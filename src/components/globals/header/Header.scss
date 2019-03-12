@@ -1,0 +1,125 @@
+$padding-header: 16px;
+$padding-total: 30px;
+$padding-menu: $padding-total - $padding-header;
+header{
+  background-color: #FFD000;
+  padding: $padding-header 0;
+  #logo{
+    img{
+      width: 100%;
+      height: auto;
+      max-width: 104.29px;
+    }
+  }
+  #main-menu{
+    ul{
+      display: flex;
+      justify-content: flex-end;
+      margin: 0;
+      li{
+        a{
+          font-weight: 400;
+          display: block;
+          text-decoration: none;
+          color: #002855;
+          font-size: 14px;
+          line-height: 16px;
+          padding: $padding-menu 0 ($padding-menu - 6) 16px;
+          position: relative;
+          transition: all 0.3s ease;
+          &::after{
+            content: '';
+            height: 60%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            margin: auto;
+            background-color: rgba(52, 55, 65, 0.1497);
+            display: none;
+          }
+          &::before{
+            content: '';
+            height: 3px;
+            position: absolute;
+            top: 100%;
+            width: 100%;
+            background-color: #1A1446;
+            display: none;
+            left: 0;
+            margin-top: 13px;
+          }
+          i{
+            width: 32px;
+            height: 32px;
+            border-radius: 100%;
+            background-color: white;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 7px;
+            &::before{
+              content: '';
+              background-size: 80% auto;
+              background-repeat: no-repeat;
+              background-position: center;
+              display: block;
+              width: 100%;
+              height: 100%;
+              transition: all 0.3s ease;
+            }
+            &.icon1::before{
+              background-image: url("../../../common/images/icono-header1.png");
+            }
+            &.icon2::before{
+              background-image: url("../../../common/images/icono-header2.png");
+            }
+            &.icon3{
+              background-color: transparent;
+              width: 15px;
+              height: 15px;
+              transform: scale(1);
+              transition: all 0.3s ease;
+              &::before{
+                background-size: 100% auto;
+                background-image: url("../../../common/images/icono-header3.png");
+              }
+            }
+          }
+        }
+        &:last-child a{
+          padding-right: 0;
+        }
+        &.active a{
+          padding-right: 22px;
+          font-weight: bold;
+          &::before,
+          &::after{
+            display: block;
+          }
+        }
+        &:hover a{
+          color: #343741;
+          font-weight: bold;
+          i{
+            &::before{
+              background-size: 90% auto;
+            }
+            &.icon3{
+              transform: scale(1.1);
+              &::before{
+                background-size: 100% auto;
+              }
+            }
+          }
+        }
+        &.logout{
+          a{
+            font-weight: bold;
+            padding-top: $padding-header + 5;
+          }
+        }
+      }
+    }
+  }
+}
