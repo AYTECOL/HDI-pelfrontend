@@ -2,16 +2,20 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
-    item: [],
+    validaridentificacion: {
+        className: 'hide'
+    },
+    identifications: {}
 };
 
 const reducer = (state=initialState, action) => {
-    if (action.type === "ACTION_TYPE") {
+    if (action.type === "ALIDARIDENTIFICACION_TOOGLE") {
         return {
             ...state,
-            item: action.item
-        };
+            validaridentificacion: { className: action.data }
+        }
     }
+
 
     return state;
 };

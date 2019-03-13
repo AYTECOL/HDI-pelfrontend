@@ -1,27 +1,188 @@
-html, a, i, li, p, h1, h2, h3, h4, h5, h6, input, textarea, button, label{
+html, a, i, li, p, h1, h2, h3, h4, h5, h6, input, textarea, button, label {
   font-family: 'Roboto';
 }
-hmtl, body{
+
+hmtl, body {
   background: #F2F2F2;
 }
-.no-padding{
+
+.no-padding {
   padding: 0 !important;
 }
-.no-margin{
+
+.no-margin {
   margin: 0 !important;
 }
 
-.btn.btn-primary{
-  background: #99E5EA;
-  border-color: #99E5EA;
-  border-radius: 3px;
-  font-style: normal;
-  font-weight: bold;
-  line-height: 1;
-  font-size: 16px;
-  text-align: center;
-  color: #404040;
+// Forms
+$color-btn-primary: #99E5EA;
+$color-font-btn-primary: #404040;
+.btn{
   padding: 17px 0 14px;
-  text-align: center;
   width: 200px;
+  margin-top: 16px;
+  background-color: transparent;
+  color: #404040;
+  font-size: 16px;
+  font-weight: bold;
+  font-style: normal;
+  border-radius: 3px;
+  text-align: center;
+  border: 1px solid #343741;
+  line-height: 1;
+  margin-left: 8px;
+  margin-right: 8px;
+  &:last-child{
+    margin-right: 0;
+  }
+  &:first-child{
+    margin-left: 0;
+  }
+  &.btn-primary {
+    background: $color-btn-primary;
+    border-color: $color-btn-primary;
+    color: #404040;
+    &:active,
+    &:hover {
+      $hover-color: $color-btn-primary * 0.8;
+      background: $hover-color !important;
+      border-color: $hover-color !important;
+      color: $color-font-btn-primary !important;
+    }
+
+    &:active {
+      box-shadow: inset 0 0 20px 1px rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+}
+
+.form-group {
+  label {
+    font-style: normal;
+    font-weight: bold;
+    line-height: 16px;
+    font-size: 14px;
+    color: #333740;
+    margin-bottom: 8px;
+  }
+
+  .form-control {
+    background: #F5F5F5;
+    border-radius: 3px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 19px;
+    font-size: 16px;
+    color: #565656;
+    border: 0;
+    -moz-appearance: none; /* Firefox */
+    -webkit-appearance: none; /* Safari and Chrome */
+    appearance: none;
+    padding: 16px 12px 14px;
+    height: auto;
+
+    &::placeholder, /* Chrome, Firefox, Opera, Safari 10.1+ */
+    &:-ms-input-placeholder, /* Internet Explorer 10-11 */
+    &::-ms-input-placeholder { /* Microsoft Edge */
+      color: #565656;
+    }
+  }
+
+  &.input-select {
+    position: relative;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 15px;
+      height: 8px;
+      background-image: url("../images/arrow_down.png");
+      background-size: 100% auto;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: absolute;
+      right: 5%;
+      top: 67%;
+    }
+  }
+}
+
+//Modals
+.modal {
+  background: rgba(26, 20, 70, 0.481544);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  &.show {
+    display: flex;
+  }
+  &.hide{
+    display: none;
+  }
+
+  .modal-dialog {
+    flex: 1;
+    position: relative;
+    max-width: 626px;
+    border: 0;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 16px rgba(74, 74, 74, 0.642408);
+    border-radius: 3px;
+  }
+
+  .modal-body ,
+  .modal-header {
+    max-width: 420px;
+    display: block;
+    padding: 0;
+    margin: 0 auto;
+    border: 0;
+  }
+  .modal-body {
+    margin-bottom: 47px;
+  }
+  .modal-header {
+    margin-top: 47px;
+    .close {
+      padding: 24px;
+      background-image: url("../images/icon_close.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 15px 15px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin: 0;
+    }
+    .modal-title {
+      font-family: Roboto;
+      font-style: normal;
+      font-weight: bold;
+      line-height: 29px;
+      font-size: 24px;
+      text-align: center;
+      color: #343741;
+      margin-bottom: 12px;
+    }
+    .modal-subtitle{
+    }
+  }
+
+  .modal-footer{
+    border: 0;
+    background: #F5F5F5;
+    padding: 28px 0 26px;
+    p{
+      width: 436px;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 19px;
+      font-size: 12px;
+      text-align: center;
+      margin: 0 auto;
+      span{
+        color: #7dc5ca;
+      }
+    }
+  }
 }

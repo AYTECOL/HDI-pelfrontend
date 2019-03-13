@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import './Index.scss';
 
+// Data
+import Identifications from '../../../services/Identifications';
+
 class Index extends Component {
+    constructor() {
+        super();
+        let Identification = new Identifications;
+        this.state.identifications = Identification.get();
+    }
+
+    state = {
+        identifications: {}
+    };
+
     render() {
         return (
             <div className="index-form">
@@ -14,12 +27,13 @@ class Index extends Component {
                     </div>
                     <div className="row">
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                            <div className="form-group">
+                            <div className="form-group input-select">
                                 <label htmlFor="doc-type">Tipo de identificación</label>
                                 <select name="doc-type" id="doc-type" className="form-control">
                                     <option value="">Selecciona</option>
-                                    <option value="CC">Cédula de ciudadanía</option>
-                                    <option value="PASS">Pasaporte</option>
+                                    {this.state.identifications.identifications.map(identification =>
+                                        <option value="{identification.code}">{identification.description}</option>
+                                    )}
                                 </select>
                             </div>
                         </div>
