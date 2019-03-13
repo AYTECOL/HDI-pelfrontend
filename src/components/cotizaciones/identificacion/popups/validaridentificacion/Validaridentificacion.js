@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { validaridentificacionToogle } from '../../../actionCreators';
+import { validarIdentificacionToogle } from '../../../../../actionCreators';
 
 import './Validaridentificacion.scss';
 import icono from './images/icon.png';
 
-const Validaridentificacion = ({ validaridentificacion,  validaridentificacionToogle }) => {
-    validaridentificacion.className += " modal validaridentificacion";
+const Validaridentificacion = ({ validaridentificacion,  validarIdentificacionToogle }) => {
     return (
-        <div className={validaridentificacion.className}>
+        <div className={validaridentificacion.className + " modal validaridentificacion"}>
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Ups, lo sentimos</h5>
                         <p className="modal-subtitle">La identificación que ingresaste no nos permite continuar con el proceso</p>
-                        <button onClick={() => validaridentificacionToogle('hide')} type="button" className="close" aria-label="Close"></button>
+                        <button onClick={() => validarIdentificacionToogle('hide')} type="button" className="close" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
                         <div className="content">
@@ -23,8 +22,8 @@ const Validaridentificacion = ({ validaridentificacion,  validaridentificacionTo
                             </div>
                         </div>
                         <div className="buttons">
-                            <button onClick={() => validaridentificacionToogle('hide')} type="button" className="btn btn-secondary" data-dismiss="modal">Terminar</button>
-                            <button onClick={() => validaridentificacionToogle('hide')} type="button" className="btn btn-primary">Ajustar</button>
+                            <button onClick={() => validarIdentificacionToogle('hide')} type="button" className="btn btn-secondary" data-dismiss="modal">Terminar</button>
+                            <button onClick={() => validarIdentificacionToogle('hide')} type="button" className="btn btn-primary">Ajustar</button>
                         </div>
                     </div>
                     <div className="modal-footer">
@@ -45,8 +44,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        validaridentificacionToogle(className) {
-            dispatch(validaridentificacionToogle(className));
+        validarIdentificacionToogle(className) {
+            dispatch(validarIdentificacionToogle(className));
         }
     };
 };

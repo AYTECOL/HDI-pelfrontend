@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-const Baseurl = "https://hexx1yso1e.execute-api.us-east-1.amazonaws.com/dev/";
+const Baseurl = "https://1s2h3bt5l3.execute-api.us-east-1.amazonaws.com/dev/";
 class Service extends Component {
-    get(url) {
-        return axios.get(Baseurl+url,{
+     static async get(url) {
+         return await axios.get(Baseurl+url,{
             headers: {
                 'Access-Control-Allow-Origin' : '*',
             }

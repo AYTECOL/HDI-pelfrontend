@@ -15,6 +15,7 @@ hmtl, body {
 }
 
 // Forms
+$error-fields: #DD133C;
 $color-btn-primary: #99E5EA;
 $color-font-btn-primary: #404040;
 .btn{
@@ -56,7 +57,18 @@ $color-font-btn-primary: #404040;
   }
 }
 
+
 .form-group {
+  &.error{
+    label{
+      color: $error-fields;
+    }
+    .form-control{
+      border: 1px solid $error-fields;
+      background: #FFF5F5;
+    }
+  }
+
   label {
     font-style: normal;
     font-weight: bold;
@@ -90,7 +102,6 @@ $color-font-btn-primary: #404040;
 
   &.input-select {
     position: relative;
-
     &::after {
       content: "";
       display: block;

@@ -2,17 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c74c0d37-6b0f-4ac9-a30d-b1aff207941e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/Identifications.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/Service.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/actionCreators.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/actionCreators.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/scss/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/scss/index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/index/Index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/index/Index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/index/Index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/index/Index.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/index/Index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/index/Index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/popups/validaridentificacion/images/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/images/icon.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/cotizacion/Cotizacion.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/cotizacion/Cotizacion.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/Identifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/Identifications.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/Service.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/Service.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -27,12 +28,12 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/index/Index.js">
+        <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="-16">
+              <caret line="36" column="26" lean-forward="true" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
               <folding>
-                <element signature="e#0#41#0" expanded="true" />
+                <element signature="e#0#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -41,8 +42,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+            <state relative-caret-position="270">
+              <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
               <folding>
                 <element signature="e#0#53#0" expanded="true" />
               </folding>
@@ -51,10 +52,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/services/Service.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="76" selection-start-line="3" selection-start-column="76" selection-end-line="3" selection-end-column="76" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="148">
+              <caret line="15" column="28" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/common/scss/index.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="117" column="3" lean-forward="true" selection-start-line="117" selection-start-column="3" selection-end-line="117" selection-end-column="3" />
+            <state relative-caret-position="150">
+              <caret line="61" column="9" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -71,6 +93,9 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>#1A1446</find>
+      <find>validaridentificacionToogle</find>
+      <find>VALIDARIDENTIFICACION_TOOGLE</find>
+      <find>SAVE_IDENTIFICATION</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -95,14 +120,16 @@
         <option value="$PROJECT_DIR$/src/pages/cotizacion/Cotizacion.js" />
         <option value="$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.scss" />
         <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/src/common/scss/index.scss" />
         <option value="$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.js" />
         <option value="$PROJECT_DIR$/src/services/service.js" />
         <option value="$PROJECT_DIR$/src/services/identifications.js" />
-        <option value="$PROJECT_DIR$/src/actionCreators.js" />
-        <option value="$PROJECT_DIR$/src/services/Service.js" />
         <option value="$PROJECT_DIR$/src/services/Identifications.js" />
         <option value="$PROJECT_DIR$/src/components/cotizaciones/index/Index.js" />
+        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js" />
+        <option value="$PROJECT_DIR$/src/common/scss/index.scss" />
+        <option value="$PROJECT_DIR$/src/actionCreators.js" />
+        <option value="$PROJECT_DIR$/src/services/Service.js" />
+        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" />
         <option value="$PROJECT_DIR$/src/store.js" />
       </list>
     </option>
@@ -165,6 +192,15 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
+              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
+              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
               <item name="index" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -172,6 +208,12 @@
               <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="services" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -191,6 +233,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/components/cotizaciones/identificacion" />
       <recent name="$PROJECT_DIR$/src/components/popups/validaridentificacion" />
       <recent name="$PROJECT_DIR$/src/components" />
       <recent name="$PROJECT_DIR$/src/components/globals" />
@@ -212,6 +255,9 @@
     <configuration name="Debug Application" type="JavascriptDebugType" uri="http://localhost:3000">
       <method v="2" />
     </configuration>
+    <configuration name="store.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/store.js" working-dir="$PROJECT_DIR$">
+      <method v="2" />
+    </configuration>
     <configuration name="npm start" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -222,6 +268,11 @@
       <envs />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.store.js" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -235,12 +286,13 @@
       <updated>1552406982386</updated>
       <workItem from="1552406984878" duration="1767000" />
       <workItem from="1552408769314" duration="16629000" />
-      <workItem from="1552485122392" duration="14968000" />
+      <workItem from="1552485122392" duration="17845000" />
+      <workItem from="1552510267795" duration="4583000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33364000" />
+    <option name="totallyTimeSpent" value="40824000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="320" width="1366" height="704" extended-state="6" />
@@ -265,6 +317,26 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2278481" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3043478" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.43826088" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -281,13 +353,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package-lock.json">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/common/fonts/stylesheet.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -341,7 +406,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/index/Index.scss">
+    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
           <caret line="23" column="7" lean-forward="true" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
@@ -368,20 +433,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.scss">
+    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="12" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -395,13 +450,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="2" lean-forward="true" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -412,50 +460,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/common/scss/index.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="117" column="3" lean-forward="true" selection-start-line="117" selection-start-column="3" selection-end-line="117" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../libertyhomeback/serverless.yml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/Service.js">
+    <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="330">
+          <caret line="22" column="4" selection-start-line="22" selection-start-column="3" selection-end-line="22" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/services/Identifications.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+        <state relative-caret-position="75">
+          <caret line="5" column="51" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/index/Index.js">
+    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="120">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/common/scss/index.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="61" column="9" selection-start-line="61" selection-start-column="9" selection-end-line="61" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="148">
+          <caret line="15" column="28" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/Service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="76" selection-start-line="3" selection-start-column="76" selection-end-line="3" selection-end-column="76" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-16">
+          <caret line="36" column="26" lean-forward="true" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/store.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+        <state relative-caret-position="270">
+          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
           <folding>
             <element signature="e#0#53#0" expanded="true" />
           </folding>
