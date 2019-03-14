@@ -20,6 +20,7 @@ const initialState = {
     },
     cotizacion: {
         continueButtonDisable: false,
+        typeDocument: 1,
         identification: {
             code: "01",
             value: "",
@@ -45,15 +46,13 @@ const reducer = (state = initialState, action) => {
         }
     } else if (action.type === "NEXT_STEP_INDEX") {
         return validateIdentification(state);
-    } else if (action.type === "SAVE_IDENTIFICATION_TYPE") {
+    }else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
         return {
             ...state,
-            cotizacion: {identification: {...state.cotizacion.identification, code: action.data}}
-        }
-    } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
-        return {
-            ...state,
-            cotizacion: {identification: {...state.cotizacion.identification, ...action.data}}
+            cotizacion: {
+                ...state.cotizacion,
+                identification: {...state.cotizacion.identification, ...action.data },
+            }
         }
     }
     return state;
@@ -75,6 +74,8 @@ const validateIdentification = (state) => {
     }
 
     //Valida el valor contra el tipo de documento
+    let typeDocument = state.cotizacion.typeDocument;
+    let v = state.cotizacion.identification.value;
     switch (state.cotizacion.identification.code) {
         // Valida todos los documentos persona natural
         case "01":
@@ -82,14 +83,22 @@ const validateIdentification = (state) => {
         case "06":
         case "05":
         case "07":
-            let v = state.cotizacion.identification.value.length;
-            if ( v < 5 || v >= 15 || isNaN(v) ){
+            if (v.length < 5 || v.length >= 15 || isNaN(v)) {
                 errors.identification_value = "error";
                 errors.status = 0;
             }
+            typeDocument = 1;
             break;
         // Valida solo el nit
         case "08":
+            let s = v.split("-");
+            if ( v.indexOf("-") == -1 || isNaN(parseInt(v)) ||
+                s[0].length < 7 || s[1].length < 1 || isNaN(s[0]) || isNaN(s[1])
+            ){
+                errors.identification_value = "error";
+                errors.status = 0;
+            }
+            typeDocument = 2;
             break;
     }
 
@@ -117,7 +126,8 @@ const validateIdentification = (state) => {
         stateForm: step,
         cotizacion: {
             continueButtonDisable: continueButtonDisable,
-            identification: {...state.cotizacion.identification}
+            identification: {...state.cotizacion.identification},
+            typeDocument: typeDocument
         }
     }
 };

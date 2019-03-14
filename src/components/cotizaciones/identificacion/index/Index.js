@@ -14,7 +14,7 @@ import {Link} from "react-router-dom";
 
 store.dispatch(loadIdentifications());
 
-const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveIdentificationType, saveIdentificationValue, nextStepIndex}) => {
+const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveIdentificationValue, nextStepIndex}) => {
     return (
         <div className="index-form">
             <div className="container">
@@ -31,10 +31,10 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
                             <label htmlFor="doc-type">Tipo de identificación</label>
                             <select disabled={(stateForm != 0 ? "disabled" : "")} name="code" id="doc-type"
                                     className={(stateForm != 0 ? "disabled " : "") + "form-control"}
-                                    defaultValue={cotizacion.identification.code}
-                                    onChange={(e) => saveIdentificationType(e.target)}>
+                                    value={cotizacion.identification.code}
+                                    onChange={(e) => saveIdentificationValue(e.target)}>
                                 {identifications.identifications.map(identification =>
-                                    <option selected={(cotizacion.identification.code == identification.code)?'selected':''} key={identification.code}
+                                    <option key={identification.code}
                                             value={identification.code}>{identification.description}</option>
                                 )}
                             </select>
@@ -54,7 +54,7 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
 
                 <div className={(stateForm != 1 ? "hide " : "")}>
 
-                    <div className="row">
+                    <div className={(cotizacion.typeDocument==2?"hide ":"") + "row"}>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_name}>
                                 <label htmlFor="doc-type-value">Primer nombre</label>
@@ -68,6 +68,17 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
                                 <label htmlFor="doc-type-value">Primer apellido</label>
                                 <input name="lastname" id="doc-type-value" type="text" className="form-control"
                                        placeholder="Ingresa primer apellido"
+                                       onChange={(e) => saveIdentificationValue(e.target)}/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={(cotizacion.typeDocument==1?"hide ":"") + "row"}>
+                        <div className="col col-sm-12 col-md-12 col-lg-12 form-first">
+                            <div className={"form-group " + cotizacionErrors.identification_name}>
+                                <label htmlFor="doc-type-value">Razón social</label>
+                                <input name="name" id="doc-type-value" type="text" className="form-control"
+                                       placeholder="Ingresa la razón social"
                                        onChange={(e) => saveIdentificationValue(e.target)}/>
                             </div>
                         </div>
@@ -127,9 +138,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        saveIdentificationType(value) {
-            dispatch(saveIdentificationType(value));
-        },
         saveIdentificationValue(value) {
             dispatch(saveIdentificationValue(value));
         },

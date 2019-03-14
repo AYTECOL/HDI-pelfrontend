@@ -13,10 +13,6 @@ const validarIdentificacionToogle = (data) => {
     return { type: "VALIDARIDENTIFICACION_TOOGLE", data };
 };
 
-const saveIdentificationType = (value) => {
-    return {type: "SAVE_IDENTIFICATION_TYPE", data: value};
-};
-
 const saveIdentificationValue = (element) => {
     let name = element.name;
     let value = element.value;
@@ -34,6 +30,5 @@ export {
     loadIdentifications,
     validarIdentificacionToogle,
     nextStepIndex,
-    saveIdentificationType,
     saveIdentificationValue
 };

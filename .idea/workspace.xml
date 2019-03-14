@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c74c0d37-6b0f-4ac9-a30d-b1aff207941e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/common/scss/index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/scss/index.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/actionCreators.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/actionCreators.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -30,20 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/globals/header/Header.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="100" column="20" lean-forward="true" selection-start-line="100" selection-start-column="20" selection-end-line="100" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="90" column="29" selection-start-line="90" selection-start-column="29" selection-end-line="90" selection-end-column="29" />
+            <state relative-caret-position="720">
+              <caret line="52" column="36" selection-start-line="52" selection-start-column="36" selection-end-line="52" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -51,8 +42,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="223">
-              <caret line="22" column="18" lean-forward="true" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+            <state relative-caret-position="480">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/globals/header/Header.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-12">
+              <caret line="73" column="28" lean-forward="true" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -85,9 +85,9 @@
       <find>BrowserRouter</find>
       <find>validateIdentification</find>
       <find>stateForm</find>
-      <find>SAVE_IDENTIFICATION_VALUE</find>
       <find>16px 12px 14px</find>
       <find>saveIdentificationValue</find>
+      <find>SAVE_IDENTIFICATION_VALUE</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -124,17 +124,17 @@
         <option value="$PROJECT_DIR$/src/pages/cotizacion/Cotizacion.js" />
         <option value="$PROJECT_DIR$/src/services/Service.js" />
         <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.scss" />
-        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" />
         <option value="$PROJECT_DIR$/src/common/scss/index.scss" />
         <option value="$PROJECT_DIR$/src/actionCreators.js" />
+        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" />
         <option value="$PROJECT_DIR$/src/store.js" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="380" />
-    <option name="width" value="673" />
-    <option name="height" value="526" />
+  <component name="ProjectFrameBounds" extendedState="4">
+    <option name="y" value="25" />
+    <option name="width" value="1367" />
+    <option name="height" value="1016" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -249,7 +249,7 @@
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -314,18 +314,18 @@
       <workItem from="1552510267795" duration="4583000" />
       <workItem from="1552556675352" duration="595000" />
       <workItem from="1552557333997" duration="2703000" />
-      <workItem from="1552570548964" duration="11860000" />
+      <workItem from="1552570548964" duration="15581000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55983000" />
+    <option name="totallyTimeSpent" value="59704000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="320" width="1366" height="704" extended-state="6" />
+    <frame x="0" y="25" width="1367" height="1016" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.2278481" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20907739" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -535,17 +535,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/globals/header/Header.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="100" column="20" lean-forward="true" selection-start-line="100" selection-start-column="20" selection-end-line="100" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/common/scss/index.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="193">
           <caret line="134" column="38" lean-forward="true" selection-start-line="134" selection-start-column="38" selection-end-line="134" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/globals/header/Header.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-12">
+          <caret line="73" column="28" lean-forward="true" selection-start-line="73" selection-start-column="28" selection-end-line="73" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
         </state>
       </provider>
     </entry>
@@ -559,17 +566,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="22" column="18" lean-forward="true" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/store.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="90" column="29" selection-start-line="90" selection-start-column="29" selection-end-line="90" selection-end-column="29" />
+        <state relative-caret-position="720">
+          <caret line="52" column="36" selection-start-line="52" selection-start-column="36" selection-end-line="52" selection-end-column="36" />
         </state>
       </provider>
     </entry>
