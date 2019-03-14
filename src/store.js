@@ -14,21 +14,26 @@ const initialState = {
         identification_value: '',
         identification_name: '',
         identification_lastname: '',
+        identification_businessname: '',
         identification_city: '',
         identification_address: '',
-        identification_address_additional: '',
+        identification_addressadditional: '',
     },
+    cotizacionExclude: [
+        'identification_addressadditional'
+    ],
+    continueButtonDisable: false,
     cotizacion: {
-        continueButtonDisable: false,
         typeDocument: 1,
         identification: {
             code: "01",
             value: "",
             name: "",
             lastname: "",
+            businessname: "",
             city: "",
             address: "",
-            address_additional: "",
+            addressadditional: "",
         }
     }
 };
@@ -45,7 +50,13 @@ const reducer = (state = initialState, action) => {
             identifications: {identifications: action.data}
         }
     } else if (action.type === "NEXT_STEP_INDEX") {
-        return validateIdentification(state);
+        return {
+            ...state,
+            continueButtonDisable: true,
+            stateForm: state.stateForm + 1,
+        }
+    } else if (action.type === "VALIDATE_IDENTIFICATION_VALUE") {
+        return validateIdentification(state, action.data);
     }else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
         return {
             ...state,
@@ -58,23 +69,33 @@ const reducer = (state = initialState, action) => {
     return state;
 };
 
-const validateIdentification = (state) => {
+const validateIdentification = (state,name) => {
     let errors = {
         status: 1
     };
+
+    // Quita el estado de error para natural o juridica
+    let typeDocument = state.cotizacion.typeDocument;
+    if (typeDocument == 2 ) state.cotizacionExclude.push('identification_lastname','identification_name');
+    if (typeDocument == 1 ) state.cotizacionExclude.push('identification_businessname');
+
     // Valida Si los campos no estan vacios
     let i = 0;
     for (let item in state.cotizacion.identification) {
-        if (state.cotizacion.identification[item] == "") {
-            errors['identification_' + item] = "error";
+        if (state.cotizacion.identification[item] == "" && state.cotizacionExclude.indexOf('identification_'+ item) == -1 ) {
             errors.status = 0;
         }
         i++;
         if (state.stateForm == 0 && i > 1) break;
     }
 
+    if ( state.cotizacion.identification[name] == "" && state.cotizacionExclude.indexOf('identification_'+ name) == -1 ) {
+        errors['identification_' + name] = "error";
+    }else{
+        errors['identification_' + name] = "";
+    }
+
     //Valida el valor contra el tipo de documento
-    let typeDocument = state.cotizacion.typeDocument;
     let v = state.cotizacion.identification.value;
     switch (state.cotizacion.identification.code) {
         // Valida todos los documentos persona natural
@@ -86,6 +107,8 @@ const validateIdentification = (state) => {
             if (v.length < 5 || v.length >= 15 || isNaN(v)) {
                 errors.identification_value = "error";
                 errors.status = 0;
+            }else{
+                errors.identification_value = "";
             }
             typeDocument = 1;
             break;
@@ -97,35 +120,30 @@ const validateIdentification = (state) => {
             ){
                 errors.identification_value = "error";
                 errors.status = 0;
+            }else{
+                errors.identification_value = "";
             }
             typeDocument = 2;
             break;
     }
 
-    // Valida si los primero campos cumplen
-    let step;
     let continueButtonDisable = false;
-    if (errors.status == 1 && (state.stateForm == 0 || state.stateForm == 1)) {
-        step = 1;
-        continueButtonDisable = true;
-    } else {
-        if (state.stateForm == 0) {
-            step = 0;
-        } else {
-            step = 1;
-        }
-    }
     //Controla el boton de continuar
+    if (state.stateForm == 0 && errors.status == 0) continueButtonDisable = true;
     if (state.stateForm == 1 && errors.status == 0) continueButtonDisable = true;
+
+    delete errors.status;
+
+    console.log(state.cotizacionErrors);
 
     return {
         ...state,
         cotizacionErrors: {
+            ...state.cotizacionErrors,
             ...errors
         },
-        stateForm: step,
+        continueButtonDisable: continueButtonDisable,
         cotizacion: {
-            continueButtonDisable: continueButtonDisable,
             identification: {...state.cotizacion.identification},
             typeDocument: typeDocument
         }

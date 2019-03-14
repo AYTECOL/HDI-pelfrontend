@@ -21,8 +21,11 @@ const saveIdentificationValue = (element) => {
     return {type: "SAVE_IDENTIFICATION_VALUE", data: data};
 };
 
-const nextStepIndex = (doc) => {
-    console.log(doc);
+const validateIdentificationValue = (name) => {
+    return {type: "VALIDATE_IDENTIFICATION_VALUE", data: name};
+};
+
+const nextStepIndex = () => {
     return {type: "NEXT_STEP_INDEX", data: {}};
 };
 
@@ -30,5 +33,6 @@ export {
     loadIdentifications,
     validarIdentificacionToogle,
     nextStepIndex,
-    saveIdentificationValue
+    saveIdentificationValue,
+    validateIdentificationValue
 };

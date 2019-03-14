@@ -4,9 +4,9 @@ import {connect} from "react-redux";
 import store from '../../../../store';
 import {
     loadIdentifications,
-    nextStepIndex,
-    saveIdentificationType,
-    saveIdentificationValue
+    validateIdentificationValue,
+    saveIdentificationValue,
+    nextStepIndex
 } from '../../../../actionCreators';
 
 import './Index.scss';
@@ -14,7 +14,7 @@ import {Link} from "react-router-dom";
 
 store.dispatch(loadIdentifications());
 
-const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveIdentificationValue, nextStepIndex}) => {
+const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, continueButtonDisable, saveIdentificationValue, validateIdentificationValue, nextStepIndex}) => {
     return (
         <div className="index-form">
             <div className="container">
@@ -32,7 +32,7 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
                             <select disabled={(stateForm != 0 ? "disabled" : "")} name="code" id="doc-type"
                                     className={(stateForm != 0 ? "disabled " : "") + "form-control"}
                                     value={cotizacion.identification.code}
-                                    onChange={(e) => saveIdentificationValue(e.target)}>
+                                    onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }>
                                 {identifications.identifications.map(identification =>
                                     <option key={identification.code}
                                             value={identification.code}>{identification.description}</option>
@@ -46,7 +46,7 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
                             <input disabled={(stateForm != 0 ? "disabled" : "")} name="value" id="doc-type-value" type="text"
                                    className={(stateForm != 0 ? "disabled " : "") + "form-control"}
                                    placeholder="Ingresa la identificación"
-                                   onChange={(e) => saveIdentificationValue(e.target)}/>
+                                   onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
                             <small className="form-text only-errors">El número de Identificación ingresado, no corresponde con el tipo de identificación seleccionado.</small>
                         </div>
                     </div>
@@ -54,32 +54,32 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
 
                 <div className={(stateForm != 1 ? "hide " : "")}>
 
-                    <div className={(cotizacion.typeDocument==2?"hide ":"") + "row"}>
+                    <div className={(cotizacion.typeDocument!=1?"hide ":"") + "row"}>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_name}>
-                                <label htmlFor="doc-type-value">Primer nombre</label>
-                                <input name="name" id="doc-type-value" type="text" className="form-control"
+                                <label htmlFor="name">Primer nombre</label>
+                                <input name="name" id="name" type="text" className="form-control"
                                        placeholder="Ingresa primer nombre"
-                                       onChange={(e) => saveIdentificationValue(e.target)}/>
+                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
                             </div>
                         </div>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_lastname}>
-                                <label htmlFor="doc-type-value">Primer apellido</label>
-                                <input name="lastname" id="doc-type-value" type="text" className="form-control"
+                                <label htmlFor="lastname">Primer apellido</label>
+                                <input name="lastname" id="lastnamee" type="text" className="form-control"
                                        placeholder="Ingresa primer apellido"
-                                       onChange={(e) => saveIdentificationValue(e.target)}/>
+                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
                             </div>
                         </div>
                     </div>
 
-                    <div className={(cotizacion.typeDocument==1?"hide ":"") + "row"}>
+                    <div className={(cotizacion.typeDocument!=2?"hide ":"") + "row"}>
                         <div className="col col-sm-12 col-md-12 col-lg-12 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_name}>
-                                <label htmlFor="doc-type-value">Razón social</label>
-                                <input name="name" id="doc-type-value" type="text" className="form-control"
+                                <label htmlFor="businessname">Razón social</label>
+                                <input name="businessname" id="businessname" type="text" className="form-control"
                                        placeholder="Ingresa la razón social"
-                                       onChange={(e) => saveIdentificationValue(e.target)}/>
+                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
                             </div>
                         </div>
                     </div>
@@ -88,20 +88,30 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
                     <div className="row">
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_city}>
-                                <label htmlFor="doc-type-value">Ciudad o municipio del hogar</label>
-                                <input name="city" id="doc-type-value" type="text" className="form-control"
+                                <label htmlFor="city">Ciudad o municipio del hogar</label>
+                                <input name="city" id="city" type="text" className="form-control"
                                        placeholder="Ingresa ciudad o municipio del h..."
-                                       onChange={(e) => saveIdentificationValue(e.target)}/>
+                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
                                 <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
                             </div>
                         </div>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_address}>
-                                <label htmlFor="doc-type-value">Dirección del hogar</label>
-                                <input name="address" id="doc-type-value" type="text" className="form-control"
+                                <label htmlFor="address">Dirección del hogar</label>
+                                <input name="address" id="address" type="text" className="form-control"
                                        placeholder="Ingresa la dirección"
-                                       onChange={(e) => saveIdentificationValue(e.target)}/>
+                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
                                 <small className="form-text text-muted">Ejemplo: Calle 143Bis # 23 a 34</small>
+                            </div>
+                        </div>
+
+                        <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
+                            <div className={"form-group " + cotizacionErrors.identification_addressadditional}>
+                                <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
+                                <input name="addressadditional" id="addressadditional" type="text" className="form-control"
+                                       placeholder="Ingresa la dirección"
+                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
+                                <small className="form-text text-muted"> Ejemplo: Interior 6, apto 201</small>
                             </div>
                         </div>
                     </div>
@@ -114,11 +124,11 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, saveId
                             <Link to='/'><i className="back-icon"></i>Volver</Link>
                         </div>
                         <button className={(stateForm != 1 ? "hide " : "") + "btn btn-default"}
-                                onClick={() => nextStepIndex(cotizacion)} type="button">Guardar y salir
+                                onClick={() => nextStepIndex()} type="button">Guardar y salir
                         </button>
-                        <button disabled={cotizacion.continueButtonDisable} onClick={() => nextStepIndex(cotizacion)}
+                        <button disabled={continueButtonDisable} onClick={() => nextStepIndex()}
                                 type="button"
-                                className={(cotizacion.continueButtonDisable ? 'disabled ' : '') + "btn btn-primary"}>Continuar
+                                className={(continueButtonDisable ? 'disabled ' : '') + "btn btn-primary"}>Continuar
                         </button>
                     </div>
                 </div>
@@ -132,7 +142,8 @@ const mapStateToProps = state => {
         stateForm: state.stateForm,
         identifications: state.identifications,
         cotizacion: state.cotizacion,
-        cotizacionErrors: state.cotizacionErrors
+        cotizacionErrors: state.cotizacionErrors,
+        continueButtonDisable: state.continueButtonDisable
     };
 };
 
@@ -140,6 +151,9 @@ const mapDispatchToProps = dispatch => {
     return {
         saveIdentificationValue(value) {
             dispatch(saveIdentificationValue(value));
+        },
+        validateIdentificationValue(cotizacion) {
+            dispatch(validateIdentificationValue(cotizacion));
         },
         nextStepIndex() {
             dispatch(nextStepIndex());
