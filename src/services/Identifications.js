@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import Service from './Service';
 
 class Identifications extends Component {

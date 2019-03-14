@@ -22,7 +22,7 @@ const initialState = {
     cotizacionExclude: [
         'identification_addressadditional'
     ],
-    continueButtonDisable: false,
+    continueButtonDisable: true,
     cotizacion: {
         typeDocument: 1,
         identification: {
@@ -50,48 +50,59 @@ const reducer = (state = initialState, action) => {
             identifications: {identifications: action.data}
         }
     } else if (action.type === "NEXT_STEP_INDEX") {
+        let className = state.validaridentificacion.className;
+        let stateForm = state.stateForm + 1;
+        // Abre el popup
+        //if (state.stateForm == 0) {
+        //  className = "show";
+        //  stateForm--;
+        //}
         return {
             ...state,
             continueButtonDisable: true,
-            stateForm: state.stateForm + 1,
+            stateForm: stateForm,
+            validaridentificacion: {
+                ...state.validaridentificacion,
+                className: className
+            }
         }
     } else if (action.type === "VALIDATE_IDENTIFICATION_VALUE") {
         return validateIdentification(state, action.data);
-    }else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
+    } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
         return {
             ...state,
             cotizacion: {
                 ...state.cotizacion,
-                identification: {...state.cotizacion.identification, ...action.data },
+                identification: {...state.cotizacion.identification, ...action.data},
             }
         }
     }
     return state;
 };
 
-const validateIdentification = (state,name) => {
+const validateIdentification = (state, name) => {
     let errors = {
         status: 1
     };
 
     // Quita el estado de error para natural o juridica
     let typeDocument = state.cotizacion.typeDocument;
-    if (typeDocument == 2 ) state.cotizacionExclude.push('identification_lastname','identification_name');
-    if (typeDocument == 1 ) state.cotizacionExclude.push('identification_businessname');
+    if (typeDocument == 2) state.cotizacionExclude.push('identification_lastname', 'identification_name');
+    if (typeDocument == 1) state.cotizacionExclude.push('identification_businessname');
 
     // Valida Si los campos no estan vacios
     let i = 0;
     for (let item in state.cotizacion.identification) {
-        if (state.cotizacion.identification[item] == "" && state.cotizacionExclude.indexOf('identification_'+ item) == -1 ) {
+        if (state.cotizacion.identification[item] == "" && state.cotizacionExclude.indexOf('identification_' + item) == -1) {
             errors.status = 0;
         }
         i++;
         if (state.stateForm == 0 && i > 1) break;
     }
 
-    if ( state.cotizacion.identification[name] == "" && state.cotizacionExclude.indexOf('identification_'+ name) == -1 ) {
+    if (state.cotizacion.identification[name] == "" && state.cotizacionExclude.indexOf('identification_' + name) == -1) {
         errors['identification_' + name] = "error";
-    }else{
+    } else {
         errors['identification_' + name] = "";
     }
 
@@ -107,7 +118,7 @@ const validateIdentification = (state,name) => {
             if (v.length < 5 || v.length >= 15 || isNaN(v)) {
                 errors.identification_value = "error";
                 errors.status = 0;
-            }else{
+            } else {
                 errors.identification_value = "";
             }
             typeDocument = 1;
@@ -115,12 +126,12 @@ const validateIdentification = (state,name) => {
         // Valida solo el nit
         case "08":
             let s = v.split("-");
-            if ( v.indexOf("-") == -1 || isNaN(parseInt(v)) ||
+            if (v.indexOf("-") == -1 || isNaN(parseInt(v)) ||
                 s[0].length < 7 || s[1].length < 1 || isNaN(s[0]) || isNaN(s[1])
-            ){
+            ) {
                 errors.identification_value = "error";
                 errors.status = 0;
-            }else{
+            } else {
                 errors.identification_value = "";
             }
             typeDocument = 2;

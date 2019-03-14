@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c74c0d37-6b0f-4ac9-a30d-b1aff207941e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/actionCreators.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/actionCreators.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/Identifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/Identifications.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/store.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -18,8 +21,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
+            <state relative-caret-position="390">
+              <caret line="131" column="30" lean-forward="true" selection-start-line="131" selection-start-column="30" selection-end-line="131" selection-end-column="30" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -27,11 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/store.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="610">
-              <caret line="128" lean-forward="true" selection-start-line="128" selection-end-line="128" />
+            <state relative-caret-position="360">
+              <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
               </folding>
@@ -39,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="2" lean-forward="true" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="2" />
+            <state relative-caret-position="315">
+              <caret line="21" column="2" lean-forward="true" selection-start-line="21" selection-start-column="2" selection-end-line="21" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -90,8 +93,8 @@
       <find>nextStepIndex</find>
       <find>SAVE_IDENTIFICATION_VALUE</find>
       <find>continueButtonDisable</find>
-      <find>validateIdentificationValue</find>
       <find>VALIDATE_IDENTIFICATION_VALUE</find>
+      <find>validateIdentificationValue</find>
     </findStrings>
     <replaceStrings>
       <replace>validateIdentificationValue</replace>
@@ -117,7 +120,6 @@
         <option value="$PROJECT_DIR$/src/components/popups/validaridentificacion/Validaridentificacion.js" />
         <option value="$PROJECT_DIR$/src/services/service.js" />
         <option value="$PROJECT_DIR$/src/services/identifications.js" />
-        <option value="$PROJECT_DIR$/src/services/Identifications.js" />
         <option value="$PROJECT_DIR$/src/components/cotizaciones/index/Index.js" />
         <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js" />
         <option value="$PROJECT_DIR$/src/routes.js" />
@@ -132,9 +134,10 @@
         <option value="$PROJECT_DIR$/src/services/Service.js" />
         <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.scss" />
         <option value="$PROJECT_DIR$/src/common/scss/index.scss" />
-        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" />
-        <option value="$PROJECT_DIR$/src/actionCreators.js" />
         <option value="$PROJECT_DIR$/src/store.js" />
+        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js" />
+        <option value="$PROJECT_DIR$/src/services/Identifications.js" />
+        <option value="$PROJECT_DIR$/src/actionCreators.js" />
       </list>
     </option>
   </component>
@@ -163,83 +166,6 @@
               <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
               <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
-              <item name="scss" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
-              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
-              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
-              <item name="index" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="globals" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="globals" type="462c0819:PsiDirectoryNode" />
-              <item name="header" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="services" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -322,12 +248,12 @@
       <workItem from="1552510267795" duration="4583000" />
       <workItem from="1552556675352" duration="595000" />
       <workItem from="1552557333997" duration="2703000" />
-      <workItem from="1552570548964" duration="19920000" />
+      <workItem from="1552570548964" duration="21135000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64043000" />
+    <option name="totallyTimeSpent" value="65258000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1367" height="1016" extended-state="4" />
@@ -452,16 +378,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/Identifications.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="51" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -516,16 +432,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/services/Service.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/globals/header/Header.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
@@ -557,30 +463,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/Service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="26" lean-forward="true" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
+        <state relative-caret-position="390">
+          <caret line="131" column="30" lean-forward="true" selection-start-line="131" selection-start-column="30" selection-end-line="131" selection-end-column="30" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
+    <entry file="file://$PROJECT_DIR$/src/services/Identifications.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="2" lean-forward="true" selection-start-line="25" selection-start-column="2" selection-end-line="25" selection-end-column="2" />
+        <state relative-caret-position="150">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/store.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="610">
-          <caret line="128" lean-forward="true" selection-start-line="128" selection-end-line="128" />
+        <state relative-caret-position="360">
+          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/actionCreators.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="2" lean-forward="true" selection-start-line="21" selection-start-column="2" selection-end-line="21" selection-end-column="2" />
         </state>
       </provider>
     </entry>

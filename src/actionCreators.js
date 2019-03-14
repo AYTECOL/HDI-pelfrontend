@@ -4,13 +4,13 @@ const loadIdentifications = () => {
     return dispatch => {
         return Identifications.get()
             .then(response => {
-                dispatch({ type: "ADD_IDENTIFICATIONS", data: response.identifications });
+                dispatch({type: "ADD_IDENTIFICATIONS", data: response.identifications});
             });
     };
 };
 
 const validarIdentificacionToogle = (data) => {
-    return { type: "VALIDARIDENTIFICACION_TOOGLE", data };
+    return {type: "VALIDARIDENTIFICACION_TOOGLE", data};
 };
 
 const saveIdentificationValue = (element) => {

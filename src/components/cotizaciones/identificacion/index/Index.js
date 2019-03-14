@@ -32,7 +32,10 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                             <select disabled={(stateForm != 0 ? "disabled" : "")} name="code" id="doc-type"
                                     className={(stateForm != 0 ? "disabled " : "") + "form-control"}
                                     value={cotizacion.identification.code}
-                                    onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }>
+                                    onChange={(e) => {
+                                        saveIdentificationValue(e.target);
+                                        validateIdentificationValue(e.target.name);
+                                    }}>
                                 {identifications.identifications.map(identification =>
                                     <option key={identification.code}
                                             value={identification.code}>{identification.description}</option>
@@ -43,24 +46,33 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <div className={"form-group " + cotizacionErrors.identification_value}>
                             <label htmlFor="doc-type-value">Número de identificación</label>
-                            <input disabled={(stateForm != 0 ? "disabled" : "")} name="value" id="doc-type-value" type="text"
+                            <input disabled={(stateForm != 0 ? "disabled" : "")} name="value" id="doc-type-value"
+                                   type="text"
                                    className={(stateForm != 0 ? "disabled " : "") + "form-control"}
                                    placeholder="Ingresa la identificación"
-                                   onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
-                            <small className="form-text only-errors">El número de Identificación ingresado, no corresponde con el tipo de identificación seleccionado.</small>
+                                   onChange={(e) => {
+                                       saveIdentificationValue(e.target);
+                                       validateIdentificationValue(e.target.name);
+                                   }}/>
+                            <small className="form-text only-errors">El número de Identificación ingresado, no
+                                corresponde con el tipo de identificación seleccionado.
+                            </small>
                         </div>
                     </div>
                 </div>
 
                 <div className={(stateForm != 1 ? "hide " : "")}>
 
-                    <div className={(cotizacion.typeDocument!=1?"hide ":"") + "row"}>
+                    <div className={(cotizacion.typeDocument != 1 ? "hide " : "") + "row"}>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_name}>
                                 <label htmlFor="name">Primer nombre</label>
                                 <input name="name" id="name" type="text" className="form-control"
                                        placeholder="Ingresa primer nombre"
-                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
+                                       onChange={(e) => {
+                                           saveIdentificationValue(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
                             </div>
                         </div>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
@@ -68,18 +80,24 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                                 <label htmlFor="lastname">Primer apellido</label>
                                 <input name="lastname" id="lastnamee" type="text" className="form-control"
                                        placeholder="Ingresa primer apellido"
-                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
+                                       onChange={(e) => {
+                                           saveIdentificationValue(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
                             </div>
                         </div>
                     </div>
 
-                    <div className={(cotizacion.typeDocument!=2?"hide ":"") + "row"}>
+                    <div className={(cotizacion.typeDocument != 2 ? "hide " : "") + "row"}>
                         <div className="col col-sm-12 col-md-12 col-lg-12 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_name}>
                                 <label htmlFor="businessname">Razón social</label>
                                 <input name="businessname" id="businessname" type="text" className="form-control"
                                        placeholder="Ingresa la razón social"
-                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
+                                       onChange={(e) => {
+                                           saveIdentificationValue(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
                             </div>
                         </div>
                     </div>
@@ -91,8 +109,13 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                                 <label htmlFor="city">Ciudad o municipio del hogar</label>
                                 <input name="city" id="city" type="text" className="form-control"
                                        placeholder="Ingresa ciudad o municipio del h..."
-                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
-                                <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
+                                       onChange={(e) => {
+                                           saveIdentificationValue(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
+                                <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del
+                                    Hogar.
+                                </small>
                             </div>
                         </div>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
@@ -100,7 +123,10 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                                 <label htmlFor="address">Dirección del hogar</label>
                                 <input name="address" id="address" type="text" className="form-control"
                                        placeholder="Ingresa la dirección"
-                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
+                                       onChange={(e) => {
+                                           saveIdentificationValue(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
                                 <small className="form-text text-muted">Ejemplo: Calle 143Bis # 23 a 34</small>
                             </div>
                         </div>
@@ -108,9 +134,13 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                             <div className={"form-group " + cotizacionErrors.identification_addressadditional}>
                                 <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
-                                <input name="addressadditional" id="addressadditional" type="text" className="form-control"
+                                <input name="addressadditional" id="addressadditional" type="text"
+                                       className="form-control"
                                        placeholder="Ingresa la dirección"
-                                       onChange={(e) => {saveIdentificationValue(e.target); validateIdentificationValue(e.target.name);} }/>
+                                       onChange={(e) => {
+                                           saveIdentificationValue(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
                                 <small className="form-text text-muted"> Ejemplo: Interior 6, apto 201</small>
                             </div>
                         </div>
