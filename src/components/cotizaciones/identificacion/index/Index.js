@@ -27,7 +27,7 @@ const Index = ({ stateForm, identifications, cotizacion, cotizacionErrors, saveI
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <div className={"form-group input-select "+cotizacionErrors.identification_code}>
                             <label htmlFor="doc-type">Tipo de identificación</label>
-                            <select name="doc-type" id="doc-type" className="form-control" defaultValue={cotizacion.identification.code} onChange={(e) => saveIdentificationType(e.target.value)}>
+                            <select name="code" id="doc-type" className="form-control" defaultValue={cotizacion.identification.code} onChange={(e) => saveIdentificationType(e.target)}>
                                 <option value="">Selecciona</option>
                                 <option value="default">Eliminar</option>
                                 {identifications.identifications.map(identification =>
@@ -39,49 +39,50 @@ const Index = ({ stateForm, identifications, cotizacion, cotizacionErrors, saveI
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <div className={"form-group "+cotizacionErrors.identification_value}>
                             <label htmlFor="doc-type-value">Número de identificación</label>
-                            <input name="doc-type-value" id="doc-type-value" type="text" className="form-control" placeholder="Ingresa la identificación" onChange={(e) => saveIdentificationValue(e.target.value)} />
+                            <input name="value" id="doc-type-value" type="text" className="form-control" placeholder="Ingresa la identificación" onChange={(e) => saveIdentificationValue(e.target)} />
                         </div>
                     </div>
                 </div>
 
                 <div className={ (stateForm != 1?"hide ":"") + "row"}>
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <div className={"form-group " + cotizacionErrors.identification_value}>
+                        <div className={"form-group " + cotizacionErrors.identification_name}>
                             <label htmlFor="doc-type-value">Primer nombre</label>
-                            <input name="doc-type-value" id="doc-type-value" type="text" className="form-control"
+                            <input name="name" id="doc-type-value" type="text" className="form-control"
                                    placeholder="Ingresa primer nombre"
-                                   onChange={(e) => saveIdentificationValue(e.target.value)}/>
+                                   onChange={(e) => saveIdentificationValue(e.target)}/>
                         </div>
                     </div>
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <div className={"form-group " + cotizacionErrors.identification_value}>
+                        <div className={"form-group " + cotizacionErrors.identification_lastname}>
                             <label htmlFor="doc-type-value">Primer apellido</label>
-                            <input name="doc-type-value" id="doc-type-value" type="text" className="form-control"
+                            <input name="lastname" id="doc-type-value" type="text" className="form-control"
                                    placeholder="Ingresa primer apellido"
-                                   onChange={(e) => saveIdentificationValue(e.target.value)}/>
+                                   onChange={(e) => saveIdentificationValue(e.target)}/>
                         </div>
                     </div>
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <div className={"form-group " + cotizacionErrors.identification_value}>
+                        <div className={"form-group " + cotizacionErrors.identification_city}>
                             <label htmlFor="doc-type-value">Ciudad o municipio del hogar</label>
-                            <input name="doc-type-value" id="doc-type-value" type="text" className="form-control"
+                            <input name="city" id="doc-type-value" type="text" className="form-control"
                                    placeholder="Ingresa ciudad o municipio del h..."
-                                   onChange={(e) => saveIdentificationValue(e.target.value)}/>
+                                   onChange={(e) => saveIdentificationValue(e.target)}/>
                         </div>
                     </div>
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <div className={"form-group " + cotizacionErrors.identification_value}>
+                        <div className={"form-group " + cotizacionErrors.identification_address}>
                             <label htmlFor="doc-type-value">Dirección del hogar</label>
-                            <input name="doc-type-value" id="doc-type-value" type="text" className="form-control"
+                            <input name="address" id="doc-type-value" type="text" className="form-control"
                                    placeholder="Ingresa la dirección"
-                                   onChange={(e) => saveIdentificationValue(e.target.value)}/>
+                                   onChange={(e) => saveIdentificationValue(e.target)}/>
                         </div>
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                        <button onClick={() => nextStepIndex(cotizacion)} type="button" className="btn btn-primary">Continuar</button>
+                        <button className={ (stateForm != 1?"hide ":"") + "btn btn-default"} onClick={() => nextStepIndex(cotizacion)} type="button">Guardar y salir</button>
+                        <button disabled={cotizacion.continueButton} onClick={() => nextStepIndex(cotizacion)} type="button" className="btn btn-primary">Continuar</button>
                     </div>
                 </div>
             </div>

@@ -11,12 +11,23 @@ const initialState = {
     },
     cotizacionErrors: {
         identification_code: '',
-        identification_value: ''
+        identification_value: '',
+        identification_name: '',
+        identification_lastname: '',
+        identification_city: '',
+        identification_address: '',
+        identification_address_additional: '',
     },
     cotizacion: {
+        continueButtonDisable: false,
         identification: {
             code: "",
-            value: ""
+            value: "",
+            name: "",
+            lastname: "",
+            city: "",
+            address: "",
+            address_additional: "",
         }
     }
 };
@@ -37,16 +48,12 @@ const reducer = (state = initialState, action) => {
     } else if (action.type === "SAVE_IDENTIFICATION_TYPE") {
         return {
             ...state,
-            cotizacion: {
-                identification: { ...state.cotizacion.identification,  code: action.data },
-            }
+            cotizacion: { identification: { ...state.cotizacion.identification,  code: action.data } }
         }
     } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
         return {
             ...state,
-            cotizacion: {
-                identification: { ...state.cotizacion.identification, value: action.data },
-            }
+            cotizacion: { identification: { ...state.cotizacion.identification, ...action.data } }
         }
     }
     return state;
@@ -56,22 +63,44 @@ const validateIdentification = (state) => {
     let errors = {
         identification_type: "",
         identification_value: "",
-        status: state.stateForm + 1
+        status: 1
     };
-    console.log(state.stateForm);
+    let i = 0;
     for(let item in state.cotizacion.identification ){
-        console.log(item);
         if (state.cotizacion.identification[item] == "") {
             errors['identification_'+item] = "error";
-            errors.status = state.stateForm;
+            errors.status = 0;
         }
+        i++;
+        if ( state.stateForm == 0 && i > 1 ) break;
+    }
+    let step;
+    let continueButtonDisable = false;
+    // Valida si los primero campos cumplen
+    if (errors.status == 1 && (state.stateForm == 0 || state.stateForm == 1) ){
+        step = 1;
+        continueButtonDisable = true;
+    }else{
+        if ( state.stateForm == 0 ){
+            step = 0;
+        }else{
+            step = 1;
+        }
+    }
+    //Controla el boton de continuar
+    if (state.stateForm == 1 && errors.status == 0){
+        continueButtonDisable = true;
     }
     return {
         ...state,
         cotizacionErrors: {
             ...errors
         },
-        stateForm: errors.status
+        stateForm: step,
+        cotizacion: {
+            continueButtonDisable: continueButtonDisable,
+            identification: { ...state.cotizacion.identification }
+        }
     }
 };
 
