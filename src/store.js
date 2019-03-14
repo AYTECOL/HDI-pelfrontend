@@ -21,7 +21,7 @@ const initialState = {
     cotizacion: {
         continueButtonDisable: false,
         identification: {
-            code: "",
+            code: "01",
             value: "",
             name: "",
             lastname: "",
@@ -48,12 +48,12 @@ const reducer = (state = initialState, action) => {
     } else if (action.type === "SAVE_IDENTIFICATION_TYPE") {
         return {
             ...state,
-            cotizacion: { identification: { ...state.cotizacion.identification,  code: action.data } }
+            cotizacion: {identification: {...state.cotizacion.identification, code: action.data}}
         }
     } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
         return {
             ...state,
-            cotizacion: { identification: { ...state.cotizacion.identification, ...action.data } }
+            cotizacion: {identification: {...state.cotizacion.identification, ...action.data}}
         }
     }
     return state;
@@ -61,36 +61,54 @@ const reducer = (state = initialState, action) => {
 
 const validateIdentification = (state) => {
     let errors = {
-        identification_type: "",
-        identification_value: "",
         status: 1
     };
+    // Valida Si los campos no estan vacios
     let i = 0;
-    for(let item in state.cotizacion.identification ){
+    for (let item in state.cotizacion.identification) {
         if (state.cotizacion.identification[item] == "") {
-            errors['identification_'+item] = "error";
+            errors['identification_' + item] = "error";
             errors.status = 0;
         }
         i++;
-        if ( state.stateForm == 0 && i > 1 ) break;
+        if (state.stateForm == 0 && i > 1) break;
     }
+
+    //Valida el valor contra el tipo de documento
+    switch (state.cotizacion.identification.code) {
+        // Valida todos los documentos persona natural
+        case "01":
+        case "02":
+        case "06":
+        case "05":
+        case "07":
+            let v = state.cotizacion.identification.value.length;
+            if ( v < 5 || v >= 15 || isNaN(v) ){
+                errors.identification_value = "error";
+                errors.status = 0;
+            }
+            break;
+        // Valida solo el nit
+        case "08":
+            break;
+    }
+
+    // Valida si los primero campos cumplen
     let step;
     let continueButtonDisable = false;
-    // Valida si los primero campos cumplen
-    if (errors.status == 1 && (state.stateForm == 0 || state.stateForm == 1) ){
+    if (errors.status == 1 && (state.stateForm == 0 || state.stateForm == 1)) {
         step = 1;
         continueButtonDisable = true;
-    }else{
-        if ( state.stateForm == 0 ){
+    } else {
+        if (state.stateForm == 0) {
             step = 0;
-        }else{
+        } else {
             step = 1;
         }
     }
     //Controla el boton de continuar
-    if (state.stateForm == 1 && errors.status == 0){
-        continueButtonDisable = true;
-    }
+    if (state.stateForm == 1 && errors.status == 0) continueButtonDisable = true;
+
     return {
         ...state,
         cotizacionErrors: {
@@ -99,7 +117,7 @@ const validateIdentification = (state) => {
         stateForm: step,
         cotizacion: {
             continueButtonDisable: continueButtonDisable,
-            identification: { ...state.cotizacion.identification }
+            identification: {...state.cotizacion.identification}
         }
     }
 };

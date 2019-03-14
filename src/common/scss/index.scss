@@ -18,6 +18,42 @@ hmtl, body {
   display: none !important;
 }
 
+.return-button{
+  display: inline-block;
+  vertical-align: middle;
+  a{
+    font-style: normal;
+    font-weight: bold;
+    line-height: 19px;
+    font-size: 16px;
+    text-align: center;
+    color: #404040;
+    transition: all 0.3s ease;
+  }
+  &:hover {
+    i{
+      transform: scale(1.1);
+    }
+    a{
+      color: #404040 * 0.8;
+    }
+  }
+}
+
+.back-icon{
+  display: inline-block;
+  background-image: url("../../common/images/icon_back.png");
+  background-size: 100% auto;
+  background-position: center;
+  width: 22px;
+  height: 22px;
+  margin-top: -4px;
+  vertical-align: middle;
+  margin-right: 5px;
+  transition: all 0.3s ease;
+  transform: scale(1);
+}
+
 // Forms
 $error-fields: #DD133C;
 $color-btn-primary: #99E5EA;
@@ -60,6 +96,12 @@ $color-font-btn-primary: #404040;
       box-shadow: inset 0 0 20px 1px rgba(0, 0, 0, 0.2) !important;
     }
   }
+  &.btn-default{
+    &:hover{
+      background: #e6e6e6 !important;
+      color: #404040 !important;
+    }
+  }
   &.btn-home{
     $color-btn-home: #1A1446;
     border-color: $color-btn-home;
@@ -74,6 +116,13 @@ $color-font-btn-primary: #404040;
       box-shadow: 0 4px 18px rgba(28, 22, 71, 0.4);
     }
   }
+  &.disabled{
+    cursor: not-allowed;
+    &, &:hover{
+      border-color: #E6E6E6 !important;
+      background: #E6E6E6 !important;
+    }
+  }
 }
 
 
@@ -85,6 +134,24 @@ $color-font-btn-primary: #404040;
     .form-control{
       border: 1px solid $error-fields;
       background: #FFF5F5;
+    }
+    .only-errors{
+      display: block;
+      color: $error-fields;
+    }
+    &::after{
+      content: 'i';
+      display: block;
+      position: absolute;
+      top: 42px;
+      right: 10px;
+      color: $error-fields;
+      border: 2px solid $error-fields;
+      border-radius: 100%;
+      padding: 2px 7px 1px;
+      line-height: 1;
+      font-size: 15px;
+      font-weight: 600;
     }
   }
 
@@ -116,6 +183,22 @@ $color-font-btn-primary: #404040;
     &:-ms-input-placeholder, /* Internet Explorer 10-11 */
     &::-ms-input-placeholder { /* Microsoft Edge */
       color: #565656;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      background: #E6E6E6;
+    }
+  }
+
+  small{
+    font-style: normal;
+    font-weight: normal;
+    line-height: 11px;
+    font-size: 10px;
+    color: #757575;
+    &.only-errors{
+      display: none;
     }
   }
 

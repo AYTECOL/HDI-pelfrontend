@@ -28,4 +28,23 @@
       margin: 0 auto;
     }
   }
+  .return-button {
+    position: absolute;
+    left: -100px;
+    top: 30px;
+    float: left;
+  }
+  .form-action{
+    margin-top: 30px;
+  }
+  .form-first{
+    padding-right: 7px;
+    padding-left: 7px;
+    &:first-child{
+      padding-left: 0;
+    }
+    &:last-child{
+      padding-right: 0;
+    }
+  }
 }
