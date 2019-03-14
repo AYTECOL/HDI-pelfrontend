@@ -14,6 +14,10 @@ hmtl, body {
   margin: 0 !important;
 }
 
+.hide{
+  display: none !important;
+}
+
 // Forms
 $error-fields: #DD133C;
 $color-btn-primary: #99E5EA;
@@ -53,6 +57,20 @@ $color-font-btn-primary: #404040;
 
     &:active {
       box-shadow: inset 0 0 20px 1px rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+  &.btn-home{
+    $color-btn-home: #1A1446;
+    border-color: $color-btn-home;
+    background: $color-btn-home;
+    box-shadow: 0 2px 16px rgba(28, 22, 71, 0.370386);
+    border-radius: 3px;
+    color: white;
+    &:hover{
+      border-color: $color-btn-home * 0.7 !important;
+      background: $color-btn-home * 0.7 !important;
+      color: white !important;
+      box-shadow: 0 4px 18px rgba(28, 22, 71, 0.8);
     }
   }
 }

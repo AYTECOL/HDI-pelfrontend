@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import Header from './components/globals/header/Header';
 import Footer from './components/globals/footer/Footer';
 
 import Cotizacion from './pages/cotizacion/Cotizacion';
+import Home from './pages/home/Home';
 
 class App extends Component {
   render() {
@@ -12,7 +13,10 @@ class App extends Component {
       <div className="App">
           <Header />
           <main>
-              <Cotizacion />
+              <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/cotizacion" component={Cotizacion} />
+              </Switch>
           </main>
           <Footer />
       </div>

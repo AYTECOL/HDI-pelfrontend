@@ -5,6 +5,7 @@ const initialState = {
     validaridentificacion: {
         className: 'hide'
     },
+    stateForm: 0,
     identifications: {
         identifications: []
     },
@@ -63,11 +64,19 @@ const validateIdentification = (state) => {
     }else{
         errors.identification_value = "";
     }
+    console.log({
+        ...state,
+        cotizacionErrors: {
+            ...errors
+        },
+        stateForm: 1
+    });
     return {
         ...state,
         cotizacionErrors: {
             ...errors
-        }
+        },
+        stateForm: 1
     }
 };
 

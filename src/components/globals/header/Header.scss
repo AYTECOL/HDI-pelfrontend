@@ -87,14 +87,18 @@ header{
             }
           }
         }
+        &:first-child a{
+          padding-right: 22px;
+          &::after{
+            display: block;
+          }
+        }
         &:last-child a{
           padding-right: 0;
         }
         &.active a{
-          padding-right: 22px;
           font-weight: bold;
-          &::before,
-          &::after{
+          &::before{
             display: block;
           }
         }

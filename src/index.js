@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 
@@ -13,14 +13,11 @@ import store from './store';
 import {loadItems} from './actionCreators';
 import App from './App';
 
-// Carga la lista de cotizaciones
-//store.dispatch(loadItems());
-
 ReactDOM.render((
     <Provider store={store}>
-        <BrowserRouter>
+        <Router>
             <App />
-        </BrowserRouter>
+        </Router>
     </Provider>
 ), document.getElementById('root'));
 
