@@ -133,9 +133,6 @@ const validateIdentification = (state,name) => {
     if (state.stateForm == 1 && errors.status == 0) continueButtonDisable = true;
 
     delete errors.status;
-
-    console.log(state.cotizacionErrors);
-
     return {
         ...state,
         cotizacionErrors: {
