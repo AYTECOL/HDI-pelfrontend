@@ -25,7 +25,7 @@ const Index = ({ stateForm, identifications, cotizacion, cotizacionErrors, saveI
                 </div>
                 <div className="row">
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <div className={"form-group input-select "+cotizacionErrors.identification_type}>
+                        <div className={"form-group input-select "+cotizacionErrors.identification_code}>
                             <label htmlFor="doc-type">Tipo de identificación</label>
                             <select name="doc-type" id="doc-type" className="form-control" defaultValue={cotizacion.identification.code} onChange={(e) => saveIdentificationType(e.target.value)}>
                                 <option value="">Selecciona</option>
@@ -38,7 +38,7 @@ const Index = ({ stateForm, identifications, cotizacion, cotizacionErrors, saveI
                     </div>
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <div className={"form-group "+cotizacionErrors.identification_value}>
-                            <label for="doc-type-value">Número de identificación</label>
+                            <label htmlFor="doc-type-value">Número de identificación</label>
                             <input name="doc-type-value" id="doc-type-value" type="text" className="form-control" placeholder="Ingresa la identificación" onChange={(e) => saveIdentificationValue(e.target.value)} />
                         </div>
                     </div>

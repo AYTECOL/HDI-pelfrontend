@@ -10,7 +10,7 @@ const initialState = {
         identifications: []
     },
     cotizacionErrors: {
-        identification_type: '',
+        identification_code: '',
         identification_value: ''
     },
     cotizacion: {
@@ -53,30 +53,25 @@ const reducer = (state = initialState, action) => {
 };
 
 const validateIdentification = (state) => {
-    let errors = {};
-    if (state.cotizacion.identification.code == "") {
-        errors.identification_type = "error";
-    }else{
-        errors.identification_type = "";
+    let errors = {
+        identification_type: "",
+        identification_value: "",
+        status: state.stateForm + 1
+    };
+    console.log(state.stateForm);
+    for(let item in state.cotizacion.identification ){
+        console.log(item);
+        if (state.cotizacion.identification[item] == "") {
+            errors['identification_'+item] = "error";
+            errors.status = state.stateForm;
+        }
     }
-    if( state.cotizacion.identification.value == "" ){
-        errors.identification_value = "error";
-    }else{
-        errors.identification_value = "";
-    }
-    console.log({
-        ...state,
-        cotizacionErrors: {
-            ...errors
-        },
-        stateForm: 1
-    });
     return {
         ...state,
         cotizacionErrors: {
             ...errors
         },
-        stateForm: 1
+        stateForm: errors.status
     }
 };
 
