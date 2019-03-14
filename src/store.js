@@ -2,6 +2,7 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
+    autoCompleteCuidad: false,
     validaridentificacion: {
         className: 'hide'
     },
@@ -75,6 +76,11 @@ const reducer = (state = initialState, action) => {
                 ...state.cotizacion,
                 identification: {...state.cotizacion.identification, ...action.data},
             }
+        }
+    }else if( action.type === "TOOGLE_AUTOCOMPLETE_CIUDAD" ){
+        return {
+            ...state,
+            autoCompleteCuidad: !state.autoCompleteCuidad
         }
     }
     return state;

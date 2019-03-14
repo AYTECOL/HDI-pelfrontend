@@ -163,8 +163,8 @@ $color-font-btn-primary: #404040;
     color: #333740;
     margin-bottom: 8px;
   }
-
-  .form-control {
+    .list-items,
+    .form-control {
     background: #F5F5F5;
     border-radius: 3px;
     font-style: normal;
@@ -216,6 +216,28 @@ $color-font-btn-primary: #404040;
       position: absolute;
       right: 5%;
       top: 67%;
+    }
+  }
+  &.autocomplete{
+    position: relative;
+    .list-items{
+      position: absolute;
+      margin-top: -4px;
+      top: 100%;
+      width: 100%;
+      left: 0;
+      z-index: 2;
+      border-radius: 0 0 3px 3px;
+      padding: 0;
+      max-height: 200px;
+      overflow: auto;
+      li{
+        border-bottom: 1px solid rgba(#c8c8c8, 0.8);
+        padding: 10px 12px 8px;
+        &:last-child{
+          border-bottom: 0;
+        }
+      }
     }
   }
 }

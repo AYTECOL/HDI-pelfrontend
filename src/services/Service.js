@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-const Baseurl = "https://1s2h3bt5l3.execute-api.us-east-1.amazonaws.com/dev/";
 class Service {
      static async get(url) {
          axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-         return await axios.get(Baseurl+url)
+         return await axios.get(url)
         .then(response => {
             return response.data;
         });

@@ -29,10 +29,15 @@ const nextStepIndex = () => {
     return {type: "NEXT_STEP_INDEX", data: {}};
 };
 
+const autoCompleteCiudadToogle = (toogle) => {
+    return {type: "TOOGLE_AUTOCOMPLETE_CIUDAD", data: {}};
+}
+
 export {
     loadIdentifications,
     validarIdentificacionToogle,
     nextStepIndex,
     saveIdentificationValue,
-    validateIdentificationValue
+    validateIdentificationValue,
+    autoCompleteCiudadToogle
 };

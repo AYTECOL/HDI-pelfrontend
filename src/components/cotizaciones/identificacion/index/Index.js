@@ -6,6 +6,7 @@ import {
     loadIdentifications,
     validateIdentificationValue,
     saveIdentificationValue,
+    autoCompleteCiudadToogle,
     nextStepIndex
 } from '../../../../actionCreators';
 
@@ -14,9 +15,9 @@ import {Link} from "react-router-dom";
 
 store.dispatch(loadIdentifications());
 
-const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, continueButtonDisable, saveIdentificationValue, validateIdentificationValue, nextStepIndex}) => {
+const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, cotizacionErrors, continueButtonDisable, autoCompleteCiudadToogle, saveIdentificationValue, validateIdentificationValue, nextStepIndex}) => {
     return (
-        <div className="index-form">
+        <form autocomplete="off" className="index-form">
             <div className="container">
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12 title">
@@ -105,10 +106,17 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
 
                     <div className="row">
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                            <div className={"form-group " + cotizacionErrors.identification_city}>
+                            <div className={"form-group autocomplete " + cotizacionErrors.identification_city}>
                                 <label htmlFor="city">Ciudad o municipio del hogar</label>
                                 <input name="city" id="city" type="text" className="form-control"
+                                       autoComplete="off"
                                        placeholder="Ingresa ciudad o municipio del h..."
+                                       onBlur={(e) => {
+                                           autoCompleteCiudadToogle();
+                                       }}
+                                       onFocus={(e) => {
+                                           autoCompleteCiudadToogle();
+                                       }}
                                        onChange={(e) => {
                                            saveIdentificationValue(e.target);
                                            validateIdentificationValue(e.target.name);
@@ -116,6 +124,14 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                                 <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del
                                     Hogar.
                                 </small>
+                                <ul className={(autoCompleteCuidad?'show':'hide') + " list-items"}>
+                                    <li>hola</li>
+                                    <li>hola</li>
+                                    <li>hola</li>
+                                    <li>hola</li>
+                                    <li>hola</li>
+                                    <li>hola</li>
+                                </ul>
                             </div>
                         </div>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
@@ -163,12 +179,13 @@ const Index = ({stateForm, identifications, cotizacion, cotizacionErrors, contin
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     );
 };
 
 const mapStateToProps = state => {
     return {
+        autoCompleteCuidad: state.autoCompleteCuidad,
         stateForm: state.stateForm,
         identifications: state.identifications,
         cotizacion: state.cotizacion,
@@ -187,6 +204,9 @@ const mapDispatchToProps = dispatch => {
         },
         nextStepIndex() {
             dispatch(nextStepIndex());
+        },
+        autoCompleteCiudadToogle(){
+            dispatch(autoCompleteCiudadToogle());
         }
     };
 };
