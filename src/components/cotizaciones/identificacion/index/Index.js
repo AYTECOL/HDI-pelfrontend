@@ -12,10 +12,11 @@ import {
 
 import './Index.scss';
 import {Link} from "react-router-dom";
+import Mapa from "../../../mapa/Mapa.js"
 
 store.dispatch(loadIdentifications());
 
-const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, cotizacionErrors, continueButtonDisable, autoCompleteCiudadToogle, saveIdentificationValue, validateIdentificationValue, nextStepIndex}) => {
+const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, cotizacionErrors, continueButtonDisable, autoCompleteCiudadToogle, saveIdentificationValue, validateIdentificationValue, nextStepIndex, mapsOptions}) => {
     return (
         <form autocomplete="off" className="index-form">
             <div className="container">
@@ -163,7 +164,10 @@ const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, coti
                     </div>
 
                 </div>
+                <button type="button" className="btn btn-primary" onClick={() => {mapsOptions.options.zoom = mapsOptions.options.zoom +1}}>+</button>
+                <button type="button" className="btn btn-primary">-</button>
 
+                    <Mapa coords={mapsOptions}  />                   
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                         <div className={(stateForm != 1 ? "hide " : "") + "return-button"}>
@@ -190,7 +194,8 @@ const mapStateToProps = state => {
         identifications: state.identifications,
         cotizacion: state.cotizacion,
         cotizacionErrors: state.cotizacionErrors,
-        continueButtonDisable: state.continueButtonDisable
+        continueButtonDisable: state.continueButtonDisable,
+        mapsOptions: state.mapsOptions
     };
 };
 

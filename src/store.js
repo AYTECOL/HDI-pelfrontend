@@ -20,6 +20,13 @@ const initialState = {
         identification_address: '',
         identification_addressadditional: '',
     },
+    mapsOptions:{
+        longitude: -74.0436118,
+        latitude: 4.681545,
+        options:{
+            zoom: 8
+        }
+    },
     cotizacionExclude: [
         'identification_addressadditional'
     ],
