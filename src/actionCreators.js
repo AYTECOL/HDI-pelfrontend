@@ -29,9 +29,9 @@ const nextStepIndex = () => {
     return {type: "NEXT_STEP_INDEX", data: {}};
 };
 
-const autoCompleteCiudadToogle = (toogle) => {
-    return {type: "TOOGLE_AUTOCOMPLETE_CIUDAD", data: {}};
-}
+const saveCityStore = (data) => {
+    return {type: "SAVE_CITY_STORE", data};
+};
 
 export {
     loadIdentifications,
@@ -39,5 +39,5 @@ export {
     nextStepIndex,
     saveIdentificationValue,
     validateIdentificationValue,
-    autoCompleteCiudadToogle
+    saveCityStore
 };
