@@ -114,6 +114,7 @@ const validateIdentification = (state, name) => {
 
     //Valida el valor contra el tipo de documento
     let v = state.cotizacion.identification.value;
+    console.log(state.cotizacion.identification.code);
     switch (state.cotizacion.identification.code) {
         // Valida todos los documentos persona natural
         case "01":

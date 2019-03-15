@@ -17,7 +17,7 @@ store.dispatch(loadIdentifications());
 
 const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, cotizacionErrors, continueButtonDisable, autoCompleteCiudadToogle, saveIdentificationValue, validateIdentificationValue, nextStepIndex}) => {
     return (
-        <form autocomplete="off" className="index-form">
+        <form autoComplete="off" className="index-form">
             <div className="container">
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12 title">
