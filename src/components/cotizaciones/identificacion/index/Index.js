@@ -8,6 +8,17 @@ import BtnContinue from '../../../globals/forms/identificacion/btncontinue/BtnCo
 import SecondForm from '../secondform/SecondForm';
 
 import store from '../../../../store';
+<<<<<<< HEAD
+=======
+import {
+    loadIdentifications,
+    validateIdentificationValue,
+    saveIdentificationValue,
+    nextStepIndex,
+    setAddresMap,
+    reqAddres
+} from '../../../../actionCreators';
+>>>>>>> 996af23... [PELH-2.2] Send google places request
 
 import './Index.scss';
 import {Link} from "react-router-dom";
@@ -18,7 +29,11 @@ class Index extends React.Component {
 =======
 store.dispatch(loadIdentifications());
 
+<<<<<<< HEAD
 const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, cotizacionErrors, continueButtonDisable, autoCompleteCiudadToogle, saveIdentificationValue, validateIdentificationValue, nextStepIndex, mapsOptions}) => {
+=======
+const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, cotizacionErrors, continueButtonDisable, saveIdentificationValue, validateIdentificationValue, nextStepIndex, setAddresMap,  reqAddres}) => {
+>>>>>>> 996af23... [PELH-2.2] Send google places request
     return (
         <form autocomplete="off" className="index-form">
             <div className="container">
@@ -88,7 +103,34 @@ const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, coti
                             <TipoDocumento/>
                         </div>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
+<<<<<<< HEAD
                             <NumeroIdentificacion/>
+=======
+                            <div className={"form-group " + cotizacionErrors.identification_address}>
+                                <label htmlFor="address">Dirección del hogar</label>
+                                <input name="address" id="address" type="text" className="form-control"
+                                       placeholder="Ingresa la dirección"
+                                       onChange={(e) => {
+                                           reqAddres(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
+                                <small className="form-text text-muted">Ejemplo: Calle 143Bis # 23 a 34</small>
+                            </div>
+                        </div>
+
+                        <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
+                            <div className={"form-group " + cotizacionErrors.identification_addressadditional}>
+                                <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
+                                <input name="addressadditional" id="addressadditional" type="text"
+                                       className="form-control"
+                                       placeholder="Ingresa la dirección"
+                                       onChange={(e) => {
+                                           saveIdentificationValue(e.target);
+                                           validateIdentificationValue(e.target.name);
+                                       }}/>
+                                <small className="form-text text-muted"> Ejemplo: Interior 6, apto 201</small>
+                            </div>
+>>>>>>> 996af23... [PELH-2.2] Send google places request
                         </div>
                     </div>
 
@@ -100,10 +142,10 @@ const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, coti
                             <BtnContinue/>
 =======
                 </div>
-                <button type="button" className="btn btn-primary" onClick={() => {mapsOptions.options.zoom = mapsOptions.options.zoom +1}}>+</button>
-                <button type="button" className="btn btn-primary">-</button>
+                {/* <button type="button" className="btn btn-primary" onClick={() => {mapsOptions.options.zoom = mapsOptions.options.zoom +1;console.log(mapsOptions); setAddresMap(mapsOptions)}}>+</button>
+                <button type="button" className="btn btn-primary">-</button> */}
 
-                    <Mapa coords={mapsOptions}  />                   
+                <Mapa />                   
                 <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                         <div className={(stateForm != 1 ? "hide " : "") + "return-button"}>
@@ -129,12 +171,32 @@ const mapStateToProps = state => {
         identifications: state.identifications,
         cotizacion: state.cotizacion,
         cotizacionErrors: state.cotizacionErrors,
-        continueButtonDisable: state.continueButtonDisable,
-        mapsOptions: state.mapsOptions
+        continueButtonDisable: state.continueButtonDisable
     };
 };
 >>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
 
+<<<<<<< HEAD
+=======
+const mapDispatchToProps = dispatch => {
+    return {
+        saveIdentificationValue(value) {
+            dispatch(saveIdentificationValue(value));
+        },
+        validateIdentificationValue(cotizacion) {
+            dispatch(validateIdentificationValue(cotizacion));
+        },
+        nextStepIndex() {
+            dispatch(nextStepIndex());
+        },
+        setAddresMap(mapa) {
+            dispatch(setAddresMap(mapa));
+        },
+        reqAddres(value) {
+            dispatch(reqAddres(value));
+        },
+    };
+>>>>>>> 996af23... [PELH-2.2] Send google places request
 };
 
 export default Index;

@@ -28,7 +28,7 @@ const initialState = {
         longitude: -74.0436118,
         latitude: 4.681545,
         options:{
-            zoom: 8
+            zoom: 20
         }
     },
     cotizacionExclude: [
@@ -55,7 +55,47 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+<<<<<<< HEAD
     if (action.type === "SAVE_IDENTIFICATION_VALUE") {
+=======
+    if (action.type === "VALIDARIDENTIFICACION_TOOGLE") {
+        return {
+            ...state,
+            validaridentificacion: {className: action.data}
+        }
+    } else if (action.type === "SET_ADDRES_MAP") {
+        console.log(action.data);
+        console.log("_______________________________")
+        return {
+            ...state,
+            mapsOptions: action.data
+        }
+    } else if (action.type === "ADD_IDENTIFICATIONS") {
+        return {
+            ...state,
+            identifications: {identifications: action.data}
+        }
+    } else if (action.type === "NEXT_STEP_INDEX") {
+        let className = state.validaridentificacion.className;
+        let stateForm = state.stateForm + 1;
+        // Abre el popup
+        //if (state.stateForm == 0) {
+        //  className = "show";
+        //  stateForm--;
+        //}
+        return {
+            ...state,
+            continueButtonDisable: true,
+            stateForm: stateForm,
+            validaridentificacion: {
+                ...state.validaridentificacion,
+                className: className
+            }
+        }
+    } else if (action.type === "VALIDATE_IDENTIFICATION_VALUE") {
+        return validateIdentification(state, action.data);
+    } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
+>>>>>>> 996af23... [PELH-2.2] Send google places request
         return {
             ...state,
             cotizacion: {

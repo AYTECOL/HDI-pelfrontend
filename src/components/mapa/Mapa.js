@@ -4,6 +4,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-map
 import store from '../../store';
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
     validateIdentificationValue,
     saveIdentificationValue,
 =======
@@ -22,15 +23,22 @@ import { runInThisContext } from 'vm';
 =======
 
 store.dispatch(loadIdentifications());
+=======
+   setAddresMap
+} from '../../actionCreators';
+
+import './Mapa.scss';
+>>>>>>> 996af23... [PELH-2.2] Send google places request
 
 >>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
 class  Mapa  extends React.Component{
-    
     render() {
-        const { coords:{ longitude, latitude, options: { zoom } } } = this.props;
+        console.log(this.refs.map);
+        const { mapsOptions:{ longitude, latitude, options: { zoom } } } = this.props;
+        
         const MyMapComponent = withScriptjs(withGoogleMap((props) =>
         <GoogleMap
-            defaultZoom={8}
+            defaultZoom={zoom}
             defaultCenter={{ lat: latitude, lng: longitude }}
             zoom={zoom}
             defaultOptions={{
@@ -42,7 +50,7 @@ class  Mapa  extends React.Component{
                 rotateControl: false,
                 fullscreenControl: false
               }}
-            disableDefaultUI  
+            disableDefaultUI
         >
             {props.isMarkerShown && <Marker position={{ lat: latitude, lng: longitude }} />}
         </GoogleMap>
@@ -50,6 +58,8 @@ class  Mapa  extends React.Component{
 
         return (
         <div>
+            {longitude}
+            {latitude}
             <MyMapComponent isMarkerShown
                             googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU"
                             loadingElement={<div style={{ height: `100%` }} />}
@@ -63,17 +73,13 @@ class  Mapa  extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        autoCompleteCuidad: state.autoCompleteCuidad,
-        stateForm: state.stateForm,
-        identifications: state.identifications,
-        cotizacion: state.cotizacion,
-        cotizacionErrors: state.cotizacionErrors,
-        continueButtonDisable: state.continueButtonDisable
+        mapsOptions: state.mapsOptions
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+<<<<<<< HEAD
         saveIdentificationValue(value) {
             dispatch(saveIdentificationValue(value));
         },
@@ -89,6 +95,11 @@ const mapDispatchToProps = dispatch => {
             dispatch(autoCompleteCiudadToogle());
         }
 >>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
+=======
+        setAddresMap(map) {
+            dispatch(setAddresMap(map));
+        }
+>>>>>>> 996af23... [PELH-2.2] Send google places request
     };
 };
 
