@@ -2,8 +2,40 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
+<<<<<<< HEAD
     stateFormIdentificacion: 0,
 
+=======
+    autoCompleteCuidad: false,
+    validaridentificacion: {
+        className: 'hide'
+    },
+    stateForm: 0,
+    identifications: {
+        identifications: []
+    },
+    cotizacionErrors: {
+        identification_code: '',
+        identification_value: '',
+        identification_name: '',
+        identification_lastname: '',
+        identification_businessname: '',
+        identification_city: '',
+        identification_address: '',
+        identification_addressadditional: '',
+    },
+    mapsOptions:{
+        longitude: -74.0436118,
+        latitude: 4.681545,
+        options:{
+            zoom: 8
+        }
+    },
+    cotizacionExclude: [
+        'identification_addressadditional'
+    ],
+    continueButtonDisable: true,
+>>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
     cotizacion: {
         typeDocument: 1,
         identification: {
