@@ -13,11 +13,14 @@ class Name extends Component {
     }
 
     validateEmpty(e){
+        let error = false;
         if ( e.value.length < 1 ){
             this.setState({
                 ...this.state,
                 error: true
             })
+        }else{
+
         }
         store.dispatch(saveIdentificationValue(e));
     }
