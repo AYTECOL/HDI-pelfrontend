@@ -3,23 +3,6 @@ import thunk from 'redux-thunk';
 
 const initialState = {
     autoCompleteCuidad: false,
-    validaridentificacion: {
-        className: 'hide'
-    },
-    stateForm: 0,
-    identifications: {
-        identifications: []
-    },
-    cotizacionErrors: {
-        identification_code: '',
-        identification_value: '',
-        identification_name: '',
-        identification_lastname: '',
-        identification_businessname: '',
-        identification_city: '',
-        identification_address: '',
-        identification_addressadditional: '',
-    },
     mapsOptions:{
         longitude: -74.0436118,
         latitude: 4.681545,
@@ -27,10 +10,6 @@ const initialState = {
             zoom: 20
         }
     },
-    cotizacionExclude: [
-        'identification_addressadditional'
-    ],
-    continueButtonDisable: true,
     cotizacion: {
         typeDocument: 1,
         identification: {
@@ -46,16 +25,12 @@ const initialState = {
     },
 
     continueButtonDisable: true,
-    disabledNumberIdentification: false
+    disabledNumberIdentification: false,
+    stateFormIdentificacion: 0,
 };
 
 const reducer = (state = initialState, action) => {
-    if (action.type === "VALIDARIDENTIFICACION_TOOGLE") {
-        return {
-            ...state,
-            validaridentificacion: {className: action.data}
-        }
-    } else if (action.type === "SET_ADDRES_MAP") {
+    if (action.type === "SET_ADDRES_MAP") {
         console.log(action.data);
         console.log("_______________________________")
         return {
@@ -70,11 +45,6 @@ const reducer = (state = initialState, action) => {
     } else if (action.type === "NEXT_STEP_INDEX") {
         let className = state.validaridentificacion.className;
         let stateForm = state.stateForm + 1;
-        // Abre el popup
-        //if (state.stateForm == 0) {
-        //  className = "show";
-        //  stateForm--;
-        //}
         return {
             ...state,
             continueButtonDisable: true,
@@ -83,6 +53,16 @@ const reducer = (state = initialState, action) => {
                 ...state.validaridentificacion,
                 className: className
             }
+        }
+    }else if( action.type === "DISABLE_BTN_CONTINUE" ){
+        return {
+            ...state,
+            continueButtonDisable: action.data
+        }
+    }else if( action.type === "NEXT_STEP_INDENTIFICATION" ){
+        return {
+            ...state,
+            stateFormIdentificacion: state.stateFormIdentificacion + action.data
         }
     }
     return state;
