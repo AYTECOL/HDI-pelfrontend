@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {activeButtonContinue, nextStepIndentification} from '../../../../../actionCreators';
 import SaveIdentifications from '../../../../../services/SaveIdentifications';
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 class BtnContinue extends Component {
 
@@ -38,8 +38,6 @@ class BtnContinue extends Component {
                         i++;
                     }
                 }
-                console.log(i);
-                console.log(storeState.cotizacion.identification);
                 if ( i == 0) {
                     storeState.continueButtonDisable = false;
                 }else{
@@ -55,13 +53,14 @@ class BtnContinue extends Component {
     }
 
     nextStepIndex() {
+        let storeState = store.getState();
         switch (this.state.stateFormIdentificacion) {
             case 0:
                 store.dispatch(nextStepIndentification());
                 break;
             case 1:
-                console.log(2);
                 SaveIdentifications.save();
+                this.props.history.push('/cotizacion/2/'+storeState.cotizacion.number);
                 break;
         }
     }
@@ -84,7 +83,7 @@ class BtnContinue extends Component {
     }
 }
 
-export default BtnContinue;
+export default withRouter(BtnContinue);
 
 
 
