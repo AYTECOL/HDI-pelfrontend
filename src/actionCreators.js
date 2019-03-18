@@ -38,11 +38,16 @@ const saveCityStore = (data) => {
     return {type: "SAVE_CITY_STORE", data};
 };
 
+const saveCotizacionNumber = (number) => {
+    return {type: "SAVE_COTIZACION_NUMBER", data: number}
+}
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
     saveCityStore,
     setAddresMap,
     continueButtonDisable,
+    saveCotizacionNumber,
     reqAddress
 };

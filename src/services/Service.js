@@ -8,6 +8,14 @@ class Service {
             return response.data;
         });
     };
+
+    static async put(url) {
+        axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+        return await axios.put(url)
+            .then(response => {
+                return response.data;
+            });
+    };
 }
 
 export default Service;

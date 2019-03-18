@@ -2,7 +2,6 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
-    autoCompleteCuidad: false,
     mapsOptions:{
         longitude: -74.0436118,
         latitude: 4.681545,
@@ -11,6 +10,7 @@ const initialState = {
         }
     },
     cotizacion: {
+        number: "00000000",
         typeDocument: 1,
         identification: {
             code: "01",
@@ -27,6 +27,18 @@ const initialState = {
     continueButtonDisable: true,
     disabledNumberIdentification: false,
     stateFormIdentificacion: 0,
+
+
+    sendData:{
+        numberid: "000000",
+        doctype: "02",
+        docnumber: "",
+        lastname: "",
+        businessname: "",
+        city: "",
+        address: "",
+        addressadditional: "",
+    }
 };
 
 const reducer = (state = initialState, action) => {
@@ -48,11 +60,7 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             continueButtonDisable: true,
-            stateForm: stateForm,
-            validaridentificacion: {
-                ...state.validaridentificacion,
-                className: className
-            }
+            stateFormIdentificacion: stateForm
         }
     }else if( action.type === "DISABLE_BTN_CONTINUE" ){
         return {
@@ -63,6 +71,22 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             stateFormIdentificacion: state.stateFormIdentificacion + action.data
+        }
+    }else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                identification: {...state.cotizacion.identification, ...action.data},
+            }
+        }
+    }else if( action.type === "SAVE_COTIZACION_NUMBER" ){
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                cotizacion: { ...state.cotizacion, number: action.data},
+            }
         }
     }
     return state;

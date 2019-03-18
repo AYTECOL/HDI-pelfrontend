@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import { saveIdentificationValue } from '../../../../../actionCreators';
+import {continueButtonDisable, saveIdentificationValue} from '../../../../../actionCreators';
 import Identifications from '../../../../../services/Identifications';
 
 class TipoDocumento extends Component {
@@ -35,7 +35,11 @@ class TipoDocumento extends Component {
                 error: true
             })
         }
-        saveIdentificationValue(e);
+        store.dispatch(saveIdentificationValue(e));
+        this.setState({
+            ...this.state,
+            value: e.value
+        });
     }
 
     async getOptions(){
@@ -53,7 +57,7 @@ class TipoDocumento extends Component {
                         className={(this.props.disabled ? "disabled " : "") + "form-control"}
                         value={this.state.value}
                         onChange={(e) => {
-                            this.validateEmpty(e);
+                            this.validateEmpty(e.target);
                         }}>
                     {this.state.options.identifications.map(option =>
                         <option key={option.code}
