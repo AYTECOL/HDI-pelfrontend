@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 import store from '../../store';
 import {
-    loadIdentifications,
     validateIdentificationValue,
     saveIdentificationValue,
     nextStepIndex
@@ -11,9 +10,6 @@ import {
 
 import './Mapa.scss';
 import { runInThisContext } from 'vm';
-
-
-store.dispatch(loadIdentifications());
 
 class  Mapa  extends React.Component{
     
@@ -70,9 +66,6 @@ const mapDispatchToProps = dispatch => {
         },
         validateIdentificationValue(cotizacion) {
             dispatch(validateIdentificationValue(cotizacion));
-        },
-        nextStepIndex() {
-            dispatch(nextStepIndex());
         },
     };
 };

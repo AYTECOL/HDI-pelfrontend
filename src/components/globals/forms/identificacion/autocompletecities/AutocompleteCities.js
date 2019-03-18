@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import './AutocompleteCities.scss';
-import IdentificationsCities from '../../../../services/IdentificationsCities';
+import IdentificationsCities from '../../../../../services/IdentificationsCities';
 
-import store from '../../../../store';
-import { saveCityStore } from '../../../../actionCreators';
+import store from '../../../../../store';
+import { saveCityStore } from '../../../../../actionCreators';
 
 class AutocompleteCities extends Component {
 
@@ -14,6 +13,7 @@ class AutocompleteCities extends Component {
                 cities: []
             },
             value: "",
+            empty: false,
             idElement: "",
             toggle: false,
             onChange: null
@@ -23,24 +23,23 @@ class AutocompleteCities extends Component {
     }
 
     async getOptions(){
-        this.state.options = await IdentificationsCities.get();
-    }
-
-    openOptions() {
         this.setState({
-           ...this.state,
-           toggle: true
+            ...this.state,
+            options: await IdentificationsCities.get()
         });
     }
 
-    closeOptions() {
+    onBlur(v){
+        let empty = false;
+        if (v == "") empty = true;
         setTimeout(
             function() {
                 this.setState({
                     ...this.state,
-                    toggle: false
+                    toggle: false,
+                    empty: empty
                 });
-            }.bind(this),200);
+            }.bind(this),150);
     }
 
     saveOption(code, value){
@@ -51,20 +50,27 @@ class AutocompleteCities extends Component {
         });
     }
 
+    searchData(value){
+        this.setState({
+            ...this.state,
+            toggle: true,
+            value: value
+        });
+    }
+
     render() {
         return (
-            <div className={"form-group autocomplete " + this.props.error}>
+            <div className={"form-group autocomplete " + (this.state.empty?'error':'')}>
                 <label htmlFor="city">Ciudad o municipio del hogar</label>
                 <input name="city" id="city" type="text" className="form-control"
                        autoComplete="off"
                        placeholder="Ingresa ciudad o municipio del h..."
                        value={this.state.value}
                        onBlur={(e) => {
-                           this.closeOptions();
+                           this.onBlur(e.target.value);
                        }}
                        onChange={(e) => {
-                           this.props.onChange(e);
-                           this.openOptions();
+                           this.searchData(e.target.value);
                        }}
                 />
                 <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.
@@ -77,10 +83,6 @@ class AutocompleteCities extends Component {
                             }}
                         >{option.description}</li>
                     )}
-                    <li>hola</li>
-                    <li>hola</li>
-                    <li>hola</li>
-                    <li>hola</li>
                 </ul>
             </div>
         );

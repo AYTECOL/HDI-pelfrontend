@@ -1,14 +1,3 @@
-import Identifications from './services/Identifications';
-
-const loadIdentifications = () => {
-    return dispatch => {
-        return Identifications.get()
-            .then(response => {
-                dispatch({type: "ADD_IDENTIFICATIONS", data: response.identifications});
-            });
-    };
-};
-
 const validarIdentificacionToogle = (data) => {
     return {type: "VALIDARIDENTIFICACION_TOOGLE", data};
 };
@@ -25,8 +14,12 @@ const validateIdentificationValue = (name) => {
     return {type: "VALIDATE_IDENTIFICATION_VALUE", data: name};
 };
 
-const nextStepIndex = () => {
-    return {type: "NEXT_STEP_INDEX", data: {}};
+const nextStepIndentification = () => {
+    return {type: "NEXT_STEP_INDENTIFICATION", data: {}};
+};
+
+const continueButtonDisable = (state) => {
+    return {type: "DISABLE_BTN_CONTINUE", data: state};
 };
 
 const saveCityStore = (data) => {
@@ -34,10 +27,10 @@ const saveCityStore = (data) => {
 };
 
 export {
-    loadIdentifications,
     validarIdentificacionToogle,
-    nextStepIndex,
+    nextStepIndentification,
     saveIdentificationValue,
     validateIdentificationValue,
-    saveCityStore
+    saveCityStore,
+    continueButtonDisable
 };

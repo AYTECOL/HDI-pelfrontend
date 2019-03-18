@@ -1,196 +1,58 @@
 import React from 'react';
-import {connect} from "react-redux";
 
 //Component
-import AutoCompleteCities from '../../../globals/forms/autocompletecities/AutocompleteCities';
+import TipoDocumento from '../../../globals/forms/identificacion/tipodocumento/TipoDocumento';
+import NumeroIdentificacion from '../../../globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion';
+import BtnContinue from '../../../globals/forms/identificacion/btncontinue/BtnContinue';
+
+import SecondForm from '../secondform/SecondForm';
 
 import store from '../../../../store';
-import {
-    loadIdentifications,
-    validateIdentificationValue,
-    saveIdentificationValue,
-    nextStepIndex
-} from '../../../../actionCreators';
 
 import './Index.scss';
 import {Link} from "react-router-dom";
 import Mapa from "../../../mapa/Mapa.js"
 
-store.dispatch(loadIdentifications());
+class Index extends React.Component {
 
-const Index = ({stateForm, identifications, autoCompleteCuidad, cotizacion, cotizacionErrors, continueButtonDisable, saveIdentificationValue, validateIdentificationValue, nextStepIndex, mapsOptions}) => {
-    return (
-        <form autoComplete="off" className="index-form">
-            <div className="container">
-                <div className="row">
-                    <div className="col col-sm-12 col-md-12 col-lg-12 title">
-                        <h2>Comencemos</h2>
-                        <p>Ingresa la siguiente información, así sabremos si es viable continuar con el proceso de
-                            cotización</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <div className={"form-group input-select " + cotizacionErrors.identification_code}>
-                            <label htmlFor="doc-type">Tipo de identificación</label>
-                            <select disabled={(stateForm != 0 ? "disabled" : "")} name="code" id="doc-type"
-                                    className={(stateForm != 0 ? "disabled " : "") + "form-control"}
-                                    value={cotizacion.identification.code}
-                                    onChange={(e) => {
-                                        saveIdentificationValue(e.target);
-                                        validateIdentificationValue(e.target.name);
-                                    }}>
-                                {identifications.identifications.map(identification =>
-                                    <option key={identification.code}
-                                            value={identification.code}>{identification.description}</option>
-                                )}
-                            </select>
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }
+
+    render() {
+        return (
+            <form autoComplete="off" className="index-form">
+                <div className="container">
+                    <div className="row">
+                        <div className="col col-sm-12 col-md-12 col-lg-12 title">
+                            <h2>Comencemos</h2>
+                            <p>Ingresa la siguiente información, así sabremos si es viable continuar con el proceso de
+                                cotización</p>
                         </div>
                     </div>
-                    <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <div className={"form-group " + cotizacionErrors.identification_value}>
-                            <label htmlFor="doc-type-value">Número de identificación</label>
-                            <input disabled={(stateForm != 0 ? "disabled" : "")} name="value" id="doc-type-value"
-                                   type="text"
-                                   className={(stateForm != 0 ? "disabled " : "") + "form-control"}
-                                   placeholder="Ingresa la identificación"
-                                   onChange={(e) => {
-                                       saveIdentificationValue(e.target);
-                                       validateIdentificationValue(e.target.name);
-                                   }}/>
-                            <small className="form-text only-errors">El número de Identificación ingresado, no
-                                corresponde con el tipo de identificación seleccionado.
-                            </small>
-                        </div>
-                    </div>
-                </div>
-
-                <div className={(stateForm != 1 ? "hide " : "")}>
-
-                    <div className={(cotizacion.typeDocument != 1 ? "hide " : "") + "row"}>
-                        <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                            <div className={"form-group " + cotizacionErrors.identification_name}>
-                                <label htmlFor="name">Primer nombre</label>
-                                <input name="name" id="name" type="text" className="form-control"
-                                       placeholder="Ingresa primer nombre"
-                                       onChange={(e) => {
-                                           saveIdentificationValue(e.target);
-                                           validateIdentificationValue(e.target.name);
-                                       }}/>
-                            </div>
-                        </div>
-                        <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                            <div className={"form-group " + cotizacionErrors.identification_lastname}>
-                                <label htmlFor="lastname">Primer apellido</label>
-                                <input name="lastname" id="lastnamee" type="text" className="form-control"
-                                       placeholder="Ingresa primer apellido"
-                                       onChange={(e) => {
-                                           saveIdentificationValue(e.target);
-                                           validateIdentificationValue(e.target.name);
-                                       }}/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={(cotizacion.typeDocument != 2 ? "hide " : "") + "row"}>
-                        <div className="col col-sm-12 col-md-12 col-lg-12 form-first">
-                            <div className={"form-group " + cotizacionErrors.identification_name}>
-                                <label htmlFor="businessname">Razón social</label>
-                                <input name="businessname" id="businessname" type="text" className="form-control"
-                                       placeholder="Ingresa la razón social"
-                                       onChange={(e) => {
-                                           saveIdentificationValue(e.target);
-                                           validateIdentificationValue(e.target.name);
-                                       }}/>
-                            </div>
-                        </div>
-                    </div>
-
-
                     <div className="row">
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                            <AutoCompleteCities error={cotizacionErrors.identification_city}
-                                                onChange={(e) => {
-                                                    saveIdentificationValue(e.target);
-                                                    validateIdentificationValue(e.target.name);
-                                                }}/>
+                            <TipoDocumento/>
                         </div>
                         <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                            <div className={"form-group " + cotizacionErrors.identification_address}>
-                                <label htmlFor="address">Dirección del hogar</label>
-                                <input name="address" id="address" type="text" className="form-control"
-                                       placeholder="Ingresa la dirección"
-                                       onChange={(e) => {
-                                           saveIdentificationValue(e.target);
-                                           validateIdentificationValue(e.target.name);
-                                       }}/>
-                                <small className="form-text text-muted">Ejemplo: Calle 143Bis # 23 a 34</small>
-                            </div>
-                        </div>
-
-                        <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                            <div className={"form-group " + cotizacionErrors.identification_addressadditional}>
-                                <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
-                                <input name="addressadditional" id="addressadditional" type="text"
-                                       className="form-control"
-                                       placeholder="Ingresa la dirección"
-                                       onChange={(e) => {
-                                           saveIdentificationValue(e.target);
-                                           validateIdentificationValue(e.target.name);
-                                       }}/>
-                                <small className="form-text text-muted"> Ejemplo: Interior 6, apto 201</small>
-                            </div>
+                            <NumeroIdentificacion/>
                         </div>
                     </div>
 
-                </div>
-                <button type="button" className="btn btn-primary" onClick={() => {mapsOptions.options.zoom = mapsOptions.options.zoom +1}}>+</button>
-                <button type="button" className="btn btn-primary">-</button>
+                    <SecondForm />
 
-                    <Mapa coords={mapsOptions}  />                   
-                <div className="row">
-                    <div className="col col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                        <div className={(stateForm != 1 ? "hide " : "") + "return-button"}>
-                            <Link to='/'><i className="back-icon"></i>Volver</Link>
+                    <div className="row">
+                        <div className="col col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
+                            <BtnContinue/>
                         </div>
-                        <button className={(stateForm != 1 ? "hide " : "") + "btn btn-default"}
-                                onClick={() => nextStepIndex()} type="button">Guardar y salir
-                        </button>
-                        <button disabled={continueButtonDisable} onClick={() => nextStepIndex()}
-                                type="button"
-                                className={(continueButtonDisable ? 'disabled ' : '') + "btn btn-primary"}>Continuar
-                        </button>
                     </div>
                 </div>
-            </div>
-        </form>
-    );
+            </form>
+        )
+    }
+
 };
 
-const mapStateToProps = state => {
-    return {
-        autoCompleteCuidad: state.autoCompleteCuidad,
-        stateForm: state.stateForm,
-        identifications: state.identifications,
-        cotizacion: state.cotizacion,
-        cotizacionErrors: state.cotizacionErrors,
-        continueButtonDisable: state.continueButtonDisable,
-        mapsOptions: state.mapsOptions
-    };
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        saveIdentificationValue(value) {
-            dispatch(saveIdentificationValue(value));
-        },
-        validateIdentificationValue(cotizacion) {
-            dispatch(validateIdentificationValue(cotizacion));
-        },
-        nextStepIndex() {
-            dispatch(nextStepIndex());
-        }
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Index);
+export default Index;
