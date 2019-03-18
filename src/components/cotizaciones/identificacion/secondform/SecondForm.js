@@ -21,7 +21,8 @@ class SecondForm extends React.Component {
             let storeState = store.getState();
             this.setState({
                 ...this.state,
-                show: storeState.stateFormIdentificacion == 1
+                show: storeState.stateFormIdentificacion == 1,
+                type: storeState.typeDocument
             });
         });
     }
@@ -38,7 +39,7 @@ class SecondForm extends React.Component {
                     </div>
                 </div>
 
-                <div className={(this.state.typeof != 2 ? "hide " : "") + "row"}>
+                <div className={(this.state.type != 2 ? "hide " : "") + "row"}>
                     <div className="col col-sm-12 col-md-12 col-lg-12 form-first">
                         <Razonsocial />
                     </div>

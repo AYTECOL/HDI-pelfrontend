@@ -13,20 +13,14 @@ class Addressadditional extends Component {
     }
 
     validateEmpty(e){
-        if ( e.value.length < 1 ){
-            this.setState({
-                ...this.state,
-                error: true
-            })
-        }
         store.dispatch(saveIdentificationValue(e));
     }
 
     render() {
         return (
             <div className={"form-group " + this.state.error}>
-                <label htmlFor="doc-type-value">Ingresa información adicional (opcional)</label>
-                <input name="value" id="doc-type-value"
+                <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
+                <input name="addressadditional" id="addressadditional"
                        type="text"
                        className={"form-control"}
                        placeholder="Ingresa la dirección"

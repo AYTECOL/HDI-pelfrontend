@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import {continueButtonDisable, saveIdentificationValue} from '../../../../../actionCreators';
+import {continueButtonDisable, saveIdentificationValue, updateTypeDoc} from '../../../../../actionCreators';
 import Identifications from '../../../../../services/Identifications';
 
 class TipoDocumento extends Component {
@@ -14,16 +14,22 @@ class TipoDocumento extends Component {
                 identifications: []
             },
             error: false,
-            stateForm: 1,
+            stateForm: 0,
+            disabled: false,
+            docType: 1,
         };
 
         this.getOptions();
 
         store.subscribe(() => {
             let storeState = store.getState();
+            let newState = storeState.stateFormIdentificacion;
+            let disabled = false;
+            if (newState != 0) disabled = true;
             this.setState({
                 ...this.state,
-                stateForm: storeState.stateForm,
+                stateForm: newState,
+                disabled: disabled
             });
         });
     }
@@ -35,7 +41,11 @@ class TipoDocumento extends Component {
                 error: true
             })
         }
+        let type = e.selectedOptions[0].getAttribute("data");
+        let typeDocument = 1;
+        if (type == "Jurídica") typeDocument = 2;
         store.dispatch(saveIdentificationValue(e));
+        store.dispatch(updateTypeDoc(typeDocument));
         this.setState({
             ...this.state,
             value: e.value
@@ -53,15 +63,15 @@ class TipoDocumento extends Component {
         return (
             <div className={"form-group input-select " + this.state.error}>
                 <label htmlFor="doc-type">Tipo de identificación</label>
-                <select disabled={(this.props.disabled ? "disabled" : "")} name="code" id="doc-type"
-                        className={(this.props.disabled ? "disabled " : "") + "form-control"}
+                <select disabled={(this.state.disabled ? "disabled" : "")} name="code" id="doc-type"
+                        className={(this.state.disabled ? "disabled " : "") + "form-control"}
                         value={this.state.value}
                         onChange={(e) => {
                             this.validateEmpty(e.target);
                         }}>
                     {this.state.options.identifications.map(option =>
                         <option key={option.code}
-                                value={option.code}>{option.description}</option>
+                                value={option.code} data={option.type_person}>{option.description}</option>
                     )}
                 </select>
             </div>

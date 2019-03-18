@@ -17,7 +17,7 @@ class Home extends Component {
         number = number.currentValue.toString();
         number = storeState.cotizacion.number.slice(number.length) + number;
         store.dispatch(saveCotizacionNumber(number));
-        this.props.history.push('/cotizacion/'+number);
+        this.props.history.push('/cotizacion/1/'+number);
     }
 
     render() {

@@ -13,7 +13,7 @@ const initialState = {
         number: "00000000",
         typeDocument: 1,
         identification: {
-            code: "01",
+            code: "36",
             value: "",
             name: "",
             lastname: "",
@@ -25,26 +25,12 @@ const initialState = {
     },
 
     continueButtonDisable: true,
-    disabledNumberIdentification: false,
     stateFormIdentificacion: 0,
-
-
-    sendData:{
-        numberid: "000000",
-        doctype: "02",
-        docnumber: "",
-        lastname: "",
-        businessname: "",
-        city: "",
-        address: "",
-        addressadditional: "",
-    }
+    typeDocument: 1,
 };
 
 const reducer = (state = initialState, action) => {
     if (action.type === "SET_ADDRES_MAP") {
-        console.log(action.data);
-        console.log("_______________________________")
         return {
             ...state,
             mapsOptions: action.data
@@ -70,7 +56,8 @@ const reducer = (state = initialState, action) => {
     }else if( action.type === "NEXT_STEP_INDENTIFICATION" ){
         return {
             ...state,
-            stateFormIdentificacion: state.stateFormIdentificacion + action.data
+            stateFormIdentificacion: state.stateFormIdentificacion + action.data,
+            continueButtonDisable: true,
         }
     }else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
         return {
@@ -85,8 +72,16 @@ const reducer = (state = initialState, action) => {
             ...state,
             cotizacion: {
                 ...state.cotizacion,
-                cotizacion: { ...state.cotizacion, number: action.data},
+                number: action.data,
             }
+        }
+    }else if( action.type === "UPDATE_TYPE_DOC" ){
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+            },
+            typeDocument: action.data,
         }
     }
     return state;

@@ -7,6 +7,7 @@ class NumeroIdentificacion extends Component {
 
     constructor(props) {
         super(props);
+        let storeState = store.getState();
         this.state = {
             options: {
                 cities: []
@@ -15,20 +16,23 @@ class NumeroIdentificacion extends Component {
             error: false,
             idElement: "",
             disabled: false,
-            typeIdentification: "",
+            typeIdentification: storeState.cotizacion.identification.code,
             toggle: false,
             onChange: null
         };
 
         store.subscribe(() => {
             let storeState = store.getState();
+            let disabled = false;
             let value = this.state.value;
+            let newState = storeState.stateFormIdentificacion;
+            if (newState != 0) disabled = true;
             if ( storeState.cotizacion.identification.code != this.state.typeIdentification ) {
                 value = "";
             }
             this.setState({
                 ...this.state,
-                disabled: storeState.disabledNumberIdentification,
+                disabled: disabled,
                 typeIdentification: storeState.cotizacion.identification.code,
                 value: value
             });
@@ -83,10 +87,10 @@ class NumeroIdentificacion extends Component {
                        value={this.state.value}
                        placeholder="Ingresa la identificación"
                        onBlur={(e) =>{
-                           this.validateEmpty(e.target.value,e);
+                           this.validateEmpty(e.target.value,e.target);
                        }}
                        onChange={(e) => {
-                           this.validateEmpty(e.target.value,e);
+                           this.validateEmpty(e.target.value,e.target);
                        }}/>
                 <small className="form-text only-errors">El número de Identificación ingresado, no corresponde con el tipo de identificación seleccionado.</small>
             </div>

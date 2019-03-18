@@ -4,6 +4,7 @@ import AutoIncrementCotizacion from "../../../services/AutoIncrementCotizacion";
 
 import './Submenu.scss';
 import store from "../../../store";
+import {saveCotizacionNumber} from "../../../actionCreators";
 
 class Submenu extends Component {
 
@@ -13,7 +14,7 @@ class Submenu extends Component {
         this.state = {
             number: this.props.match.params.id,
         };
-
+        store.dispatch(saveCotizacionNumber(this.state.number));
         store.subscribe(() => {
             let storeState = store.getState();
             this.setState({
