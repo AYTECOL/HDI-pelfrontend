@@ -1,36 +1,12 @@
 import React from 'react';
 import {connect} from "react-redux";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import store from '../../store';
-import {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    validateIdentificationValue,
-    saveIdentificationValue,
-=======
-    loadIdentifications,
-    validateIdentificationValue,
-    saveIdentificationValue,
-    autoCompleteCiudadToogle,
->>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
-    nextStepIndex
-} from '../../actionCreators';
 
 import './Mapa.scss';
-import { runInThisContext } from 'vm';
 
-<<<<<<< HEAD
-=======
-
-store.dispatch(loadIdentifications());
-=======
-   setAddresMap
-} from '../../actionCreators';
+import { setAddresMap } from '../../actionCreators';
 
 import './Mapa.scss';
->>>>>>> 996af23... [PELH-2.2] Send google places request
-
->>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
 class  Mapa  extends React.Component{
     render() {
         console.log(this.refs.map);
@@ -79,27 +55,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-<<<<<<< HEAD
-        saveIdentificationValue(value) {
-            dispatch(saveIdentificationValue(value));
-        },
-        validateIdentificationValue(cotizacion) {
-            dispatch(validateIdentificationValue(cotizacion));
-        },
-<<<<<<< HEAD
-=======
-        nextStepIndex() {
-            dispatch(nextStepIndex());
-        },
-        autoCompleteCiudadToogle(){
-            dispatch(autoCompleteCiudadToogle());
-        }
->>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
-=======
         setAddresMap(map) {
             dispatch(setAddresMap(map));
         }
->>>>>>> 996af23... [PELH-2.2] Send google places request
     };
 };
 

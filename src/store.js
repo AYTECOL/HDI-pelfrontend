@@ -2,10 +2,6 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
-<<<<<<< HEAD
-    stateFormIdentificacion: 0,
-
-=======
     autoCompleteCuidad: false,
     validaridentificacion: {
         className: 'hide'
@@ -35,7 +31,6 @@ const initialState = {
         'identification_addressadditional'
     ],
     continueButtonDisable: true,
->>>>>>> 2ca8784... [PEL-2.4]Startup Maps component
     cotizacion: {
         typeDocument: 1,
         identification: {
@@ -55,9 +50,6 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
-<<<<<<< HEAD
-    if (action.type === "SAVE_IDENTIFICATION_VALUE") {
-=======
     if (action.type === "VALIDARIDENTIFICACION_TOOGLE") {
         return {
             ...state,
@@ -91,27 +83,6 @@ const reducer = (state = initialState, action) => {
                 ...state.validaridentificacion,
                 className: className
             }
-        }
-    } else if (action.type === "VALIDATE_IDENTIFICATION_VALUE") {
-        return validateIdentification(state, action.data);
-    } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
->>>>>>> 996af23... [PELH-2.2] Send google places request
-        return {
-            ...state,
-            cotizacion: {
-                ...state.cotizacion,
-                identification: {...state.cotizacion.identification, ...action.data},
-            }
-        }
-    }else if( action.type === "DISABLE_BTN_CONTINUE" ){
-        return {
-            ...state,
-            continueButtonDisable: action.data
-        }
-    }else if( action.type === "NEXT_STEP_INDENTIFICATION" ){
-        return {
-            ...state,
-            stateFormIdentificacion: state.stateFormIdentificacion + action.data
         }
     }
     return state;
