@@ -24,7 +24,7 @@ class Name extends Component {
 
     render() {
         return (
-            <div className={"form-group " + this.state.error}>
+            <div className={"form-group " + (this.state.error?'error':'')}>
                 <label htmlFor="doc-type-value">Primer nombre</label>
                 <input name="value" id="doc-type-value"
                        type="text"

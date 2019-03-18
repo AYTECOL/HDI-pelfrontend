@@ -39,7 +39,7 @@ const reducer = (state = initialState, action) => {
     }else if( action.type === "NEXT_STEP_INDENTIFICATION" ){
         return {
             ...state,
-            stateFormIdentificacion: state.stateFormIdentificacion++
+            stateFormIdentificacion: state.stateFormIdentificacion + action.data
         }
     }
     return state;

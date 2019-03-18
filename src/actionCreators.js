@@ -15,7 +15,7 @@ const validateIdentificationValue = (name) => {
 };
 
 const nextStepIndentification = () => {
-    return {type: "NEXT_STEP_INDENTIFICATION", data: {}};
+    return {type: "NEXT_STEP_INDENTIFICATION", data: 1};
 };
 
 const continueButtonDisable = (state) => {
