@@ -1,23 +1,20 @@
 import React from 'react';
 import {connect} from "react-redux";
 import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import store from '../../store';
-import {
-    validateIdentificationValue,
-    saveIdentificationValue,
-    nextStepIndex
-} from '../../actionCreators';
 
 import './Mapa.scss';
-import { runInThisContext } from 'vm';
 
+import { setAddresMap } from '../../actionCreators';
+
+import './Mapa.scss';
 class  Mapa  extends React.Component{
-    
     render() {
-        const { coords:{ longitude, latitude, options: { zoom } } } = this.props;
+        console.log(this.refs.map);
+        const { mapsOptions:{ longitude, latitude, options: { zoom } } } = this.props;
+        
         const MyMapComponent = withScriptjs(withGoogleMap((props) =>
         <GoogleMap
-            defaultZoom={8}
+            defaultZoom={zoom}
             defaultCenter={{ lat: latitude, lng: longitude }}
             zoom={zoom}
             defaultOptions={{
@@ -29,7 +26,7 @@ class  Mapa  extends React.Component{
                 rotateControl: false,
                 fullscreenControl: false
               }}
-            disableDefaultUI  
+            disableDefaultUI
         >
             {props.isMarkerShown && <Marker position={{ lat: latitude, lng: longitude }} />}
         </GoogleMap>
@@ -37,6 +34,8 @@ class  Mapa  extends React.Component{
 
         return (
         <div>
+            {longitude}
+            {latitude}
             <MyMapComponent isMarkerShown
                             googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU"
                             loadingElement={<div style={{ height: `100%` }} />}
@@ -50,23 +49,15 @@ class  Mapa  extends React.Component{
 
 const mapStateToProps = state => {
     return {
-        autoCompleteCuidad: state.autoCompleteCuidad,
-        stateForm: state.stateForm,
-        identifications: state.identifications,
-        cotizacion: state.cotizacion,
-        cotizacionErrors: state.cotizacionErrors,
-        continueButtonDisable: state.continueButtonDisable
+        mapsOptions: state.mapsOptions
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        saveIdentificationValue(value) {
-            dispatch(saveIdentificationValue(value));
-        },
-        validateIdentificationValue(cotizacion) {
-            dispatch(validateIdentificationValue(cotizacion));
-        },
+        setAddresMap(map) {
+            dispatch(setAddresMap(map));
+        }
     };
 };
 

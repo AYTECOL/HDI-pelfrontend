@@ -5,7 +5,7 @@ import TipoDocumento from '../../../globals/forms/identificacion/tipodocumento/T
 import NumeroIdentificacion from '../../../globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion';
 import BtnContinue from '../../../globals/forms/identificacion/btncontinue/BtnContinue';
 
-import SecondForm from '../secondform/SecondForm';
+// import SecondForm from '../secondform/SecondForm';
 
 import store from '../../../../store';
 
@@ -41,7 +41,7 @@ class Index extends React.Component {
                         </div>
                     </div>
 
-                    <SecondForm />
+                    {/* <SecondForm /> */}
 
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
