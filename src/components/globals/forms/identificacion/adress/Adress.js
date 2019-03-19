@@ -33,6 +33,7 @@ class Adress extends Component {
                        placeholder="Ingresa la dirección"
                        onBlur={(e) => {
                            this.validateEmpty(e.target);
+                           store.dispatch(reqAddress(e.target));
                        }}
                        onChange={(e) => {
                            this.validateEmpty(e.target);
