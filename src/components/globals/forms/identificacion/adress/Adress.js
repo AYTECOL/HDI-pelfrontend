@@ -13,20 +13,20 @@ class Adress extends Component {
     }
 
     validateEmpty(e){
-        if ( e.value.length < 1 ){
-            this.setState({
-                ...this.state,
-                error: true
-            });
-        }
+        let error = false;
+        if ( e.value.length < 1 ) error = true;
+        this.setState({
+            ...this.state,
+            error: error
+        });
         store.dispatch(saveIdentificationValue(e));
     }
 
     render() {
         return (
             <div className={"form-group " + (this.state.error?'error':'')}>
-                <label htmlFor="doc-type-value">Dirección del hogar</label>
-                <input name="value" id="doc-type-value"
+                <label htmlFor="address">Dirección del hogar</label>
+                <input name="address" id="address"
                        type="text"
                        className={"form-control"}
                        placeholder="Ingresa la dirección"

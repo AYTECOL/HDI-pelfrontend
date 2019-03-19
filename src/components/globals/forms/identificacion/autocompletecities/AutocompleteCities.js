@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import IdentificationsCities from '../../../../../services/IdentificationsCities';
 
 import store from '../../../../../store';
-import { saveCityStore } from '../../../../../actionCreators';
+import {saveCityStore, saveIdentificationValue} from '../../../../../actionCreators';
 
 class AutocompleteCities extends Component {
 
@@ -10,6 +10,9 @@ class AutocompleteCities extends Component {
         super(props);
         this.state = {
             options: {
+                cities: []
+            },
+            originalOptions: {
                 cities: []
             },
             value: "",
@@ -22,45 +25,62 @@ class AutocompleteCities extends Component {
         this.getOptions();
     }
 
-    async getOptions(){
+    async getOptions() {
+        let data = await IdentificationsCities.get();
         this.setState({
             ...this.state,
-            options: await IdentificationsCities.get()
+            options: data,
+            originalOptions: data,
         });
     }
 
-    onBlur(v){
+    onBlur(v) {
         let empty = false;
         if (v == "") empty = true;
         setTimeout(
-            function() {
+            function () {
                 this.setState({
                     ...this.state,
                     toggle: false,
                     empty: empty
                 });
-            }.bind(this),150);
+            }.bind(this), 150);
     }
 
-    saveOption(code, value){
-        store.dispatch(saveCityStore(code));
+    saveOption(code, value) {
+        let element = {
+            name: "city",
+            value: code
+        };
+        store.dispatch(saveIdentificationValue(element));
         this.setState({
             ...this.state,
             value: value
         });
     }
 
-    searchData(value){
+    searchData(value) {
+        let optionsFilters = { cities: [] };
+        this.state.originalOptions.cities.map((option, key) =>{
+            let item = option.city;
+            let search = item.toLowerCase().search(value.toLowerCase());
+            if ( search !== -1 && search == 0 ){
+                optionsFilters.cities[key] = option;
+            }
+        });
+
         this.setState({
             ...this.state,
+            value: value,
             toggle: true,
-            value: value
+            options: optionsFilters,
+            empty: value == ""
         });
     }
 
     render() {
         return (
-            <div className={"form-group autocomplete " + (this.state.empty?'error':'')}>
+            <div className={"form-group autocomplete " + (this.state.empty ? 'error' : '')}>
                 <label htmlFor="city">Ciudad o municipio del hogar</label>
                 <input name="city" id="city" type="text" className="form-control"
                        autoComplete="off"
@@ -73,13 +93,12 @@ class AutocompleteCities extends Component {
                            this.searchData(e.target.value);
                        }}
                 />
-                <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.
-                </small>
-                <ul className={(this.state.toggle?'show':'hide') + " list-items"}>
+                <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
+                <ul className={(this.state.toggle ? 'show' : 'hide') + " list-items"}>
                     {this.state.options.cities.map(option =>
                         <li key={option.code_city} value={option.code_city}
                             onClick={(e) => {
-                                this.saveOption(option.code_city, option.description);
+                                this.saveOption(option.code_city, option.department);
                             }}
                         >{option.description}</li>
                     )}

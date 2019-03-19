@@ -1,4 +1,5 @@
 import GetAddresInfo from './services/AddresCoordenates';
+import store from "./store";
 
 const saveIdentificationValue = (element) => {
     let name = element.name;
@@ -34,15 +35,20 @@ const continueButtonDisable = (state) => {
     return {type: "DISABLE_BTN_CONTINUE", data: state};
 };
 
-const saveCityStore = (data) => {
-    return {type: "SAVE_CITY_STORE", data};
-};
+const saveCotizacionNumber = (number) => {
+    return {type: "SAVE_COTIZACION_NUMBER", data: number}
+}
+
+const updateTypeDoc = (type) => {
+    return {type: "UPDATE_TYPE_DOC", data: type}
+}
 
 export {
     nextStepIndentification,
     saveIdentificationValue,
-    saveCityStore,
     setAddresMap,
     continueButtonDisable,
+    saveCotizacionNumber,
+    updateTypeDoc,
     reqAddress
 };

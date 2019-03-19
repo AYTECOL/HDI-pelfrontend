@@ -13,12 +13,12 @@ class Razonsocial extends Component {
     }
 
     validateEmpty(e){
-        if ( e.value.length < 1 ){
-            this.setState({
-                ...this.state,
-                error: true
-            })
-        }
+        let error = false;
+        if ( e.value.length < 1 ) error = true;
+        this.setState({
+            ...this.state,
+            error: error
+        });
         store.dispatch(saveIdentificationValue(e));
     }
 

@@ -2,7 +2,6 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
-    autoCompleteCuidad: false,
     mapsOptions:{
         longitude: -74.0436118,
         latitude: 4.681545,
@@ -11,9 +10,10 @@ const initialState = {
         }
     },
     cotizacion: {
+        number: "00000000",
         typeDocument: 1,
         identification: {
-            code: "01",
+            code: "36",
             value: "",
             name: "",
             lastname: "",
@@ -25,14 +25,12 @@ const initialState = {
     },
 
     continueButtonDisable: true,
-    disabledNumberIdentification: false,
     stateFormIdentificacion: 0,
+    typeDocument: 1,
 };
 
 const reducer = (state = initialState, action) => {
     if (action.type === "SET_ADDRES_MAP") {
-        console.log(action.data);
-        console.log("_______________________________")
         return {
             ...state,
             mapsOptions: action.data
@@ -48,11 +46,7 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             continueButtonDisable: true,
-            stateForm: stateForm,
-            validaridentificacion: {
-                ...state.validaridentificacion,
-                className: className
-            }
+            stateFormIdentificacion: stateForm
         }
     }else if( action.type === "DISABLE_BTN_CONTINUE" ){
         return {
@@ -62,7 +56,32 @@ const reducer = (state = initialState, action) => {
     }else if( action.type === "NEXT_STEP_INDENTIFICATION" ){
         return {
             ...state,
-            stateFormIdentificacion: state.stateFormIdentificacion + action.data
+            stateFormIdentificacion: state.stateFormIdentificacion + action.data,
+            continueButtonDisable: true,
+        }
+    }else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                identification: {...state.cotizacion.identification, ...action.data},
+            }
+        }
+    }else if( action.type === "SAVE_COTIZACION_NUMBER" ){
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                number: action.data,
+            }
+        }
+    }else if( action.type === "UPDATE_TYPE_DOC" ){
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+            },
+            typeDocument: action.data,
         }
     }
     return state;
