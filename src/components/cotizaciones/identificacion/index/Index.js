@@ -11,7 +11,6 @@ import store from '../../../../store';
 
 import './Index.scss';
 import {Link} from "react-router-dom";
-import Mapa from "../../../mapa/Mapa.js"
 
 class Index extends React.Component {
 

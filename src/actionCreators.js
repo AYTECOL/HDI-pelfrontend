@@ -14,14 +14,12 @@ const setAddresMap = (data) => {
 
 const reqAddress = (address) => {
     return dispatch => {
-        console.log(address.value)
         return GetAddresInfo.get(address.value)
             .then(response => {
                 let map = {
                     longitude: response.lng,
                     latitude: response.lat
                 }
-                console.log(response)
                 return {type: "SET_ADDRES_MAP", map};
             });
     };

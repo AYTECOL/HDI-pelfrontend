@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import { saveIdentificationValue } from '../../../../../actionCreators';
+import { saveIdentificationValue, reqAddress } from '../../../../../actionCreators';
 
 class Adress extends Component {
 
@@ -20,6 +20,7 @@ class Adress extends Component {
             error: error
         });
         store.dispatch(saveIdentificationValue(e));
+        console.log(store.getState())
     }
 
     render() {
@@ -32,6 +33,7 @@ class Adress extends Component {
                        placeholder="Ingresa la dirección"
                        onBlur={(e) => {
                            this.validateEmpty(e.target);
+                           store.dispatch(reqAddress(e.target));
                        }}
                        onChange={(e) => {
                            this.validateEmpty(e.target);
