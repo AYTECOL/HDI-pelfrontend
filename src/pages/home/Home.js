@@ -33,6 +33,36 @@ class Home extends Component {
                         </div>
                     </div>
 
+                    <div className="top-bar">
+                        <ul className="menus">
+                            <li>Cotizaciones <span>12</span></li>
+                            <li className="active">Proceso de emisión <span>43</span></li>
+                            <li>Pólizas emitidas <span>12</span></li>
+                        </ul>
+                        <div className="search">
+                            <div className={"form-group input-select"}>
+                                <select name="code" id="doc-type"
+                                        className={"form-control"} >
+                                        <option value="">Seleciona</option>
+                                </select>
+                            </div>
+                            <div className={"form-group"}>
+                                <input name="name" id="name"
+                                       type="text"
+                                       className={"form-control"}
+                                       placeholder="Busca por Nombre, Id, dirección ..."/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="tabs row">
+                        <ul>
+                            <li className="active">Ver todo</li>
+                            <li>Opción 1</li>
+                            <li>Opción 2</li>
+                        </ul>
+                    </div>
+
                     <Table />
 
                 </div>
