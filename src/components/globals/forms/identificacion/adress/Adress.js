@@ -20,6 +20,7 @@ class Adress extends Component {
             error: error
         });
         store.dispatch(saveIdentificationValue(e));
+        console.log(store.getState())
     }
 
     render() {
@@ -32,7 +33,6 @@ class Adress extends Component {
                        placeholder="Ingresa la dirección"
                        onBlur={(e) => {
                            this.validateEmpty(e.target);
-                           store.dispatch(reqAddress(e.target));
                        }}
                        onChange={(e) => {
                            this.validateEmpty(e.target);

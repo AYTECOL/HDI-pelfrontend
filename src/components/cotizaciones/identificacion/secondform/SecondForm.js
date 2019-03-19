@@ -7,6 +7,7 @@ import Razonsocial from '../../../globals/forms/identificacion/razonsocial/Razon
 import Adress from '../../../globals/forms/identificacion/adress/Adress';
 import Addressadditional from '../../../globals/forms/identificacion/addressadditional/Addressadditional';
 import AutoCompleteCities from '../../../globals/forms/identificacion/autocompletecities/AutocompleteCities';
+import Map from "../../../map/Map.js"
 
 class SecondForm extends React.Component {
 
@@ -26,7 +27,6 @@ class SecondForm extends React.Component {
             });
         });
     }
-
     render() {
         return (
             <div className={(this.state.show?'show':'hide')}>
@@ -53,7 +53,9 @@ class SecondForm extends React.Component {
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <Adress />
                     </div>
-
+                    <div className="col col-sm-12 col-md-12 col-lg-12 form-first">
+                        <Map />
+                    </div>
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <Addressadditional />
                     </div>
