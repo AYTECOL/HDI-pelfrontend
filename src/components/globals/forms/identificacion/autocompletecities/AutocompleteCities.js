@@ -44,7 +44,7 @@ class AutocompleteCities extends Component {
                     toggle: false,
                     empty: empty
                 });
-            }.bind(this), 150);
+            }.bind(this), 200);
     }
 
     saveOption(code, value) {
