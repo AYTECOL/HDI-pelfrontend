@@ -20,11 +20,13 @@ class SecondForm extends React.Component {
 
         store.subscribe(() => {
             let storeState = store.getState();
-            this.setState({
-                ...this.state,
-                show: storeState.stateFormIdentificacion == 1,
-                type: storeState.typeDocument
-            });
+            if( storeState.stateFormIdentificacion != this.state.show || storeState.typeDocument != this.state.type ){
+                this.setState({
+                    ...this.state,
+                    show: storeState.stateFormIdentificacion == 1,
+                    type: storeState.typeDocument
+                });
+            }
         });
     }
     render() {
