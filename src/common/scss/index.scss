@@ -18,6 +18,14 @@ hmtl, body {
   display: none !important;
 }
 
+@media (min-width: 1200px){
+  .container {
+    max-width: 1180px;
+    width: 100%;
+  }
+}
+
+
 .return-button {
   display: inline-block;
   vertical-align: middle;

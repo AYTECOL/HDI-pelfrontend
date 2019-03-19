@@ -5,6 +5,8 @@ import AutoIncrementCotizacion from "../../services/AutoIncrementCotizacion";
 import store from "../../store";
 import {saveCotizacionNumber} from "../../actionCreators";
 
+import Table from '../../components/home/table/Table';
+
 class Home extends Component {
 
     constructor(props) {
@@ -30,6 +32,9 @@ class Home extends Component {
                             <button className="btn btn-primary btn-home" onClick={() => this.getNumber()}>Nueva cotización</button>
                         </div>
                     </div>
+
+                    <Table />
+
                 </div>
             </div>
         );

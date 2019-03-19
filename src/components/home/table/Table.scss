@@ -1,0 +1,67 @@
+.table-solicitudes{
+  background-color: white;
+  margin-top: 18px;
+  overflow: auto;
+  white-space: pre-wrap;
+  .row-header{
+    span {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      text-transform: uppercase;
+      display: block;
+      position: relative;
+      padding: 36px 0;
+      &::after{
+        content: '';
+        width: 1px;
+        height: 68px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        right: 0;
+        background-color: #979797;
+        display: block;
+        position: absolute;
+      }
+    }
+    .col{
+      padding: 0;
+    }
+    .col:last-child{
+      span::after{
+        display: none;
+      }
+    }
+  }
+  .row{
+    margin: 0;
+    min-width: 1024px;
+    &.body{
+      .col{
+        padding: 22px 0;
+        text-align: center;
+      }
+    }
+    p{
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 14px;
+      color: #343741;
+      margin: 0;
+      text-align: left;
+      display: inline-block;
+      span{
+        display: block;
+        font-size: 12px;
+        color: #808080;
+      }
+    }
+    &:nth-child(even){
+      background: rgba(242, 242, 242, 0.588995);
+    }
+  }
+}
