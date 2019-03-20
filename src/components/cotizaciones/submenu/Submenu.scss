@@ -1,7 +1,7 @@
 $padding-aside: 36px;
 .cotizaciones-aside{
   background-color: white;
-  padding: $padding-aside 0 14px;
+  padding: $padding-aside 0 $padding-aside;
   margin-bottom: 24px;
   #id-cotizacion{
     p{

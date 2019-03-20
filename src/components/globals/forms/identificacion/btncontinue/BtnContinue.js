@@ -44,11 +44,16 @@ class BtnContinue extends Component {
                     storeState.continueButtonDisable = true;
                 }
             }
-            this.setState({
-                ...this.state,
-                continueButtonDisable: storeState.continueButtonDisable,
-                stateFormIdentificacion: storeState.stateFormIdentificacion,
-            });
+            if(
+                this.state.continueButtonDisable != storeState.continueButtonDisable ||
+                this.state.stateFormIdentificacion != storeState.stateFormIdentificacion
+            ){
+                this.setState({
+                    ...this.state,
+                    continueButtonDisable: storeState.continueButtonDisable,
+                    stateFormIdentificacion: storeState.stateFormIdentificacion,
+                });
+            }
         });
     }
 
