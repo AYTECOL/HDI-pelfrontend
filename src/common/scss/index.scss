@@ -18,7 +18,7 @@ hmtl, body {
   display: none !important;
 }
 
-@media (min-width: 1200px){
+@media (min-width: 1200px) {
   .container {
     max-width: 1180px;
     width: 100%;
@@ -147,6 +147,8 @@ $color-font-btn-primary: #404040;
 
 
 .form-group {
+  margin-bottom: 24px;
+
   &.error {
     label {
       color: $error-fields;
@@ -175,6 +177,10 @@ $color-font-btn-primary: #404040;
       line-height: 1;
       font-size: 15px;
       font-weight: 600;
+    }
+
+    .list-items {
+      margin-top: -15px !important;
     }
   }
 
@@ -259,16 +265,18 @@ $color-font-btn-primary: #404040;
       padding: 0;
       max-height: 200px;
       overflow: auto;
-      box-shadow: 0 4px 10px -1px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 10px -1px rgba(0, 0, 0, 0.2);
 
       li {
         border-bottom: 1px solid rgba(#c8c8c8, 0.8);
         padding: 10px 12px 8px;
         cursor: pointer;
         transition: background 0.3s ease;
-        &:hover{
+
+        &:hover {
           background: #F5F5F5 * 0.9;
         }
+
         &:last-child {
           border-bottom: 0;
         }

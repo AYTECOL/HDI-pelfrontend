@@ -1,0 +1,97 @@
+import React from 'react';
+import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+import './Map.scss';
+import store from "../../store";
+import {mapShow, saveIdentificationValue} from "../../actionCreators";
+import GetAddresInfo from "../../services/AddresCoordenates";
+
+
+class MapBase extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        let storeState = store.getState();
+        this.state = {
+            address: "",
+            longitude: storeState.mapsOptions.longitude,
+            latitude: storeState.mapsOptions.latitude,
+            isMarkerShown: true,
+            zoom: 20,
+            el: document.querySelector(".wrapper-map")
+        };
+        this.state.markerPosition = {lat: this.state.latitude, lng: this.state.longitude};
+
+        window.stime = null;
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let address = storeState.cotizacion.identification.address;
+            if (this.state.address != address) {
+                if (address != "") {
+                    var it = this;
+                    clearTimeout(window.stime);
+                    window.stime = setTimeout(async function () {
+                        let data = await it.reqAddress(address);
+                        store.dispatch(mapShow(true));
+                        if (typeof data.lng != "undefined" && typeof data.lat != "undefined") {
+                            it.setState({
+                                ...it.state,
+                                address: address,
+                                markerPosition: data
+                            });
+                            it.state.el.className = it.state.el.className.replace(" error", "");
+                        } else {
+                            it.state.el.className += " error";
+                        }
+                    }, 600);
+                }
+            }
+        });
+    }
+
+    async reqAddress(address) {
+        return await GetAddresInfo.get(address)
+            .then(response => {
+                return response;
+            });
+    }
+
+    async onMapClick(e) {
+        return await GetAddresInfo.getAdressByCoors(e.latLng).then(response => {
+            this.setState({
+                address: response,
+                markerPosition: e.latLng,
+                isMarkerShown: true,
+            });
+            store.dispatch(saveIdentificationValue({
+                name: 'address',
+                value: response
+            }));
+        });
+    }
+
+    render() {
+        return (
+            <GoogleMap
+                defaultZoom={this.state.zoom}
+                defaultCenter={this.state.markerPosition}
+                center={this.state.markerPosition}
+                zoom={this.state.zoom}
+                onClick={this.onMapClick.bind(this)}
+                defaultOptions={{
+                    streetViewControl: false,
+                    scaleControl: false,
+                    mapTypeControl: false,
+                    panControl: true,
+                    zoomControl: true,
+                    rotateControl: false,
+                    fullscreenControl: false,
+                }}
+                disableDefaultUI
+            >{this.state.isMarkerShown && <Marker position={this.state.markerPosition}/>}
+            </GoogleMap>
+        );
+    }
+};
+
+export default withScriptjs(withGoogleMap(MapBase));

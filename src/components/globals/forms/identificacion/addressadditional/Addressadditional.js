@@ -22,6 +22,7 @@ class Addressadditional extends Component {
                 <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
                 <input name="addressadditional" id="addressadditional"
                        type="text"
+                       autoComplete="addressadditional"
                        className={"form-control"}
                        placeholder="Ingresa la dirección"
                        onChange={(e) => {

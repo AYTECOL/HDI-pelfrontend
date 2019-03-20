@@ -41,6 +41,11 @@ const updateTypeDoc = (type) => {
     return {type: "UPDATE_TYPE_DOC", data: type}
 }
 
+const mapShow = (status) => {
+    return {type: "SET_MAP_SHOW", data: status}
+}
+
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -48,5 +53,6 @@ export {
     continueButtonDisable,
     saveCotizacionNumber,
     updateTypeDoc,
-    reqAddress
+    reqAddress,
+    mapShow
 };

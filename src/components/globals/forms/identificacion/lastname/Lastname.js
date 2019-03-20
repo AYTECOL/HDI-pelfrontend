@@ -28,6 +28,7 @@ class Lastname extends Component {
                 <label htmlFor="lastname">Primer apellido</label>
                 <input name="lastname" id="lastname"
                        type="text"
+                       autoComplete="lastname"
                        className={"form-control"}
                        placeholder="Ingresa primer apellido"
                        onBlur={(e) => {

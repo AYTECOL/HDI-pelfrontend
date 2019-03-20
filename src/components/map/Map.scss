@@ -1,0 +1,93 @@
+.wrapper-map{
+  border-top: 2px solid #28A3AF;
+  margin: 0 21px 28px;
+  position: relative;
+  .error-info{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 84%;
+    background: #FFECDB;
+    border: 1px solid #EE7000;
+    box-sizing: border-box;
+    border-radius: 3px;
+    max-width: 695px;
+    margin: 0 auto;
+    padding: 8px 17px 8px 43px;
+    display: none;
+    p{
+      margin: 0;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 22px;
+      color: #D43900;
+      position: relative;
+      &::before {
+        position: absolute;
+        top: 1px;
+        left: -32px;
+        content: 'i';
+        display: inline-block;
+        color: #DD133C;
+        border: 2px solid #DD133C;
+        border-radius: 100%;
+        padding: 2px 7px 2px;
+        line-height: 1;
+        font-size: 13px;
+        font-weight: 600;
+      }
+    }
+  }
+  &.error{
+    border-top: 2px solid #EE7000;
+    .error-info {
+      display: block;
+    }
+  }
+
+  .gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom{
+    right: inherit !important;
+    left: 150px;
+    top: 55% !important;
+    >div>div{
+      background: transparent !important;
+      box-shadow: inherit !important;
+    }
+    >div>div>div {
+      display: block;
+      background: transparent !important;
+      height: 8px !important;
+    }
+    button{
+      width: 32px !important;
+      height: 32px !important;
+      background: #28A3AF !important;
+      box-shadow: 0px 4px 8px rgba(128, 128, 128, 0.695114) !important;
+      border-radius: 100%;
+      border: 0 !important;
+      transform: scale(1);
+      transition: all 0.3s ease;
+      &::before{
+        content: '+';
+        color: white;
+        font-size: 27px;
+        line-height: 1;
+        position: relative;
+      }
+      &:last-child{
+        &::before{
+          content: '_';
+          font-size: 35px;
+          top: -14px;
+        }
+      }
+      &:hover{
+        transform: scale(1.1);
+      }
+      img{
+        display: none;
+      }
+    }
+  }
+}

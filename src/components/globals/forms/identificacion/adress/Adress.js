@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import { saveIdentificationValue, reqAddress } from '../../../../../actionCreators';
+import {saveIdentificationValue, reqAddress, mapShow} from '../../../../../actionCreators';
 
 class Adress extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            error: false
+            error: false,
+            address: ""
         };
-        window.stime = null;
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let address = storeState.cotizacion.identification.address;
+            if (this.state.address != address) {
+                this.setState({
+                    ...this.state,
+                    address: address
+                });
+            }
+        });
     }
 
     validateEmpty(e){
@@ -18,7 +28,8 @@ class Adress extends Component {
         if ( e.value.length < 1 ) error = true;
         this.setState({
             ...this.state,
-            error: error
+            error: error,
+            address: e.value
         });
         store.dispatch(saveIdentificationValue(e));
     }
@@ -29,8 +40,12 @@ class Adress extends Component {
                 <label htmlFor="address">Dirección del hogar</label>
                 <input name="address" id="address"
                        type="text"
+                       value={this.state.address}
                        className={"form-control"}
                        placeholder="Ingresa la dirección"
+                       autoComplete="address"
+                       autoCorrect="off"
+                       autoCapitalize="none"
                        onBlur={(e) => {
                            this.validateEmpty(e.target);
                        }}

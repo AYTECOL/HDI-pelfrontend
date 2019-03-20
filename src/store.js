@@ -27,6 +27,7 @@ const initialState = {
     continueButtonDisable: true,
     stateFormIdentificacion: 0,
     typeDocument: 1,
+    showMap: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -82,6 +83,11 @@ const reducer = (state = initialState, action) => {
                 ...state.cotizacion,
             },
             typeDocument: action.data,
+        }
+    }else if( action.type === "SET_MAP_SHOW" ){
+        return {
+            ...state,
+            showMap: action.data,
         }
     }
     return state;

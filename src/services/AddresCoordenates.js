@@ -1,19 +1,28 @@
 import Service from './Service';
-import axios from 'axios';
-const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU'; 
+const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU';
 
 class GetAddresInfo {
     static async get(address) {
-        return await axios.get(encodeURI(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&key=${APIKEY}&input=${address}`))
-       .then(response => {
-            if( response.status == "ZERO_RESULTS" ) return{};
-            if( response.data.status == "ZERO_RESULTS" ) return{};
-            return  axios.get(encodeURI(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/details/json?key=${APIKEY}&placeid=${response.data.candidates[0].place_id}`))
-            .then(finalResponse => {
-                return(finalResponse.data.result.geometry.location)
+        address = "Colombia " + address;
+        //let url = `https://maps.googleapis.com/maps/api/geocode/json?key=${APIKEY}&address=${address}`;
+        let url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&key=${APIKEY}&input=${address}`;
+        return await Service.get(encodeURI(url))
+            .then(response => {
+                //return response.results[0].geometry.location;
+                if( response.status == "ZERO_RESULTS" ) return{};
+                return Service.get(encodeURI(`https://maps.googleapis.com/maps/api/place/details/json?key=${APIKEY}&placeid=${response.candidates[0].place_id}`))
+                    .then(finalResponse => {
+                        return (finalResponse.result.geometry.location)
+                    });
             });
-       });
-   };
+    };
+
+    static async getAdressByCoors(coors) {
+        return Service.get(encodeURI(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coors.lat()},${coors.lng()}&key=${APIKEY}`))
+            .then(response => {
+                return response.results[0].formatted_address;
+            });
+    }
 }
 
 export default GetAddresInfo;

@@ -37,14 +37,13 @@ class AutocompleteCities extends Component {
     onBlur(v) {
         let empty = false;
         if (v == "") empty = true;
-        setTimeout(
-            function () {
-                this.setState({
-                    ...this.state,
-                    toggle: false,
-                    empty: empty
-                });
-            }.bind(this), 200);
+        setTimeout(function () {
+            this.setState({
+                ...this.state,
+                toggle: false,
+                empty: empty
+            });
+        }.bind(this), 200);
     }
 
     saveOption(code, value) {
@@ -52,19 +51,22 @@ class AutocompleteCities extends Component {
             name: "city",
             value: code
         };
-        store.dispatch(saveIdentificationValue(element));
-        this.setState({
-            ...this.state,
-            value: value
-        });
+        setTimeout(function () {
+            store.dispatch(saveIdentificationValue(element));
+            this.setState({
+                ...this.state,
+                value: value,
+                empty: false
+            });
+        }.bind(this), 200);
     }
 
     searchData(value) {
-        let optionsFilters = { cities: [] };
-        this.state.originalOptions.cities.map((option, key) =>{
+        let optionsFilters = {cities: []};
+        this.state.originalOptions.cities.map((option, key) => {
             let item = option.city;
             let search = item.toLowerCase().search(value.toLowerCase());
-            if ( search !== -1 && search == 0 ){
+            if (search !== -1 && search == 0) {
                 optionsFilters.cities[key] = option;
             }
         });
@@ -83,9 +85,11 @@ class AutocompleteCities extends Component {
             <div className={"form-group autocomplete " + (this.state.empty ? 'error' : '')}>
                 <label htmlFor="city">Ciudad o municipio del hogar</label>
                 <input name="city" id="city" type="text" className="form-control"
-                       autoComplete="off"
                        placeholder="Ingresa ciudad o municipio del h..."
                        value={this.state.value}
+                       autoComplete="city"
+                       autoCorrect="off"
+                       autoCapitalize="none"
                        onBlur={(e) => {
                            this.onBlur(e.target.value);
                        }}

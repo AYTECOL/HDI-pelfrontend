@@ -1,103 +1,45 @@
 import React from 'react';
-import {connect} from "react-redux";
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+import {compose, withStateHandlers} from "recompose";
 import store from '../../store';
-
-import './Map.scss';
-
-import { setAddresMap } from '../../actionCreators';
-
+import MapBase from './MapBase';
 import './Map.scss';
 import GetAddresInfo from '../../services/AddresCoordenates';
-class  Map  extends React.Component {
+
+class Map extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { 
+        this.state = {
             show: false,
-            address: "",
-            mapsOptions:{
-                longitude: -74.0436118,
-                latitude: 4.681545,
-                options:{
-                    zoom: 20
-                }
-            }
+            error: false
         };
-
-        window.stime = null;
         store.subscribe(async () => {
             let storeState = store.getState();
-            let address = storeState.cotizacion.identification.address;
-            if( address != "" ){
-                if( this.state.address != address ){
-                    var it = this;
-                    clearTimeout(window.stime);
-                    window.stime = setTimeout(async function () {
-                        let data = await it.reqAddress(address);
-                        if( typeof data.longitude != "undefined" && typeof data.latitude != "undefined" ){
-                            it.setState({
-                                ...it.state,
-                                address: address,
-                                mapsOptions: {
-                                    ...it.state.mapsOptions,
-                                    longitude: data.longitude,
-                                    latitude: data.latitude,
-                                }
-                            });
-                        }
-                    },1000);
-                }
+            if (storeState.errorMap != this.state.error || storeState.showMap != this.state.show) {
+                this.setState({
+                    error: storeState.errorMap,
+                    show: storeState.showMap,
+                });
             }
         });
     }
 
-    async reqAddress(address){
-        return await GetAddresInfo.get(address)
-            .then(response => {
-                let map = {
-                    longitude: response.lng,
-                    latitude: response.lat
-                }
-                return map;
-            });
-    }
-    
     render() {
-        
-        const { longitude, latitude, options: { zoom } } = this.state.mapsOptions;
-        
-        const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-        <GoogleMap
-            defaultZoom={zoom}
-            defaultCenter={{ lat: latitude, lng: longitude }}
-            zoom={zoom}
-            defaultOptions={{
-                streetViewControl: false,
-                scaleControl: false,
-                mapTypeControl: false,
-                panControl: false,
-                zoomControl: false,
-                rotateControl: false,
-                fullscreenControl: false
-              }}
-            disableDefaultUI
-        >
-            {props.isMarkerShown && <Marker position={{ lat: latitude, lng: longitude }} />}
-        </GoogleMap>
-        ));
-
         return (
-        <div>
-            <MyMapComponent isMarkerShown
-                            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU"
-                            loadingElement={<div style={{ height: `100%` }} />}
-                            containerElement={<div style={{ height: `400px` }} />}
-                            mapElement={<div style={{ height: `100%` }} />}/>
-        </div>
-       
-    );
-                }
+            <div className={(this.state.show ? "" : "hide") + " wrapper-map " + (this.state.error ? "error" : "")}>
+                <MapBase isMarkerShown
+                         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU"
+                         loadingElement={<div style={{height: `100%`}}/>}
+                         containerElement={<div style={{height: `400px`}}/>}
+                         mapElement={<div style={{height: `100%`}}/>}/>
+                <div className="error-info">
+                    <p>No encontramos la dirección ingresada, valida si es la correcta y continua con el proceso</p>
+                </div>
+            </div>
+
+        );
+    }
 };
 
 export default Map;
