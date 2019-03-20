@@ -25,21 +25,28 @@ class  Map  extends React.Component {
             }
         };
 
+        window.stime = null;
         store.subscribe(async () => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
             if( address != "" ){
                 if( this.state.address != address ){
-                    let data = await this.reqAddress(address);
-                    this.setState({
-                        ...this.state,
-                        address: address,
-                        mapsOptions: {
-                            ...this.state.mapsOptions,
-                            longitude: data.longitude,
-                            latitude: data.latitude,
+                    var it = this;
+                    clearTimeout(window.stime);
+                    window.stime = setTimeout(async function () {
+                        let data = await it.reqAddress(address);
+                        if( typeof data.longitude != "undefined" && typeof data.latitude != "undefined" ){
+                            it.setState({
+                                ...it.state,
+                                address: address,
+                                mapsOptions: {
+                                    ...it.state.mapsOptions,
+                                    longitude: data.longitude,
+                                    latitude: data.latitude,
+                                }
+                            });
                         }
-                    });
+                    },1000);
                 }
             }
         });

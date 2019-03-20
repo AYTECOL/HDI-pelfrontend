@@ -10,6 +10,7 @@ class Adress extends Component {
         this.state = {
             error: false
         };
+        window.stime = null;
     }
 
     validateEmpty(e){
@@ -32,10 +33,9 @@ class Adress extends Component {
                        placeholder="Ingresa la dirección"
                        onBlur={(e) => {
                            this.validateEmpty(e.target);
-                           store.dispatch(reqAddress(e.target));
                        }}
                        onChange={(e) => {
-                           //this.validateEmpty(e.target);
+                           this.validateEmpty(e.target);
                        }}/>
                 <small className="form-text text-muted">Ejemplo: Calle 143Bis # 23 a 34</small>
             </div>
