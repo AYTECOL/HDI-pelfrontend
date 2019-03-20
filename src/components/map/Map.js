@@ -29,16 +29,18 @@ class  Map  extends React.Component {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
             if( address != "" ){
-                let data = await this.reqAddress(address);
-                this.setState({
-                    ...this.state,
-                    address: address,
-                    mapsOptions: {
-                        ...this.state.mapsOptions,
-                        longitude: data.longitude,
-                        latitude: data.latitude,
-                    }
-                });
+                if( this.state.address != address ){
+                    let data = await this.reqAddress(address);
+                    this.setState({
+                        ...this.state,
+                        address: address,
+                        mapsOptions: {
+                            ...this.state.mapsOptions,
+                            longitude: data.longitude,
+                            latitude: data.latitude,
+                        }
+                    });
+                }
             }
         });
     }
