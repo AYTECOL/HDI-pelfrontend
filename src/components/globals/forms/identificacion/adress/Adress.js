@@ -20,7 +20,6 @@ class Adress extends Component {
             error: error
         });
         store.dispatch(saveIdentificationValue(e));
-        console.log(store.getState())
     }
 
     render() {
@@ -36,7 +35,7 @@ class Adress extends Component {
                            store.dispatch(reqAddress(e.target));
                        }}
                        onChange={(e) => {
-                           this.validateEmpty(e.target);
+                           //this.validateEmpty(e.target);
                        }}/>
                 <small className="form-text text-muted">Ejemplo: Calle 143Bis # 23 a 34</small>
             </div>

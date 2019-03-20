@@ -2,9 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c74c0d37-6b0f-4ac9-a30d-b1aff207941e" name="Default Changelist" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/src/components/home/table/Table.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/home/table/Table.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/Home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/home/Home.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/Home.scss" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion.js" afterDir="false" />
+>>>>>>> jc-pelh-add-map-function
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,26 +23,47 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/pages/home/Home.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="254">
               <caret line="40" column="29" lean-forward="true" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/services/AddresCoordenates.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="120">
+              <caret line="9" column="70" selection-start-line="9" selection-start-column="70" selection-end-line="9" selection-end-column="70" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+>>>>>>> jc-pelh-add-map-function
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/home/Home.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="478">
               <caret line="57" column="24" selection-start-line="57" selection-start-column="24" selection-end-line="57" selection-end-column="24" />
+=======
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/adress/Adress.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="420">
+              <caret line="28" column="50" lean-forward="true" selection-start-line="28" selection-start-column="50" selection-end-line="28" selection-end-column="50" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+>>>>>>> jc-pelh-add-map-function
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/home/table/Table.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -45,25 +71,54 @@
               <caret line="37" column="41" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
+=======
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="32" column="89" selection-start-line="32" selection-start-column="89" selection-end-line="32" selection-end-column="89" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+>>>>>>> jc-pelh-add-map-function
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/autocompletecities/AutocompleteCities.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
               <caret line="46" column="28" selection-start-line="46" selection-start-column="28" selection-end-line="46" selection-end-column="28" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
+>>>>>>> jc-pelh-add-map-function
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+<<<<<<< HEAD
         <entry file="file://$PROJECT_DIR$/src/components/home/table/Table.scss">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="90">
               <caret line="6" column="21" selection-start-line="6" selection-start-column="21" selection-end-line="6" selection-end-column="21" />
+=======
+        <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
+              <folding>
+                <element signature="e#40#134#0" expanded="true" />
+              </folding>
+>>>>>>> jc-pelh-add-map-function
             </state>
           </provider>
         </entry>
@@ -162,22 +217,24 @@
         <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/businessname/Businessname.js" />
         <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/tipodocumento/TipoDocumento.js" />
-        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/secondform/SecondForm.js" />
-        <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion.js" />
         <option value="$PROJECT_DIR$/src/actionCreators.js" />
         <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/razonsocial/Razonsocial.js" />
-        <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/adress/Adress.js" />
         <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/addressadditional/Addressadditional.js" />
         <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/lastname/Lastname.js" />
         <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/name/Name.js" />
         <option value="$PROJECT_DIR$/src/store.js" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.js" />
+=======
+        <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/autocompletecities/AutocompleteCities.js" />
+>>>>>>> jc-pelh-add-map-function
         <option value="$PROJECT_DIR$/src/services/Service.js" />
         <option value="$PROJECT_DIR$/../libertyhomeback/quote/handler.js" />
         <option value="$PROJECT_DIR$/src/services/SaveIdentifications.js" />
         <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/btncontinue/BtnContinue.js" />
         <option value="$PROJECT_DIR$/src/components/globals/header/Header.js" />
         <option value="$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.scss" />
+<<<<<<< HEAD
         <option value="$PROJECT_DIR$/src/common/scss/index.scss" />
         <option value="$PROJECT_DIR$/src/services/GetIdentifications.js" />
         <option value="$PROJECT_DIR$/src/components/home/table/Table.js" />
@@ -185,6 +242,13 @@
         <option value="$PROJECT_DIR$/src/components/home/table/Table.scss" />
         <option value="$PROJECT_DIR$/src/pages/home/Home.js" />
         <option value="$PROJECT_DIR$/src/pages/home/Home.scss" />
+=======
+        <option value="$PROJECT_DIR$/src/components/cotizaciones/identificacion/secondform/SecondForm.js" />
+        <option value="$PROJECT_DIR$/src/services/AddresCoordenates.js" />
+        <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/adress/Adress.js" />
+        <option value="$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.js" />
+        <option value="$PROJECT_DIR$/src/components/globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion.js" />
+>>>>>>> jc-pelh-add-map-function
       </list>
     </option>
   </component>
@@ -196,7 +260,11 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="25" />
+<<<<<<< HEAD
     <option name="width" value="934" />
+=======
+    <option name="width" value="1295" />
+>>>>>>> jc-pelh-add-map-function
     <option name="height" value="1016" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -207,7 +275,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -232,6 +299,8 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="common" type="462c0819:PsiDirectoryNode" />
               <item name="scss" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+=======
             </path>
             <path>
               <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
@@ -244,7 +313,36 @@
               <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
+>>>>>>> jc-pelh-add-map-function
+            </path>
+            <path>
+              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="globals" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
+              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
+              <item name="index" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="cotizaciones" type="462c0819:PsiDirectoryNode" />
+              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
+              <item name="secondform" type="462c0819:PsiDirectoryNode" />
+>>>>>>> jc-pelh-add-map-function
             </path>
             <path>
               <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
@@ -270,8 +368,11 @@
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="globals" type="462c0819:PsiDirectoryNode" />
               <item name="forms" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="identificacion" type="462c0819:PsiDirectoryNode" />
               <item name="name" type="462c0819:PsiDirectoryNode" />
+=======
+>>>>>>> jc-pelh-add-map-function
             </path>
             <path>
               <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
@@ -281,20 +382,40 @@
               <item name="globals" type="462c0819:PsiDirectoryNode" />
               <item name="forms" type="462c0819:PsiDirectoryNode" />
               <item name="identificacion" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
               <item name="tipodocumento" type="462c0819:PsiDirectoryNode" />
+=======
+            </path>
+            <path>
+              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="globals" type="462c0819:PsiDirectoryNode" />
+              <item name="forms" type="462c0819:PsiDirectoryNode" />
+              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
+              <item name="adress" type="462c0819:PsiDirectoryNode" />
+>>>>>>> jc-pelh-add-map-function
+            </path>
+            <path>
+              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
+              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="globals" type="462c0819:PsiDirectoryNode" />
+              <item name="forms" type="462c0819:PsiDirectoryNode" />
+              <item name="identificacion" type="462c0819:PsiDirectoryNode" />
+              <item name="numeroidentificacion" type="462c0819:PsiDirectoryNode" />
+>>>>>>> jc-pelh-add-map-function
             </path>
             <path>
               <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
               <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
-              <item name="liberty-home-react" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="liberty-home-react" type="b2602c69:ProjectViewProjectNode" />
@@ -315,6 +436,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -397,11 +519,17 @@
       <workItem from="1552557333997" duration="2703000" />
       <workItem from="1552570548964" duration="26002000" />
       <workItem from="1552658342223" duration="8025000" />
+<<<<<<< HEAD
       <workItem from="1552673479472" duration="40574000" />
+=======
+      <workItem from="1552673479472" duration="34399000" />
+      <workItem from="1553087238947" duration="710000" />
+>>>>>>> jc-pelh-add-map-function
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< HEAD
     <option name="totallyTimeSpent" value="118724000" />
   </component>
   <component name="ToolWindowManager">
@@ -409,12 +537,21 @@
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2807148" />
+=======
+    <option name="totallyTimeSpent" value="113914000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="25" width="1295" height="1016" extended-state="4" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2948113" />
+>>>>>>> jc-pelh-add-map-function
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299435" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.30169493" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.30101466" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39887005" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -533,8 +670,18 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/components/globals/forms/autocompletecities/AutocompleteCities.scss">
       <provider selected="true" editor-type-id="text-editor" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/autocompletecities/AutocompleteCities.scss" />
+    <entry file="file://$PROJECT_DIR$/src/common/scss/index.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="248" column="17" lean-forward="true" selection-start-line="248" selection-start-column="17" selection-end-line="248" selection-end-column="17" />
+        </state>
+      </provider>
+>>>>>>> jc-pelh-add-map-function
     </entry>
     <entry file="file://$PROJECT_DIR$/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -546,12 +693,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/inputtext/InputText.scss">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/numeroidentificacion/NumeroIdentificacion.scss">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/inputtext/InputText.scss" />
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/numeroidentificacion/NumeroIdentificacion.scss" />
     <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -580,6 +723,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/services/AddresCoordenates.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -587,6 +731,12 @@
           <folding>
             <element signature="e#0#32#0" expanded="true" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/src/services/Identifications.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" lean-forward="true" selection-end-line="9" />
+>>>>>>> jc-pelh-add-map-function
         </state>
       </provider>
     </entry>
@@ -604,16 +754,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/mapa/Mapa.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/mapa/Mapa.js" />
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -634,6 +775,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -648,12 +790,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" column="27" lean-forward="true" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
+=======
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/businessname/Businessname.js" />
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/tipodocumento/TipoDocumento.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="33" lean-forward="true" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
+>>>>>>> jc-pelh-add-map-function
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/secondform/SecondForm.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="143">
@@ -664,30 +814,12 @@
         </state>
       </provider>
     </entry>
+=======
+>>>>>>> jc-pelh-add-map-function
     <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/razonsocial/Razonsocial.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" selection-start-line="15" selection-end-line="20" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="31" column="13" lean-forward="true" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/adress/Adress.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="20" column="11" selection-start-line="20" selection-start-column="11" selection-end-line="20" selection-end-column="11" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -734,6 +866,7 @@
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -741,6 +874,12 @@
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
+=======
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/autocompletecities/AutocompleteCities.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="52" column="23" lean-forward="true" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+>>>>>>> jc-pelh-add-map-function
         </state>
       </provider>
     </entry>
@@ -871,6 +1010,66 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="478">
           <caret line="57" column="24" selection-start-line="57" selection-start-column="24" selection-end-line="57" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/AddresCoordenates.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="9" column="70" selection-start-line="9" selection-start-column="70" selection-end-line="9" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/secondform/SecondForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="28" column="13" lean-forward="true" selection-start-line="28" selection-start-column="13" selection-end-line="29" selection-end-column="11" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/submenu/Submenu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#40#134#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/adress/Adress.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="28" column="50" lean-forward="true" selection-start-line="28" selection-start-column="50" selection-end-line="28" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="32" column="89" selection-start-line="32" selection-start-column="89" selection-end-line="32" selection-end-column="89" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

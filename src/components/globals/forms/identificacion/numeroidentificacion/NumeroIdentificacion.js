@@ -30,12 +30,14 @@ class NumeroIdentificacion extends Component {
             if ( storeState.cotizacion.identification.code != this.state.typeIdentification ) {
                 value = "";
             }
-            this.setState({
-                ...this.state,
-                disabled: disabled,
-                typeIdentification: storeState.cotizacion.identification.code,
-                value: value
-            });
+            if(this.state.typeIdentification != storeState.cotizacion.identification.code){
+                this.setState({
+                    ...this.state,
+                    disabled: disabled,
+                    typeIdentification: storeState.cotizacion.identification.code,
+                    value: value
+                });
+            }
         });
     }
 

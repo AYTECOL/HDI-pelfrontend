@@ -17,9 +17,12 @@ class Submenu extends Component {
         store.dispatch(saveCotizacionNumber(this.state.number));
         store.subscribe(() => {
             let storeState = store.getState();
-            this.setState({
-                value: storeState.cotizacion.number
-            });
+            let number = storeState.cotizacion.number;
+            if( this.state.number != number ){
+                this.setState({
+                    number: number
+                });
+            }
         });
     }
 
