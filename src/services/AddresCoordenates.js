@@ -3,7 +3,9 @@ const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU';
 
 class GetAddresInfo {
     static async get(address) {
-        address = "Colombia " + address;
+        address = address +  ", Manizales, Caldas, Colombia";
+        address = address.replace("#", " ");
+        address = address.replace("N°", " ");
         //let url = `https://maps.googleapis.com/maps/api/geocode/json?key=${APIKEY}&address=${address}`;
         let url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&key=${APIKEY}&input=${address}`;
         return await Service.get(encodeURI(url))

@@ -16,10 +16,14 @@ class Home extends Component {
     async getNumber() {
         let storeState = store.getState();
         let number = await AutoIncrementCotizacion.get();
-        number = number.currentValue.toString();
-        number = storeState.cotizacion.number.slice(number.length) + number;
-        store.dispatch(saveCotizacionNumber(number));
-        this.props.history.push('/cotizacion/1/'+number);
+        if( typeof number.currentValue != 'undefined' ){
+            number = number.currentValue.toString();
+            number = storeState.cotizacion.number.slice(number.length) + number;
+            store.dispatch(saveCotizacionNumber(number));
+            this.props.history.push('/cotizacion/1/'+number);
+        } else {
+            this.props.history.push('/');
+        }
     }
 
     render() {
@@ -51,6 +55,7 @@ class Home extends Component {
                                        type="text"
                                        className={"form-control"}
                                        placeholder="Busca por Nombre, Id, dirección ..."/>
+                                       <button className="btn-search"></button>
                             </div>
                         </div>
                     </div>

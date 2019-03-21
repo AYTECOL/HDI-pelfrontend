@@ -38,15 +38,26 @@
   .top-bar{
     background-color: white;
     display: flex;
+    margin-top: 32px;
+    box-shadow: 0px 4px 32px rgba(192, 191, 192, 0.4);
+    border-radius: 3px;
     .menus{
       display: flex;
+      margin: 0;
+      flex: 1;
+      max-width: 55%;
       li{
-        padding: 29px 14px;
+        padding: 28px 16px 21px;
         font-style: normal;
         font-weight: normal;
         font-size: 18px;
         line-height: 29px;
         color: #808080;
+        position: relative;
+        cursor: pointer;
+        &:first-child{
+          padding-left: 32px;
+        }
         span{
           background: #F0FBFC;
           border-radius: 6px;
@@ -57,10 +68,68 @@
           color: #28A3AF;
           padding: 6px 8px;
         }
+        &:hover,
+        &.active{
+          font-weight: bold;
+          font-size: 18px;
+          line-height: 29px;
+          color: #28A3AF;
+          &::before{
+            content: '';
+            width: 100%;
+            height: 2px;
+            background-color: #28A3AF;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            display: block;
+            margin-top: -2px;
+          }
+        }
       }
+    }
+    .btn-search{
+      width: 24px;
+      height: 24px;
+      background-image: url('../../common/images/icono-search.png');
+      display: block;
+      position: absolute;
+      right: 13px;
+      top: 13px;
+      background-size: 100% auto;
+      background-repeat: no-repeat;
+      background-color: transparent;
+      border: 0;
     }
     .search{
       display: flex;
+      flex: 1;
+      max-width: 45%;
+      padding-top: 18px;
+      justify-items: flex-end;
+      justify-content: flex-end;
+      padding-right: 18px;
+      .form-group{
+        margin: 0;
+        &:last-child{
+          min-width: 326px;
+          position: relative;
+          input{
+            border-radius: 0 3px 3px 0;
+          }
+        }
+      }
+      .input-select{
+        min-width: 136px;
+        select{
+          border-right: 1px solid #E6E6E6;
+          border-radius: 3px 0 0 3px;
+        }
+        &::after{
+          top: 22px;
+          right: 17px;
+        }
+      }
     }
   }
 }

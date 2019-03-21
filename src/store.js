@@ -2,16 +2,17 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
-    mapsOptions:{
+    mapsOptions: {
         longitude: -74.0436118,
         latitude: 4.681545,
-        options:{
+        options: {
             zoom: 20
         }
     },
     cotizacion: {
         number: "00000000",
         typeDocument: 1,
+        state: 1,
         identification: {
             code: "36",
             value: "",
@@ -49,18 +50,18 @@ const reducer = (state = initialState, action) => {
             continueButtonDisable: true,
             stateFormIdentificacion: stateForm
         }
-    }else if( action.type === "DISABLE_BTN_CONTINUE" ){
+    } else if (action.type === "DISABLE_BTN_CONTINUE") {
         return {
             ...state,
             continueButtonDisable: action.data
         }
-    }else if( action.type === "NEXT_STEP_INDENTIFICATION" ){
+    } else if (action.type === "NEXT_STEP_INDENTIFICATION") {
         return {
             ...state,
             stateFormIdentificacion: state.stateFormIdentificacion + action.data,
             continueButtonDisable: true,
         }
-    }else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
+    } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
         return {
             ...state,
             cotizacion: {
@@ -68,7 +69,7 @@ const reducer = (state = initialState, action) => {
                 identification: {...state.cotizacion.identification, ...action.data},
             }
         }
-    }else if( action.type === "SAVE_COTIZACION_NUMBER" ){
+    } else if (action.type === "SAVE_COTIZACION_NUMBER") {
         return {
             ...state,
             cotizacion: {
@@ -76,7 +77,7 @@ const reducer = (state = initialState, action) => {
                 number: action.data,
             }
         }
-    }else if( action.type === "UPDATE_TYPE_DOC" ){
+    } else if (action.type === "UPDATE_TYPE_DOC") {
         return {
             ...state,
             cotizacion: {
@@ -84,7 +85,7 @@ const reducer = (state = initialState, action) => {
             },
             typeDocument: action.data,
         }
-    }else if( action.type === "SET_MAP_SHOW" ){
+    } else if (action.type === "SET_MAP_SHOW") {
         return {
             ...state,
             showMap: action.data,

@@ -1,10 +1,12 @@
 .table-solicitudes{
-  background-color: white;
-  margin-top: 23px;
-  overflow: auto;
-  white-space: pre-wrap;
-  box-shadow: 0px 2px 6px rgba(192, 191, 192, 0.795488);
-  border-radius: 3px;
+  .wrapper{
+    background-color: white;
+    margin-top: 23px;
+    overflow: auto;
+    white-space: pre-wrap;
+    box-shadow: 0px 2px 6px rgba(192, 191, 192, 0.795488);
+    border-radius: 3px;
+  }
   .row-header{
     span {
       font-style: normal;
@@ -24,7 +26,7 @@
         bottom: 0;
         margin: auto 0;
         right: 0;
-        background-color: #979797;
+        background-color: rgba(#979797, 0.29);
         display: block;
         position: absolute;
       }
@@ -35,6 +37,75 @@
     .col:last-child{
       span::after{
         display: none;
+      }
+    }
+  }
+  .footer{
+    padding-top: 34px;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
+    button{
+      display: inline-block;
+      background-color: transparent;
+      border: 0;
+      background-repeat: no-repeat;
+      background-size: 100% auto;
+      vertical-align: middle;
+      width: 11px;
+      transition: all 0.3s ease;
+      transform: scale(1);
+      &.prev{
+        background-image: url("../../../common/images/arrow_left.png");
+      }
+      &.next{
+        background-image: url("../../../common/images/arrow_right.png");
+      }
+      &:hover{
+        transform: scale(1.2);
+      }
+    }
+    ul{
+      display: -webkit-flex;
+      display: flex;
+      -webkit-justify-content: flex-end;
+      justify-content: flex-end;
+      margin: 0 10px;
+      li{
+        vertical-align: middle;
+        position: relative;
+        span{
+          font-style: normal;
+          font-weight: normal;
+          font-size: 12px;
+          line-height: 1;
+          text-align: center;
+          color: #1A1446;
+          position: relative;
+          top: -6px;
+          cursor: pointer;
+          padding: 0 10px;
+        }
+        &:hover,
+        &.active{
+          span{
+            font-style: normal;
+            font-weight: bold;
+            font-size: 12px;
+            line-height: 14px;
+            text-align: center;
+            color: #28A3AF;
+          }
+          &::after{
+            content: '';
+            width: 10px;
+            height: 1px;
+            background-color: #28A3AF;
+            left: 10px;
+            display: block;
+            top: 80%;
+            position: absolute;
+          }
+        }
       }
     }
   }
@@ -51,19 +122,26 @@
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
-      line-height: 14px;
+      line-height: 1;
       color: #343741;
       margin: 0;
       text-align: left;
       display: inline-block;
+      vertical-align: middle;
       span{
         display: block;
         font-size: 12px;
         color: #808080;
+        vertical-align: middle;
       }
     }
     &:nth-child(even){
       background: rgba(242, 242, 242, 0.588995);
     }
+  }
+  .btn{
+      width: auto;
+      padding: 9px 15px 8px;
+      margin: 0;
   }
 }

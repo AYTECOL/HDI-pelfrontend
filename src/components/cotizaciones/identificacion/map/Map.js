@@ -1,10 +1,7 @@
 import React from 'react';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
-import {compose, withStateHandlers} from "recompose";
-import store from '../../store';
+import store from '../../../../store';
 import MapBase from './MapBase';
 import './Map.scss';
-import GetAddresInfo from '../../services/AddresCoordenates';
 
 class Map extends React.Component {
     constructor(props) {

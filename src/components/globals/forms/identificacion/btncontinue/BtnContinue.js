@@ -11,9 +11,8 @@ class BtnContinue extends Component {
         super(props);
         this.state = {
             continueButtonDisable: true,
-            additionalBtnsShow: false,
             stateFormIdentificacion: 0,
-            cotizacionExclude: []
+            cotizacionExclude: [],
         };
 
         store.subscribe(() => {
@@ -70,14 +69,19 @@ class BtnContinue extends Component {
         }
     }
 
+    saveAndExit(){
+        SaveIdentifications.save();
+        window.location.href = "/";
+    }
+
     render() {
         return (
             <div>
-                <div className={(!this.state.additionalBtnsShow ? "hide " : "") + " return-button"}>
+                <div className={(this.state.stateFormIdentificacion != 1 ? "hide " : "") + " return-button"}>
                     <Link to='/'><i className="back-icon"></i>Volver</Link>
                 </div>
-                <button className={(!this.state.additionalBtnsShow ? "hide " : "") + " btn btn-default"}
-                        onClick={() => this.nextStepIndex()} type="button">Guardar y salir
+                <button className={(this.state.stateFormIdentificacion != 1 ? "hide " : "") + " btn btn-default"}
+                        onClick={() => this.saveAndExit()} type="button">Guardar y salir
                 </button>
                 <button disabled={this.state.continueButtonDisable} onClick={() => this.nextStepIndex()}
                         type="button"

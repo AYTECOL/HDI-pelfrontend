@@ -19,6 +19,7 @@ class IdentificationsCities {
             longitude: storeState.mapsOptions.longitude,
             name: storeState.cotizacion.identification.name,
             last_name: storeState.cotizacion.identification.lastname,
+            step: storeState.cotizacion.state
         };
         for(let i in data) if (data[i] == "") data[i] = '""';
         return await Service.post(Url, data);

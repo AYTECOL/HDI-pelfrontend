@@ -7,7 +7,7 @@ import Razonsocial from '../../../globals/forms/identificacion/razonsocial/Razon
 import Adress from '../../../globals/forms/identificacion/adress/Adress';
 import Addressadditional from '../../../globals/forms/identificacion/addressadditional/Addressadditional';
 import AutoCompleteCities from '../../../globals/forms/identificacion/autocompletecities/AutocompleteCities';
-import Map from "../../../map/Map.js"
+import Map from "../map/Map.js"
 
 class SecondForm extends React.Component {
 
@@ -47,7 +47,6 @@ class SecondForm extends React.Component {
                     </div>
                 </div>
 
-
                 <div className="row">
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <AutoCompleteCities />
@@ -57,13 +56,14 @@ class SecondForm extends React.Component {
                     </div>
                 </div>
 
-                <Map />
-
                 <div className="row">
                     <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
                         <Addressadditional />
                     </div>
                 </div>
+
+                <Map />
+
             </div>
         )
     }
