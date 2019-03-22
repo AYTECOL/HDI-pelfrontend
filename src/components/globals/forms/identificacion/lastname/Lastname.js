@@ -8,8 +8,19 @@ class Lastname extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: false
+            error: false,
+            value: "",
         };
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let lastname = storeState.cotizacion.identification.lastname;
+            if (this.state.value != lastname ) {
+                this.setState({
+                    ...this.state,
+                    value: lastname
+                });
+            }
+        });
     }
 
     validateEmpty(e){
@@ -17,7 +28,8 @@ class Lastname extends Component {
         if ( e.value.length < 1 ) error = true;
         this.setState({
             ...this.state,
-            error: error
+            error: error,
+            value: e.value
         });
         store.dispatch(saveIdentificationValue(e));
     }
@@ -28,6 +40,7 @@ class Lastname extends Component {
                 <label htmlFor="lastname">Primer apellido</label>
                 <input name="lastname" id="lastname"
                        type="text"
+                       value={this.state.value}
                        autoComplete="lastname"
                        className={"form-control"}
                        placeholder="Ingresa primer apellido"

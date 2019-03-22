@@ -9,15 +9,22 @@ class Adress extends Component {
         super(props);
         this.state = {
             error: false,
-            address: ""
+            address: "",
+            disabled: true,
+            city: ""
         };
         store.subscribe(async () => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
-            if (this.state.address != address) {
+            let city = storeState.cotizacion.identification.city;
+            let disabled = true;
+            if (this.state.address != address || this.state.city != city ) {
+                if ( city != "" ) disabled = false;
                 this.setState({
                     ...this.state,
-                    address: address
+                    address: address,
+                    city: city,
+                    disabled: disabled
                 });
             }
         });
@@ -41,11 +48,12 @@ class Adress extends Component {
                 <input name="address" id="address"
                        type="text"
                        value={this.state.address}
-                       className={"form-control"}
+                       className={"form-control "+ (this.state.disabled?'disabled':'')}
                        placeholder="Ingresa la dirección"
                        autoComplete="address"
                        autoCorrect="off"
                        autoCapitalize="none"
+                       disabled={(this.state.disabled)?'disabled':''}
                        onBlur={(e) => {
                            this.validateEmpty(e.target);
                        }}

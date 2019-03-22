@@ -8,8 +8,19 @@ class Addressadditional extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: false
+            error: false,
+            value: "",
         };
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.cotizacion.identification.addressadditional;
+            if (this.state.value != value ) {
+                this.setState({
+                    ...this.state,
+                    value: value
+                });
+            }
+        });
     }
 
     validateEmpty(e){
@@ -22,6 +33,7 @@ class Addressadditional extends Component {
                 <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
                 <input name="addressadditional" id="addressadditional"
                        type="text"
+                       value={this.state.value}
                        autoComplete="addressadditional"
                        className={"form-control"}
                        placeholder="Ingresa la dirección"

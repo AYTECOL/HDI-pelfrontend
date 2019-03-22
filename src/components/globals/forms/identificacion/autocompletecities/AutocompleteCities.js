@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import IdentificationsCities from '../../../../../services/IdentificationsCities';
 
 import store from '../../../../../store';
-import {saveCityStore, saveIdentificationValue} from '../../../../../actionCreators';
+import {saveCityStore, saveIdentificationValue, saveDescriptionCity} from '../../../../../actionCreators';
 
 class AutocompleteCities extends Component {
 
@@ -46,13 +46,14 @@ class AutocompleteCities extends Component {
         }.bind(this), 200);
     }
 
-    saveOption(code, value) {
+    saveOption(code, value, description) {
         let element = {
             name: "city",
             value: code
         };
         setTimeout(function () {
             store.dispatch(saveIdentificationValue(element));
+            store.dispatch(saveDescriptionCity(description));
             this.setState({
                 ...this.state,
                 value: value,
@@ -102,7 +103,7 @@ class AutocompleteCities extends Component {
                     {this.state.options.cities.map(option =>
                         <li key={option.code_city} value={option.code_city}
                             onClick={(e) => {
-                                this.saveOption(option.code_city, option.department);
+                                this.saveOption(option.code_city, option.department, option.description);
                             }}
                         >{option.description}</li>
                     )}

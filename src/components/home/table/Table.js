@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import './Table.scss';
+import store from '../../../store';
+import { restoreCotizacion } from '../../../actionCreators';
 
 import Identifications from '../../../services/GetIdentifications';
 
@@ -23,6 +25,14 @@ class Table extends Component {
                 ...this.state,
                 options: await Identifications.get()
             });
+        }
+    }
+
+    async getRowById(id){
+        let cotizacion = await Identifications.getById(id);
+        if( typeof cotizacion.identification != 'undefined'){
+            this.props.history.push('/cotizacion/'+cotizacion.state+'/'+id);
+            store.dispatch(restoreCotizacion(cotizacion));
         }
     }
 
@@ -49,7 +59,9 @@ class Table extends Component {
                             <div className="col"><p>{option.address}</p></div>
                             <div className="col"><p>08 días</p></div>
                             <div className="col"><p>Proceso de inspección</p></div>
-                            <div className="col"><button className="btn btn-default">Retomar</button></div>
+                            <div className="col"><button onClick={(e)=>{
+                                this.getRowById(option.quoteId)
+                            }} className="btn btn-default">Retomar</button></div>
                         </div>
                     )}
                 </div>
@@ -66,4 +78,4 @@ class Table extends Component {
     }
 }
 
-export default Table;
+export default withRouter(Table);

@@ -1,6 +1,6 @@
 .home{
   padding-top: 122px;
-  padding-bottom: 60px;
+  padding-bottom: 0;
   .title{
     text-align: center;
     h2, .btn-home{
@@ -55,6 +55,9 @@
         color: #808080;
         position: relative;
         cursor: pointer;
+        @media (min-width: 992px){
+          font-size: 15px;
+        }
         &:first-child{
           padding-left: 32px;
         }
@@ -74,6 +77,9 @@
           font-size: 18px;
           line-height: 29px;
           color: #28A3AF;
+          @media (min-width: 992px){
+            font-size: 17px;
+          }
           &::before{
             content: '';
             width: 100%;

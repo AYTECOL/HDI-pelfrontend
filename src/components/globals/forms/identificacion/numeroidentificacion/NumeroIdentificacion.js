@@ -28,16 +28,14 @@ class NumeroIdentificacion extends Component {
             let newState = storeState.stateFormIdentificacion;
             if (newState != 0) disabled = true;
             if ( storeState.cotizacion.identification.code != this.state.typeIdentification ) {
-                value = "";
+                value = '';
             }
-            if(this.state.typeIdentification != storeState.cotizacion.identification.code){
-                this.setState({
-                    ...this.state,
-                    disabled: disabled,
-                    typeIdentification: storeState.cotizacion.identification.code,
-                    value: value
-                });
-            }
+            this.setState({
+                ...this.state,
+                disabled: disabled,
+                typeIdentification: storeState.cotizacion.identification.code,
+                value: value
+            });
         });
     }
 

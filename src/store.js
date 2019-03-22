@@ -25,6 +25,7 @@ const initialState = {
         }
     },
 
+    cityDescription: "",
     continueButtonDisable: true,
     stateFormIdentificacion: 0,
     typeDocument: 1,
@@ -89,6 +90,19 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             showMap: action.data,
+        }
+    }else if( action.type == "SAVE_DESCRIPTION_CITY" ){
+        return {
+            ...state,
+            cityDescription: action.data,
+        }
+    }else if( action.type == "RESTORE_COTIZACION" ){
+        return {
+            ...state,
+            cotizacion: action.data,
+            typeDocument: action.data.typeDocument,
+            stateFormIdentificacion: action.data.stateFormIdentificacion,
+            showMap: action.data.showMap,
         }
     }
     return state;

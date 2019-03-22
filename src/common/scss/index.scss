@@ -25,6 +25,11 @@ hmtl, body {
   }
 }
 
+@media (min-width: 992px){
+  .container {
+    max-width: 100%;
+  }
+}
 
 .return-button {
   display: inline-block;

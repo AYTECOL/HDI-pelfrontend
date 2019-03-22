@@ -29,7 +29,8 @@ class MapBase extends React.Component {
                 var it = this;
                 clearTimeout(window.stime);
                 window.stime = setTimeout(async function () {
-                    let data = await it.reqAddress(address);
+                    let state = store.getState();
+                    let data = await it.reqAddress(address+", "+state.cityDescription);
                     store.dispatch(mapShow(true));
                     it.state.el.className = it.state.el.className.replace(" error", "");
                     if (typeof data.lng != "undefined" && typeof data.lat != "undefined") {

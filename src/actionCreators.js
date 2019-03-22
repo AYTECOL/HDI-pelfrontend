@@ -45,6 +45,13 @@ const mapShow = (status) => {
     return {type: "SET_MAP_SHOW", data: status}
 }
 
+const saveDescriptionCity = (description) => {
+    return {type: "SAVE_DESCRIPTION_CITY", data: description}
+}
+
+const restoreCotizacion = (cotizacion) => {
+    return {type: "RESTORE_COTIZACION", data: cotizacion}
+}
 
 export {
     nextStepIndentification,
@@ -54,5 +61,7 @@ export {
     saveCotizacionNumber,
     updateTypeDoc,
     reqAddress,
-    mapShow
+    mapShow,
+    saveDescriptionCity,
+    restoreCotizacion
 };

@@ -8,8 +8,19 @@ class Name extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: false
+            error: false,
+            value: "",
         };
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.cotizacion.identification.name;
+            if (this.state.value != value ) {
+                this.setState({
+                    ...this.state,
+                    value: value
+                });
+            }
+        });
     }
 
     validateEmpty(e){
@@ -17,7 +28,8 @@ class Name extends Component {
         if ( e.value.length < 1 ) error = true;
         this.setState({
             ...this.state,
-            error: error
+            error: error,
+            value: e.value
         });
         store.dispatch(saveIdentificationValue(e));
     }
@@ -28,6 +40,7 @@ class Name extends Component {
                 <label htmlFor="name">Primer nombre</label>
                 <input name="name" id="name"
                        type="text"
+                       value={this.state.value}
                        className={"form-control"}
                        placeholder="Ingresa primer nombre"
                        onChange={(e) => {
