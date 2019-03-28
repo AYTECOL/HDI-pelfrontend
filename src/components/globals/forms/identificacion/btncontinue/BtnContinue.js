@@ -1,9 +1,19 @@
 import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {NextStep, nextStepIndentification} from '../../../../../actionCreators';
+import {
+    NextStep,
+    nextStepIndentification,
+    saveIdentificationValue,
+    showPopupIdentification,
+    disabledName,
+    disabledLastName
+} from '../../../../../actionCreators';
 import SaveIdentifications from '../../../../../services/SaveIdentifications';
 import {Link, withRouter} from "react-router-dom";
+
+// Services
+import Consultapersonas from '../../../../../services/Consultapersonas';
 
 class BtnContinue extends Component {
 
@@ -36,6 +46,9 @@ class BtnContinue extends Component {
                     if (storeState.cotizacion.identification[item] === "" && this.state.cotizacionExclude.indexOf(item) === -1) {
                         i++;
                     }
+                    if (true){
+
+                    }
                 }
                 if (i === 0) {
                     storeState.continueButtonDisable = false;
@@ -57,12 +70,42 @@ class BtnContinue extends Component {
         });
     }
 
-    nextStepIndex() {
+    async nextStepIndex() {
         let storeState = store.getState();
         switch (this.state.stateFormIdentificacion) {
             case 0:
             default:
-                store.dispatch(nextStepIndentification());
+                this.setState({
+                    ...this.state,
+                    continueButtonDisable: true,
+                });
+                let persona = await Consultapersonas.get(storeState.cotizacion.identification.code,storeState.cotizacion.identification.value);
+                if ( persona.consultarPersonaRs.personaRestringida === true ) {
+                    store.dispatch(showPopupIdentification(true));
+                }else{
+                    store.dispatch(nextStepIndentification());
+                    if ( persona.consultarPersonaRs.personaEncontradaIAXIS === true ){
+                        let personaData = persona.consultarPersonaRs.persona;
+                        let personaType = persona.consultarPersonaRs.persona.tipoPersona.nombre;
+
+                        personaData = personaData["persona"+personaType];
+                        if ( typeof personaData.primerNombre != 'undefined' && personaData.primerNombre != '' ) {
+                            store.dispatch(saveIdentificationValue({
+                                name: 'name',
+                                value: personaData.primerNombre
+                            }));
+                            store.dispatch(disabledName());
+                        }
+                        if ( typeof personaData.primerApellido != 'undefined' && personaData.primerApellido != '' ) {
+                            store.dispatch(saveIdentificationValue({
+                                name: 'lastname',
+                                value: personaData.primerApellido
+                            }));
+                            store.dispatch(disabledLastName());
+                        }
+
+                    }
+                }
                 break;
             case 1:
                 store.dispatch(NextStep(2));

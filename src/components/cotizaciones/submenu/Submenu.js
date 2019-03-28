@@ -33,7 +33,7 @@ class Submenu extends Component {
 
     async getRowById(id) {
         let cotizacion = await Identifications.getById(id);
-        // cotizacion.state = "3";
+        cotizacion.state = "3";
         if (typeof cotizacion.identification !== 'undefined') {
             let path = '/cotizacion/' + cotizacion.state + '/' + id;
             if (this.state.path !== path) {

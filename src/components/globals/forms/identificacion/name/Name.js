@@ -10,14 +10,17 @@ class Name extends Component {
         this.state = {
             error: false,
             value: "",
+            disabledName: false,
         };
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.cotizacion.identification.name;
-            if (this.state.value !== value) {
+            let disabledName = storeState.disabledName;
+            if (this.state.value !== value || this.state.disabledName != disabledName) {
                 this.setState({
                     ...this.state,
-                    value: value
+                    value: value,
+                    disabledName: disabledName,
                 });
             }
         });
@@ -41,7 +44,8 @@ class Name extends Component {
                 <input name="name" id="name"
                        type="text"
                        value={this.state.value}
-                       className={"form-control"}
+                       className={(this.state.disabledName ? "disabled " : "") + "form-control"}
+                       disabled={this.state.disabledName===true?'true':'false'}
                        placeholder="Ingresa primer nombre"
                        onChange={(e) => {
                            this.validateEmpty(e.target);

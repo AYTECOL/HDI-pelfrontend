@@ -1,13 +1,35 @@
 import React, {Component} from 'react';
 import './Validaridentificacion.scss';
-import icono from './images/icon.png';
+import icono from '../../../../../common/images/icon.png';
+import store from "../../../../../store";
+import {mapShow, setAddresMap} from "../../../../../actionCreators";
 
 // import {validarIdentificacionToogle} from '../../../../../actionCreators';
 
 class Validaridentificacion extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showPopUp: false,
+        };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let showPopUp = storeState.showPopUp;
+            if (this.state.showPopUp !== showPopUp ) {
+                this.setState({
+                    ...this.state,
+                    showPopUp: showPopUp,
+                });
+            }
+        });
+    }
+
     render() {
         return (
-            <div className={"modal validaridentificacion"}>
+            <div className={"modal validaridentificacion "+ ((this.state.showPopUp === true)?'show':'hide')}>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">

@@ -71,6 +71,18 @@ const saveInmuebleValue = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE", data: data};
 };
 
+const showPopupIdentification = (state) => {
+    return {type: "SHOW_POP_UP_IDENTIFICATION", data: state}
+};
+
+const disabledName = () => {
+    return {type: "DISABLE_NAME", data: true}
+};
+
+const disabledLastName = () => {
+    return {type: "DISABLE_LASTNAME", data: true}
+};
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -84,5 +96,8 @@ export {
     restoreCotizacion,
     NextStep,
     typeInmueble,
-    saveInmuebleValue
+    saveInmuebleValue,
+    showPopupIdentification,
+    disabledLastName,
+    disabledName
 };
