@@ -1,7 +1,9 @@
-import {createStore, applyMiddleware} from 'redux';
+import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
 
 const initialState = {
+
+    // Primer formulario identificacion
     mapsOptions: {
         longitude: -74.0436118,
         latitude: 4.681545,
@@ -24,12 +26,36 @@ const initialState = {
             addressadditional: "",
         }
     },
-
     cityDescription: "",
     continueButtonDisable: true,
     stateFormIdentificacion: 0,
     typeDocument: 1,
     showMap: false,
+
+    // Segundo formulario Inmueble
+    typeInmueble: 0,
+    Inmueble: {
+        numerodepisos: "",
+        zona: "",
+        refuerzo: "",
+        anorefuerzo: "",
+        anoconstruido: "",
+        construidocon: "",
+        cojuntocarrado: "",
+        seguridad: {
+            alarma: "",
+            cajafuerte: "",
+            puertascontroldomotico: "",
+            puertasseguridadblindada: "",
+            circuitocarradotv: "",
+            vigilanciapermanente: "",
+            reguladordeboltaje: "",
+        },
+        inmuebleasegudado: "",
+        inmuebleasegudadovalor: "",
+        contenidoasegudado: "",
+        contenidoasegudadovalor: "",
+    }
 };
 
 const reducer = (state = initialState, action) => {
@@ -44,7 +70,6 @@ const reducer = (state = initialState, action) => {
             identifications: {identifications: action.data}
         }
     } else if (action.type === "NEXT_STEP_INDEX") {
-        let className = state.validaridentificacion.className;
         let stateForm = state.stateForm + 1;
         return {
             ...state,
@@ -91,18 +116,39 @@ const reducer = (state = initialState, action) => {
             ...state,
             showMap: action.data,
         }
-    }else if( action.type == "SAVE_DESCRIPTION_CITY" ){
+    } else if (action.type === "SAVE_DESCRIPTION_CITY") {
         return {
             ...state,
             cityDescription: action.data,
         }
-    }else if( action.type == "RESTORE_COTIZACION" ){
+    } else if (action.type === "RESTORE_COTIZACION") {
         return {
             ...state,
             cotizacion: action.data,
             typeDocument: action.data.typeDocument,
             stateFormIdentificacion: action.data.stateFormIdentificacion,
             showMap: action.data.showMap,
+        }
+    } else if (action.type === "NEXT_STEP") {
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                state: action.data
+            },
+        }
+    } else if (action.type === "TYPE_INMUEBLE") {
+        return {
+            ...state,
+            typeInmueble: action.data
+        }
+    } else if (action.type === "SAVE_INMUEBLE_VALUE") {
+        return {
+            ...state,
+            Inmueble: {
+                ...state.Inmueble,
+                ...action.data,
+            }
         }
     }
     return state;

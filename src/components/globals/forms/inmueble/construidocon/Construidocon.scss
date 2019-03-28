@@ -1,0 +1,9 @@
+.grid-select {
+  @media (max-width: 769px) {
+    display: inline;
+    .col {
+      display: inline-block;
+      padding: 0 10px !important;
+    }
+  }
+}

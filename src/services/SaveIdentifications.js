@@ -2,6 +2,7 @@ import Service from './Service';
 import Store from '../store';
 
 const Url = "https://jdo0rhqwmc.execute-api.us-east-1.amazonaws.com/dev/quote";
+
 //const Url = "http://127.0.0.1:8888/quote";
 
 class IdentificationsCities {
@@ -21,7 +22,7 @@ class IdentificationsCities {
             last_name: storeState.cotizacion.identification.lastname,
             step: storeState.cotizacion.state
         };
-        for(let i in data) if (data[i] == "") data[i] = '""';
+        for (let i in data) if (data[i] === "") data[i] = '""';
         return await Service.post(Url, data);
     };
 }

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import { saveIdentificationValue } from '../../../../../actionCreators';
+import {saveIdentificationValue} from '../../../../../actionCreators';
 
 class Razonsocial extends Component {
 
@@ -12,9 +12,9 @@ class Razonsocial extends Component {
         };
     }
 
-    validateEmpty(e){
+    validateEmpty(e) {
         let error = false;
-        if ( e.value.length < 1 ) error = true;
+        if (e.value.length < 1) error = true;
         this.setState({
             ...this.state,
             error: error

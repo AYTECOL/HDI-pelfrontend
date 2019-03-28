@@ -1,23 +1,42 @@
 $padding-header: 16px;
 $padding-total: 30px;
 $padding-menu: $padding-total - $padding-header;
-header{
+header {
   background-color: #FFD000;
   padding: $padding-header 0;
-  #logo{
-    img{
+
+  #logo {
+    @media (max-width: 769px) {
+      text-align: center;
+    }
+
+    img {
       width: 100%;
       height: auto;
       max-width: 104.29px;
     }
   }
-  #main-menu{
-    ul{
+
+  #main-menu {
+    @media (max-width: 769px) {
+      padding: 0;
+    }
+
+    ul {
       display: flex;
       justify-content: flex-end;
       margin: 0;
-      li{
-        a{
+
+      li {
+        @media (max-width: 769px) {
+          min-width: 33%;
+          &:last-child a,
+          &:first-child a {
+            padding-top: 27px !important;
+          }
+        }
+
+        a {
           font-weight: 400;
           display: block;
           text-decoration: none;
@@ -27,7 +46,13 @@ header{
           padding: $padding-menu 0 ($padding-menu - 6) 16px;
           position: relative;
           transition: all 0.3s ease;
-          &::after{
+          @media (max-width: 769px) {
+            padding: 20px 5px 0 5px !important;
+            text-align: center;
+            font-size: 12px;
+          }
+
+          &::after {
             content: '';
             height: 60%;
             position: absolute;
@@ -38,8 +63,12 @@ header{
             margin: auto;
             background-color: rgba(52, 55, 65, 0.1497);
             display: none;
+            @media (max-width: 769px) {
+              display: none !important;
+            }
           }
-          &::before{
+
+          &::before {
             content: '';
             height: 3px;
             position: absolute;
@@ -49,8 +78,13 @@ header{
             display: none;
             left: 0;
             margin-top: 13px;
+
+            @media (max-width: 769px) {
+              margin-top: 22px;
+            }
           }
-          i{
+
+          i {
             width: 32px;
             height: 32px;
             border-radius: 100%;
@@ -58,7 +92,11 @@ header{
             display: inline-block;
             vertical-align: middle;
             margin-right: 7px;
-            &::before{
+            @media (max-width: 769px) {
+              display: none;
+            }
+
+            &::before {
               content: '';
               background-size: 80% auto;
               background-repeat: no-repeat;
@@ -68,57 +106,71 @@ header{
               height: 100%;
               transition: all 0.3s ease;
             }
-            &.icon1::before{
+
+            &.icon1::before {
               background-image: url("../../../common/images/icono-header1.png");
             }
-            &.icon2::before{
+
+            &.icon2::before {
               background-image: url("../../../common/images/icono-header2.png");
             }
-            &.icon3{
+
+            &.icon3 {
               background-color: transparent;
               width: 15px;
               height: 15px;
               transform: scale(1);
               transition: all 0.3s ease;
-              &::before{
+
+              &::before {
                 background-size: 100% auto;
                 background-image: url("../../../common/images/icono-header3.png");
               }
             }
           }
         }
-        &:first-child a{
+
+        &:first-child a {
           padding-right: 22px;
-          &::after{
+
+          &::after {
             display: block;
           }
         }
-        &:last-child a{
+
+        &:last-child a {
           padding-right: 0;
         }
-        &.active a{
+
+        &.active a {
           font-weight: bold;
-          &::before{
+
+          &::before {
             display: block;
           }
         }
-        &:hover a{
+
+        &:hover a {
           color: #343741;
           font-weight: bold;
-          i{
-            &::before{
+
+          i {
+            &::before {
               background-size: 90% auto;
             }
-            &.icon3{
+
+            &.icon3 {
               transform: scale(1.1);
-              &::before{
+
+              &::before {
                 background-size: 100% auto;
               }
             }
           }
         }
-        &.logout{
-          a{
+
+        &.logout {
+          a {
             font-weight: bold;
             padding-top: $padding-header + 5;
           }

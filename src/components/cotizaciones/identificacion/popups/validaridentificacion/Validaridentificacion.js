@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {validarIdentificacionToogle} from '../../../../../actionCreators';
-
 import './Validaridentificacion.scss';
 import icono from './images/icon.png';
+
+// import {validarIdentificacionToogle} from '../../../../../actionCreators';
 
 class Validaridentificacion extends Component {
     render() {
@@ -37,6 +37,6 @@ class Validaridentificacion extends Component {
             </div>
         )
     };
-};
+}
 
 export default Validaridentificacion;

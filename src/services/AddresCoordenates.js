@@ -1,4 +1,5 @@
 import Service from './Service';
+
 const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU';
 
 class GetAddresInfo {
@@ -12,7 +13,7 @@ class GetAddresInfo {
         return await Service.get(encodeURI(url))
             .then(response => {
                 //return response.results[0].geometry.location;
-                if( response.status == "ZERO_RESULTS" ) return{};
+                if (response.status === "ZERO_RESULTS") return {};
                 return Service.get(encodeURI(`https://maps.googleapis.com/maps/api/place/details/json?key=${APIKEY}&placeid=${response.candidates[0].place_id}`))
                     .then(finalResponse => {
                         return (finalResponse.result.geometry.location)

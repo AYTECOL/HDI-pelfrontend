@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import IdentificationsCities from '../../../../../services/IdentificationsCities';
 
 import store from '../../../../../store';
-import {saveCityStore, saveIdentificationValue, saveDescriptionCity} from '../../../../../actionCreators';
+import {saveDescriptionCity, saveIdentificationValue} from '../../../../../actionCreators';
 
 class AutocompleteCities extends Component {
 
@@ -19,24 +19,43 @@ class AutocompleteCities extends Component {
             empty: false,
             idElement: "",
             toggle: false,
-            onChange: null
+            onChange: null,
+            valueLoaded: 0,
         };
 
         this.getOptions();
+        store.subscribe(() => {
+            let storeState = store.getState();
+            this.setState({
+                ...this.state,
+                valueLoaded: storeState.cotizacion.identification.city
+            });
+        });
     }
 
     async getOptions() {
         let data = await IdentificationsCities.get();
+        let value = "";
+        if (this.state.valueLoaded !== 0) {
+            for (let i in data.cities) {
+                let d = data.cities[i];
+                if (d.code_city === this.state.valueLoaded) {
+                    value = d.description;
+                    break;
+                }
+            }
+        }
         this.setState({
             ...this.state,
             options: data,
             originalOptions: data,
+            value: value
         });
     }
 
     onBlur(v) {
         let empty = false;
-        if (v == "") empty = true;
+        if (v === "") empty = true;
         setTimeout(function () {
             this.setState({
                 ...this.state,
@@ -67,9 +86,10 @@ class AutocompleteCities extends Component {
         this.state.originalOptions.cities.map((option, key) => {
             let item = option.city;
             let search = item.toLowerCase().search(value.toLowerCase());
-            if (search !== -1 && search == 0) {
+            if (search !== -1 && search === 0) {
                 optionsFilters.cities[key] = option;
             }
+            return true;
         });
 
         this.setState({
@@ -77,7 +97,7 @@ class AutocompleteCities extends Component {
             value: value,
             toggle: true,
             options: optionsFilters,
-            empty: value == ""
+            empty: value === ""
         });
     }
 

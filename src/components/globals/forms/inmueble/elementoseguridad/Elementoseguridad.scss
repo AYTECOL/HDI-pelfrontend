@@ -1,0 +1,11 @@
+.index-form .container .items-checkboxes {
+  @media (max-width: 769px) {
+    .row {
+      margin-bottom: 0 !important;
+
+      .col {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}

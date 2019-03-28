@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import { saveIdentificationValue } from '../../../../../actionCreators';
+import {saveIdentificationValue} from '../../../../../actionCreators';
 
 class Name extends Component {
 
@@ -14,7 +14,7 @@ class Name extends Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.cotizacion.identification.name;
-            if (this.state.value != value ) {
+            if (this.state.value !== value) {
                 this.setState({
                     ...this.state,
                     value: value
@@ -23,9 +23,9 @@ class Name extends Component {
         });
     }
 
-    validateEmpty(e){
+    validateEmpty(e) {
         let error = false;
-        if ( e.value.length < 1 ) error = true;
+        if (e.value.length < 1) error = true;
         this.setState({
             ...this.state,
             error: error,
@@ -36,7 +36,7 @@ class Name extends Component {
 
     render() {
         return (
-            <div className={"form-group " + (this.state.error?'error':'')}>
+            <div className={"form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="name">Primer nombre</label>
                 <input name="name" id="name"
                        type="text"

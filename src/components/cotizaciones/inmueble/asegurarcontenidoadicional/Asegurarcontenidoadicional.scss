@@ -1,0 +1,25 @@
+.extraform {
+  > .col {
+    padding: 0 10px !important;
+  }
+
+  .row {
+    .col-6 {
+      &:last-child {
+        label {
+          padding-top: 15px;
+        }
+
+        .form-group.error::after {
+          top: 55px;
+        }
+      }
+
+      &:first-child {
+        label {
+          padding-top: 0;
+        }
+      }
+    }
+  }
+}

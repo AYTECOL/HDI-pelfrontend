@@ -1,11 +1,13 @@
-.index-form{
-  .container{
+.index-form {
+  .container {
     background-color: white;
     max-width: 1050px;
     padding: 64px 0 47px;
-    .title{
+
+    .title {
       text-align: center;
-      h2{
+
+      h2 {
         font-style: normal;
         font-weight: normal;
         line-height: 38px;
@@ -13,7 +15,8 @@
         color: #343741;
         margin-bottom: 9px;
       }
-      p{
+
+      p {
         font-style: normal;
         font-weight: 300;
         line-height: 26px;
@@ -23,28 +26,36 @@
         margin: 0 0 39px 0;
       }
     }
-    .row{
+
+    .row {
       max-width: 583px;
       margin: 0 auto;
     }
   }
+
   .return-button {
     position: absolute;
     left: -100px;
     top: 30px;
     float: left;
   }
-  .form-action{
+
+  .form-action {
     margin-top: 30px;
   }
-  .form-first{
+
+  .form-first {
     padding-right: 9px;
     padding-left: 9px;
-    &:first-child{
-      padding-left: 0;
-    }
-    &:last-child{
-      padding-right: 0;
+
+    @media (min-width: 770px) {
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
     }
   }
 }

@@ -1,8 +1,14 @@
-.wrapper-map{
+.wrapper-map {
   border-top: 2px solid #28A3AF;
   margin: 0 21px 0;
   position: relative;
-  .error-info{
+
+  @media (max-width: 769px) {
+    width: 100%;
+    margin: 0;
+  }
+
+  .error-info {
     position: absolute;
     left: 0;
     right: 0;
@@ -15,7 +21,8 @@
     margin: 0 auto;
     padding: 8px 17px 8px 43px;
     display: none;
-    p{
+
+    p {
       margin: 0;
       font-style: normal;
       font-weight: normal;
@@ -23,6 +30,7 @@
       line-height: 22px;
       color: #D43900;
       position: relative;
+
       &::before {
         position: absolute;
         top: 1px;
@@ -39,27 +47,32 @@
       }
     }
   }
-  &.error{
+
+  &.error {
     border-top: 2px solid #EE7000;
+
     .error-info {
       display: block;
     }
   }
 
-  .gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom{
+  .gmnoprint.gm-bundled-control.gm-bundled-control-on-bottom {
     right: inherit !important;
     left: 150px;
     top: 55% !important;
-    >div>div{
+
+    > div > div {
       background: transparent !important;
       box-shadow: inherit !important;
     }
-    >div>div>div {
+
+    > div > div > div {
       display: block;
       background: transparent !important;
       height: 8px !important;
     }
-    button{
+
+    button {
       width: 32px !important;
       height: 32px !important;
       background: #28A3AF !important;
@@ -68,24 +81,28 @@
       border: 0 !important;
       transform: scale(1);
       transition: all 0.3s ease;
-      &::before{
+
+      &::before {
         content: '+';
         color: white;
         font-size: 27px;
         line-height: 1;
         position: relative;
       }
-      &:last-child{
-        &::before{
+
+      &:last-child {
+        &::before {
           content: '_';
           font-size: 35px;
           top: -14px;
         }
       }
-      &:hover{
+
+      &:hover {
         transform: scale(1.1);
       }
-      img{
+
+      img {
         display: none;
       }
     }

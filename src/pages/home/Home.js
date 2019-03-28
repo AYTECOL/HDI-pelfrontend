@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import './Home.scss';
 import AutoIncrementCotizacion from "../../services/AutoIncrementCotizacion";
 import store from "../../store";
@@ -9,18 +8,14 @@ import Table from '../../components/home/table/Table';
 
 class Home extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     async getNumber() {
         let storeState = store.getState();
         let number = await AutoIncrementCotizacion.get();
-        if( typeof number.currentValue != 'undefined' ){
+        if (typeof number.currentValue !== 'undefined') {
             number = number.currentValue.toString();
             number = storeState.cotizacion.number.slice(number.length) + number;
             store.dispatch(saveCotizacionNumber(number));
-            this.props.history.push('/cotizacion/1/'+number);
+            this.props.history.push('/cotizacion/1/' + number);
         } else {
             this.props.history.push('/');
         }
@@ -33,7 +28,9 @@ class Home extends Component {
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h2>Mis negocios en línea</h2>
-                            <button className="btn btn-primary btn-home" onClick={() => this.getNumber()}>Nueva cotización</button>
+                            <button className="btn btn-primary btn-home" onClick={() => this.getNumber()}>Nueva
+                                cotización
+                            </button>
                         </div>
                     </div>
 
@@ -46,8 +43,8 @@ class Home extends Component {
                         <div className="search">
                             <div className={"form-group input-select"}>
                                 <select name="code" id="doc-type"
-                                        className={"form-control"} >
-                                        <option value="">Seleciona</option>
+                                        className={"form-control"}>
+                                    <option value="">Seleciona</option>
                                 </select>
                             </div>
                             <div className={"form-group"}>
@@ -55,7 +52,7 @@ class Home extends Component {
                                        type="text"
                                        className={"form-control"}
                                        placeholder="Busca por Nombre, Id, dirección ..."/>
-                                       <button className="btn-search"></button>
+                                <button className="btn-search"></button>
                             </div>
                         </div>
                     </div>
@@ -68,7 +65,7 @@ class Home extends Component {
                         </ul>
                     </div>
 
-                    <Table />
+                    <Table/>
 
                 </div>
             </div>

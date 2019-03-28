@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import './Table.scss';
 import store from '../../../store';
-import { restoreCotizacion } from '../../../actionCreators';
+import {restoreCotizacion} from '../../../actionCreators';
 
 import Identifications from '../../../services/GetIdentifications';
 
@@ -11,16 +11,16 @@ class Table extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          options: {
-              quote: []
-          }
+            options: {
+                quote: []
+            }
         };
         this.getRows();
     }
 
     async getRows() {
         let cotizaciones = await Identifications.get();
-        if ( typeof cotizaciones.quote != "undefined" && cotizaciones.quote.length > 0 ) {
+        if (typeof cotizaciones.quote !== "undefined" && cotizaciones.quote.length > 0) {
             this.setState({
                 ...this.state,
                 options: await Identifications.get()
@@ -28,10 +28,10 @@ class Table extends Component {
         }
     }
 
-    async getRowById(id){
+    async getRowById(id) {
         let cotizacion = await Identifications.getById(id);
-        if( typeof cotizacion.identification != 'undefined'){
-            this.props.history.push('/cotizacion/'+cotizacion.state+'/'+id);
+        if (typeof cotizacion.identification !== 'undefined') {
+            this.props.history.push('/cotizacion/' + cotizacion.state + '/' + id);
             store.dispatch(restoreCotizacion(cotizacion));
         }
     }
@@ -59,9 +59,12 @@ class Table extends Component {
                             <div className="col"><p>{option.address}</p></div>
                             <div className="col"><p>08 días</p></div>
                             <div className="col"><p>Proceso de inspección</p></div>
-                            <div className="col"><button onClick={(e)=>{
-                                this.getRowById(option.quoteId)
-                            }} className="btn btn-default">Retomar</button></div>
+                            <div className="col">
+                                <button onClick={(e) => {
+                                    this.getRowById(option.quoteId)
+                                }} className="btn btn-default">Retomar
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>

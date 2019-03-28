@@ -1,5 +1,5 @@
 import React from 'react';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps";
 import './Map.scss';
 import store from "../../../../store";
 import {mapShow, saveIdentificationValue, setAddresMap} from "../../../../actionCreators";
@@ -25,15 +25,15 @@ class MapBase extends React.Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
-            if (this.state.address != address && address != "") {
+            if (this.state.address !== address && address !== "") {
                 var it = this;
                 clearTimeout(window.stime);
                 window.stime = setTimeout(async function () {
                     let state = store.getState();
-                    let data = await it.reqAddress(address+", "+state.cityDescription);
+                    let data = await it.reqAddress(address + ", " + state.cityDescription);
                     store.dispatch(mapShow(true));
                     it.state.el.className = it.state.el.className.replace(" error", "");
-                    if (typeof data.lng != "undefined" && typeof data.lat != "undefined") {
+                    if (typeof data.lng !== "undefined" && typeof data.lat !== "undefined") {
                         it.setState({
                             ...it.state,
                             address: address,
@@ -100,6 +100,6 @@ class MapBase extends React.Component {
             </GoogleMap>
         );
     }
-};
+}
 
 export default withScriptjs(withGoogleMap(MapBase));

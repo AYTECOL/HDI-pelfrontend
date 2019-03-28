@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {continueButtonDisable, saveIdentificationValue, updateTypeDoc} from '../../../../../actionCreators';
+import {saveIdentificationValue, updateTypeDoc} from '../../../../../actionCreators';
 import Identifications from '../../../../../services/Identifications';
 
 class TipoDocumento extends Component {
@@ -25,17 +25,19 @@ class TipoDocumento extends Component {
             let storeState = store.getState();
             let newState = storeState.stateFormIdentificacion;
             let disabled = false;
-            if (newState != 0) disabled = true;
-            this.setState({
-                ...this.state,
-                stateForm: newState,
-                disabled: disabled
-            });
+            if (newState !== 0) disabled = true;
+            if (this.state.stateForm !== newState) {
+                this.setState({
+                    ...this.state,
+                    stateForm: newState,
+                    disabled: disabled
+                });
+            }
         });
     }
 
-    validateEmpty(e){
-        if ( e.value.length < 1 ){
+    validateEmpty(e) {
+        if (e.value.length < 1) {
             this.setState({
                 ...this.state,
                 error: true
@@ -43,7 +45,7 @@ class TipoDocumento extends Component {
         }
         let type = e.selectedOptions[0].getAttribute("data");
         let typeDocument = 1;
-        if (type == "Jurídica") typeDocument = 2;
+        if (type === "Jurídica") typeDocument = 2;
         store.dispatch(saveIdentificationValue(e));
         store.dispatch(updateTypeDoc(typeDocument));
         this.setState({
@@ -52,7 +54,7 @@ class TipoDocumento extends Component {
         });
     }
 
-    async getOptions(){
+    async getOptions() {
         this.setState({
             ...this.state,
             options: await Identifications.get()

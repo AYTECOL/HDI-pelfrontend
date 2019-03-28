@@ -1,0 +1,26 @@
+.inmuebleform {
+  > .container {
+    margin-top: 0;
+    padding-top: 37px;
+    padding-bottom: 0;
+  }
+
+  .col {
+    padding-left: 9px;
+    padding-right: 9px;
+
+    &:nth-child(2n+1) {
+      padding-left: 0;
+      @media (max-width: 769px) {
+        padding-left: 9px;
+      }
+    }
+
+    &:nth-child(2n) {
+      padding-right: 0;
+      @media (max-width: 769px) {
+        padding-right: 9px;
+      }
+    }
+  }
+}

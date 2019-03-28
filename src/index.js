@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import {BrowserRouter as Router} from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
 
 import './common/scss/reset.scss';
 import './common/fonts/stylesheet.css';
@@ -10,13 +10,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './common/scss/index.scss';
 
 import store from './store';
-import {loadItems} from './actionCreators';
 import App from './App';
 
 ReactDOM.render((
     <Provider store={store}>
         <Router>
-            <App />
+            <App/>
         </Router>
     </Provider>
 ), document.getElementById('root'));

@@ -9,9 +9,9 @@ class Service {
             });
     };
 
-    static async post(url,data) {
+    static async post(url, data) {
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-        return await axios.post(url,data)
+        return await axios.post(url, data)
             .then(response => {
                 return response.data;
             });

@@ -13,7 +13,7 @@ class Map extends React.Component {
         };
         store.subscribe(async () => {
             let storeState = store.getState();
-            if (storeState.errorMap != this.state.error || storeState.showMap != this.state.show) {
+            if (storeState.errorMap !== this.state.error || storeState.showMap !== this.state.show) {
                 this.setState({
                     error: storeState.errorMap,
                     show: storeState.showMap,
@@ -37,6 +37,6 @@ class Map extends React.Component {
 
         );
     }
-};
+}
 
 export default Map;

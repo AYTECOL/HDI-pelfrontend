@@ -18,16 +18,16 @@ hmtl, body {
   display: none !important;
 }
 
+@media (min-width: 992px) {
+  .container {
+    max-width: 100%;
+  }
+}
+
 @media (min-width: 1200px) {
   .container {
     max-width: 1240px;
     width: 100%;
-  }
-}
-
-@media (min-width: 992px){
-  .container {
-    max-width: 100%;
   }
 }
 
@@ -241,18 +241,22 @@ $color-font-btn-primary: #404040;
   &.input-select {
     position: relative;
 
-    &::after {
-      content: "";
-      display: block;
-      width: 15px;
-      height: 8px;
-      background-image: url("../images/arrow_down.png");
-      background-size: 100% auto;
-      background-position: center;
-      background-repeat: no-repeat;
-      position: absolute;
-      right: 5%;
-      top: 67%;
+    &,
+    &.error {
+      &::after {
+        content: "";
+        display: block;
+        width: 15px;
+        height: 8px;
+        background-image: url("../images/arrow_down.png");
+        background-size: 100% auto;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: absolute;
+        right: 5%;
+        top: 67%;
+        border: 2px solid transparent;
+      }
     }
   }
 
@@ -375,6 +379,168 @@ $color-font-btn-primary: #404040;
       span {
         color: #7dc5ca;
       }
+    }
+  }
+}
+
+.cotizacion .container .grid-select {
+  .select-item {
+    background: #FFFFFF;
+    box-shadow: 0px 0px 3px rgba(86, 86, 86, 0.404806);
+    border-radius: 3px;
+    text-align: center;
+    padding: 24px 0;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+
+    &.active,
+    &:hover {
+      background: #28A3AF;
+      border: 1px solid #28A3AF;
+      box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
+      border-radius: 3px;
+
+      p {
+        color: white;
+      }
+
+      i {
+        background-image: url("../images/home-icon-hover.png");
+
+        &.concreto {
+          background-image: url("../images/concreto-hover.png");
+        }
+
+        &.ladrillo {
+          background-image: url("../images/build-hover.png");
+        }
+
+        &.aceror {
+          background-image: url("../images/ladrillo-hover.png");
+        }
+
+        &.bahareque {
+          background-image: url("../images/cho-hover.png");
+        }
+
+        &.madera {
+          background-image: url("../images/cam-hover.png");
+        }
+
+        &.adobe {
+          background-image: url("../images/house-hover.png");
+        }
+      }
+    }
+
+    i {
+      background-repeat: no-repeat;
+      display: block;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+      transform: scale(1);
+      background-image: url("../images/home-icon.png");
+      margin-bottom: 10px;
+      background-size: auto 100%;
+      width: 35px;
+      height: 35px;
+      background-position: center;
+
+      &.concreto {
+        background-image: url("../images/concreto.png");
+      }
+
+      &.ladrillo {
+        background-image: url("../images/build.png");
+      }
+
+      &.aceror {
+        background-image: url("../images/ladrillo.png");
+      }
+
+      &.bahareque {
+        background-image: url("../images/cho.png");
+      }
+
+      &.madera {
+        background-image: url("../images/cam.png");
+      }
+
+      &.adobe {
+        background-image: url("../images/house.png");
+      }
+
+    }
+
+    p {
+      display: block;
+      text-align: center;
+      width: 100%;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 16px;
+      color: #565656;
+      margin-bottom: 0;
+    }
+  }
+
+}
+
+.gridgrid {
+  .grid-select {
+    .col {
+      &:nth-child(2n) {
+        padding-right: 9px;
+      }
+
+      &:last-child {
+        padding-left: 9px;
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.tool-tip {
+  width: auto;
+  display: inline-block;
+  margin: 0 0 14px;
+
+  &.info {
+    background: #F0FBFC;
+    border: 1px solid #28A3AF;
+    box-sizing: border-box;
+    border-radius: 3px 3px 0px 0px;
+    padding: 10px 9px 8px 31px;
+    text-align: left;
+    position: relative;
+
+    &::before {
+      content: 'i';
+      display: block;
+      position: absolute;
+      top: 9px;
+      left: 7px;
+      color: #037B86;
+      border: 2px solid #037B86;
+      border-radius: 100%;
+      padding: 0 4.5px 1px;
+      line-height: 1;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    p {
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 16px;
+      text-align: center;
+      color: #037B86;
+      margin: 0;
     }
   }
 }

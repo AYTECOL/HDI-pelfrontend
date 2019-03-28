@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import { saveIdentificationValue } from '../../../../../actionCreators';
+import {saveIdentificationValue} from '../../../../../actionCreators';
 
 class Addressadditional extends Component {
 
@@ -14,7 +14,7 @@ class Addressadditional extends Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.cotizacion.identification.addressadditional;
-            if (this.state.value != value ) {
+            if (this.state.value !== value) {
                 this.setState({
                     ...this.state,
                     value: value
@@ -23,7 +23,7 @@ class Addressadditional extends Component {
         });
     }
 
-    validateEmpty(e){
+    validateEmpty(e) {
         store.dispatch(saveIdentificationValue(e));
     }
 
