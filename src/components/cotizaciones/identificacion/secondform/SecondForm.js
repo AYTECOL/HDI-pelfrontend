@@ -7,7 +7,7 @@ import Razonsocial from '../../../globals/forms/identificacion/razonsocial/Razon
 import Adress from '../../../globals/forms/identificacion/adress/Adress';
 import Addressadditional from '../../../globals/forms/identificacion/addressadditional/Addressadditional';
 import AutoCompleteCities from '../../../globals/forms/identificacion/autocompletecities/AutocompleteCities';
-import Map from "../../../map/Map.js"
+import Map from "../map/Map.js"
 
 class SecondForm extends React.Component {
 
@@ -20,54 +20,55 @@ class SecondForm extends React.Component {
 
         store.subscribe(() => {
             let storeState = store.getState();
-            if( storeState.stateFormIdentificacion != this.state.show || storeState.typeDocument != this.state.type ){
+            if (storeState.stateFormIdentificacion !== this.state.show || storeState.typeDocument !== this.state.type) {
                 this.setState({
                     ...this.state,
-                    show: storeState.stateFormIdentificacion == 1,
+                    show: storeState.stateFormIdentificacion === 1,
                     type: storeState.typeDocument
                 });
             }
         });
     }
+
     render() {
         return (
-            <div className={(this.state.show?'show':'hide')}>
-                <div className={(this.state.type != 1 ? "hide " : "") + "row"}>
-                    <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <Name />
+            <div className={(this.state.show ? 'show' : 'hide')}>
+                <div className={(this.state.type !== 1 ? "hide " : "") + "row"}>
+                    <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                        <Name/>
                     </div>
-                    <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <Lastname />
+                    <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                        <Lastname/>
                     </div>
                 </div>
 
-                <div className={(this.state.type != 2 ? "hide " : "") + "row"}>
+                <div className={(this.state.type !== 2 ? "hide " : "") + "row"}>
                     <div className="col col-sm-12 col-md-12 col-lg-12 form-first">
-                        <Razonsocial />
+                        <Razonsocial/>
                     </div>
                 </div>
-
 
                 <div className="row">
-                    <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <AutoCompleteCities />
+                    <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                        <AutoCompleteCities/>
                     </div>
-                    <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <Adress />
+                    <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                        <Adress/>
                     </div>
                 </div>
-
-                <Map />
 
                 <div className="row">
-                    <div className="col col-sm-6 col-md-6 col-lg-6 form-first">
-                        <Addressadditional />
+                    <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                        <Addressadditional/>
                     </div>
                 </div>
+
+                <Map/>
+
             </div>
         )
     }
 
-};
+}
 
 export default SecondForm;

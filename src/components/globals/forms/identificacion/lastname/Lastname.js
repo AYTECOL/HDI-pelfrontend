@@ -1,35 +1,52 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import { saveIdentificationValue } from '../../../../../actionCreators';
+import {saveIdentificationValue} from '../../../../../actionCreators';
 
 class Lastname extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            error: false
+            error: false,
+            value: "",
+            disabledLastName: false
         };
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let lastname = storeState.cotizacion.identification.lastname;
+            let disabledLastName = storeState.disabledLastName;
+            if (this.state.value !== lastname || this.state.disabledName !== disabledLastName) {
+                this.setState({
+                    ...this.state,
+                    value: lastname,
+                    disabledLastName: disabledLastName
+                });
+            }
+        });
     }
 
-    validateEmpty(e){
+    validateEmpty(e) {
         let error = false;
-        if ( e.value.length < 1 ) error = true;
+        if (e.value.length < 1) error = true;
         this.setState({
             ...this.state,
-            error: error
+            error: error,
+            value: e.value
         });
         store.dispatch(saveIdentificationValue(e));
     }
 
     render() {
         return (
-            <div className={"form-group " + (this.state.error?'error':'')}>
+            <div className={"form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="lastname">Primer apellido</label>
                 <input name="lastname" id="lastname"
                        type="text"
+                       value={this.state.value}
+                       disabled={this.state.disabledLastName===true?'true':'false'}
                        autoComplete="lastname"
-                       className={"form-control"}
+                       className={(this.state.disabledLastName ? "disabled " : "") + "form-control"}
                        placeholder="Ingresa primer apellido"
                        onBlur={(e) => {
                            this.validateEmpty(e.target);

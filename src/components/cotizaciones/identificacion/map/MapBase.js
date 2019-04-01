@@ -1,10 +1,9 @@
 import React from 'react';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
+import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps";
 import './Map.scss';
-import store from "../../store";
-import {mapShow, saveIdentificationValue} from "../../actionCreators";
-import GetAddresInfo from "../../services/AddresCoordenates";
-
+import store from "../../../../store";
+import {mapShow, saveIdentificationValue, setAddresMap} from "../../../../actionCreators";
+import GetAddresInfo from "../../../../services/AddresCoordenates";
 
 class MapBase extends React.Component {
 
@@ -26,25 +25,34 @@ class MapBase extends React.Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
-            if (this.state.address != address) {
-                if (address != "") {
-                    var it = this;
-                    clearTimeout(window.stime);
-                    window.stime = setTimeout(async function () {
-                        let data = await it.reqAddress(address);
-                        store.dispatch(mapShow(true));
-                        if (typeof data.lng != "undefined" && typeof data.lat != "undefined") {
-                            it.setState({
-                                ...it.state,
-                                address: address,
-                                markerPosition: data
-                            });
-                            it.state.el.className = it.state.el.className.replace(" error", "");
-                        } else {
-                            it.state.el.className += " error";
-                        }
-                    }, 600);
-                }
+            if (this.state.address !== address && address !== "") {
+                var it = this;
+                clearTimeout(window.stime);
+                window.stime = setTimeout(async function () {
+                    let state = store.getState();
+                    let data = await it.reqAddress(address + ", " + state.cityDescription);
+                    store.dispatch(mapShow(true));
+                    it.state.el.className = it.state.el.className.replace(" error", "");
+                    if (typeof data.lng !== "undefined" && typeof data.lat !== "undefined") {
+                        it.setState({
+                            ...it.state,
+                            address: address,
+                            markerPosition: data,
+                            isMarkerShown: true,
+                        });
+                        store.dispatch(setAddresMap({
+                            longitude: data.lng,
+                            latitude: data.lat,
+                        }));
+                    } else {
+                        it.setState({
+                            ...it.state,
+                            address: address,
+                            isMarkerShown: false,
+                        });
+                        it.state.el.className += " error";
+                    }
+                }, 500);
             }
         });
     }
@@ -92,6 +100,6 @@ class MapBase extends React.Component {
             </GoogleMap>
         );
     }
-};
+}
 
 export default withScriptjs(withGoogleMap(MapBase));

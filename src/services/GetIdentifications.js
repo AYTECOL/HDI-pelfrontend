@@ -1,11 +1,38 @@
 import Service from './Service';
 
 const Url = "https://jdo0rhqwmc.execute-api.us-east-1.amazonaws.com/dev/quote";
+const UrlById = "https://jdo0rhqwmc.execute-api.us-east-1.amazonaws.com/dev/quote/";
 
 class GetIdentifications {
     static async get() {
         return await Service.get(Url);
     };
+
+    static async getById(id) {
+        let items = await Service.get(UrlById + id);
+        if (typeof items.quote !== 'undefined') {
+            items = items.quote;
+            return {
+                number: items.quoteId,
+                typeDocument: items.document_type === '37' ? 2 : 1,
+                state: items.step,
+                identification: {
+                    code: items.document_type,
+                    value: items.document_number,
+                    name: items.name,
+                    lastname: items.last_name,
+                    businessname: items.business_name,
+                    city: items.city,
+                    address: items.address,
+                    addressadditional: items.address_additional,
+                },
+                stateFormIdentificacion: 1,
+                showMap: true
+            };
+        } else {
+            return {};
+        }
+    }
 }
 
 export default GetIdentifications;

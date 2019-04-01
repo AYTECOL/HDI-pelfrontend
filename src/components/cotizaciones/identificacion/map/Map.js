@@ -1,10 +1,7 @@
 import React from 'react';
-import {withScriptjs, withGoogleMap, GoogleMap, Marker} from "react-google-maps";
-import {compose, withStateHandlers} from "recompose";
-import store from '../../store';
+import store from '../../../../store';
 import MapBase from './MapBase';
 import './Map.scss';
-import GetAddresInfo from '../../services/AddresCoordenates';
 
 class Map extends React.Component {
     constructor(props) {
@@ -16,7 +13,7 @@ class Map extends React.Component {
         };
         store.subscribe(async () => {
             let storeState = store.getState();
-            if (storeState.errorMap != this.state.error || storeState.showMap != this.state.show) {
+            if (storeState.errorMap !== this.state.error || storeState.showMap !== this.state.show) {
                 this.setState({
                     error: storeState.errorMap,
                     show: storeState.showMap,
@@ -40,6 +37,6 @@ class Map extends React.Component {
 
         );
     }
-};
+}
 
 export default Map;

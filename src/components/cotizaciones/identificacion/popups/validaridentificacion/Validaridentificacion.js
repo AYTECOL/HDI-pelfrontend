@@ -1,13 +1,38 @@
 import React, {Component} from 'react';
-import {validarIdentificacionToogle} from '../../../../../actionCreators';
-
 import './Validaridentificacion.scss';
-import icono from './images/icon.png';
+import icono from '../../../../../common/images/icon.png';
+import store from "../../../../../store";
+import {showPopupIdentification} from "../../../../../actionCreators";
 
 class Validaridentificacion extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showPopUp: false,
+        };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let showPopUp = storeState.showPopUp;
+            if (this.state.showPopUp !== showPopUp ) {
+                this.setState({
+                    ...this.state,
+                    showPopUp: showPopUp,
+                });
+            }
+        });
+    }
+
+    hide(){
+        document.getElementById("doc-type-value").setAttribute("disabled","false");
+        store.dispatch(showPopupIdentification(false));
+    }
+
     render() {
         return (
-            <div className={"modal validaridentificacion"}>
+            <div className={"modal validaridentificacion "+ ((this.state.showPopUp === true)?'show':'hide')}>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -23,9 +48,13 @@ class Validaridentificacion extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Terminar
-                                </button>
-                                <button type="button" className="btn btn-primary">Ajustar</button>
+                                <a  href="/" className="btn btn-secondary" data-dismiss="modal">Terminar
+                                </a>
+                                <button type="button" className="btn btn-primary"
+                                        onClick={(e) => {
+                                            this.hide();
+                                        }}
+                                >Ajustar</button>
                             </div>
                         </div>
                         <div className="modal-footer">
@@ -37,6 +66,6 @@ class Validaridentificacion extends Component {
             </div>
         )
     };
-};
+}
 
 export default Validaridentificacion;

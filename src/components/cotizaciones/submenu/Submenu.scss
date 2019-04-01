@@ -1,30 +1,49 @@
 $padding-aside: 36px;
-.cotizaciones-aside{
+.cotizaciones-aside {
   background-color: white;
   padding: $padding-aside 0 $padding-aside;
   margin-bottom: 24px;
-  #id-cotizacion{
-    p{
+  height: 94px;
+  @media (max-width: 769px) {
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 0;
+  }
+
+  #id-cotizacion {
+    p {
       font-style: normal;
       font-weight: normal;
       line-height: 22px;
       font-size: 14px;
       color: #808080;
       margin: 0;
-      span{
+
+      span {
         color: #28A3AF;
       }
     }
   }
-  #cotizacion-menu{
-    ul{
+
+  #cotizacion-menu {
+    @media (max-width: 769px) {
+      padding: 0;
+    }
+
+    ul {
       display: flex;
       justify-content: center;
       text-align: center;
       margin: 0;
       position: relative;
       top: 4px;
-      li{
+      @media (max-width: 769px) {
+        display: block;
+        text-align: left;
+        margin-top: 10px;
+      }
+
+      li {
         font-style: normal;
         font-weight: normal;
         line-height: 16px;
@@ -32,10 +51,20 @@ $padding-aside: 36px;
         color: #C0BFC0;
         padding: 0 25px;
         position: relative;
-        &.active{
+
+        @media (max-width: 769px) {
+          width: 100%;
+          display: block;
+          height: 30px;
+          margin-bottom: 5px;
+          padding: 0 15px;
+        }
+
+        &.active {
           color: #28A3AF;
           font-weight: bold;
-          &::before{
+
+          &::before {
             content: '';
             width: 100%;
             height: 2px;
@@ -44,12 +73,17 @@ $padding-aside: 36px;
             top: 100%;
             margin-top: $padding-aside;
             background-color: #28A3AF;
+            @media (max-width: 769px) {
+              display: none;
+            }
           }
-          span{
+
+          span {
             border: 1px solid #28A3AF;
           }
         }
-        span{
+
+        span {
           border-radius: 100%;
           padding: 4px 8px;
           text-align: center;
