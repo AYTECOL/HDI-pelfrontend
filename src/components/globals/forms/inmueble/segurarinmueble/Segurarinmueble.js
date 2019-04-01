@@ -30,7 +30,7 @@ class Segurarinmueble extends Component {
 
     validateValue(e) {
         let error = 0;
-        let v = e.value;
+        let v = Masknumbermoney.formatToNumber(e.value);
         if (v.length < 1) error = 1;
         if (error === 0) {
             if (v <= this.state.min) {
@@ -41,6 +41,10 @@ class Segurarinmueble extends Component {
         }
 
         let format = Masknumbermoney.formatToMask(v);
+        store.dispatch(saveInmuebleValue({
+            name: "inmuebleasegudadovalor",
+            value: format,
+        }));
         this.setState({
             ...this.state,
             errorValue: error,
@@ -93,7 +97,7 @@ class Segurarinmueble extends Component {
                                    onChange={(e) => {
                                        this.validateValue(e.target);
                                    }}/>
-                            <small className={"form-text " + (this.state.errorValue === 0 ? 'show' : 'hide')}>Mínimo. $
+                            <small className={"form-text"}>Mínimo. $
                                 1.000.000 - Máximo. $ 4.000.000.000
                             </small>
                             <small

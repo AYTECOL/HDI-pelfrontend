@@ -37,7 +37,7 @@ class Conjuntocerrado extends Component {
                             this.validateEmpty({
                                 data: 1,
                                 value: "Si",
-                                name: "refuerzo"
+                                name: "cojuntocerrado"
                             });
                         }}
                     >Si
@@ -48,7 +48,7 @@ class Conjuntocerrado extends Component {
                             this.validateEmpty({
                                 data: 2,
                                 value: "No",
-                                name: "refuerzo"
+                                name: "cojuntocerrado"
                             });
                         }}
                     >No

@@ -24,14 +24,18 @@ class Anoconstruccion extends Component {
 
     render() {
         return (
-            <div className={"input-select form-group " + this.state.error}>
+            <div className={"input-select form-group " + (this.state.error?'error':'')}>
                 <label htmlFor="anoconstruidoe">Año en que fue construido inmueble</label>
                 <select disabled={(this.state.disabled ? "disabled" : "")} name="anoconstruido" id="anoconstruido"
                         className={(this.state.disabled ? "disabled " : "") + "form-control"}
                         value={this.state.value}
+                        onBlur={(e) => {
+                            this.validateEmpty(e.target);
+                        }}
                         onChange={(e) => {
                             this.validateEmpty(e.target);
-                        }}>
+                        }}
+                        >
                     <option value="">Selecciona</option>
                     <option value="1">Antes de 1963</option>
                     <option value="2">1963-1977</option>

@@ -83,6 +83,18 @@ const disabledLastName = () => {
     return {type: "DISABLE_LASTNAME", data: true}
 };
 
+const disabledBusinessName = () => {
+    return {type: "DISABLE_BUSSINESSNAME", data: true}
+};
+
+const saveInmuebleValueSeguridad = (element) => {
+    let name = element.name;
+    let value = element.value;
+    let data = {};
+    data[name] = value;
+    return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: data}
+};
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -99,5 +111,7 @@ export {
     saveInmuebleValue,
     showPopupIdentification,
     disabledLastName,
-    disabledName
+    disabledName,
+    saveInmuebleValueSeguridad,
+    disabledBusinessName
 };

@@ -10,6 +10,18 @@ class Razonsocial extends Component {
         this.state = {
             error: false
         };
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.cotizacion.identification.businessname;
+            let disabledbusinessname = storeState.disabledbusinessname;
+            if (this.state.value !== value || this.state.disabledbusinessname !== disabledbusinessname) {
+                this.setState({
+                    ...this.state,
+                    value: value,
+                    disabledName: disabledbusinessname,
+                });
+            }
+        });
     }
 
     validateEmpty(e) {
@@ -28,7 +40,9 @@ class Razonsocial extends Component {
                 <label htmlFor="doc-type-value">Razón social</label>
                 <input name="value" id="doc-type-value"
                        type="text"
-                       className={"form-control"}
+                       value={this.state.value}
+                       className={(this.state.disabledName ? "disabled " : "") + "form-control"}
+                       disabled={this.state.disabledName===true?'true':'false'}
                        placeholder="Ingresa la razón social"
                        onChange={(e) => {
                            this.validateEmpty(e.target);

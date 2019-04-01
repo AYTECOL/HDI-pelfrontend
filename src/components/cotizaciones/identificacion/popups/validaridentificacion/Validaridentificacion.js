@@ -2,9 +2,7 @@ import React, {Component} from 'react';
 import './Validaridentificacion.scss';
 import icono from '../../../../../common/images/icon.png';
 import store from "../../../../../store";
-import {mapShow, setAddresMap} from "../../../../../actionCreators";
-
-// import {validarIdentificacionToogle} from '../../../../../actionCreators';
+import {showPopupIdentification} from "../../../../../actionCreators";
 
 class Validaridentificacion extends Component {
 
@@ -27,6 +25,11 @@ class Validaridentificacion extends Component {
         });
     }
 
+    hide(){
+        document.getElementById("doc-type-value").setAttribute("disabled","false");
+        store.dispatch(showPopupIdentification(false));
+    }
+
     render() {
         return (
             <div className={"modal validaridentificacion "+ ((this.state.showPopUp === true)?'show':'hide')}>
@@ -45,9 +48,13 @@ class Validaridentificacion extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Terminar
-                                </button>
-                                <button type="button" className="btn btn-primary">Ajustar</button>
+                                <a  href="/" className="btn btn-secondary" data-dismiss="modal">Terminar
+                                </a>
+                                <button type="button" className="btn btn-primary"
+                                        onClick={(e) => {
+                                            this.hide();
+                                        }}
+                                >Ajustar</button>
                             </div>
                         </div>
                         <div className="modal-footer">

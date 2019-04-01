@@ -7,7 +7,8 @@ import {
     saveIdentificationValue,
     showPopupIdentification,
     disabledName,
-    disabledLastName
+    disabledLastName,
+    disabledBusinessName
 } from '../../../../../actionCreators';
 import SaveIdentifications from '../../../../../services/SaveIdentifications';
 import {Link, withRouter} from "react-router-dom";
@@ -79,29 +80,41 @@ class BtnContinue extends Component {
                     ...this.state,
                     continueButtonDisable: true,
                 });
-                let persona = await Consultapersonas.get(storeState.cotizacion.identification.code,storeState.cotizacion.identification.value);
+                let code = storeState.cotizacion.identification.code;
+                let value = storeState.cotizacion.identification.value;
+                if (code === "37")  value = value.replace("-", "",value);
+                document.getElementById("doc-type-value").setAttribute("disabled","disabled");
+                let persona = await Consultapersonas.get(code,value);
                 if ( persona.consultarPersonaRs.personaRestringida === true ) {
                     store.dispatch(showPopupIdentification(true));
                 }else{
                     store.dispatch(nextStepIndentification());
                     if ( persona.consultarPersonaRs.personaEncontradaIAXIS === true ){
                         let personaData = persona.consultarPersonaRs.persona;
-                        let personaType = persona.consultarPersonaRs.persona.tipoPersona.nombre;
+                        let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;
 
-                        personaData = personaData["persona"+personaType];
-                        if ( typeof personaData.primerNombre != 'undefined' && personaData.primerNombre != '' ) {
+                        personaData = personaData[(personaType===2?'personaJuridica':'personaNatural')];
+                        if ( typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '' ) {
                             store.dispatch(saveIdentificationValue({
                                 name: 'name',
                                 value: personaData.primerNombre
                             }));
                             store.dispatch(disabledName());
                         }
-                        if ( typeof personaData.primerApellido != 'undefined' && personaData.primerApellido != '' ) {
+                        if ( typeof personaData.primerApellido !== 'undefined' && personaData.primerApellido !== '' ) {
                             store.dispatch(saveIdentificationValue({
                                 name: 'lastname',
                                 value: personaData.primerApellido
                             }));
                             store.dispatch(disabledLastName());
+                        }
+
+                        if ( typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '' ) {
+                            store.dispatch(saveIdentificationValue({
+                                name: 'businessname',
+                                value: personaData.razonSocial
+                            }));
+                            store.dispatch(disabledBusinessName());
                         }
 
                     }

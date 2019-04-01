@@ -29,7 +29,7 @@ class Asegurarjoyas extends Component {
 
     validateValue(e) {
         let error = 0;
-        let v = e.value;
+        let v = Masknumbermoney.formatToNumber(e.value);
         if (v.length < 1) error = 1;
         if (error === 0) {
             if (v <= this.state.min) {
@@ -39,6 +39,10 @@ class Asegurarjoyas extends Component {
             }
         }
         let format = Masknumbermoney.formatToMask(v);
+        store.dispatch(saveInmuebleValue({
+            name: "inmuebleasegudadojoyasvalor",
+            value: format,
+        }));
         this.setState({
             ...this.state,
             errorValue: error,
@@ -58,7 +62,7 @@ class Asegurarjoyas extends Component {
                                     this.validateEmpty({
                                         data: 1,
                                         value: "Si",
-                                        name: "inmuebleasegudado2"
+                                        name: "inmuebleasegudadojoyas"
                                     });
                                 }}
                             >Si
@@ -68,7 +72,7 @@ class Asegurarjoyas extends Component {
                                     this.validateEmpty({
                                         data: 2,
                                         value: "No",
-                                        name: "inmuebleasegudado2"
+                                        name: "inmuebleasegudadojoyas"
                                     });
                                 }}
                             >No
@@ -91,7 +95,7 @@ class Asegurarjoyas extends Component {
                                    onChange={(e) => {
                                        this.validateValue(e.target);
                                    }}/>
-                            <small className={"form-text " + (this.state.errorValue === 0 ? 'show' : 'hide')}>Mínimo. $
+                            <small className={"form-text"}>Mínimo. $
                                 850.000 - Máximo. $ 100.000.000
                             </small>
                             <small

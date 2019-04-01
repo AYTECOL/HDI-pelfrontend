@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {saveIdentificationValue} from '../../../../../actionCreators';
+import {saveInmuebleValue} from '../../../../../actionCreators';
 
 class Refuerzoestructural extends Component {
 
@@ -11,7 +11,8 @@ class Refuerzoestructural extends Component {
             error: false,
             anoconstruido: "",
             show: false,
-            active: 0
+            active: 0,
+            errorselect: false
         };
 
         store.subscribe(async () => {
@@ -34,11 +35,21 @@ class Refuerzoestructural extends Component {
     validateEmpty(e) {
         let error = false;
         if (e.value.length < 1) error = true;
-        store.dispatch(saveIdentificationValue(e));
+        store.dispatch(saveInmuebleValue(e));
         this.setState({
             ...this.state,
             error: error,
             active: e.data
+        });
+    }
+
+    saveValue(e) {
+        let error = false;
+        if (e.value.length < 1) error = true;
+        store.dispatch(saveInmuebleValue(e));
+        this.setState({
+            ...this.state,
+            errorselect: error,
         });
     }
 
@@ -50,7 +61,7 @@ class Refuerzoestructural extends Component {
                     <div className={"form-group " + this.state.error}>
                         <label htmlFor="doc-type-value">Cuenta con refuerzos estructurales</label>
                         <ul className="select-item">
-                            <li className={(this.state.active === 1) ? 'active' : ''}
+                            <li className={(this.state.active === "1") ? 'active' : ''}
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         data: "1",
@@ -60,7 +71,7 @@ class Refuerzoestructural extends Component {
                                 }}
                             >Si
                             </li>
-                            <li className={(this.state.active === 2) ? 'active' : ''}
+                            <li className={(this.state.active === "2") ? 'active' : ''}
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         data: "2",
@@ -73,11 +84,18 @@ class Refuerzoestructural extends Component {
                         </ul>
                     </div>
                 </div>
-                {(this.state.active === 1) ? (
+                {(this.state.active === "1") ? (
                     <div className="col col-6">
-                        <div className={"input-select form-group " + this.state.error}>
+                        <div className={"input-select form-group " + (this.state.errorselect?'error':'')}>
                             <label htmlFor="doc-type-value">En qué año se hizo el refuerzo estrucutral</label>
-                            <select className="form-control">
+                            <select className="form-control"
+                                    onChange={(e) => {
+                                        this.saveValue({
+                                            value: e.target.value,
+                                            name: "anorefuerzo"
+                                        });
+                                    }}
+                            >
                                 <option value="">Selecciona el año</option>
                                 <option value="1">1985-1997</option>
                                 <option value="2">1998-2010</option>

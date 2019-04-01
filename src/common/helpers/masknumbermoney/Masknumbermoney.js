@@ -15,16 +15,14 @@ const Args = {
 class Masknumbermoney {
 
     static formatToMask(v) {
-        return SimpleMaskMoney.formatToMask(v, Args).split(",")[0];
+        let format = SimpleMaskMoney.formatToMask(v, Args).split(",")[0];
+        return format==="$0."?'':format;
     }
 
     static formatToNumber(v) {
-        return SimpleMaskMoney.formatToNumber(v, Args).split(",")[0];
+        return SimpleMaskMoney.formatToNumber(v, Args);
     }
 
 }
 
 export default Masknumbermoney;
-
-
-

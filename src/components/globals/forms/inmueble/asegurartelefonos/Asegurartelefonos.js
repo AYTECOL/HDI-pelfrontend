@@ -29,16 +29,20 @@ class Asegurartelefonos extends Component {
 
     validateValue(e) {
         let error = 0;
-        let v = e.value;
+        let v = Masknumbermoney.formatToNumber(e.value);
         if (v.length < 1) error = 1;
         if (error === 0) {
-            if (v <= this.state.min) {
+            if (v < this.state.min) {
                 error = 2;
             } else if (v >= this.state.max) {
                 error = 3;
             }
         }
         let format = Masknumbermoney.formatToMask(v);
+        store.dispatch(saveInmuebleValue({
+            name: "inmuebleasegudadotelefonosvalor",
+            value: format,
+        }));
         this.setState({
             ...this.state,
             errorValue: error,
@@ -58,7 +62,7 @@ class Asegurartelefonos extends Component {
                                     this.validateEmpty({
                                         data: 1,
                                         value: "Si",
-                                        name: "inmuebleasegudado2"
+                                        name: "inmuebleasegudadotelefonos"
                                     });
                                 }}
                             >Si
@@ -68,7 +72,7 @@ class Asegurartelefonos extends Component {
                                     this.validateEmpty({
                                         data: 2,
                                         value: "No",
-                                        name: "inmuebleasegudado2"
+                                        name: "inmuebleasegudadotelefonos"
                                     });
                                 }}
                             >No
@@ -91,7 +95,7 @@ class Asegurartelefonos extends Component {
                                    onChange={(e) => {
                                        this.validateValue(e.target);
                                    }}/>
-                            <small className={"form-text " + (this.state.errorValue === 0 ? 'show' : 'hide')}>Mínimo. $
+                            <small className={"form-text"}>Mínimo. $
                                 850.000 - Máximo. $ 10.000.000
                             </small>
                             <small

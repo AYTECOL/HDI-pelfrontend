@@ -29,7 +29,7 @@ class Construidocon extends Component {
 
     render() {
         return (
-            <div className={"gridgrid form-group " + this.state.error}>
+            <div className={"gridgrid form-group " + (this.state.error?'error':'')}>
                 <label htmlFor="doc-type-value">El inmueble está construido con</label>
                 <div className="row grid-select">
                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
@@ -37,8 +37,8 @@ class Construidocon extends Component {
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: 1,
-                                     value: "No",
-                                     name: "refuerzo"
+                                     value: 1,
+                                     name: "construidocon"
                                  });
                              }}
                         >
@@ -56,8 +56,8 @@ class Construidocon extends Component {
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: 2,
-                                     value: "No",
-                                     name: "refuerzo"
+                                     value: 2,
+                                     name: "construidocon"
                                  });
                              }}
                         >
@@ -75,8 +75,8 @@ class Construidocon extends Component {
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: 3,
-                                     value: "No",
-                                     name: "refuerzo"
+                                     value: 3,
+                                     name: "construidocon"
                                  });
                              }}
                         >
@@ -96,8 +96,8 @@ class Construidocon extends Component {
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: 4,
-                                     value: "No",
-                                     name: "refuerzo"
+                                     value: 4,
+                                     name: "construidocon"
                                  });
                              }}
                         >
@@ -115,8 +115,8 @@ class Construidocon extends Component {
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: 5,
-                                     value: "No",
-                                     name: "refuerzo"
+                                     value: 5,
+                                     name: "construidocon"
                                  });
                              }}
                         >
@@ -134,8 +134,8 @@ class Construidocon extends Component {
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: 6,
-                                     value: "No",
-                                     name: "refuerzo"
+                                     value: 6,
+                                     name: "construidocon"
                                  });
                              }}
                         >

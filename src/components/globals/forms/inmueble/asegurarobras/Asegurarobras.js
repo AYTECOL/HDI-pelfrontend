@@ -29,16 +29,20 @@ class Asegurarobras extends Component {
 
     validateValue(e) {
         let error = 0;
-        let v = e.value;
+        let v = Masknumbermoney.formatToNumber(e.value);
         if (v.length < 1) error = 1;
         if (error === 0) {
-            if (v <= this.state.min) {
+            if (v < this.state.min) {
                 error = 2;
             } else if (v >= this.state.max) {
                 error = 3;
             }
         }
         let format = Masknumbermoney.formatToMask(v);
+        store.dispatch(saveInmuebleValue({
+            name: "inmuebleasegudadoobrasvalor",
+            value: format,
+        }));
         this.setState({
             ...this.state,
             errorValue: error,
@@ -58,7 +62,7 @@ class Asegurarobras extends Component {
                                     this.validateEmpty({
                                         data: 1,
                                         value: "Si",
-                                        name: "inmuebleasegudado2"
+                                        name: "inmuebleasegudadoobras"
                                     });
                                 }}
                             >Si
@@ -68,7 +72,7 @@ class Asegurarobras extends Component {
                                     this.validateEmpty({
                                         data: 2,
                                         value: "No",
-                                        name: "inmuebleasegudado2"
+                                        name: "inmuebleasegudadoobras"
                                     });
                                 }}
                             >No
@@ -91,8 +95,7 @@ class Asegurarobras extends Component {
                                    onChange={(e) => {
                                        this.validateValue(e.target);
                                    }}/>
-                            <small className={"form-text " + (this.state.errorValue === 0 ? 'show' : 'hide')}>Mínimo. $
-                                850.000 - Máximo. $ 600.000.000
+                            <small className={"form-text"}>Máximo. $ 600.000.000
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por

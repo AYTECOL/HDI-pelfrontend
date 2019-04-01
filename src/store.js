@@ -28,6 +28,7 @@ const initialState = {
     },
     disabledName: false,
     disabledLastName: false,
+    disabledbusinessname: false,
     cityDescription: "",
     continueButtonDisable: true,
     stateFormIdentificacion: 0,
@@ -38,137 +39,161 @@ const initialState = {
     // Segundo formulario Inmueble
     typeInmueble: 0,
     Inmueble: {
+        type_risk: "",
+        type_risk_id: "",
+        pisonumero: "",
         numerodepisos: "",
         zona: "",
         refuerzo: "",
         anorefuerzo: "",
         anoconstruido: "",
         construidocon: "",
-        cojuntocarrado: "",
+        cojuntocerrado: "",
         seguridad: {
             alarma: "",
             cajafuerte: "",
             puertascontroldomotico: "",
             puertasseguridadblindada: "",
-            circuitocarradotv: "",
+            circuitocerradotv: "",
             vigilanciapermanente: "",
-            reguladordeboltaje: "",
+            reguladordevoltaje: "",
         },
-        inmuebleasegudado: "",
+        inmuebleasegudado: "Si",
         inmuebleasegudadovalor: "",
         contenidoasegudado: "",
         contenidoasegudadovalor: "",
+        inmuebleasegudadojoyas: "",
+        inmuebleasegudadojoyasvalor: "",
+        inmuebleasegudadoobras: "",
+        inmuebleasegudadoobrasvalor: "",
+        inmuebleasegudadotelefonos: "",
+        inmuebleasegudadotelefonosvalor: "",
     }
 };
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-        case "SET_ADDRES_MAP":
-            return {
-                ...state,
-                mapsOptions: action.data
+    if (action.type === "SET_ADDRES_MAP") {
+        return {
+            ...state,
+            mapsOptions: action.data
+        }
+    } else if (action.type === "ADD_IDENTIFICATIONS") {
+        return {
+            ...state,
+            identifications: {identifications: action.data}
+        }
+    } else if (action.type === "NEXT_STEP_INDEX") {
+        let stateForm = state.stateForm + 1;
+        return {
+            ...state,
+            continueButtonDisable: true,
+            stateFormIdentificacion: stateForm
+        }
+    } else if (action.type === "DISABLE_BTN_CONTINUE") {
+        return {
+            ...state,
+            continueButtonDisable: action.data
+        }
+    } else if (action.type === "NEXT_STEP_INDENTIFICATION") {
+        return {
+            ...state,
+            stateFormIdentificacion: state.stateFormIdentificacion + action.data,
+            continueButtonDisable: true,
+        }
+    } else if (action.type === "SAVE_IDENTIFICATION_VALUE") {
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                identification: {...state.cotizacion.identification, ...action.data},
             }
-        case "ADD_IDENTIFICATIONS":
-            return {
-                ...state,
-                identifications: {identifications: action.data}
+        }
+    } else if (action.type === "SAVE_COTIZACION_NUMBER") {
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                number: action.data,
             }
-        case "NEXT_STEP_INDEX":
-            let stateForm = state.stateForm + 1;
-            return {
-                ...state,
-                continueButtonDisable: true,
-                stateFormIdentificacion: stateForm
+        }
+    } else if (action.type === "UPDATE_TYPE_DOC") {
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+            },
+            typeDocument: action.data,
+        }
+    } else if (action.type === "SET_MAP_SHOW") {
+        return {
+            ...state,
+            showMap: action.data,
+        }
+    } else if (action.type === "SAVE_DESCRIPTION_CITY") {
+        return {
+            ...state,
+            cityDescription: action.data,
+        }
+    } else if (action.type === "RESTORE_COTIZACION") {
+        return {
+            ...state,
+            cotizacion: action.data,
+            typeDocument: action.data.typeDocument,
+            stateFormIdentificacion: action.data.stateFormIdentificacion,
+            showMap: action.data.showMap,
+        }
+    } else if (action.type === "NEXT_STEP") {
+        return {
+            ...state,
+            cotizacion: {
+                ...state.cotizacion,
+                state: action.data
+            },
+        }
+    } else if (action.type === "TYPE_INMUEBLE") {
+        return {
+            ...state,
+            typeInmueble: action.data
+        }
+    } else if (action.type === "SAVE_INMUEBLE_VALUE") {
+        return {
+            ...state,
+            Inmueble: {
+                ...state.Inmueble,
+                ...action.data,
             }
-        case "DISABLE_BTN_CONTINUE":
-            return {
-                ...state,
-                continueButtonDisable: action.data
-            }
-        case "NEXT_STEP_INDENTIFICATION":
-            return {
-                ...state,
-                stateFormIdentificacion: state.stateFormIdentificacion + action.data,
-                continueButtonDisable: true,
-            }
-        case "SAVE_IDENTIFICATION_VALUE":
-            return {
-                ...state,
-                cotizacion: {
-                    ...state.cotizacion,
-                    identification: {...state.cotizacion.identification, ...action.data},
-                }
-            }
-        case "SAVE_COTIZACION_NUMBER":
-            return {
-                ...state,
-                cotizacion: {
-                    ...state.cotizacion,
-                    number: action.data,
-                }
-            }
-        case "UPDATE_TYPE_DOC":
-            return {
-                ...state,
-                cotizacion: {
-                    ...state.cotizacion,
-                },
-                typeDocument: action.data,
-            }
-        case "SET_MAP_SHOW":
-            return {
-                ...state,
-                showMap: action.data,
-            }
-        case "SAVE_DESCRIPTION_CITY":
-            return {
-                ...state,
-                cityDescription: action.data,
-            }
-        case "RESTORE_COTIZACION":
-            return {
-                ...state,
-                cotizacion: action.data,
-                typeDocument: action.data.typeDocument,
-                stateFormIdentificacion: action.data.stateFormIdentificacion,
-                showMap: action.data.showMap,
-            }
-        case "NEXT_STEP":
-            return {
-                ...state,
-                cotizacion: {
-                    ...state.cotizacion,
-                    state: action.data
-                },
-            }
-        case "TYPE_INMUEBLE":
-            return {
-                ...state,
-                typeInmueble: action.data
-            }
-        case "SAVE_INMUEBLE_VALUE":
-            return {
-                ...state,
-                Inmueble: {
-                    ...state.Inmueble,
+        }
+    } else if (action.type === "SAVE_INMUEBLE_VALUE_SEGURIDAD") {
+        return {
+            ...state,
+            Inmueble: {
+                ...state.Inmueble,
+                seguridad:{
+                    ...state.Inmueble.seguridad,
                     ...action.data,
                 }
             }
-        case "SHOW_POP_UP_IDENTIFICATION":
-            return {
-                ...state,
-                showPopUp: action.data
-            }
-        case "DISABLE_NAME":
-            return {
-                ...state,
-                disabledName: action.data
-            }
-        case "DISABLE_LASTNAME":
-            return {
-                ...state,
-                disabledLastName: action.data
-            }
+        }
+    } else if (action.type === "SHOW_POP_UP_IDENTIFICATION") {
+        return {
+            ...state,
+            showPopUp: action.data
+        }
+    } else if (action.type === "DISABLE_NAME") {
+        return {
+            ...state,
+            disabledName: action.data
+        }
+    } else if (action.type === "DISABLE_LASTNAME") {
+        return {
+            ...state,
+            disabledLastName: action.data
+        }
+    } else if (action.type === "DISABLE_BUSSINESSNAME") {
+        return {
+            ...state,
+            disabledbusinessname: action.data
+        }
     }
     return state;
 };

@@ -11,7 +11,7 @@ import Risk from '../../../../services/Risks';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";
-import {typeInmueble} from "../../../../actionCreators";
+import {saveInmuebleValue, typeInmueble} from "../../../../actionCreators";
 
 class Index extends React.Component {
 
@@ -49,9 +49,17 @@ class Index extends React.Component {
         });
     }
 
-    active(item) {
+    active(item,type) {
         item = parseInt(item);
         store.dispatch(typeInmueble(item));
+        store.dispatch(saveInmuebleValue({
+            name: "type_risk",
+            value: type
+        }));
+        store.dispatch(saveInmuebleValue({
+            name: "type_risk_id",
+            value: item
+        }));
         this.setState({
             ...this.state,
             active: item,
@@ -78,9 +86,9 @@ class Index extends React.Component {
                                 {this.state.options.risks.map((option, key) =>
                                     <li key={option.riskId}
                                         data={option.riskId}
-                                        className={this.state.active === option.riskId ? 'active' : ''}
+                                        className={parseInt(this.state.active) === parseInt(option.riskId) ? 'active' : ''}
                                         onClick={(e) => {
-                                            this.active(option.riskId);
+                                            this.active(option.riskId,option.risk_type);
                                         }}>
                                         <i className={(option.riskId === "1") ? "home-icon" : "apartamento-icon"}></i>
                                         <p>{option.risk_type}</p>

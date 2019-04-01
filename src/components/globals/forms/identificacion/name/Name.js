@@ -16,7 +16,7 @@ class Name extends Component {
             let storeState = store.getState();
             let value = storeState.cotizacion.identification.name;
             let disabledName = storeState.disabledName;
-            if (this.state.value !== value || this.state.disabledName != disabledName) {
+            if (this.state.value !== value || this.state.disabledName !== disabledName) {
                 this.setState({
                     ...this.state,
                     value: value,

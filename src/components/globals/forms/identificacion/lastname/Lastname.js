@@ -16,7 +16,7 @@ class Lastname extends Component {
             let storeState = store.getState();
             let lastname = storeState.cotizacion.identification.lastname;
             let disabledLastName = storeState.disabledLastName;
-            if (this.state.value !== lastname || this.state.disabledName != disabledLastName) {
+            if (this.state.value !== lastname || this.state.disabledName !== disabledLastName) {
                 this.setState({
                     ...this.state,
                     value: lastname,

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {saveInmuebleValue} from '../../../../../actionCreators';
+import {saveInmuebleValueSeguridad} from '../../../../../actionCreators';
 
 import './Elementoseguridad.scss';
 
@@ -14,14 +14,8 @@ class Elementoseguridad extends Component {
         };
     }
 
-    validateEmpty(e) {
-        let error = false;
-        if (e.value.length < 1) error = true;
-        this.setState({
-            ...this.state,
-            error: error
-        });
-        store.dispatch(saveInmuebleValue(e));
+    saveValue(e) {
+        store.dispatch(saveInmuebleValueSeguridad(e));
     }
 
     render() {
@@ -32,38 +26,80 @@ class Elementoseguridad extends Component {
                 <ul className="items-checkboxes">
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="alarma" id="alarma"/>
+                            <input type="checkbox" name="alarma" id="alarma"
+                                   onChange={(e) => {
+                                       this.saveValue({
+                                           value: 1,
+                                           name: "alarma"
+                                       });
+                                   }}/>
                             <label htmlFor="alarma">Alarma monitoreada</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="cajafuerte" id="cajafuerte"/>
+                            <input type="checkbox" name="cajafuerte" id="cajafuerte"
+                                   onChange={(e) => {
+                                       this.saveValue({
+                                           value: 1,
+                                           name: "cajafuerte"
+                                       });
+                                   }}/>
                             <label htmlFor="cajafuerte">Puertas con control domótica</label>
                         </div>
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="puertascontroldomotico" id="puertascontroldomotico"/>
+                            <input type="checkbox" name="puertascontroldomotico" id="puertascontroldomotico"
+                                   onChange={(e) => {
+                                       this.saveValue({
+                                           value: 1,
+                                           name: "puertascontroldomotico"
+                                       });
+                                   }}/>
                             <label htmlFor="puertascontroldomotico">Caja fuerte</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="puertasseguridadblindada" id="puertasseguridadblindada"/>
+                            <input type="checkbox" name="puertasseguridadblindada" id="puertasseguridadblindada"
+                                   onChange={(e) => {
+                                       this.saveValue({
+                                           value: 1,
+                                           name: "puertasseguridadblindada"
+                                       });
+                                   }}/>
                             <label htmlFor="puertasseguridadblindada">Puerta de seguridad blindada</label>
                         </div>
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="circuitocarradotv" id="circuitocarradotv"/>
-                            <label htmlFor="circuitocarradotv">Circuito cerrado de televisión</label>
+                            <input type="checkbox" name="circuitocerradotv" id="circuitocerradotv"
+                                   onChange={(e) => {
+                                       this.saveValue({
+                                           value: 1,
+                                           name: "circuitocerradotv"
+                                       });
+                                   }}/>
+                            <label htmlFor="circuitocerradotv">Circuito cerrado de televisión</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="vigilanciapermanente" id="vigilanciapermanente"/>
+                            <input type="checkbox" name="vigilanciapermanente" id="vigilanciapermanente"
+                                   onChange={(e) => {
+                                       this.saveValue({
+                                           value: 1,
+                                           name: "vigilanciapermanente"
+                                       });
+                                   }}/>
                             <label htmlFor="vigilanciapermanente">Vigilancia permanente</label>
                         </div>
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="reguladordeboltaje" id="reguladordeboltaje"/>
-                            <label htmlFor="reguladordeboltaje">Regulador de voltaje</label>
+                            <input type="checkbox" name="reguladordevoltaje" id="reguladordevoltaje"
+                                   onChange={(e) => {
+                                       this.saveValue({
+                                           value: 1,
+                                           name: "reguladordevoltaje"
+                                       });
+                                   }}/>
+                            <label htmlFor="reguladordevoltaje">Regulador de voltaje</label>
                         </div>
                     </li>
 

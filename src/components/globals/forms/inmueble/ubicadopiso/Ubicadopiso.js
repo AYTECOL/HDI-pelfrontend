@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {saveIdentificationValue} from '../../../../../actionCreators';
+import {saveInmuebleValue} from '../../../../../actionCreators';
 
 class Ubicadopiso extends Component {
 
@@ -19,15 +19,21 @@ class Ubicadopiso extends Component {
             ...this.state,
             error: error
         });
-        store.dispatch(saveIdentificationValue(e));
+        store.dispatch(saveInmuebleValue(e));
     }
 
     render() {
         return (
-            <div className={"input-select form-group " + this.state.error}>
+            <div className={"input-select form-group "  + ((this.state.error) ? 'error' : '')}>
                 <label htmlFor="doc-type-value">Piso donde se encuentra ubicado</label>
-                <select name="pisoubicado" className="form-control">
-                    <option value="">Seleccione</option>
+                <select name="pisonumero" className="form-control"
+                        onBlur={(e) => {
+                            this.validateEmpty(e.target);
+                        }}
+                        onChange={(e) => {
+                            this.validateEmpty(e.target);
+                        }}
+                >
                     <option value="">Seleccione</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
