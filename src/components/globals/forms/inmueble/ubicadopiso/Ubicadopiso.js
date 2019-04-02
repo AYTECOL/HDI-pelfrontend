@@ -2,14 +2,37 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
+import AllFloors from "../../../../../services/Allfloors";
 
 class Ubicadopiso extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            error: false
+            error: false,
+            floors: []
         };
+
+        this.getFloors();
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.Inmueble.pisonumero;
+            if (this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    value: value,
+                });
+            }
+        });
+    }
+
+    async getFloors(){
+        let allFloors = await AllFloors.get();
+        this.setState({
+            ...this.state,
+            floors: allFloors,
+        });
     }
 
     validateEmpty(e) {
@@ -24,9 +47,9 @@ class Ubicadopiso extends Component {
 
     render() {
         return (
-            <div className={"input-select form-group "  + ((this.state.error) ? 'error' : '')}>
+            <div className={"input-select form-group " + ((this.state.error) ? 'error' : '')}>
                 <label htmlFor="doc-type-value">Piso donde se encuentra ubicado</label>
-                <select name="pisonumero" className="form-control"
+                <select name="pisonumero" className="form-control" value={this.state.value}
                         onBlur={(e) => {
                             this.validateEmpty(e.target);
                         }}
@@ -35,37 +58,9 @@ class Ubicadopiso extends Component {
                         }}
                 >
                     <option value="">Seleccione</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                    <option value="24">24</option>
-                    <option value="25">25</option>
-                    <option value="26">26</option>
-                    <option value="27">27</option>
-                    <option value="28">28</option>
-                    <option value="29">29</option>
-                    <option value="30">30</option>
-                    <option value="30+">Más de 30</option>
+                    {this.state.floors.map(option =>
+                        <option  key={option.floorCode} value={option.floorCode}>{option.answer}</option>
+                    )}
                 </select>
             </div>
         );

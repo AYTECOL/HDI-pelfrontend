@@ -1,6 +1,6 @@
 import Service from './Service';
 
-const BaseUrl = "https://zpnegbbupi.execute-api.us-east-1.amazonaws.com/dev/";
+const BaseUrl = "https://4gw3dqvq6g.execute-api.us-east-1.amazonaws.com/dev/";
 
 class Risks {
     static async get() {
@@ -13,11 +13,11 @@ class Risks {
                 risks: [
                     {
                         risk_type: "Casa",
-                        riskId: "1",
+                        riskId: 1,
                     },
                     {
                         risk_type: "Apartamento",
-                        riskId: "2",
+                        riskId: 2,
                     },
                 ]
             }

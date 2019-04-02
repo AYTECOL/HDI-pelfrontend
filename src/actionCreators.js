@@ -53,6 +53,10 @@ const restoreCotizacion = (cotizacion) => {
     return {type: "RESTORE_COTIZACION", data: cotizacion}
 };
 
+const restoreCotizacionRisk = (cotizacion) => {
+    return {type: "RESTORE_COTIZACION_RISK", data: cotizacion}
+};
+
 const NextStep = (step) => {
     return {type: "NEXT_STEP", data: step}
 };
@@ -113,5 +117,6 @@ export {
     disabledLastName,
     disabledName,
     saveInmuebleValueSeguridad,
-    disabledBusinessName
+    disabledBusinessName,
+    restoreCotizacionRisk
 };

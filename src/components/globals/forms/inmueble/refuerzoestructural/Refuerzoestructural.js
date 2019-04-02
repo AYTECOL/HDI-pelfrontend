@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
+import BuildYears from "../../../../../services/BuildYear";
 
 class Refuerzoestructural extends Component {
 
@@ -12,23 +13,42 @@ class Refuerzoestructural extends Component {
             anoconstruido: "",
             show: false,
             active: 0,
-            errorselect: false
+            errorselect: false,
+            valueOther: ""
         };
+
+        this.getYears();
 
         store.subscribe(async () => {
             let storeState = store.getState();
             let anoconstruido = storeState.Inmueble.anoconstruido;
+            let value = storeState.Inmueble.refuerzo;
+            let valueOther = storeState.Inmueble.anorefuerzo;
             let show = false;
-            if (this.state.anoconstruido !== anoconstruido && anoconstruido !== "") {
+            if (
+                (this.state.anoconstruido !== anoconstruido && anoconstruido !== "") ||
+                this.state.active !== value ||
+                this.state.valueOther !== valueOther
+            ) {
                 if (anoconstruido < 4) {
                     show = true;
                 }
                 this.setState({
                     ...this.state,
                     anoconstruido: anoconstruido,
-                    show: show
+                    show: show,
+                    active: value,
+                    valueOther: valueOther
                 });
             }
+        });
+    }
+
+    async getYears(){
+        let years = await BuildYears.get();
+        this.setState({
+            ...this.state,
+            years: years,
         });
     }
 
@@ -50,6 +70,7 @@ class Refuerzoestructural extends Component {
         this.setState({
             ...this.state,
             errorselect: error,
+            valueOther: e.value
         });
     }
 
@@ -61,21 +82,21 @@ class Refuerzoestructural extends Component {
                     <div className={"form-group " + this.state.error}>
                         <label htmlFor="doc-type-value">Cuenta con refuerzos estructurales</label>
                         <ul className="select-item">
-                            <li className={(this.state.active === "1") ? 'active' : ''}
+                            <li className={(this.state.active === 1) ? 'active' : ''}
                                 onClick={(e) => {
                                     this.validateEmpty({
-                                        data: "1",
-                                        value: "Si",
+                                        data: 1,
+                                        value: 1,
                                         name: "refuerzo"
                                     });
                                 }}
                             >Si
                             </li>
-                            <li className={(this.state.active === "2") ? 'active' : ''}
+                            <li className={(this.state.active === 2) ? 'active' : ''}
                                 onClick={(e) => {
                                     this.validateEmpty({
-                                        data: "2",
-                                        value: "No",
+                                        data: 2,
+                                        value: 2,
                                         name: "refuerzo"
                                     });
                                 }}
@@ -84,11 +105,12 @@ class Refuerzoestructural extends Component {
                         </ul>
                     </div>
                 </div>
-                {(this.state.active === "1") ? (
+                {(this.state.active === 1) ? (
                     <div className="col col-6">
-                        <div className={"input-select form-group " + (this.state.errorselect?'error':'')}>
+                        <div className={"input-select form-group " + (this.state.errorselect ? 'error' : '')}>
                             <label htmlFor="doc-type-value">En qué año se hizo el refuerzo estrucutral</label>
                             <select className="form-control"
+                                    value={this.state.valueOther}
                                     onChange={(e) => {
                                         this.saveValue({
                                             value: e.target.value,

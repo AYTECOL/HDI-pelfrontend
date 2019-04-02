@@ -10,12 +10,67 @@ class Elementoseguridad extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: false
+            error: false,
+            alarma: 0,
+            cajafuerte: 0,
+            puertascontroldomotico: 0,
+            puertasseguridadblindada: 0,
+            circuitocerradotv: 0,
+            vigilanciapermanente: 0,
+            reguladordevoltaje: 0,
         };
+
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.Inmueble.zona;
+            let alarma = storeState.Inmueble.seguridad.alarma;
+            let cajafuerte = storeState.Inmueble.seguridad.cajafuerte;
+            let puertascontroldomotico = storeState.Inmueble.seguridad.puertascontroldomotico;
+            let puertasseguridadblindada = storeState.Inmueble.seguridad.puertasseguridadblindada;
+            let circuitocerradotv = storeState.Inmueble.seguridad.circuitocerradotv;
+            let vigilanciapermanente = storeState.Inmueble.seguridad.vigilanciapermanente;
+            let reguladordevoltaje = storeState.Inmueble.seguridad.reguladordevoltaje;
+            if (
+                this.state.alarma !== alarma ||
+                this.state.cajafuerte !== cajafuerte ||
+                this.state.puertascontroldomotico !== puertascontroldomotico ||
+                this.state.puertasseguridadblindada !== puertasseguridadblindada ||
+                this.state.circuitocerradotv !== circuitocerradotv ||
+                this.state.vigilanciapermanente !== vigilanciapermanente ||
+                this.state.reguladordevoltaje !== reguladordevoltaje
+            ) {
+                let newValue = {};
+                newValue["storeState"] = storeState;
+                newValue["value"] = value;
+                newValue["alarma"] = alarma;
+                newValue["cajafuerte"] = cajafuerte;
+                newValue["puertascontroldomotico"] = puertascontroldomotico;
+                newValue["puertasseguridadblindada"] = puertasseguridadblindada;
+                newValue["circuitocerradotv"] = circuitocerradotv;
+                newValue["vigilanciapermanente"] = vigilanciapermanente;
+                newValue["reguladordevoltaje"] = reguladordevoltaje;
+                this.setState({
+                    ...this.state,
+                    ...newValue,
+                });
+            }
+        });
     }
 
     saveValue(e) {
+        if (this.state[e.name] === 1){
+            e.value = 0;
+        } else if( this.state[e.name] === 1 ){
+            e.value = 1;
+        }
         store.dispatch(saveInmuebleValueSeguridad(e));
+        let newValue = {};
+        newValue[e.name] = e.value;
+        this.setState({
+            ...this.state,
+            ...newValue
+        });
     }
 
     render() {
@@ -26,7 +81,8 @@ class Elementoseguridad extends Component {
                 <ul className="items-checkboxes">
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="alarma" id="alarma"
+                            <input type="checkbox" checked={(this.state.alarma === 0 ? false : 'checked')} name="alarma"
+                                   id="alarma"
                                    onChange={(e) => {
                                        this.saveValue({
                                            value: 1,
@@ -36,7 +92,8 @@ class Elementoseguridad extends Component {
                             <label htmlFor="alarma">Alarma monitoreada</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="cajafuerte" id="cajafuerte"
+                            <input type="checkbox" checked={(this.state.cajafuerte === 0 ? false : 'checked')}
+                                   name="cajafuerte" id="cajafuerte"
                                    onChange={(e) => {
                                        this.saveValue({
                                            value: 1,
@@ -48,7 +105,9 @@ class Elementoseguridad extends Component {
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="puertascontroldomotico" id="puertascontroldomotico"
+                            <input type="checkbox"
+                                   checked={(this.state.puertascontroldomotico === 0 ? false : 'checked')}
+                                   name="puertascontroldomotico" id="puertascontroldomotico"
                                    onChange={(e) => {
                                        this.saveValue({
                                            value: 1,
@@ -58,7 +117,9 @@ class Elementoseguridad extends Component {
                             <label htmlFor="puertascontroldomotico">Caja fuerte</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="puertasseguridadblindada" id="puertasseguridadblindada"
+                            <input type="checkbox"
+                                   checked={(this.state.puertasseguridadblindada === 0 ? false : 'checked')}
+                                   name="puertasseguridadblindada" id="puertasseguridadblindada"
                                    onChange={(e) => {
                                        this.saveValue({
                                            value: 1,
@@ -70,7 +131,8 @@ class Elementoseguridad extends Component {
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="circuitocerradotv" id="circuitocerradotv"
+                            <input type="checkbox" checked={(this.state.circuitocerradotv === 0 ? false : 'checked')}
+                                   name="circuitocerradotv" id="circuitocerradotv"
                                    onChange={(e) => {
                                        this.saveValue({
                                            value: 1,
@@ -80,7 +142,8 @@ class Elementoseguridad extends Component {
                             <label htmlFor="circuitocerradotv">Circuito cerrado de televisión</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="vigilanciapermanente" id="vigilanciapermanente"
+                            <input type="checkbox" checked={(this.state.vigilanciapermanente === 0 ? false : 'checked')}
+                                   name="vigilanciapermanente" id="vigilanciapermanente"
                                    onChange={(e) => {
                                        this.saveValue({
                                            value: 1,
@@ -92,7 +155,8 @@ class Elementoseguridad extends Component {
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" name="reguladordevoltaje" id="reguladordevoltaje"
+                            <input type="checkbox" checked={(this.state.reguladordevoltaje === 0 ? false : 'checked')}
+                                   name="reguladordevoltaje" id="reguladordevoltaje"
                                    onChange={(e) => {
                                        this.saveValue({
                                            value: 1,

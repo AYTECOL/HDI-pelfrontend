@@ -45,7 +45,7 @@ class Name extends Component {
                        type="text"
                        value={this.state.value}
                        className={(this.state.disabledName ? "disabled " : "") + "form-control"}
-                       disabled={this.state.disabledName===true?'true':'false'}
+                       disabled={this.state.disabledName === true ? 'true' : ''}
                        placeholder="Ingresa primer nombre"
                        onChange={(e) => {
                            this.validateEmpty(e.target);

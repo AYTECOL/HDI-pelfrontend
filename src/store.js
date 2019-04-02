@@ -58,7 +58,7 @@ const initialState = {
             vigilanciapermanente: "",
             reguladordevoltaje: "",
         },
-        inmuebleasegudado: "Si",
+        inmuebleasegudado: 1,
         inmuebleasegudadovalor: "",
         contenidoasegudado: "",
         contenidoasegudadovalor: "",
@@ -142,6 +142,12 @@ const reducer = (state = initialState, action) => {
             stateFormIdentificacion: action.data.stateFormIdentificacion,
             showMap: action.data.showMap,
         }
+    } else if (action.type === "RESTORE_COTIZACION_RISK") {
+        return {
+            ...state,
+            typeInmueble: action.data.type_risk,
+            Inmueble: action.data,
+        }
     } else if (action.type === "NEXT_STEP") {
         return {
             ...state,
@@ -168,7 +174,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             Inmueble: {
                 ...state.Inmueble,
-                seguridad:{
+                seguridad: {
                     ...state.Inmueble.seguridad,
                     ...action.data,
                 }

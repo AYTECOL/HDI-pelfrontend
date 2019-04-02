@@ -44,7 +44,7 @@ class Lastname extends Component {
                 <input name="lastname" id="lastname"
                        type="text"
                        value={this.state.value}
-                       disabled={this.state.disabledLastName===true?'true':'false'}
+                       disabled={this.state.disabledLastName === true ? 'true' : ''}
                        autoComplete="lastname"
                        className={(this.state.disabledLastName ? "disabled " : "") + "form-control"}
                        placeholder="Ingresa primer apellido"

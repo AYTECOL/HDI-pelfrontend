@@ -9,10 +9,10 @@ class SaveInmueble {
         let nCotizacion = store.cotizacion.number;
         let risks = store.Inmueble;
         let data = {
-            risk_type: risks.type_risk,
-            ririsks_id: risks.type_risk_id,
+            risk_type: risks.type_risk_id,
+            risks_id: risks.type_risk_id,
             floors_number: risks.numerodepisos,
-            location_floor: risks.numerodepisos,
+            location_floor: risks.pisonumero,
             location_zone: risks.zona,
             build_year: risks.anoconstruido,
             structure_reinforcement: risks.refuerzo,
@@ -28,7 +28,6 @@ class SaveInmueble {
             vigilancia_permanente: risks.seguridad.vigilanciapermanente,
             regulador_de_voltaje: risks.seguridad.reguladordevoltaje,
 
-
             inmueble_asegudado: risks.inmuebleasegudado,
             inmueble_asegudadovalor: risks.inmuebleasegudadovalor,
             contenido_asegudado: risks.contenidoasegudado,
@@ -38,10 +37,10 @@ class SaveInmueble {
             inmueble_asegudado_obras: risks.inmuebleasegudadoobras,
             inmueble_asegudado_obrasvalor: risks.inmuebleasegudadoobrasvalor,
             inmueble_asegudado_telefonos: risks.inmuebleasegudadotelefonos,
-            inmueble_asegudado_telefonosvalo: risks.inmuebleasegudadotelefonosvalor
+            inmueble_asegudado_telefonosvalor: risks.inmuebleasegudadotelefonosvalor
         };
         for (let i in data) if (data[i] === "") data[i] = '""';
-        return await Service.post(BaseUrl+nCotizacion,data);
+        return await Service.post(BaseUrl + nCotizacion, data);
     };
 }
 

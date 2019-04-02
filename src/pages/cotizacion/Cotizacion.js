@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 // Components
 import Submenu from '../../components/cotizaciones/submenu/Submenu';
 import Identificacion from '../../components/cotizaciones/identificacion/index/Index';
@@ -18,7 +17,7 @@ class Cotizacion extends Component {
                 <Submenu/>
                 <Identificacion/>
                 <Inmueble/>
-                <CotizacionForm />
+                <CotizacionForm/>
                 <Validaridentificacion/>
             </div>
         );

@@ -16,7 +16,7 @@ class Validaridentificacion extends Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let showPopUp = storeState.showPopUp;
-            if (this.state.showPopUp !== showPopUp ) {
+            if (this.state.showPopUp !== showPopUp) {
                 this.setState({
                     ...this.state,
                     showPopUp: showPopUp,
@@ -25,14 +25,14 @@ class Validaridentificacion extends Component {
         });
     }
 
-    hide(){
-        document.getElementById("doc-type-value").setAttribute("disabled","false");
+    hide() {
+        document.getElementById("doc-type-value").removeAttribute("disabled");
         store.dispatch(showPopupIdentification(false));
     }
 
     render() {
         return (
-            <div className={"modal validaridentificacion "+ ((this.state.showPopUp === true)?'show':'hide')}>
+            <div className={"modal validaridentificacion " + ((this.state.showPopUp === true) ? 'show' : 'hide')}>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -48,13 +48,14 @@ class Validaridentificacion extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <a  href="/" className="btn btn-secondary" data-dismiss="modal">Terminar
+                                <a href="/" className="btn btn-secondary" data-dismiss="modal">Terminar
                                 </a>
                                 <button type="button" className="btn btn-primary"
                                         onClick={(e) => {
                                             this.hide();
                                         }}
-                                >Ajustar</button>
+                                >Ajustar
+                                </button>
                             </div>
                         </div>
                         <div className="modal-footer">
