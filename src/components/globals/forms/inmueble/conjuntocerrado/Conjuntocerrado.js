@@ -13,6 +13,17 @@ class Conjuntocerrado extends Component {
             show: false,
             active: 0
         };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.Inmueble.cojuntocerrado;
+            if (this.state.active !== value) {
+                this.setState({
+                    ...this.state,
+                    active: value,
+                });
+            }
+        });
     }
 
     validateEmpty(e) {
@@ -36,7 +47,7 @@ class Conjuntocerrado extends Component {
                         onClick={(e) => {
                             this.validateEmpty({
                                 data: 1,
-                                value: "Si",
+                                value: 1,
                                 name: "cojuntocerrado"
                             });
                         }}
@@ -47,7 +58,7 @@ class Conjuntocerrado extends Component {
                         onClick={(e) => {
                             this.validateEmpty({
                                 data: 2,
-                                value: "No",
+                                value: 2,
                                 name: "cojuntocerrado"
                             });
                         }}

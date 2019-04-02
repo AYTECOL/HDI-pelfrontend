@@ -71,6 +71,7 @@ class MapBase extends React.Component {
                 markerPosition: e.latLng,
                 isMarkerShown: true,
             });
+            this.state.el.className = this.state.el.className.replace(" error", "");
             store.dispatch(saveIdentificationValue({
                 name: 'address',
                 value: response

@@ -17,6 +17,19 @@ class Asegurarcontenidos extends Component {
             errorValue: 0,
             value: ""
         };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.contenidoasegudado;
+            let value = storeState.Inmueble.contenidoasegudadovalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    active: active,
+                    value: value,
+                });
+            }
+        });
     }
 
     validateEmpty(e) {
@@ -61,7 +74,7 @@ class Asegurarcontenidos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         data: 1,
-                                        value: "Si",
+                                        value: 1,
                                         name: "contenidoasegudado"
                                     });
                                 }}
@@ -71,7 +84,7 @@ class Asegurarcontenidos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         data: 2,
-                                        value: "No",
+                                        value: 2,
                                         name: "contenidoasegudado"
                                     });
                                 }}

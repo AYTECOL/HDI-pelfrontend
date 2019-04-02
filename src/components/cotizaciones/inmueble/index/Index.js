@@ -28,14 +28,15 @@ class Index extends React.Component {
         };
 
         this.getRisks();
-
         store.subscribe(async () => {
             let storeState = store.getState();
             let typeInmueble = storeState.typeInmueble;
-            if (this.state.typeInmueble !== typeInmueble) {
+            let type = storeState.Inmueble.type_risk_id;
+            if (this.state.typeInmueble !== typeInmueble || (type !== "" && this.state.active !== type)) {
                 this.setState({
                     ...this.state,
                     typeInmueble: typeInmueble,
+                    active: type
                 });
             }
         });
@@ -49,8 +50,7 @@ class Index extends React.Component {
         });
     }
 
-    active(item,type) {
-        item = parseInt(item);
+    active(item, type) {
         store.dispatch(typeInmueble(item));
         store.dispatch(saveInmuebleValue({
             name: "type_risk",
@@ -88,9 +88,9 @@ class Index extends React.Component {
                                         data={option.riskId}
                                         className={parseInt(this.state.active) === parseInt(option.riskId) ? 'active' : ''}
                                         onClick={(e) => {
-                                            this.active(option.riskId,option.risk_type);
+                                            this.active(parseInt(option.riskId), parseInt(option.riskId));
                                         }}>
-                                        <i className={(option.riskId === "1") ? "home-icon" : "apartamento-icon"}></i>
+                                        <i className={(parseInt(option.riskId) === 1) ? "home-icon" : "apartamento-icon"}></i>
                                         <p>{option.risk_type}</p>
                                     </li>
                                 )}

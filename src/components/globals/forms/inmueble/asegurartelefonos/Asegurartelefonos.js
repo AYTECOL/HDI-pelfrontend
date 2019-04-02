@@ -17,6 +17,19 @@ class Asegurartelefonos extends Component {
             errorValue: 0,
             value: ""
         };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.inmuebleasegudadotelefonos;
+            let value = storeState.Inmueble.inmuebleasegudadotelefonosvalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    active: active,
+                    value: value,
+                });
+            }
+        });
     }
 
     validateEmpty(e) {
@@ -61,7 +74,7 @@ class Asegurartelefonos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         data: 1,
-                                        value: "Si",
+                                        value: 1,
                                         name: "inmuebleasegudadotelefonos"
                                     });
                                 }}
@@ -71,7 +84,7 @@ class Asegurartelefonos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         data: 2,
-                                        value: "No",
+                                        value: 2,
                                         name: "inmuebleasegudadotelefonos"
                                     });
                                 }}

@@ -4,6 +4,7 @@ import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 
 import './Construidocon.scss';
+import BuildMaterial from "../../../../../services/BuildMaterial";
 
 class Construidocon extends Component {
 
@@ -12,8 +13,30 @@ class Construidocon extends Component {
         this.state = {
             error: false,
             show: false,
-            active: 0
+            active: 0,
+            materials: []
         };
+
+        this.getMaterials();
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.Inmueble.construidocon;
+            if (this.state.active !== value) {
+                this.setState({
+                    ...this.state,
+                    active: value,
+                });
+            }
+        });
+    }
+
+    async getMaterials(){
+        let materials = await BuildMaterial.get();
+        this.setState({
+            ...this.state,
+            materials: materials,
+        });
     }
 
     validateEmpty(e) {
@@ -29,124 +52,35 @@ class Construidocon extends Component {
 
     render() {
         return (
-            <div className={"gridgrid form-group " + (this.state.error?'error':'')}>
+            <div className={"gridgrid form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="doc-type-value">El inmueble está construido con</label>
-                <div className="row grid-select">
-                    <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === 1) ? 'active' : '')}
-                             onClick={(e) => {
-                                 this.validateEmpty({
-                                     data: 1,
-                                     value: 1,
-                                     name: "construidocon"
-                                 });
-                             }}
-                        >
-                            <div className="col col-12 no-padding">
-                                <i className="concreto"></i>
-                            </div>
-                            <div className="col col-12 no-padding">
-                                <p>Murosen concreto</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === 2) ? 'active' : '')}
-                             onClick={(e) => {
-                                 this.validateEmpty({
-                                     data: 2,
-                                     value: 2,
-                                     name: "construidocon"
-                                 });
-                             }}
-                        >
-                            <div className="col col-12 no-padding">
-                                <i className="ladrillo"></i>
-                            </div>
-                            <div className="col col-12 no-padding">
-                                <p>Mampostería (ladrillo)</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === 3) ? 'active' : '')}
-                             onClick={(e) => {
-                                 this.validateEmpty({
-                                     data: 3,
-                                     value: 3,
-                                     name: "construidocon"
-                                 });
-                             }}
-                        >
-                            <div className="col col-12 no-padding">
-                                <i className="aceror"></i>
-                            </div>
-                            <div className="col col-12 no-padding">
-                                <p>Acero reforzado</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div className="row grid-select">
-                    <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === 4) ? 'active' : '')}
+                {this.state.materials.map((option, key) =>
+                    <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
+                        <div className={"select-item row " + ((this.state.active === parseInt(option.buildMaterialCode)) ? 'active' : '')}
                              onClick={(e) => {
                                  this.validateEmpty({
-                                     data: 4,
-                                     value: 4,
+                                     data: option.buildMaterialCode,
+                                     value: option.buildMaterialCode,
                                      name: "construidocon"
                                  });
                              }}
                         >
                             <div className="col col-12 no-padding">
-                                <i className="bahareque"></i>
+                                {(parseInt(option.buildMaterialCode) === 1) ? (<i className="concreto"></i>) : ("")}
+                                {(parseInt(option.buildMaterialCode) === 2) ? (<i className="ladrillo"></i>) : ("")}
+                                {(parseInt(option.buildMaterialCode) === 3) ? (<i className="aceror"></i>) : ("")}
+                                {(parseInt(option.buildMaterialCode) === 4) ? (<i className="bahareque"></i>) : ("")}
+                                {(parseInt(option.buildMaterialCode) === 5) ? (<i className="madera"></i>) : ("")}
+                                {(parseInt(option.buildMaterialCode) === 6) ? (<i className="adobe"></i>) : ("")}
                             </div>
                             <div className="col col-12 no-padding">
-                                <p>Bahareque</p>
+                                <p>{option.answer}</p>
                             </div>
                         </div>
                     </div>
-
-                    <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === 5) ? 'active' : '')}
-                             onClick={(e) => {
-                                 this.validateEmpty({
-                                     data: 5,
-                                     value: 5,
-                                     name: "construidocon"
-                                 });
-                             }}
-                        >
-                            <div className="col col-12 no-padding">
-                                <i className="madera"></i>
-                            </div>
-                            <div className="col col-12 no-padding">
-                                <p>Madera</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === 6) ? 'active' : '')}
-                             onClick={(e) => {
-                                 this.validateEmpty({
-                                     data: 6,
-                                     value: 6,
-                                     name: "construidocon"
-                                 });
-                             }}
-                        >
-                            <div className="col col-12 no-padding">
-                                <i className="adobe"></i>
-                            </div>
-                            <div className="col col-12 no-padding">
-                                <p>Adobe</p>
-                            </div>
-                        </div>
-                    </div>
+                )}
                 </div>
             </div>
         );

@@ -3,8 +3,9 @@ import {withRouter} from 'react-router-dom';
 
 import './Submenu.scss';
 import store from "../../../store";
-import {restoreCotizacion, saveCotizacionNumber} from "../../../actionCreators";
+import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actionCreators";
 import Identifications from "../../../services/GetIdentifications";
+import RiskData from "../../../services/RiskData";
 
 class Submenu extends Component {
 
@@ -33,15 +34,14 @@ class Submenu extends Component {
 
     async getRowById(id) {
         let cotizacion = await Identifications.getById(id);
-        // cotizacion.state = "3";
         if (typeof cotizacion.identification !== 'undefined') {
             let path = '/cotizacion/' + cotizacion.state + '/' + id;
-            if (this.state.path !== path) {
-                // window.location.href = path;
-            }
             store.dispatch(restoreCotizacion(cotizacion));
-            if( cotizacion.state === "2" ){
-
+            if (cotizacion.state >= 2) {
+                let riskData = await RiskData.get(id);
+                if (riskData !== null) {
+                    store.dispatch(restoreCotizacionRisk(riskData));
+                }
             }
         }
     }

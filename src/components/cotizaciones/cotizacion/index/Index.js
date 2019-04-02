@@ -1,7 +1,6 @@
 import React from 'react';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
-
 //Component
 import Tab1 from "../tab1/Tab1";
 
@@ -15,7 +14,7 @@ class Index extends React.Component {
     }
 
     render() {
-        if (this.state.step !== 3) return <div> </div>;
+        if (this.state.step !== 3) return <div></div>;
         return (
             <form autoComplete="off" className="index-form contizacion-form">
                 <div className="container">
@@ -49,7 +48,7 @@ class Index extends React.Component {
                     </div>
 
                     <div className="tabs-header text-center">
-                        <Tab1 />
+                        <Tab1/>
                     </div>
 
                 </div>

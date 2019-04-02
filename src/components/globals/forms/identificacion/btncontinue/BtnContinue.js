@@ -2,17 +2,16 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {
+    disabledBusinessName,
+    disabledLastName,
+    disabledName,
     NextStep,
     nextStepIndentification,
     saveIdentificationValue,
-    showPopupIdentification,
-    disabledName,
-    disabledLastName,
-    disabledBusinessName
+    showPopupIdentification
 } from '../../../../../actionCreators';
 import SaveIdentifications from '../../../../../services/SaveIdentifications';
 import {Link, withRouter} from "react-router-dom";
-
 // Services
 import Consultapersonas from '../../../../../services/Consultapersonas';
 
@@ -47,7 +46,7 @@ class BtnContinue extends Component {
                     if (storeState.cotizacion.identification[item] === "" && this.state.cotizacionExclude.indexOf(item) === -1) {
                         i++;
                     }
-                    if (true){
+                    if (true) {
 
                     }
                 }
@@ -82,26 +81,27 @@ class BtnContinue extends Component {
                 });
                 let code = storeState.cotizacion.identification.code;
                 let value = storeState.cotizacion.identification.value;
-                if (code === "37")  value = value.replace("-", "",value);
-                document.getElementById("doc-type-value").setAttribute("disabled","disabled");
-                let persona = await Consultapersonas.get(code,value);
-                if ( persona.consultarPersonaRs.personaRestringida === true ) {
+                if (code === "37") value = value.replace("-", "", value);
+                document.getElementById("doc-type-value").setAttribute("disabled", "disabled");
+                let persona = await Consultapersonas.get(code, value);
+                if (persona.consultarPersonaRs.personaRestringida === true) {
+                    document.getElementById("doc-type-value").removeAttribute("disabled");
                     store.dispatch(showPopupIdentification(true));
-                }else{
+                } else {
                     store.dispatch(nextStepIndentification());
-                    if ( persona.consultarPersonaRs.personaEncontradaIAXIS === true ){
+                    if (persona.consultarPersonaRs.personaEncontradaIAXIS === true) {
                         let personaData = persona.consultarPersonaRs.persona;
                         let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;
 
-                        personaData = personaData[(personaType===2?'personaJuridica':'personaNatural')];
-                        if ( typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '' ) {
+                        personaData = personaData[(personaType === 2 ? 'personaJuridica' : 'personaNatural')];
+                        if (typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '') {
                             store.dispatch(saveIdentificationValue({
                                 name: 'name',
                                 value: personaData.primerNombre
                             }));
                             store.dispatch(disabledName());
                         }
-                        if ( typeof personaData.primerApellido !== 'undefined' && personaData.primerApellido !== '' ) {
+                        if (typeof personaData.primerApellido !== 'undefined' && personaData.primerApellido !== '') {
                             store.dispatch(saveIdentificationValue({
                                 name: 'lastname',
                                 value: personaData.primerApellido
@@ -109,7 +109,7 @@ class BtnContinue extends Component {
                             store.dispatch(disabledLastName());
                         }
 
-                        if ( typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '' ) {
+                        if (typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '') {
                             store.dispatch(saveIdentificationValue({
                                 name: 'businessname',
                                 value: personaData.razonSocial
@@ -122,8 +122,8 @@ class BtnContinue extends Component {
                 break;
             case 1:
                 store.dispatch(NextStep(2));
-                SaveIdentifications.save();
-                this.props.history.push('/cotizacion/2/' + storeState.cotizacion.number);
+                await SaveIdentifications.save();
+                window.location.href = '/cotizacion/2/' + storeState.cotizacion.number;
                 break;
         }
     }

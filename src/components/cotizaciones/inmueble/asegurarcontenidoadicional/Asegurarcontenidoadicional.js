@@ -6,13 +6,14 @@ import Asegurartelefonos from '../../../../components/globals/forms/inmueble/ase
 import store from "../../../../store";
 
 import './Asegurarcontenidoadicional.scss';
+import {saveInmuebleValue} from "../../../../actionCreators";
 
 class Asegurarcontenidoadicional extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            active: "No"
+            active: 2
         };
         store.subscribe(async () => {
             let storeState = store.getState();
@@ -22,12 +23,16 @@ class Asegurarcontenidoadicional extends React.Component {
                     ...this.state,
                     active: contenidoasegudado,
                 });
+                store.dispatch(saveInmuebleValue({
+                    name: "inmuebleasegudado",
+                    value: contenidoasegudado,
+                }));
             }
         });
     }
 
     render() {
-        if (this.state.active === "No") return <div></div>;
+        if (this.state.active === 2) return <div></div>;
         return (
             <div className="row justify-content-center extraform">
                 <div className="col col-11">
