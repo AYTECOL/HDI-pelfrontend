@@ -58,7 +58,7 @@ class Construidocon extends Component {
                 <div className="row grid-select">
                 {this.state.materials.map((option, key) =>
                     <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === parseInt(option.buildMaterialCode)) ? 'active' : '')}
+                        <div className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: option.buildMaterialCode,

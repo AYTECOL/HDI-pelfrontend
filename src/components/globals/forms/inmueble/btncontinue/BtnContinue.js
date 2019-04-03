@@ -11,21 +11,28 @@ class BtnContinue extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            disabled: false
+        };
 
         store.subscribe(() => {
             let storeState = store.getState();
-            let totalErrors;
+            let totalErrors = 0;
             let inmueble = storeState.Inmueble;
+            let disabled = false;
             for (let i in inmueble) {
                 let data = inmueble[i];
-                for (let o in data) {
-                    let d = data[o];
-                    if (d === "") {
-                        totalErrors++;
-                    }
+                if (i !== "seguridad" && data === ""){
+                    totalErrors++;
                 }
             }
+            if (totalErrors !== 0) {
+                disabled = true;
+            }
+            this.setState({
+                ...this.state,
+                disabled: disabled
+            });
         });
     }
 
@@ -56,10 +63,11 @@ class BtnContinue extends Component {
                         type="button">Guardar y salir
                 </button>
                 <button type="button"
+                        disabled={this.state.disabled}
                         onClick={(e) => {
                             this.saveServiceContinue();
                         }}
-                        className={"btn btn-primary"}>Continuar
+                        className={"btn btn-primary "+(this.state.disabled===true?'disabled':'')}>Continuar
                 </button>
             </div>
         );

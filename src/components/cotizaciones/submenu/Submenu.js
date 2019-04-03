@@ -35,7 +35,6 @@ class Submenu extends Component {
     async getRowById(id) {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
-            let path = '/cotizacion/' + cotizacion.state + '/' + id;
             store.dispatch(restoreCotizacion(cotizacion));
             if (cotizacion.state >= 2) {
                 let riskData = await RiskData.get(id);

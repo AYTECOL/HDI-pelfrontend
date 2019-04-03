@@ -1,7 +1,6 @@
 import Service from './Service';
 
-const Url = "https://jdo0rhqwmc.execute-api.us-east-1.amazonaws.com/dev/quote";
-const UrlById = "https://jdo0rhqwmc.execute-api.us-east-1.amazonaws.com/dev/quote/";
+const Url = "https://mnkg7plc7i.execute-api.us-east-1.amazonaws.com/dev/quote/";
 
 class GetIdentifications {
     static async get() {
@@ -9,7 +8,7 @@ class GetIdentifications {
     };
 
     static async getById(id) {
-        let items = await Service.get(UrlById + id);
+        let items = await Service.get(Url + id);
         if (typeof items.quote !== 'undefined') {
             items = items.quote;
             return {

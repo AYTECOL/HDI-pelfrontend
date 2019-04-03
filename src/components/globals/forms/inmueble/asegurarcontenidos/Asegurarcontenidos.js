@@ -25,8 +25,8 @@ class Asegurarcontenidos extends Component {
             if (this.state.active !== active || this.state.value !== value) {
                 this.setState({
                     ...this.state,
-                    active: active,
                     value: value,
+                    active: active,
                 });
             }
         });
@@ -34,10 +34,6 @@ class Asegurarcontenidos extends Component {
 
     validateEmpty(e) {
         store.dispatch(saveInmuebleValue(e));
-        this.setState({
-            ...this.state,
-            active: e.data
-        });
     }
 
     validateValue(e) {
@@ -80,11 +76,11 @@ class Asegurarcontenidos extends Component {
                                 }}
                             >Si
                             </li>
-                            <li className={((this.state.active === 2) ? 'active' : '')}
+                            <li className={((this.state.active === 0) ? 'active' : '')}
                                 onClick={(e) => {
                                     this.validateEmpty({
-                                        data: 2,
-                                        value: 2,
+                                        data: 0,
+                                        value: 0,
                                         name: "contenidoasegudado"
                                     });
                                 }}

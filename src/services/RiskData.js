@@ -1,6 +1,6 @@
 import Service from './Service';
 
-const BaseUrl = "https://4gw3dqvq6g.execute-api.us-east-1.amazonaws.com/dev/";
+const BaseUrl = "https://mnkg7plc7i.execute-api.us-east-1.amazonaws.com/dev/";
 
 class RiskData {
     static async get(id) {
