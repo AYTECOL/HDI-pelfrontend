@@ -83,8 +83,8 @@ class Asegurarobras extends Component {
                             <li className={((this.state.active === 2) ? 'active' : '')}
                                 onClick={(e) => {
                                     this.validateEmpty({
-                                        data: 2,
-                                        value: 2,
+                                        data: 0,
+                                        value: 0,
                                         name: "inmuebleasegudadoobras"
                                     });
                                 }}

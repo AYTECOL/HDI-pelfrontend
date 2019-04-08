@@ -6,33 +6,45 @@ import AllFloors from "../../../../../services/Allfloors";
 
 class Ubicadopiso extends Component {
 
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
             error: false,
             floors: []
         };
-
-        this.getFloors();
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let value = storeState.Inmueble.pisonumero;
-            if (this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    value: value,
-                });
-            }
-        });
+        if (this._isMounted) {
+            store.subscribe(async () => {
+                let storeState = store.getState();
+                let value = storeState.Inmueble.pisonumero;
+                if (this.state.value !== value) {
+                    this.setState({
+                        ...this.state,
+                        value: value,
+                    });
+                }
+            });
+        }
     }
 
-    async getFloors(){
-        let allFloors = await AllFloors.get();
-        this.setState({
-            ...this.state,
-            floors: allFloors,
-        });
+    componentDidMount() {
+        this._isMounted = true;
+        this.getFloors();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    async getFloors() {
+        if (this._isMounted) {
+            let allFloors = await AllFloors.get();
+            this.setState({
+                ...this.state,
+                floors: allFloors,
+            });
+        }
     }
 
     validateEmpty(e) {
@@ -59,7 +71,7 @@ class Ubicadopiso extends Component {
                 >
                     <option value="">Seleccione</option>
                     {this.state.floors.map(option =>
-                        <option  key={option.floorCode} value={option.floorCode}>{option.answer}</option>
+                        <option key={option.floorCode} value={option.floorCode}>{option.answer}</option>
                     )}
                 </select>
             </div>

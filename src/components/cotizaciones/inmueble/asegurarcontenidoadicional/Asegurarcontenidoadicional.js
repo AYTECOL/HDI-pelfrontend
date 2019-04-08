@@ -6,7 +6,6 @@ import Asegurartelefonos from '../../../../components/globals/forms/inmueble/ase
 import store from "../../../../store";
 
 import './Asegurarcontenidoadicional.scss';
-import {saveInmuebleValue} from "../../../../actionCreators";
 
 class Asegurarcontenidoadicional extends React.Component {
 

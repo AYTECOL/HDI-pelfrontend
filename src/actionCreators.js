@@ -12,19 +12,6 @@ const setAddresMap = (data) => {
     return {type: "SET_ADDRES_MAP", data};
 };
 
-const reqAddress = (address) => {
-    return dispatch => {
-        return GetAddresInfo.get(address.value)
-            .then(response => {
-                let map = {
-                    longitude: response.lng,
-                    latitude: response.lat
-                };
-                return {type: "SET_ADDRES_MAP", map};
-            });
-    };
-};
-
 const nextStepIndentification = () => {
     return {type: "NEXT_STEP_INDENTIFICATION", data: 1};
 };
@@ -99,6 +86,11 @@ const saveInmuebleValueSeguridad = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: data}
 };
 
+// Dada Services
+const saveAllfloors = (data) => {
+    return {type: "SAVE_ALL_FLOORS", data: data}
+};
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -106,7 +98,6 @@ export {
     continueButtonDisable,
     saveCotizacionNumber,
     updateTypeDoc,
-    reqAddress,
     mapShow,
     saveDescriptionCity,
     restoreCotizacion,
@@ -118,5 +109,6 @@ export {
     disabledName,
     saveInmuebleValueSeguridad,
     disabledBusinessName,
-    restoreCotizacionRisk
+    restoreCotizacionRisk,
+    saveAllfloors
 };

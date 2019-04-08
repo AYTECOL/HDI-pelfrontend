@@ -83,8 +83,8 @@ class Asegurarjoyas extends Component {
                             <li className={((this.state.active === 2) ? 'active' : '')}
                                 onClick={(e) => {
                                     this.validateEmpty({
-                                        data: 2,
-                                        value: 2,
+                                        data: 0,
+                                        value: 0,
                                         name: "inmuebleasegudadojoyas"
                                     });
                                 }}
@@ -96,8 +96,8 @@ class Asegurarjoyas extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12  col-md-6">
                         <div className={"form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="doc-type-value">Valor de joyas</label>
-                            <input name="value" id="doc-type-value"
+                            <label htmlFor="inmuebleasegudadojoyasvalor">Valor de joyas</label>
+                            <input name="value" id="inmuebleasegudadojoyasvalor"
                                    type="text"
                                    value={this.state.value}
                                    className={"form-control"}

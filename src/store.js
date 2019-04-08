@@ -68,7 +68,10 @@ const initialState = {
         inmuebleasegudadoobrasvalor: "",
         inmuebleasegudadotelefonos: "",
         inmuebleasegudadotelefonosvalor: "",
-    }
+    },
+
+    // Dada Services
+    Allfloors: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -199,6 +202,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             disabledbusinessname: action.data
+        }
+    } else if( action.type === "SAVE_ALL_FLOORS" ){
+        return {
+            ...state,
+            Allfloors: action.data
         }
     }
     return state;

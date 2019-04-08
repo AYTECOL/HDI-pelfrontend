@@ -16,12 +16,11 @@ class Counter extends Component {
             let storeState = store.getState();
             let errors = 0;
             let inmueble = storeState.Inmueble;
-            let limitRisk = 6;
-            let total = limitRisk;
+            let total = 5;
+            let elements = [];
 
             if (inmueble.type_risk === 2) {
                 total++;
-                limitRisk++;
             }
 
             if (inmueble.type_risk === 2 && inmueble.pisonumero === "") errors++;
@@ -31,9 +30,15 @@ class Counter extends Component {
             if (inmueble.zona === "") errors++;
             if (inmueble.numerodepisos === "") errors++;
 
+            if (inmueble.refuerzo === 1){
+                total++;
+                if (inmueble.anorefuerzo === "") errors++;
+            }
+
+            if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 0) errors++;
+
             if (inmueble.inmuebleasegudado === 1){
                 total++;
-
                 if (inmueble.inmuebleasegudadovalor === "") errors++;
             }
             if (inmueble.contenidoasegudado === 1){
@@ -44,32 +49,16 @@ class Counter extends Component {
             if (inmueble.inmuebleasegudadojoyas === 1){
                 total++;
                 if (inmueble.inmuebleasegudadojoyasvalor === "") errors++;
-            }else{
-                if( total > limitRisk ) total--;
             }
             if (inmueble.inmuebleasegudadoobras === 1){
                 total++;
                 if (inmueble.inmuebleasegudadoobrasvalor === "") errors++;
-            }else{
-                if( total > limitRisk ) total--;
             }
             if (inmueble.inmuebleasegudadotelefonos === 1){
                 total++;
                 if (inmueble.inmuebleasegudadotelefonosvalor === "") errors++;
-            }else{
-                if( total > limitRisk ) total--;
-            }
-            if (inmueble.refuerzo === 1){
-                total++;
-                if (inmueble.anorefuerzo === "") errors++;
             }
 
-            if (inmueble.inmuebleasegudado === 2 && inmueble.contenidoasegudado === 0) errors++;
-            if (inmueble.inmuebleasegudado === 2 && inmueble.contenidoasegudado === "") errors++;
-            if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) errors++;
-
-
-            // console.log(errors);
             let ok = total - errors;
             this.setState({
                 ...this.state,
