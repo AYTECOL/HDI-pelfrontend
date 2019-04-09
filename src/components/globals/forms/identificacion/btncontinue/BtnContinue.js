@@ -12,6 +12,12 @@ import {
 } from '../../../../../actionCreators';
 import SaveIdentifications from '../../../../../services/SaveIdentifications';
 import {Link, withRouter} from "react-router-dom";
+
+// Components
+import Name from '../name/Name';
+import LastName from '../lastname/Lastname';
+import RazonSocial from '../razonsocial/Razonsocial';
+
 // Services
 import Consultapersonas from '../../../../../services/Consultapersonas';
 
@@ -46,8 +52,17 @@ class BtnContinue extends Component {
                     if (storeState.cotizacion.identification[item] === "" && this.state.cotizacionExclude.indexOf(item) === -1) {
                         i++;
                     }
-                    if (true) {
-
+                    if (typeDoc === 2) {
+                        if (item === "businessname" && storeState.cotizacion.identification[item].length > RazonSocial.limit()){
+                            i++;
+                        }
+                    }else{
+                        if (item === "name" && storeState.cotizacion.identification[item].length > Name.limit()){
+                            i++;
+                        }
+                        if (item === "lastname" && storeState.cotizacion.identification[item].length > LastName.limit()){
+                            i++;
+                        }
                     }
                 }
                 if (i === 0) {
@@ -66,7 +81,6 @@ class BtnContinue extends Component {
                     stateFormIdentificacion: storeState.stateFormIdentificacion,
                 });
             }
-            console.log(storeState.cotizacion.state);
         });
     }
 

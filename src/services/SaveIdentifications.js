@@ -1,9 +1,7 @@
 import Service from './Service';
 import Store from '../store';
 
-const Url = "https://jdo0rhqwmc.execute-api.us-east-1.amazonaws.com/dev/quote";
-
-//const Url = "http://127.0.0.1:8888/quote";
+const Url = "https://mnkg7plc7i.execute-api.us-east-1.amazonaws.com/dev/quote";
 
 class IdentificationsCities {
     static async save() {
@@ -14,6 +12,7 @@ class IdentificationsCities {
             document_number: storeState.cotizacion.identification.value,
             business_name: storeState.cotizacion.identification.businessname,
             city: parseInt(storeState.cotizacion.identification.city),
+            department: parseInt(storeState.cotizacion.identification.department),
             address: storeState.cotizacion.identification.address,
             address_additional: storeState.cotizacion.identification.addressadditional,
             latitude: storeState.mapsOptions.latitude,

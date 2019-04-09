@@ -1,5 +1,3 @@
-import GetAddresInfo from './services/AddresCoordenates';
-
 // Primer Formulario
 const saveIdentificationValue = (element) => {
     let name = element.name;
@@ -90,6 +88,9 @@ const saveInmuebleValueSeguridad = (element) => {
 const saveAllfloors = (data) => {
     return {type: "SAVE_ALL_FLOORS", data: data}
 };
+const saveAllInsurableLimits = (data) => {
+    return {type: "SAVE_ALL_INSURABLE_LIMITS", data: data}
+};
 
 export {
     nextStepIndentification,
@@ -110,5 +111,6 @@ export {
     saveInmuebleValueSeguridad,
     disabledBusinessName,
     restoreCotizacionRisk,
-    saveAllfloors
+    saveAllfloors,
+    saveAllInsurableLimits
 };

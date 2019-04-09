@@ -2,20 +2,26 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {saveIdentificationValue} from '../../../../../actionCreators';
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Razonsocial extends Component {
+
+    static limit(){
+        return 61;
+    }
 
     constructor(props) {
         super(props);
         this.state = {
             error: false,
-            value: ""
+            value: "",
         };
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.cotizacion.identification.businessname;
             let disabledbusinessname = storeState.disabledbusinessname;
             if (this.state.value !== value || this.state.disabledbusinessname !== disabledbusinessname) {
+                value = Helpers.toCapitalize(value);
                 this.setState({
                     ...this.state,
                     value: value,
@@ -26,14 +32,15 @@ class Razonsocial extends Component {
     }
 
     validateEmpty(e) {
+        e.value = Helpers.toCapitalize(e.value);
         let error = false;
-        if (e.value.length < 1) error = true;
+        if (e.value.length < 1 || e.value.length > Razonsocial.limit()) error = true;
+        store.dispatch(saveIdentificationValue(e));
         this.setState({
             ...this.state,
             error: error,
             value: e.value
         });
-        store.dispatch(saveIdentificationValue(e));
     }
 
     render() {

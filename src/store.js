@@ -22,6 +22,7 @@ const initialState = {
             lastname: "",
             businessname: "",
             city: "",
+            department: "",
             address: "",
             addressadditional: "",
         }
@@ -71,7 +72,8 @@ const initialState = {
     },
 
     // Dada Services
-    Allfloors: []
+    Allfloors: [],
+    allInsurableLimits: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -207,6 +209,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             Allfloors: action.data
+        }
+    }else if( action.type === "SAVE_ALL_INSURABLE_LIMITS" ){
+        return {
+            ...state,
+            allInsurableLimits: action.data
         }
     }
     return state;

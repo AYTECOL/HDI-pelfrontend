@@ -187,6 +187,16 @@ $color-font-btn-primary: #404040;
     .list-items {
       margin-top: -15px !important;
     }
+
+    &.no-icon::after{
+      display: none;
+    }
+
+    .select-item{
+      //li{
+      //  border: 1px solid $error-fields;
+      //}
+    }
   }
 
   label {
