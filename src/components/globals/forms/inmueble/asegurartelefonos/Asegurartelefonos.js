@@ -129,8 +129,8 @@ class Asegurartelefonos extends Component {
                                    }}/>
                             <small className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Asegurartelefonos.min())} - Máximo. {Masknumbermoney.formatToMask(Asegurartelefonos.max())}</small>
                             <small
-                                className={"form-text only-errors " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
-                                favor ingrese un valor.
+                                className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
+                                Ingrese el valor asegurado de Teléfonos Móviles.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor

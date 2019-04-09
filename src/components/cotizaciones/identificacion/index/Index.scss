@@ -33,6 +33,12 @@
     }
   }
 
+  &.contizacion-form{
+    .container {
+      padding-bottom: 0;
+    }
+  }
+
   .return-button {
     position: absolute;
     left: -100px;

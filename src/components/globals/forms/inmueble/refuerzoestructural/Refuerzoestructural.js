@@ -113,7 +113,7 @@ class Refuerzoestructural extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-6">
                         <div className={"anorefuerzo input-select form-group " + (this.state.errorselect ? 'error' : '')}>
-                            <label htmlFor="anorefuerzo">En qué año se hizo el refuerzo estrucutral</label>
+                            <label htmlFor="anorefuerzo">En qué año se hizo el refuerzo estructural</label>
                             <select className="anorefuerzo form-control"
                                     name="anorefuerzo"
                                     value={this.state.valueOther}

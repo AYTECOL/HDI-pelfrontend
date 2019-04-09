@@ -2,7 +2,9 @@ import React from 'react';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 //Component
-import Tab1 from "../tab1/Tab1";
+import Tab from "../tab/Tab";
+import Btns from "../../../../components/globals/forms/cotizacion/btncontinue/BtnContinue";
+import Links from "../../../../components/globals/forms/cotizacion/links/Links";
 
 class Index extends React.Component {
 
@@ -48,7 +50,28 @@ class Index extends React.Component {
                     </div>
 
                     <div className="tabs-header text-center">
-                        <Tab1/>
+                        <Tab/>
+                    </div>
+
+                    <div className="row">
+                        <div
+                            className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
+                            <Links/>
+                        </div>
+                    </div>
+
+                    <div className="row btns-bottom">
+                        <div
+                            className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
+                            <Btns/>
+                        </div>
+                    </div>
+
+                    <div className="row alert-contizacion">
+                        <div
+                            className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
+                            <p><i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes descarga el fotmato  <span>aquí</span></p>
+                        </div>
                     </div>
 
                 </div>
