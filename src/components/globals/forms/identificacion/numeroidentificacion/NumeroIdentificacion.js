@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {continueButtonDisable, saveIdentificationValue} from '../../../../../actionCreators';
 
+import Helpers from '../../../../../common/helpers/helpers/Helpers';
+
 class NumeroIdentificacion extends Component {
 
     constructor(props) {
@@ -69,7 +71,12 @@ class NumeroIdentificacion extends Component {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
         //NIT
         } else if (this.state.typeIdentification === "37") {
-            if (v.length < 10 || isNaN(v)) error = true;
+            if (v.length < 9 || isNaN(v)) error = true;
+            // if( v.length === 10 && v.substr(-1) === "-" ){
+            //     let sub = parseInt(v.toString().substr(0,9));
+            //     v = sub + "-" + Helpers.calcularDigitoVerificacion(v);
+            //     console.log(v);
+            // }
             // let sub = parseInt(v.toString().substr(0,9));
             // if( sub < 80000000 || sub > 999999999 ) error = true;
         }

@@ -39,7 +39,10 @@ class Counter extends Component {
                 if (inmueble.anorefuerzo === "") errors++;
             }
 
-            if (inmueble.inmuebleasegudado === 0 && (inmueble.contenidoasegudado === 0 || inmueble.contenidoasegudado === "")) errors++;
+            if (inmueble.inmuebleasegudado === 0 && (inmueble.contenidoasegudado === 0 || inmueble.contenidoasegudado === "")) {
+                total++;
+                errors++;
+            }
 
             if (inmueble.inmuebleasegudado === 1){
                 total++;
