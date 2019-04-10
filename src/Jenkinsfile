@@ -1,0 +1,47 @@
+#!/bin/groovy
+pipeline {
+  agent any
+  tools {nodejs "NodeJSInstall"}
+  stages {
+    stage('Pwd') {
+        steps {
+          script {
+            sh 'cd libertyhomefront && ls'
+          }
+        }
+    }
+    stage('Clone') {
+      steps {
+        script {
+          sh 'rm -fr libertyhomefront && git clone git@bitbucket.org:Amaris_col/libertyhomefront.git && cd libertyhomefront && git checkout ma-sprint-3 && git pull origin ma-sprint-3'
+        }
+      }
+    }
+    stage('Yarn') {
+      steps {
+        script {
+          sh 'npm install -g yarn'
+        }
+      }
+    }
+    stage('Startup') {
+      steps {
+        script {
+          sh 'cd libertyhomefront && yarn install'
+        }
+      }
+    }
+    stage('Test') {
+      steps {
+        script {
+          sh 'cd libertyhomefront && yarn test -- --coverage'
+        }
+      }
+      post {
+        always {
+          step([$class: 'CoberturaPublisher', coberturaReportFile: 'output/coverage/jest/cobertura-coverage.xml'])
+        }
+      }
+    }
+  }
+}

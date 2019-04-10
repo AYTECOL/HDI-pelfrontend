@@ -17,7 +17,8 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "simple-mask-money": "^3.0.1"
+    "simple-mask-money": "^3.0.1",
+    "yarn": "^1.15.2"
   },
   "scripts": {
     "start": "react-scripts start",
