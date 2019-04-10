@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
+    "jest-junit": "^6.3.0",
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -24,6 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "react-scripts test --env=jsdom --testResultsProcessor=\"jest-junit\" --coverage",
     "eject": "react-scripts eject"
   },
   "jest": {
@@ -31,6 +33,14 @@
       "text",
       "cobertura"
     ]
+  },
+  "jest-junit": {
+    "suiteName": "jest tests",
+    "output": "test/junit.xml",
+    "classNameTemplate": "{classname} - {title}",
+    "titleTemplate": "{classname} - {title}",
+    "ancestorSeparator": " > ",
+    "usePathForSuiteName": "true"
   },
   "eslintConfig": {
     "extends": "react-app"
