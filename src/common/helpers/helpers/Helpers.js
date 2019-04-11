@@ -62,6 +62,7 @@ class Helpers {
             z;
 
         // Se limpia el Nit
+        myNit = myNit.toString();
         myNit = myNit.replace ( /\s/g, "" ) ; // Espacios
         myNit = myNit.replace ( /,/g,  "" ) ; // Comas
         myNit = myNit.replace ( /\./g, "" ) ; // Puntos
