@@ -3,13 +3,6 @@ pipeline {
   agent any
   tools {nodejs "NodeJSInstall"}
   stages {
-    stage('Pwd') {
-        steps {
-          script {
-            sh 'cd libertyhomefront && ls'
-          }
-        }
-    }
     stage('Clone') {
       steps {
         script {
@@ -36,10 +29,17 @@ pipeline {
         script {
           sh 'cd libertyhomefront && yarn run test:ci'
         }
-      }
+      }all-build-years
       post {
         always {
-          step([$class: 'CoberturaPublisher', coberturaReportFile: '/var/jenkins_home/workspace/Tests/libertyhomefront/coverage/clover.xml'])
+          step([
+            $class: 'CloverPublisher',
+            cloverReportDir: "${JENKINS_HOME}/workspace/Tests/libertyhomefront/coverage/",
+            cloverReportFileName: 'clover.xml',
+            healthyTarget: [methodCoverage: 70, conditionalCoverage: 80, statementCoverage: 80],
+            unhealthyTarget: [methodCoverage: 50, conditionalCoverage: 50, statementCoverage: 50],
+            failingTarget: [methodCoverage: 0, conditionalCoverage: 0, statementCoverage: 0]
+          ])
         }
       }
     }

@@ -75,7 +75,6 @@ class NumeroIdentificacion extends Component {
             // if( v.length === 10 && v.substr(-1) === "-" ){
             //     let sub = parseInt(v.toString().substr(0,9));
             //     v = sub + "-" + Helpers.calcularDigitoVerificacion(v);
-            //     console.log(v);
             // }
             // let sub = parseInt(v.toString().substr(0,9));
             // if( sub < 80000000 || sub > 999999999 ) error = true;

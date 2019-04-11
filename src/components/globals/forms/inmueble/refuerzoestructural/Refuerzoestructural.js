@@ -15,7 +15,8 @@ class Refuerzoestructural extends Component {
             show: false,
             active: 0,
             errorselect: false,
-            valueOther: ""
+            valueOther: "",
+            years: []
         };
 
         this.getYears();
@@ -49,11 +50,11 @@ class Refuerzoestructural extends Component {
     }
 
     async getYears(){
-        let years = await BuildYears.get();
-        this.setState({
-            ...this.state,
-            years: years,
-        });
+        // let years = await BuildYears.get();
+        // this.setState({
+        //     ...this.state,
+        //     years: years,
+        // });
     }
 
     validateEmpty(e) {

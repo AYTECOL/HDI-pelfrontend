@@ -69,7 +69,6 @@ class Helpers {
 
         // Se valida el nit
         if  ( isNaN ( myNit ) )  {
-            console.log ("El nit/cédula '" + myNit + "' no es válido(a).") ;
             return "" ;
         }
 

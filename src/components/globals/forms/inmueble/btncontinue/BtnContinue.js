@@ -158,7 +158,7 @@ class BtnContinue extends Component {
         return (
             <div>
                 <div className={"return-button"}>
-                    <Link to={"/cotizacion/1/"+storeState.cotizacion.number}><i className="back-icon"></i>Volver</Link>
+                    <a href={"/cotizacion/1/"+storeState.cotizacion.number}><i className="back-icon"></i>Volver</a>
                 </div>
                 <button className={"btn btn-default"}
                         onClick={(e) => {

@@ -30,6 +30,7 @@
   "jest": {
     "coverageReporters": [
       "text",
+      "html",
       "clover"
     ]
   },
