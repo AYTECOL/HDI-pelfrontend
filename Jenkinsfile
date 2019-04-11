@@ -39,7 +39,7 @@ pipeline {
       }
       post {
         always {
-          junit '/var/jenkins_home/workspace/Tests/libertyhomefront/coverage/cobertura-coverage.xml'
+          step([$class: 'CoberturaPublisher', coberturaReportFile: '/var/jenkins_home/workspace/Tests/libertyhomefront/coverage/clover.xml'])
         }
       }
     }

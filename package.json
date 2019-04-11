@@ -24,13 +24,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:ci": "react-scripts test --skipFilter true  --watchAll false --coverage --coverageDirectory=coverage",
+    "test:ci": "react-scripts test --skipFilter true --watchAll false --coverage --coverageDirectory=coverage",
     "eject": "react-scripts eject"
   },
   "jest": {
     "coverageReporters": [
       "text",
-      "cobertura"
+      "clover"
     ]
   },
   "eslintConfig": {
