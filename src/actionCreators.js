@@ -84,12 +84,20 @@ const saveInmuebleValueSeguridad = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: data}
 };
 
+// Tercer formulario
+const indexPlanSelected = (index) => {
+    return {type: "INDEX_PLAN_SELECTED", data: index}
+};
+
 // Dada Services
 const saveAllfloors = (data) => {
     return {type: "SAVE_ALL_FLOORS", data: data}
 };
 const saveAllInsurableLimits = (data) => {
     return {type: "SAVE_ALL_INSURABLE_LIMITS", data: data}
+};
+const AllPlans = (data) => {
+    return {type: "SAVE_ALL_PLANS", data: data}
 };
 
 export {
@@ -112,5 +120,7 @@ export {
     disabledBusinessName,
     restoreCotizacionRisk,
     saveAllfloors,
-    saveAllInsurableLimits
+    saveAllInsurableLimits,
+    AllPlans,
+    indexPlanSelected
 };

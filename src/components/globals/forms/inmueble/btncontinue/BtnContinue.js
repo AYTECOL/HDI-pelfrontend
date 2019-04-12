@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 import SaveInmueble from "../../../../../services/SaveInmueble";
 import SaveIdentifications from "../../../../../services/SaveIdentifications";

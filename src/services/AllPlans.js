@@ -1,11 +1,25 @@
 import Service from './Service';
+import Store from '../store';
+import {AllPlans as AllPlansCreator} from '../actionCreators';
 
 const BaseUrl = "https://jnvmb2ndq8.execute-api.us-east-1.amazonaws.com/dev/all-plans";
 
 class AllPlans {
     static async get() {
-        let data = await Service.get(BaseUrl);
-        return data.plans;
+        let data = [];
+        let storeState = Store.getState();
+        if (storeState.AllPlans.length === 0) {
+            try {
+                data = await Service.get(BaseUrl);
+                data = data.plans;
+            }catch (e) {
+                data = [];
+            }
+            Store.dispatch(AllPlansCreator(data));
+        } else {
+            data = storeState.AllPlans;
+        }
+        return data;
     };
 }
 

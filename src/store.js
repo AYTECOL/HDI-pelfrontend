@@ -71,9 +71,13 @@ const initialState = {
         inmuebleasegudadotelefonosvalor: "",
     },
 
+    // tercer formulario Cotizacion
+    indexPlan: 1,
+
     // Dada Services
     Allfloors: [],
-    allInsurableLimits: []
+    allInsurableLimits: [],
+    AllPlans: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -214,6 +218,16 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             allInsurableLimits: action.data
+        }
+    }else if( action.type === "SAVE_ALL_PLANS"){
+        return {
+            ...state,
+            AllPlans: action.data
+        }
+    }else if( action.type === "INDEX_PLAN_SELECTED"){
+        return {
+            ...state,
+            indexPlan: action.data
         }
     }
     return state;

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
-import BuildYears from "../../../../../services/BuildYear";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Refuerzoestructural extends Component {
