@@ -1,6 +1,6 @@
 import Service from './Service';
 
-const BaseUrl = "https://mnkg7plc7i.execute-api.us-east-1.amazonaws.com/dev/all-build-years";
+const BaseUrl = "https://jnvmb2ndq8.execute-api.us-east-1.amazonaws.com/dev/all-build-years";
 
 const Default = {
     build_years: [

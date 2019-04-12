@@ -1,7 +1,7 @@
 import Service from './Service';
 import Store from '../store';
 
-const Url = "https://mnkg7plc7i.execute-api.us-east-1.amazonaws.com/dev/quote";
+const Url = "https://jnvmb2ndq8.execute-api.us-east-1.amazonaws.com/dev/quote";
 
 class IdentificationsCities {
     static async save() {

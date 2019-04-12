@@ -2,7 +2,7 @@ import Service from './Service';
 import Store from '../store';
 import {saveAllfloors} from '../actionCreators';
 
-const BaseUrl = "https://mnkg7plc7i.execute-api.us-east-1.amazonaws.com/dev/all-floors";
+const BaseUrl = "https://jnvmb2ndq8.execute-api.us-east-1.amazonaws.com/dev/all-floors";
 
 const Default = function () {
     let data = {};
