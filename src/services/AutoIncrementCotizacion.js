@@ -1,6 +1,6 @@
 import Service from './Service';
 
-const Url = "https://xeht7k1od8.execute-api.us-east-1.amazonaws.com/dev/counter";
+const Url = "https://jnvmb2ndq8.execute-api.us-east-1.amazonaws.com/dev/counter";
 
 class AutoIncrementCotizacion {
     static async get() {

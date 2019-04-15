@@ -4,6 +4,9 @@ import Segurarinmueble from '../../../../components/globals/forms/inmueble/segur
 import Asegurarcontenidos from '../../../../components/globals/forms/inmueble/asegurarcontenidos/Asegurarcontenidos';
 import Asegurarcontenidoadicional from '../asegurarcontenidoadicional/Asegurarcontenidoadicional';
 
+//Service
+import AllInsurableLimits from '../../../../services/AllInsurableLimits';
+
 import {withRouter} from "react-router-dom";
 
 class Valoreasegurar extends React.Component {
@@ -11,6 +14,11 @@ class Valoreasegurar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
+        this.getAllInsurableLimits();
+    }
+
+    async getAllInsurableLimits(){
+        await AllInsurableLimits.get();
     }
 
     render() {

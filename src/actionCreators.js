@@ -1,5 +1,3 @@
-import GetAddresInfo from './services/AddresCoordenates';
-
 // Primer Formulario
 const saveIdentificationValue = (element) => {
     let name = element.name;
@@ -10,19 +8,6 @@ const saveIdentificationValue = (element) => {
 };
 const setAddresMap = (data) => {
     return {type: "SET_ADDRES_MAP", data};
-};
-
-const reqAddress = (address) => {
-    return dispatch => {
-        return GetAddresInfo.get(address.value)
-            .then(response => {
-                let map = {
-                    longitude: response.lng,
-                    latitude: response.lat
-                };
-                return {type: "SET_ADDRES_MAP", map};
-            });
-    };
 };
 
 const nextStepIndentification = () => {
@@ -99,6 +84,27 @@ const saveInmuebleValueSeguridad = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: data}
 };
 
+// Tercer formulario
+const indexPlanSelected = (index) => {
+    return {type: "INDEX_PLAN_SELECTED", data: index}
+};
+
+// Dada Services
+const saveAllfloors = (data) => {
+    return {type: "SAVE_ALL_FLOORS", data: data}
+};
+const saveAllInsurableLimits = (data) => {
+    return {type: "SAVE_ALL_INSURABLE_LIMITS", data: data}
+};
+const AllPlans = (data) => {
+    return {type: "SAVE_ALL_PLANS", data: data}
+};
+
+// General
+const toggleLoading = (data) => {
+    return {type: "TOGGLE_LOADER", data: data}
+};
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -106,7 +112,6 @@ export {
     continueButtonDisable,
     saveCotizacionNumber,
     updateTypeDoc,
-    reqAddress,
     mapShow,
     saveDescriptionCity,
     restoreCotizacion,
@@ -118,5 +123,10 @@ export {
     disabledName,
     saveInmuebleValueSeguridad,
     disabledBusinessName,
-    restoreCotizacionRisk
+    restoreCotizacionRisk,
+    saveAllfloors,
+    saveAllInsurableLimits,
+    AllPlans,
+    indexPlanSelected,
+    toggleLoading
 };

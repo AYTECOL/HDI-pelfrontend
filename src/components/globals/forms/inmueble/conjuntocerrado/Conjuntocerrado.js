@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Conjuntocerrado extends Component {
 
@@ -29,6 +30,7 @@ class Conjuntocerrado extends Component {
     validateEmpty(e) {
         let error = false;
         if (e.value.length < 1) error = true;
+        if (error === false) Helpers.removeClass(".cojuntocerrado", "error");
         store.dispatch(saveInmuebleValue(e));
         this.setState({
             ...this.state,
@@ -39,7 +41,7 @@ class Conjuntocerrado extends Component {
 
     render() {
         return (
-            <div className={"form-group " + this.state.error}>
+            <div className={"cojuntocerrado no-icon form-group " + this.state.error}>
                 <label htmlFor="doc-type-value">Está ubicado en conjunto cerrado</label>
                 <ul className="select-item">
                     <li data="1"

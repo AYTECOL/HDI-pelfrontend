@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
+    "enzyme": "^3.9.0",
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -14,16 +15,27 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
     "react-scripts": "2.1.8",
+    "react-test-renderer": "^16.8.6",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "simple-mask-money": "^3.0.1"
+    "simple-mask-money": "^3.0.1",
+    "yarn": "^1.15.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "react-scripts test --skipFilter true --watchAll false --coverage --coverageDirectory=coverage",
     "eject": "react-scripts eject"
+  },
+  "jest": {
+    "coverageReporters": [
+      "text",
+      "html",
+      "json",
+      "clover"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"

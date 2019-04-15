@@ -3,8 +3,11 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 import AllFloors from "../../../../../services/Allfloors";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Ubicadopiso extends Component {
+
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -12,32 +15,43 @@ class Ubicadopiso extends Component {
             error: false,
             floors: []
         };
-
-        this.getFloors();
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let value = storeState.Inmueble.pisonumero;
-            if (this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    value: value,
-                });
-            }
-        });
+        if (this._isMounted) {
+            store.subscribe(async () => {
+                let storeState = store.getState();
+                let value = storeState.Inmueble.pisonumero;
+                if (this.state.value !== value) {
+                    this.setState({
+                        ...this.state,
+                        value: value,
+                    });
+                }
+            });
+        }
     }
 
-    async getFloors(){
-        let allFloors = await AllFloors.get();
-        this.setState({
-            ...this.state,
-            floors: allFloors,
-        });
+    componentDidMount() {
+        this._isMounted = true;
+        this.getFloors();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    async getFloors() {
+        if (this._isMounted) {
+            let allFloors = await AllFloors.get();
+            this.setState({
+                ...this.state,
+                floors: allFloors,
+            });
+        }
     }
 
     validateEmpty(e) {
         let error = false;
         if (e.value.length < 1) error = true;
+        if (error === false) Helpers.removeClass(".pisonumero", "error");
         this.setState({
             ...this.state,
             error: error
@@ -47,8 +61,8 @@ class Ubicadopiso extends Component {
 
     render() {
         return (
-            <div className={"input-select form-group " + ((this.state.error) ? 'error' : '')}>
-                <label htmlFor="doc-type-value">Piso donde se encuentra ubicado</label>
+            <div className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
+                <label htmlFor="pisonumero">Piso donde se encuentra ubicado</label>
                 <select name="pisonumero" className="form-control" value={this.state.value}
                         onBlur={(e) => {
                             this.validateEmpty(e.target);
@@ -59,7 +73,7 @@ class Ubicadopiso extends Component {
                 >
                     <option value="">Seleccione</option>
                     {this.state.floors.map(option =>
-                        <option  key={option.floorCode} value={option.floorCode}>{option.answer}</option>
+                        <option key={option.floorCode} value={option.floorCode}>{option.answer}</option>
                     )}
                 </select>
             </div>

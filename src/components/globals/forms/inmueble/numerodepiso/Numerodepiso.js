@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 import AllFloors from '../../../../../services/Allfloors';
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Numerodepiso extends Component {
 
@@ -39,6 +40,7 @@ class Numerodepiso extends Component {
     validateEmpty(e) {
         let error = false;
         if (e.value.length < 1) error = true;
+        if (error === false) Helpers.removeClass(".numerodepisos", "error");
         this.setState({
             ...this.state,
             error: error,
@@ -49,7 +51,7 @@ class Numerodepiso extends Component {
 
     render() {
         return (
-            <div className={"input-select form-group " + ((this.state.error) ? 'error' : '')}>
+            <div className={"numerodepisos input-select form-group " + ((this.state.error) ? 'error' : '')}>
                 <label htmlFor="numerodepisose">Número de pisos del inmueble</label>
                 <select name="numerodepisos" id="numerodepisos" className={"form-control "} value={this.state.value}
                         onBlur={(e) => {

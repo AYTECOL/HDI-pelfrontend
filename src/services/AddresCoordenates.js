@@ -1,6 +1,6 @@
 import Service from './Service';
 
-const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU';
+const APIKEY = 'AIzaSyBXeRIuY5S9iz3qswku06SnAg1AaAX67I4';
 
 class GetAddresInfo {
     static async get(address) {

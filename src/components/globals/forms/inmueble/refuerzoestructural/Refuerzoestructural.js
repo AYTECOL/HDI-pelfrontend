@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
-import BuildYears from "../../../../../services/BuildYear";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Refuerzoestructural extends Component {
 
@@ -14,7 +14,8 @@ class Refuerzoestructural extends Component {
             show: false,
             active: 0,
             errorselect: false,
-            valueOther: ""
+            valueOther: "",
+            years: []
         };
 
         this.getYears();
@@ -30,8 +31,11 @@ class Refuerzoestructural extends Component {
                 this.state.active !== value ||
                 this.state.valueOther !== valueOther
             ) {
-                if (anoconstruido < 4) {
+                if (anoconstruido < 500008) {
                     show = true;
+                }
+                if ( anoconstruido === "" ){
+                    show = false;
                 }
                 this.setState({
                     ...this.state,
@@ -45,11 +49,11 @@ class Refuerzoestructural extends Component {
     }
 
     async getYears(){
-        let years = await BuildYears.get();
-        this.setState({
-            ...this.state,
-            years: years,
-        });
+        // let years = await BuildYears.get();
+        // this.setState({
+        //     ...this.state,
+        //     years: years,
+        // });
     }
 
     validateEmpty(e) {
@@ -66,6 +70,7 @@ class Refuerzoestructural extends Component {
     saveValue(e) {
         let error = false;
         if (e.value.length < 1) error = true;
+        if (error === false) Helpers.removeClass(".anorefuerzo", "error");
         store.dispatch(saveInmuebleValue(e));
         this.setState({
             ...this.state,
@@ -107,9 +112,10 @@ class Refuerzoestructural extends Component {
                 </div>
                 {(this.state.active === 1) ? (
                     <div className="col col-6">
-                        <div className={"input-select form-group " + (this.state.errorselect ? 'error' : '')}>
-                            <label htmlFor="doc-type-value">En qué año se hizo el refuerzo estrucutral</label>
-                            <select className="form-control"
+                        <div className={"anorefuerzo input-select form-group " + (this.state.errorselect ? 'error' : '')}>
+                            <label htmlFor="anorefuerzo">En qué año se hizo el refuerzo estructural</label>
+                            <select className="anorefuerzo form-control"
+                                    name="anorefuerzo"
                                     value={this.state.valueOther}
                                     onChange={(e) => {
                                         this.saveValue({

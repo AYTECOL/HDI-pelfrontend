@@ -1,0 +1,148 @@
+.contizacion-form .container .row-boxes{
+  max-width: 93%;
+  margin: 0 auto 75px;
+  >.col{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .box-col{
+    background: #FFFFFF;
+    border: 1px solid #99E5EA;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 8px rgba(40, 163, 175, 0.32);
+    border-radius: 3px;
+    text-align: center;
+
+    .image{
+      width: 34px;
+      height: 34px;
+      display: inline-block;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100% auto;
+      margin: 30px 0 15px;
+      &.image-1{
+        background-image: url("../../../../common/images/home.png");
+        width: 44px;
+        height: 32px;
+      }
+      &.image-2{
+        background-image: url("../../../../common/images/sillon.png");
+      }
+      &.image-3{
+        background-image: url("../../../../common/images/otro.png");
+        background-size: 90% auto;
+      }
+      &.image-4{
+        background-image: url("../../../../common/images/a.png");
+        background-size: auto 100%;
+      }
+      &.image-5{
+        background-image: url("../../../../common/images/phone.png");
+        background-size: auto 100%;
+      }
+    }
+    p{
+      margin-bottom: 0;
+      font-style: normal;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 19px;
+      text-align: center;
+
+      color: #565656;
+      max-width: 90%;
+      margin-right: auto;
+      margin-left: auto;
+      height: 34px;
+    }
+    span{
+      font-size: 12px;
+      line-height: 14px;
+      text-align: center;
+      color: #037B86;
+      margin: 7px 0 10px;
+      display: block;
+      cursor: pointer;
+      &:hover{
+        text-decoration: underline;
+      }
+    }
+    .form-group.error::after{
+      display: none;
+    }
+    .form-group{
+      max-width: 75%;
+      margin: 0 auto;
+      label{
+        text-align: left;
+        width: 100%;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        line-height: 14px;
+        color: #343741;
+        mix-blend-mode: normal;
+        margin-bottom: 4px;
+        margin-top: 0;
+      }
+      .form-control{
+        padding: 9px 8px;
+        height: auto;
+        width: 100%;
+      }
+      .form-text{
+        margin: 2px;
+        text-align: left;
+      }
+    }
+
+    .btntoggle{
+      display: none;
+    }
+
+    &.active{
+      background: #F5F5F5;
+      border: 1px dashed #C0BFC0;
+      box-shadow: 0px 0px 3px rgba(86, 86, 86, 0.404806);
+      border-radius: 3px;
+      .image {
+        -webkit-filter: grayscale(1); /* Webkit */
+        filter: gray; /* IE6-9 */
+        filter: grayscale(1); /* W3C */
+      }
+      .wrapper-over {
+        position: relative;
+        .form-group,span {
+          visibility: hidden;
+        }
+        .btntoggle{
+          background: #28A3AF;
+          border: 1px solid #28A3AF;
+          box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
+          border-radius: 3px;
+          height: 32px;
+          width: 32px;
+          display: block;
+          margin: 0 auto;
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 25%;
+          color: white;
+          font-size: 35px;
+          font-weight: 300;
+          line-height: 0.65;
+          text-align: center;
+          cursor: pointer;
+          transform: scale(1);
+          transition: all 0.3s ease;
+        }
+        &:hover .btntoggle{
+          transform: scale(1.1);
+        }
+      }
+    }
+
+  }
+}

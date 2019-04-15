@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 import BuildYears from "../../../../../services/BuildYear";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Anoconstruccion extends Component {
 
@@ -39,6 +40,7 @@ class Anoconstruccion extends Component {
     validateEmpty(e) {
         let error = false;
         if (e.value.length < 1) error = true;
+        if (error === false) Helpers.removeClass(".anoconstruido", "error");
         this.setState({
             ...this.state,
             error: error
@@ -48,8 +50,8 @@ class Anoconstruccion extends Component {
 
     render() {
         return (
-            <div className={"input-select form-group " + (this.state.error ? 'error' : '')}>
-                <label htmlFor="anoconstruidoe">Año en que fue construido inmueble</label>
+            <div className={"anoconstruido input-select form-group " + (this.state.error ? 'error' : '')}>
+                <label htmlFor="anoconstruido">Año en que fue construido inmueble</label>
                 <select disabled={(this.state.disabled ? "disabled" : "")} name="anoconstruido" id="anoconstruido"
                         className={(this.state.disabled ? "disabled " : "") + "form-control"}
                         value={this.state.value}

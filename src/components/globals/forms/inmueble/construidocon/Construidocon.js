@@ -5,6 +5,7 @@ import {saveInmuebleValue} from '../../../../../actionCreators';
 
 import './Construidocon.scss';
 import BuildMaterial from "../../../../../services/BuildMaterial";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Construidocon extends Component {
 
@@ -42,6 +43,7 @@ class Construidocon extends Component {
     validateEmpty(e) {
         let error = false;
         if (e.value.length < 1) error = true;
+        if (error === false) Helpers.removeClass(".construidocon", "error");
         store.dispatch(saveInmuebleValue(e));
         this.setState({
             ...this.state,
@@ -52,13 +54,13 @@ class Construidocon extends Component {
 
     render() {
         return (
-            <div className={"gridgrid form-group " + (this.state.error ? 'error' : '')}>
-                <label htmlFor="doc-type-value">El inmueble está construido con</label>
+            <div className={"construidocon no-icon gridgrid form-group " + (this.state.error ? 'error' : '')}>
+                <label htmlFor="construidocon">El inmueble está construido con</label>
 
                 <div className="row grid-select">
                 {this.state.materials.map((option, key) =>
                     <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((this.state.active === parseInt(option.buildMaterialCode)) ? 'active' : '')}
+                        <div className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
                              onClick={(e) => {
                                  this.validateEmpty({
                                      data: option.buildMaterialCode,
