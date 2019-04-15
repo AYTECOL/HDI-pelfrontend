@@ -10,6 +10,10 @@ hmtl, body {
   padding: 0 !important;
 }
 
+.no-padding-right{
+  padding-right: 0 !important;
+}
+
 .no-margin {
   margin: 0 !important;
 }
@@ -101,8 +105,9 @@ $color-font-btn-primary: #404040;
 
   &.btn-primary {
     background: $color-btn-primary;
-    border-color: $color-btn-primary;
+    border: 1px solid $color-btn-primary;
     color: #404040;
+    -webkit-appearance: inherit;
 
     &:active,
     &:hover {
@@ -310,6 +315,7 @@ $color-font-btn-primary: #404040;
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow: auto;
 
   &.show {
     display: flex;

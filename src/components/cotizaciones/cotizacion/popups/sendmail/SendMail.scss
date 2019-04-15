@@ -5,4 +5,45 @@
   .modal-header{
     max-width: 580px;
   }
+  .content{
+    max-height: 500px;
+    overflow: auto;
+  }
+}
+.more-items{
+  p, button{
+    display: inline-block;
+  }
+  p{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #28A3AF;
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+  button{
+    background: #28A3AF;
+    border: 1px solid #28A3AF;
+    box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
+    border-radius: 3px;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    margin: 0 auto;
+    color: white;
+    font-size: 30px;
+    font-weight: 300;
+    line-height: 0.65;
+    text-align: center;
+    cursor: pointer;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    transition: all 0.3s ease;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
 }
