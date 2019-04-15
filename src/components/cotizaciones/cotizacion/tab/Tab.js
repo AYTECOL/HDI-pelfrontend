@@ -13,7 +13,9 @@ class Tab extends React.Component {
         this.state = {
             step: parseInt(this.props.match.params.step),
             index: 1,
-            plans: []
+            plans: [],
+            assistsTotal: 0,
+            coverturasTotal: 0
         };
         for (let i = 0; i < 3; i++) {
             this.state.plans[i] = {
@@ -40,20 +42,15 @@ class Tab extends React.Component {
                     ...this.state,
                     index: index
                 });
+                let it = this;
+                setTimeout(function() {
+                    it.countCoverturas();
+                    it.countAsistencias();
+                }.bind(this), 100);
             }
         });
 
         this.getPlants();
-    }
-
-    countCheckedItems(item) {
-        let t = 0;
-        for (let i in item) {
-            if (item[i].checked === true) {
-                t++;
-            }
-        }
-        return t;
     }
 
     toogleSlide(index) {
@@ -67,44 +64,65 @@ class Tab extends React.Component {
         }
     }
 
-    checkAsistencia(index,key,k,i){
-        let check = this.state.plans[index].assists[key].values[k].assists[i];
-        this.setState({
-            ...this.state.plans[index].assists[key].values[k].assists[i],
-            checked: !check
-        });
-
-        let plans = [...this.plans];
-        plans[index] = {
-            ...this.plans[index],
-            assists: []
-        };
-
-        let assists = [...this.plans[index]];
-        assists[key] = {
-            ...this.plans[index].assists[key],
-            values: []
-        };
-
-        let values = [...this.plans[index].assists[key]];
-        values[key] = {
-            ...this.plans[index].assists[key].values[k],
-            assists: []
-        };
-
-        let assists2 = [...this.plans[index].assists[key].values[k]];
-        assists2[key] = {
-            ...this.plans[index].assists[key].values[k].assists[i],
-            assists: []
-        };
-
+    countCoverturas() {
+        let t = 0;
+        let item = this.state.plans[this.state.index].coverages;
+        for (let i in item) {
+            if (item[i].checked === true) {
+                t++;
+            }
+        }
         this.setState({
             ...this.state,
-            plans: [
-                ...this.plans,
-
-            ]
+            coverturasTotal: t
         });
+    }
+
+    countAsistencias() {
+        let t = 0;
+        let item = this.state.plans[this.state.index].assists[0].values;
+        for (let i in item) {
+            if (item[i].checked === true) t++;
+            if (typeof item[i].assists !== 'undefined') {
+                for (let o in item[i].assists) {
+                    if (item[i].assists[o].checked === true) t++;
+                }
+            }
+        }
+        this.setState({
+            ...this.state,
+            assistsTotal: t
+        });
+    }
+
+    checkCoverturas(index, key) {
+        let check = this.state.plans[index].coverages[key].checked;
+        let newPlans = this.state.plans;
+        newPlans[index].coverages[key].checked = !check;
+        this.setState({
+            ...this.state,
+            plans: newPlans
+        });
+        this.countCoverturas();
+    }
+
+    checkAsistencia(index, key, k, i, parent) {
+        let check;
+        let newPlans;
+        if (typeof parent !== 'undefined') {
+            check = this.state.plans[index].assists[key].values[k].checked;
+            newPlans = this.state.plans;
+            newPlans[index].assists[key].values[k].checked = !check;
+        } else {
+            check = this.state.plans[index].assists[key].values[k].assists[i].checked;
+            newPlans = this.state.plans;
+            newPlans[index].assists[key].values[k].assists[i].checked = !check;
+        }
+        this.setState({
+            ...this.state,
+            plans: newPlans
+        });
+        this.countAsistencias();
     }
 
     async getPlants() {
@@ -113,6 +131,8 @@ class Tab extends React.Component {
             ...this.state,
             plans: plans
         });
+        this.countCoverturas();
+        this.countAsistencias();
     }
 
     render() {
@@ -140,7 +160,7 @@ class Tab extends React.Component {
                             }}>
                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
                                     <h4>
-                                        <span>{this.countCheckedItems(this.state.plans[this.state.index].coverages)}</span>Coberturas
+                                        <span>{this.state.coverturasTotal}</span>Coberturas
                                     </h4>
                                 </div>
                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
@@ -162,7 +182,7 @@ class Tab extends React.Component {
                                                            disabled={(option.optional === false)}
                                                            name="incendios" id="incendios"
                                                            onChange={(e) => {
-
+                                                               this.checkCoverturas(this.state.index, key);
                                                            }}
                                                     />
                                                     <label htmlFor="incendios">{option.name}</label>
@@ -208,7 +228,7 @@ class Tab extends React.Component {
                                 }}>
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
                                         <h4>
-                                            <span>{option.values.length}</span>{option.name}
+                                            <span>{this.state.assistsTotal}</span>{option.name}
                                         </h4>
                                     </div>
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
@@ -223,7 +243,12 @@ class Tab extends React.Component {
                                                 <div
                                                     className="col col-12 col-sm-12 col-md-12 col-lg-12 asistencia items-checkboxes">
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="incendios" id="incendios"/>
+                                                        <input type="checkbox" name="incendios" id="incendios"
+                                                               checked={(opt.checked === true ? 'checked' : false)}
+                                                               onChange={(e) => {
+                                                                   this.checkAsistencia(this.state.index, key, k, 0, true);
+                                                               }}
+                                                        />
                                                         <div className="group">
                                                             <label htmlFor="incendios">{opt.name}</label>
                                                             <p>plomería, electricidad, vidrios y cerrajería</p>
@@ -234,9 +259,9 @@ class Tab extends React.Component {
                                                                     className="col col-12 col-sm-12 col-md-12 col-lg-12 items-checkboxes">
                                                                     <input type="checkbox" name="incendios"
                                                                            id="incendios"
-                                                                           checked={(option.checked === true ? 'checked' : false)}
+                                                                           checked={(opt.checked === true ? 'checked' : false)}
                                                                            onChange={(e) => {
-                                                                               this.checkAsistencia(this.state.index,key,k,i);
+                                                                               this.checkAsistencia(this.state.index, key, k, i);
                                                                            }}
                                                                     />
                                                                     <div className="group">

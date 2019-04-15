@@ -1,4 +1,6 @@
 import axios from 'axios';
+import store from "../store";
+import {toggleLoading} from "../actionCreators";
 
 class Service {
     static async get(url) {
@@ -10,9 +12,11 @@ class Service {
     };
 
     static async post(url, data) {
+        store.dispatch(toggleLoading(true));
         axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
         return await axios.post(url, data)
             .then(response => {
+                store.dispatch(toggleLoading(false));
                 return response.data;
             });
     };

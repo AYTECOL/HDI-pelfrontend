@@ -3,8 +3,6 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {continueButtonDisable, saveIdentificationValue} from '../../../../../actionCreators';
 
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
-
 class NumeroIdentificacion extends Component {
 
     constructor(props) {

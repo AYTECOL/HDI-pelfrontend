@@ -77,7 +77,10 @@ const initialState = {
     // Dada Services
     Allfloors: [],
     allInsurableLimits: [],
-    AllPlans: []
+    AllPlans: [],
+
+    //General
+    ShowLoader: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -228,6 +231,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             indexPlan: action.data
+        }
+    }else if( action.type === "TOGGLE_LOADER" ){
+        return {
+            ...state,
+            ShowLoader: action.data
         }
     }
     return state;

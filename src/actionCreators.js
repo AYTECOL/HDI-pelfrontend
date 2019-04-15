@@ -100,6 +100,11 @@ const AllPlans = (data) => {
     return {type: "SAVE_ALL_PLANS", data: data}
 };
 
+// General
+const toggleLoading = (data) => {
+    return {type: "TOGGLE_LOADER", data: data}
+};
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -122,5 +127,6 @@ export {
     saveAllfloors,
     saveAllInsurableLimits,
     AllPlans,
-    indexPlanSelected
+    indexPlanSelected,
+    toggleLoading
 };
