@@ -1,0 +1,45 @@
+.cotizacion.exito{
+  padding-top: 40px;
+}
+.cotizacion.exito .index-form .container{
+  h2{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 38px;
+    color: #343741;
+  }
+  h3{
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 26px;
+    text-align: center;
+  }
+  .title p{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 22px;
+    margin-top: 14px;
+    display: block;
+
+    color: #808080;
+    span{
+      color: #99E5EA;
+    }
+  }
+  .links-row{
+    margin: 29px auto 33px;
+  }
+  .image{
+    background-image: url("../../common/images/exito.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 126%;
+    height: 181px;
+    display: block;
+    margin: 0 -13%;
+  }
+}

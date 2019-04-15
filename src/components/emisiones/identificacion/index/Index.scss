@@ -1,0 +1,123 @@
+.index-form.emision {
+  .container {
+    .row{
+      max-width: 985px;
+    }
+    .form-action{
+      max-width: 583px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  .wrapper-more-items{
+    text-align: center;
+    .more-items{
+      display: inline-block;
+      margin: 0 25px;
+      position: relative;
+      &:first-child{
+        &::after{
+          content: '';
+          background-color: #C0BFC0;
+          width: 1px;
+          height: 44px;
+          display: inline-block;
+          position: absolute;
+          right: -25px;
+          top: -8px;
+        }
+      }
+    }
+  }
+  .wrapper-more-selected{
+    padding: 0;
+    .item-select{
+      padding: 24px 0 27px;
+      background: #FFFFFF;
+      box-shadow: 0px 6px 24px rgba(52, 55, 65, 0.16);
+      border-radius: 3px;
+      margin-bottom: 60px;
+      .icon-image{
+        background-image: url("../../../../common/images/user.png");
+        width: 60px;
+        height: 38px;
+        background-size: 100% auto;
+        margin-top: 5px;
+      }
+      .col-1{
+        text-align: center;
+        padding-right: 0;
+        flex: 0 0 6.5%;
+        max-width: 6.5%;
+      }
+      .col{
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      span{
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 19px;
+        color: #808080;
+      }
+      p{
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 26px;
+        color: #343741;
+        margin: 0;
+      }
+      .actions{
+        padding-top: 20px;
+        p{
+          font-style: normal;
+          font-weight: bold;
+          font-size: 16px;
+          line-height: 19px;
+          text-align: center;
+          color: #404040;
+          cursor: pointer;
+          &:before{
+            content: '';
+            width: 24px;
+            height: 28px;
+            background-image: url("../../../../common/images/edit.png");
+            display: inline-block;
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+            vertical-align: middle;
+          }
+          .trash{
+            display: inline-block;
+            position: relative;
+            margin-left: 30px;
+            &::before{
+              content: '';
+              width: 1.5px;
+              height: 32px;
+              position: absolute;
+              left: -17px;
+              top: -5px;
+              display: block;
+              background-color: #C0BFC0;
+            }
+            &:after{
+              content: '';
+              width: 18px;
+              height: 18px;
+              background-image: url("../../../../common/images/trash.png");
+              display: inline-block;
+              background-repeat: no-repeat;
+              background-size: 12px auto;
+              vertical-align: middle;
+              background-position: center;
+              margin-top: -4px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

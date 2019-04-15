@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import './SendMail.scss';
 
+import {toggleTopUpSendMail} from '../../../../../actionCreators';
+import store from "../../../../../store";
+
 class SendMail extends Component {
 
     constructor(props) {
@@ -9,22 +12,32 @@ class SendMail extends Component {
         this.state = {
             showPopUp: false,
             errorValue: 0,
-            totalItems: 1
+            totalItems: 1,
         };
 
-        // store.subscribe(async () => {
-        //     let storeState = store.getState();
-        //     let showPopUp = storeState.showPopUp;
-        //     if (this.state.showPopUp !== showPopUp) {
-        //         this.setState({
-        //             ...this.state,
-        //             showPopUp: showPopUp,
-        //         });
-        //     }
-        // });
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let showPopUp = storeState.ShowSendMail;
+            if (this.state.showPopUp !== showPopUp) {
+                this.setState({
+                    ...this.state,
+                    showPopUp: showPopUp,
+                });
+            }
+        });
     }
 
     hide() {
+        store.dispatch(toggleTopUpSendMail(false));
+    }
+
+    moreItems() {
+        let current = this.state.totalItems;
+        current++;
+        this.setState({
+            ...this.state,
+            totalItems: current,
+        });
     }
 
     render() {
@@ -36,20 +49,33 @@ class SendMail extends Component {
                             <h5 className="modal-title">Enviar cotización por correo</h5>
                             <p className="modal-subtitle">Ingresa el correo de la persona a la que deseas enviarle la
                                 cotización</p>
-                            <button type="button" className="close" aria-label="Close"></button>
+                            <button type="button" className="close" aria-label="Close"
+                                    onClick={(e) => {
+                                        this.hide();
+                                    }}
+                            ></button>
                         </div>
                         <div className="modal-body">
                             <div className="content">
                                 {Array(this.state.totalItems).fill(1).map((el, i) =>
-                                    <div className={"form-group text-left " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                                        <label htmlFor="incendios">Valor</label>
-                                        <input placeholder={"Ingresa el correo de la persona"} type="text" className={"form-control"} name="incendios" id="incendios"/>
+                                    <div
+                                        className={"form-group text-left " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                                        <label htmlFor="incendios">Correo</label>
+                                        <input placeholder={"Ingresa el correo de la persona"} type="text"
+                                               className={"form-control"} name="incendios" id="incendios"/>
                                         <small
                                             className={"form-text only-errors " + (this.state.errorValue === 3 ? 'show' : 'hide')}>El
                                             correo no es valido
                                         </small>
                                     </div>
                                 )}
+                                <div className="more-items"
+                                     onClick={(e) => {
+                                         this.moreItems();
+                                     }}>
+                                    <button className={"more-btn"}>+</button>
+                                    <p>Agregar otro correo</p>
+                                </div>
                             </div>
                             <div className="buttons">
                                 <a href="/" className="btn btn-secondary" data-dismiss="modal">Cancelar
