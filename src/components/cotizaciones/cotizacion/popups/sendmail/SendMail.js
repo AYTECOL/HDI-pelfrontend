@@ -58,8 +58,8 @@ class SendMail extends Component {
                         <div className="modal-body">
                             <div className="content">
                                 {Array(this.state.totalItems).fill(1).map((el, i) =>
-                                    <div
-                                        className={"form-group text-left " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                                    <div key={i}
+                                         className={"form-group text-left " + (this.state.errorValue !== 0 ? 'error' : '')}>
                                         <label htmlFor="incendios">Correo</label>
                                         <input placeholder={"Ingresa el correo de la persona"} type="text"
                                                className={"form-control"} name="incendios" id="incendios"/>
