@@ -27,20 +27,6 @@ node('linux'){
 			"""
 		}
 	}
-	stage('Dev Permisos') {
-    			"Version": "2012-10-17",
-    			"Statement": [
-        						{
-            					"Effect": "Allow",
-            					"Principal": {
-                				"AWS": "arn:aws:iam::710809157942:root"
-           						 },
-            	"Action": "s3:*",
-           		 "Resource": "arn:aws:s3:::poliza-express-hogar-front"
-        						}
-    						]
-				}
-
 	stage('Completion Email'){
 
         mail bcc: '', body: ' Dev Infra Deployment completed successfully http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/.', cc: '', from: 'noreply-cdp@libertymutual.com', replyTo: '', subject: 'Dev Infra Deployment ', to: 'carlos.unate@libertycolombia.com'
