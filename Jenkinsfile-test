@@ -1,39 +1,26 @@
-library ('utils@master') _
+
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
-//def  = "intl-latam-poliza-backend-jenks"
+//def  = "intl-latam-poliza-frontend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
 node('linux'){
-
+withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
 	stage('Git Checkout'){
 		checkout scm develop
 	}
 
-	stage('Dev Deploy') {
-		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-        
-			sh """
-				aws s3 mb s3://$BUCKET_NAME
-				
-				ls -ltr
-				
-				npm install	
-				npm run-script buildUAT
-					
-				ls -ltr
-				aws s3 cp dist s3://$BUCKET_NAME  --recursive --acl public-read
-			//	aws s3api put-bucket-website --bucket $BUCKET_NAME --website-configuration file://webSite.json
-			"""
-
-			deployToDev{
-				stage('Git Checkout'){
-					checkout scm
-					sh """
-						npm install
-					"""
-				}
-			}
-		}
+	stage('Check version') {
+			sh 'npm --version && node --version'
+	}
+	stage('install') {
+			sh 'npm install'
+	}
+	stage('migrate data seed') {
+			sh 'sls dynamodb --migrate'
+	}
+	stage('deploy') {
+			sh 'sls deploy'
 	}
  }
+  }
