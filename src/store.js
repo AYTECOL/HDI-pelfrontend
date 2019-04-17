@@ -22,6 +22,7 @@ const initialState = {
             lastname: "",
             businessname: "",
             city: "",
+            department: "",
             address: "",
             addressadditional: "",
         }
@@ -60,15 +61,27 @@ const initialState = {
         },
         inmuebleasegudado: 1,
         inmuebleasegudadovalor: "",
-        contenidoasegudado: "",
+        contenidoasegudado: 0,
         contenidoasegudadovalor: "",
-        inmuebleasegudadojoyas: "",
+        inmuebleasegudadojoyas: 0,
         inmuebleasegudadojoyasvalor: "",
-        inmuebleasegudadoobras: "",
+        inmuebleasegudadoobras: 0,
         inmuebleasegudadoobrasvalor: "",
-        inmuebleasegudadotelefonos: "",
+        inmuebleasegudadotelefonos: 0,
         inmuebleasegudadotelefonosvalor: "",
-    }
+    },
+
+    // tercer formulario Cotizacion
+    indexPlan: 1,
+
+    // Dada Services
+    Allfloors: [],
+    allInsurableLimits: [],
+    AllPlans: [],
+
+    //General
+    ShowLoader: false,
+    ShowSendMail: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -199,6 +212,36 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             disabledbusinessname: action.data
+        }
+    } else if( action.type === "SAVE_ALL_FLOORS" ){
+        return {
+            ...state,
+            Allfloors: action.data
+        }
+    }else if( action.type === "SAVE_ALL_INSURABLE_LIMITS" ){
+        return {
+            ...state,
+            allInsurableLimits: action.data
+        }
+    }else if( action.type === "SAVE_ALL_PLANS"){
+        return {
+            ...state,
+            AllPlans: action.data
+        }
+    }else if( action.type === "INDEX_PLAN_SELECTED"){
+        return {
+            ...state,
+            indexPlan: action.data
+        }
+    }else if( action.type === "TOGGLE_LOADER" ){
+        return {
+            ...state,
+            ShowLoader: action.data
+        }
+    }else if( action.type === "TOGGLE_POPUP_SENDMAIL" ){
+        return {
+            ...state,
+            ShowSendMail: action.data
         }
     }
     return state;

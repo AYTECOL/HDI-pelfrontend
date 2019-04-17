@@ -10,7 +10,6 @@ import Validaridentificacion
 
 class Cotizacion extends Component {
 
-
     render() {
         return (
             <div className="cotizacion">

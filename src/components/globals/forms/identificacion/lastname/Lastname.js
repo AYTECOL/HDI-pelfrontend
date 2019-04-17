@@ -2,8 +2,13 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {saveIdentificationValue} from '../../../../../actionCreators';
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Lastname extends Component {
+
+    static limit(){
+        return 51;
+    }
 
     constructor(props) {
         super(props);
@@ -17,6 +22,7 @@ class Lastname extends Component {
             let lastname = storeState.cotizacion.identification.lastname;
             let disabledLastName = storeState.disabledLastName;
             if (this.state.value !== lastname || this.state.disabledName !== disabledLastName) {
+                lastname = Helpers.toCapitalize(lastname);
                 this.setState({
                     ...this.state,
                     value: lastname,
@@ -27,14 +33,15 @@ class Lastname extends Component {
     }
 
     validateEmpty(e) {
+        e.value = Helpers.toCapitalize(e.value);
         let error = false;
-        if (e.value.length < 1) error = true;
+        if (e.value.length < 1 || e.value.length > Lastname.limit()) error = true;
+        store.dispatch(saveIdentificationValue(e));
         this.setState({
             ...this.state,
             error: error,
             value: e.value
         });
-        store.dispatch(saveIdentificationValue(e));
     }
 
     render() {

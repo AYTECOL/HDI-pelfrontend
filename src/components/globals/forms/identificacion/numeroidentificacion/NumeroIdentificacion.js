@@ -46,29 +46,36 @@ class NumeroIdentificacion extends Component {
         let error = false;
 
         if (v.length < 1) error = true;
-        switch (this.state.typeIdentification) {
-            // Valida todos los documentos persona natural
-            case "36":
-            case "33":
-            case "40":
-            case "38":
-            case "35":
-            case "44":
-            case "34":
-            default:
-                if (v.length < 5 || v.length >= 15 || isNaN(v)) {
-                    error = true;
-                }
-                break;
-            // Valida solo el nit
-            case "37":
-                let s = v.split("-");
-                if (v.indexOf("-") === -1 || isNaN(parseInt(v)) ||
-                    s[0].length < 7 || s[1].length < 1 || isNaN(s[0]) || isNaN(s[1])
-                ) {
-                    error = true;
-                }
-                break;
+        // CC
+        if (this.state.typeIdentification === "36") {
+            if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
+        //CC extranjería
+        } else if (this.state.typeIdentification === "33") {
+            if (v.length < 1 || v.length > 18 || isNaN(v)) error = true;
+        //Pasaporte
+        } else if (this.state.typeIdentification === "40") {
+            if (v.length < 3 || v.length > 10) error = true;
+        //NUIP
+        } else if (this.state.typeIdentification === "38") {
+            if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
+        //Registro civil
+        } else if (this.state.typeIdentification === "35") {
+            if (v.length < 3 || v.length > 20 || isNaN(v)) error = true;
+        //Diplomático
+        } else if (this.state.typeIdentification === "44") {
+            if (v.length < 3 || v.length > 10) error = true;
+        //Identidad
+        } else if (this.state.typeIdentification === "34") {
+            if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
+        //NIT
+        } else if (this.state.typeIdentification === "37") {
+            if (v.length < 9 || isNaN(v)) error = true;
+            // if( v.length === 10 && v.substr(-1) === "-" ){
+            //     let sub = parseInt(v.toString().substr(0,9));
+            //     v = sub + "-" + Helpers.calcularDigitoVerificacion(v);
+            // }
+            // let sub = parseInt(v.toString().substr(0,9));
+            // if( sub < 80000000 || sub > 999999999 ) error = true;
         }
 
         if (error === false) store.dispatch(saveIdentificationValue(e));

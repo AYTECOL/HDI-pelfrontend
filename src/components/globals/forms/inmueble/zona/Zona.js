@@ -4,6 +4,7 @@ import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 import './Zona.scss';
 import Zones from "../../../../../services/Zones";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Zona extends Component {
 
@@ -39,6 +40,7 @@ class Zona extends Component {
 
     saveData(e) {
         store.dispatch(saveInmuebleValue(e));
+        Helpers.removeClass(".zona", "error");
         this.setState({
             ...this.state,
             active: e.value
@@ -47,8 +49,8 @@ class Zona extends Component {
 
     render() {
         return (
-            <div className={"form-group " + this.state.error}>
-                <label htmlFor="doc-type-value">El inmueble está ubicado en zona</label>
+            <div className={"zona no-icon form-group " + this.state.error}>
+                <label htmlFor="zona">El inmueble está ubicado en zona</label>
                 <ul className="select-item">
                     {this.state.zonas.map((option, key) =>
                         <li key={option.zoneCode} className={parseInt(this.state.active) === parseInt(option.zoneCode) ? 'active' : ''}

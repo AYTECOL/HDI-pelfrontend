@@ -3,7 +3,13 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {saveIdentificationValue} from '../../../../../actionCreators';
 
+import Helpers from '../../../../../common/helpers/helpers/Helpers';
+
 class Name extends Component {
+
+    static limit(){
+        return 51;
+    }
 
     constructor(props) {
         super(props);
@@ -17,6 +23,7 @@ class Name extends Component {
             let value = storeState.cotizacion.identification.name;
             let disabledName = storeState.disabledName;
             if (this.state.value !== value || this.state.disabledName !== disabledName) {
+                value = Helpers.toCapitalize(value);
                 this.setState({
                     ...this.state,
                     value: value,
@@ -27,14 +34,15 @@ class Name extends Component {
     }
 
     validateEmpty(e) {
+        e.value = Helpers.toCapitalize(e.value);
         let error = false;
-        if (e.value.length < 1) error = true;
+        if (e.value.length < 1 || e.value.length > Name.limit()) error = true;
+        store.dispatch(saveIdentificationValue(e));
         this.setState({
             ...this.state,
             error: error,
             value: e.value
         });
-        store.dispatch(saveIdentificationValue(e));
     }
 
     render() {

@@ -3,8 +3,38 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Asegurartelefonos extends Component {
+
+    static name () {
+        try { return store.getState().allInsurableLimits[6].description;
+        }catch (e) { return ""; }
+    }
+    //850000
+    static min () {
+        try { return store.getState().allInsurableLimits[6].min_value;
+        }catch (e) { return 0; }
+    }
+    //10000001
+    static max() {
+        try { return store.getState().allInsurableLimits[6].max_value;
+        }catch (e) { return 0; }
+    }
+
+    static validateField(v){
+        let error = 0;
+        v = Masknumbermoney.formatToNumber(v);
+        if (v.length < 1) error = 1;
+        if (error === 0) {
+            if (v < Asegurartelefonos.min()) {
+                error = 2;
+            } else if (v > Asegurartelefonos.max()) {
+                error = 3;
+            }
+        }
+        return error;
+    }
 
     constructor(props) {
         super(props);
@@ -12,8 +42,6 @@ class Asegurartelefonos extends Component {
             error: false,
             show: false,
             active: 0,
-            min: 850000,
-            max: 10000001,
             errorValue: 0,
             value: ""
         };
@@ -36,22 +64,15 @@ class Asegurartelefonos extends Component {
         store.dispatch(saveInmuebleValue(e));
         this.setState({
             ...this.state,
-            active: e.data
+            active: e.value
         });
+        Helpers.removeClass(".inmuebleasegudadotelefonos", "error");
     }
 
     validateValue(e) {
-        let error = 0;
-        let v = Masknumbermoney.formatToNumber(e.value);
-        if (v.length < 1) error = 1;
-        if (error === 0) {
-            if (v < this.state.min) {
-                error = 2;
-            } else if (v >= this.state.max) {
-                error = 3;
-            }
-        }
-        let format = Masknumbermoney.formatToMask(v);
+        let error = Asegurartelefonos.validateField(e.value);
+        let format = Masknumbermoney.formatToMask(e.value);
+        if( error === 0 ) Helpers.removeClass(".inmuebleasegudadotelefonosvalor", "error");
         store.dispatch(saveInmuebleValue({
             name: "inmuebleasegudadotelefonosvalor",
             value: format,
@@ -67,24 +88,22 @@ class Asegurartelefonos extends Component {
         return (
             <div className="row">
                 <div className="col col-12 col-md-6">
-                    <div className={"form-group " + this.state.error}>
-                        <label htmlFor="doc-type-value">¿Adicionalmente deseas asegurar teléfonos móviles? </label>
+                    <div className={"inmuebleasegudadotelefonos form-group " + this.state.error}>
+                        <label htmlFor="doc-type-value">¿Adicionalmente deseas asegurar { Asegurartelefonos.name() }? </label>
                         <ul className="select-item">
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={(e) => {
                                     this.validateEmpty({
-                                        data: 1,
                                         value: 1,
                                         name: "inmuebleasegudadotelefonos"
                                     });
                                 }}
                             >Si
                             </li>
-                            <li className={((this.state.active === 2) ? 'active' : '')}
+                            <li className={((this.state.active === 0) ? 'active' : '')}
                                 onClick={(e) => {
                                     this.validateEmpty({
-                                        data: 2,
-                                        value: 2,
+                                        value: 0,
                                         name: "inmuebleasegudadotelefonos"
                                     });
                                 }}
@@ -95,9 +114,9 @@ class Asegurartelefonos extends Component {
                 </div>
                 {(this.state.active === 1) ? (
                     <div className="col col-12 col-md-6">
-                        <div className={"form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="doc-type-value">Valor de teléfonos móviles</label>
-                            <input name="value" id="doc-type-value"
+                        <div className={"inmuebleasegudadotelefonosvalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor="inmuebleasegudadotelefonosvalor">Valor de { Asegurartelefonos.name() }</label>
+                            <input name="inmuebleasegudadotelefonosvalor" id="inmuebleasegudadotelefonosvalor"
                                    type="text"
                                    value={this.state.value}
                                    className={"form-control"}
@@ -108,20 +127,18 @@ class Asegurartelefonos extends Component {
                                    onChange={(e) => {
                                        this.validateValue(e.target);
                                    }}/>
-                            <small className={"form-text"}>Mínimo. $
-                                850.000 - Máximo. $ 10.000.000
-                            </small>
+                            <small className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Asegurartelefonos.min())} - Máximo. {Masknumbermoney.formatToMask(Asegurartelefonos.max())}</small>
                             <small
-                                className={"form-text only-errors " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
-                                favor ingrese un valor.
+                                className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
+                                Ingrese el valor asegurado de Teléfonos Móviles.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor
-                                Asegurado de Teléfonos Móviles es inferior al permitido.
+                                Asegurado de { Asegurartelefonos.name() } es inferior al permitido.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 3 ? 'show' : 'hide')}>Valor
-                                Asegurado de Teléfonos Móviles es superior al permitido.
+                                Asegurado de { Asegurartelefonos.name() } es superior al permitido.
                             </small>
                         </div>
                     </div>

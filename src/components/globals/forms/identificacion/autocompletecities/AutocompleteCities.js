@@ -20,35 +20,48 @@ class AutocompleteCities extends Component {
             idElement: "",
             toggle: false,
             onChange: null,
-            valueLoaded: 0,
+            valueLoadedCity: 0,
+            valueLoadedDepartment: 0,
         };
 
         this.getOptions();
         store.subscribe(() => {
             let storeState = store.getState();
-            this.setState({
-                ...this.state,
-                valueLoaded: storeState.cotizacion.identification.city
-            });
+            let city = storeState.cotizacion.identification.city;
+            let department = storeState.cotizacion.identification.department;
+            if( city !== this.state.valueLoadedCity || department !== this.state.valueLoadedDepartment ) {
+                this.setState({
+                    ...this.state,
+                    valueLoadedCity: city,
+                    valueLoadedDepartment: department,
+                });
+            }
         });
     }
 
     async getOptions() {
         let data = await IdentificationsCities.get();
+        this.setState({
+            ...this.state,
+            options: data,
+            originalOptions: data
+        });
+        setTimeout(function () {
+            this.getTextById();
+        }.bind(this), 300);
+    }
+
+    getTextById(){
         let value = "";
-        if (this.state.valueLoaded !== 0) {
-            for (let i in data.cities) {
-                let d = data.cities[i];
-                if (d.code_city === this.state.valueLoaded) {
-                    value = d.description;
-                    break;
-                }
+        for (let i = 0; i < this.state.options.cities.length; i++) {
+            let d = this.state.options.cities[i];
+            if (this.state.valueLoadedCity === parseInt(d.code_city) && this.state.valueLoadedDepartment === parseInt(d.code_department)) {
+                value = d.department;
+                break;
             }
         }
         this.setState({
             ...this.state,
-            options: data,
-            originalOptions: data,
             value: value
         });
     }
@@ -65,13 +78,16 @@ class AutocompleteCities extends Component {
         }.bind(this), 200);
     }
 
-    saveOption(code, value, description) {
-        let element = {
-            name: "city",
-            value: code
-        };
+    saveOption(code, value, description, codeDepartment) {
         setTimeout(function () {
-            store.dispatch(saveIdentificationValue(element));
+            store.dispatch(saveIdentificationValue({
+                name: "city",
+                value: code
+            }));
+            store.dispatch(saveIdentificationValue({
+                name: "department",
+                value: codeDepartment
+            }));
             store.dispatch(saveDescriptionCity(description));
             this.setState({
                 ...this.state,
@@ -120,10 +136,10 @@ class AutocompleteCities extends Component {
                 />
                 <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
                 <ul className={(this.state.toggle ? 'show' : 'hide') + " list-items"}>
-                    {this.state.options.cities.map(option =>
-                        <li key={option.code_city} value={option.code_city}
+                    {this.state.options.cities.map((option, key) =>
+                        <li key={key} value={option.code_city}
                             onClick={(e) => {
-                                this.saveOption(option.code_city, option.department, option.description);
+                                this.saveOption(option.code_city, option.department, option.description, option.code_department);
                             }}
                         >{option.description}</li>
                     )}
