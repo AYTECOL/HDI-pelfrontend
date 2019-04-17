@@ -1,0 +1,40 @@
+library ('utils@master') _
+
+def MAJOR_VERSION = "1"
+def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
+//def  = "intl-latam-poliza-backend-jenks"
+//def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
+node('linux'){
+
+	stage('Git Checkout'){
+		checkout scm develop
+	}
+
+	stage('Dev Deploy') {
+		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+        
+			sh """
+				aws s3 mb s3://$BUCKET_NAME
+				
+				ls -ltr
+				
+				npm install	
+				npm run-script build
+					
+				ls -ltr
+				aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
+				aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document error.html
+			"""
+		}
+	}
+	stage('Completion Email'){
+
+        mail bcc: '', body: ' Dev Infra Deployment completed successfully http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/.', cc: '', from: 'noreply-cdp@libertymutual.com', replyTo: '', subject: "Dev Infra Deployment ${env.JOB_NAME} ${env.BUILD_NUMBER}", to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms'
+		echo '${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL} Dev Deploy complete http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/'
+    }
+	stage('Test sonarqube'){
+		withSonarQubeEnv('sonarqube') {
+          	 sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+	 }
+	}
+ }
