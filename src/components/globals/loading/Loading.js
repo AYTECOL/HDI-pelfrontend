@@ -21,7 +21,6 @@ class Loading extends Component {
     }
 
     animation() {
-        console.log(this.state.active);
         if (this.state.active === false) return;
         let status = true;
         setInterval(function () {

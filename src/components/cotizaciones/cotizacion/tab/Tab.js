@@ -192,12 +192,20 @@ class Tab extends React.Component {
                                                 {option.values.map((opt, k) =>
                                                     <div className={"contenidoasegudadovalor form-group"} key={k}>
                                                         <label htmlFor="contenidoasegudadovalor">{opt.name}</label>
-                                                        <input name="contenidoasegudadovalor"
-                                                               id="contenidoasegudadovalor"
-                                                               placeholder={Masknumbermoney.formatToMask(opt.value)}
-                                                               defaultValue={opt.value}
-                                                               disabled={(option.optional === false)}
-                                                               type="text" className={"form-control"}/>
+                                                        {typeof opt.value !== 'undefined' ? (
+                                                            <input name="contenidoasegudadovalor"
+                                                                   id="contenidoasegudadovalor"
+                                                                   placeholder={Masknumbermoney.formatToMask(opt.value)}
+                                                                   defaultValue={opt.value}
+                                                                   disabled={(option.optional === false)}
+                                                                   type="text" className={"form-control"}/>
+                                                        ):(
+                                                            <select className="form-control">
+                                                                {opt.values.map((opt, k) =>
+                                                                    <option selected={(opt.default===true?'selected':false)} key={k} value={k}>{opt.limit}</option>
+                                                                )}
+                                                            </select>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
