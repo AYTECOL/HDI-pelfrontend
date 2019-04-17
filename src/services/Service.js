@@ -1,6 +1,5 @@
 import store from "../store";
 import {toggleLoading} from "../actionCreators";
-import axios from 'axios';
 import Promise from 'es6-promise';
 
 class Service {
@@ -10,6 +9,7 @@ class Service {
             var xhr = new XMLHttpRequest();
             xhr.open(method, url);
             xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+            xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             xhr.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
                     resolve(xhr.response);
