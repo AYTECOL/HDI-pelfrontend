@@ -20,7 +20,8 @@ node('linux'){
 				
 				npm install	
 				npm run-script build
-					
+				mv build webapp	
+				
 				ls -ltr
 				aws s3 cp dist s3://$BUCKET_NAME  --recursive --acl public-read
 			//	aws s3api put-bucket-website --bucket $BUCKET_NAME --website-configuration file://webSite.json
