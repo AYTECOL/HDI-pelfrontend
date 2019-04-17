@@ -28,10 +28,12 @@ node('linux'){
 		}
 	}
 	stage('Completion Email'){
-
-        mail bcc: '', body: ' Dev Infra Deployment completed successfully http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/.', cc: '', from: 'noreply-cdp@libertymutual.com', replyTo: '', subject: "Dev Infra Deployment ${env.JOB_NAME} ${env.BUILD_NUMBER}", to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms'
-		echo '${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL} Dev Deploy complete http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/'
-    }
+		    
+	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
+                subject: "Dev Infra Deployment: ${env.JOB_NAME}", 
+                body: "Despliegue realizado validar ambiente Dev en: http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/ Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
+	
+	}
 	stage('Test sonarqube'){
 		withSonarQubeEnv('sonarqube') {
           	 sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
