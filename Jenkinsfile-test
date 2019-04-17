@@ -29,7 +29,7 @@ node('linux'){
 	}
 	stage('Completion Email'){
 
-        mail bcc: '', body: ' Dev Infra Deployment completed successfully http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/.', cc: '', from: 'noreply-cdp@libertymutual.com', replyTo: '', subject: 'Dev Infra Deployment ${env.JOB_NAME} ${env.BUILD_NUMBER}', to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms'
+        mail bcc: '', body: ' Dev Infra Deployment completed successfully http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/.', cc: '', from: 'noreply-cdp@libertymutual.com', replyTo: '', subject: "Dev Infra Deployment ${env.JOB_NAME} ${env.BUILD_NUMBER}", to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms'
 		echo '${currentBuild.currentResult}: Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}\n More info at: ${env.BUILD_URL} Dev Deploy complete http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/'
     }
 	stage('Test sonarqube'){
