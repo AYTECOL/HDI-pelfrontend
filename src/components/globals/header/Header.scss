@@ -108,7 +108,8 @@ header {
             }
 
             &.icon1::before {
-              background-image: url("../../../common/images/icono-header1.png");
+              background-image: url("../../../common/images/negosios.png");
+              background-size: 70% auto;
             }
 
             &.icon2::before {
@@ -158,10 +159,12 @@ header {
             &::before {
               background-size: 90% auto;
             }
+            &.icon1::before {
+              background-size: 75% auto;
+            }
 
             &.icon3 {
               transform: scale(1.1);
-
               &::before {
                 background-size: 100% auto;
               }

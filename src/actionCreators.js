@@ -104,6 +104,9 @@ const AllPlans = (data) => {
 const toggleLoading = (data) => {
     return {type: "TOGGLE_LOADER", data: data}
 };
+const toggleTopUpSendMail = (data) => {
+    return {type: "TOGGLE_POPUP_SENDMAIL", data: data}
+};
 
 export {
     nextStepIndentification,
@@ -128,5 +131,6 @@ export {
     saveAllInsurableLimits,
     AllPlans,
     indexPlanSelected,
-    toggleLoading
+    toggleLoading,
+    toggleTopUpSendMail
 };

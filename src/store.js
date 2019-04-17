@@ -80,7 +80,8 @@ const initialState = {
     AllPlans: [],
 
     //General
-    ShowLoader: false
+    ShowLoader: false,
+    ShowSendMail: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -236,6 +237,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             ShowLoader: action.data
+        }
+    }else if( action.type === "TOGGLE_POPUP_SENDMAIL" ){
+        return {
+            ...state,
+            ShowSendMail: action.data
         }
     }
     return state;

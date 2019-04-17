@@ -19,7 +19,7 @@ node('linux'){
 				ls -ltr
 				
 				npm install	
-				npm run-script buildUAT
+				npm run-script build
 					
 				ls -ltr
 				aws s3 cp dist s3://$BUCKET_NAME  --recursive --acl public-read
