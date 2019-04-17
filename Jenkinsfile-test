@@ -31,6 +31,10 @@ node('linux'){
 
         mail bcc: '', body: ' Dev Infra Deployment completed successfully http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/.', cc: '', from: 'noreply-cdp@libertymutual.com', replyTo: '', subject: 'Dev Infra Deployment ', to: 'carlos.unate@libertycolombia.com'
 		echo 'Dev Deploy complete http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/'
+		
+		office365ConnectorWebhooks([
+   					 [name: "Dev Deploy complete http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/", url: "https://outlook.office.com/webhook/749c14c8-f0a2-430e-8cdf-f3dbe55a26bb@08a83339-90e7-49bf-9075-957ccd561bf1/JenkinsCI/7f052cbefcdd4a82ba91952538c709db/c7749015-6707-40b2-bf1f-b9eb9a5c1d4a", notifyFailure: true]
+
     }
 	stage('Test sonarqube'){
 		withSonarQubeEnv('sonarqube') {
