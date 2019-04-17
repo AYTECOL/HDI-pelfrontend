@@ -32,8 +32,9 @@ node('linux'){
         mail bcc: '', body: ' Dev Infra Deployment completed successfully http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/.', cc: '', from: 'noreply-cdp@libertymutual.com', replyTo: '', subject: 'Dev Infra Deployment ', to: 'carlos.unate@libertycolombia.com'
 		echo 'Dev Deploy complete http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/'
     }
-	
-	withSonarQubeEnv('sonarqube') {
-           sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+	stage('Test sonarqube'){
+		withSonarQubeEnv('sonarqube') {
+          	 sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+	 }
 	}
  }
