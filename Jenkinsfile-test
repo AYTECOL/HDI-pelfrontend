@@ -39,7 +39,7 @@ node('linux'){
           	 sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 }
 	}
-	stage('Test Selenium'){
-		npm install selenium-webdriver
+	stage('Testing'){
+		
 	}
  }
