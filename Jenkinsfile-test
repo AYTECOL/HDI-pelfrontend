@@ -40,6 +40,8 @@ node('linux'){
 	 }
 	}
 	stage('Testing'){
-		
+
+		npm install jasmine-node --save-dev
+		npm install request --save
 	}
  }
