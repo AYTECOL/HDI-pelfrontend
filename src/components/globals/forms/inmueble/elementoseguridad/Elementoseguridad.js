@@ -61,7 +61,7 @@ class Elementoseguridad extends Component {
     saveValue(e) {
         if (this.state[e.name] === 1){
             e.value = 0;
-        } else if( this.state[e.name] === 1 ){
+        } else if( this.state[e.name] === 0 ){
             e.value = 1;
         }
         store.dispatch(saveInmuebleValueSeguridad(e));

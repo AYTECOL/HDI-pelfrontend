@@ -1,6 +1,7 @@
-import axios from 'axios';
 import store from "../store";
 import {toggleLoading} from "../actionCreators";
+import axios from 'axios';
+import Promise from 'es6-promise';
 
 class Service {
 
@@ -8,6 +9,7 @@ class Service {
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
             xhr.open(method, url);
+            xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
             xhr.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
                     resolve(xhr.response);
@@ -24,7 +26,7 @@ class Service {
                     statusText: xhr.statusText
                 });
             };
-            xhr.send();
+            xhr.send(JSON.stringify(data));
         });
     }
 
@@ -39,7 +41,7 @@ class Service {
         return await Service.HttpRequest('POST',url, data).then(function (response) {
             store.dispatch(toggleLoading(false));
             return JSON.parse(response);
-        })
+        });
     };
 
     static async put(url) {
