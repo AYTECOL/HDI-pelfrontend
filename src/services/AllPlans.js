@@ -2,7 +2,7 @@ import Service from './Service';
 import Store from '../store';
 import {AllPlans as AllPlansCreator} from '../actionCreators';
 
-const BaseUrl = "https://jnvmb2ndq8.execute-api.us-east-1.amazonaws.com/dev/all-plans";
+const BaseUrl = "https://o78mqwmm0l.execute-api.us-east-1.amazonaws.com/dev/all-plans";
 
 class AllPlans {
     static async get() {
