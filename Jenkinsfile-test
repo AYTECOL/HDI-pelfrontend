@@ -40,10 +40,6 @@ node('linux'){
 	 }
 	}
 	stage('Testing'){
-     withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-        aws s3 mb s3://$BUCKET_NAME
-		npm install jasmine-node --save-dev
-		npm install request --save
-	 }
+     
 	}
  }
