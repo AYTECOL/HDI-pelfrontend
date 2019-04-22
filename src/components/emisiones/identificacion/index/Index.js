@@ -1,6 +1,9 @@
 import React from 'react';
 //Component
 import BtnContinue from '../../../globals/forms/emision/identificacion/btncontinue/BtnContinue';
+import PopUpDelete from '../popups/delete/Delete';
+import PopUpPersona from '../popups/persona/Persona';
+import PopUpEntidad from '../popups/entidad/Entidad';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";
@@ -11,7 +14,36 @@ class Index extends React.Component {
         super(props);
         this.state = {
             step: parseInt(this.props.match.params.step),
+            showPopUpDelete: false,
+            showPopUpPersona: false,
+            showPopUpEntidad: false,
         };
+
+        this.togglePopUpDelete = this.togglePopUpDelete.bind(this);
+        this.togglePopUpPersona = this.togglePopUpPersona.bind(this);
+        this.togglePopUpEntidad = this.togglePopUpEntidad.bind(this);
+    }
+
+    togglePopUpDelete(index){
+        let state = !this.state.showPopUpDelete;
+        this.setState({
+            ...this.state,
+            showPopUpDelete: state
+        });
+    }
+    togglePopUpPersona(){
+        let state = !this.state.showPopUpPersona;
+        this.setState({
+            ...this.state,
+            showPopUpPersona: state
+        });
+    }
+    togglePopUpEntidad(){
+        let state = !this.state.showPopUpEntidad;
+        this.setState({
+            ...this.state,
+            showPopUpEntidad: state
+        });
     }
 
     render() {
@@ -34,7 +66,7 @@ class Index extends React.Component {
                                 </div>
                                 <div className="col">
                                     <span>Rol</span>
-                                    <p>Asegurado, tomador</p>
+                                    <p className="font-weight-bold">Asegurado, tomador</p>
                                 </div>
                                 <div className="col">
                                     <span>Identificación</span>
@@ -49,7 +81,12 @@ class Index extends React.Component {
                                     <p>Medellin calle 1233…</p>
                                 </div>
                                 <div className="col actions">
-                                    <p>Modificar <span className="trash"></span></p>
+                                    <p>
+                                    <i>Modificar</i>
+                                    <span className="trash" onClick={(e)=>{
+                                        this.togglePopUpDelete(1);
+                                    }}>&nbsp;</span>
+                                    </p>
                                 </div>
                             </div>
 
@@ -58,11 +95,15 @@ class Index extends React.Component {
 
                     <div className="row">
                         <div className="col wrapper-more-items">
-                            <div className="more-items">
+                            <div className="more-items" onClick={(e)=>{
+                                this.togglePopUpPersona(1);
+                            }}>
                                 <button className="more-btn">+</button>
                                 <p>Agregar persona</p>
                             </div>
-                            <div className="more-items">
+                            <div className="more-items" onClick={(e)=>{
+                                this.togglePopUpEntidad(1);
+                            }}>
                                 <button className="more-btn">+</button>
                                 <p>Agregar beneficiario oneroso</p>
                             </div>
@@ -76,6 +117,9 @@ class Index extends React.Component {
                         </div>
                     </div>
                 </div>
+                {this.state.showPopUpDelete === true && <PopUpDelete toggle={this.togglePopUpDelete} /> }
+                {this.state.showPopUpPersona === true && <PopUpPersona toggle={this.togglePopUpPersona} /> }
+                {this.state.showPopUpEntidad === true && <PopUpEntidad toggle={this.togglePopUpEntidad} /> }
             </form>
         )
     }
