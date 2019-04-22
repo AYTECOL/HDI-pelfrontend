@@ -18,6 +18,10 @@ class Submenu extends Component {
             path: '/cotizacion/' + this.props.match.params.step + '/' + this.props.match.params.id
         };
 
+        if ( this.state.step > 3 ){
+            window.location.href = "/404";
+        }
+
         store.dispatch(saveCotizacionNumber(this.state.number));
         store.subscribe(() => {
             let storeState = store.getState();

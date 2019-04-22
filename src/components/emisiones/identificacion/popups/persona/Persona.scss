@@ -1,0 +1,27 @@
+.person-popup{
+  &.modal {
+    .modal-body{
+      max-width: 100%;
+      width: 80%;
+      .items-checkboxes{
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        input, label{
+          vertical-align: middle;
+          display: inline-block;
+        }
+      }
+      .fields-row{
+        padding-top: 15px;
+      }
+      .form-group{
+        margin-bottom: 14px;
+        label{
+          display: block;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
