@@ -1,6 +1,6 @@
 import Service from './Service';
 
-const BaseUrl = "https://o78mqwmm0l.execute-api.us-east-1.amazonaws.com/dev/all-properties-zones";
+const BaseUrl = "/all-properties-zones";
 
 const Default = {
     properties_zones: [

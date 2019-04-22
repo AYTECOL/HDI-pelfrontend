@@ -2,7 +2,7 @@ import Service from './Service';
 import Store from '../store';
 import {saveAllInsurableLimits} from '../actionCreators';
 
-const BaseUrl = "https://o78mqwmm0l.execute-api.us-east-1.amazonaws.com/dev/all-insurable-limits";
+const BaseUrl = "/all-insurable-limits";
 
 const Default = function () {
     let data = {};

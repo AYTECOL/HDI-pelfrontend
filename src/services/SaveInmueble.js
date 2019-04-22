@@ -1,7 +1,7 @@
 import Service from './Service';
 import Store from '../store';
 
-const BaseUrl = "https://o78mqwmm0l.execute-api.us-east-1.amazonaws.com/dev/create-or-update-valoration/";
+const BaseUrl = "/create-or-update-valoration/";
 
 class SaveInmueble {
     static async get() {

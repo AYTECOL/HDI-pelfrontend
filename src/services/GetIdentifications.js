@@ -1,6 +1,6 @@
 import Service from './Service';
 
-const Url = "https://o78mqwmm0l.execute-api.us-east-1.amazonaws.com/dev/quote/";
+const Url = "/quote/";
 
 class GetIdentifications {
     static async get() {
