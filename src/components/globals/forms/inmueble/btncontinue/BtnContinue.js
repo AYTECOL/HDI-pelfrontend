@@ -163,8 +163,7 @@ class BtnContinue extends Component {
                 <button type="button" className={"btn btn-default"}
                         onClick={(e) => {
                             this.saveService();
-                        }}
-                        type="button">Guardar y salir
+                        }}>Guardar y salir
                 </button>
                 <button type="button"
                         disabled={this.state.disabled}

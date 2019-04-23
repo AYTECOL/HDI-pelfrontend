@@ -25,7 +25,7 @@ class BtnContinue extends Component {
                     <Link to='/'><i className="back-icon"></i>Volver</Link>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={() => this.saveAndExit()} type="button">Guardar y salir
+                        onClick={() => this.saveAndExit()}>Guardar y salir
                 </button>
                 <button type="button" className={"btn btn-primary"}>Continuar
                 </button>

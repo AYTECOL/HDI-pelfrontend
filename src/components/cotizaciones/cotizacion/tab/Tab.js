@@ -18,7 +18,8 @@ class Tab extends React.Component {
             assistsTotal: 0,
             coverturasTotal: 0,
             Inmueble: store.getState().Inmueble,
-            plansOks: false
+            plansOks: false,
+            typePlans: 3
         };
         store.dispatch(toggleLoading(true));
         for (let i = 0; i < 3; i++) {
@@ -43,7 +44,7 @@ class Tab extends React.Component {
             let index = storeState.indexPlan;
             let inmueble = storeState.Inmueble;
             if (inmueble !== this.state.Inmueble) {
-                let type = 0;
+                let type = this.state.typePlans;
                 if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
                     type = 3;
                 } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
@@ -55,7 +56,9 @@ class Tab extends React.Component {
                     ...this.state,
                     Inmueble: inmueble
                 });
-                if (this.state.plansOks === false) this.getPlants(type);
+                if (this.state.plansOks === false || this.state.typePlans !== type) {
+                    this.getPlants(type);
+                }
             }
             if (this.state.index !== index) {
                 this.setState({
@@ -149,7 +152,8 @@ class Tab extends React.Component {
         this.setState({
             ...this.state,
             plans: plans,
-            plansOks: true
+            plansOks: true,
+            typePlans: type
         });
         this.countCoverturas();
         this.countAsistencias();
@@ -194,7 +198,6 @@ class Tab extends React.Component {
     render() {
         return (
             <div>
-
                 <div className="first-content">
                     <div className="row">
                         <div className="col col-12 col-md-3 col-lg-3">

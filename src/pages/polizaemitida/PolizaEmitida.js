@@ -45,8 +45,7 @@ class PolizaEmitida extends Component {
 
                         <div className={"row text-center"}>
                             <div className="col col-sm-12 col-md-12 col-lg-12">
-                                <button type="button" className={"btn btn-default"}
-                                        type="button">Nueva cotización
+                                <button type="button" className={"btn btn-default"}>Nueva cotización
                                 </button>
                                 <a href={'/'} type="button"
                                    className={"btn btn-primary"}>Ir a mis negocios

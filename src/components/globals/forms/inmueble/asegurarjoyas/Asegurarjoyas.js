@@ -7,6 +7,11 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Asegurarjoyas extends Component {
 
+    static nameModel = "inmuebleasegudadojoyas";
+    static nameModelValue = "inmuebleasegudadojoyasvalor";
+
+    _isMounted = false;
+
     static name() {
         try {
             return store.getState().allInsurableLimits[4].description;
@@ -47,6 +52,14 @@ class Asegurarjoyas extends Component {
         return error;
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -64,21 +77,25 @@ class Asegurarjoyas extends Component {
             let active = storeState.Inmueble.inmuebleasegudadojoyas;
             let value = storeState.Inmueble.inmuebleasegudadojoyasvalor;
             if (this.state.active !== active || this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    active: active,
-                    value: value,
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        value: value,
+                        active: active,
+                    });
+                }
             }
         });
     }
 
     validateEmpty(e) {
         store.dispatch(saveInmuebleValue(e));
-        this.setState({
-            ...this.state,
-            active: e.value
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                active: e.value
+            });
+        }
         Helpers.removeClass(".inmuebleasegudadojoyas", "error");
     }
 
@@ -87,14 +104,16 @@ class Asegurarjoyas extends Component {
         let format = Masknumbermoney.formatToMask(e.value);
         if (error === 0) Helpers.removeClass(".inmuebleasegudadojoyasvalor", "error");
         store.dispatch(saveInmuebleValue({
-            name: "inmuebleasegudadojoyasvalor",
+            name: Asegurarjoyas.nameModelValue,
             value: format,
         }));
-        this.setState({
-            ...this.state,
-            errorValue: error,
-            value: format
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                errorValue: error,
+                value: format
+            });
+        }
     }
 
     render() {
@@ -108,7 +127,7 @@ class Asegurarjoyas extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 1,
-                                        name: "inmuebleasegudadojoyas"
+                                        name: Asegurarjoyas.nameModel
                                     });
                                 }}
                             >Si
@@ -117,7 +136,7 @@ class Asegurarjoyas extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 0,
-                                        name: "inmuebleasegudadojoyas"
+                                        name: Asegurarjoyas.nameModel
                                     });
                                 }}
                             >No
