@@ -129,17 +129,22 @@ class Cards extends React.Component {
         }
     }
 
-    toggleItem(index) {
-        let active = this.state.items[index].active;
-        let newItems = this.state.items;
-        newItems[index].active = !active;
-
+    updateStoreItem(index){
         // Actualiza el valor de prendido o apagado en el store
+        let newItems = this.state.items;
         let newObj = new newItems[index].parent();
         newObj.validateEmpty({
             value: newItems[index].active === true?0:1,
             name: newItems[index].parent.nameModel
         });
+    }
+
+    toggleItem(index) {
+        let active = this.state.items[index].active;
+        let newItems = this.state.items;
+        newItems[index].active = !active;
+
+        this.updateStoreItem(index);
 
         // Pone el cargando para cotizacion
         if( newItems[index].type === 1 || newItems[index].type === 2 ){
@@ -149,6 +154,17 @@ class Cards extends React.Component {
         // Deshabilita los demas items
         if( newItems[index].type === 2 && newItems[index].active === true ){
             for(let i = 1; i < 5; i++) newItems[i].active = newItems[index].active;
+        }
+
+        // Habilita contenido si los demas items lo tienn
+        if(
+            newItems[index].type === 3 && newItems[index].active === false ||
+            newItems[index].type === 4 && newItems[index].active === false ||
+            newItems[index].type === 5 && newItems[index].active === false
+        ){
+            store.dispatch(toggleLoading(true));
+            newItems[1].active = newItems[index].active;
+            this.updateStoreItem(1);
         }
 
         this.setState({
