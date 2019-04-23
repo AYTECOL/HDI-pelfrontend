@@ -321,6 +321,7 @@ $color-font-btn-primary: #404040;
   text-align: center;
   overflow: auto;
   height: 100%;
+  padding: 50px 0;
 
   &.show {
     display: flex;
@@ -338,7 +339,7 @@ $color-font-btn-primary: #404040;
     background: #FFFFFF;
     box-shadow: 0 4px 16px rgba(74, 74, 74, 0.642408);
     border-radius: 3px;
-    max-height: 95%;
+    margin: auto;
   }
 
   .modal-body,
