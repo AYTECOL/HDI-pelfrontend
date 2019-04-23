@@ -320,6 +320,7 @@ $color-font-btn-primary: #404040;
   justify-content: center;
   text-align: center;
   overflow: auto;
+  height: 100%;
 
   &.show {
     display: flex;
@@ -335,8 +336,9 @@ $color-font-btn-primary: #404040;
     max-width: 626px;
     border: 0;
     background: #FFFFFF;
-    box-shadow: 0px 4px 16px rgba(74, 74, 74, 0.642408);
+    box-shadow: 0 4px 16px rgba(74, 74, 74, 0.642408);
     border-radius: 3px;
+    max-height: 95%;
   }
 
   .modal-body,
@@ -662,4 +664,8 @@ $color-font-btn-primary: #404040;
       }
     }
   }
+}
+
+.popup{
+  overflow: hidden;
 }
