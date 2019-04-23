@@ -6,13 +6,13 @@ import {UrlService} from '../config';
 
 class Service {
 
-    static HttpRequest (method, url, data, overrideBase) {
+    static HttpRequest(method, url, data, overrideBase) {
 
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
-            if (typeof overrideBase === 'undefined'){
+            if (typeof overrideBase === 'undefined') {
                 url = UrlService + url;
-            }else{
+            } else {
                 url = overrideBase + url;
             }
             xhr.open(method, url);
@@ -34,9 +34,9 @@ class Service {
                     statusText: xhr.statusText
                 });
             };
-            if (data === null){
+            if (data === null) {
                 xhr.send();
-            }else{
+            } else {
                 xhr.send(JSON.stringify(data));
             }
         });
@@ -50,14 +50,14 @@ class Service {
 
     static async post(url, data, overrideBase) {
         store.dispatch(toggleLoading(true));
-        return await Service.HttpRequest('POST',url, data, overrideBase).then(function (response) {
+        return await Service.HttpRequest('POST', url, data, overrideBase).then(function (response) {
             store.dispatch(toggleLoading(false));
             return JSON.parse(response);
         });
     };
 
     static async put(url, overrideBase) {
-        return await Service.HttpRequest('PUT',url, null, overrideBase).then(function (response) {
+        return await Service.HttpRequest('PUT', url, null, overrideBase).then(function (response) {
             store.dispatch(toggleLoading(false));
             return JSON.parse(response);
         })

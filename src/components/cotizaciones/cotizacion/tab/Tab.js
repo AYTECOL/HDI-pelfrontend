@@ -55,7 +55,7 @@ class Tab extends React.Component {
                     ...this.state,
                     Inmueble: inmueble
                 });
-                if ( this.state.plansOks === false ) this.getPlants(type);
+                if (this.state.plansOks === false) this.getPlants(type);
             }
             if (this.state.index !== index) {
                 this.setState({
@@ -155,7 +155,7 @@ class Tab extends React.Component {
         this.countAsistencias();
         setTimeout(function () {
             store.dispatch(toggleLoading(false));
-        },1000);
+        }, 1000);
     }
 
     getSelectByItems(item) {
@@ -245,8 +245,8 @@ class Tab extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="col col-12 col-sm-12 col-md-3 col-lg-3 middle">
-                                                { typeof option.values !== "undefined" &&
-                                                    <div>
+                                                {typeof option.values !== "undefined" &&
+                                                <div>
                                                     {option.values.map((opt, k) =>
                                                         <div className={"contenidoasegudadovalor form-group"} key={k}>
                                                             <label htmlFor="contenidoasegudadovalor">{opt.name}</label>
@@ -255,7 +255,8 @@ class Tab extends React.Component {
                                                                        id="contenidoasegudadovalor"
                                                                        placeholder={Masknumbermoney.formatToMask(opt.value)}
                                                                        value={this.getValueFields(opt)}
-                                                                       onChange={(e)=>{}}
+                                                                       onChange={(e) => {
+                                                                       }}
                                                                        disabled={(option.optional === false)}
                                                                        type="text" className={"form-control"}/>
                                                             ) : (
@@ -270,7 +271,7 @@ class Tab extends React.Component {
                                                             )}
                                                         </div>
                                                     )}
-                                                    </div>
+                                                </div>
                                                 }
                                             </div>
                                             <div className="col last">

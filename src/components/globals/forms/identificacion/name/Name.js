@@ -7,7 +7,7 @@ import Helpers from '../../../../../common/helpers/helpers/Helpers';
 
 class Name extends Component {
 
-    static limit(){
+    static limit() {
         return 51;
     }
 

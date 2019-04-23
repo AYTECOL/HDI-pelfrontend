@@ -36,10 +36,10 @@ class BuildMaterial {
         let data = {};
         try {
             data = await Service.get(BaseUrl);
-        }catch (e) {
+        } catch (e) {
             data = Default;
         }
-        if ( typeof data.build_materials === "undefined" || data.build_materials.length === 0 ){
+        if (typeof data.build_materials === "undefined" || data.build_materials.length === 0) {
             data = Default;
         }
         return data.build_materials.sort(function (a, b) {

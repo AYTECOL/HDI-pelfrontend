@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import SaveIdentifications from '../../../../../services/SaveIdentifications';
 import {Link, withRouter} from "react-router-dom";
+import {UrlSite} from "../../../../../config";
 
 class BtnContinue extends Component {
 
@@ -20,7 +21,7 @@ class BtnContinue extends Component {
 
     saveAndExit() {
         SaveIdentifications.save();
-        window.location.href = "/";
+        window.location.href = UrlSite + "/";
     }
 
     render() {

@@ -53,7 +53,7 @@ class MapBase extends React.Component {
                         it.state.el.className += " error";
                     }
                 }, 500);
-            }else if(address === ""){
+            } else if (address === "") {
                 this.setState({
                     ...this.state,
                     isMarkerShown: false,

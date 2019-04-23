@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './Counter.scss';
 import store from "../../../../../store";
-
 // Components
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from "../asegurarcontenidos/Asegurarcontenidos";
@@ -34,7 +33,7 @@ class Counter extends Component {
             if (inmueble.zona === "") errors++;
             if (inmueble.numerodepisos === "") errors++;
 
-            if (inmueble.refuerzo === 1){
+            if (inmueble.refuerzo === 1) {
                 total++;
                 if (inmueble.anorefuerzo === "") errors++;
             }
@@ -44,26 +43,26 @@ class Counter extends Component {
                 errors++;
             }
 
-            if (inmueble.inmuebleasegudado === 1){
+            if (inmueble.inmuebleasegudado === 1) {
                 total++;
-                if ( Segurarinmueble.validateField(inmueble.inmuebleasegudadovalor) !== 0 ) errors++;
+                if (Segurarinmueble.validateField(inmueble.inmuebleasegudadovalor) !== 0) errors++;
             }
-            if (inmueble.contenidoasegudado === 1){
+            if (inmueble.contenidoasegudado === 1) {
                 total++;
-                if ( Asegurarcontenidos.validateField(inmueble.contenidoasegudadovalor) !== 0 ) errors++;
+                if (Asegurarcontenidos.validateField(inmueble.contenidoasegudadovalor) !== 0) errors++;
             }
 
-            if (inmueble.inmuebleasegudadojoyas === 1){
+            if (inmueble.inmuebleasegudadojoyas === 1) {
                 total++;
-                if ( Asegurarjoyas.validateField(inmueble.inmuebleasegudadojoyasvalor) !== 0 ) errors++;
+                if (Asegurarjoyas.validateField(inmueble.inmuebleasegudadojoyasvalor) !== 0) errors++;
             }
-            if (inmueble.inmuebleasegudadoobras === 1){
+            if (inmueble.inmuebleasegudadoobras === 1) {
                 total++;
-                if ( Asegurarobras.validateField(inmueble.inmuebleasegudadoobrasvalor) !== 0 ) errors++;
+                if (Asegurarobras.validateField(inmueble.inmuebleasegudadoobrasvalor) !== 0) errors++;
             }
-            if (inmueble.inmuebleasegudadotelefonos === 1){
+            if (inmueble.inmuebleasegudadotelefonos === 1) {
                 total++;
-                if ( Asegurartelefonos.validateField(inmueble.inmuebleasegudadotelefonosvalor) !== 0 ) errors++;
+                if (Asegurartelefonos.validateField(inmueble.inmuebleasegudadotelefonosvalor) !== 0) errors++;
             }
 
             let ok = total - errors;

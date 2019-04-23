@@ -55,9 +55,13 @@ class Submenu extends Component {
                         </div>
                         <div id="cotizacion-menu" className="col col-12 col-sm-8 col-md-8 col-lg-8">
                             <ul>
-                                <li className={this.state.step === 1 ? 'active' : ''}><span>1</span>Información personal</li>
-                                <li className={this.state.step === 2 ? 'active' : ''}><span>2</span>Información adicional</li>
-                                <li className={this.state.step === 3 ? 'active' : ''}><span>3</span>Resumen de compra</li>
+                                <li className={this.state.step === 1 ? 'active' : ''}><span>1</span>Información personal
+                                </li>
+                                <li className={this.state.step === 2 ? 'active' : ''}><span>2</span>Información
+                                    adicional
+                                </li>
+                                <li className={this.state.step === 3 ? 'active' : ''}><span>3</span>Resumen de compra
+                                </li>
                             </ul>
                         </div>
                     </div>

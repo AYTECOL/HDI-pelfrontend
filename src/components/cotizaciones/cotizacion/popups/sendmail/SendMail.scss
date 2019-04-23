@@ -1,31 +1,37 @@
-.sendmail{
-  .modal-subtitle{
+.sendmail {
+  .modal-subtitle {
     line-height: 25px;
   }
-  .modal-header{
+
+  .modal-header {
     max-width: 580px;
   }
-  .content{
+
+  .content {
     max-height: 500px;
     overflow: auto;
   }
 }
-.more-items{
-  p, button{
+
+.more-items {
+  p, button {
     display: inline-block;
   }
-  p{
+
+  p {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
     color: #28A3AF;
     cursor: pointer;
-    &:hover{
+
+    &:hover {
       text-decoration: underline;
     }
   }
-  button{
+
+  button {
     background: #28A3AF;
     border: 1px solid #28A3AF;
     box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);

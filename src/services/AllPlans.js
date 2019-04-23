@@ -10,9 +10,9 @@ class AllPlans {
         let storeState = Store.getState();
         if (storeState.AllPlans.length === 0) {
             try {
-                data = await Service.get(BaseUrl+type);
+                data = await Service.get(BaseUrl + type);
                 data = data.plans;
-            }catch (e) {
+            } catch (e) {
                 data = [];
             }
             Store.dispatch(AllPlansCreator(data));

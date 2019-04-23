@@ -70,7 +70,10 @@ class Index extends React.Component {
                                     <p>Más información</p>
                                     <div className="span">
                                         <span>?</span>
-                                        <div className="text">La vivienda requiere que la revisemos más al detalle, si deseas emitir la póliza agendaremos una futura inspección. Ten presente los siguientes datos: nombre de contacto y teléfono de contacto:</div>
+                                        <div className="text">La vivienda requiere que la revisemos más al detalle, si
+                                            deseas emitir la póliza agendaremos una futura inspección. Ten presente los
+                                            siguientes datos: nombre de contacto y teléfono de contacto:
+                                        </div>
                                     </div>
                                 </div>
                             </div>

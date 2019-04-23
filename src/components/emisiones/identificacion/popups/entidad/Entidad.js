@@ -35,7 +35,8 @@ export default class Entidad extends Component {
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                         <div className="numerodepisos input-select form-group "><label
                                             htmlFor="tipodedocuemnto">Tipo de documento</label>
-                                            <select name="tipodedocuemnto" id="tipodedocuemnto" className="form-control">
+                                            <select name="tipodedocuemnto" id="tipodedocuemnto"
+                                                    className="form-control">
                                                 <option value="">Seleccione</option>
                                             </select>
                                         </div>

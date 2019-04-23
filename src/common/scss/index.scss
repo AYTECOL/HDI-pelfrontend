@@ -10,11 +10,11 @@ hmtl, body {
   padding: 0 !important;
 }
 
-.no-padding-right{
+.no-padding-right {
   padding-right: 0 !important;
 }
 
-.no-padding-left{
+.no-padding-left {
   padding-left: 0 !important;
 }
 
@@ -197,11 +197,11 @@ $color-font-btn-primary: #404040;
       margin-top: -15px !important;
     }
 
-    &.no-icon::after{
+    &.no-icon::after {
       display: none;
     }
 
-    .select-item{
+    .select-item {
       //li{
       //  border: 1px solid $error-fields;
       //}
@@ -564,18 +564,22 @@ $color-font-btn-primary: #404040;
       text-align: center;
       color: #037B86;
       margin: 0;
-      span{
+
+      span {
         font-weight: 600;
       }
     }
   }
-  .more-info{
+
+  .more-info {
     position: absolute;
     right: 10px;
     top: 13px;
-    .span{
+
+    .span {
       display: inline-block;
-      span{
+
+      span {
         line-height: 1;
         color: white;
         font-weight: 600;
@@ -587,13 +591,15 @@ $color-font-btn-primary: #404040;
         display: block;
         cursor: pointer;
       }
-      &:hover{
-        .text{
+
+      &:hover {
+        .text {
           display: block;
         }
       }
     }
-    p{
+
+    p {
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -601,7 +607,8 @@ $color-font-btn-primary: #404040;
       color: #28A3AF;
       display: inline-block;
     }
-    .text{
+
+    .text {
       display: none;
       position: absolute;
       right: -10px;
@@ -619,7 +626,7 @@ $color-font-btn-primary: #404040;
       color: #FFFFFF;
       margin-top: 14px;
 
-      &::after{
+      &::after {
         content: '';
         width: 0;
         height: 0;
@@ -632,7 +639,8 @@ $color-font-btn-primary: #404040;
       }
     }
   }
-  &.tool-tip-new{
+
+  &.tool-tip-new {
     width: 100%;
     background: #F0FBFC;
     border: 1px solid #28A3AF;
@@ -640,8 +648,9 @@ $color-font-btn-primary: #404040;
     border-radius: 3px;
     margin-bottom: 22px;
     padding: 17px;
-    &.info{
-      &::after{
+
+    &.info {
+      &::after {
         content: '';
         width: 45px;
         height: 100%;
@@ -653,7 +662,8 @@ $color-font-btn-primary: #404040;
         top: 0;
         z-index: 1;
       }
-      &::before{
+
+      &::before {
         color: white;
         border: 2px solid #ffffff;
         z-index: 2;
@@ -667,6 +677,6 @@ $color-font-btn-primary: #404040;
   }
 }
 
-.popup{
+.popup {
   overflow: hidden;
 }

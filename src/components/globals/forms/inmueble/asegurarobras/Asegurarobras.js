@@ -7,22 +7,33 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Asegurarobras extends Component {
 
-    static name () {
-        try { return store.getState().allInsurableLimits[3].description;
-        }catch (e) { return ""; }
-    }
-    //0
-    static min () {
-        try { return store.getState().allInsurableLimits[3].min_value;
-        }catch (e) { return 0; }
-    }
-    //600000001
-    static max() {
-        try { return store.getState().allInsurableLimits[3].max_value;
-        }catch (e) { return 0; }
+    static name() {
+        try {
+            return store.getState().allInsurableLimits[3].description;
+        } catch (e) {
+            return "";
+        }
     }
 
-    static validateField(v){
+    //0
+    static min() {
+        try {
+            return store.getState().allInsurableLimits[3].min_value;
+        } catch (e) {
+            return 0;
+        }
+    }
+
+    //600000001
+    static max() {
+        try {
+            return store.getState().allInsurableLimits[3].max_value;
+        } catch (e) {
+            return 0;
+        }
+    }
+
+    static validateField(v) {
         let error = 0;
         v = Masknumbermoney.formatToNumber(v);
         if (v.length < 1) error = 1;
@@ -72,7 +83,7 @@ class Asegurarobras extends Component {
     validateValue(e) {
         let error = Asegurarobras.validateField(e.value);
         let format = Masknumbermoney.formatToMask(e.value);
-        if( error === 0 ) Helpers.removeClass(".inmuebleasegudadoobrasvalor", "error");
+        if (error === 0) Helpers.removeClass(".inmuebleasegudadoobrasvalor", "error");
         store.dispatch(saveInmuebleValue({
             name: "inmuebleasegudadoobrasvalor",
             value: format,
@@ -89,7 +100,7 @@ class Asegurarobras extends Component {
             <div className="row">
                 <div className="col col-12 col-md-6">
                     <div className={"inmuebleasegudadoobras no-icon form-group " + this.state.error}>
-                        <label htmlFor="doc-type-value">¿Adicionalmente deseas asegurar { Asegurarobras.name() }? </label>
+                        <label htmlFor="doc-type-value">¿Adicionalmente deseas asegurar {Asegurarobras.name()}? </label>
                         <ul className="select-item">
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={(e) => {
@@ -114,8 +125,9 @@ class Asegurarobras extends Component {
                 </div>
                 {(this.state.active === 1) ? (
                     <div className="col col-12 col-md-6">
-                        <div className={"inmuebleasegudadoobrasvalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="inmuebleasegudadoobrasvalor">Valor de las { Asegurarobras.name() }</label>
+                        <div
+                            className={"inmuebleasegudadoobrasvalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor="inmuebleasegudadoobrasvalor">Valor de las {Asegurarobras.name()}</label>
                             <input name="inmuebleasegudadoobrasvalor" id="inmuebleasegudadoobrasvalor"
                                    type="text"
                                    value={this.state.value}
@@ -127,18 +139,19 @@ class Asegurarobras extends Component {
                                    onChange={(e) => {
                                        this.validateValue(e.target);
                                    }}/>
-                            <small className={"form-text"}>Máximo. {Masknumbermoney.formatToMask(Asegurarobras.max())}</small>
+                            <small
+                                className={"form-text"}>Máximo. {Masknumbermoney.formatToMask(Asegurarobras.max())}</small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
                                 Ingrese el valor asegurado de Obras de Arte.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor
-                                Asegurado de { Asegurarobras.name() } de Arte es inferior al permitido.
+                                Asegurado de {Asegurarobras.name()} de Arte es inferior al permitido.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 3 ? 'show' : 'hide')}>Valor
-                                Asegurado de { Asegurarobras.name() } de Arte es superior al permitido.
+                                Asegurado de {Asegurarobras.name()} de Arte es superior al permitido.
                             </small>
                         </div>
                     </div>

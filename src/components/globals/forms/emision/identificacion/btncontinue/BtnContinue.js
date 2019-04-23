@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {Link, withRouter} from "react-router-dom";
+import {UrlSite} from "../../../../../../config";
 
 class BtnContinue extends Component {
 
@@ -14,7 +15,7 @@ class BtnContinue extends Component {
     }
 
     saveAndExit() {
-        window.location.href = "/";
+        window.location.href = UrlSite + "/";
     }
 
     render() {

@@ -12,14 +12,13 @@ import {
 } from '../../../../../actionCreators';
 import SaveIdentifications from '../../../../../services/SaveIdentifications';
 import {Link, withRouter} from "react-router-dom";
-
 // Components
 import Name from '../name/Name';
 import LastName from '../lastname/Lastname';
 import RazonSocial from '../razonsocial/Razonsocial';
-
 // Services
 import Consultapersonas from '../../../../../services/Consultapersonas';
+import {UrlSite} from "../../../../../config";
 
 class BtnContinue extends Component {
 
@@ -53,14 +52,14 @@ class BtnContinue extends Component {
                         i++;
                     }
                     if (typeDoc === 2) {
-                        if (item === "businessname" && storeState.cotizacion.identification[item].length > RazonSocial.limit()){
+                        if (item === "businessname" && storeState.cotizacion.identification[item].length > RazonSocial.limit()) {
                             i++;
                         }
-                    }else{
-                        if (item === "name" && storeState.cotizacion.identification[item].length > Name.limit()){
+                    } else {
+                        if (item === "name" && storeState.cotizacion.identification[item].length > Name.limit()) {
                             i++;
                         }
-                        if (item === "lastname" && storeState.cotizacion.identification[item].length > LastName.limit()){
+                        if (item === "lastname" && storeState.cotizacion.identification[item].length > LastName.limit()) {
                             i++;
                         }
                     }
@@ -137,14 +136,14 @@ class BtnContinue extends Component {
             case 1:
                 store.dispatch(NextStep(2));
                 await SaveIdentifications.save();
-                window.location.href = '/cotizacion/2/' + storeState.cotizacion.number;
+                window.location.href = UrlSite + '/cotizacion/2/' + storeState.cotizacion.number;
                 break;
         }
     }
 
     saveAndExit() {
         SaveIdentifications.save();
-        window.location.href = "/";
+        window.location.href = UrlSite + "/";
     }
 
     render() {
