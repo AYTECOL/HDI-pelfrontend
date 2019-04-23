@@ -209,6 +209,11 @@
         text-align: left;
         overflow: hidden;
       }
+      .input-select{
+          &::after{
+            top: 58%;
+          }
+      }
       &.disabled-item{
         label,
         select,
@@ -264,7 +269,7 @@
           border: 1px solid #C0BFC0;
           box-sizing: border-box;
           border-radius: 3px;
-          padding: 8px 12px 9px;
+          padding: 8px 34px 9px 12px;
           display: block;
         }
       }

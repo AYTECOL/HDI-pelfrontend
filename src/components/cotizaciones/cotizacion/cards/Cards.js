@@ -18,22 +18,29 @@ class Cards extends React.Component {
             items: [
                 {
                     parent: Segurarinmueble,
+                    type: 1,
                 },
                 {
                     parent: Asegurarcontenidos,
+                    type: 2,
                 },
                 {
                     parent: Asegurarobras,
+                    type: 3,
                 },
                 {
                     parent: Asegurarjoyas,
+                    type: 4,
                 },
                 {
                     parent: Asegurartelefonos,
+                    type: 5,
                 }
-            ]
+            ],
+            Inmueble: store.getState().Inmueble
         };
         for(let i = 0; i < 5; i++){
+            this.state.items[i].value = "";
             this.state.items[i].active = true;
             this.state.items[i].errorValue = 0;
             this.state.items[i].inactiveToggle = false;
@@ -41,6 +48,29 @@ class Cards extends React.Component {
         this.state.items[0].active = false;
 
         store.subscribe(async () => {
+            let storeState = store.getState();
+            let inmueble = storeState.Inmueble;
+            if (inmueble !== this.state.Inmueble) {
+                let items = this.state.items;
+                for(let i = 0; i < 5; i++){
+                    if ( items[i].type === 1 ){
+                        items[i].value = inmueble.inmuebleasegudadovalor;
+                    } else if( items[i].type === 2 ) {
+                        items[i].value = inmueble.contenidoasegudadovalor;
+                    } else if( items[i].type === 3 ) {
+                        items[i].value = inmueble.inmuebleasegudadoobrasvalor;
+                    } else if( items[i].type === 4 ) {
+                        items[i].value = inmueble.inmuebleasegudadojoyasvalor;
+                    } else if( items[i].type === 5 ) {
+                        items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
+                    }
+                }
+                this.setState({
+                    ...this.state,
+                    items: items,
+                    Inmueble: inmueble
+                });
+            }
         });
 
         this.getAllInsurableLimits();

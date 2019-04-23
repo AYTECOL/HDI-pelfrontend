@@ -115,6 +115,24 @@ class Index extends React.Component {
                         </div>
                     </div>
 
+                    <div className="row no-gutters">
+                        <div className="col">
+                            <hr/>
+                        </div>
+                    </div>
+
+                    <div className="row justify-content-center">
+                        <div className="col col-md-8 col-lg-8 last-items-emision">
+                            <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten asegurar a personas adicionales. ¿Deseas hacerlo?</p>
+                            <div className="more-items" onClick={(e)=>{
+                                this.togglePopUpPersona(1);
+                            }}>
+                                <button className="more-btn">+</button>
+                                <p>Si, agregar persona</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="row">
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
