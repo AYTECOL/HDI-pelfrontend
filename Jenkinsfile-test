@@ -41,7 +41,7 @@ node('linux'){
 	}
 	stage('Testing'){
 		  
-		curl http://10.142.137.77:8080/job/sahi-test/build?token=12345
+		curl -X POST "http://10.142.137.77:8080/job/sahi-test/build?token=12345"
     
 	}
  }
