@@ -23,7 +23,9 @@ class Loading extends Component {
     animation() {
         if (this.state.active === false) return;
         let status = true;
+        let it = this;
         setInterval(function () {
+            if (it.state.active === false) return;
             status = !status;
             if (status === true) {
                 document.querySelector(".loader-background").setAttribute("class", "loader-background active");

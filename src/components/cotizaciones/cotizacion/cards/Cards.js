@@ -55,15 +55,23 @@ class Cards extends React.Component {
                 for(let i = 0; i < 5; i++){
                     if ( items[i].type === 1 ){
                         items[i].value = inmueble.inmuebleasegudadovalor;
+                        items[i].active = inmueble.inmuebleasegudado === 0;
                     } else if( items[i].type === 2 ) {
                         items[i].value = inmueble.contenidoasegudadovalor;
+                        items[i].active = inmueble.contenidoasegudado === 0;
                     } else if( items[i].type === 3 ) {
                         items[i].value = inmueble.inmuebleasegudadoobrasvalor;
+                        items[i].active = inmueble.inmuebleasegudadoobras === 0;
                     } else if( items[i].type === 4 ) {
                         items[i].value = inmueble.inmuebleasegudadojoyasvalor;
+                        items[i].active = inmueble.inmuebleasegudadojoyas === 0;
                     } else if( items[i].type === 5 ) {
                         items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
+                        items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
                     }
+                }
+                for(let i = 0; i < 5; i++){
+                    if ( this.state.items[i].value === '""' ) this.state.items[i].value = "";
                 }
                 this.setState({
                     ...this.state,
@@ -92,6 +100,13 @@ class Cards extends React.Component {
             newItems[0].inactiveToggle = true;
         }else{
             newItems[0].inactiveToggle = false;
+        }
+        if(
+            newItems[0].active === true
+        ){
+            newItems[1].inactiveToggle = true;
+        }else{
+            newItems[1].inactiveToggle = false;
         }
         this.setState({
             ...this.state,
