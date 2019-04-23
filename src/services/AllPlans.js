@@ -2,15 +2,15 @@ import Service from './Service';
 import Store from '../store';
 import {AllPlans as AllPlansCreator} from '../actionCreators';
 
-const BaseUrl = "/all-plans";
+const BaseUrl = "/all-plans/";
 
 class AllPlans {
-    static async get() {
+    static async get(type) {
         let data = [];
         let storeState = Store.getState();
         if (storeState.AllPlans.length === 0) {
             try {
-                data = await Service.get(BaseUrl);
+                data = await Service.get(BaseUrl+type);
                 data = data.plans;
             }catch (e) {
                 data = [];

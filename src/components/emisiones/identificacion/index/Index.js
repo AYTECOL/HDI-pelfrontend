@@ -1,4 +1,8 @@
 import React from 'react';
+
+//Helpers
+import Helpers from '../../../../common/helpers/helpers/Helpers';
+
 //Component
 import BtnContinue from '../../../globals/forms/emision/identificacion/btncontinue/BtnContinue';
 import PopUpDelete from '../popups/delete/Delete';
@@ -24,26 +28,27 @@ class Index extends React.Component {
         this.togglePopUpEntidad = this.togglePopUpEntidad.bind(this);
     }
 
-    togglePopUpDelete(index){
-        let state = !this.state.showPopUpDelete;
+    showAnyPopup(name){
+        let state = !this.state[name];
         this.setState({
             ...this.state,
-            showPopUpDelete: state
+            [name]: state
         });
+        if( !Helpers.hasClass("body","popup") ){
+            Helpers.addClass("body", "popup");
+        }else{
+            Helpers.removeClass("body", "popup");
+        }
+    }
+
+    togglePopUpDelete(index){
+        this.showAnyPopup("showPopUpDelete")
     }
     togglePopUpPersona(){
-        let state = !this.state.showPopUpPersona;
-        this.setState({
-            ...this.state,
-            showPopUpPersona: state
-        });
+        this.showAnyPopup("showPopUpPersona")
     }
     togglePopUpEntidad(){
-        let state = !this.state.showPopUpEntidad;
-        this.setState({
-            ...this.state,
-            showPopUpEntidad: state
-        });
+        this.showAnyPopup("showPopUpEntidad")
     }
 
     render() {
@@ -62,7 +67,7 @@ class Index extends React.Component {
 
                             <div className="row item-select">
                                 <div className="col col-1">
-                                    <div className="icon-image"></div>
+                                    <div className="icon-image">&nbsp</div>
                                 </div>
                                 <div className="col">
                                     <span>Rol</span>
