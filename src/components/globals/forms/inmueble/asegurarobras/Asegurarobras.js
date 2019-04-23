@@ -7,6 +7,11 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Asegurarobras extends Component {
 
+    static nameModel = "inmuebleasegudadoobras";
+    static nameModelValue = "inmuebleasegudadoobrasvalor";
+
+    _isMounted = false;
+
     static name() {
         try {
             return store.getState().allInsurableLimits[3].description;
@@ -47,6 +52,14 @@ class Asegurarobras extends Component {
         return error;
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -62,21 +75,25 @@ class Asegurarobras extends Component {
             let active = storeState.Inmueble.inmuebleasegudadoobras;
             let value = storeState.Inmueble.inmuebleasegudadoobrasvalor;
             if (this.state.active !== active || this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    active: active,
-                    value: value,
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        active: active,
+                        value: value,
+                    });
+                }
             }
         });
     }
 
     validateEmpty(e) {
         store.dispatch(saveInmuebleValue(e));
-        this.setState({
-            ...this.state,
-            active: e.value
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                active: e.value
+            });
+        }
         Helpers.removeClass(".inmuebleasegudadoobras", "error");
     }
 
@@ -85,14 +102,16 @@ class Asegurarobras extends Component {
         let format = Masknumbermoney.formatToMask(e.value);
         if (error === 0) Helpers.removeClass(".inmuebleasegudadoobrasvalor", "error");
         store.dispatch(saveInmuebleValue({
-            name: "inmuebleasegudadoobrasvalor",
+            name: Asegurarobras.nameModelValue,
             value: format,
         }));
-        this.setState({
-            ...this.state,
-            errorValue: error,
-            value: format
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                errorValue: error,
+                value: format
+            });
+        }
     }
 
     render() {
@@ -106,7 +125,7 @@ class Asegurarobras extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 1,
-                                        name: "inmuebleasegudadoobras"
+                                        name: Asegurarobras.nameModel
                                     });
                                 }}
                             >Si
@@ -115,7 +134,7 @@ class Asegurarobras extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 0,
-                                        name: "inmuebleasegudadoobras"
+                                        name: Asegurarobras.nameModel
                                     });
                                 }}
                             >No
@@ -128,7 +147,7 @@ class Asegurarobras extends Component {
                         <div
                             className={"inmuebleasegudadoobrasvalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
                             <label htmlFor="inmuebleasegudadoobrasvalor">Valor de las {Asegurarobras.name()}</label>
-                            <input name="inmuebleasegudadoobrasvalor" id="inmuebleasegudadoobrasvalor"
+                            <input name={Asegurarobras.nameModelValue} id={Asegurarobras.nameModelValue}
                                    type="text"
                                    value={this.state.value}
                                    className={"form-control"}

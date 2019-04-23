@@ -9,8 +9,19 @@ import Asegurarobras from "../../../globals/forms/inmueble/asegurarobras/Asegura
 import Asegurarjoyas from "../../../globals/forms/inmueble/asegurarjoyas/Asegurarjoyas";
 import Asegurartelefonos from "../../../globals/forms/inmueble/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import {toggleLoading} from "../../../../actionCreators";
 
 class Cards extends React.Component {
+
+    _isMounted = false;
+
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     constructor(props) {
         super(props);
@@ -37,7 +48,8 @@ class Cards extends React.Component {
                     type: 5,
                 }
             ],
-            Inmueble: store.getState().Inmueble
+            Inmueble: store.getState().Inmueble,
+            InmuebleOk: false
         };
         for (let i = 0; i < 5; i++) {
             this.state.items[i].value = "";
@@ -50,7 +62,7 @@ class Cards extends React.Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
-            if (inmueble !== this.state.Inmueble) {
+            if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
                 let items = this.state.items;
                 for (let i = 0; i < 5; i++) {
                     if (items[i].type === 1) {
@@ -76,7 +88,8 @@ class Cards extends React.Component {
                 this.setState({
                     ...this.state,
                     items: items,
-                    Inmueble: inmueble
+                    Inmueble: inmueble,
+                    InmuebleOk: true
                 });
             }
         });
@@ -108,16 +121,36 @@ class Cards extends React.Component {
         } else {
             newItems[1].inactiveToggle = false;
         }
-        this.setState({
-            ...this.state,
-            items: newItems
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                items: newItems
+            });
+        }
     }
 
     toggleItem(index) {
         let active = this.state.items[index].active;
         let newItems = this.state.items;
         newItems[index].active = !active;
+
+        // Actualiza el valor de prendido o apagado en el store
+        let newObj = new newItems[index].parent();
+        newObj.validateEmpty({
+            value: newItems[index].active === true?0:1,
+            name: newItems[index].parent.nameModel
+        });
+
+        // Pone el cargando para cotizacion
+        if( newItems[index].type === 1 || newItems[index].type === 2 ){
+            store.dispatch(toggleLoading(true));
+        }
+
+        // Deshabilita los demas items
+        if( newItems[index].type === 2 && newItems[index].active === true ){
+            for(let i = 1; i < 5; i++) newItems[i].active = newItems[index].active;
+        }
+
         this.setState({
             ...this.state,
             items: newItems

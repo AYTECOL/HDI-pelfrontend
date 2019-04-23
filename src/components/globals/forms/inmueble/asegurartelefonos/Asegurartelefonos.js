@@ -7,6 +7,11 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Asegurartelefonos extends Component {
 
+    static nameModel = "inmuebleasegudadotelefonos";
+    static nameModelValue = "inmuebleasegudadotelefonosvalor";
+
+    _isMounted = false;
+
     static name() {
         try {
             return store.getState().allInsurableLimits[6].description;
@@ -47,6 +52,14 @@ class Asegurartelefonos extends Component {
         return error;
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -62,21 +75,25 @@ class Asegurartelefonos extends Component {
             let active = storeState.Inmueble.inmuebleasegudadotelefonos;
             let value = storeState.Inmueble.inmuebleasegudadotelefonosvalor;
             if (this.state.active !== active || this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    active: active,
-                    value: value,
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        active: active,
+                        value: value,
+                    });
+                }
             }
         });
     }
 
     validateEmpty(e) {
         store.dispatch(saveInmuebleValue(e));
-        this.setState({
-            ...this.state,
-            active: e.value
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                active: e.value
+            });
+        }
         Helpers.removeClass(".inmuebleasegudadotelefonos", "error");
     }
 
@@ -85,14 +102,16 @@ class Asegurartelefonos extends Component {
         let format = Masknumbermoney.formatToMask(e.value);
         if (error === 0) Helpers.removeClass(".inmuebleasegudadotelefonosvalor", "error");
         store.dispatch(saveInmuebleValue({
-            name: "inmuebleasegudadotelefonosvalor",
+            name: Asegurartelefonos.nameModelValue,
             value: format,
         }));
-        this.setState({
-            ...this.state,
-            errorValue: error,
-            value: format
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                errorValue: error,
+                value: format
+            });
+        }
     }
 
     render() {
@@ -107,7 +126,7 @@ class Asegurartelefonos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 1,
-                                        name: "inmuebleasegudadotelefonos"
+                                        name: Asegurartelefonos.nameModel
                                     });
                                 }}
                             >Si
@@ -116,7 +135,7 @@ class Asegurartelefonos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 0,
-                                        name: "inmuebleasegudadotelefonos"
+                                        name: Asegurartelefonos.nameModel
                                     });
                                 }}
                             >No

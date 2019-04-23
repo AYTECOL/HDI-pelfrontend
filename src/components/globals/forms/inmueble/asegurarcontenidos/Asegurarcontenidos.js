@@ -7,6 +7,11 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Asegurarcontenidos extends Component {
 
+    static nameModel = "contenidoasegudado";
+    static nameModelValue = "contenidoasegudado";
+
+    _isMounted = false;
+
     static name() {
         try {
             return store.getState().allInsurableLimits[2].description;
@@ -47,6 +52,14 @@ class Asegurarcontenidos extends Component {
         return error;
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -62,11 +75,13 @@ class Asegurarcontenidos extends Component {
             let active = storeState.Inmueble.contenidoasegudado;
             let value = storeState.Inmueble.contenidoasegudadovalor;
             if (this.state.active !== active || this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    value: value,
-                    active: active,
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        value: value,
+                        active: active,
+                    });
+                }
             }
         });
     }
@@ -85,11 +100,13 @@ class Asegurarcontenidos extends Component {
             name: "contenidoasegudadovalor",
             value: format,
         }));
-        this.setState({
-            ...this.state,
-            errorValue: error,
-            value: format
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                errorValue: error,
+                value: format
+            });
+        }
     }
 
     render() {
@@ -103,7 +120,7 @@ class Asegurarcontenidos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 1,
-                                        name: "contenidoasegudado"
+                                        name: Asegurarcontenidos.nameModel
                                     });
                                 }}
                             >Si
@@ -112,7 +129,7 @@ class Asegurarcontenidos extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 0,
-                                        name: "contenidoasegudado"
+                                        name: Asegurarcontenidos.nameModel
                                     });
                                 }}
                             >No
@@ -123,9 +140,9 @@ class Asegurarcontenidos extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12  col-md-6">
                         <div
-                            className={"contenidoasegudadovalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="contenidoasegudadovalor">Valor de {Asegurarcontenidos.name()}</label>
-                            <input name="contenidoasegudadovalor" id="contenidoasegudadovalor"
+                            className={Asegurarcontenidos.nameModelValue+" form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor={Asegurarcontenidos.nameModelValue}>Valor de {Asegurarcontenidos.name()}</label>
+                            <input name={Asegurarcontenidos.nameModelValue} id={Asegurarcontenidos.nameModelValue}
                                    type="text"
                                    className={"form-control"}
                                    value={this.state.value}

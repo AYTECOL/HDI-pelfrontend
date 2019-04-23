@@ -8,6 +8,11 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Segurarinmueble extends Component {
 
+    static nameModel = "inmuebleasegudado";
+    static nameModelValue = "inmuebleasegudadovalor";
+
+    _isMounted = false;
+
     static name() {
         try {
             return store.getState().allInsurableLimits[1].description;
@@ -46,6 +51,14 @@ class Segurarinmueble extends Component {
         return error;
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -61,21 +74,25 @@ class Segurarinmueble extends Component {
             let active = storeState.Inmueble.inmuebleasegudado;
             let value = storeState.Inmueble.inmuebleasegudadovalor;
             if (this.state.active !== active || this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    active: active,
-                    value: value,
-                });
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        active: active,
+                        value: value,
+                    });
+                }
             }
         });
     }
 
     validateEmpty(e) {
         store.dispatch(saveInmuebleValue(e));
-        this.setState({
-            ...this.state,
-            active: e.value
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                active: e.value
+            });
+        }
         Helpers.removeClass(".contenidoasegudado", "error");
         Helpers.removeClass(".inmuebleasegudado", "error");
     }
@@ -86,7 +103,7 @@ class Segurarinmueble extends Component {
 
         let format = Masknumbermoney.formatToMask(e.value);
         store.dispatch(saveInmuebleValue({
-            name: "inmuebleasegudadovalor",
+            name: Segurarinmueble.nameModelValue,
             value: format,
         }));
     }
@@ -102,7 +119,7 @@ class Segurarinmueble extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 1,
-                                        name: "inmuebleasegudado"
+                                        name: Segurarinmueble.nameModel
                                     });
                                 }}
                             >Si
@@ -111,7 +128,7 @@ class Segurarinmueble extends Component {
                                 onClick={(e) => {
                                     this.validateEmpty({
                                         value: 0,
-                                        name: "inmuebleasegudado"
+                                        name: Segurarinmueble.nameModel
                                     });
                                 }}
                             >No
@@ -122,7 +139,7 @@ class Segurarinmueble extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12 col-md-6">
                         <div
-                            className={"inmuebleasegudadovalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            className={Segurarinmueble.nameModelValue+" form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
                             <label htmlFor="doc-type-value">Valor del inmueble</label>
                             <input name="value" id="doc-type-value"
                                    type="text"

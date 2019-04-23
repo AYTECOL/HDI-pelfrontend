@@ -73,7 +73,7 @@ class SendMail extends Component {
                                      onClick={(e) => {
                                          this.moreItems();
                                      }}>
-                                    <button className={"more-btn"}>+</button>
+                                    <button type="button" className={"more-btn"}>+</button>
                                     <p>Agregar otro correo</p>
                                 </div>
                             </div>

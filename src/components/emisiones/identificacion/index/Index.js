@@ -104,13 +104,13 @@ class Index extends React.Component {
                             <div className="more-items" onClick={(e) => {
                                 this.togglePopUpPersona(1);
                             }}>
-                                <button className="more-btn">+</button>
+                                <button type="button" className="more-btn">+</button>
                                 <p>Agregar persona</p>
                             </div>
                             <div className="more-items" onClick={(e) => {
                                 this.togglePopUpEntidad(1);
                             }}>
-                                <button className="more-btn">+</button>
+                                <button type="button" className="more-btn">+</button>
                                 <p>Agregar beneficiario oneroso</p>
                             </div>
                         </div>
@@ -129,7 +129,7 @@ class Index extends React.Component {
                             <div className="more-items" onClick={(e) => {
                                 this.togglePopUpPersona(1);
                             }}>
-                                <button className="more-btn">+</button>
+                                <button type="button" className="more-btn">+</button>
                                 <p>Si, agregar persona</p>
                             </div>
                         </div>

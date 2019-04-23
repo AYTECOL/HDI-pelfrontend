@@ -152,8 +152,9 @@ class BtnContinue extends Component {
                 <div className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " return-button"}>
                     <Link to='/'><i className="back-icon"></i>Volver</Link>
                 </div>
-                <button className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}
-                        onClick={() => this.saveAndExit()} type="button">Guardar y salir
+                <button type="button"
+                        className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}
+                        onClick={() => this.saveAndExit()}>Guardar y salir
                 </button>
                 <button disabled={this.state.continueButtonDisable} onClick={() => this.nextStepIndex()}
                         type="button"
