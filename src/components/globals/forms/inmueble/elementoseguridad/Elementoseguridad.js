@@ -59,9 +59,9 @@ class Elementoseguridad extends Component {
     }
 
     saveValue(e) {
-        if (this.state[e.name] === 1){
+        if (this.state[e.name] === 1) {
             e.value = 0;
-        } else if( this.state[e.name] === 0 ){
+        } else if (this.state[e.name] === 0) {
             e.value = 1;
         }
         store.dispatch(saveInmuebleValueSeguridad(e));
@@ -81,7 +81,8 @@ class Elementoseguridad extends Component {
                 <ul className="items-checkboxes">
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" checked={(this.state.alarma === 0 || this.state.alarma === "" ? false : 'checked')}
+                            <input type="checkbox"
+                                   checked={(this.state.alarma === 0 || this.state.alarma === "" ? false : 'checked')}
                                    name="alarma"
                                    id="alarma"
                                    onChange={(e) => {
@@ -93,7 +94,8 @@ class Elementoseguridad extends Component {
                             <label htmlFor="alarma">Alarma monitoreada</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" checked={(this.state.cajafuerte === 0 || this.state.cajafuerte === "" ? false : 'checked')}
+                            <input type="checkbox"
+                                   checked={(this.state.cajafuerte === 0 || this.state.cajafuerte === "" ? false : 'checked')}
                                    name="cajafuerte" id="cajafuerte"
                                    onChange={(e) => {
                                        this.saveValue({
@@ -132,7 +134,8 @@ class Elementoseguridad extends Component {
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" checked={(this.state.circuitocerradotv === 0 || this.state.circuitocerradotv === "" ? false : 'checked')}
+                            <input type="checkbox"
+                                   checked={(this.state.circuitocerradotv === 0 || this.state.circuitocerradotv === "" ? false : 'checked')}
                                    name="circuitocerradotv" id="circuitocerradotv"
                                    onChange={(e) => {
                                        this.saveValue({
@@ -143,7 +146,8 @@ class Elementoseguridad extends Component {
                             <label htmlFor="circuitocerradotv">Circuito cerrado de televisión</label>
                         </div>
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" checked={(this.state.vigilanciapermanente === 0 || this.state.vigilanciapermanente === "" ? false : 'checked')}
+                            <input type="checkbox"
+                                   checked={(this.state.vigilanciapermanente === 0 || this.state.vigilanciapermanente === "" ? false : 'checked')}
                                    name="vigilanciapermanente" id="vigilanciapermanente"
                                    onChange={(e) => {
                                        this.saveValue({
@@ -156,7 +160,8 @@ class Elementoseguridad extends Component {
                     </li>
                     <li className="row">
                         <div className="col col-12 col-md-6">
-                            <input type="checkbox" checked={(this.state.reguladordevoltaje === 0 || this.state.reguladordevoltaje === "" ? false : 'checked')}
+                            <input type="checkbox"
+                                   checked={(this.state.reguladordevoltaje === 0 || this.state.reguladordevoltaje === "" ? false : 'checked')}
                                    name="reguladordevoltaje" id="reguladordevoltaje"
                                    onChange={(e) => {
                                        this.saveValue({

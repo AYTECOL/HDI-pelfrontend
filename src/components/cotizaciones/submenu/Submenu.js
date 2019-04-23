@@ -6,6 +6,7 @@ import store from "../../../store";
 import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actionCreators";
 import Identifications from "../../../services/GetIdentifications";
 import RiskData from "../../../services/RiskData";
+import {UrlSite} from "../../../config";
 
 class Submenu extends Component {
 
@@ -18,8 +19,8 @@ class Submenu extends Component {
             path: '/cotizacion/' + this.props.match.params.step + '/' + this.props.match.params.id
         };
 
-        if ( this.state.step > 3 ){
-            window.location.href = "/404";
+        if (this.state.step > 3) {
+            window.location.href = UrlSite + "/404";
         }
 
         store.dispatch(saveCotizacionNumber(this.state.number));

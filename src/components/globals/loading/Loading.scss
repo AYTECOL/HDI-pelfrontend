@@ -8,6 +8,7 @@
     opacity: 0;
   }
 }
+
 .loader-background-2.active,
 .loader-background.active {
   transform-origin: center;
@@ -28,7 +29,8 @@
     transform: rotate(360deg);
   }
 }
-.loader-circle{
+
+.loader-circle {
   transform-origin: center;
   animation-name: loader-circle;
   animation-duration: 1s; /* or: Xms */
@@ -55,7 +57,8 @@
     left: 0;
     top: 0;
   }
-  p{
+
+  p {
     position: absolute;
     width: 100%;
     height: auto;

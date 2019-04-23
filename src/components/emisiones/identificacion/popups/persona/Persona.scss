@@ -1,36 +1,44 @@
-.person-popup{
+.person-popup {
   &.modal {
-    .modal-dialog{
+    .modal-dialog {
       max-width: 1032px;
-      .fields-row{
+
+      .fields-row {
         max-width: 624px;
         margin: 40px auto 26px;
       }
     }
-    .modal-body{
+
+    .modal-body {
       max-width: 100%;
       width: 100%;
-      .items-checkboxes{
+
+      .items-checkboxes {
         max-width: 400px;
         margin-left: auto;
         margin-right: auto;
-        input, label{
+
+        input, label {
           vertical-align: middle;
           display: inline-block;
         }
       }
-      .form-group{
+
+      .form-group {
         margin-bottom: 14px;
-        label{
+
+        label {
           display: block;
           text-align: left;
         }
       }
-      .row.sarlaft{
+
+      .row.sarlaft {
         background: #F0FBFC;
         margin: 0 0 50px 0;
         padding: 30px 0 60px;
-        label{
+
+        label {
           text-align: center;
           font-style: normal;
           font-weight: normal;
@@ -39,7 +47,8 @@
           color: #343741;
           padding-bottom: 5px;
         }
-        span{
+
+        span {
           font-style: normal;
           font-weight: normal;
           font-size: 14px;
@@ -47,8 +56,9 @@
           text-align: center;
           color: #565656;
         }
+
         p,
-        .form-control{
+        .form-control {
           max-width: 387px;
           width: 100%;
           margin: 13px auto 0;
@@ -59,10 +69,12 @@
           z-index: 2;
           cursor: pointer;
         }
-        .form-group{
+
+        .form-group {
           margin: 0;
         }
-        p{
+
+        p {
           margin-top: -49px;
           opacity: 1;
           z-index: 1;
@@ -76,7 +88,8 @@
           line-height: 16px;
           color: #333740;
           border-radius: 4px;
-          &::before{
+
+          &::before {
             content: '';
             width: 17px;
             height: 17px;
@@ -88,7 +101,8 @@
             background-repeat: no-repeat;
             background-size: 100% auto;
           }
-          b{
+
+          b {
             color: #28A3AF;
             font-weight: 500;
           }

@@ -39,7 +39,7 @@ class Cards extends React.Component {
             ],
             Inmueble: store.getState().Inmueble
         };
-        for(let i = 0; i < 5; i++){
+        for (let i = 0; i < 5; i++) {
             this.state.items[i].value = "";
             this.state.items[i].active = true;
             this.state.items[i].errorValue = 0;
@@ -52,26 +52,26 @@ class Cards extends React.Component {
             let inmueble = storeState.Inmueble;
             if (inmueble !== this.state.Inmueble) {
                 let items = this.state.items;
-                for(let i = 0; i < 5; i++){
-                    if ( items[i].type === 1 ){
+                for (let i = 0; i < 5; i++) {
+                    if (items[i].type === 1) {
                         items[i].value = inmueble.inmuebleasegudadovalor;
                         items[i].active = inmueble.inmuebleasegudado === 0;
-                    } else if( items[i].type === 2 ) {
+                    } else if (items[i].type === 2) {
                         items[i].value = inmueble.contenidoasegudadovalor;
                         items[i].active = inmueble.contenidoasegudado === 0;
-                    } else if( items[i].type === 3 ) {
+                    } else if (items[i].type === 3) {
                         items[i].value = inmueble.inmuebleasegudadoobrasvalor;
                         items[i].active = inmueble.inmuebleasegudadoobras === 0;
-                    } else if( items[i].type === 4 ) {
+                    } else if (items[i].type === 4) {
                         items[i].value = inmueble.inmuebleasegudadojoyasvalor;
                         items[i].active = inmueble.inmuebleasegudadojoyas === 0;
-                    } else if( items[i].type === 5 ) {
+                    } else if (items[i].type === 5) {
                         items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
                         items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
                     }
                 }
-                for(let i = 0; i < 5; i++){
-                    if ( this.state.items[i].value === '""' ) this.state.items[i].value = "";
+                for (let i = 0; i < 5; i++) {
+                    if (this.state.items[i].value === '""') this.state.items[i].value = "";
                 }
                 this.setState({
                     ...this.state,
@@ -89,23 +89,23 @@ class Cards extends React.Component {
         await AllInsurableLimits.get();
     }
 
-    validateToggle(){
+    validateToggle() {
         let newItems = this.state.items;
-        if(
+        if (
             newItems[1].active === true &&
             newItems[2].active === true &&
             newItems[3].active === true &&
             newItems[4].active === true
-        ){
+        ) {
             newItems[0].inactiveToggle = true;
-        }else{
+        } else {
             newItems[0].inactiveToggle = false;
         }
-        if(
+        if (
             newItems[0].active === true
-        ){
+        ) {
             newItems[1].inactiveToggle = true;
-        }else{
+        } else {
             newItems[1].inactiveToggle = false;
         }
         this.setState({
@@ -147,14 +147,14 @@ class Cards extends React.Component {
                 {this.state.items.map((option, key) =>
                     <div className="col" key={key}>
                         <div className={"box-col " + (this.state.items[key].active === true ? 'active' : '')}>
-                            <div className={"image image-" + (key + 1)}> </div>
+                            <div className={"image image-" + (key + 1)}></div>
                             <p>{option.parent.name()}</p>
                             <div className="wrapper-over">
                                 <div className="btntoggle" onClick={(e) => {
                                     this.toggleItem(key)
                                 }}>+
                                 </div>
-                                <div className={"form-group "+(option.errorValue !== 0 ? 'error' : '')}>
+                                <div className={"form-group " + (option.errorValue !== 0 ? 'error' : '')}>
                                     <label htmlFor="incendios">Valor</label>
                                     <input type="text" className={"form-control"} name="incendios" id="incendios"
                                            value={option.value}
@@ -181,7 +181,7 @@ class Cards extends React.Component {
                                         Asegurado de {option.parent.name()} es superior al permitido.
                                     </small>
                                 </div>
-                                <span className={(option.inactiveToggle === true?'invisible':'')} onClick={(e) => {
+                                <span className={(option.inactiveToggle === true ? 'invisible' : '')} onClick={(e) => {
                                     this.toggleItem(key)
                                 }}>No lo quiero</span>
                             </div>

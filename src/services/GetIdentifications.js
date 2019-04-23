@@ -33,7 +33,7 @@ class GetIdentifications {
             } else {
                 return {};
             }
-        }catch (e) {
+        } catch (e) {
             return {};
         }
     }

@@ -29,7 +29,7 @@ class AutocompleteCities extends Component {
             let storeState = store.getState();
             let city = storeState.cotizacion.identification.city;
             let department = storeState.cotizacion.identification.department;
-            if( city !== this.state.valueLoadedCity || department !== this.state.valueLoadedDepartment ) {
+            if (city !== this.state.valueLoadedCity || department !== this.state.valueLoadedDepartment) {
                 this.setState({
                     ...this.state,
                     valueLoadedCity: city,
@@ -51,7 +51,7 @@ class AutocompleteCities extends Component {
         }.bind(this), 300);
     }
 
-    getTextById(){
+    getTextById() {
         let value = "";
         for (let i = 0; i < this.state.options.cities.length; i++) {
             let d = this.state.options.cities[i];

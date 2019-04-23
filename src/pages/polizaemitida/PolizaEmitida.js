@@ -23,7 +23,8 @@ class PolizaEmitida extends Component {
                         <div className="row">
                             <div className="col col-sm-12 col-md-12 col-lg-12 title">
                                 <h2>¡Póliza emitida!</h2>
-                                <h3>En los próximos minutos, se enviará un mail con la información de la poliza e información de utilidad</h3>
+                                <h3>En los próximos minutos, se enviará un mail con la información de la poliza e
+                                    información de utilidad</h3>
                                 <p>Póliza <span>234562</span></p>
                                 <div className="image"></div>
                             </div>
@@ -48,7 +49,7 @@ class PolizaEmitida extends Component {
                                         type="button">Nueva cotización
                                 </button>
                                 <a href={'/'} type="button"
-                                        className={"btn btn-primary"}>Ir a mis negocios
+                                   className={"btn btn-primary"}>Ir a mis negocios
                                 </a>
                             </div>
                         </div>

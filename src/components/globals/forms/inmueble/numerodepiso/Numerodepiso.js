@@ -29,7 +29,7 @@ class Numerodepiso extends Component {
         });
     }
 
-    async getFloors(){
+    async getFloors() {
         let allFloors = await AllFloors.get();
         this.setState({
             ...this.state,
@@ -63,7 +63,7 @@ class Numerodepiso extends Component {
                 >
                     <option value="">Seleccione</option>
                     {this.state.floors.map(option =>
-                        <option  key={option.floorCode} value={option.floorCode}>{option.answer}</option>
+                        <option key={option.floorCode} value={option.floorCode}>{option.answer}</option>
                     )}
                 </select>
             </div>

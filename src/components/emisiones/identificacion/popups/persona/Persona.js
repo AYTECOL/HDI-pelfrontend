@@ -13,8 +13,8 @@ export default class Persona extends Component {
         };
     }
 
-    changeTextFile(e){
-        if (typeof e.target.files[0] !== "undefined"){
+    changeTextFile(e) {
+        if (typeof e.target.files[0] !== "undefined") {
             this.setState({
                 ...this.state,
                 textFile: e.target.files[0].name,
@@ -29,7 +29,7 @@ export default class Persona extends Component {
         }
     }
 
-    generoChange(index){
+    generoChange(index) {
         this.setState({
             ...this.state,
             genero: index,
@@ -74,7 +74,8 @@ export default class Persona extends Component {
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                         <div className="numerodepisos input-select form-group "><label
                                             htmlFor="tipodedocuemnto">Tipo de documento</label>
-                                            <select name="tipodedocuemnto" id="tipodedocuemnto" className="form-control">
+                                            <select name="tipodedocuemnto" id="tipodedocuemnto"
+                                                    className="form-control">
                                                 <option value="">Seleccione</option>
                                             </select>
                                         </div>
@@ -114,7 +115,8 @@ export default class Persona extends Component {
 
 
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                        <div className={"inmuebleasegudadojoyas no-icon form-group " + this.state.error}>
+                                        <div
+                                            className={"inmuebleasegudadojoyas no-icon form-group " + this.state.error}>
                                             <label htmlFor="doc-type-value">Genero</label>
                                             <ul className="select-item">
                                                 <li className={((this.state.genero === 1) ? 'active' : '')}
@@ -189,10 +191,11 @@ export default class Persona extends Component {
                                         <div className="sarlaft form-group">
                                             <label htmlFor="address">Es necesario el sarlaft</label>
                                             <span>Adjunta el Sarlaft diligenciado</span>
-                                            <input type="file" className="form-control" name="sarlaft" onChange={(e)=>{
-                                                this.changeTextFile(e);
-                                            }}/>
-                                            { this.state.showDefaultTextFile ? (
+                                            <input type="file" className="form-control" name="sarlaft"
+                                                   onChange={(e) => {
+                                                       this.changeTextFile(e);
+                                                   }}/>
+                                            {this.state.showDefaultTextFile ? (
                                                 <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                             ) : (
                                                 <p>{this.state.textFile}</p>

@@ -1,11 +1,13 @@
-.contizacion-form .container .row-boxes{
+.contizacion-form .container .row-boxes {
   max-width: 93%;
   margin: 0 auto 75px;
-  >.col{
+
+  > .col {
     padding-left: 5px;
     padding-right: 5px;
   }
-  .box-col{
+
+  .box-col {
     background: #FFFFFF;
     border: 1px solid #99E5EA;
     box-sizing: border-box;
@@ -13,7 +15,7 @@
     border-radius: 3px;
     text-align: center;
 
-    .image{
+    .image {
       width: 34px;
       height: 34px;
       display: inline-block;
@@ -21,28 +23,34 @@
       background-position: center;
       background-size: 100% auto;
       margin: 30px 0 15px;
-      &.image-1{
+
+      &.image-1 {
         background-image: url("../../../../common/images/home.png");
         width: 44px;
         height: 32px;
       }
-      &.image-2{
+
+      &.image-2 {
         background-image: url("../../../../common/images/sillon.png");
       }
-      &.image-3{
+
+      &.image-3 {
         background-image: url("../../../../common/images/otro.png");
         background-size: 90% auto;
       }
-      &.image-4{
+
+      &.image-4 {
         background-image: url("../../../../common/images/a.png");
         background-size: auto 100%;
       }
-      &.image-5{
+
+      &.image-5 {
         background-image: url("../../../../common/images/phone.png");
         background-size: auto 100%;
       }
     }
-    p{
+
+    p {
       margin-bottom: 0;
       font-style: normal;
       font-weight: 300;
@@ -56,7 +64,8 @@
       margin-left: auto;
       height: 34px;
     }
-    span{
+
+    span {
       font-size: 12px;
       line-height: 14px;
       text-align: center;
@@ -64,17 +73,21 @@
       margin: 7px 0 10px;
       display: block;
       cursor: pointer;
-      &:hover{
+
+      &:hover {
         text-decoration: underline;
       }
     }
-    .form-group.error::after{
+
+    .form-group.error::after {
       display: none;
     }
-    .form-group{
+
+    .form-group {
       max-width: 75%;
       margin: 0 auto;
-      label{
+
+      label {
         text-align: left;
         width: 100%;
         font-style: normal;
@@ -86,37 +99,43 @@
         margin-bottom: 4px;
         margin-top: 0;
       }
-      .form-control{
+
+      .form-control {
         padding: 9px 8px;
         height: auto;
         width: 100%;
       }
-      .form-text{
+
+      .form-text {
         margin: 2px;
         text-align: left;
       }
     }
 
-    .btntoggle{
+    .btntoggle {
       display: none;
     }
 
-    &.active{
+    &.active {
       background: #F5F5F5;
       border: 1px dashed #C0BFC0;
       box-shadow: 0px 0px 3px rgba(86, 86, 86, 0.404806);
       border-radius: 3px;
+
       .image {
         -webkit-filter: grayscale(1); /* Webkit */
         filter: gray; /* IE6-9 */
         filter: grayscale(1); /* W3C */
       }
+
       .wrapper-over {
         position: relative;
-        .form-group,span {
+
+        .form-group, span {
           visibility: hidden;
         }
-        .btntoggle{
+
+        .btntoggle {
           background: #28A3AF;
           border: 1px solid #28A3AF;
           box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
@@ -138,7 +157,8 @@
           transform: scale(1);
           transition: all 0.3s ease;
         }
-        &:hover .btntoggle{
+
+        &:hover .btntoggle {
           transform: scale(1.1);
         }
       }

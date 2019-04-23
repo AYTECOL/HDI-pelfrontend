@@ -28,7 +28,7 @@ class Asegurarcontenidoadicional extends React.Component {
 
     render() {
         return (
-            <div className={"row justify-content-center extraform "+(this.state.active === 0?'hide':'')}>
+            <div className={"row justify-content-center extraform " + (this.state.active === 0 ? 'hide' : '')}>
                 <div className="col col-11">
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 no-padding">
