@@ -2,10 +2,14 @@
   &.modal {
     .modal-dialog{
       max-width: 1032px;
+      .fields-row{
+        max-width: 624px;
+        margin: 40px auto 26px;
+      }
     }
     .modal-body{
       max-width: 100%;
-      width: 80%;
+      width: 100%;
       .items-checkboxes{
         max-width: 400px;
         margin-left: auto;
@@ -15,14 +19,33 @@
           display: inline-block;
         }
       }
-      .fields-row{
-        padding-top: 15px;
-      }
       .form-group{
         margin-bottom: 14px;
         label{
           display: block;
           text-align: left;
+        }
+      }
+      .sarlaft{
+        background: #F0FBFC;
+        margin: 0;
+        padding: 30px 0;
+        label{
+          text-align: center;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 20px;
+          line-height: 19px;
+          color: #343741;
+          padding-bottom: 5px;
+        }
+        span{
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 22px;
+          text-align: center;
+          color: #565656;
         }
       }
     }
