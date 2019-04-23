@@ -1,5 +1,8 @@
 .person-popup{
   &.modal {
+    .modal-dialog{
+      max-width: 1032px;
+    }
     .modal-body{
       max-width: 100%;
       width: 80%;

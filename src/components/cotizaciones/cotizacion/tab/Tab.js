@@ -15,7 +15,8 @@ class Tab extends React.Component {
             index: 1,
             plans: [],
             assistsTotal: 0,
-            coverturasTotal: 0
+            coverturasTotal: 0,
+            Inmueble: store.getState().Inmueble
         };
         for (let i = 0; i < 3; i++) {
             this.state.plans[i] = {
@@ -37,20 +38,32 @@ class Tab extends React.Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let index = storeState.indexPlan;
+            if (storeState.Inmueble !== this.state.Inmueble) {
+                let inmueble = storeState.Inmueble;
+                let type = 0;
+                if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
+                    type = 3;
+                } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
+                    type = 2;
+                } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
+                    type = 1;
+                }
+                this.getPlants(type);
+            }
+
             if (this.state.index !== index) {
                 this.setState({
                     ...this.state,
                     index: index
                 });
                 let it = this;
-                setTimeout(function() {
+                setTimeout(function () {
                     it.countCoverturas();
                     it.countAsistencias();
-                }.bind(this), 100);
+                }, 100);
             }
         });
 
-        this.getPlants();
     }
 
     toogleSlide(index) {
@@ -125,8 +138,8 @@ class Tab extends React.Component {
         this.countAsistencias();
     }
 
-    async getPlants() {
-        let plans = await AllPlans.get();
+    async getPlants(type) {
+        let plans = await AllPlans.get(type);
         this.setState({
             ...this.state,
             plans: plans
@@ -199,10 +212,12 @@ class Tab extends React.Component {
                                                                    defaultValue={opt.value}
                                                                    disabled={(option.optional === false)}
                                                                    type="text" className={"form-control"}/>
-                                                        ):(
+                                                        ) : (
                                                             <select className="form-control">
                                                                 {opt.values.map((opt, k) =>
-                                                                    <option selected={(opt.default===true?'selected':false)} key={k} value={k}>{opt.limit}</option>
+                                                                    <option
+                                                                        selected={(opt.default === true ? 'selected' : false)}
+                                                                        key={k} value={k}>{opt.limit}</option>
                                                                 )}
                                                             </select>
                                                         )}
@@ -210,6 +225,7 @@ class Tab extends React.Component {
                                                 )}
                                             </div>
                                             <div className="col last">
+                                                {typeof option.deductible !== 'undefined' ? (
                                                 <div
                                                     className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
                                                     <label htmlFor="pisonumero">Deducible</label>
@@ -217,8 +233,13 @@ class Tab extends React.Component {
                                                             disabled={(option.optional === false)}
                                                             defaultValue={this.state.value}>
                                                         <option value="">Sin Deducible</option>
+                                                        {option.deductible.map((opt, k) =>
+                                                            <option key={k} selected={opt.default}
+                                                                    value={opt.id}>{opt.name}</option>
+                                                        )}
                                                     </select>
                                                 </div>
+                                                ):( <div className={"form-group"}>&nbsp;</div> )}
                                             </div>
                                         </div>
                                     </div>
