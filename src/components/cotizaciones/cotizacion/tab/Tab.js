@@ -5,6 +5,7 @@ import AllPlans from '../../../../services/AllPlans';
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
+import {toggleLoading} from "../../../../actionCreators";
 
 class Tab extends React.Component {
 
@@ -16,8 +17,10 @@ class Tab extends React.Component {
             plans: [],
             assistsTotal: 0,
             coverturasTotal: 0,
-            Inmueble: store.getState().Inmueble
+            Inmueble: store.getState().Inmueble,
+            plansOks: false
         };
+        store.dispatch(toggleLoading(true));
         for (let i = 0; i < 3; i++) {
             this.state.plans[i] = {
                 assists: [
@@ -52,7 +55,7 @@ class Tab extends React.Component {
                     ...this.state,
                     Inmueble: inmueble
                 });
-                this.getPlants(type);
+                if ( this.state.plansOks === false ) this.getPlants(type);
             }
             if (this.state.index !== index) {
                 this.setState({
@@ -145,10 +148,14 @@ class Tab extends React.Component {
         let plans = await AllPlans.get(type);
         this.setState({
             ...this.state,
-            plans: plans
+            plans: plans,
+            plansOks: true
         });
         this.countCoverturas();
         this.countAsistencias();
+        setTimeout(function () {
+            store.dispatch(toggleLoading(false));
+        },1000);
     }
 
     getSelectByItems(item) {
@@ -247,7 +254,8 @@ class Tab extends React.Component {
                                                                 <input name="contenidoasegudadovalor"
                                                                        id="contenidoasegudadovalor"
                                                                        placeholder={Masknumbermoney.formatToMask(opt.value)}
-                                                                       defaultValue={this.getValueFields(opt)}
+                                                                       value={this.getValueFields(opt)}
+                                                                       onChange={(e)=>{}}
                                                                        disabled={(option.optional === false)}
                                                                        type="text" className={"form-control"}/>
                                                             ) : (
