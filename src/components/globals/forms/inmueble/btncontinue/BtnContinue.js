@@ -160,7 +160,7 @@ class BtnContinue extends Component {
                 <div className={"return-button"}>
                     <a href={"/cotizacion/1/" + storeState.cotizacion.number}><i className="back-icon"></i>Volver</a>
                 </div>
-                <button className={"btn btn-default"}
+                <button type="button" className={"btn btn-default"}
                         onClick={(e) => {
                             this.saveService();
                         }}

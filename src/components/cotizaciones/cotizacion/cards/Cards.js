@@ -37,7 +37,8 @@ class Cards extends React.Component {
                     type: 5,
                 }
             ],
-            Inmueble: store.getState().Inmueble
+            Inmueble: store.getState().Inmueble,
+            InmuebleOk: false
         };
         for (let i = 0; i < 5; i++) {
             this.state.items[i].value = "";
@@ -50,7 +51,7 @@ class Cards extends React.Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
-            if (inmueble !== this.state.Inmueble) {
+            if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
                 let items = this.state.items;
                 for (let i = 0; i < 5; i++) {
                     if (items[i].type === 1) {
@@ -76,7 +77,8 @@ class Cards extends React.Component {
                 this.setState({
                     ...this.state,
                     items: items,
-                    Inmueble: inmueble
+                    Inmueble: inmueble,
+                    InmuebleOk: true
                 });
             }
         });

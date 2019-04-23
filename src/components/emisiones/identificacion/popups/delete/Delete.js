@@ -28,7 +28,7 @@ export default class Delete extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <button className="btn btn-secondary" onClick={(e) => {
+                                <button type="button" className="btn btn-secondary" onClick={(e) => {
                                     this.props.toggle(0)
                                 }}>Cancelar
                                 </button>
