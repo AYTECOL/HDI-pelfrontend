@@ -43,7 +43,6 @@ class Service {
     }
 
     static async get(url, overrideBase) {
-        console.log(overrideBase);
         return await Service.HttpRequest('GET', url, null, overrideBase).then(function (response) {
             return JSON.parse(response);
         })

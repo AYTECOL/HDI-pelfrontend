@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 
-import SaveIdentifications from '../../../../../services/SaveIdentifications';
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
 
 class BtnContinue extends Component {
@@ -9,33 +8,33 @@ class BtnContinue extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            step: parseInt(this.props.match.params.step),
             continueButtonDisable: true,
             stateFormIdentificacion: 0,
             cotizacionExclude: [],
+            comeBack: UrlSite + "/cotizacion/2/" + this.props.match.params.id
         };
     }
 
-    async nextStepIndex() {
-
+    saveAndExit() {
+        window.location.href = UrlSite + "/";
     }
 
-    saveAndExit() {
-        SaveIdentifications.save();
-        window.location.href = UrlSite + "/";
+    nextStep() {
+        window.location.href = UrlSite + "/cotizacion/4/" + this.props.match.params.id;
     }
 
     render() {
         return (
             <div>
                 <div className={"return-button"}>
-                    <Link to='/'><i className="back-icon">&nbsp;</i>Volver</Link>
+                    <a href={this.state.comeBack}><i className="back-icon">&nbsp;</i>Volver</a>
                 </div>
-                <button type="button" className={" btn btn-default"}
+                <button type="button" className={"btn btn-default"}
                         onClick={() => this.saveAndExit()}>Guardar y salir
                 </button>
-                <button onClick={() => this.nextStepIndex()}
-                        type="button"
-                        className={"btn btn-primary"}>Iniciar emisión
+                <button type="button" className={"btn btn-primary"}
+                        onClick={() => this.nextStep()}>Continuar
                 </button>
             </div>
         );
