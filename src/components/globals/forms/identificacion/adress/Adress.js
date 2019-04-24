@@ -56,7 +56,7 @@ class Adress extends Component {
                        autoComplete="address"
                        autoCorrect="off"
                        autoCapitalize="none"
-                       disabled={(this.state.disabled) ? 'disabled' : ''}
+                       disabled={this.state.disabled === true}
                        onBlur={(e) => {
                            this.validateEmpty(e.target);
                        }}

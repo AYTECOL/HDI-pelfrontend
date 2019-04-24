@@ -182,15 +182,30 @@ class Tab extends React.Component {
 
     getValueFields(item) {
         let inmueble = this.state.Inmueble;
+        // Inmueble
         if (item.id === 1) {
             return Masknumbermoney.formatToMask(
                 Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) * parseInt(item.value) / 100);
+        //Contenidos
         } else if (item.id === 2) {
             return Masknumbermoney.formatToMask(
                 Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * parseInt(item.value) / 100);
+        //Obras
         } else if (item.id === 3) {
             return Masknumbermoney.formatToMask(
                 Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
+        //Telefonos moviles
+        } else if (item.id === 4){
+
+        //Hurto siempre basado en hurto calificado
+        } else if(item.id === 5){
+
+        //Joyas
+        } else if(item.id === 6){
+
+        //Contenido mobile
+        } else if(item.id === 7){
+
         }
         return 'N/A';
     }
