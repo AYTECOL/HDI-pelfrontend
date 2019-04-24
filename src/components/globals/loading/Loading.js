@@ -50,7 +50,7 @@ class Loading extends Component {
     }
 
     render() {
-        if (this.state.active === false) return <div></div>;
+        if (this.state.active === false) return <div>&nbsp;</div>;
         return (
             <div className="app-loader">
                 <div className="content-loader">
