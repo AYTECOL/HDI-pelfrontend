@@ -435,6 +435,10 @@ $color-font-btn-primary: #404040;
       i {
         background-image: url("../images/home-icon-hover.png");
 
+        &.userperson {
+          background-image: url("../images/user-icon-hover.png");
+        }
+
         &.summer {
           background-image: url("../images/summer-hover.png");
         }
@@ -485,6 +489,12 @@ $color-font-btn-primary: #404040;
       &.home-icon{
         background-size: 100% auto;
         width: 45px;
+      }
+
+      &.userperson {
+        width: 30px;
+        height: 30px;
+        background-image: url("../images/user-icon.png");
       }
 
       &.summer {
@@ -720,6 +730,9 @@ $color-font-btn-primary: #404040;
     font-size: 14px;
     line-height: 19px;
     color: #28A3AF;
+    margin: 0;
+    padding: 0 74px;
+    cursor: pointer;
     span{
       display: inline-block;
       line-height: 1;
@@ -727,7 +740,8 @@ $color-font-btn-primary: #404040;
       background: #037B86;
       color: white;
       border-radius: 100%;
-      padding: 2px 4px;
+      padding: 4px 7px 2px;
+      margin-left: 5px;
     }
   }
 }

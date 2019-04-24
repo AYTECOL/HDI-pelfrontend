@@ -11,12 +11,21 @@ class Index extends React.Component {
         super(props);
         this.state = {
             step: parseInt(this.props.match.params.step),
+            totalContent: 0
         };
 
     }
 
+    addContent(){
+        let total = this.state.totalContent + 1;
+        this.setState({
+            ...this.state,
+            totalContent: total
+        })
+    }
+
     render() {
-        if (this.state.step !== 2) return <div></div>;
+        if (this.state.step !== 2) return <div>&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form emision informacion-adicioonal">
                 <div className="container">
@@ -97,8 +106,13 @@ class Index extends React.Component {
                                     <p><b>Contenidos Móviles:</b> $ 3.000.000</p>
                                 </div>
                                 <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
+
+
+
+
+
                                     <div className="more-items" onClick={(e) => {
-                                        this.togglePopUpPersona(1);
+                                        this.addContent();
                                     }}>
                                         <button type="button" className="more-btn">+</button>
                                         <p>Agregar contenido</p>
@@ -112,18 +126,21 @@ class Index extends React.Component {
                         </div>
                     </div>
 
-                    <div className="row text-center">
+                    <div className="row row-full text-right">
                         <div className="col col-sm-12 col-md-12 col-lg-12">
                             <div className="more-info">
                                 <p>Más información <span>?</span></p>
                             </div>
                         </div>
-                        <div className="col col-sm-12 col-md-12 col-lg-12 sujeta-block">
+                    </div>
+
+                    <div className="row text-center sujeta-block justify-content-center">
+                        <div className="col col-sm-12 col-md-12 col-lg-12">
                             <h5>La póliza está sujeta a inspección en sitio</h5>
                             <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la inspección en el
                                 inmueble</p>
                         </div>
-                        <div className="col col-sm-12 col-md-12 col-lg-12">
+                        <div className="col col-sm-12 col-md-8 col-lg-8">
                             <div className={"no-icon gridgrid form-group"}>
 
                                 <div className="row grid-select">
@@ -131,7 +148,7 @@ class Index extends React.Component {
                                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                         <div className={"select-item row"}>
                                             <div className="col col-12 no-padding">
-                                                <i className="aceror">&nbsp;</i>
+                                                <i className="userperson">&nbsp;</i>
                                             </div>
                                             <div className="col col-12 no-padding">
                                                 <p>Andrés Salamanca</p>
@@ -141,7 +158,7 @@ class Index extends React.Component {
                                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                         <div className={"select-item row"}>
                                             <div className="col col-12 no-padding">
-                                                <i className="aceror">&nbsp;</i>
+                                                <i className="userperson">&nbsp;</i>
                                             </div>
                                             <div className="col col-12 no-padding">
                                                 <p>Juana Perez Gomez</p>
@@ -151,7 +168,7 @@ class Index extends React.Component {
                                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                         <div className={"select-item row"}>
                                             <div className="col col-12 no-padding">
-                                                <i className="aceror">&nbsp;</i>
+                                                <i className="userperson">&nbsp;</i>
                                             </div>
                                             <div className="col col-12 no-padding">
                                                 <p>Mónica Gómez</p>

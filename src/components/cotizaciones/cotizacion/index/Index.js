@@ -42,7 +42,7 @@ class Index extends React.Component {
     }
 
     render() {
-        if (this.state.step !== 3) return <div></div>;
+        if (this.state.step !== 3) return <div>&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form contizacion-form">
                 <div className="container">
