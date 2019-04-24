@@ -90,7 +90,7 @@ class Index extends React.Component {
                                         onClick={(e) => {
                                             this.active(parseInt(option.riskId), parseInt(option.riskId));
                                         }}>
-                                        <i className={(parseInt(option.riskId) === 1) ? "home-icon" : "apartamento-icon"}></i>
+                                        <i className={(parseInt(option.riskId) === 1) ? "home-icon" : "apartamento-icon"}>&nbsp;</i>
                                         <p>{option.risk_type}</p>
                                     </li>
                                 )}

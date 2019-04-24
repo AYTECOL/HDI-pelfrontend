@@ -223,8 +223,8 @@ class Tab extends React.Component {
                                     </h4>
                                 </div>
                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
-                                    <div className="close-section closeclose">Ocultar <i></i></div>
-                                    <div className="close-section open">Ver <i></i></div>
+                                    <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
+                                    <div className="close-section open">Ver <i>&nbsp;</i></div>
                                 </div>
                             </div>
 
@@ -313,8 +313,8 @@ class Tab extends React.Component {
                                         </h4>
                                     </div>
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
-                                        <div className="close-section closeclose">Ocultar <i></i></div>
-                                        <div className="close-section open">Ver <i></i></div>
+                                        <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
+                                        <div className="close-section open">Ver <i>&nbsp;</i></div>
                                     </div>
                                 </div>
                                 <div className="wrapper-box asistencias">

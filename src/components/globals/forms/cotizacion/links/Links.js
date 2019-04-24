@@ -19,12 +19,12 @@ class Links extends Component {
         return (
             <div>
                 <div className="generatepdf link-item">
-                    <p><i></i> Generar cotización en PDF</p>
+                    <p><i>&nbsp;</i> Generar cotización en PDF</p>
                 </div>
                 <div className="sendpdf link-item" onClick={(e) => {
                     this.openModal();
                 }}>
-                    <p><i></i> Enviar por correo</p>
+                    <p><i>&nbsp;</i> Enviar por correo</p>
                 </div>
             </div>
         );

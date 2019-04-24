@@ -158,9 +158,9 @@ class Cards extends React.Component {
 
         // Habilita contenido si los demas items lo tienn
         if(
-            newItems[index].type === 3 && newItems[index].active === false ||
-            newItems[index].type === 4 && newItems[index].active === false ||
-            newItems[index].type === 5 && newItems[index].active === false
+            (newItems[index].type === 3 && newItems[index].active === false) ||
+            (newItems[index].type === 4 && newItems[index].active === false) ||
+            (newItems[index].type === 5 && newItems[index].active === false)
         ){
             store.dispatch(toggleLoading(true));
             newItems[1].active = newItems[index].active;
@@ -196,7 +196,7 @@ class Cards extends React.Component {
                 {this.state.items.map((option, key) =>
                     <div className="col" key={key}>
                         <div className={"box-col " + (this.state.items[key].active === true ? 'active' : '')}>
-                            <div className={"image image-" + (key + 1)}></div>
+                            <div className={"image image-" + (key + 1)}>&nbsp;</div>
                             <p>{option.parent.name()}</p>
                             <div className="wrapper-over">
                                 <div className="btntoggle" onClick={(e) => {

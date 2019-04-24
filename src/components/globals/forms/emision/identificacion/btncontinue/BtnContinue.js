@@ -8,6 +8,7 @@ class BtnContinue extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            step: parseInt(this.props.match.params.step),
             continueButtonDisable: true,
             stateFormIdentificacion: 0,
             cotizacionExclude: [],
@@ -18,16 +19,21 @@ class BtnContinue extends Component {
         window.location.href = UrlSite + "/";
     }
 
+    nextStep() {
+        window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
+    }
+
     render() {
         return (
             <div>
                 <div className={"return-button"}>
-                    <Link to='/'><i className="back-icon"></i>Volver</Link>
+                    <Link to='/'><i className="back-icon">&nbsp;</i>Volver</Link>
                 </div>
                 <button type="button" className={"btn btn-default"}
                         onClick={() => this.saveAndExit()}>Guardar y salir
                 </button>
-                <button type="button" className={"btn btn-primary"}>Continuar
+                <button type="button" className={"btn btn-primary"}
+                        onClick={() => this.nextStep()}>Continuar
                 </button>
             </div>
         );

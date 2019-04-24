@@ -159,6 +159,10 @@ $color-font-btn-primary: #404040;
   }
 }
 
+.row.row-full{
+  max-width: 100% !important;
+  width: 100% !important;
+}
 
 .form-group {
   margin-bottom: 24px;
@@ -284,7 +288,7 @@ $color-font-btn-primary: #404040;
 
     .list-items {
       position: absolute;
-      margin-top: 0px;
+      margin-top: 0;
       top: 100%;
       width: 100%;
       left: 0;
@@ -371,7 +375,6 @@ $color-font-btn-primary: #404040;
     }
 
     .modal-title {
-      font-family: Roboto;
       font-style: normal;
       font-weight: bold;
       line-height: 29px;
@@ -409,7 +412,7 @@ $color-font-btn-primary: #404040;
 .cotizacion .container .grid-select {
   .select-item {
     background: #FFFFFF;
-    box-shadow: 0px 0px 3px rgba(86, 86, 86, 0.404806);
+    box-shadow: 0 0 3px rgba(86, 86, 86, 0.404806);
     border-radius: 3px;
     text-align: center;
     padding: 24px 0;
@@ -431,6 +434,14 @@ $color-font-btn-primary: #404040;
 
       i {
         background-image: url("../images/home-icon-hover.png");
+
+        &.summer {
+          background-image: url("../images/summer-hover.png");
+        }
+
+        &.home-pay {
+          background-image: url("../images/rent-home-hover.png");
+        }
 
         &.concreto {
           background-image: url("../images/concreto-hover.png");
@@ -470,6 +481,19 @@ $color-font-btn-primary: #404040;
       width: 35px;
       height: 35px;
       background-position: center;
+
+      &.home-icon{
+        background-size: 100% auto;
+        width: 45px;
+      }
+
+      &.summer {
+        background-image: url("../images/summer.png");
+      }
+
+      &.home-pay {
+        background-image: url("../images/rent-home.png");
+      }
 
       &.concreto {
         background-image: url("../images/concreto.png");
@@ -536,7 +560,7 @@ $color-font-btn-primary: #404040;
     background: #F0FBFC;
     border: 1px solid #28A3AF;
     box-sizing: border-box;
-    border-radius: 3px 3px 0px 0px;
+    border-radius: 3px 3px 0 0;
     padding: 10px 9px 8px 31px;
     text-align: left;
     position: relative;
@@ -614,7 +638,7 @@ $color-font-btn-primary: #404040;
       right: -10px;
       top: 100%;
       background: #343741;
-      box-shadow: 0px 2px 11px rgba(52, 55, 65, 0.543733);
+      box-shadow: 0 2px 11px rgba(52, 55, 65, 0.543733);
       border-radius: 6px;
       z-index: 12;
       padding: 15px 22px;
@@ -644,7 +668,7 @@ $color-font-btn-primary: #404040;
     width: 100%;
     background: #F0FBFC;
     border: 1px solid #28A3AF;
-    box-shadow: 0px 2px 12px rgba(3, 123, 134, 0.300781);
+    box-shadow: 0 2px 12px rgba(3, 123, 134, 0.300781);
     border-radius: 3px;
     margin-bottom: 22px;
     padding: 17px;
@@ -669,7 +693,7 @@ $color-font-btn-primary: #404040;
         z-index: 2;
         font-size: 16px;
         font-weight: 400;
-        padding: 0 6px 0px 5.5px;
+        padding: 0 6px 0 5.5px;
         top: 13px;
         left: 12px;
       }
@@ -679,4 +703,30 @@ $color-font-btn-primary: #404040;
 
 .popup {
   overflow: hidden;
+}
+
+.form-control.pickerDate{
+  background-image: url("../images/calendar-pciker.png");
+  background-size: 22px auto;
+  background-position: 97% center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.more-info{
+  p{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 19px;
+    color: #28A3AF;
+    span{
+      display: inline-block;
+      line-height: 1;
+      vertical-align: middle;
+      background: #037B86;
+      color: white;
+      border-radius: 100%;
+    }
+  }
 }

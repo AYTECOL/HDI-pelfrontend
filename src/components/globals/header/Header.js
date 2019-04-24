@@ -20,10 +20,10 @@ class Header extends Component {
                         <div id="main-menu" className="col col-12 col-sm-12 col-md-8 col-lg-8">
                             <ul>
                                 <li className={activeMenu1}>
-                                    <a href='/'><i className="icon1"></i>Mis negocios</a>
+                                    <a href='/'><i className="icon1">&nbsp;</i>Mis negocios</a>
                                 </li>
-                                <li><a href="/#"><i className="icon2"></i>Andres Salamanca</a></li>
-                                <li className="logout"><a href="/#"><i className="icon3"></i>Salir</a></li>
+                                <li><a href="/#"><i className="icon2">&nbsp;</i>Andres Salamanca</a></li>
+                                <li className="logout"><a href="/#"><i className="icon3">&nbsp;</i>Salir</a></li>
                             </ul>
                         </div>
                     </div>

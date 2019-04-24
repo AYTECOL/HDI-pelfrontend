@@ -52,6 +52,7 @@ class Index extends React.Component {
     }
 
     render() {
+        if (this.state.step !== 1) return <div></div>;
         return (
             <form autoComplete="off" className="index-form emision">
                 <div className="container">

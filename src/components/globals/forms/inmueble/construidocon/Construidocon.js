@@ -71,13 +71,13 @@ class Construidocon extends Component {
                                 }}
                             >
                                 <div className="col col-12 no-padding">
-                                    {(parseInt(option.buildMaterialCode) === 1) ? (<i className="concreto"></i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 2) ? (<i className="ladrillo"></i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 3) ? (<i className="aceror"></i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 1) ? (<i className="concreto">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 2) ? (<i className="ladrillo">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 3) ? (<i className="aceror">&nbsp;</i>) : ("")}
                                     {(parseInt(option.buildMaterialCode) === 4) ? (
-                                        <i className="bahareque"></i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 5) ? (<i className="madera"></i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 6) ? (<i className="adobe"></i>) : ("")}
+                                        <i className="bahareque">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 5) ? (<i className="madera">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 6) ? (<i className="adobe">&nbsp;</i>) : ("")}
                                 </div>
                                 <div className="col col-12 no-padding">
                                     <p>{option.answer}</p>
