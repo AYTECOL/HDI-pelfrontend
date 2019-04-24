@@ -1,13 +1,12 @@
 import Service from './Service';
 
-const APIKEY = 'AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4';
-// const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU';
+// const APIKEY = 'AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4';
+const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU';
 const Cors = 'https://cors-anywhere.herokuapp.com/';
 
 class GetAddresInfo {
     static async get(address) {
         address = address + ", Colombia";
-        // address = address +  ", Manizales, Caldas, Colombia";
         address = address.replace("#", " ");
         address = address.replace("N°", " ");
         //let url = `https://maps.googleapis.com/maps/api/geocode/json?key=${APIKEY}&address=${address}`;
