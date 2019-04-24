@@ -193,16 +193,18 @@ class Tab extends React.Component {
         //Obras
         } else if (item.id === 3) {
             return Masknumbermoney.formatToMask(
-                Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
+                Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobras) * parseInt(item.value) / 100);
         //Telefonos moviles
         } else if (item.id === 4){
-
+            return Masknumbermoney.formatToMask(
+                Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
         //Hurto siempre basado en hurto calificado
         } else if(item.id === 5){
 
         //Joyas
         } else if(item.id === 6){
-
+            return Masknumbermoney.formatToMask(
+                Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
         //Contenido mobile
         } else if(item.id === 7){
 
