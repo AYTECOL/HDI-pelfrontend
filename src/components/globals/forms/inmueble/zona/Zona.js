@@ -30,7 +30,7 @@ class Zona extends Component {
         });
     }
 
-    async getZones(){
+    async getZones() {
         let zonas = await Zones.get();
         this.setState({
             ...this.state,
@@ -53,7 +53,8 @@ class Zona extends Component {
                 <label htmlFor="zona">El inmueble está ubicado en zona</label>
                 <ul className="select-item">
                     {this.state.zonas.map((option, key) =>
-                        <li key={option.zoneCode} className={parseInt(this.state.active) === parseInt(option.zoneCode) ? 'active' : ''}
+                        <li key={option.zoneCode}
+                            className={parseInt(this.state.active) === parseInt(option.zoneCode) ? 'active' : ''}
                             onClick={(e) => {
                                 this.saveData({
                                     value: parseInt(option.zoneCode),

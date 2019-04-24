@@ -63,7 +63,9 @@ class Adress extends Component {
                        onChange={(e) => {
                            this.validateEmpty(e.target);
                        }}/>
-                <small className={"form-text only-errors "+(this.state.error ? 'show' : 'hide')}>Por favor ingrese la dirreción del hogar.</small>
+                <small className={"form-text only-errors " + (this.state.error ? 'show' : 'hide')}>Por favor ingrese la
+                    dirreción del hogar.
+                </small>
                 <small className="form-text text-muted">Ejemplo: Calle 143Bis # 23 a 34</small>
             </div>
         );

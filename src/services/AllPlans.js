@@ -7,18 +7,13 @@ const BaseUrl = "/all-plans/";
 class AllPlans {
     static async get(type) {
         let data = [];
-        let storeState = Store.getState();
-        if (storeState.AllPlans.length === 0) {
-            try {
-                data = await Service.get(BaseUrl+type);
-                data = data.plans;
-            }catch (e) {
-                data = [];
-            }
-            Store.dispatch(AllPlansCreator(data));
-        } else {
-            data = storeState.AllPlans;
+        try {
+            data = await Service.get(BaseUrl + type);
+            data = data.plans;
+        } catch (e) {
+            data = [];
         }
+        Store.dispatch(AllPlansCreator(data));
         return data;
     };
 }

@@ -32,7 +32,7 @@ class Construidocon extends Component {
         });
     }
 
-    async getMaterials(){
+    async getMaterials() {
         let materials = await BuildMaterial.get();
         this.setState({
             ...this.state,
@@ -58,31 +58,33 @@ class Construidocon extends Component {
                 <label htmlFor="construidocon">El inmueble está construido con</label>
 
                 <div className="row grid-select">
-                {this.state.materials.map((option, key) =>
-                    <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                        <div className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
-                             onClick={(e) => {
-                                 this.validateEmpty({
-                                     data: option.buildMaterialCode,
-                                     value: option.buildMaterialCode,
-                                     name: "construidocon"
-                                 });
-                             }}
-                        >
-                            <div className="col col-12 no-padding">
-                                {(parseInt(option.buildMaterialCode) === 1) ? (<i className="concreto"></i>) : ("")}
-                                {(parseInt(option.buildMaterialCode) === 2) ? (<i className="ladrillo"></i>) : ("")}
-                                {(parseInt(option.buildMaterialCode) === 3) ? (<i className="aceror"></i>) : ("")}
-                                {(parseInt(option.buildMaterialCode) === 4) ? (<i className="bahareque"></i>) : ("")}
-                                {(parseInt(option.buildMaterialCode) === 5) ? (<i className="madera"></i>) : ("")}
-                                {(parseInt(option.buildMaterialCode) === 6) ? (<i className="adobe"></i>) : ("")}
-                            </div>
-                            <div className="col col-12 no-padding">
-                                <p>{option.answer}</p>
+                    {this.state.materials.map((option, key) =>
+                        <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
+                            <div
+                                className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
+                                onClick={(e) => {
+                                    this.validateEmpty({
+                                        data: option.buildMaterialCode,
+                                        value: option.buildMaterialCode,
+                                        name: "construidocon"
+                                    });
+                                }}
+                            >
+                                <div className="col col-12 no-padding">
+                                    {(parseInt(option.buildMaterialCode) === 1) ? (<i className="concreto">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 2) ? (<i className="ladrillo">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 3) ? (<i className="aceror">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 4) ? (
+                                        <i className="bahareque">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 5) ? (<i className="madera">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 6) ? (<i className="adobe">&nbsp;</i>) : ("")}
+                                </div>
+                                <div className="col col-12 no-padding">
+                                    <p>{option.answer}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )}
                 </div>
             </div>
         );

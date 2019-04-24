@@ -7,13 +7,13 @@ import SaveInmueble from "../../../../../services/SaveInmueble";
 import SaveIdentifications from "../../../../../services/SaveIdentifications";
 import {NextStep} from "../../../../../actionCreators";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
-
 // Components
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from "../asegurarcontenidos/Asegurarcontenidos";
 import Asegurarjoyas from "../asegurarjoyas/Asegurarjoyas";
 import Asegurarobras from "../asegurarobras/Asegurarobras";
 import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
+import {UrlSite} from "../../../../../config";
 
 class BtnContinue extends Component {
 
@@ -26,7 +26,7 @@ class BtnContinue extends Component {
 
     async saveService() {
         await SaveInmueble.get();
-        window.location.href = "/";
+        window.location.href = UrlSite + "/";
     }
 
     async saveServiceContinue() {
@@ -38,50 +38,50 @@ class BtnContinue extends Component {
         if (inmueble.type_risk === 2 && inmueble.pisonumero === "") {
             Helpers.addClass(".pisonumero", "error");
             errors++;
-        }else{
+        } else {
             Helpers.removeClass(".pisonumero", "error");
         }
 
         if (inmueble.numerodepisos === "") {
             Helpers.addClass(".numerodepisos", "error");
             errors++;
-        }else{
+        } else {
             Helpers.removeClass(".numerodepisos", "error");
         }
 
         if (inmueble.zona === "") {
             Helpers.addClass(".zona", "error");
             errors++;
-        }else{
+        } else {
             Helpers.removeClass(".zona", "error");
         }
 
         if (inmueble.anoconstruido === "") {
             Helpers.addClass(".anoconstruido", "error");
             errors++;
-        }else{
+        } else {
             Helpers.removeClass(".anoconstruido", "error");
         }
 
         if (inmueble.construidocon === "") {
             Helpers.addClass(".construidocon", "error");
             errors++;
-        }else{
+        } else {
             Helpers.removeClass(".construidocon", "error");
         }
 
         if (inmueble.cojuntocerrado === "") {
             Helpers.addClass(".cojuntocerrado", "error");
             errors++;
-        }else{
+        } else {
             Helpers.removeClass(".cojuntocerrado", "error");
         }
 
-        if (inmueble.refuerzo === 1){
+        if (inmueble.refuerzo === 1) {
             if (inmueble.anorefuerzo === "") {
                 Helpers.addClass(".anorefuerzo", "error");
                 errors++;
-            }else{
+            } else {
                 Helpers.removeClass(".anorefuerzo", "error");
             }
         }
@@ -90,65 +90,65 @@ class BtnContinue extends Component {
             Helpers.addClass(".inmuebleasegudado", "error");
             Helpers.addClass(".contenidoasegudado", "error");
             errors++;
-        }else{
+        } else {
             Helpers.removeClass(".inmuebleasegudado", "error");
             Helpers.removeClass(".contenidoasegudado", "error");
         }
 
-        if (inmueble.inmuebleasegudado === 1){
+        if (inmueble.inmuebleasegudado === 1) {
             if (Segurarinmueble.validateField(inmueble.inmuebleasegudadovalor) !== 0) {
                 Helpers.addClass(".inmuebleasegudadovalor", "error");
                 errors++;
-            }else{
+            } else {
                 Helpers.removeClass(".inmuebleasegudadovalor", "error");
             }
         }
 
-        if (inmueble.contenidoasegudado === 1){
+        if (inmueble.contenidoasegudado === 1) {
             if (Asegurarcontenidos.validateField(inmueble.contenidoasegudadovalor) !== 0) {
                 Helpers.addClass(".contenidoasegudadovalor", "error");
                 errors++;
-            }else{
+            } else {
                 Helpers.removeClass(".contenidoasegudadovalor", "error");
             }
         }
 
-        if (inmueble.inmuebleasegudadojoyas === 1){
+        if (inmueble.inmuebleasegudadojoyas === 1) {
             if (Asegurarjoyas.validateField(inmueble.inmuebleasegudadojoyasvalor) !== 0) {
                 Helpers.addClass(".inmuebleasegudadojoyasvalor", "error");
                 errors++;
-            }else{
+            } else {
                 Helpers.removeClass(".inmuebleasegudadojoyasvalor", "error");
             }
         }
 
-        if (inmueble.inmuebleasegudadoobras === 1){
+        if (inmueble.inmuebleasegudadoobras === 1) {
             if (Asegurarobras.validateField(inmueble.inmuebleasegudadoobrasvalor) !== 0) {
                 Helpers.addClass(".inmuebleasegudadoobrasvalor", "error");
                 errors++;
-            }else{
+            } else {
                 Helpers.removeClass(".inmuebleasegudadoobrasvalor", "error");
             }
         }
 
-        if (inmueble.inmuebleasegudadotelefonos === 1){
+        if (inmueble.inmuebleasegudadotelefonos === 1) {
             if (Asegurartelefonos.validateField(inmueble.inmuebleasegudadotelefonosvalor) !== 0) {
                 Helpers.addClass(".inmuebleasegudadotelefonosvalor", "error");
                 errors++;
-            }else{
+            } else {
                 Helpers.removeClass(".inmuebleasegudadotelefonosvalor", "error");
             }
         }
 
 
-        let disabled = errors!==0;
+        let disabled = errors !== 0;
         if (disabled !== false) {
             Helpers.scrollToElement(".error");
-        }else{
+        } else {
             store.dispatch(NextStep(3));
             await SaveIdentifications.save();
             await SaveInmueble.get();
-            window.location.href = '/cotizacion/3/' + storeState.cotizacion.number;
+            window.location.href = UrlSite + '/cotizacion/3/' + storeState.cotizacion.number;
         }
 
     }
@@ -158,20 +158,19 @@ class BtnContinue extends Component {
         return (
             <div>
                 <div className={"return-button"}>
-                    <a href={"/cotizacion/1/"+storeState.cotizacion.number}><i className="back-icon"></i>Volver</a>
+                    <a href={"/cotizacion/1/" + storeState.cotizacion.number}><i className="back-icon">&nbsp;</i>Volver</a>
                 </div>
-                <button className={"btn btn-default"}
+                <button type="button" className={"btn btn-default"}
                         onClick={(e) => {
                             this.saveService();
-                        }}
-                        type="button">Guardar y salir
+                        }}>Guardar y salir
                 </button>
                 <button type="button"
                         disabled={this.state.disabled}
                         onClick={(e) => {
                             this.saveServiceContinue();
                         }}
-                        className={"btn btn-primary "+(this.state.disabled===true?'disabled':'')}>Continuar
+                        className={"btn btn-primary " + (this.state.disabled === true ? 'disabled' : '')}>Continuar
                 </button>
             </div>
         );

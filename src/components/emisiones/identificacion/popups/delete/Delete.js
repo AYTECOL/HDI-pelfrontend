@@ -15,8 +15,9 @@ export default class Delete extends Component {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Estás seguro de eliminar persona</h5>
-                            <p className="modal-subtitle">Una vez elimines la persona, sus datos se borrarán por completo</p>
-                            <button type="button" className="close" aria-label="Close" onClick={(e)=>{
+                            <p className="modal-subtitle">Una vez elimines la persona, sus datos se borrarán por
+                                completo</p>
+                            <button type="button" className="close" aria-label="Close" onClick={(e) => {
                                 this.props.toggle(0)
                             }}>&nbsp;</button>
                         </div>
@@ -27,11 +28,13 @@ export default class Delete extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <button className="btn btn-secondary" onClick={(e)=>{
+                                <button type="button" className="btn btn-secondary" onClick={(e) => {
                                     this.props.toggle(0)
-                                }}>Cancelar</button>
+                                }}>Cancelar
+                                </button>
                                 <button type="button" className="btn btn-primary"
-                                >Eliminar</button>
+                                >Eliminar
+                                </button>
                             </div>
                         </div>
                     </div>

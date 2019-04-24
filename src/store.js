@@ -213,32 +213,32 @@ const reducer = (state = initialState, action) => {
             ...state,
             disabledbusinessname: action.data
         }
-    } else if( action.type === "SAVE_ALL_FLOORS" ){
+    } else if (action.type === "SAVE_ALL_FLOORS") {
         return {
             ...state,
             Allfloors: action.data
         }
-    }else if( action.type === "SAVE_ALL_INSURABLE_LIMITS" ){
+    } else if (action.type === "SAVE_ALL_INSURABLE_LIMITS") {
         return {
             ...state,
             allInsurableLimits: action.data
         }
-    }else if( action.type === "SAVE_ALL_PLANS"){
+    } else if (action.type === "SAVE_ALL_PLANS") {
         return {
             ...state,
             AllPlans: action.data
         }
-    }else if( action.type === "INDEX_PLAN_SELECTED"){
+    } else if (action.type === "INDEX_PLAN_SELECTED") {
         return {
             ...state,
             indexPlan: action.data
         }
-    }else if( action.type === "TOGGLE_LOADER" ){
+    } else if (action.type === "TOGGLE_LOADER") {
         return {
             ...state,
             ShowLoader: action.data
         }
-    }else if( action.type === "TOGGLE_POPUP_SENDMAIL" ){
+    } else if (action.type === "TOGGLE_POPUP_SENDMAIL") {
         return {
             ...state,
             ShowSendMail: action.data

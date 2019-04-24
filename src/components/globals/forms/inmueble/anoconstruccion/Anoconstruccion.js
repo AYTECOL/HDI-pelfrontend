@@ -29,7 +29,7 @@ class Anoconstruccion extends Component {
         });
     }
 
-    async getYears(){
+    async getYears() {
         let years = await BuildYears.get();
         this.setState({
             ...this.state,
@@ -64,7 +64,7 @@ class Anoconstruccion extends Component {
                 >
                     <option value="">Selecciona</option>
                     {this.state.years.map(option =>
-                        <option  key={option.buildYearCode} value={option.buildYearCode}>{option.answer}</option>
+                        <option key={option.buildYearCode} value={option.buildYearCode}>{option.answer}</option>
                     )}
                 </select>
             </div>

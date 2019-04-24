@@ -5,6 +5,35 @@ export default class Persona extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            showDefaultTextFile: true,
+            textFile: "",
+            genero: 0
+        };
+    }
+
+    changeTextFile(e) {
+        if (typeof e.target.files[0] !== "undefined") {
+            this.setState({
+                ...this.state,
+                textFile: e.target.files[0].name,
+                showDefaultTextFile: false
+            })
+        } else {
+            this.setState({
+                ...this.state,
+                textFile: '',
+                showDefaultTextFile: true
+            })
+        }
+    }
+
+    generoChange(index) {
+        this.setState({
+            ...this.state,
+            genero: index,
+        })
     }
 
     render() {
@@ -45,7 +74,8 @@ export default class Persona extends Component {
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                         <div className="numerodepisos input-select form-group "><label
                                             htmlFor="tipodedocuemnto">Tipo de documento</label>
-                                            <select name="tipodedocuemnto" id="tipodedocuemnto" className="form-control">
+                                            <select name="tipodedocuemnto" id="tipodedocuemnto"
+                                                    className="form-control">
                                                 <option value="">Seleccione</option>
                                             </select>
                                         </div>
@@ -85,9 +115,23 @@ export default class Persona extends Component {
 
 
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                        <div className="pisonumero form-group "><label
-                                            htmlFor="pisonumero">Genero</label>
-                                            <input type="text" className="form-control" name="lastname"/>
+                                        <div
+                                            className={"inmuebleasegudadojoyas no-icon form-group " + this.state.error}>
+                                            <label htmlFor="doc-type-value">Genero</label>
+                                            <ul className="select-item">
+                                                <li className={((this.state.genero === 1) ? 'active' : '')}
+                                                    onClick={(e) => {
+                                                        this.generoChange(1);
+                                                    }}
+                                                >Masculino
+                                                </li>
+                                                <li className={((this.state.genero === 0) ? 'active' : '')}
+                                                    onClick={(e) => {
+                                                        this.generoChange(0);
+                                                    }}
+                                                >Femenino
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
@@ -147,7 +191,15 @@ export default class Persona extends Component {
                                         <div className="sarlaft form-group">
                                             <label htmlFor="address">Es necesario el sarlaft</label>
                                             <span>Adjunta el Sarlaft diligenciado</span>
-                                            <input type="file" className="form-control" name="sarlaft"/>
+                                            <input type="file" className="form-control" name="sarlaft"
+                                                   onChange={(e) => {
+                                                       this.changeTextFile(e);
+                                                   }}/>
+                                            {this.state.showDefaultTextFile ? (
+                                                <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
+                                            ) : (
+                                                <p>{this.state.textFile}</p>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

@@ -1,28 +1,111 @@
-.person-popup{
+.person-popup {
   &.modal {
-    .modal-dialog{
+    .modal-dialog {
       max-width: 1032px;
+
+      .fields-row {
+        max-width: 624px;
+        margin: 40px auto 26px;
+      }
     }
-    .modal-body{
+
+    .modal-body {
       max-width: 100%;
-      width: 80%;
-      .items-checkboxes{
+      width: 100%;
+
+      .items-checkboxes {
         max-width: 400px;
         margin-left: auto;
         margin-right: auto;
-        input, label{
+
+        input, label {
           vertical-align: middle;
           display: inline-block;
         }
       }
-      .fields-row{
-        padding-top: 15px;
-      }
-      .form-group{
+
+      .form-group {
         margin-bottom: 14px;
-        label{
+
+        label {
           display: block;
           text-align: left;
+        }
+      }
+
+      .row.sarlaft {
+        background: #F0FBFC;
+        margin: 0 0 50px 0;
+        padding: 30px 0 60px;
+
+        label {
+          text-align: center;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 20px;
+          line-height: 19px;
+          color: #343741;
+          padding-bottom: 5px;
+        }
+
+        span {
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 22px;
+          text-align: center;
+          color: #565656;
+        }
+
+        p,
+        .form-control {
+          max-width: 387px;
+          width: 100%;
+          margin: 13px auto 0;
+          display: block;
+          height: 49px;
+          opacity: 0;
+          position: relative;
+          z-index: 2;
+          cursor: pointer;
+        }
+
+        .form-group {
+          margin: 0;
+        }
+
+        p {
+          margin-top: -49px;
+          opacity: 1;
+          z-index: 1;
+          background: #FFFFFF;
+          border: 2px dashed rgba(52, 55, 65, 0.8);
+          box-sizing: border-box;
+          padding: 16px 0;
+          font-style: normal;
+          font-weight: normal;
+          font-size: 14px;
+          line-height: 16px;
+          color: #333740;
+          border-radius: 4px;
+
+          &::before {
+            content: '';
+            width: 17px;
+            height: 17px;
+            vertical-align: middle;
+            margin-right: 8px;
+            display: inline-block;
+            background-image: url("../../../../../common/images/upload.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+          }
+
+          b {
+            color: #28A3AF;
+            font-weight: 500;
+          }
         }
       }
     }

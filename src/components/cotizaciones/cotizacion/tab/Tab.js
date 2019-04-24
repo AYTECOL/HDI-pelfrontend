@@ -5,6 +5,7 @@ import AllPlans from '../../../../services/AllPlans';
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
+import {toggleLoading} from "../../../../actionCreators";
 
 class Tab extends React.Component {
 
@@ -16,8 +17,11 @@ class Tab extends React.Component {
             plans: [],
             assistsTotal: 0,
             coverturasTotal: 0,
-            Inmueble: store.getState().Inmueble
+            Inmueble: store.getState().Inmueble,
+            plansOks: false,
+            typePlans: 3
         };
+        store.dispatch(toggleLoading(true));
         for (let i = 0; i < 3; i++) {
             this.state.plans[i] = {
                 assists: [
@@ -38,9 +42,9 @@ class Tab extends React.Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let index = storeState.indexPlan;
-            if (storeState.Inmueble !== this.state.Inmueble) {
-                let inmueble = storeState.Inmueble;
-                let type = 0;
+            let inmueble = storeState.Inmueble;
+            if (inmueble !== this.state.Inmueble) {
+                let type = this.state.typePlans;
                 if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
                     type = 3;
                 } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
@@ -48,9 +52,14 @@ class Tab extends React.Component {
                 } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
                     type = 1;
                 }
-                this.getPlants(type);
+                this.setState({
+                    ...this.state,
+                    Inmueble: inmueble
+                });
+                if (this.state.plansOks === false || this.state.typePlans !== type) {
+                    this.getPlants(type);
+                }
             }
-
             if (this.state.index !== index) {
                 this.setState({
                     ...this.state,
@@ -142,16 +151,53 @@ class Tab extends React.Component {
         let plans = await AllPlans.get(type);
         this.setState({
             ...this.state,
-            plans: plans
+            plans: plans,
+            plansOks: true,
+            typePlans: type
         });
         this.countCoverturas();
         this.countAsistencias();
+        setTimeout(function () {
+            store.dispatch(toggleLoading(false));
+        }, 1000);
+    }
+
+    getSelectByItems(item) {
+        for (let i in item) {
+            if (item[i].default === true) {
+                return item[i].id;
+            }
+        }
+        return "";
+    }
+
+    getSelectFields(item) {
+        for (let i in item) {
+            if (item[i].default === true) {
+                return i;
+            }
+        }
+        return "";
+    }
+
+    getValueFields(item) {
+        let inmueble = this.state.Inmueble;
+        if (item.id === 1) {
+            return Masknumbermoney.formatToMask(
+                Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) * parseInt(item.value) / 100);
+        } else if (item.id === 2) {
+            return Masknumbermoney.formatToMask(
+                Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * parseInt(item.value) / 100);
+        } else if (item.id === 3) {
+            return Masknumbermoney.formatToMask(
+                Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
+        }
+        return 'N/A';
     }
 
     render() {
         return (
             <div>
-
                 <div className="first-content">
                     <div className="row">
                         <div className="col col-12 col-md-3 col-lg-3">
@@ -177,8 +223,8 @@ class Tab extends React.Component {
                                     </h4>
                                 </div>
                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
-                                    <div className="close-section closeclose">Ocultar <i></i></div>
-                                    <div className="close-section open">Ver <i></i></div>
+                                    <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
+                                    <div className="close-section open">Ver <i>&nbsp;</i></div>
                                 </div>
                             </div>
 
@@ -202,44 +248,50 @@ class Tab extends React.Component {
                                                 </div>
                                             </div>
                                             <div className="col col-12 col-sm-12 col-md-3 col-lg-3 middle">
-                                                {option.values.map((opt, k) =>
-                                                    <div className={"contenidoasegudadovalor form-group"} key={k}>
-                                                        <label htmlFor="contenidoasegudadovalor">{opt.name}</label>
-                                                        {typeof opt.value !== 'undefined' ? (
-                                                            <input name="contenidoasegudadovalor"
-                                                                   id="contenidoasegudadovalor"
-                                                                   placeholder={Masknumbermoney.formatToMask(opt.value)}
-                                                                   defaultValue={opt.value}
-                                                                   disabled={(option.optional === false)}
-                                                                   type="text" className={"form-control"}/>
-                                                        ) : (
-                                                            <select className="form-control">
-                                                                {opt.values.map((opt, k) =>
-                                                                    <option
-                                                                        selected={(opt.default === true ? 'selected' : false)}
-                                                                        key={k} value={k}>{opt.limit}</option>
-                                                                )}
-                                                            </select>
-                                                        )}
-                                                    </div>
-                                                )}
+                                                {typeof option.values !== "undefined" &&
+                                                <div>
+                                                    {option.values.map((opt, k) =>
+                                                        <div className={"contenidoasegudadovalor form-group"} key={k}>
+                                                            <label htmlFor="contenidoasegudadovalor">{opt.name}</label>
+                                                            {typeof opt.value !== 'undefined' ? (
+                                                                <input name="contenidoasegudadovalor"
+                                                                       id="contenidoasegudadovalor"
+                                                                       placeholder={Masknumbermoney.formatToMask(opt.value)}
+                                                                       value={this.getValueFields(opt)}
+                                                                       onChange={(e) => {
+                                                                       }}
+                                                                       disabled={(option.optional === false)}
+                                                                       type="text" className={"form-control"}/>
+                                                            ) : (
+                                                                <select defaultValue={this.getSelectFields(opt.values)}
+                                                                        className="form-control" onChange={(e) => {
+                                                                }}>
+                                                                    {opt.values.map((opt, k) =>
+                                                                        <option key={k}
+                                                                                value={k}>{Masknumbermoney.formatToMask(opt.limit)}</option>
+                                                                    )}
+                                                                </select>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                }
                                             </div>
                                             <div className="col last">
                                                 {typeof option.deductible !== 'undefined' ? (
-                                                <div
-                                                    className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
-                                                    <label htmlFor="pisonumero">Deducible</label>
-                                                    <select name="pisonumero" className="form-control"
-                                                            disabled={(option.optional === false)}
-                                                            defaultValue={this.state.value}>
-                                                        <option value="">Sin Deducible</option>
-                                                        {option.deductible.map((opt, k) =>
-                                                            <option key={k} selected={opt.default}
-                                                                    value={opt.id}>{opt.name}</option>
-                                                        )}
-                                                    </select>
-                                                </div>
-                                                ):( <div className={"form-group"}>&nbsp;</div> )}
+                                                    <div
+                                                        className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
+                                                        <label htmlFor="pisonumero">Deducible</label>
+                                                        <select name="pisonumero" className="form-control"
+                                                                disabled={(option.optional === false)}
+                                                                defaultValue={this.getSelectByItems(option.deductible)}>
+                                                            <option value="">Sin Deducible</option>
+                                                            {option.deductible.map((opt, k) =>
+                                                                <option key={k} value={opt.id}>{opt.name}</option>
+                                                            )}
+                                                        </select>
+                                                    </div>
+                                                ) : (<div className={"form-group"}>&nbsp;</div>)}
                                             </div>
                                         </div>
                                     </div>
@@ -261,8 +313,8 @@ class Tab extends React.Component {
                                         </h4>
                                     </div>
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
-                                        <div className="close-section closeclose">Ocultar <i></i></div>
-                                        <div className="close-section open">Ver <i></i></div>
+                                        <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
+                                        <div className="close-section open">Ver <i>&nbsp;</i></div>
                                     </div>
                                 </div>
                                 <div className="wrapper-box asistencias">

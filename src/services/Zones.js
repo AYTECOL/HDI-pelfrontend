@@ -20,10 +20,10 @@ class Zones {
         let data = {};
         try {
             data = await Service.get(BaseUrl);
-        }catch (e) {
+        } catch (e) {
             data = Default;
         }
-        if ( typeof data.properties_zones === "undefined" || data.properties_zones.length === 0 ){
+        if (typeof data.properties_zones === "undefined" || data.properties_zones.length === 0) {
             data = Default;
         }
         return data.properties_zones.sort(function (a, b) {

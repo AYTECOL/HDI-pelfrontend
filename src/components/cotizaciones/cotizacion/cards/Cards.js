@@ -9,8 +9,19 @@ import Asegurarobras from "../../../globals/forms/inmueble/asegurarobras/Asegura
 import Asegurarjoyas from "../../../globals/forms/inmueble/asegurarjoyas/Asegurarjoyas";
 import Asegurartelefonos from "../../../globals/forms/inmueble/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import {toggleLoading} from "../../../../actionCreators";
 
 class Cards extends React.Component {
+
+    _isMounted = false;
+
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     constructor(props) {
         super(props);
@@ -18,22 +29,30 @@ class Cards extends React.Component {
             items: [
                 {
                     parent: Segurarinmueble,
+                    type: 1,
                 },
                 {
                     parent: Asegurarcontenidos,
+                    type: 2,
                 },
                 {
                     parent: Asegurarobras,
+                    type: 3,
                 },
                 {
                     parent: Asegurarjoyas,
+                    type: 4,
                 },
                 {
                     parent: Asegurartelefonos,
+                    type: 5,
                 }
-            ]
+            ],
+            Inmueble: store.getState().Inmueble,
+            InmuebleOk: false
         };
-        for(let i = 0; i < 5; i++){
+        for (let i = 0; i < 5; i++) {
+            this.state.items[i].value = "";
             this.state.items[i].active = true;
             this.state.items[i].errorValue = 0;
             this.state.items[i].inactiveToggle = false;
@@ -41,6 +60,38 @@ class Cards extends React.Component {
         this.state.items[0].active = false;
 
         store.subscribe(async () => {
+            let storeState = store.getState();
+            let inmueble = storeState.Inmueble;
+            if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
+                let items = this.state.items;
+                for (let i = 0; i < 5; i++) {
+                    if (items[i].type === 1) {
+                        items[i].value = inmueble.inmuebleasegudadovalor;
+                        items[i].active = inmueble.inmuebleasegudado === 0;
+                    } else if (items[i].type === 2) {
+                        items[i].value = inmueble.contenidoasegudadovalor;
+                        items[i].active = inmueble.contenidoasegudado === 0;
+                    } else if (items[i].type === 3) {
+                        items[i].value = inmueble.inmuebleasegudadoobrasvalor;
+                        items[i].active = inmueble.inmuebleasegudadoobras === 0;
+                    } else if (items[i].type === 4) {
+                        items[i].value = inmueble.inmuebleasegudadojoyasvalor;
+                        items[i].active = inmueble.inmuebleasegudadojoyas === 0;
+                    } else if (items[i].type === 5) {
+                        items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
+                        items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
+                    }
+                }
+                for (let i = 0; i < 5; i++) {
+                    if (this.state.items[i].value === '""') this.state.items[i].value = "";
+                }
+                this.setState({
+                    ...this.state,
+                    items: items,
+                    Inmueble: inmueble,
+                    InmuebleOk: true
+                });
+            }
         });
 
         this.getAllInsurableLimits();
@@ -51,21 +102,40 @@ class Cards extends React.Component {
         await AllInsurableLimits.get();
     }
 
-    validateToggle(){
+    validateToggle() {
         let newItems = this.state.items;
-        if(
+        if (
             newItems[1].active === true &&
             newItems[2].active === true &&
             newItems[3].active === true &&
             newItems[4].active === true
-        ){
+        ) {
             newItems[0].inactiveToggle = true;
-        }else{
+        } else {
             newItems[0].inactiveToggle = false;
         }
-        this.setState({
-            ...this.state,
-            items: newItems
+        if (
+            newItems[0].active === true
+        ) {
+            newItems[1].inactiveToggle = true;
+        } else {
+            newItems[1].inactiveToggle = false;
+        }
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                items: newItems
+            });
+        }
+    }
+
+    updateStoreItem(index){
+        // Actualiza el valor de prendido o apagado en el store
+        let newItems = this.state.items;
+        let newObj = new newItems[index].parent();
+        newObj.validateEmpty({
+            value: newItems[index].active === true?0:1,
+            name: newItems[index].parent.nameModel
         });
     }
 
@@ -73,6 +143,30 @@ class Cards extends React.Component {
         let active = this.state.items[index].active;
         let newItems = this.state.items;
         newItems[index].active = !active;
+
+        this.updateStoreItem(index);
+
+        // Pone el cargando para cotizacion
+        if( newItems[index].type === 1 || newItems[index].type === 2 ){
+            store.dispatch(toggleLoading(true));
+        }
+
+        // Deshabilita los demas items
+        if( newItems[index].type === 2 && newItems[index].active === true ){
+            for(let i = 1; i < 5; i++) newItems[i].active = newItems[index].active;
+        }
+
+        // Habilita contenido si los demas items lo tienn
+        if(
+            (newItems[index].type === 3 && newItems[index].active === false) ||
+            (newItems[index].type === 4 && newItems[index].active === false) ||
+            (newItems[index].type === 5 && newItems[index].active === false)
+        ){
+            store.dispatch(toggleLoading(true));
+            newItems[1].active = newItems[index].active;
+            this.updateStoreItem(1);
+        }
+
         this.setState({
             ...this.state,
             items: newItems
@@ -102,14 +196,14 @@ class Cards extends React.Component {
                 {this.state.items.map((option, key) =>
                     <div className="col" key={key}>
                         <div className={"box-col " + (this.state.items[key].active === true ? 'active' : '')}>
-                            <div className={"image image-" + (key + 1)}> </div>
+                            <div className={"image image-" + (key + 1)}>&nbsp;</div>
                             <p>{option.parent.name()}</p>
                             <div className="wrapper-over">
                                 <div className="btntoggle" onClick={(e) => {
                                     this.toggleItem(key)
                                 }}>+
                                 </div>
-                                <div className={"form-group "+(option.errorValue !== 0 ? 'error' : '')}>
+                                <div className={"form-group " + (option.errorValue !== 0 ? 'error' : '')}>
                                     <label htmlFor="incendios">Valor</label>
                                     <input type="text" className={"form-control"} name="incendios" id="incendios"
                                            value={option.value}
@@ -136,7 +230,7 @@ class Cards extends React.Component {
                                         Asegurado de {option.parent.name()} es superior al permitido.
                                     </small>
                                 </div>
-                                <span className={(option.inactiveToggle === true?'invisible':'')} onClick={(e) => {
+                                <span className={(option.inactiveToggle === true ? 'invisible' : '')} onClick={(e) => {
                                     this.toggleItem(key)
                                 }}>No lo quiero</span>
                             </div>

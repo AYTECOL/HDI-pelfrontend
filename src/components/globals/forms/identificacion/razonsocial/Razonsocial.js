@@ -6,7 +6,7 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Razonsocial extends Component {
 
-    static limit(){
+    static limit() {
         return 61;
     }
 
@@ -45,7 +45,7 @@ class Razonsocial extends Component {
 
     render() {
         return (
-            <div className={"form-group " + (this.state.error?'error':'')}>
+            <div className={"form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="doc-type-value">Razón social</label>
                 <input name="value" id="doc-type-value"
                        type="text"

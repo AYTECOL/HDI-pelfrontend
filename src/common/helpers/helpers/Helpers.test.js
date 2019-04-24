@@ -6,15 +6,15 @@ it('test toCapitalize', () => {
 });
 
 it('test hasClass', () => {
-    expect(Helpers.hasClass("body","body")).toBe(false);
+    expect(Helpers.hasClass("body", "body")).toBe(false);
 });
 
 it('test addClass', () => {
-    expect(Helpers.addClass("body","body")).toBe(undefined);
+    expect(Helpers.addClass("body", "body")).toBe(undefined);
 });
 
 it('test removeClass', () => {
-    expect(Helpers.removeClass("body","body")).toBe(undefined);
+    expect(Helpers.removeClass("body", "body")).toBe(undefined);
 });
 
 it('test scrollToElement', () => {

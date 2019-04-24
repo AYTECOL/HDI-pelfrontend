@@ -24,7 +24,7 @@ class Risks {
         } catch (e) {
             risks = Default;
         }
-        if ( typeof risks.risks === "undefined" || risks.risks.length === 0 ){
+        if (typeof risks.risks === "undefined" || risks.risks.length === 0) {
             risks = Default;
         }
         return risks;

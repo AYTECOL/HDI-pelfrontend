@@ -36,10 +36,10 @@ class BuildYear {
         let data = {};
         try {
             data = await Service.get(BaseUrl);
-        }catch (e) {
+        } catch (e) {
             data = Default;
         }
-        if ( typeof data.build_years === "undefined" || data.build_years.length === 0 ){
+        if (typeof data.build_years === "undefined" || data.build_years.length === 0) {
             data = Default;
         }
         return data.build_years.sort(function (a, b) {

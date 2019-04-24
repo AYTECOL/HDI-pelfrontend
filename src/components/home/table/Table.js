@@ -69,12 +69,12 @@ class Table extends Component {
                     )}
                 </div>
                 <div className="row footer">
-                    <button className="pager prev"></button>
+                    <button type="button" className="pager prev"></button>
                     <ul>
                         <li className="active"><span>1</span></li>
                         <li><span>2</span></li>
                     </ul>
-                    <button className="pager next"></button>
+                    <button type="button" className="pager next"></button>
                 </div>
             </div>
         );

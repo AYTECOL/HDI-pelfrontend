@@ -28,7 +28,8 @@ class Home extends Component {
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h2>Mis negocios en línea</h2>
-                            <button className="btn btn-primary btn-home" onClick={() => this.getNumber()}>Nueva
+                            <button type="button" className="btn btn-primary btn-home"
+                                    onClick={() => this.getNumber()}>Nueva
                                 cotización
                             </button>
                         </div>
@@ -52,7 +53,7 @@ class Home extends Component {
                                        type="text"
                                        className={"form-control"}
                                        placeholder="Busca por Nombre, Id, dirección ..."/>
-                                <button className="btn-search"></button>
+                                <button type="button" className="btn-search"></button>
                             </div>
                         </div>
                     </div>

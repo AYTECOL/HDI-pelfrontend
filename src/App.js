@@ -26,7 +26,7 @@ class App extends Component {
                     </Switch>
                 </main>
                 <Footer/>
-                <Loading />
+                <Loading/>
             </div>
         );
     }

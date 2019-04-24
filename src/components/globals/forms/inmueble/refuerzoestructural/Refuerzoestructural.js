@@ -34,7 +34,7 @@ class Refuerzoestructural extends Component {
                 if (anoconstruido < 500008) {
                     show = true;
                 }
-                if ( anoconstruido === "" ){
+                if (anoconstruido === "") {
                     show = false;
                 }
                 this.setState({
@@ -48,7 +48,7 @@ class Refuerzoestructural extends Component {
         });
     }
 
-    async getYears(){
+    async getYears() {
         // let years = await BuildYears.get();
         // this.setState({
         //     ...this.state,
@@ -112,7 +112,8 @@ class Refuerzoestructural extends Component {
                 </div>
                 {(this.state.active === 1) ? (
                     <div className="col col-6">
-                        <div className={"anorefuerzo input-select form-group " + (this.state.errorselect ? 'error' : '')}>
+                        <div
+                            className={"anorefuerzo input-select form-group " + (this.state.errorselect ? 'error' : '')}>
                             <label htmlFor="anorefuerzo">En qué año se hizo el refuerzo estructural</label>
                             <select className="anorefuerzo form-control"
                                     name="anorefuerzo"

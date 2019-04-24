@@ -23,17 +23,27 @@ class Loading extends Component {
     animation() {
         if (this.state.active === false) return;
         let status = true;
+        let it = this;
         setInterval(function () {
+            if (it.state.active === false) return;
             status = !status;
             if (status === true) {
-                document.querySelector(".loader-background").setAttribute("class", "loader-background active");
+                if (document.querySelector(".loader-background") !== null) {
+                    document.querySelector(".loader-background").setAttribute("class", "loader-background active");
+                }
                 setTimeout(function () {
-                    document.querySelector(".loader-background-2").setAttribute("class", "loader-background-2");
+                    if (document.querySelector(".loader-background-2") !== null) {
+                        document.querySelector(".loader-background-2").setAttribute("class", "loader-background-2");
+                    }
                 }, 150);
             } else {
-                document.querySelector(".loader-background-2").setAttribute("class", "loader-background-2 active");
+                if (document.querySelector(".loader-background-2") !== null) {
+                    document.querySelector(".loader-background-2").setAttribute("class", "loader-background-2 active");
+                }
                 setTimeout(function () {
-                    document.querySelector(".loader-background").setAttribute("class", "loader-background");
+                    if (document.querySelector(".loader-background") !== null) {
+                        document.querySelector(".loader-background").setAttribute("class", "loader-background");
+                    }
                 }, 150);
             }
         }, 2500);

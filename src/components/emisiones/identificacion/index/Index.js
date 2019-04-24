@@ -1,8 +1,6 @@
 import React from 'react';
-
 //Helpers
 import Helpers from '../../../../common/helpers/helpers/Helpers';
-
 //Component
 import BtnContinue from '../../../globals/forms/emision/identificacion/btncontinue/BtnContinue';
 import PopUpDelete from '../popups/delete/Delete';
@@ -28,37 +26,41 @@ class Index extends React.Component {
         this.togglePopUpEntidad = this.togglePopUpEntidad.bind(this);
     }
 
-    showAnyPopup(name){
+    showAnyPopup(name) {
         let state = !this.state[name];
         this.setState({
             ...this.state,
             [name]: state
         });
-        if( !Helpers.hasClass("body","popup") ){
+        if (!Helpers.hasClass("body", "popup")) {
             Helpers.addClass("body", "popup");
-        }else{
+        } else {
             Helpers.removeClass("body", "popup");
         }
     }
 
-    togglePopUpDelete(index){
+    togglePopUpDelete(index) {
         this.showAnyPopup("showPopUpDelete")
     }
-    togglePopUpPersona(){
+
+    togglePopUpPersona() {
         this.showAnyPopup("showPopUpPersona")
     }
-    togglePopUpEntidad(){
+
+    togglePopUpEntidad() {
         this.showAnyPopup("showPopUpEntidad")
     }
 
     render() {
+        if (this.state.step !== 1) return <div></div>;
         return (
             <form autoComplete="off" className="index-form emision">
                 <div className="container">
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h2>Cuéntanos sobre las personas</h2>
-                            <p>Diligencia la siguiente información, agrega a los beneficiarios, asigna roles y no olvides ningún dato, puede ser importante en el futuro.</p>
+                            <p>Diligencia la siguiente información, agrega a los beneficiarios, asigna roles y no
+                                olvides ningún dato, puede ser importante en el futuro.</p>
                         </div>
                     </div>
 
@@ -87,10 +89,10 @@ class Index extends React.Component {
                                 </div>
                                 <div className="col actions">
                                     <p>
-                                    <i>Modificar</i>
-                                    <span className="trash" onClick={(e)=>{
-                                        this.togglePopUpDelete(1);
-                                    }}>&nbsp;</span>
+                                        <i>Modificar</i>
+                                        <span className="trash" onClick={(e) => {
+                                            this.togglePopUpDelete(1);
+                                        }}>&nbsp;</span>
                                     </p>
                                 </div>
                             </div>
@@ -100,17 +102,36 @@ class Index extends React.Component {
 
                     <div className="row">
                         <div className="col wrapper-more-items">
-                            <div className="more-items" onClick={(e)=>{
+                            <div className="more-items" onClick={(e) => {
                                 this.togglePopUpPersona(1);
                             }}>
-                                <button className="more-btn">+</button>
+                                <button type="button" className="more-btn">+</button>
                                 <p>Agregar persona</p>
                             </div>
-                            <div className="more-items" onClick={(e)=>{
+                            <div className="more-items" onClick={(e) => {
                                 this.togglePopUpEntidad(1);
                             }}>
-                                <button className="more-btn">+</button>
+                                <button type="button" className="more-btn">+</button>
                                 <p>Agregar beneficiario oneroso</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="row no-gutters">
+                        <div className="col">
+                            <hr/>
+                        </div>
+                    </div>
+
+                    <div className="row justify-content-center">
+                        <div className="col col-md-8 col-lg-8 last-items-emision">
+                            <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
+                                asegurar a personas adicionales. ¿Deseas hacerlo?</p>
+                            <div className="more-items" onClick={(e) => {
+                                this.togglePopUpPersona(1);
+                            }}>
+                                <button type="button" className="more-btn">+</button>
+                                <p>Si, agregar persona</p>
                             </div>
                         </div>
                     </div>
@@ -122,9 +143,9 @@ class Index extends React.Component {
                         </div>
                     </div>
                 </div>
-                {this.state.showPopUpDelete === true && <PopUpDelete toggle={this.togglePopUpDelete} /> }
-                {this.state.showPopUpPersona === true && <PopUpPersona toggle={this.togglePopUpPersona} /> }
-                {this.state.showPopUpEntidad === true && <PopUpEntidad toggle={this.togglePopUpEntidad} /> }
+                {this.state.showPopUpDelete === true && <PopUpDelete toggle={this.togglePopUpDelete}/>}
+                {this.state.showPopUpPersona === true && <PopUpPersona toggle={this.togglePopUpPersona}/>}
+                {this.state.showPopUpEntidad === true && <PopUpEntidad toggle={this.togglePopUpEntidad}/>}
             </form>
         )
     }

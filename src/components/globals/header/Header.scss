@@ -159,12 +159,14 @@ header {
             &::before {
               background-size: 90% auto;
             }
+
             &.icon1::before {
               background-size: 75% auto;
             }
 
             &.icon3 {
               transform: scale(1.1);
+
               &::before {
                 background-size: 100% auto;
               }

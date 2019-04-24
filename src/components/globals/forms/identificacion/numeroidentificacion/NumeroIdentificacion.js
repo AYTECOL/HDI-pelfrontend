@@ -49,25 +49,25 @@ class NumeroIdentificacion extends Component {
         // CC
         if (this.state.typeIdentification === "36") {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
-        //CC extranjería
+            //CC extranjería
         } else if (this.state.typeIdentification === "33") {
             if (v.length < 1 || v.length > 18 || isNaN(v)) error = true;
-        //Pasaporte
+            //Pasaporte
         } else if (this.state.typeIdentification === "40") {
             if (v.length < 3 || v.length > 10) error = true;
-        //NUIP
+            //NUIP
         } else if (this.state.typeIdentification === "38") {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
-        //Registro civil
+            //Registro civil
         } else if (this.state.typeIdentification === "35") {
             if (v.length < 3 || v.length > 20 || isNaN(v)) error = true;
-        //Diplomático
+            //Diplomático
         } else if (this.state.typeIdentification === "44") {
             if (v.length < 3 || v.length > 10) error = true;
-        //Identidad
+            //Identidad
         } else if (this.state.typeIdentification === "34") {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
-        //NIT
+            //NIT
         } else if (this.state.typeIdentification === "37") {
             if (v.length < 9 || isNaN(v)) error = true;
             // if( v.length === 10 && v.substr(-1) === "-" ){
