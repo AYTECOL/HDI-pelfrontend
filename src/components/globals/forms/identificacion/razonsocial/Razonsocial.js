@@ -51,7 +51,7 @@ class Razonsocial extends Component {
                        type="text"
                        value={this.state.value}
                        className={(this.state.disabledName ? "disabled " : "") + "form-control"}
-                       disabled={this.state.disabledName === true ? 'true' : ''}
+                       disabled={this.state.disabledName === true}
                        placeholder="Ingresa la razón social"
                        onChange={(e) => {
                            this.validateEmpty(e.target);
