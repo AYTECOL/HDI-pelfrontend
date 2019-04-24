@@ -39,4 +39,10 @@ node('linux'){
           	 sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 }
 	}
+	stage('Testing'){
+		  
+		sh 'curl -X POST  http://cunate:38a9806ece2c583ef858ffde13ae9498@10.142.137.77:8080/job/sahi-test/build?token=08b214cb68e0ed63132813dca24a7233'
+		echo 'Ver resultados test funcional en: 9 http://10.142.137.77:9999/_s_/dyn/pro/DBReports'
+    
+	}
  }
