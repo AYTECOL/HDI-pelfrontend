@@ -150,7 +150,7 @@ class BtnContinue extends Component {
         return (
             <div>
                 <div className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " return-button"}>
-                    <Link to='/'><i className="back-icon"></i>Volver</Link>
+                    <Link to='/'><i className="back-icon">&nbsp;</i>Volver</Link>
                 </div>
                 <button type="button"
                         className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}

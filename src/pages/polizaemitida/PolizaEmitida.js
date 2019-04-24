@@ -33,12 +33,12 @@ class PolizaEmitida extends Component {
                         <div className={"row text-center links-row"}>
                             <div className="col col-sm-12 col-md-12 col-lg-12">
                                 <div className="generatepdf link-item">
-                                    <p><i></i> Generar cotización en PDF</p>
+                                    <p><i>&nbsp;</i> Generar cotización en PDF</p>
                                 </div>
                                 <div className="sendpdf link-item" onClick={(e) => {
                                     this.openModal();
                                 }}>
-                                    <p><i></i> Enviar por correo</p>
+                                    <p><i>&nbsp;</i> Enviar por correo</p>
                                 </div>
                             </div>
                         </div>
