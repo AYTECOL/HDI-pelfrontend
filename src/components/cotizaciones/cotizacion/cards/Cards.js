@@ -15,14 +15,6 @@ class Cards extends React.Component {
 
     _isMounted = false;
 
-    componentDidMount() {
-        this._isMounted = true;
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -98,6 +90,14 @@ class Cards extends React.Component {
         this.validateToggle();
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     async getAllInsurableLimits() {
         await AllInsurableLimits.get();
     }
@@ -129,12 +129,12 @@ class Cards extends React.Component {
         }
     }
 
-    updateStoreItem(index){
+    updateStoreItem(index) {
         // Actualiza el valor de prendido o apagado en el store
         let newItems = this.state.items;
         let newObj = new newItems[index].parent();
         newObj.validateEmpty({
-            value: newItems[index].active === true?0:1,
+            value: newItems[index].active === true ? 0 : 1,
             name: newItems[index].parent.nameModel
         });
     }
@@ -147,24 +147,27 @@ class Cards extends React.Component {
         this.updateStoreItem(index);
 
         // Pone el cargando para cotizacion
-        if( newItems[index].type === 1 || newItems[index].type === 2 ){
+        if (newItems[index].type === 1 || newItems[index].type === 2) {
             store.dispatch(toggleLoading(true));
         }
 
         // Deshabilita los demas items
-        if( newItems[index].type === 2 && newItems[index].active === true ){
-            for(let i = 1; i < 5; i++) newItems[i].active = newItems[index].active;
+        if (newItems[index].type === 2 && newItems[index].active === true) {
+            for (let i = 1; i < 5; i++) newItems[i].active = newItems[index].active;
         }
 
         // Habilita contenido si los demas items lo tienn
-        if(
-            (newItems[index].type === 3 && newItems[index].active === false) ||
-            (newItems[index].type === 4 && newItems[index].active === false) ||
-            (newItems[index].type === 5 && newItems[index].active === false)
-        ){
-            store.dispatch(toggleLoading(true));
-            newItems[1].active = newItems[index].active;
-            this.updateStoreItem(1);
+        if (newItems[1].type === 2 && newItems[1].active === true) {
+            if (
+                (newItems[index].type === 3 && newItems[index].active === false) ||
+                (newItems[index].type === 4 && newItems[index].active === false) ||
+                (newItems[index].type === 5 && newItems[index].active === false)
+            ) {
+                console.log(2222);
+                store.dispatch(toggleLoading(true));
+                newItems[1].active = newItems[index].active;
+                this.updateStoreItem(1);
+            }
         }
 
         this.setState({

@@ -598,9 +598,12 @@ $color-font-btn-primary: #404040;
       text-align: center;
       color: #037B86;
       margin: 0;
+      vertical-align: middle;
 
       span {
         font-weight: 600;
+        vertical-align: middle;
+        display: inline-block;
       }
     }
   }
@@ -608,7 +611,7 @@ $color-font-btn-primary: #404040;
   .more-info {
     position: absolute;
     right: 10px;
-    top: 13px;
+    top: 10px;
 
     .span {
       display: inline-block;
