@@ -22,7 +22,6 @@ class Home extends Component {
     }
 
     render() {
-        console.log(process);
         return (
             <div className="home">
                 <div className="container">
