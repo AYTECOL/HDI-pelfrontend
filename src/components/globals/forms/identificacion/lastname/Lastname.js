@@ -6,10 +6,6 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Lastname extends Component {
 
-    static limit() {
-        return 51;
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +26,10 @@ class Lastname extends Component {
                 });
             }
         });
+    }
+
+    static limit() {
+        return 51;
     }
 
     validateEmpty(e) {

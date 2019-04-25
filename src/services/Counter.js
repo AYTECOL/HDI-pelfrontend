@@ -2,10 +2,10 @@ import Service from './Service';
 
 const Url = "/counter";
 
-class AutoIncrementCotizacion {
+class Counter {
     static async get() {
         return await Service.put(Url);
     };
 }
 
-export default AutoIncrementCotizacion;
+export default Counter;

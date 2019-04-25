@@ -39,11 +39,10 @@ class Datosgenerales extends React.Component {
                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                             <NumeroDepiso/>
                         </div>
-                        {(this.state.typeInmueble === 2) ? (
-                            <div className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
-                                <Ubicadopiso/>
-                            </div>
-                        ) : ("")}
+                        <div
+                            className={"col col-12 col-sm-12 col-md-6 col-lg-6 " + (this.state.typeInmueble === 2 ? 'show' : 'hide')}>
+                            <Ubicadopiso/>
+                        </div>
                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                             <Zona/>
                         </div>

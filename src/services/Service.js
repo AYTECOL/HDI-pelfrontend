@@ -7,7 +7,6 @@ import {UrlService} from '../config';
 class Service {
 
     static HttpRequest(method, url, data, overrideBase) {
-
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
             if (typeof overrideBase === 'undefined') {
@@ -37,7 +36,8 @@ class Service {
             if (data === null) {
                 xhr.send();
             } else {
-                xhr.send(JSON.stringify(data));
+                data = JSON.stringify(data).replace(/<(?:.|\n)*?>/gm, '');
+                xhr.send(data);
             }
         });
     }

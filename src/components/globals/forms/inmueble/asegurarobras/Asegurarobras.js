@@ -12,6 +12,32 @@ class Asegurarobras extends Component {
 
     _isMounted = false;
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: false,
+            show: false,
+            active: 0,
+            errorValue: 0,
+            value: ""
+        };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.inmuebleasegudadoobras;
+            let value = storeState.Inmueble.inmuebleasegudadoobrasvalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        active: active,
+                        value: value,
+                    });
+                }
+            }
+        });
+    }
+
     static name() {
         try {
             return store.getState().allInsurableLimits[3].description;
@@ -58,32 +84,6 @@ class Asegurarobras extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: false,
-            show: false,
-            active: 0,
-            errorValue: 0,
-            value: ""
-        };
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let active = storeState.Inmueble.inmuebleasegudadoobras;
-            let value = storeState.Inmueble.inmuebleasegudadoobrasvalor;
-            if (this.state.active !== active || this.state.value !== value) {
-                if (this._isMounted) {
-                    this.setState({
-                        ...this.state,
-                        active: active,
-                        value: value,
-                    });
-                }
-            }
-        });
     }
 
     validateEmpty(e) {

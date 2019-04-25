@@ -7,45 +7,32 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Ubicadopiso extends Component {
 
-    _isMounted = false;
-
     constructor(props) {
         super(props);
         this.state = {
             error: false,
             floors: []
         };
-        if (this._isMounted) {
-            store.subscribe(async () => {
-                let storeState = store.getState();
-                let value = storeState.Inmueble.pisonumero;
-                if (this.state.value !== value) {
-                    this.setState({
-                        ...this.state,
-                        value: value,
-                    });
-                }
-            });
-        }
-    }
 
-    componentDidMount() {
-        this._isMounted = true;
         this.getFloors();
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = storeState.Inmueble.pisonumero;
+            if (this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    value: value,
+                });
+            }
+        });
     }
 
     async getFloors() {
-        if (this._isMounted) {
-            let allFloors = await AllFloors.get();
-            this.setState({
-                ...this.state,
-                floors: allFloors,
-            });
-        }
+        let allFloors = await AllFloors.get();
+        this.setState({
+            ...this.state,
+            floors: allFloors,
+        });
     }
 
     validateEmpty(e) {

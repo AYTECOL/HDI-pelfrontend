@@ -180,10 +180,10 @@ class Tab extends React.Component {
         return "";
     }
 
-    getCoverangeById(id){
+    getCoverangeById(id) {
         let plans = this.state.plans[this.state.index].coverages;
-        for(let i = 0; i < plans.length; i++){
-            if ( plans[i].id === id ){
+        for (let i = 0; i < plans.length; i++) {
+            if (plans[i].id === id) {
                 return plans[i];
             }
         }
@@ -212,7 +212,7 @@ class Tab extends React.Component {
             } else if (item.id === 5) {
                 let dataHurto = [];
                 let hurto = this.getCoverangeById(3);
-                for(let i = 0; i < hurto.values.length; i++) dataHurto.push(this.getValueFields(hurto.values[i]));
+                for (let i = 0; i < hurto.values.length; i++) dataHurto.push(this.getValueFields(hurto.values[i]));
                 return Masknumbermoney.formatToMask(
                     (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
                 //Joyas
@@ -228,7 +228,7 @@ class Tab extends React.Component {
                     (joyas + contenido + telefonos) * parseInt(item.value) / 100);
             }
             return 'N/A';
-        }catch (e) {
+        } catch (e) {
             return 'N/A';
         }
     }

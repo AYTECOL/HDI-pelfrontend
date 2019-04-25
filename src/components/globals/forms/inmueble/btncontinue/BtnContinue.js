@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {withRouter} from "react-router-dom";
 
-import SaveInmueble from "../../../../../services/SaveInmueble";
-import SaveIdentifications from "../../../../../services/SaveIdentifications";
+import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
+import SaveIdentifications from "../../../../../services/Quote";
 import {NextStep} from "../../../../../actionCreators";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 // Components
@@ -25,7 +25,7 @@ class BtnContinue extends Component {
     }
 
     async saveService() {
-        await SaveInmueble.get();
+        await CreateOrUpdateValoration.get();
         window.location.href = UrlSite + "/";
     }
 
@@ -147,7 +147,7 @@ class BtnContinue extends Component {
         } else {
             store.dispatch(NextStep(3));
             await SaveIdentifications.save();
-            await SaveInmueble.get();
+            await CreateOrUpdateValoration.get();
             window.location.href = UrlSite + '/cotizacion/3/' + storeState.cotizacion.number;
         }
 

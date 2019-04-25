@@ -31,7 +31,7 @@ const Default = {
     ]
 };
 
-class BuildYear {
+class AllBuildYears {
     static async get() {
         let data = {};
         try {
@@ -55,5 +55,5 @@ class BuildYear {
     };
 }
 
-export default BuildYear;
+export default AllBuildYears;
 

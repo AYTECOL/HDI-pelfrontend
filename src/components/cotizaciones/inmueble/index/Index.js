@@ -7,7 +7,7 @@ import Valoreasegurar from '../valoreasegurar/Valoreasegurar';
 import Counter from '../../../../components/globals/forms/inmueble/counter/Counter';
 import Btns from '../../../../components/globals/forms/inmueble/btncontinue/BtnContinue';
 // Services
-import Risk from '../../../../services/Risks';
+import Risk from '../../../../services/AllRisks';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";

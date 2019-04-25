@@ -31,7 +31,7 @@ const Default = {
     ]
 };
 
-class BuildMaterial {
+class AllBuildMaterial {
     static async get() {
         let data = {};
         try {
@@ -55,5 +55,5 @@ class BuildMaterial {
     };
 }
 
-export default BuildMaterial;
+export default AllBuildMaterial;
 

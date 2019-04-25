@@ -2,13 +2,13 @@ import Service from './Service';
 
 const BaseUrl = "/";
 
-class RiskData {
+class ValorationById {
     static async get(id) {
         let url = BaseUrl + "valoration-by-id/" + id;
         let data = await Service.get(url);
         if (typeof data.valoration.Item !== "undefined") {
             let item = data.valoration.Item;
-            for(let i in item)if(item[i] === '""') item[i] = "";
+            for (let i in item) if (item[i] === '""') item[i] = "";
             return {
                 type_risk: item.risk_type,
                 type_risk_id: item.risk_type,
@@ -46,4 +46,4 @@ class RiskData {
     };
 }
 
-export default RiskData;
+export default ValorationById;

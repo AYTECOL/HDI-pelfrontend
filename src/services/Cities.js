@@ -2,7 +2,7 @@ import Service from './Service';
 
 const Url = "/cities";
 
-class IdentificationsCities {
+class Cities {
     static async get() {
         let cities = await Service.get(Url);
         // let extis = [];
@@ -19,4 +19,4 @@ class IdentificationsCities {
     };
 }
 
-export default IdentificationsCities;
+export default Cities;

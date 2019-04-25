@@ -12,6 +12,34 @@ class Asegurarjoyas extends Component {
 
     _isMounted = false;
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: false,
+            show: false,
+            active: 0,
+            min: Asegurarjoyas.min,
+            max: Asegurarjoyas.max,
+            errorValue: 0,
+            value: ""
+        };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.inmuebleasegudadojoyas;
+            let value = storeState.Inmueble.inmuebleasegudadojoyasvalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        value: value,
+                        active: active,
+                    });
+                }
+            }
+        });
+    }
+
     static name() {
         try {
             return store.getState().allInsurableLimits[4].description;
@@ -58,34 +86,6 @@ class Asegurarjoyas extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: false,
-            show: false,
-            active: 0,
-            min: Asegurarjoyas.min,
-            max: Asegurarjoyas.max,
-            errorValue: 0,
-            value: ""
-        };
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let active = storeState.Inmueble.inmuebleasegudadojoyas;
-            let value = storeState.Inmueble.inmuebleasegudadojoyasvalor;
-            if (this.state.active !== active || this.state.value !== value) {
-                if (this._isMounted) {
-                    this.setState({
-                        ...this.state,
-                        value: value,
-                        active: active,
-                    });
-                }
-            }
-        });
     }
 
     validateEmpty(e) {

@@ -15,7 +15,7 @@ const Default = {
     ]
 };
 
-class Zones {
+class AllPropertiesZones {
     static async get() {
         let data = {};
         try {
@@ -39,5 +39,5 @@ class Zones {
     };
 }
 
-export default Zones;
+export default AllPropertiesZones;
 

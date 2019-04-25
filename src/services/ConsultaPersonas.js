@@ -1,26 +1,9 @@
-/*
-import Service from './Service';
-import {UrlServicePerson} from '../config';
-
-const Baseurl = "/flex/";
-
-class Consultapersonas {
-    static async get(type, value) {
-        return await Service.post(Baseurl + type + "/" + value, {}, UrlServicePerson);
-    };
-}
-
-export default Consultapersonas;
-
-
-*/
-
 import Service from './Service';
 import {UrlServicePerson} from '../config';
 
 const Baseurl = "/consultarpersona";
 
-class Consultapersonas {
+class ConsultaPersonas {
     static async get(type, value) {
         let data = {
             "authorization": {
@@ -45,4 +28,4 @@ class Consultapersonas {
     };
 }
 
-export default Consultapersonas;
+export default ConsultaPersonas;

@@ -12,38 +12,87 @@
     position: absolute;
     left: 0;
     right: 0;
-    top: 84%;
+    top: -2px;
+
     background: #FFECDB;
     border: 1px solid #EE7000;
     box-sizing: border-box;
+    box-shadow: 0 2px 12px rgba(212, 57, 0, 0.3);
     border-radius: 3px;
-    max-width: 695px;
+
+    max-width: 781px;
     margin: 0 auto;
-    padding: 8px 17px 8px 43px;
+    padding: 12px 7px 13px 58px;
     display: none;
+
+    &::before{
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-bottom: 13px solid #EE7000;
+      position: absolute;
+      top: -13px;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
+
+    &::after{
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-bottom: 11px solid #FFECDB;
+      position: absolute;
+      top: -11px;
+      left: 0;
+      right: 0;
+      margin: auto;
+    }
 
     p {
       margin: 0;
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
-      line-height: 22px;
       color: #D43900;
-      position: relative;
+      line-height: 26px;
 
-      &::before {
+      span{
+        display: block;
+        background: #D43900;
+        border: 1px solid #D43900;
+        box-sizing: border-box;
+        color: white;
         position: absolute;
-        top: 1px;
-        left: -32px;
-        content: 'i';
-        display: inline-block;
-        color: #DD133C;
-        border: 2px solid #DD133C;
-        border-radius: 100%;
-        padding: 2px 7px 2px;
-        line-height: 1;
-        font-size: 13px;
-        font-weight: 600;
+        left: 0;
+        top: 0;
+        width: 51px;
+        height: 51px;
+        text-align: center;
+
+        &::before {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          content: 'i';
+          display: block;
+          color: white;
+          border-radius: 100%;
+          border: 2px solid white;
+          padding: 2px 7px 2px;
+          line-height: 1;
+          font-size: 13px;
+          font-weight: 600;
+          margin: auto;
+          width: 20px;
+          height: 20px;
+        }
       }
     }
   }
@@ -77,7 +126,7 @@
       height: 32px !important;
       background: #28A3AF !important;
       box-shadow: 0 4px 8px rgba(128, 128, 128, 0.695114) !important;
-      border-radius: 100%;
+      border-radius: 3px;
       border: 0 !important;
       transform: scale(1);
       transition: all 0.3s ease;

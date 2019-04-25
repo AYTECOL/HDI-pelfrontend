@@ -4,7 +4,7 @@ import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 
 import './Construidocon.scss';
-import BuildMaterial from "../../../../../services/BuildMaterial";
+import AllBuildMaterial from "../../../../../services/AllBuildMaterial";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Construidocon extends Component {
@@ -33,7 +33,7 @@ class Construidocon extends Component {
     }
 
     async getMaterials() {
-        let materials = await BuildMaterial.get();
+        let materials = await AllBuildMaterial.get();
         this.setState({
             ...this.state,
             materials: materials,
@@ -71,13 +71,18 @@ class Construidocon extends Component {
                                 }}
                             >
                                 <div className="col col-12 no-padding">
-                                    {(parseInt(option.buildMaterialCode) === 1) ? (<i className="concreto">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 2) ? (<i className="ladrillo">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 3) ? (<i className="aceror">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 1) ? (
+                                        <i className="concreto">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 2) ? (
+                                        <i className="ladrillo">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 3) ? (
+                                        <i className="aceror">&nbsp;</i>) : ("")}
                                     {(parseInt(option.buildMaterialCode) === 4) ? (
                                         <i className="bahareque">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 5) ? (<i className="madera">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 6) ? (<i className="adobe">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 5) ? (
+                                        <i className="madera">&nbsp;</i>) : ("")}
+                                    {(parseInt(option.buildMaterialCode) === 6) ? (
+                                        <i className="adobe">&nbsp;</i>) : ("")}
                                 </div>
                                 <div className="col col-12 no-padding">
                                     <p>{option.answer}</p>
