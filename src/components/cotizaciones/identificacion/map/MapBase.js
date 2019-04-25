@@ -17,7 +17,8 @@ class MapBase extends React.Component {
             latitude: storeState.mapsOptions.latitude,
             isMarkerShown: true,
             zoom: 20,
-            el: document.querySelector(".wrapper-map")
+            el: document.querySelector(".wrapper-map"),
+            mapOption: {}
         };
         this.state.markerPosition = {lat: this.state.latitude, lng: this.state.longitude};
 
