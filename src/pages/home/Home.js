@@ -53,7 +53,7 @@ class Home extends Component {
                                        type="text"
                                        className={"form-control"}
                                        placeholder="Busca por Nombre, Id, dirección ..."/>
-                                <button type="button" className="btn-search"></button>
+                                <button type="button" className="btn-search">&nbsp;</button>
                             </div>
                         </div>
                     </div>
