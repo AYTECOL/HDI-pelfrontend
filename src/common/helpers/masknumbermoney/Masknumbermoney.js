@@ -16,7 +16,7 @@ class Masknumbermoney {
 
     static formatToMask(v) {
         let format = SimpleMaskMoney.formatToMask(v, Args).split(",")[0];
-        return format === "$0." ? '' : format;
+        return format === "$0." ? '$0' : format;
     }
 
     static formatToNumber(v) {

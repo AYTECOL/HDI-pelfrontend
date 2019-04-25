@@ -4,9 +4,10 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "es6-promise-promise": "^1.0.0",
     "bootstrap": "^4.3.1",
+    "dotenv": "^7.0.0",
     "enzyme": "^3.9.0",
+    "es6-promise-promise": "^1.0.0",
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
