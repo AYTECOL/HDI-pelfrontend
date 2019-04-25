@@ -13,9 +13,10 @@ class SecondForm extends React.Component {
 
     constructor(props) {
         super(props);
+        let storeState = store.getState();
         this.state = {
-            type: 1,
-            show: false
+            type: storeState.typeDocument,
+            show: storeState.stateFormIdentificacion === 1
         };
 
         store.subscribe(() => {

@@ -141,8 +141,8 @@ class BtnContinue extends Component {
         }
     }
 
-    saveAndExit() {
-        SaveIdentifications.save();
+    async saveAndExit() {
+        await SaveIdentifications.save();
         window.location.href = UrlSite + "/";
     }
 
