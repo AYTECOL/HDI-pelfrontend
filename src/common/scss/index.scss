@@ -186,15 +186,15 @@ $color-font-btn-primary: #404040;
       content: 'i';
       display: block;
       position: absolute;
-      top: 42px;
+      top: 47px;
       right: 5%;
       color: $error-fields;
       border: 2px solid $error-fields;
       border-radius: 100%;
-      padding: 2px 7px 1px;
+      padding: 1px 6px 0px;
       line-height: 1;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .list-items {
@@ -230,12 +230,19 @@ $color-font-btn-primary: #404040;
     line-height: 19px;
     font-size: 16px;
     color: #565656;
-    border: 0;
+    border: 2px solid transparent;
     -moz-appearance: none; /* Firefox */
     -webkit-appearance: none; /* Safari and Chrome */
     appearance: none;
     padding: 16px 12px 14px;
     height: auto;
+    outline: none;
+
+    &:focus{
+      border: 2px solid #28A3AF;
+      outline: none;
+      box-shadow: none;
+    }
 
     &::placeholder, /* Chrome, Firefox, Opera, Safari 10.1+ */
     &:-ms-input-placeholder, /* Internet Explorer 10-11 */
