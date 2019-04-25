@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import './Submenu.scss';
 import store from "../../../store";
 import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actionCreators";
-import Identifications from "../../../services/GetIdentifications";
+import Identifications from "../../../services/GetQuote";
 import ValorationById from "../../../services/ValorationById";
 
 class Submenu extends Component {

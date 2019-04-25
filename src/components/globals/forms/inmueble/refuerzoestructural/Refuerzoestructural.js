@@ -80,7 +80,7 @@ class Refuerzoestructural extends Component {
     }
 
     render() {
-        if (this.state.show === false) return <div>&nbsp;</div>;
+        if (this.state.show === false) return <div className="hide">&nbsp;</div>;
         return (
             <div className="row no-gutters">
                 <div className="col col-6">

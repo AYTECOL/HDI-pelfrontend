@@ -25,7 +25,7 @@ class Index extends React.Component {
     }
 
     render() {
-        if (this.state.step !== 2) return <div>&nbsp;</div>;
+        if (this.state.step !== 2) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form emision informacion-adicioonal">
                 <div className="container">

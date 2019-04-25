@@ -23,7 +23,7 @@ class Map extends React.Component {
     }
 
     render() {
-        if (this.state.show === false) return <div>&nbsp;</div>;
+        if (this.state.show === false) return <div className="hide">&nbsp;</div>;
         return (
             <div className={(this.state.show ? "" : "hide") + " wrapper-map " + (this.state.error ? "error" : "")}>
                 <MapBase isMarkerShown

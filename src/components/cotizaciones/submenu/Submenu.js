@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 import './Submenu.scss';
 import store from "../../../store";
 import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actionCreators";
-import Identifications from "../../../services/GetIdentifications";
+import Identifications from "../../../services/GetQuote";
 import ValorationById from "../../../services/ValorationById";
 import {UrlSite} from "../../../config";
 
@@ -46,6 +46,12 @@ class Submenu extends Component {
                 if (riskData !== null) {
                     store.dispatch(restoreCotizacionRisk(riskData));
                 }
+            }
+        }else if( typeof cotizacion.status !== 'undefined' ){
+            if ( cotizacion.status === 404 ){
+                window.location.href = UrlSite + "/404";
+            }else if( cotizacion.status === 0 ){
+                window.location.href = UrlSite + "/";
             }
         }
     }
