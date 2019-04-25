@@ -2,7 +2,7 @@ import Service from './Service';
 
 const Url = "/quote/";
 
-class GetIdentifications {
+class GetQuote {
     static async get() {
         return await Service.get(Url);
     };
@@ -42,9 +42,9 @@ class GetIdentifications {
                 return {};
             }
         } catch (e) {
-            return {};
+            return e;
         }
     }
 }
 
-export default GetIdentifications;
+export default GetQuote;

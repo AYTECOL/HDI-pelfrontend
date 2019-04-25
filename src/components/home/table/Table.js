@@ -4,7 +4,7 @@ import './Table.scss';
 import store from '../../../store';
 import {restoreCotizacion} from '../../../actionCreators';
 
-import Identifications from '../../../services/GetIdentifications';
+import Identifications from '../../../services/GetQuote';
 
 class Table extends Component {
 
