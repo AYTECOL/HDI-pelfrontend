@@ -5,7 +5,7 @@ import './Submenu.scss';
 import store from "../../../store";
 import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actionCreators";
 import Identifications from "../../../services/GetIdentifications";
-import RiskData from "../../../services/RiskData";
+import ValorationById from "../../../services/ValorationById";
 import {UrlSite} from "../../../config";
 
 class Submenu extends Component {
@@ -42,7 +42,7 @@ class Submenu extends Component {
         if (typeof cotizacion.identification !== 'undefined') {
             store.dispatch(restoreCotizacion(cotizacion));
             if (cotizacion.state >= 2 && parseInt(this.props.match.params.step) >= 2) {
-                let riskData = await RiskData.get(id);
+                let riskData = await ValorationById.get(id);
                 if (riskData !== null) {
                     store.dispatch(restoreCotizacionRisk(riskData));
                 }

@@ -15,7 +15,7 @@ const Default = {
     ]
 };
 
-class Risks {
+class AllRisks {
     static async get() {
         let url = BaseUrl + "all-risks";
         let risks;
@@ -31,4 +31,4 @@ class Risks {
     };
 }
 
-export default Risks;
+export default AllRisks;

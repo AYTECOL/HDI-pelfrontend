@@ -3,7 +3,7 @@ import Store from '../store';
 
 const BaseUrl = "/create-or-update-valoration/";
 
-class SaveInmueble {
+class CreateOrUpdateValoration {
     static async get() {
         let store = Store.getState();
         let nCotizacion = store.cotizacion.number;
@@ -44,4 +44,4 @@ class SaveInmueble {
     };
 }
 
-export default SaveInmueble;
+export default CreateOrUpdateValoration;

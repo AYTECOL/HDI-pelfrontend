@@ -1,5 +1,5 @@
 html, a, i, li, p, h1, h2, h3, h4, h5, h6, input, textarea, button, label {
-  font-family: 'Roboto';
+  font-family: 'Roboto', serif;
 }
 
 hmtl, body {
@@ -159,7 +159,7 @@ $color-font-btn-primary: #404040;
   }
 }
 
-.row.row-full{
+.row.row-full {
   max-width: 100% !important;
   width: 100% !important;
 }
@@ -486,7 +486,7 @@ $color-font-btn-primary: #404040;
       height: 35px;
       background-position: center;
 
-      &.home-icon{
+      &.home-icon {
         background-size: 100% auto;
         width: 45px;
       }
@@ -718,7 +718,7 @@ $color-font-btn-primary: #404040;
   overflow: hidden;
 }
 
-.form-control.pickerDate{
+.form-control.pickerDate {
   background-image: url("../images/calendar-pciker.png");
   background-size: 22px auto;
   background-position: 97% center;
@@ -726,8 +726,8 @@ $color-font-btn-primary: #404040;
   cursor: pointer;
 }
 
-.more-info{
-  p{
+.more-info {
+  p {
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -736,7 +736,8 @@ $color-font-btn-primary: #404040;
     margin: 0;
     padding: 0 74px;
     cursor: pointer;
-    span{
+
+    span {
       display: inline-block;
       line-height: 1;
       vertical-align: middle;

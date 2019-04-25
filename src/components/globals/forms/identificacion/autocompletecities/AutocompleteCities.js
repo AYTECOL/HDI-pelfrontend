@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import IdentificationsCities from '../../../../../services/IdentificationsCities';
+import Cities from '../../../../../services/Cities';
 
 import store from '../../../../../store';
 import {saveDescriptionCity, saveIdentificationValue} from '../../../../../actionCreators';
@@ -40,7 +40,7 @@ class AutocompleteCities extends Component {
     }
 
     async getOptions() {
-        let data = await IdentificationsCities.get();
+        let data = await Cities.get();
         this.setState({
             ...this.state,
             options: data,

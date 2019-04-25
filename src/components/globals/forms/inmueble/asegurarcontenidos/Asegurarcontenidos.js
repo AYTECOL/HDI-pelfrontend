@@ -12,6 +12,32 @@ class Asegurarcontenidos extends Component {
 
     _isMounted = false;
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: false,
+            show: false,
+            active: 0,
+            errorValue: 0,
+            value: ""
+        };
+
+        store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.contenidoasegudado;
+            let value = storeState.Inmueble.contenidoasegudadovalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                if (this._isMounted) {
+                    this.setState({
+                        ...this.state,
+                        value: value,
+                        active: active,
+                    });
+                }
+            }
+        });
+    }
+
     static name() {
         try {
             return store.getState().allInsurableLimits[2].description;
@@ -58,32 +84,6 @@ class Asegurarcontenidos extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: false,
-            show: false,
-            active: 0,
-            errorValue: 0,
-            value: ""
-        };
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let active = storeState.Inmueble.contenidoasegudado;
-            let value = storeState.Inmueble.contenidoasegudadovalor;
-            if (this.state.active !== active || this.state.value !== value) {
-                if (this._isMounted) {
-                    this.setState({
-                        ...this.state,
-                        value: value,
-                        active: active,
-                    });
-                }
-            }
-        });
     }
 
     validateEmpty(e) {
@@ -140,8 +140,9 @@ class Asegurarcontenidos extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12  col-md-6">
                         <div
-                            className={Asegurarcontenidos.nameModelValue+" form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor={Asegurarcontenidos.nameModelValue}>Valor de {Asegurarcontenidos.name()}</label>
+                            className={Asegurarcontenidos.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor={Asegurarcontenidos.nameModelValue}>Valor
+                                de {Asegurarcontenidos.name()}</label>
                             <input name={Asegurarcontenidos.nameModelValue} id={Asegurarcontenidos.nameModelValue}
                                    type="text"
                                    className={"form-control"}

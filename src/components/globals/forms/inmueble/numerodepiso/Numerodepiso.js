@@ -16,7 +16,6 @@ class Numerodepiso extends Component {
         };
 
         this.getFloors();
-
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.numerodepisos;

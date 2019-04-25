@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actionCreators';
 import './Zona.scss';
-import Zones from "../../../../../services/Zones";
+import AllPropertiesZones from "../../../../../services/AllPropertiesZones";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Zona extends Component {
@@ -31,7 +31,7 @@ class Zona extends Component {
     }
 
     async getZones() {
-        let zonas = await Zones.get();
+        let zonas = await AllPropertiesZones.get();
         this.setState({
             ...this.state,
             zonas: zonas,

@@ -6,10 +6,6 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Razonsocial extends Component {
 
-    static limit() {
-        return 61;
-    }
-
     constructor(props) {
         super(props);
         this.state = {
@@ -29,6 +25,10 @@ class Razonsocial extends Component {
                 });
             }
         });
+    }
+
+    static limit() {
+        return 61;
     }
 
     validateEmpty(e) {

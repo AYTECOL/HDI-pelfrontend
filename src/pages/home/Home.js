@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Home.scss';
-import AutoIncrementCotizacion from "../../services/AutoIncrementCotizacion";
+import Counter from "../../services/Counter";
 import store from "../../store";
 import {saveCotizacionNumber} from "../../actionCreators";
 
@@ -10,7 +10,7 @@ class Home extends Component {
 
     async getNumber() {
         let storeState = store.getState();
-        let number = await AutoIncrementCotizacion.get();
+        let number = await Counter.get();
         if (typeof number.currentValue !== 'undefined') {
             number = number.currentValue.toString();
             number = storeState.cotizacion.number.slice(number.length) + number;

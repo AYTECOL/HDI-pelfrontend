@@ -10,14 +10,14 @@ import {
     saveIdentificationValue,
     showPopupIdentification
 } from '../../../../../actionCreators';
-import SaveIdentifications from '../../../../../services/SaveIdentifications';
+import SaveIdentifications from '../../../../../services/Quote';
 import {Link, withRouter} from "react-router-dom";
 // Components
 import Name from '../name/Name';
 import LastName from '../lastname/Lastname';
 import RazonSocial from '../razonsocial/Razonsocial';
 // Services
-import Consultapersonas from '../../../../../services/Consultapersonas';
+import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
 import {UrlSite} from "../../../../../config";
 
 class BtnContinue extends Component {
@@ -96,7 +96,7 @@ class BtnContinue extends Component {
                 let value = storeState.cotizacion.identification.value;
                 if (code === "37") value = value.replace("-", "", value);
                 document.getElementById("doc-type-value").setAttribute("disabled", "disabled");
-                let persona = await Consultapersonas.get(code, value);
+                let persona = await ConsultaPersonas.get(code, value);
                 if (persona.consultarPersonaRs.personaRestringida === true) {
                     document.getElementById("doc-type-value").removeAttribute("disabled");
                     store.dispatch(showPopupIdentification(true));
