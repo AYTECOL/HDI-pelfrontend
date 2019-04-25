@@ -3,4 +3,4 @@ export const UrlSite = "";
 
 //Liberty
 export const UrlService = "https://6ion89fdgb.execute-api.us-east-1.amazonaws.com/dev";
-export const UrlServicePerson = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev";
+export const UrlServicePerson = "httpsgit bran://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev";

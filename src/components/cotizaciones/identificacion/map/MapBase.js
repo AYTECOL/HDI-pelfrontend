@@ -12,11 +12,11 @@ class MapBase extends React.Component {
 
         let storeState = store.getState();
         this.state = {
-            address: "",
+            address: storeState.cotizacion.identification.address,
             longitude: storeState.mapsOptions.longitude,
             latitude: storeState.mapsOptions.latitude,
             isMarkerShown: true,
-            zoom: 20,
+            zoom: storeState.mapsOptions.options.zoom,
             el: document.querySelector(".wrapper-map"),
             mapOption: {}
         };

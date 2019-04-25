@@ -12,6 +12,7 @@ class GetIdentifications {
             let items = await Service.get(Url + id);
             if (typeof items.quote !== 'undefined') {
                 items = items.quote;
+                for(let i in items)if(items[i] === '""') items[i] = "";
                 return {
                     number: items.quoteId,
                     typeDocument: items.document_type === '37' ? 2 : 1,

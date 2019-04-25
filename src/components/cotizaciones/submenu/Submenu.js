@@ -41,7 +41,7 @@ class Submenu extends Component {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
             store.dispatch(restoreCotizacion(cotizacion));
-            if (cotizacion.state >= 2) {
+            if (cotizacion.state >= 2 && parseInt(this.props.match.params.step) >= 2) {
                 let riskData = await RiskData.get(id);
                 if (riskData !== null) {
                     store.dispatch(restoreCotizacionRisk(riskData));
