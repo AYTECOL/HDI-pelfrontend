@@ -14,6 +14,7 @@ class AllPlans {
             data = [];
         }
         Store.dispatch(AllPlansCreator(data));
+        console.log(data);
         return data;
     };
 }
