@@ -5,8 +5,8 @@ const initialState = {
 
     // Primer formulario identificacion
     mapsOptions: {
-        longitude: -74.0436118,
-        latitude: 4.681545,
+        longitude: 0,
+        latitude: 0,
         options: {
             zoom: 20
         }
@@ -154,6 +154,7 @@ const reducer = (state = initialState, action) => {
             typeDocument: action.data.typeDocument,
             stateFormIdentificacion: action.data.stateFormIdentificacion,
             showMap: action.data.showMap,
+            mapsOptions: action.data.mapsOptions
         }
     } else if (action.type === "RESTORE_COTIZACION_RISK") {
         return {

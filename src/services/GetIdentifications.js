@@ -27,6 +27,13 @@ class GetIdentifications {
                         address: items.address,
                         addressadditional: items.address_additional,
                     },
+                    mapsOptions: {
+                        longitude: items.longitude,
+                        latitude: items.latitude,
+                        options: {
+                            zoom: 20
+                        }
+                    },
                     stateFormIdentificacion: 1,
                     showMap: true
                 };
