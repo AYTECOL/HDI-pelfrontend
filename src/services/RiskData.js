@@ -8,6 +8,7 @@ class RiskData {
         let data = await Service.get(url);
         if (typeof data.valoration.Item !== "undefined") {
             let item = data.valoration.Item;
+            for(let i in item)if(item[i] === '""') item[i] = "";
             return {
                 type_risk: item.risk_type,
                 type_risk_id: item.risk_type,
