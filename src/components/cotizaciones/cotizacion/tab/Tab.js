@@ -301,7 +301,7 @@ class Tab extends React.Component {
                                                                        disabled={(option.optional === false)}
                                                                        type="text" className={"form-control"}/>
                                                             ) : (
-                                                                <select value={this.getSelectFields(opt.values)} onChange={(e)=>{}}>
+                                                                <select className={"form-control"} value={this.getSelectFields(opt.values)} onChange={(e)=>{}}>
                                                                     {opt.values.map((opt, k) =>
                                                                         <option key={k} value={k}>{Masknumbermoney.formatToMask(opt.limit)}</option>
                                                                     )}
