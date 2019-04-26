@@ -2,7 +2,7 @@ import React from 'react';
 //Helpers
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 //Component
-import BtnContinue from '../../../globals/forms/emision/identificacion/btncontinue/BtnContinue';
+import BtnContinue from '../forms/btncontinue/BtnContinue';
 import PopUpDelete from '../popups/delete/Delete';
 import PopUpPersona from '../popups/persona/Persona';
 import PopUpEntidad from '../popups/entidad/Entidad';
@@ -43,16 +43,16 @@ class Index extends React.Component {
         this.showAnyPopup("showPopUpDelete")
     }
 
-    togglePopUpPersona() {
+    togglePopUpPersona(index) {
         this.showAnyPopup("showPopUpPersona")
     }
 
-    togglePopUpEntidad() {
+    togglePopUpEntidad(index) {
         this.showAnyPopup("showPopUpEntidad")
     }
 
     render() {
-        if (this.state.step !== 1) return <div>&nbsp;</div>;
+        if (this.state.step !== 1) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form emision">
                 <div className="container">

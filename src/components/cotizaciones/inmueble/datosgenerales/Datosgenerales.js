@@ -1,12 +1,12 @@
 import React from 'react';
 import store from '../../../../store';
 //Components
-import NumeroDepiso from '../../../../components/globals/forms/inmueble/numerodepiso/Numerodepiso';
-import Ubicadopiso from '../../../../components/globals/forms/inmueble/ubicadopiso/Ubicadopiso';
-import Anoconstruccion from '../../../../components/globals/forms/inmueble/anoconstruccion/Anoconstruccion';
-import Zona from '../../../../components/globals/forms/inmueble/zona/Zona';
-import Construidocon from '../../../../components/globals/forms/inmueble/construidocon/Construidocon';
-import Refuerzoestructural from '../../../../components/globals/forms/inmueble/refuerzoestructural/Refuerzoestructural';
+import NumeroDepiso from '../forms/numerodepiso/Numerodepiso';
+import Ubicadopiso from '../forms/ubicadopiso/Ubicadopiso';
+import Anoconstruccion from '../forms/anoconstruccion/Anoconstruccion';
+import Zona from '../forms/zona/Zona';
+import Construidocon from '../forms/construidocon/Construidocon';
+import Refuerzoestructural from '../forms/refuerzoestructural/Refuerzoestructural';
 
 import './Datosgenerales.scss';
 import {withRouter} from "react-router-dom";
@@ -39,11 +39,10 @@ class Datosgenerales extends React.Component {
                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                             <NumeroDepiso/>
                         </div>
-                        {(this.state.typeInmueble === 2) ? (
-                            <div className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
-                                <Ubicadopiso/>
-                            </div>
-                        ) : ("")}
+                        <div
+                            className={"col col-12 col-sm-12 col-md-6 col-lg-6 " + (this.state.typeInmueble === 2 ? 'show' : 'hide')}>
+                            <Ubicadopiso/>
+                        </div>
                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                             <Zona/>
                         </div>

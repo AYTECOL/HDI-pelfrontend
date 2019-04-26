@@ -1,9 +1,9 @@
 import React from 'react';
 //Components
-import Segurarinmueble from '../../../../components/globals/forms/inmueble/segurarinmueble/Segurarinmueble';
-import Asegurarcontenidos from '../../../../components/globals/forms/inmueble/asegurarcontenidos/Asegurarcontenidos';
+import Segurarinmueble from '../forms/segurarinmueble/Segurarinmueble';
+import Asegurarcontenidos from '../forms/asegurarcontenidos/Asegurarcontenidos';
 import Asegurarcontenidoadicional from '../asegurarcontenidoadicional/Asegurarcontenidoadicional';
-//Service
+//Api
 import AllInsurableLimits from '../../../../services/AllInsurableLimits';
 
 import {withRouter} from "react-router-dom";

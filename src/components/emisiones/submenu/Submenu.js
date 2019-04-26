@@ -3,9 +3,9 @@ import {withRouter} from 'react-router-dom';
 
 import './Submenu.scss';
 import store from "../../../store";
-import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actionCreators";
-import Identifications from "../../../services/GetIdentifications";
-import RiskData from "../../../services/RiskData";
+import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actions";
+import Identifications from "../../../services/GetQuote";
+import ValorationById from "../../../services/ValorationById";
 
 class Submenu extends Component {
 
@@ -37,7 +37,7 @@ class Submenu extends Component {
         if (typeof cotizacion.identification !== 'undefined') {
             store.dispatch(restoreCotizacion(cotizacion));
             if (cotizacion.state >= 2) {
-                let riskData = await RiskData.get(id);
+                let riskData = await ValorationById.get(id);
                 if (riskData !== null) {
                     store.dispatch(restoreCotizacionRisk(riskData));
                 }

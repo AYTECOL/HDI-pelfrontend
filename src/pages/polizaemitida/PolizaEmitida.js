@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './PolizaEmitida.scss';
 import store from "../../store";
-import {toggleTopUpSendMail} from "../../actionCreators";
+import {toggleTopUpSendMail} from "../../actions";
 import SendMail from "../../components/cotizaciones/cotizacion/popups/sendmail/SendMail";
 
 class PolizaEmitida extends Component {

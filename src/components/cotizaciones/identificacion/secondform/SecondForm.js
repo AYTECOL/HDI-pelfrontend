@@ -1,12 +1,12 @@
 import React from 'react';
 import store from '../../../../store';
 
-import Name from '../../../globals/forms/identificacion/name/Name';
-import Lastname from '../../../globals/forms/identificacion/lastname/Lastname';
-import Razonsocial from '../../../globals/forms/identificacion/razonsocial/Razonsocial';
-import Adress from '../../../globals/forms/identificacion/adress/Adress';
-import Addressadditional from '../../../globals/forms/identificacion/addressadditional/Addressadditional';
-import AutoCompleteCities from '../../../globals/forms/identificacion/autocompletecities/AutocompleteCities';
+import Name from '../forms/name/Name';
+import Lastname from '../forms/lastname/Lastname';
+import Razonsocial from '../forms/razonsocial/Razonsocial';
+import Adress from '../forms/adress/Adress';
+import Addressadditional from '../forms/addressadditional/Addressadditional';
+import AutoCompleteCities from '../forms/autocompletecities/AutocompleteCities';
 import Map from "../map/Map.js"
 
 class SecondForm extends React.Component {

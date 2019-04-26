@@ -23,7 +23,7 @@ class Map extends React.Component {
     }
 
     render() {
-        if (this.state.show === false) return <div>&nbsp;</div>;
+        if (this.state.show === false) return <div className="hide">&nbsp;</div>;
         return (
             <div className={(this.state.show ? "" : "hide") + " wrapper-map " + (this.state.error ? "error" : "")}>
                 <MapBase isMarkerShown
@@ -32,7 +32,7 @@ class Map extends React.Component {
                          containerElement={<div style={{height: `400px`}}/>}
                          mapElement={<div style={{height: `100%`}}/>}/>
                 <div className="error-info">
-                    <p>No encontramos la dirección ingresada, valida si es la correcta y continua con el proceso</p>
+                    <p><span>&nbsp;</span>No encontramos la dirección ingresada, valida en el mapa si es la correcta y continua con el proceso</p>
                 </div>
             </div>
 

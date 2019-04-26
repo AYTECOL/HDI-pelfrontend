@@ -1,0 +1,32 @@
+.errornetwork{
+  background-color: white;
+  .App-header,
+  .App-footer {
+    display: none;
+  }
+  h1{
+    font-style: normal;
+    font-weight: bold;
+    font-size: 87px;
+    line-height: 102px;
+    text-align: center;
+    letter-spacing: -0.776786px;
+    color: #343741;
+  }
+  h2{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 32px;
+
+    color: #343741;
+  }
+  .title{
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    top: 10%;
+  }
+
+}

@@ -1,8 +1,8 @@
-import Service from './Service';
+import Api from './Api';
 
 class Identifications {
     static async get() {
-        return await Service.get('/identifications');
+        return await Api.get('/identifications');
     };
 }
 

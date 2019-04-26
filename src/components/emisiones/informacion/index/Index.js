@@ -1,6 +1,6 @@
 import React from 'react';
 //Component
-import BtnContinue from '../../../globals/forms/emision/informacion/btncontinue/BtnContinue';
+import BtnContinue from '../forms/btncontinue/BtnContinue';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";
@@ -16,7 +16,7 @@ class Index extends React.Component {
 
     }
 
-    addContent(){
+    addContent() {
         let total = this.state.totalContent + 1;
         this.setState({
             ...this.state,
@@ -25,7 +25,7 @@ class Index extends React.Component {
     }
 
     render() {
-        if (this.state.step !== 2) return <div>&nbsp;</div>;
+        if (this.state.step !== 2) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form emision informacion-adicioonal">
                 <div className="container">
@@ -39,13 +39,15 @@ class Index extends React.Component {
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                             <div className="form-group"><label
                                 htmlFor="pisonumero">¿Cuándo deseas que comience la póliza?</label>
-                                <input type="text" className="form-control pickerDate" name="secondlastname" placeholder={"Selecciona la fecha de inicio de vigencia"}/>
+                                <input type="text" className="form-control pickerDate" name="secondlastname"
+                                       placeholder={"Selecciona la fecha de inicio de vigencia"}/>
                             </div>
                         </div>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                             <div className="form-group "><label
                                 htmlFor="pisonumero">Metros construidos de vivienda (Opcional)</label>
-                                <input type="text" className="form-control" name="secondlastname" placeholder={"Ingresa el tamañó de la vivienda"}/>
+                                <input type="text" className="form-control" name="secondlastname"
+                                       placeholder={"Ingresa el tamañó de la vivienda"}/>
                             </div>
                         </div>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -106,9 +108,6 @@ class Index extends React.Component {
                                     <p><b>Contenidos Móviles:</b> $ 3.000.000</p>
                                 </div>
                                 <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
-
-
-
 
 
                                     <div className="more-items" onClick={(e) => {

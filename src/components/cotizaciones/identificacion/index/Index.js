@@ -1,8 +1,8 @@
 import React from 'react';
 //Component
-import TipoDocumento from '../../../globals/forms/identificacion/tipodocumento/TipoDocumento';
-import NumeroIdentificacion from '../../../globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion';
-import BtnContinue from '../../../globals/forms/identificacion/btncontinue/BtnContinue';
+import TipoDocumento from '../forms/tipodocumento/TipoDocumento';
+import NumeroIdentificacion from '../forms/numeroidentificacion/NumeroIdentificacion';
+import BtnContinue from '../forms/btncontinue/BtnContinue';
 
 import SecondForm from '../secondform/SecondForm';
 
@@ -19,7 +19,7 @@ class Index extends React.Component {
     }
 
     render() {
-        if (this.state.step !== 1) return <div>&nbsp;</div>;
+        if (this.state.step !== 1) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form">
                 <div className="container">

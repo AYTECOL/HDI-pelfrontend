@@ -1,8 +1,9 @@
-.box-blue-full{
+.box-blue-full {
   background: #F0FBFC;
   padding: 65px 0 0;
   margin-bottom: 121px !important;
-  h4{
+
+  h4 {
     font-style: normal;
     font-weight: bold;
     font-size: 24px;
@@ -10,14 +11,16 @@
     color: #343741;
     margin-bottom: 26px;
   }
-  p{
+
+  p {
     font-style: normal;
     font-size: 14px;
     line-height: 22px;
     color: #343741;
     margin: 0;
   }
-  .more-items{
+
+  .more-items {
     background-color: white;
     box-shadow: 0 5px 32px rgba(40, 163, 175, 0.32), 0 16px 64px rgba(40, 163, 175, 0.0001);
     border-radius: 3px;
@@ -25,12 +28,14 @@
     margin: 13px auto 26px;
     padding: 10px 7px;
   }
-  .msj-bottom{
+
+  .msj-bottom {
     background: #D1F2F4;
     background-blend-mode: multiply;
     padding: 20px 15px;
     position: relative;
-    &::before{
+
+    &::before {
       content: '';
       width: 0;
       height: 0;
@@ -43,7 +48,8 @@
       top: -15px;
       margin: 0 auto;
     }
-    p{
+
+    p {
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
@@ -54,17 +60,20 @@
   }
 }
 
-.index-form.emision.informacion-adicioonal{
+.index-form.emision.informacion-adicioonal {
   .row {
     max-width: 614px;
-    &.select-item{
+
+    &.select-item {
       min-height: 127px;
     }
   }
-  .sujeta-block{
+
+  .sujeta-block {
     max-width: 730px;
-    .select-item{
-      p{
+
+    .select-item {
+      p {
         max-width: 90px;
         margin-left: auto;
         margin-right: auto;

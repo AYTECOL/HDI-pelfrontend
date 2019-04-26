@@ -1,6 +1,7 @@
-import Service from './Service';
+import Api from './Api';
 import Store from '../store';
-import {saveAllInsurableLimits} from '../actionCreators';
+import {saveAllInsurableLimits} from '../actions';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/all-insurable-limits";
 
@@ -59,24 +60,14 @@ class AllInsurableLimits {
         let storeState = Store.getState();
         if (storeState.allInsurableLimits.length === 0) {
             try {
-                data = await Service.get(BaseUrl);
+                data = await Api.get(BaseUrl);
             } catch (e) {
                 data = Default();
             }
             if (typeof data.limits === "undefined" || data.limits.length === 0) {
                 data = Default();
             }
-
-            allInsurableLimits = data.limits.sort(function (a, b) {
-                a = parseInt(a.insurable_limit_id);
-                b = parseInt(b.insurable_limit_id);
-                if (a > b) {
-                    return 1;
-                } else if (a < b) {
-                    return -1;
-                }
-                return 0;
-            });
+            allInsurableLimits = Helpers.orderArray(data.limits,"insurable_limit_id");
 
             let newData = [];
             for (let i = 0; i < allInsurableLimits.length; i++) {

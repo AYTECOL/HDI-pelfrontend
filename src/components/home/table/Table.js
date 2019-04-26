@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import './Table.scss';
 import store from '../../../store';
-import {restoreCotizacion} from '../../../actionCreators';
+import {restoreCotizacion} from '../../../actions';
 
-import Identifications from '../../../services/GetIdentifications';
+import Identifications from '../../../services/GetQuote';
 
 class Table extends Component {
 

@@ -3,13 +3,13 @@ import './Cards.scss';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
 import AllInsurableLimits from "../../../../services/AllInsurableLimits";
-import Segurarinmueble from "../../../globals/forms/inmueble/segurarinmueble/Segurarinmueble";
-import Asegurarcontenidos from "../../../globals/forms/inmueble/asegurarcontenidos/Asegurarcontenidos";
-import Asegurarobras from "../../../globals/forms/inmueble/asegurarobras/Asegurarobras";
-import Asegurarjoyas from "../../../globals/forms/inmueble/asegurarjoyas/Asegurarjoyas";
-import Asegurartelefonos from "../../../globals/forms/inmueble/asegurartelefonos/Asegurartelefonos";
+import Segurarinmueble from "../../inmueble/forms/segurarinmueble/Segurarinmueble";
+import Asegurarcontenidos from "../../inmueble/forms/asegurarcontenidos/Asegurarcontenidos";
+import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
+import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
+import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {toggleLoading} from "../../../../actionCreators";
+import {toggleLoading} from "../../../../actions";
 
 class Cards extends React.Component {
 
@@ -51,7 +51,7 @@ class Cards extends React.Component {
         }
         this.state.items[0].active = false;
 
-        store.subscribe(async () => {
+        store.subscribe(() => {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
             if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
@@ -74,9 +74,7 @@ class Cards extends React.Component {
                         items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
                     }
                 }
-                for (let i = 0; i < 5; i++) {
-                    if (this.state.items[i].value === '""') this.state.items[i].value = "";
-                }
+                for (let i = 0; i < 5; i++) if (this.state.items[i].value === '""') this.state.items[i].value = "";
                 this.setState({
                     ...this.state,
                     items: items,
@@ -104,23 +102,11 @@ class Cards extends React.Component {
 
     validateToggle() {
         let newItems = this.state.items;
-        if (
-            newItems[1].active === true &&
+        newItems[0].inactiveToggle = newItems[1].active === true &&
             newItems[2].active === true &&
             newItems[3].active === true &&
-            newItems[4].active === true
-        ) {
-            newItems[0].inactiveToggle = true;
-        } else {
-            newItems[0].inactiveToggle = false;
-        }
-        if (
-            newItems[0].active === true
-        ) {
-            newItems[1].inactiveToggle = true;
-        } else {
-            newItems[1].inactiveToggle = false;
-        }
+            newItems[4].active === true;
+        newItems[1].inactiveToggle = newItems[0].active === true;
         if (this._isMounted) {
             this.setState({
                 ...this.state,
@@ -139,12 +125,21 @@ class Cards extends React.Component {
         });
     }
 
+    updateStoreItemValue(index) {
+        // Actualiza el valor de prendido o apagado en el store
+        let newItems = this.state.items;
+        let newObj = new newItems[index].parent();
+        newObj.validateValue({
+            value: '',
+            name: newItems[index].parent.nameModel
+        });
+    }
+
     toggleItem(index) {
         let active = this.state.items[index].active;
         let newItems = this.state.items;
+        let saved = false;
         newItems[index].active = !active;
-
-        this.updateStoreItem(index);
 
         // Pone el cargando para cotizacion
         if (newItems[index].type === 1 || newItems[index].type === 2) {
@@ -163,11 +158,15 @@ class Cards extends React.Component {
                 (newItems[index].type === 4 && newItems[index].active === false) ||
                 (newItems[index].type === 5 && newItems[index].active === false)
             ) {
-                console.log(2222);
                 store.dispatch(toggleLoading(true));
                 newItems[1].active = newItems[index].active;
                 this.updateStoreItem(1);
+                saved = true;
             }
+        }
+        if( saved === false ) {
+            this.updateStoreItemValue(index);
+            this.updateStoreItem(index);
         }
 
         this.setState({
