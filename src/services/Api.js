@@ -7,8 +7,8 @@ import {UrlService} from '../config';
 
 class Api {
 
-    static HttpRequest(method, url, data, overrideBase) {
-        store.dispatch(toggleLoading(true));
+    static HttpRequest(method, url, data, overrideBase, showLoader) {
+        // if (typeof showLoader === "undefined") store.dispatch(toggleLoading(true));
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
             if (typeof overrideBase === 'undefined') {
@@ -46,20 +46,20 @@ class Api {
         });
     }
 
-    static async get(url, overrideBase) {
-        return await Api.HttpRequest('GET', url, null, overrideBase).then(function (response) {
+    static async get(url, overrideBase, showLoader) {
+        return await Api.HttpRequest('GET', url, null, overrideBase, showLoader).then(function (response) {
             return JSON.parse(response);
         })
     };
 
-    static async post(url, data, overrideBase) {
-        return await Api.HttpRequest('POST', url, data, overrideBase).then(function (response) {
+    static async post(url, data, overrideBase, showLoader) {
+        return await Api.HttpRequest('POST', url, data, overrideBase, showLoader).then(function (response) {
             return JSON.parse(response);
         });
     };
 
-    static async put(url, overrideBase) {
-        return await Api.HttpRequest('PUT', url, null, overrideBase).then(function (response) {
+    static async put(url, overrideBase, showLoader) {
+        return await Api.HttpRequest('PUT', url, null, overrideBase, showLoader).then(function (response) {
             return JSON.parse(response);
         })
     };

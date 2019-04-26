@@ -43,11 +43,11 @@ class Index extends React.Component {
         this.showAnyPopup("showPopUpDelete")
     }
 
-    togglePopUpPersona() {
+    togglePopUpPersona(index) {
         this.showAnyPopup("showPopUpPersona")
     }
 
-    togglePopUpEntidad() {
+    togglePopUpEntidad(index) {
         this.showAnyPopup("showPopUpEntidad")
     }
 

@@ -99,6 +99,19 @@ class Helpers {
         });
     }
 
+    static orderArray(array, key){
+        return array.sort(function (a, b) {
+            a = parseInt(a[key]);
+            b = parseInt(b[key]);
+            if (a > b) {
+                return 1;
+            } else if (a < b) {
+                return -1;
+            }
+            return 0;
+        });
+    }
+
     static calcularDigitoVerificacion(myNit) {
         var vpri,
             x,

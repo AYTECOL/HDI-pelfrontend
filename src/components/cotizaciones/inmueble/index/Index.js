@@ -28,7 +28,7 @@ class Index extends React.Component {
         };
 
         this.getRisks();
-        store.subscribe(async () => {
+        store.subscribe(() => {
             let storeState = store.getState();
             let typeInmueble = storeState.typeInmueble;
             let type = storeState.Inmueble.type_risk_id;

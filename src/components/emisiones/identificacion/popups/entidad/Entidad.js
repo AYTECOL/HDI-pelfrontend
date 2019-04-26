@@ -3,9 +3,9 @@ import './Entidad.scss';
 
 export default class Entidad extends Component {
 
-    constructor(props) {
+/*    constructor(props) {
         super(props);
-    }
+    }*/
 
     render() {
         return (

@@ -2,8 +2,9 @@ import React from 'react';
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps";
 import './Map.scss';
 import store from "../../../../store";
-import {mapShow, saveIdentificationValue, setAddresMap} from "../../../../actions";
+import {saveIdentificationValue, setAddresMap} from "../../../../actions";
 import GetAddresInfo from "../../../../services/AddresCoordenates";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class MapBase extends React.Component {
 
@@ -17,49 +18,55 @@ class MapBase extends React.Component {
             latitude: storeState.mapsOptions.latitude,
             isMarkerShown: true,
             zoom: storeState.mapsOptions.options.zoom,
-            el: document.querySelector(".wrapper-map"),
-            mapOption: {}
+            el: ".wrapper-map",
+            mapOption: {},
+            city: storeState.cotizacion.identification.city,
+            department: storeState.cotizacion.identification.department
         };
         this.state.markerPosition = {lat: this.state.latitude, lng: this.state.longitude};
 
         window.stime = null;
-        store.subscribe(async () => {
+        store.subscribe(() => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
-            if (this.state.address !== address && address !== "") {
+            let city = storeState.cotizacion.identification.city;
+            let department = storeState.cotizacion.identification.department;
+            if ( (this.state.address !== address && address !== "") || (this.state.city !== city) || (this.state.department !== department) ) {
                 var it = this;
+                it.setState({
+                    ...it.state,
+                    address: address
+                });
                 clearTimeout(window.stime);
-                window.stime = setTimeout(async function () {
+                Helpers.removeClass(it.state.el,'error');
+                window.stime = setTimeout(function () {
                     let state = store.getState();
-                    let data = await it.reqAddress(address + ", " + state.cityDescription);
-                    store.dispatch(mapShow(true));
-                    it.state.el.className = it.state.el.className.replace(" error", "");
-                    if (typeof data.lng !== "undefined" && typeof data.lat !== "undefined") {
-                        it.setState({
-                            ...it.state,
-                            address: address,
-                            markerPosition: data,
-                            isMarkerShown: true,
-                        });
-                        store.dispatch(setAddresMap({
-                            longitude: data.lng,
-                            latitude: data.lat,
-                        }));
-                    } else {
-                        it.setState({
-                            ...it.state,
-                            address: address,
-                            isMarkerShown: false,
-                        });
-                        it.state.el.className += " error";
-                    }
-                }, 500);
+                    it.reqAddress(address + ", " + state.cityDescription).then(function (data) {
+                        if (typeof data.lng !== "undefined" && typeof data.lat !== "undefined") {
+                            it.setState({
+                                ...it.state,
+                                markerPosition: data,
+                                isMarkerShown: true,
+                            });
+                            store.dispatch(setAddresMap({
+                                longitude: data.lng,
+                                latitude: data.lat,
+                            }));
+                        } else {
+                            it.setState({
+                                ...it.state,
+                                isMarkerShown: false,
+                            });
+                            Helpers.addClass(it.state.el,'error');
+                        }
+                    });
+                }, 250);
             } else if (address === "") {
                 this.setState({
                     ...this.state,
                     isMarkerShown: false,
                 });
-                this.state.el.className += " error";
+                Helpers.addClass(this.state.el,'error');
             }
         });
     }
@@ -78,7 +85,7 @@ class MapBase extends React.Component {
                 markerPosition: e.latLng,
                 isMarkerShown: true,
             });
-            this.state.el.className = this.state.el.className.replace(" error", "");
+            Helpers.removeClass(this.state.el,'error');
             store.dispatch(saveIdentificationValue({
                 name: 'address',
                 value: response

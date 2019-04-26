@@ -1,4 +1,5 @@
 import Api from './Api';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/all-build-material";
 
@@ -42,16 +43,7 @@ class AllBuildMaterial {
         if (typeof data.build_materials === "undefined" || data.build_materials.length === 0) {
             data = Default;
         }
-        return data.build_materials.sort(function (a, b) {
-            a = parseInt(a.buildMaterialCode);
-            b = parseInt(b.buildMaterialCode);
-            if (a > b) {
-                return 1;
-            } else if (a < b) {
-                return -1;
-            }
-            return 0;
-        });
+        return Helpers.orderArray(data.build_materials,"buildMaterialCode");
     };
 }
 

@@ -1,6 +1,7 @@
 import Api from './Api';
 import Store from '../store';
 import {AllPlans as AllPlansCreator} from '../actions';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/all-plans";
 
@@ -13,8 +14,8 @@ class AllPlans {
         } catch (e) {
             data = [];
         }
+        data = Helpers.orderArray(data,"order");
         Store.dispatch(AllPlansCreator(data));
-        console.log(data);
         return data;
     };
 }

@@ -42,14 +42,15 @@ class AutocompleteCities extends Component {
 
     async getOptions() {
         let data = await Cities.get();
+        let it = this;
         this.setState({
-            ...this.state,
+            ...it.state,
             options: data,
             originalOptions: data
         });
         setTimeout(function () {
-            this.getTextById();
-        }.bind(this), 300);
+            it.getTextById();
+        }, 300);
     }
 
     getTextById() {
@@ -152,10 +153,12 @@ class AutocompleteCities extends Component {
         //Up
         } else if(key === 38){
             options = this.selectActive(options,true);
-        } else if(key === 13){
+        } else if(key === 13 || key === 9){
+            e.preventDefault();
             this.onBlur("noempty");
             e.target.blur();
             if(Helpers.hasClass(element,'active')) document.querySelector(element).click();
+            document.getElementById("address").focus();
         }
         if (typeof options !== 'undefined'){
             this.setState({

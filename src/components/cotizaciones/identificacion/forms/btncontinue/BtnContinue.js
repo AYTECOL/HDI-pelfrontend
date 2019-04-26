@@ -121,7 +121,6 @@ class BtnContinue extends Component {
                             }));
                             store.dispatch(disabledLastName());
                         }
-
                         if (typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '') {
                             store.dispatch(saveIdentificationValue({
                                 name: 'businessname',

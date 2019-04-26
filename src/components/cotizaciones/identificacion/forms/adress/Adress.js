@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {saveIdentificationValue} from '../../../../../actions';
+import {saveIdentificationValue,mapShow} from '../../../../../actions';
 
 class Adress extends Component {
 
@@ -37,6 +37,7 @@ class Adress extends Component {
         let error = false;
         if (e.value.length < 1 || e.value.length > 200) error = true;
         store.dispatch(saveIdentificationValue(e));
+        if( store.getState().showMap !== true ) store.dispatch(mapShow(true));
         this.setState({
             ...this.state,
             error: error,

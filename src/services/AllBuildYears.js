@@ -1,4 +1,5 @@
 import Api from './Api';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/all-build-years";
 
@@ -42,16 +43,7 @@ class AllBuildYears {
         if (typeof data.build_years === "undefined" || data.build_years.length === 0) {
             data = Default;
         }
-        return data.build_years.sort(function (a, b) {
-            a = parseInt(a.buildYearCode);
-            b = parseInt(b.buildYearCode);
-            if (a > b) {
-                return 1;
-            } else if (a < b) {
-                return -1;
-            }
-            return 0;
-        });
+        return Helpers.orderArray(data.build_years,"buildYearCode");
     };
 }
 
