@@ -3,13 +3,13 @@ import './Cards.scss';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
 import AllInsurableLimits from "../../../../services/AllInsurableLimits";
-import Segurarinmueble from "../../../globals/forms/inmueble/segurarinmueble/Segurarinmueble";
-import Asegurarcontenidos from "../../../globals/forms/inmueble/asegurarcontenidos/Asegurarcontenidos";
-import Asegurarobras from "../../../globals/forms/inmueble/asegurarobras/Asegurarobras";
-import Asegurarjoyas from "../../../globals/forms/inmueble/asegurarjoyas/Asegurarjoyas";
-import Asegurartelefonos from "../../../globals/forms/inmueble/asegurartelefonos/Asegurartelefonos";
+import Segurarinmueble from "../../inmueble/forms/segurarinmueble/Segurarinmueble";
+import Asegurarcontenidos from "../../inmueble/forms/asegurarcontenidos/Asegurarcontenidos";
+import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
+import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
+import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {toggleLoading} from "../../../../actionCreators";
+import {toggleLoading} from "../../../../actions";
 
 class Cards extends React.Component {
 

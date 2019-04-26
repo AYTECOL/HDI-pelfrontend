@@ -1,8 +1,8 @@
 import React from 'react';
 //Components
-import Asegurarjoyas from '../../../../components/globals/forms/inmueble/asegurarjoyas/Asegurarjoyas';
-import Asegurarobras from '../../../../components/globals/forms/inmueble/asegurarobras/Asegurarobras';
-import Asegurartelefonos from '../../../../components/globals/forms/inmueble/asegurartelefonos/Asegurartelefonos';
+import Asegurarjoyas from '../forms/asegurarjoyas/Asegurarjoyas';
+import Asegurarobras from '../forms/asegurarobras/Asegurarobras';
+import Asegurartelefonos from '../forms/asegurartelefonos/Asegurartelefonos';
 import store from "../../../../store";
 
 import './Asegurarcontenidoadicional.scss';

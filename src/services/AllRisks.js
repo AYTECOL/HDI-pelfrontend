@@ -1,4 +1,4 @@
-import Service from './Service';
+import Api from './Api';
 
 const BaseUrl = "/";
 
@@ -20,7 +20,7 @@ class AllRisks {
         let url = BaseUrl + "all-risks";
         let risks;
         try {
-            risks = await Service.get(url);
+            risks = await Api.get(url);
         } catch (e) {
             risks = Default;
         }

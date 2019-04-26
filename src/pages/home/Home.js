@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './Home.scss';
 import Counter from "../../services/Counter";
 import store from "../../store";
-import {saveCotizacionNumber} from "../../actionCreators";
+import {saveCotizacionNumber} from "../../actions";
 
 import Table from '../../components/home/table/Table';
 

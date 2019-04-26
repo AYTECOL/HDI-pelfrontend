@@ -1,6 +1,6 @@
-import Service from './Service';
+import Api from './Api';
 import Store from '../store';
-import {saveAllfloors} from '../actionCreators';
+import {saveAllfloors} from '../actions';
 
 const BaseUrl = "/all-floors";
 
@@ -25,7 +25,7 @@ class Allfloors {
         let storeState = Store.getState();
         if (storeState.Allfloors.length === 0) {
             try {
-                data = await Service.get(BaseUrl);
+                data = await Api.get(BaseUrl);
             } catch (e) {
                 data = Default();
             }

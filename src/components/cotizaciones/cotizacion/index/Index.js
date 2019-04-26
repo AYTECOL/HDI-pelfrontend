@@ -5,10 +5,10 @@ import {withRouter} from "react-router-dom";
 import SendMail from "../popups/sendmail/SendMail";
 import Cards from "../cards/Cards";
 import Tab from "../tab/Tab";
-import Btns from "../../../../components/globals/forms/cotizacion/btncontinue/BtnContinue";
-import Links from "../../../../components/globals/forms/cotizacion/links/Links";
+import Btns from "../forms/btncontinue/BtnContinue";
+import Links from "../forms/links/Links";
 import store from "../../../../store";
-import {indexPlanSelected} from "../../../../actionCreators";
+import {indexPlanSelected} from "../../../../actions";
 
 class Index extends React.Component {
 

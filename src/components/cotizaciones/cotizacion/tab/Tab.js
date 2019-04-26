@@ -5,7 +5,7 @@ import AllPlans from '../../../../services/AllPlans';
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
-import {toggleLoading} from "../../../../actionCreators";
+import {toggleLoading} from "../../../../actions";
 
 class Tab extends React.Component {
 

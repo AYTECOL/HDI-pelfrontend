@@ -2,7 +2,7 @@ import React from 'react';
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps";
 import './Map.scss';
 import store from "../../../../store";
-import {mapShow, saveIdentificationValue, setAddresMap} from "../../../../actionCreators";
+import {mapShow, saveIdentificationValue, setAddresMap} from "../../../../actions";
 import GetAddresInfo from "../../../../services/AddresCoordenates";
 
 class MapBase extends React.Component {

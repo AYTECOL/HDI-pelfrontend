@@ -1,10 +1,10 @@
-import Service from './Service';
+import Api from './Api';
 
 const Url = "/cities";
 
 class Cities {
     static async get() {
-        let cities = await Service.get(Url);
+        let cities = await Api.get(Url);
         // let extis = [];
         // let newCities = [];
         // for (let i in cities.cities){

@@ -18,6 +18,28 @@ class Helpers {
         return false;
     }
 
+    static disabled(selector) {
+        let el = document.querySelector(selector);
+        let className = "disabled";
+        if (el != null) {
+            if (el.className.indexOf(className) === -1) {
+                el.className += " " + className;
+                el.setAttribute(className,true);
+            }
+        }
+    }
+
+    static enabled(selector) {
+        let el = document.querySelector(selector);
+        let className = "disabled";
+        if (el != null) {
+            if (el.className.indexOf(className) === -1) {
+                el.className = el.className.replace(" " + className, "");
+                el.setAttribute(className,false);
+            }
+        }
+    }
+
     static addClass(selector, className) {
         let el = document.querySelector(selector);
         if (el != null) {
@@ -34,12 +56,28 @@ class Helpers {
         }
     }
 
-    static scrollToElement(selector) {
+    static scrollElement(size, scrollElement, inverse) {
+        if (typeof scrollElement === "undefined") {
+            scrollElement = window;
+        }else{
+            scrollElement = document.querySelector(scrollElement);
+        }
+        if (typeof inverse === "undefined") inverse = false;
+        let scrollTop = scrollElement.scrollTop;
+        scrollElement.scroll({
+            top: inverse?scrollTop-size:scrollTop+size,
+            left: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    static scrollToElement(selector, scrollElement, behavior, ignoreZero) {
         let el = document.querySelector(selector);
         let top = 0;
 
+        if (typeof ignoreZero === "undefined") ignoreZero = false;
         function findValue(el) {
-            if (el.offsetTop === 0 && el.offsetParent !== null) {
+            if (el.offsetTop === 0 && el.offsetParent !== null && ignoreZero === false) {
                 return findValue(el.offsetParent);
             } else {
                 return el.offsetTop;
@@ -48,11 +86,16 @@ class Helpers {
 
         top = findValue(el);
         if (top === 0) return;
-
-        window.scroll({
+        if (typeof scrollElement === "undefined") behavior = 'smooth';
+        if (typeof scrollElement === "undefined") {
+            scrollElement = window;
+        }else{
+            scrollElement = document.querySelector(scrollElement);
+        }
+        scrollElement.scroll({
             top: top,
             left: 0,
-            behavior: 'smooth'
+            behavior: behavior,
         });
     }
 

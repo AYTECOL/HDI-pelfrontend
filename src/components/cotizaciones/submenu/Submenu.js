@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 
 import './Submenu.scss';
 import store from "../../../store";
-import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actionCreators";
+import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actions";
 import Identifications from "../../../services/GetQuote";
 import ValorationById from "../../../services/ValorationById";
 import {UrlSite} from "../../../config";

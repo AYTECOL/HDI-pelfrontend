@@ -1,15 +1,15 @@
-import Service from './Service';
+import Api from './Api';
 
 const Url = "/quote/";
 
 class GetQuote {
     static async get() {
-        return await Service.get(Url);
+        return await Api.get(Url);
     };
 
     static async getById(id) {
         try {
-            let items = await Service.get(Url + id);
+            let items = await Api.get(Url + id);
             if (typeof items.quote !== 'undefined') {
                 items = items.quote;
                 for (let i in items) if (items[i] === '""') items[i] = "";

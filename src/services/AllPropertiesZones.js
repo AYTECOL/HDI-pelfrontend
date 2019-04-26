@@ -1,4 +1,4 @@
-import Service from './Service';
+import Api from './Api';
 
 const BaseUrl = "/all-properties-zones";
 
@@ -19,7 +19,7 @@ class AllPropertiesZones {
     static async get() {
         let data = {};
         try {
-            data = await Service.get(BaseUrl);
+            data = await Api.get(BaseUrl);
         } catch (e) {
             data = Default;
         }

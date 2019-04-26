@@ -1,4 +1,4 @@
-import Service from './Service';
+import Api from './Api';
 
 const BaseUrl = "/all-build-years";
 
@@ -35,7 +35,7 @@ class AllBuildYears {
     static async get() {
         let data = {};
         try {
-            data = await Service.get(BaseUrl);
+            data = await Api.get(BaseUrl);
         } catch (e) {
             data = Default;
         }

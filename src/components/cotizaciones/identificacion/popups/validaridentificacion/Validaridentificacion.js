@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './Validaridentificacion.scss';
 import icono from '../../../../../common/images/icon.png';
 import store from "../../../../../store";
-import {showPopupIdentification} from "../../../../../actionCreators";
+import {showPopupIdentification} from "../../../../../actions";
 
 class Validaridentificacion extends Component {
 

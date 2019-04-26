@@ -1,8 +1,8 @@
 import React from 'react';
 //Component
-import TipoDocumento from '../../../globals/forms/identificacion/tipodocumento/TipoDocumento';
-import NumeroIdentificacion from '../../../globals/forms/identificacion/numeroidentificacion/NumeroIdentificacion';
-import BtnContinue from '../../../globals/forms/identificacion/btncontinue/BtnContinue';
+import TipoDocumento from '../forms/tipodocumento/TipoDocumento';
+import NumeroIdentificacion from '../forms/numeroidentificacion/NumeroIdentificacion';
+import BtnContinue from '../forms/btncontinue/BtnContinue';
 
 import SecondForm from '../secondform/SecondForm';
 

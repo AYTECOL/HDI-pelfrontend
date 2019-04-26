@@ -1,11 +1,11 @@
-import Service from './Service';
+import Api from './Api';
 
 const BaseUrl = "/";
 
 class ValorationById {
     static async get(id) {
         let url = BaseUrl + "valoration-by-id/" + id;
-        let data = await Service.get(url);
+        let data = await Api.get(url);
         if (typeof data.valoration.Item !== "undefined") {
             let item = data.valoration.Item;
             for (let i in item) if (item[i] === '""') item[i] = "";

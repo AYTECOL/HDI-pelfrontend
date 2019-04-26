@@ -312,6 +312,7 @@ $color-font-btn-primary: #404040;
         cursor: pointer;
         transition: background 0.3s ease;
 
+        &.active,
         &:hover {
           background: #F5F5F5 * 0.9;
         }

@@ -1,6 +1,6 @@
-import Service from './Service';
+import Api from './Api';
 import Store from '../store';
-import {saveAllInsurableLimits} from '../actionCreators';
+import {saveAllInsurableLimits} from '../actions';
 
 const BaseUrl = "/all-insurable-limits";
 
@@ -59,7 +59,7 @@ class AllInsurableLimits {
         let storeState = Store.getState();
         if (storeState.allInsurableLimits.length === 0) {
             try {
-                data = await Service.get(BaseUrl);
+                data = await Api.get(BaseUrl);
             } catch (e) {
                 data = Default();
             }
