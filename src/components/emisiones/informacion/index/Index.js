@@ -1,6 +1,6 @@
 import React from 'react';
 //Component
-import BtnContinue from '../../../globals/forms/emision/informacion/btncontinue/BtnContinue';
+import BtnContinue from '../forms/btncontinue/BtnContinue';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";

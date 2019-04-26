@@ -1,6 +1,7 @@
-import Service from './Service';
+import Api from './Api';
 import Store from '../store';
-import {saveAllfloors} from '../actionCreators';
+import {saveAllfloors} from '../actions';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/all-floors";
 
@@ -25,7 +26,7 @@ class Allfloors {
         let storeState = Store.getState();
         if (storeState.Allfloors.length === 0) {
             try {
-                data = await Service.get(BaseUrl);
+                data = await Api.get(BaseUrl);
             } catch (e) {
                 data = Default();
             }
@@ -33,16 +34,7 @@ class Allfloors {
                 data = Default();
             }
 
-            allfloors = data.floors.sort(function (a, b) {
-                a = parseInt(a.floorCode);
-                b = parseInt(b.floorCode);
-                if (a > b) {
-                    return 1;
-                } else if (a < b) {
-                    return -1;
-                }
-                return 0;
-            });
+            allfloors = Helpers.orderArray(data.floors,"floorCode");
             Store.dispatch(saveAllfloors(allfloors));
         } else {
             allfloors = storeState.Allfloors;

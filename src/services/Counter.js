@@ -1,10 +1,10 @@
-import Service from './Service';
+import Api from './Api';
 
 const Url = "/counter";
 
 class Counter {
     static async get() {
-        return await Service.put(Url);
+        return await Api.put(Url);
     };
 }
 

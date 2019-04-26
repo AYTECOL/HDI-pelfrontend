@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './SendMail.scss';
 
-import {toggleTopUpSendMail} from '../../../../../actionCreators';
+import {toggleTopUpSendMail} from '../../../../../actions';
 import store from "../../../../../store";
 
 class SendMail extends Component {

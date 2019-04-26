@@ -1,4 +1,4 @@
-import Service from './Service';
+import Api from './Api';
 import Store from '../store';
 
 const Url = "/quote";
@@ -22,7 +22,7 @@ class IdentificationsCities {
             step: storeState.cotizacion.state
         };
         for (let i in data) if (data[i] === "") data[i] = '""';
-        return await Service.post(Url, data);
+        return await Api.post(Url, data);
     };
 }
 

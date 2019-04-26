@@ -5,7 +5,7 @@ import AllPlans from '../../../../services/AllPlans';
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
-import {toggleLoading} from "../../../../actionCreators";
+import {indexPlanSelected, toggleLoading} from "../../../../actions";
 
 class Tab extends React.Component {
 
@@ -18,7 +18,6 @@ class Tab extends React.Component {
             assistsTotal: 0,
             coverturasTotal: 0,
             Inmueble: store.getState().Inmueble,
-            plansOks: false,
             typePlans: 3
         };
         store.dispatch(toggleLoading(true));
@@ -39,7 +38,7 @@ class Tab extends React.Component {
             }
         }
 
-        store.subscribe(async () => {
+        store.subscribe(() => {
             let storeState = store.getState();
             let index = storeState.indexPlan;
             let inmueble = storeState.Inmueble;
@@ -56,9 +55,7 @@ class Tab extends React.Component {
                     ...this.state,
                     Inmueble: inmueble
                 });
-                if (this.state.plansOks === false || this.state.typePlans !== type) {
-                    this.getPlants(type);
-                }
+                this.getPlants(type);
             }
             if (this.state.index !== index) {
                 this.setState({
@@ -87,6 +84,7 @@ class Tab extends React.Component {
     }
 
     countCoverturas() {
+        if( typeof this.state.plans[this.state.index] === "undefined" ) return;
         let t = 0;
         let item = this.state.plans[this.state.index].coverages;
         for (let i in item) {
@@ -101,6 +99,7 @@ class Tab extends React.Component {
     }
 
     countAsistencias() {
+        if( typeof this.state.plans[this.state.index] === "undefined" ) return;
         let t = 0;
         let item = this.state.plans[this.state.index].assists[0].values;
         for (let i in item) {
@@ -152,14 +151,11 @@ class Tab extends React.Component {
         this.setState({
             ...this.state,
             plans: plans,
-            plansOks: true,
             typePlans: type
         });
+        for(let i in plans) if (plans[i].isdefault) store.dispatch(indexPlanSelected(i));
         this.countCoverturas();
         this.countAsistencias();
-        setTimeout(function () {
-            store.dispatch(toggleLoading(false));
-        }, 1000);
     }
 
     getSelectByItems(item) {
@@ -234,6 +230,7 @@ class Tab extends React.Component {
     }
 
     render() {
+        if( typeof this.state.plans[this.state.index] === "undefined" ) return <div className="hide">&nbsp;</div>;
         return (
             <div>
                 <div className="first-content">

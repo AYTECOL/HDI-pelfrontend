@@ -1,21 +1,10 @@
-import Service from './Service';
+import Api from './Api';
 
 const Url = "/cities";
 
 class Cities {
     static async get() {
-        let cities = await Service.get(Url);
-        // let extis = [];
-        // let newCities = [];
-        // for (let i in cities.cities){
-        //     let d = cities.cities[i];
-        //     if ( extis.indexOf(d.code_city) === -1 ){
-        //         newCities.push(d);
-        //         extis.push(d.code_city);
-        //     }
-        // }
-        // cities.cities = newCities;
-        return cities;
+        return await Api.get(Url);
     };
 }
 

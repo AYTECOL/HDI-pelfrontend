@@ -4,14 +4,14 @@ import store from '../../../../store';
 import DatosGenerales from '../datosgenerales/Datosgenerales';
 import Seguridad from '../seguridad/Seguridad';
 import Valoreasegurar from '../valoreasegurar/Valoreasegurar';
-import Counter from '../../../../components/globals/forms/inmueble/counter/Counter';
-import Btns from '../../../../components/globals/forms/inmueble/btncontinue/BtnContinue';
+import Counter from '../forms/counter/Counter';
+import Btns from '../forms/btncontinue/BtnContinue';
 // Services
 import Risk from '../../../../services/AllRisks';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";
-import {saveInmuebleValue, typeInmueble} from "../../../../actionCreators";
+import {saveInmuebleValue, typeInmueble} from "../../../../actions";
 
 class Index extends React.Component {
 
@@ -28,7 +28,7 @@ class Index extends React.Component {
         };
 
         this.getRisks();
-        store.subscribe(async () => {
+        store.subscribe(() => {
             let storeState = store.getState();
             let typeInmueble = storeState.typeInmueble;
             let type = storeState.Inmueble.type_risk_id;

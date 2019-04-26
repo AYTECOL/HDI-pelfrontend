@@ -1,4 +1,4 @@
-import Service from './Service';
+import Api from './Api';
 import Store from '../store';
 
 const BaseUrl = "/create-or-update-valoration/";
@@ -40,7 +40,7 @@ class CreateOrUpdateValoration {
             inmueble_asegudado_telefonosvalor: risks.inmuebleasegudadotelefonosvalor
         };
         for (let i in data) if (data[i] === "") data[i] = '""';
-        return await Service.post(BaseUrl + nCotizacion, data);
+        return await Api.post(BaseUrl + nCotizacion, data);
     };
 }
 

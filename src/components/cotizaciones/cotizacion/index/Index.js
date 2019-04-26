@@ -5,10 +5,10 @@ import {withRouter} from "react-router-dom";
 import SendMail from "../popups/sendmail/SendMail";
 import Cards from "../cards/Cards";
 import Tab from "../tab/Tab";
-import Btns from "../../../../components/globals/forms/cotizacion/btncontinue/BtnContinue";
-import Links from "../../../../components/globals/forms/cotizacion/links/Links";
+import Btns from "../forms/btncontinue/BtnContinue";
+import Links from "../forms/links/Links";
 import store from "../../../../store";
-import {indexPlanSelected} from "../../../../actionCreators";
+import {indexPlanSelected} from "../../../../actions";
 
 class Index extends React.Component {
 
@@ -19,11 +19,8 @@ class Index extends React.Component {
             plans: [],
             index: 1,
         };
-        for (let i = 0; i < 3; i++) {
-            this.state.plans[i] = {name: "------"}
-        }
-
-        store.subscribe(async () => {
+        for (let i = 0; i < 3; i++) this.state.plans[i] = {name: "------"}
+        store.subscribe(() => {
             let storeState = store.getState();
             let plans = storeState.AllPlans;
             let index = storeState.indexPlan;
@@ -83,7 +80,7 @@ class Index extends React.Component {
                     <div className="row tabs text-center">
                         {this.state.plans.map((option, key) =>
                             <div className="col col-12 col-sm-12 col-md-4 col-lg-4 no-padding" key={key}>
-                                <div className={"item-tab " + (this.state.index === key ? 'active' : '')}
+                                <div className={"item-tab " + (option.isdefault ? 'active' : '')}
                                      onClick={(e) => {
                                          this.changeIndexPlan(key);
                                      }}>
@@ -116,7 +113,7 @@ class Index extends React.Component {
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                             <p><i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes descarga el
-                                fotmato <span>aquí</span></p>
+                                fotmato <a href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF" rel="noopener noreferrer" target="_blank">aquí</a></p>
                         </div>
                     </div>
 

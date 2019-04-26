@@ -2,7 +2,7 @@ import React from 'react';
 //Helpers
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 //Component
-import BtnContinue from '../../../globals/forms/emision/identificacion/btncontinue/BtnContinue';
+import BtnContinue from '../forms/btncontinue/BtnContinue';
 import PopUpDelete from '../popups/delete/Delete';
 import PopUpPersona from '../popups/persona/Persona';
 import PopUpEntidad from '../popups/entidad/Entidad';
@@ -43,11 +43,11 @@ class Index extends React.Component {
         this.showAnyPopup("showPopUpDelete")
     }
 
-    togglePopUpPersona() {
+    togglePopUpPersona(index) {
         this.showAnyPopup("showPopUpPersona")
     }
 
-    togglePopUpEntidad() {
+    togglePopUpEntidad(index) {
         this.showAnyPopup("showPopUpEntidad")
     }
 

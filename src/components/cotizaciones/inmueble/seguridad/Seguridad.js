@@ -1,7 +1,7 @@
 import React from 'react';
 //Components
-import Conjuntocerrado from '../../../../components/globals/forms/inmueble/conjuntocerrado/Conjuntocerrado';
-import Elementoseguridad from '../../../../components/globals/forms/inmueble/elementoseguridad/Elementoseguridad';
+import Conjuntocerrado from '../forms/conjuntocerrado/Conjuntocerrado';
+import Elementoseguridad from '../forms/elementoseguridad/Elementoseguridad';
 
 import {withRouter} from "react-router-dom";
 
