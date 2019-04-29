@@ -1,5 +1,4 @@
 import React from 'react';
-import './Index.scss';
 import {withRouter} from "react-router-dom";
 //Component
 import store from "../../../../store";
