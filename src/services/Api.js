@@ -8,8 +8,8 @@ import {UrlService} from '../config';
 class Api {
 
     static HttpRequest(method, url, data, overrideBase, showLoader) {
-        // if (typeof showLoader === "undefined") store.dispatch(toggleLoading(true));
         return new Promise(function (resolve, reject) {
+            if (typeof showLoader === "undefined") store.dispatch(toggleLoading(true));
             var xhr = new XMLHttpRequest();
             if (typeof overrideBase === 'undefined') {
                 url = UrlService + url;

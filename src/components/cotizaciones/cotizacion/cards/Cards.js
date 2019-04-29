@@ -9,7 +9,7 @@ import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
 import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
 import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {toggleLoading} from "../../../../actions";
+import {saveInmuebleValue} from "../../../../actions";
 
 class Cards extends React.Component {
 
@@ -118,20 +118,18 @@ class Cards extends React.Component {
     updateStoreItem(index) {
         // Actualiza el valor de prendido o apagado en el store
         let newItems = this.state.items;
-        let newObj = new newItems[index].parent();
-        newObj.validateEmpty({
+        store.dispatch(saveInmuebleValue({
             value: newItems[index].active === true ? 0 : 1,
             name: newItems[index].parent.nameModel
-        });
-    }
-
-    updateStoreItemValue(index) {
-        // Actualiza el valor de prendido o apagado en el store
-        let newItems = this.state.items;
-        let newObj = new newItems[index].parent();
-        newObj.validateValue({
+        }));
+        store.dispatch(saveInmuebleValue({
             value: '',
-            name: newItems[index].parent.nameModel
+            name: newItems[index].parent.nameModelValue
+        }));
+        newItems[index].value = "";
+        this.setState({
+            ...this.state,
+            items: newItems
         });
     }
 
@@ -140,11 +138,6 @@ class Cards extends React.Component {
         let newItems = this.state.items;
         let saved = false;
         newItems[index].active = !active;
-
-        // Pone el cargando para cotizacion
-        if (newItems[index].type === 1 || newItems[index].type === 2) {
-            store.dispatch(toggleLoading(true));
-        }
 
         // Deshabilita los demas items
         if (newItems[index].type === 2 && newItems[index].active === true) {
@@ -158,16 +151,12 @@ class Cards extends React.Component {
                 (newItems[index].type === 4 && newItems[index].active === false) ||
                 (newItems[index].type === 5 && newItems[index].active === false)
             ) {
-                store.dispatch(toggleLoading(true));
                 newItems[1].active = newItems[index].active;
                 this.updateStoreItem(1);
                 saved = true;
             }
         }
-        if( saved === false ) {
-            this.updateStoreItemValue(index);
-            this.updateStoreItem(index);
-        }
+        if( saved === false ) this.updateStoreItem(index);
 
         this.setState({
             ...this.state,

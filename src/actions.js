@@ -1,10 +1,6 @@
 // Primer Formulario
 const saveIdentificationValue = (element) => {
-    let name = element.name;
-    let value = element.value;
-    let data = {};
-    data[name] = value;
-    return {type: "SAVE_IDENTIFICATION_VALUE", data: data};
+    return {type: "SAVE_IDENTIFICATION_VALUE", data: { [element.name]: element.value }};
 };
 const setAddresMap = (data) => {
     return {type: "SET_ADDRES_MAP", data};
@@ -53,11 +49,7 @@ const typeInmueble = (typeInmueble) => {
 };
 
 const saveInmuebleValue = (element) => {
-    let name = element.name;
-    let value = element.value;
-    let data = {};
-    data[name] = value;
-    return {type: "SAVE_INMUEBLE_VALUE", data: data};
+    return {type: "SAVE_INMUEBLE_VALUE", data: { [element.name]: element.value }};
 };
 
 const showPopupIdentification = (state) => {
@@ -77,11 +69,7 @@ const disabledBusinessName = () => {
 };
 
 const saveInmuebleValueSeguridad = (element) => {
-    let name = element.name;
-    let value = element.value;
-    let data = {};
-    data[name] = value;
-    return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: data}
+    return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: { [element.name]: element.value }};
 };
 
 // Tercer formulario

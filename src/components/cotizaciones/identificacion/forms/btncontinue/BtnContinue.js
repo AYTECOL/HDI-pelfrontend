@@ -96,7 +96,6 @@ class BtnContinue extends Component {
             if (code === "37") value = value.replace("-", "", value);
             Helpers.disabled("doc-type-value");
             try {
-                store.dispatch(toggleLoading(true));
                 let persona = await ConsultaPersonas.get(code, value);
                 if (persona.consultarPersonaRs.personaRestringida === true) {
                     Helpers.enabled("doc-type-value");
