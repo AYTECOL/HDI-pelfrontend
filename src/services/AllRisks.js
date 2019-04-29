@@ -1,4 +1,5 @@
 import Api from './Api';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/";
 
@@ -27,7 +28,9 @@ class AllRisks {
         if (typeof risks.risks === "undefined" || risks.risks.length === 0) {
             risks = Default;
         }
-        return risks;
+        return {
+            risks: Helpers.orderArray(risks.risks,"riskId")
+        };
     };
 }
 
