@@ -7,8 +7,7 @@ import Cards from "../cards/Cards";
 import Tab from "../tab/Tab";
 import Btns from "../forms/btncontinue/BtnContinue";
 import Links from "../forms/links/Links";
-import store from "../../../../store";
-import {indexPlanSelected} from "../../../../actions";
+import Plans from "../plans/Plans";
 
 class Index extends React.Component {
 
@@ -16,26 +15,7 @@ class Index extends React.Component {
         super(props);
         this.state = {
             step: parseInt(this.props.match.params.step),
-            plans: [],
-            index: 1,
         };
-        for (let i = 0; i < 3; i++) this.state.plans[i] = {name: "------"};
-        store.subscribe(() => {
-            let storeState = store.getState();
-            let plans = storeState.AllPlans;
-            let index = storeState.indexPlan;
-            if (plans.length !== 0 || this.state.index !== index) {
-                this.setState({
-                    ...this.state,
-                    plans: plans,
-                    index: index
-                });
-            }
-        });
-    }
-
-    changeIndexPlan(index) {
-        store.dispatch(indexPlanSelected(index));
     }
 
     render() {
@@ -77,19 +57,7 @@ class Index extends React.Component {
                         </div>
                     </div>
 
-                    <div className="row tabs text-center">
-                        {this.state.plans.map((option, key) =>
-                            <div className="col col-12 col-sm-12 col-md-4 col-lg-4 no-padding" key={key}>
-                                <div className={"item-tab " + (parseInt(this.state.index) === key ? 'active' : '')}
-                                     onClick={(e) => {
-                                         this.changeIndexPlan(key);
-                                     }}>
-                                    <span>{option.name}</span>
-                                    <p>$ 000.000</p>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                    <Plans/>
 
                     <div className="tabs-header text-center">
                         <Tab/>
