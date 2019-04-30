@@ -8,7 +8,7 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 class Asegurarcontenidos extends Component {
 
     static nameModel = "contenidoasegudado";
-    static nameModelValue = "contenidoasegudado";
+    static nameModelValue = "contenidoasegudadovalor";
 
     _isMounted = false;
 

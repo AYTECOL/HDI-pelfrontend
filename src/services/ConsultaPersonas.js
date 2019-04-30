@@ -1,5 +1,4 @@
 import Service from './Api';
-import {UrlServicePerson} from '../config';
 
 const Baseurl = "https://4yt70dl1a7.execute-api.us-east-1.amazonaws.com/dev/flex/";
 

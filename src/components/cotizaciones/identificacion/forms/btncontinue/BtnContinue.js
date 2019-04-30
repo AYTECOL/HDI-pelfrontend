@@ -8,7 +8,7 @@ import {
     NextStep,
     nextStepIndentification,
     saveIdentificationValue,
-    showPopupIdentification, toggleLoading
+    showPopupIdentification
 } from '../../../../../actions';
 import SaveIdentifications from '../../../../../services/Quote';
 import {Link, withRouter} from "react-router-dom";
@@ -96,7 +96,6 @@ class BtnContinue extends Component {
             if (code === "37") value = value.replace("-", "", value);
             Helpers.disabled("doc-type-value");
             try {
-                store.dispatch(toggleLoading(true));
                 let persona = await ConsultaPersonas.get(code, value);
                 if (persona.consultarPersonaRs.personaRestringida === true) {
                     Helpers.enabled("doc-type-value");
