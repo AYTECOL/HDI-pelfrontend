@@ -29,7 +29,7 @@ class AllRisks {
             risks = Default;
         }
         return {
-            risks: Helpers.orderArray(risks.risks,"riskId")
+            risks: Helpers.orderArray(risks.risks, "riskId")
         };
     };
 }

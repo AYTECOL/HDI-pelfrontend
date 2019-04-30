@@ -11,9 +11,9 @@ class PolizaEmitida extends Component {
         this.state = {};
     }
 
-    openModal() {
+    openModal = () => {
         store.dispatch(toggleTopUpSendMail(true));
-    }
+    };
 
     render() {
         return (
@@ -35,9 +35,7 @@ class PolizaEmitida extends Component {
                                 <div className="generatepdf link-item">
                                     <p><i>&nbsp;</i> Generar cotización en PDF</p>
                                 </div>
-                                <div className="sendpdf link-item" onClick={(e) => {
-                                    this.openModal();
-                                }}>
+                                <div className="sendpdf link-item" onClick={this.openModal}>
                                     <p><i>&nbsp;</i> Enviar por correo</p>
                                 </div>
                             </div>

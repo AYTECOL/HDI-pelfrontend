@@ -34,7 +34,7 @@ class Allfloors {
                 data = Default();
             }
 
-            allfloors = Helpers.orderArray(data.floors,"floorCode");
+            allfloors = Helpers.orderArray(data.floors, "floorCode");
             Store.dispatch(saveAllfloors(allfloors));
         } else {
             allfloors = storeState.Allfloors;

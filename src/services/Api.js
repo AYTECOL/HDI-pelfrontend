@@ -1,7 +1,6 @@
 import store from "../store";
 import {toggleLoading} from "../actions";
 import Promise from 'es6-promise';
-
 // Data from Env
 import {UrlService} from '../config';
 

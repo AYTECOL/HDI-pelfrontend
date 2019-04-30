@@ -6,7 +6,6 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Conjuntocerrado extends Component {
 
-
     constructor(props) {
         super(props);
         this.state = {
@@ -27,7 +26,7 @@ class Conjuntocerrado extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => event => {
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".cojuntocerrado", "error");
@@ -37,7 +36,7 @@ class Conjuntocerrado extends Component {
             error: error,
             active: e.data
         });
-    }
+    };
 
     render() {
         return (
@@ -46,24 +45,20 @@ class Conjuntocerrado extends Component {
                 <ul className="select-item">
                     <li data="1"
                         className={((this.state.active === 1) ? 'active' : '')}
-                        onClick={(e) => {
-                            this.validateEmpty({
-                                data: 1,
-                                value: 1,
-                                name: "cojuntocerrado"
-                            });
-                        }}
+                        onClick={this.validateEmpty({
+                            data: 1,
+                            value: 1,
+                            name: "cojuntocerrado"
+                        })}
                     >Si
                     </li>
                     <li data="2"
                         className={((this.state.active === 2) ? 'active' : '')}
-                        onClick={(e) => {
-                            this.validateEmpty({
-                                data: 2,
-                                value: 2,
-                                name: "cojuntocerrado"
-                            });
-                        }}
+                        onClick={this.validateEmpty({
+                            data: 2,
+                            value: 2,
+                            name: "cojuntocerrado"
+                        })}
                     >No
                     </li>
                 </ul>

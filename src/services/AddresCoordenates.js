@@ -11,7 +11,7 @@ class GetAddresInfo {
         address = address.replace("N°", " ");
         //let url = `https://maps.googleapis.com/maps/api/geocode/json?key=${APIKEY}&address=${address}`;
         let url = `${Cors}https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&key=${APIKEY}&input=${address}`;
-        return await Api.get(encodeURI(url), "",false)
+        return await Api.get(encodeURI(url), "", false)
             .then(response => {
                 //return response.results[0].geometry.location;
                 if (response.status === "ZERO_RESULTS") return {};

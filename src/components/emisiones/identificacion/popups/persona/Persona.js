@@ -13,7 +13,7 @@ export default class Persona extends Component {
         };
     }
 
-    changeTextFile(e) {
+    changeTextFile = e => {
         if (typeof e.target.files[0] !== "undefined") {
             this.setState({
                 ...this.state,
@@ -27,14 +27,14 @@ export default class Persona extends Component {
                 showDefaultTextFile: true
             })
         }
-    }
+    };
 
-    generoChange(index) {
+    generoChange = index => e => {
         this.setState({
             ...this.state,
             genero: index,
         })
-    }
+    };
 
     render() {
         return (
@@ -45,9 +45,8 @@ export default class Persona extends Component {
                             <h5 className="modal-title">Información adicional</h5>
                             <p className="modal-subtitle">Ingresa la información faltante, conocerla es importante para
                                 nosotros, no olvides asignar un rol</p>
-                            <button type="button" className="close" aria-label="Close" onClick={(e) => {
-                                this.props.toggle(0)
-                            }}>&nbsp;</button>
+                            <button type="button" className="close" aria-label="Close"
+                                    onClick={this.props.toggle(0)}>&nbsp;</button>
                         </div>
                         <div className="modal-body">
                             <div className="content">
@@ -120,15 +119,11 @@ export default class Persona extends Component {
                                             <label htmlFor="doc-type-value">Genero</label>
                                             <ul className="select-item">
                                                 <li className={((this.state.genero === 1) ? 'active' : '')}
-                                                    onClick={(e) => {
-                                                        this.generoChange(1);
-                                                    }}
+                                                    onClick={this.generoChange(1)}
                                                 >Masculino
                                                 </li>
                                                 <li className={((this.state.genero === 0) ? 'active' : '')}
-                                                    onClick={(e) => {
-                                                        this.generoChange(0);
-                                                    }}
+                                                    onClick={this.generoChange(0)}
                                                 >Femenino
                                                 </li>
                                             </ul>
@@ -192,9 +187,7 @@ export default class Persona extends Component {
                                             <label htmlFor="address">Es necesario el sarlaft</label>
                                             <span>Adjunta el Sarlaft diligenciado</span>
                                             <input type="file" className="form-control" name="sarlaft"
-                                                   onChange={(e) => {
-                                                       this.changeTextFile(e);
-                                                   }}/>
+                                                   onChange={this.changeTextFile}/>
                                             {this.state.showDefaultTextFile ? (
                                                 <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                             ) : (

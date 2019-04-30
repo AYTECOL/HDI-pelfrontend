@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 //Components
 import Asegurarjoyas from '../forms/asegurarjoyas/Asegurarjoyas';
 import Asegurarobras from '../forms/asegurarobras/Asegurarobras';
@@ -7,7 +7,7 @@ import store from "../../../../store";
 
 import './Asegurarcontenidoadicional.scss';
 
-class Asegurarcontenidoadicional extends React.Component {
+class Asegurarcontenidoadicional extends Component {
 
     constructor(props) {
         super(props);

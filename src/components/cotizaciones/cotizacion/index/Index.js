@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 //Component
@@ -9,7 +9,7 @@ import Btns from "../forms/btncontinue/BtnContinue";
 import Links from "../forms/links/Links";
 import Plans from "../plans/Plans";
 
-class Index extends React.Component {
+class Index extends Component {
 
     constructor(props) {
         super(props);
@@ -81,7 +81,9 @@ class Index extends React.Component {
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                             <p><i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes descarga el
-                                fotmato <a href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF" rel="noopener noreferrer" target="_blank">aquí</a></p>
+                                fotmato <a
+                                    href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF"
+                                    rel="noopener noreferrer" target="_blank">aquí</a></p>
                         </div>
                     </div>
 

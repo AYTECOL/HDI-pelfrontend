@@ -38,14 +38,14 @@ class Zona extends Component {
         });
     }
 
-    saveData(e) {
+    saveData = e => event => {
         store.dispatch(saveInmuebleValue(e));
         Helpers.removeClass(".zona", "error");
         this.setState({
             ...this.state,
             active: e.value
         });
-    }
+    };
 
     render() {
         return (
@@ -55,12 +55,10 @@ class Zona extends Component {
                     {this.state.zonas.map((option, key) =>
                         <li key={option.zoneCode}
                             className={parseInt(this.state.active) === parseInt(option.zoneCode) ? 'active' : ''}
-                            onClick={(e) => {
-                                this.saveData({
-                                    value: parseInt(option.zoneCode),
-                                    name: "zona"
-                                });
-                            }}>
+                            onClick={this.saveData({
+                                value: parseInt(option.zoneCode),
+                                name: "zona"
+                            })}>
                             {option.answer}
                         </li>
                     )}

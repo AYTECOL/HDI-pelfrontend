@@ -28,13 +28,13 @@ class Table extends Component {
         }
     }
 
-    async getRowById(id) {
+    getRowById = id => async e => {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
             this.props.history.push('/cotizacion/' + cotizacion.state + '/' + id);
             store.dispatch(restoreCotizacion(cotizacion));
         }
-    }
+    };
 
     render() {
         return (
@@ -60,21 +60,19 @@ class Table extends Component {
                             <div className="col"><p>08 días</p></div>
                             <div className="col"><p>Proceso de inspección</p></div>
                             <div className="col">
-                                <button onClick={(e) => {
-                                    this.getRowById(option.quoteId)
-                                }} className="btn btn-default">Retomar
+                                <button onClick={this.getRowById(option.quoteId)} className="btn btn-default">Retomar
                                 </button>
                             </div>
                         </div>
                     )}
                 </div>
                 <div className="row footer">
-                    <button type="button" className="pager prev"></button>
+                    <button type="button" className="pager prev">&nbsp;</button>
                     <ul>
                         <li className="active"><span>1</span></li>
                         <li><span>2</span></li>
                     </ul>
-                    <button type="button" className="pager next"></button>
+                    <button type="button" className="pager next">&nbsp;</button>
                 </div>
             </div>
         );

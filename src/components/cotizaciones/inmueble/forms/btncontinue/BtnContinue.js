@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 import store from '../../../../../store';
 import {withRouter} from "react-router-dom";
@@ -24,12 +24,12 @@ class BtnContinue extends Component {
         };
     }
 
-    async saveService() {
+    saveService = async () => {
         await CreateOrUpdateValoration.get();
         window.location.href = UrlSite + "/";
-    }
+    };
 
-    async saveServiceContinue() {
+    saveServiceContinue = async () => {
         let storeState = store.getState();
 
         let errors = 0;
@@ -151,28 +151,24 @@ class BtnContinue extends Component {
             window.location.href = UrlSite + '/cotizacion/3/' + storeState.cotizacion.number;
         }
 
-    }
+    };
 
     render() {
         let storeState = store.getState();
         return (
-            <div>
+            <Fragment>
                 <div className={"return-button"}>
                     <a href={"/cotizacion/1/" + storeState.cotizacion.number}><i className="back-icon">&nbsp;</i>Volver</a>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={(e) => {
-                            this.saveService();
-                        }}>Guardar y salir
+                        onClick={this.saveService}>Guardar y salir
                 </button>
                 <button type="button"
                         disabled={this.state.disabled}
-                        onClick={(e) => {
-                            this.saveServiceContinue();
-                        }}
+                        onClick={this.saveServiceContinue}
                         className={"btn btn-primary " + (this.state.disabled === true ? 'disabled' : '')}>Continuar
                 </button>
-            </div>
+            </Fragment>
         );
     }
 }

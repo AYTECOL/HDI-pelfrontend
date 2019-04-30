@@ -23,7 +23,8 @@ class Addressadditional extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        e = e.target;
         let error = false;
         if (e.value.length > 200) error = true;
         this.setState({
@@ -31,7 +32,7 @@ class Addressadditional extends Component {
             error: error,
         });
         store.dispatch(saveIdentificationValue(e));
-    }
+    };
 
     render() {
         return (
@@ -43,9 +44,7 @@ class Addressadditional extends Component {
                        autoComplete="addressadditional"
                        className={"form-control"}
                        placeholder="Ingresa la dirección"
-                       onChange={(e) => {
-                           this.validateEmpty(e.target);
-                       }}/>
+                       onChange={this.validateEmpty}/>
                 <small className="form-text text-muted">Ejemplo: Interior 6, apto 201</small>
             </div>
         );

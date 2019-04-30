@@ -25,7 +25,7 @@
     padding: 12px 7px 13px 58px;
     display: none;
 
-    &::before{
+    &::before {
       content: '';
       width: 0;
       height: 0;
@@ -39,7 +39,7 @@
       margin: auto;
     }
 
-    &::after{
+    &::after {
       content: '';
       width: 0;
       height: 0;
@@ -61,7 +61,7 @@
       color: #D43900;
       line-height: 26px;
 
-      span{
+      span {
         display: block;
         background: #D43900;
         border: 1px solid #D43900;

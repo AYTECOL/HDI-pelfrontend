@@ -42,7 +42,11 @@ class NumeroIdentificacion extends Component {
         });
     }
 
-    validateEmpty(v, e) {
+    validateEmpty = event => {
+        if (event === 'notempty') return;
+        let v = event.target.value;
+        let e = event.target;
+
         let error = false;
 
         if (v.length < 1) error = true;
@@ -86,7 +90,7 @@ class NumeroIdentificacion extends Component {
             error: error,
             value: v
         });
-    }
+    };
 
     render() {
         return (
@@ -97,12 +101,8 @@ class NumeroIdentificacion extends Component {
                        className={(this.state.disabled ? "disabled " : "") + "form-control"}
                        value={this.state.value}
                        placeholder="Ingresa la identificación"
-                       onBlur={(e) => {
-                           this.validateEmpty(e.target.value, e.target);
-                       }}
-                       onChange={(e) => {
-                           this.validateEmpty(e.target.value, e.target);
-                       }}/>
+                       onBlur={this.validateEmpty}
+                       onChange={this.validateEmpty}/>
                 <small className="form-text only-errors">El número de Identificación ingresado, no corresponde con el
                     tipo de identificación seleccionado.
                 </small>

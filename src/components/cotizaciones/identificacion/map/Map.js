@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {Component} from 'react';
 import store from '../../../../store';
 import MapBase from './MapBase';
 import './Map.scss';
 
-class Map extends React.Component {
+class Map extends Component {
     constructor(props) {
         super(props);
 
@@ -32,7 +32,8 @@ class Map extends React.Component {
                          containerElement={<div style={{height: `400px`}}/>}
                          mapElement={<div style={{height: `100%`}}/>}/>
                 <div className="error-info">
-                    <p><span>&nbsp;</span>No encontramos la dirección ingresada, valida en el mapa si es la correcta y continua con el proceso</p>
+                    <p><span>&nbsp;</span>No encontramos la dirección ingresada, valida en el mapa si es la correcta y
+                        continua con el proceso</p>
                 </div>
             </div>
 

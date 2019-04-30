@@ -56,7 +56,7 @@ class Refuerzoestructural extends Component {
         // });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => event => {
         let error = false;
         if (e.value.length < 1) error = true;
         store.dispatch(saveInmuebleValue(e));
@@ -65,9 +65,10 @@ class Refuerzoestructural extends Component {
             error: error,
             active: e.data
         });
-    }
+    };
 
-    saveValue(e) {
+    saveValue = e => event => {
+        e.value = event.target.value;
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".anorefuerzo", "error");
@@ -77,7 +78,7 @@ class Refuerzoestructural extends Component {
             errorselect: error,
             valueOther: e.value
         });
-    }
+    };
 
     render() {
         if (this.state.show === false) return <div className="hide">&nbsp;</div>;
@@ -88,23 +89,19 @@ class Refuerzoestructural extends Component {
                         <label htmlFor="doc-type-value">Cuenta con refuerzos estructurales</label>
                         <ul className="select-item">
                             <li className={(this.state.active === 1) ? 'active' : ''}
-                                onClick={(e) => {
-                                    this.validateEmpty({
-                                        data: 1,
-                                        value: 1,
-                                        name: "refuerzo"
-                                    });
-                                }}
+                                onClick={this.validateEmpty({
+                                    data: 1,
+                                    value: 1,
+                                    name: "refuerzo"
+                                })}
                             >Si
                             </li>
                             <li className={(this.state.active === 2) ? 'active' : ''}
-                                onClick={(e) => {
-                                    this.validateEmpty({
-                                        data: 2,
-                                        value: 2,
-                                        name: "refuerzo"
-                                    });
-                                }}
+                                onClick={this.validateEmpty({
+                                    data: 2,
+                                    value: 2,
+                                    name: "refuerzo"
+                                })}
                             >No
                             </li>
                         </ul>
@@ -118,13 +115,10 @@ class Refuerzoestructural extends Component {
                             <select className="anorefuerzo form-control"
                                     name="anorefuerzo"
                                     value={this.state.valueOther}
-                                    onChange={(e) => {
-                                        this.saveValue({
-                                            value: e.target.value,
-                                            name: "anorefuerzo"
-                                        });
-                                    }}
-                            >
+                                    onChange={this.saveValue({
+                                        value: "",
+                                        name: "anorefuerzo"
+                                    })}>
                                 <option value="">Selecciona el año</option>
                                 <option value="1">1985-1997</option>
                                 <option value="2">1998-2010</option>

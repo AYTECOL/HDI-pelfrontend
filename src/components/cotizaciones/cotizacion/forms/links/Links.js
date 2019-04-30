@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 import './Links.scss';
 import store from "../../../../../store";
@@ -11,22 +11,20 @@ class Links extends Component {
         this.state = {};
     }
 
-    openModal() {
+    openModal = () => {
         store.dispatch(toggleTopUpSendMail(true));
-    }
+    };
 
     render() {
         return (
-            <div>
+            <Fragment>
                 <div className="generatepdf link-item">
                     <p><i>&nbsp;</i> Generar cotización en PDF</p>
                 </div>
-                <div className="sendpdf link-item" onClick={(e) => {
-                    this.openModal();
-                }}>
+                <div className="sendpdf link-item" onClick={this.openModal}>
                     <p><i>&nbsp;</i> Enviar por correo</p>
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }

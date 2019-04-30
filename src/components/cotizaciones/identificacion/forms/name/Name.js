@@ -33,7 +33,8 @@ class Name extends Component {
         return 51;
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        e = e.target;
         e.value = Helpers.toCapitalize(e.value);
         let error = false;
         if (e.value.length < 1 || e.value.length > Name.limit()) error = true;
@@ -43,7 +44,7 @@ class Name extends Component {
             error: error,
             value: e.value
         });
-    }
+    };
 
     render() {
         return (
@@ -55,9 +56,7 @@ class Name extends Component {
                        className={(this.state.disabledName ? "disabled " : "") + "form-control"}
                        disabled={this.state.disabledName === true}
                        placeholder="Ingresa primer nombre"
-                       onChange={(e) => {
-                           this.validateEmpty(e.target);
-                       }}/>
+                       onChange={this.validateEmpty}/>
             </div>
         );
     }

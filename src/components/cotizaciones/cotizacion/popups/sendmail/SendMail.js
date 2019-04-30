@@ -27,18 +27,18 @@ class SendMail extends Component {
         });
     }
 
-    hide() {
+    hide = () => {
         store.dispatch(toggleTopUpSendMail(false));
-    }
+    };
 
-    moreItems() {
+    moreItems = () => {
         let current = this.state.totalItems;
         current++;
         this.setState({
             ...this.state,
             totalItems: current,
         });
-    }
+    };
 
     render() {
         return (
@@ -49,11 +49,7 @@ class SendMail extends Component {
                             <h5 className="modal-title">Enviar cotización por correo</h5>
                             <p className="modal-subtitle">Ingresa el correo de la persona a la que deseas enviarle la
                                 cotización</p>
-                            <button type="button" className="close" aria-label="Close"
-                                    onClick={(e) => {
-                                        this.hide();
-                                    }}
-                            ></button>
+                            <button type="button" className="close" onClick={this.hide}></button>
                         </div>
                         <div className="modal-body">
                             <div className="content">
@@ -70,9 +66,7 @@ class SendMail extends Component {
                                     </div>
                                 )}
                                 <div className="more-items"
-                                     onClick={(e) => {
-                                         this.moreItems();
-                                     }}>
+                                     onClick={this.moreItems}>
                                     <button type="button" className={"more-btn"}>+</button>
                                     <p>Agregar otro correo</p>
                                 </div>
@@ -80,12 +74,7 @@ class SendMail extends Component {
                             <div className="buttons">
                                 <a href="/" className="btn btn-secondary" data-dismiss="modal">Cancelar
                                 </a>
-                                <button type="button" className="btn btn-primary"
-                                        onClick={(e) => {
-                                            this.hide();
-                                        }}
-                                >Enviar
-                                </button>
+                                <button type="button" className="btn btn-primary" onClick={this.hide}>Enviar</button>
                             </div>
                         </div>
                     </div>

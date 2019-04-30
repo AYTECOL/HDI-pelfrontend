@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 import store from '../../../../../store';
 import {
@@ -131,7 +131,7 @@ class BtnContinue extends Component {
 
                     }
                 }
-            }catch (e) {
+            } catch (e) {
                 Helpers.enabled("doc-type-value");
             }
         }
@@ -143,19 +143,19 @@ class BtnContinue extends Component {
     };
 
     render = () => (
-        <div>
+        <Fragment>
             <div className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " return-button"}>
                 <Link to='/'><i className="back-icon">&nbsp;</i>Volver</Link>
             </div>
             <button type="button"
                     className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}
-                    onClick={() => this.saveAndExit()}>Guardar y salir
+                    onClick={this.saveAndExit}>Guardar y salir
             </button>
-            <button disabled={this.state.continueButtonDisable} onClick={() => this.nextStepIndex()}
+            <button disabled={this.state.continueButtonDisable} onClick={this.nextStepIndex}
                     type="button"
                     className={(this.state.continueButtonDisable ? 'disabled ' : '') + "btn btn-primary"}>Continuar
             </button>
-        </div>
+        </Fragment>
     );
 }
 

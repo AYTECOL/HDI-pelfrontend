@@ -43,7 +43,7 @@ class AllBuildMaterial {
         if (typeof data.build_materials === "undefined" || data.build_materials.length === 0) {
             data = Default;
         }
-        return Helpers.orderArray(data.build_materials,"buildMaterialCode");
+        return Helpers.orderArray(data.build_materials, "buildMaterialCode");
     };
 }
 

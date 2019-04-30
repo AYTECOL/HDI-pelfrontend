@@ -86,13 +86,14 @@ class Asegurarcontenidos extends Component {
         this._isMounted = false;
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => event => {
         store.dispatch(saveInmuebleValue(e));
         Helpers.removeClass(".contenidoasegudado", "error");
         Helpers.removeClass(".inmuebleasegudado", "error");
-    }
+    };
 
-    validateValue(e) {
+    validateValue = (e) => {
+        e = e.target;
         let error = Asegurarcontenidos.validateField(e.value);
         let format = Masknumbermoney.formatToMask(e.value);
         if (error === 0) Helpers.removeClass(".contenidoasegudadovalor", "error");
@@ -107,7 +108,7 @@ class Asegurarcontenidos extends Component {
                 value: format
             });
         }
-    }
+    };
 
     render() {
         return (
@@ -117,21 +118,17 @@ class Asegurarcontenidos extends Component {
                         <label htmlFor="doc-type-value">¿Deseas asegurar {Asegurarcontenidos.name()}? </label>
                         <ul className="select-item">
                             <li className={((this.state.active === 1) ? 'active' : '')}
-                                onClick={(e) => {
-                                    this.validateEmpty({
-                                        value: 1,
-                                        name: Asegurarcontenidos.nameModel
-                                    });
-                                }}
+                                onClick={this.validateEmpty({
+                                    value: 1,
+                                    name: Asegurarcontenidos.nameModel
+                                })}
                             >Si
                             </li>
                             <li className={((this.state.active === 0) ? 'active' : '')}
-                                onClick={(e) => {
-                                    this.validateEmpty({
-                                        value: 0,
-                                        name: Asegurarcontenidos.nameModel
-                                    });
-                                }}
+                                onClick={this.validateEmpty({
+                                    value: 0,
+                                    name: Asegurarcontenidos.nameModel
+                                })}
                             >No
                             </li>
                         </ul>
@@ -148,12 +145,8 @@ class Asegurarcontenidos extends Component {
                                    className={"form-control"}
                                    value={this.state.value}
                                    placeholder=""
-                                   onBlur={(e) => {
-                                       this.validateValue(e.target);
-                                   }}
-                                   onChange={(e) => {
-                                       this.validateValue(e.target);
-                                   }}/>
+                                   onBlur={this.validateValue}
+                                   onChange={this.validateValue}/>
                             <small
                                 className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Asegurarcontenidos.min())} -
                                 Máximo. {Masknumbermoney.formatToMask(Asegurarcontenidos.max())}</small>

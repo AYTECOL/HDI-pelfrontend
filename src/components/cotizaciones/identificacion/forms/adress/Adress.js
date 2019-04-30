@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import store from '../../../../../store';
-import {saveIdentificationValue,mapShow} from '../../../../../actions';
+import {mapShow, saveIdentificationValue} from '../../../../../actions';
 
 class Adress extends Component {
 
@@ -33,17 +33,18 @@ class Adress extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        e = e.target;
         let error = false;
         if (e.value.length < 1 || e.value.length > 200) error = true;
         store.dispatch(saveIdentificationValue(e));
-        if( store.getState().showMap !== true ) store.dispatch(mapShow(true));
+        if (store.getState().showMap !== true) store.dispatch(mapShow(true));
         this.setState({
             ...this.state,
             error: error,
             address: e.value
         });
-    }
+    };
 
     render() {
         return (
@@ -58,12 +59,8 @@ class Adress extends Component {
                        autoCorrect="off"
                        autoCapitalize="none"
                        disabled={this.state.disabled === true}
-                       onBlur={(e) => {
-                           this.validateEmpty(e.target);
-                       }}
-                       onChange={(e) => {
-                           this.validateEmpty(e.target);
-                       }}/>
+                       onBlur={this.validateEmpty}
+                       onChange={this.validateEmpty}/>
                 <small className={"form-text only-errors " + (this.state.error ? 'show' : 'hide')}>Por favor ingrese la
                     dirreción del hogar.
                 </small>

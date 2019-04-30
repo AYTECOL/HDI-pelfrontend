@@ -36,7 +36,8 @@ class Numerodepiso extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        e = e.target;
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".numerodepisos", "error");
@@ -46,20 +47,15 @@ class Numerodepiso extends Component {
             value: e.value
         });
         store.dispatch(saveInmuebleValue(e));
-    }
+    };
 
     render() {
         return (
             <div className={"numerodepisos input-select form-group " + ((this.state.error) ? 'error' : '')}>
                 <label htmlFor="numerodepisose">Número de pisos del inmueble</label>
                 <select name="numerodepisos" id="numerodepisos" className={"form-control "} value={this.state.value}
-                        onBlur={(e) => {
-                            this.validateEmpty(e.target);
-                        }}
-                        onChange={(e) => {
-                            this.validateEmpty(e.target);
-                        }}
-                >
+                        onBlur={this.validateEmpty}
+                        onChange={this.validateEmpty}>
                     <option value="">Seleccione</option>
                     {this.state.floors.map(option =>
                         <option key={option.floorCode} value={option.floorCode}>{option.answer}</option>

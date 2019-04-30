@@ -51,7 +51,7 @@ class Loading extends Component {
 
     render() {
         return (
-            <div className={"app-loader "+(this.state.active === false?'hide':'show')}>
+            <div className={"app-loader " + (this.state.active === false ? 'hide' : 'show')}>
                 <div className="content-loader">
                     <div className="image">
                         <LoadingSvg/>

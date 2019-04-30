@@ -1,16 +1,15 @@
-import React from 'react';
+import React, {Component, Fragment} from 'react';
 import './Tab.scss';
 import {withRouter} from "react-router-dom";
 import AllPlans from '../../../../services/AllPlans';
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 import store from "../../../../store";
-import {indexPlanSelected, AllPlans as AllPlansCreator} from "../../../../actions";
-
+import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
 //Components
 import Coberturas from '../coberturas/Coberturas';
 import Asistencias from '../asistencias/Asistencias';
 
-class Tab extends React.Component {
+class Tab extends Component {
 
     constructor(props) {
         super(props);
@@ -25,12 +24,12 @@ class Tab extends React.Component {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
             let indexPlan = storeState.indexPlan;
-            if ( inmueble.inmuebleasegudado !== this.state.Inmueble.inmuebleasegudado ||
-                 inmueble.contenidoasegudado !== this.state.Inmueble.contenidoasegudado
+            if (inmueble.inmuebleasegudado !== this.state.Inmueble.inmuebleasegudado ||
+                inmueble.contenidoasegudado !== this.state.Inmueble.contenidoasegudado
             ) {
                 this.updateType();
             }
-            if (this.state.index !== indexPlan){
+            if (this.state.index !== indexPlan) {
                 this.setState({
                     ...this.state,
                     index: indexPlan
@@ -39,7 +38,18 @@ class Tab extends React.Component {
         });
     }
 
-    updateType(){
+    static toogleSlide = index => e => {
+        let className = "close_item";
+        if (Helpers.hasClass(".row_tab_" + index, className)) {
+            Helpers.removeClass(".row_tab_" + index, className);
+        } else {
+            let el = document.querySelector(".row_tab_" + index + " .wrapper-box");
+            el.style.height = el.offsetHeight + "px";
+            Helpers.addClass(".row_tab_" + index, className);
+        }
+    };
+
+    updateType() {
         let inmueble = store.getState().Inmueble;
         let type = this.state.typePlans;
         if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
@@ -56,12 +66,12 @@ class Tab extends React.Component {
         });
         setTimeout(function () {
             this.getPlants();
-        }.bind(this),4);
+        }.bind(this), 4);
     }
 
     async getPlants() {
         let plans = await AllPlans.get(this.state.typePlans);
-        if( this.state.index === "" ) for(let i in plans) if (plans[i].isdefault===true) store.dispatch(indexPlanSelected(i));
+        if (this.state.index === "") for (let i in plans) if (plans[i].isdefault === true) store.dispatch(indexPlanSelected(i));
         this.setState({
             ...this.state,
             plans: plans
@@ -69,21 +79,10 @@ class Tab extends React.Component {
         store.dispatch(AllPlansCreator(plans));
     }
 
-    static toogleSlide(index) {
-        let className = "close_item";
-        if (Helpers.hasClass(".row_tab_" + index, className)) {
-            Helpers.removeClass(".row_tab_" + index, className);
-        } else {
-            let el = document.querySelector(".row_tab_" + index + " .wrapper-box");
-            el.style.height = el.offsetHeight + "px";
-            Helpers.addClass(".row_tab_" + index, className);
-        }
-    }
-
     render() {
-        if( typeof this.state.plans[this.state.index] === "undefined" ) return <div className="hide">&nbsp;</div>;
+        if (typeof this.state.plans[this.state.index] === "undefined") return <div className="hide">&nbsp;</div>;
         return (
-            <div>
+            <Fragment>
                 <div className="first-content">
                     <div className="row">
                         <div className="col col-12 col-md-3 col-lg-3">
@@ -100,7 +99,7 @@ class Tab extends React.Component {
                     <Coberturas toogleSlide={Tab.toogleSlide}/>
                     <Asistencias toogleSlide={Tab.toogleSlide}/>
                 </div>
-            </div>
+            </Fragment>
         )
     }
 
