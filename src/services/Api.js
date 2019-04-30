@@ -20,7 +20,7 @@ class Api {
             xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
             xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             xhr.onload = function () {
-                store.dispatch(toggleLoading(false));
+                if (typeof showLoader === "undefined") store.dispatch(toggleLoading(false));
                 if (this.status >= 200 && this.status < 300) {
                     resolve(xhr.response);
                 } else {
@@ -31,7 +31,7 @@ class Api {
                 }
             };
             xhr.onerror = function () {
-                store.dispatch(toggleLoading(false));
+                if (typeof showLoader === "undefined") store.dispatch(toggleLoading(false));
                 reject({
                     status: this.status,
                     statusText: xhr.statusText

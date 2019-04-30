@@ -4,7 +4,7 @@ import {withRouter} from "react-router-dom";
 import AllPlans from '../../../../services/AllPlans';
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 import store from "../../../../store";
-import {indexPlanSelected, toggleLoading} from "../../../../actions";
+import {indexPlanSelected, AllPlans as AllPlansCreator} from "../../../../actions";
 
 //Components
 import Coberturas from '../coberturas/Coberturas';
@@ -17,11 +17,10 @@ class Tab extends React.Component {
         this.state = {
             step: parseInt(this.props.match.params.step),
             plans: [],
-            Inmueble: store.getState().Inmueble,
+            Inmueble: {},
             typePlans: 3,
-            index: 0
+            index: "",
         };
-        store.dispatch(toggleLoading(true));
         store.subscribe(() => {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
@@ -29,22 +28,7 @@ class Tab extends React.Component {
             if ( inmueble.inmuebleasegudado !== this.state.Inmueble.inmuebleasegudado ||
                  inmueble.contenidoasegudado !== this.state.Inmueble.contenidoasegudado
             ) {
-                let type = this.state.typePlans;
-                if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
-                    type = 3;
-                } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
-                    type = 2;
-                } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
-                    type = 1;
-                }
-                this.setState({
-                    ...this.state,
-                    typePlans: type,
-                    Inmueble: inmueble
-                });
-                setTimeout(function () {
-                    this.getPlants();
-                }.bind(this),4);
+                this.updateType();
             }
             if (this.state.index !== indexPlan){
                 this.setState({
@@ -55,16 +39,37 @@ class Tab extends React.Component {
         });
     }
 
-    async getPlants() {
-        let plans = await AllPlans.get(this.state.typePlans);
+    updateType(){
+        let inmueble = store.getState().Inmueble;
+        let type = this.state.typePlans;
+        if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
+            type = 3;
+        } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
+            type = 2;
+        } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
+            type = 1;
+        }
         this.setState({
             ...this.state,
-            plans: plans,
+            Inmueble: inmueble,
+            typePlans: type,
         });
-        for(let i in plans) if (plans[i].isdefault) store.dispatch(indexPlanSelected(i));
+        setTimeout(function () {
+            this.getPlants();
+        }.bind(this),4);
     }
 
-    toogleSlide(index) {
+    async getPlants() {
+        let plans = await AllPlans.get(this.state.typePlans);
+        if( this.state.index === "" ) for(let i in plans) if (plans[i].isdefault===true) store.dispatch(indexPlanSelected(i));
+        this.setState({
+            ...this.state,
+            plans: plans
+        });
+        store.dispatch(AllPlansCreator(plans));
+    }
+
+    static toogleSlide(index) {
         let className = "close_item";
         if (Helpers.hasClass(".row_tab_" + index, className)) {
             Helpers.removeClass(".row_tab_" + index, className);
@@ -92,8 +97,8 @@ class Tab extends React.Component {
                     </div>
                 </div>
                 <div className="wrapper-items">
-                    <Coberturas toogleSlide={this.toogleSlide}/>
-                    <Asistencias toogleSlide={this.toogleSlide}/>
+                    <Coberturas toogleSlide={Tab.toogleSlide}/>
+                    <Asistencias toogleSlide={Tab.toogleSlide}/>
                 </div>
             </div>
         )

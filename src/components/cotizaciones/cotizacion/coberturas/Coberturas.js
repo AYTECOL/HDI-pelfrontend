@@ -8,9 +8,10 @@ class Tab extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            plans: [],
+            plans: store.getState().AllPlans,
             index: 0,
             coverturasTotal: 0,
+            Inmueble: {},
         };
         for (let i = 0; i < 3; i++) {
             this.state.plans[i] = {
@@ -22,16 +23,14 @@ class Tab extends React.Component {
                 ]
             }
         }
-
         store.subscribe(() => {
             let storeState = store.getState();
-            let index = storeState.indexPlan;
-            let plans = storeState.AllPlans;
-            if (this.state.index !== index || this.state.plans !== plans) {
+            if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
                 this.setState({
                     ...this.state,
-                    index: index,
-                    plans: plans
+                    plans: storeState.AllPlans,
+                    Inmueble: storeState.Inmueble,
+                    index: storeState.indexPlan,
                 });
                 setTimeout(function () {
                     this.countCoverturas();
@@ -67,7 +66,7 @@ class Tab extends React.Component {
         this.countCoverturas();
     }
 
-    getSelectByItems(item) {
+    static getSelectByItems(item) {
         for (let i in item) {
             if (item[i].default === true) {
                 return item[i].id;
@@ -76,7 +75,7 @@ class Tab extends React.Component {
         return "";
     }
 
-    getSelectFields(item) {
+    static getSelectFields(item) {
         for (let i in item) {
             if (item[i].default === true) {
                 return i;
@@ -96,7 +95,7 @@ class Tab extends React.Component {
 
     getValueFields(item) {
         try {
-            let inmueble = this.state.Inmueble;
+            let inmueble = store.getState().Inmueble;
             // Inmueble
             if (item.id === 1) {
                 return Masknumbermoney.formatToMask(
@@ -157,7 +156,7 @@ class Tab extends React.Component {
                     </div>
 
                     <div className="wrapper-box">
-                        {this.state.plans[this.state.index].coverages.map((option, key) =>
+                        {typeof this.state.plans[this.state.index].coverages !== "undefined" && this.state.plans[this.state.index].coverages.map((option, key) =>
                             <div className={"rowor " + (option.optional === true ? '' : 'disabled-item')}
                                  key={key}>
                                 <div className="row">
@@ -167,23 +166,23 @@ class Tab extends React.Component {
                                             <input type="checkbox"
                                                    checked={(option.checked === true ? 'checked' : false)}
                                                    disabled={(option.optional === false)}
-                                                   name="incendios" id="incendios"
+                                                   name={"itemcheck"+key} id={"itemcheck"+key}
                                                    onChange={(e) => {
                                                        this.checkCoverturas(this.state.index, key);
                                                    }}
                                             />
-                                            <label htmlFor="incendios">{option.name}</label>
+                                            <label htmlFor={"itemcheck"+key}>{option.name}</label>
                                         </div>
                                     </div>
                                     <div className="col col-12 col-sm-12 col-md-3 col-lg-3 middle">
                                         {typeof option.values !== "undefined" &&
                                         <div>
                                             {option.values.map((opt, k) =>
-                                                <div className={"contenidoasegudadovalor form-group"} key={k}>
-                                                    <label htmlFor="contenidoasegudadovalor">{opt.name}</label>
+                                                <div className={"form-group "+(typeof opt.value !== 'undefined'?'':'input-select')} key={k}>
+                                                    <label htmlFor={"item"+k+"_"+key}>{opt.name}</label>
                                                     {typeof opt.value !== 'undefined' ? (
-                                                        <input name="contenidoasegudadovalor"
-                                                               id="contenidoasegudadovalor"
+                                                        <input name={"item"+k+"_"+key}
+                                                               id={"item"+k+"_"+key}
                                                                placeholder={Masknumbermoney.formatToMask(opt.value)}
                                                                value={this.getValueFields(opt)}
                                                                onChange={(e) => {
@@ -191,7 +190,7 @@ class Tab extends React.Component {
                                                                disabled={(option.optional === false)}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
-                                                        <select className={"form-control"} value={this.getSelectFields(opt.values)} onChange={(e)=>{}}>
+                                                        <select className={"form-control"} name={"item"+k+"_"+key} id={"item"+k+"_"+key} value={Tab.getSelectFields(opt.values)} onChange={(e)=>{}}>
                                                             {opt.values.map((opt, k) =>
                                                                 <option key={k} value={k}>{Masknumbermoney.formatToMask(opt.limit)}</option>
                                                             )}
@@ -206,10 +205,10 @@ class Tab extends React.Component {
                                         {typeof option.deductible !== 'undefined' ? (
                                             <div
                                                 className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
-                                                <label htmlFor="pisonumero">Deducible</label>
-                                                <select name="pisonumero" className="form-control"
+                                                <label htmlFor={"itemdeducible"+key}>Deducible</label>
+                                                <select name={"itemdeducible"+key} id={"itemdeducible"+key} className="form-control"
                                                         disabled={(option.optional === false)}
-                                                        defaultValue={this.getSelectByItems(option.deductible)}>
+                                                        defaultValue={Tab.getSelectByItems(option.deductible)}>
                                                     <option value="">Sin Deducible</option>
                                                     {option.deductible.map((opt, k) =>
                                                         <option key={k} value={opt.id}>{opt.name}</option>

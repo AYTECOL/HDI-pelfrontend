@@ -48,6 +48,7 @@ class Cards extends React.Component {
             this.state.items[i].active = true;
             this.state.items[i].errorValue = 0;
             this.state.items[i].inactiveToggle = false;
+            this.state.items[i].inactiveAdd = false;
         }
         this.state.items[0].active = false;
 
@@ -107,6 +108,7 @@ class Cards extends React.Component {
             newItems[3].active === true &&
             newItems[4].active === true;
         newItems[1].inactiveToggle = newItems[0].active === true;
+        for(let i = 2; i < 5; i++) newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
         if (this._isMounted) {
             this.setState({
                 ...this.state,
@@ -179,6 +181,7 @@ class Cards extends React.Component {
             ...this.state,
             items: newItems
         });
+        this.validateToggle();
     }
 
     render() {
@@ -190,7 +193,7 @@ class Cards extends React.Component {
                             <div className={"image image-" + (key + 1)}>&nbsp;</div>
                             <p>{option.parent.name()}</p>
                             <div className="wrapper-over">
-                                <div className="btntoggle" onClick={(e) => {
+                                <div className={(option.inactiveAdd === true ? 'invisible' : '')+" btntoggle"} onClick={(e) => {
                                     this.toggleItem(key)
                                 }}>+
                                 </div>

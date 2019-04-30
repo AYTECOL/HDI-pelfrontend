@@ -8,7 +8,7 @@ import {
     NextStep,
     nextStepIndentification,
     saveIdentificationValue,
-    showPopupIdentification, toggleLoading
+    showPopupIdentification
 } from '../../../../../actions';
 import SaveIdentifications from '../../../../../services/Quote';
 import {Link, withRouter} from "react-router-dom";

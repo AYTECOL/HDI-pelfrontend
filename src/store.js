@@ -72,7 +72,7 @@ const initialState = {
     },
 
     // tercer formulario Cotizacion
-    indexPlan: 1,
+    indexPlan: "",
 
     // Dada Services
     Allfloors: [],
