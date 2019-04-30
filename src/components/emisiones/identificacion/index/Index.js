@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 //Helpers
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 //Component
@@ -10,7 +10,7 @@ import PopUpEntidad from '../popups/entidad/Entidad';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 
-class Index extends React.Component {
+class Index extends Component {
 
     constructor(props) {
         super(props);
@@ -39,17 +39,17 @@ class Index extends React.Component {
         }
     }
 
-    togglePopUpDelete(index) {
+    togglePopUpDelete = index => e => {
         this.showAnyPopup("showPopUpDelete")
-    }
+    };
 
-    togglePopUpPersona(index) {
+    togglePopUpPersona = index => e => {
         this.showAnyPopup("showPopUpPersona")
-    }
+    };
 
-    togglePopUpEntidad(index) {
+    togglePopUpEntidad = index => e => {
         this.showAnyPopup("showPopUpEntidad")
-    }
+    };
 
     render() {
         if (this.state.step !== 1) return <div className="hide">&nbsp;</div>;
@@ -90,9 +90,7 @@ class Index extends React.Component {
                                 <div className="col actions">
                                     <p>
                                         <i>Modificar</i>
-                                        <span className="trash" onClick={(e) => {
-                                            this.togglePopUpDelete(1);
-                                        }}>&nbsp;</span>
+                                        <span className="trash" onClick={this.togglePopUpDelete(1)}>&nbsp;</span>
                                     </p>
                                 </div>
                             </div>
@@ -102,15 +100,11 @@ class Index extends React.Component {
 
                     <div className="row">
                         <div className="col wrapper-more-items">
-                            <div className="more-items" onClick={(e) => {
-                                this.togglePopUpPersona(1);
-                            }}>
+                            <div className="more-items" onClick={this.togglePopUpPersona(1)}>
                                 <button type="button" className="more-btn">+</button>
                                 <p>Agregar persona</p>
                             </div>
-                            <div className="more-items" onClick={(e) => {
-                                this.togglePopUpEntidad(1);
-                            }}>
+                            <div className="more-items" onClick={this.togglePopUpEntidad(1)}>
                                 <button type="button" className="more-btn">+</button>
                                 <p>Agregar beneficiario oneroso</p>
                             </div>
@@ -127,9 +121,7 @@ class Index extends React.Component {
                         <div className="col col-md-8 col-lg-8 last-items-emision">
                             <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
                                 asegurar a personas adicionales. ¿Deseas hacerlo?</p>
-                            <div className="more-items" onClick={(e) => {
-                                this.togglePopUpPersona(1);
-                            }}>
+                            <div className="more-items" onClick={this.togglePopUpPersona(1)}>
                                 <button type="button" className="more-btn">+</button>
                                 <p>Si, agregar persona</p>
                             </div>

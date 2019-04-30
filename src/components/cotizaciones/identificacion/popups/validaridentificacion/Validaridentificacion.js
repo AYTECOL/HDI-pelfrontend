@@ -25,10 +25,10 @@ class Validaridentificacion extends Component {
         });
     }
 
-    hide() {
+    hide = () => {
         document.getElementById("doc-type-value").removeAttribute("disabled");
         store.dispatch(showPopupIdentification(false));
-    }
+    };
 
     render() {
         return (
@@ -50,12 +50,7 @@ class Validaridentificacion extends Component {
                             <div className="buttons">
                                 <a href="/" className="btn btn-secondary" data-dismiss="modal">Terminar
                                 </a>
-                                <button type="button" className="btn btn-primary"
-                                        onClick={(e) => {
-                                            this.hide();
-                                        }}
-                                >Ajustar
-                                </button>
+                                <button type="button" className="btn btn-primary" onClick={this.hide}>Ajustar</button>
                             </div>
                         </div>
                         <div className="modal-footer">

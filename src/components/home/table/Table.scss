@@ -75,6 +75,7 @@
       width: 11px;
       transition: all 0.3s ease;
       transform: scale(1);
+      color: transparent;
 
       &.prev {
         background-image: url("../../../common/images/arrow_left.png");

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 //Component
 import store from "../../../../store";
 import {indexPlanSelected} from "../../../../actions";
 
-class Index extends React.Component {
+class Index extends Component {
 
     constructor(props) {
         super(props);
@@ -28,9 +28,9 @@ class Index extends React.Component {
         });
     }
 
-    changeIndexPlan(index) {
+    changeIndexPlan = index => e => {
         store.dispatch(indexPlanSelected(index));
-    }
+    };
 
     render() {
         return (
@@ -38,9 +38,7 @@ class Index extends React.Component {
                 {this.state.plans.map((option, key) =>
                     <div className="col col-12 col-sm-12 col-md-4 col-lg-4 no-padding" key={key}>
                         <div className={"item-tab " + (parseInt(this.state.index) === key ? 'active' : '')}
-                             onClick={(e) => {
-                                 this.changeIndexPlan(key);
-                             }}>
+                             onClick={this.changeIndexPlan(key)}>
                             <span>{option.name}</span>
                             <p>$ 000.000</p>
                         </div>

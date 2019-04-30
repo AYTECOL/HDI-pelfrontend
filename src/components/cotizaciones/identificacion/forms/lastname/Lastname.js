@@ -32,7 +32,8 @@ class Lastname extends Component {
         return 51;
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        e = e.target;
         e.value = Helpers.toCapitalize(e.value);
         let error = false;
         if (e.value.length < 1 || e.value.length > Lastname.limit()) error = true;
@@ -42,7 +43,7 @@ class Lastname extends Component {
             error: error,
             value: e.value
         });
-    }
+    };
 
     render() {
         return (
@@ -55,12 +56,8 @@ class Lastname extends Component {
                        autoComplete="lastname"
                        className={(this.state.disabledLastName ? "disabled " : "") + "form-control"}
                        placeholder="Ingresa primer apellido"
-                       onBlur={(e) => {
-                           this.validateEmpty(e.target);
-                       }}
-                       onChange={(e) => {
-                           this.validateEmpty(e.target);
-                       }}/>
+                       onBlur={this.validateEmpty}
+                       onChange={this.validateEmpty}/>
             </div>
         );
     }

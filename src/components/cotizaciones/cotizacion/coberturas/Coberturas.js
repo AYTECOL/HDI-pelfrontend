@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
 
-class Tab extends React.Component {
+class Tab extends Component {
 
     constructor(props) {
         super(props);
@@ -40,32 +40,6 @@ class Tab extends React.Component {
 
     }
 
-    countCoverturas() {
-        if( typeof this.state.plans[this.state.index] === "undefined" ) return;
-        let t = 0;
-        let item = this.state.plans[this.state.index].coverages;
-        for (let i in item) {
-            if (item[i].checked === true) {
-                t++;
-            }
-        }
-        this.setState({
-            ...this.state,
-            coverturasTotal: t
-        });
-    }
-
-    checkCoverturas(index, key) {
-        let check = this.state.plans[index].coverages[key].checked;
-        let newPlans = this.state.plans;
-        newPlans[index].coverages[key].checked = !check;
-        this.setState({
-            ...this.state,
-            plans: newPlans
-        });
-        this.countCoverturas();
-    }
-
     static getSelectByItems(item) {
         for (let i in item) {
             if (item[i].default === true) {
@@ -83,6 +57,32 @@ class Tab extends React.Component {
         }
         return "";
     }
+
+    countCoverturas() {
+        if (typeof this.state.plans[this.state.index] === "undefined") return;
+        let t = 0;
+        let item = this.state.plans[this.state.index].coverages;
+        for (let i in item) {
+            if (item[i].checked === true) {
+                t++;
+            }
+        }
+        this.setState({
+            ...this.state,
+            coverturasTotal: t
+        });
+    }
+
+    checkCoverturas = (index, key) => e => {
+        let check = this.state.plans[index].coverages[key].checked;
+        let newPlans = this.state.plans;
+        newPlans[index].coverages[key].checked = !check;
+        this.setState({
+            ...this.state,
+            plans: newPlans
+        });
+        this.countCoverturas();
+    };
 
     getCoverangeById(id) {
         let plans = this.state.plans[this.state.index].coverages;
@@ -137,13 +137,15 @@ class Tab extends React.Component {
         }
     }
 
+    inputChange = () => {
+
+    };
+
     render() {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                    <div className="row" onClick={(e) => {
-                        this.props.toogleSlide(0);
-                    }}>
+                    <div className="row" onClick={this.props.toogleSlide(0)}>
                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
                             <h4>
                                 <span>{this.state.coverturasTotal}</span>Coberturas
@@ -166,47 +168,51 @@ class Tab extends React.Component {
                                             <input type="checkbox"
                                                    checked={(option.checked === true ? 'checked' : false)}
                                                    disabled={(option.optional === false)}
-                                                   name={"itemcheck"+key} id={"itemcheck"+key}
-                                                   onChange={(e) => {
-                                                       this.checkCoverturas(this.state.index, key);
-                                                   }}
+                                                   name={"itemcheck" + key} id={"itemcheck" + key}
+                                                   onChange={this.checkCoverturas(this.state.index, key)}
                                             />
-                                            <label htmlFor={"itemcheck"+key}>{option.name}</label>
+                                            <label htmlFor={"itemcheck" + key}>{option.name}</label>
                                         </div>
                                     </div>
                                     <div className="col col-12 col-sm-12 col-md-3 col-lg-3 middle">
                                         {typeof option.values !== "undefined" &&
-                                        <div>
+                                        <Fragment>
                                             {option.values.map((opt, k) =>
-                                                <div className={"form-group "+(typeof opt.value !== 'undefined'?'':'input-select')} key={k}>
-                                                    <label htmlFor={"item"+k+"_"+key}>{opt.name}</label>
+                                                <div
+                                                    className={"form-group " + (typeof opt.value !== 'undefined' ? '' : 'input-select')}
+                                                    key={k}>
+                                                    <label htmlFor={"item" + k + "_" + key}>{opt.name}</label>
                                                     {typeof opt.value !== 'undefined' ? (
-                                                        <input name={"item"+k+"_"+key}
-                                                               id={"item"+k+"_"+key}
+                                                        <input name={"item" + k + "_" + key}
+                                                               id={"item" + k + "_" + key}
                                                                placeholder={Masknumbermoney.formatToMask(opt.value)}
                                                                value={this.getValueFields(opt)}
-                                                               onChange={(e) => {
-                                                               }}
+                                                               onChange={this.inputChange}
                                                                disabled={(option.optional === false)}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
-                                                        <select className={"form-control"} name={"item"+k+"_"+key} id={"item"+k+"_"+key} value={Tab.getSelectFields(opt.values)} onChange={(e)=>{}}>
+                                                        <select className={"form-control"} name={"item" + k + "_" + key}
+                                                                id={"item" + k + "_" + key}
+                                                                value={Tab.getSelectFields(opt.values)}
+                                                                onChange={this.inputChange}>
                                                             {opt.values.map((opt, k) =>
-                                                                <option key={k} value={k}>{Masknumbermoney.formatToMask(opt.limit)}</option>
+                                                                <option key={k}
+                                                                        value={k}>{Masknumbermoney.formatToMask(opt.limit)}</option>
                                                             )}
                                                         </select>
                                                     )}
                                                 </div>
                                             )}
-                                        </div>
+                                        </Fragment>
                                         }
                                     </div>
                                     <div className="col last">
                                         {typeof option.deductible !== 'undefined' ? (
                                             <div
                                                 className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
-                                                <label htmlFor={"itemdeducible"+key}>Deducible</label>
-                                                <select name={"itemdeducible"+key} id={"itemdeducible"+key} className="form-control"
+                                                <label htmlFor={"itemdeducible" + key}>Deducible</label>
+                                                <select name={"itemdeducible" + key} id={"itemdeducible" + key}
+                                                        className="form-control"
                                                         disabled={(option.optional === false)}
                                                         defaultValue={Tab.getSelectByItems(option.deductible)}>
                                                     <option value="">Sin Deducible</option>

@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {Component} from 'react';
 //Components
 import Conjuntocerrado from '../forms/conjuntocerrado/Conjuntocerrado';
 import Elementoseguridad from '../forms/elementoseguridad/Elementoseguridad';
 
 import {withRouter} from "react-router-dom";
 
-class Seguridad extends React.Component {
+class Seguridad extends Component {
 
     constructor(props) {
         super(props);

@@ -3,9 +3,9 @@ import './Entidad.scss';
 
 export default class Entidad extends Component {
 
-/*    constructor(props) {
-        super(props);
-    }*/
+    /*    constructor(props) {
+            super(props);
+        }*/
 
     render() {
         return (
@@ -16,9 +16,8 @@ export default class Entidad extends Component {
                             <h5 className="modal-title">Información adicional</h5>
                             <p className="modal-subtitle">Ingresa la información faltante, conocerla es importante para
                                 nosotros, no olvides asignar un rol</p>
-                            <button type="button" className="close" aria-label="Close" onClick={(e) => {
-                                this.props.toggle(0)
-                            }}>&nbsp;</button>
+                            <button type="button" className="close" aria-label="Close"
+                                    onClick={this.props.toggle(0)}>&nbsp;</button>
                         </div>
                         <div className="modal-body">
                             <div className="content">

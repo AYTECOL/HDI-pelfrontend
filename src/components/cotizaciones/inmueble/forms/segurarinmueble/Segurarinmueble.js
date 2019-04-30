@@ -85,7 +85,7 @@ class Segurarinmueble extends Component {
         this._isMounted = false;
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => event => {
         store.dispatch(saveInmuebleValue(e));
         if (this._isMounted) {
             this.setState({
@@ -95,9 +95,10 @@ class Segurarinmueble extends Component {
         }
         Helpers.removeClass(".contenidoasegudado", "error");
         Helpers.removeClass(".inmuebleasegudado", "error");
-    }
+    };
 
-    validateValue(e) {
+    validateValue = e => {
+        e = e.target;
         let error = Segurarinmueble.validateField(e.value);
         if (error === 0) Helpers.removeClass(".inmuebleasegudadovalor", "error");
 
@@ -106,7 +107,7 @@ class Segurarinmueble extends Component {
             name: Segurarinmueble.nameModelValue,
             value: format,
         }));
-    }
+    };
 
     render() {
         return (
@@ -116,21 +117,17 @@ class Segurarinmueble extends Component {
                         <label htmlFor="doc-type-value">¿Deseas asegurar {Segurarinmueble.name()}? </label>
                         <ul className="select-item">
                             <li className={((this.state.active === 1) ? 'active' : '')}
-                                onClick={(e) => {
-                                    this.validateEmpty({
-                                        value: 1,
-                                        name: Segurarinmueble.nameModel
-                                    });
-                                }}
+                                onClick={this.validateEmpty({
+                                    value: 1,
+                                    name: Segurarinmueble.nameModel
+                                })}
                             >Si
                             </li>
                             <li className={((this.state.active === 0) ? 'active' : '')}
-                                onClick={(e) => {
-                                    this.validateEmpty({
-                                        value: 0,
-                                        name: Segurarinmueble.nameModel
-                                    });
-                                }}
+                                onClick={this.validateEmpty({
+                                    value: 0,
+                                    name: Segurarinmueble.nameModel
+                                })}
                             >No
                             </li>
                         </ul>
@@ -146,12 +143,8 @@ class Segurarinmueble extends Component {
                                    className={"form-control"}
                                    placeholder=""
                                    value={this.state.value}
-                                   onBlur={(e) => {
-                                       this.validateValue(e.target);
-                                   }}
-                                   onChange={(e) => {
-                                       this.validateValue(e.target);
-                                   }}/>
+                                   onBlur={this.validateValue}
+                                   onChange={this.validateValue}/>
                             <small
                                 className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Segurarinmueble.min())} -
                                 Máximo. {Masknumbermoney.formatToMask(Segurarinmueble.max())}</small>

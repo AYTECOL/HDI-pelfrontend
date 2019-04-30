@@ -47,10 +47,10 @@ class Submenu extends Component {
                     store.dispatch(restoreCotizacionRisk(riskData));
                 }
             }
-        }else if( typeof cotizacion.status !== 'undefined' && parseInt(this.props.match.params.step) !== 1 ){
-            if ( cotizacion.status === 400 ){
+        } else if (typeof cotizacion.status !== 'undefined' && parseInt(this.props.match.params.step) !== 1) {
+            if (cotizacion.status === 400) {
                 window.location.href = UrlSite + "/404";
-            }else if( cotizacion.status === 0 ){
+            } else if (cotizacion.status === 0) {
                 window.location.href = UrlSite + "/";
             }
         }

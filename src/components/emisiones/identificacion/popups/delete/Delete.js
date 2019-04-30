@@ -4,9 +4,9 @@ import icono from '../../../../../common/images/trashtrash.png';
 
 export default class Delete extends Component {
 
-/*    constructor(props) {
-        super(props);
-    }*/
+    /*    constructor(props) {
+            super(props);
+        }*/
 
     render() {
         return (
@@ -17,9 +17,8 @@ export default class Delete extends Component {
                             <h5 className="modal-title">Estás seguro de eliminar persona</h5>
                             <p className="modal-subtitle">Una vez elimines la persona, sus datos se borrarán por
                                 completo</p>
-                            <button type="button" className="close" aria-label="Close" onClick={(e) => {
-                                this.props.toggle(0)
-                            }}>&nbsp;</button>
+                            <button type="button" className="close" aria-label="Close"
+                                    onClick={this.props.toggle(0)}>&nbsp;</button>
                         </div>
                         <div className="modal-body">
                             <div className="content">
@@ -28,9 +27,8 @@ export default class Delete extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <button type="button" className="btn btn-secondary" onClick={(e) => {
-                                    this.props.toggle(0)
-                                }}>Cancelar
+                                <button type="button" className="btn btn-secondary"
+                                        onClick={this.props.toggle(0)}>Cancelar
                                 </button>
                                 <button type="button" className="btn btn-primary"
                                 >Eliminar

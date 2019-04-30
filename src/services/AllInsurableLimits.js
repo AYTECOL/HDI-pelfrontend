@@ -67,7 +67,7 @@ class AllInsurableLimits {
             if (typeof data.limits === "undefined" || data.limits.length === 0) {
                 data = Default();
             }
-            allInsurableLimits = Helpers.orderArray(data.limits,"insurable_limit_id");
+            allInsurableLimits = Helpers.orderArray(data.limits, "insurable_limit_id");
 
             let newData = [];
             for (let i = 0; i < allInsurableLimits.length; i++) {

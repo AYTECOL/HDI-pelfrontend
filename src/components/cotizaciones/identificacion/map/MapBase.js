@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps";
 import './Map.scss';
 import store from "../../../../store";
@@ -6,7 +6,7 @@ import {saveIdentificationValue, setAddresMap} from "../../../../actions";
 import GetAddresInfo from "../../../../services/AddresCoordenates";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 
-class MapBase extends React.Component {
+class MapBase extends Component {
 
     constructor(props) {
         super(props);
@@ -31,14 +31,14 @@ class MapBase extends React.Component {
             let address = storeState.cotizacion.identification.address;
             let city = storeState.cotizacion.identification.city;
             let department = storeState.cotizacion.identification.department;
-            if ( (this.state.address !== address && address !== "") || (this.state.city !== city) || (this.state.department !== department) ) {
+            if ((this.state.address !== address && address !== "") || (this.state.city !== city) || (this.state.department !== department)) {
                 var it = this;
                 it.setState({
                     ...it.state,
                     address: address
                 });
                 clearTimeout(window.stime);
-                Helpers.removeClass(it.state.el,'error');
+                Helpers.removeClass(it.state.el, 'error');
                 window.stime = setTimeout(function () {
                     let state = store.getState();
                     it.reqAddress(address + ", " + state.cityDescription).then(function (data) {
@@ -57,7 +57,7 @@ class MapBase extends React.Component {
                                 ...it.state,
                                 isMarkerShown: false,
                             });
-                            Helpers.addClass(it.state.el,'error');
+                            Helpers.addClass(it.state.el, 'error');
                         }
                     });
                 }, 250);
@@ -66,7 +66,7 @@ class MapBase extends React.Component {
                     ...this.state,
                     isMarkerShown: false,
                 });
-                Helpers.addClass(this.state.el,'error');
+                Helpers.addClass(this.state.el, 'error');
             }
         });
     }
@@ -85,7 +85,7 @@ class MapBase extends React.Component {
                 markerPosition: e.latLng,
                 isMarkerShown: true,
             });
-            Helpers.removeClass(this.state.el,'error');
+            Helpers.removeClass(this.state.el, 'error');
             store.dispatch(saveIdentificationValue({
                 name: 'address',
                 value: response

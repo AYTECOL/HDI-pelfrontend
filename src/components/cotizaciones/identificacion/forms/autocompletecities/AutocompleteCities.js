@@ -68,19 +68,26 @@ class AutocompleteCities extends Component {
         });
     }
 
-    onBlur(v) {
-        let empty = false;
-        if (v === "") empty = true;
-        setTimeout(function () {
-            this.setState({
-                ...this.state,
-                toggle: false,
-                empty: empty
-            });
-        }.bind(this), 200);
-    }
+    onBlur = v => {
+        if (v !== 'noempty') {
+            v = v.target.value;
+            let empty = false;
+            if (v === "") empty = true;
+            setTimeout(function () {
+                this.setState({
+                    ...this.state,
+                    toggle: false,
+                    empty: empty
+                });
+            }.bind(this), 200);
+        }
+    };
 
-    saveOption(code, value, description, codeDepartment) {
+    saveOption = option => e => {
+        let code = option.code_city;
+        let value = option.description;
+        let description = option.department;
+        let codeDepartment = option.code_department;
         setTimeout(function () {
             store.dispatch(saveIdentificationValue({
                 name: "city",
@@ -97,9 +104,10 @@ class AutocompleteCities extends Component {
                 empty: false
             });
         }.bind(this), 200);
-    }
+    };
 
-    searchData(value) {
+    searchData = value => {
+        value = value.target.value;
         let optionsFilters = {cities: []};
         this.state.originalOptions.cities.map((option, key) => {
             let item = option.city;
@@ -117,25 +125,25 @@ class AutocompleteCities extends Component {
             options: optionsFilters,
             empty: value === ""
         });
-    }
+    };
 
     selectActive = (options, reverse) => {
         let active = false;
         let status = false;
         if (reverse === true) options.cities = options.cities.reverse();
-        for(let i in options.cities) {
-            if(options.cities[i].active === true) {
+        for (let i in options.cities) {
+            if (options.cities[i].active === true) {
                 active = true;
                 options.cities[i].active = false;
-            }else{
-                if ( active === true ){
+            } else {
+                if (active === true) {
                     options.cities[i].active = true;
                     active = false;
                     status = true;
                 }
             }
         }
-        for(let i in options.cities) if (status === false) {
+        for (let i in options.cities) if (status === false) {
             options.cities[i].active = true;
             status = true;
         }
@@ -143,33 +151,33 @@ class AutocompleteCities extends Component {
         return options;
     };
 
-    moveOptions(e){
+    moveOptions = e => {
         let key = e.keyCode;
         let options = this.state.options;
         let element = ".form-group.autocomplete .list-items li.active";
         //Down
         if (key === 40) {
-            options = this.selectActive(options,false);
-        //Up
-        } else if(key === 38){
-            options = this.selectActive(options,true);
-        } else if(key === 13 || key === 9){
+            options = this.selectActive(options, false);
+            //Up
+        } else if (key === 38) {
+            options = this.selectActive(options, true);
+        } else if (key === 13 || key === 9) {
             e.preventDefault();
             this.onBlur("noempty");
             e.target.blur();
-            if(Helpers.hasClass(element,'active')) document.querySelector(element).click();
+            if (Helpers.hasClass(element, 'active')) document.querySelector(element).click();
             document.getElementById("address").focus();
         }
-        if (typeof options !== 'undefined'){
+        if (typeof options !== 'undefined') {
             this.setState({
                 ...this.state,
                 options: options
             });
             setTimeout(function () {
-                if(Helpers.hasClass(element,'active')) Helpers.scrollToElement(element, ".form-group.autocomplete .list-items", 'auto', true);
-            },100);
+                if (Helpers.hasClass(element, 'active')) Helpers.scrollToElement(element, ".form-group.autocomplete .list-items", 'auto', true);
+            }, 100);
         }
-    }
+    };
 
     render() {
         return (
@@ -181,23 +189,15 @@ class AutocompleteCities extends Component {
                        autoComplete="city"
                        autoCorrect="off"
                        autoCapitalize="none"
-                       onKeyDown={(e)=>{
-                           this.moveOptions(e);
-                       }}
-                       onBlur={(e) => {
-                           this.onBlur(e.target.value);
-                       }}
-                       onChange={(e) => {
-                           this.searchData(e.target.value);
-                       }}
+                       onKeyDown={this.moveOptions}
+                       onBlur={this.onBlur}
+                       onChange={this.searchData}
                 />
                 <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
                 <ul className={(this.state.toggle ? 'show' : 'hide') + " list-items"}>
                     {this.state.options.cities.map((option, key) =>
-                        <li key={key} value={option.code_city} className={option.active?'active':''}
-                            onClick={(e) => {
-                                this.saveOption(option.code_city, option.department, option.description, option.code_department);
-                            }}
+                        <li key={key} value={option.code_city} className={option.active ? 'active' : ''}
+                            onClick={this.saveOption(option)}
                         >{option.description}</li>
                     )}
                 </ul>

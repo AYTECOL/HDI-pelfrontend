@@ -36,7 +36,8 @@ class TipoDocumento extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        e = e.target;
         if (e.value.length < 1) {
             this.setState({
                 ...this.state,
@@ -52,7 +53,7 @@ class TipoDocumento extends Component {
             ...this.state,
             value: e.value
         });
-    }
+    };
 
     async getOptions() {
         this.setState({
@@ -68,12 +69,10 @@ class TipoDocumento extends Component {
                 <select disabled={(this.state.disabled ? "disabled" : "")} name="code" id="doc-type"
                         className={(this.state.disabled ? "disabled " : "") + "form-control"}
                         value={this.state.value}
-                        onChange={(e) => {
-                            this.validateEmpty(e.target);
-                        }}>
+                        onChange={this.validateEmpty}>
                     {this.state.options.identifications.map(option =>
-                        <option key={option.code}
-                                value={option.code} data={option.type_person}>{option.description}</option>
+                        <option key={option.code} value={option.code}
+                                data={option.type_person}>{option.description}</option>
                     )}
                 </select>
             </div>

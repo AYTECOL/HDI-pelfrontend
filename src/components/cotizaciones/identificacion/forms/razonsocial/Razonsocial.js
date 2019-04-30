@@ -31,7 +31,8 @@ class Razonsocial extends Component {
         return 61;
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        e = e.target;
         e.value = Helpers.toCapitalize(e.value);
         let error = false;
         if (e.value.length < 1 || e.value.length > Razonsocial.limit()) error = true;
@@ -41,7 +42,7 @@ class Razonsocial extends Component {
             error: error,
             value: e.value
         });
-    }
+    };
 
     render() {
         return (
@@ -53,9 +54,7 @@ class Razonsocial extends Component {
                        className={(this.state.disabledName ? "disabled " : "") + "form-control"}
                        disabled={this.state.disabledName === true}
                        placeholder="Ingresa la razón social"
-                       onChange={(e) => {
-                           this.validateEmpty(e.target);
-                       }}/>
+                       onChange={this.validateEmpty}/>
             </div>
         );
     }

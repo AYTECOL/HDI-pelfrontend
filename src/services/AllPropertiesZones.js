@@ -27,7 +27,7 @@ class AllPropertiesZones {
         if (typeof data.properties_zones === "undefined" || data.properties_zones.length === 0) {
             data = Default;
         }
-        return Helpers.orderArray(data.properties_zones,"zoneCode");
+        return Helpers.orderArray(data.properties_zones, "zoneCode");
     };
 }
 

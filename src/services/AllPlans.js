@@ -7,12 +7,12 @@ class AllPlans {
     static async get(type) {
         let data = [];
         try {
-            data = await Api.get(BaseUrl +"/"+ type);
+            data = await Api.get(BaseUrl + "/" + type);
             data = data.plans;
         } catch (e) {
             data = [];
         }
-        data = Helpers.orderArray(data,"order");
+        data = Helpers.orderArray(data, "order");
         return data;
     };
 }

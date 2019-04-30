@@ -8,7 +8,7 @@ import Table from '../../components/home/table/Table';
 
 class Home extends Component {
 
-    async getNumber() {
+    getNumber = async () => {
         let storeState = store.getState();
         let number = await Counter.get();
         if (typeof number.currentValue !== 'undefined') {
@@ -19,7 +19,7 @@ class Home extends Component {
         } else {
             this.props.history.push('/');
         }
-    }
+    };
 
     render() {
         return (
@@ -29,7 +29,7 @@ class Home extends Component {
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h2>Mis negocios en línea</h2>
                             <button type="button" className="btn btn-primary btn-home"
-                                    onClick={() => this.getNumber()}>Nueva
+                                    onClick={this.getNumber}>Nueva
                                 cotización
                             </button>
                         </div>

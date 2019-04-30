@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import store from '../../../../store';
 //Componets
 import DatosGenerales from '../datosgenerales/Datosgenerales';
@@ -13,7 +13,7 @@ import './Index.scss';
 import {withRouter} from "react-router-dom";
 import {saveInmuebleValue, typeInmueble} from "../../../../actions";
 
-class Index extends React.Component {
+class Index extends Component {
 
     constructor(props) {
         super(props);
@@ -50,7 +50,9 @@ class Index extends React.Component {
         });
     }
 
-    active(item, type) {
+    active = option => e => {
+        let item = parseInt(option.riskId);
+        let type = parseInt(option.riskId);
         store.dispatch(typeInmueble(item));
         store.dispatch(saveInmuebleValue({
             name: "type_risk",
@@ -65,7 +67,7 @@ class Index extends React.Component {
             active: item,
             typeInmueble: item
         });
-    }
+    };
 
     render() {
         if (this.state.step !== 2) return <div className="hide">&nbsp;</div>;
@@ -83,13 +85,11 @@ class Index extends React.Component {
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 content-select">
                             <ul>
-                                {this.state.options.risks.map((option, key) =>
+                                {this.state.options.risks.map(option =>
                                     <li key={option.riskId}
                                         data={option.riskId}
                                         className={parseInt(this.state.active) === parseInt(option.riskId) ? 'active' : ''}
-                                        onClick={(e) => {
-                                            this.active(parseInt(option.riskId), parseInt(option.riskId));
-                                        }}>
+                                        onClick={this.active(option)}>
                                         <i className={(parseInt(option.riskId) === 1) ? "home-icon" : "apartamento-icon"}>&nbsp;</i>
                                         <p>{option.risk_type}</p>
                                     </li>

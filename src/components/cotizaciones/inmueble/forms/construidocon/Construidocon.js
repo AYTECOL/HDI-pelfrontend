@@ -40,7 +40,7 @@ class Construidocon extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => event => {
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".construidocon", "error");
@@ -50,26 +50,22 @@ class Construidocon extends Component {
             error: error,
             active: e.data
         });
-    }
+    };
 
     render() {
         return (
             <div className={"construidocon no-icon gridgrid form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="construidocon">El inmueble está construido con</label>
-
                 <div className="row grid-select">
                     {this.state.materials.map((option, key) =>
                         <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
                             <div
                                 className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
-                                onClick={(e) => {
-                                    this.validateEmpty({
-                                        data: option.buildMaterialCode,
-                                        value: option.buildMaterialCode,
-                                        name: "construidocon"
-                                    });
-                                }}
-                            >
+                                onClick={this.validateEmpty({
+                                    data: option.buildMaterialCode,
+                                    value: option.buildMaterialCode,
+                                    name: "construidocon"
+                                })}>
                                 <div className="col col-12 no-padding">
                                     {(parseInt(option.buildMaterialCode) === 1) ? (
                                         <i className="concreto">&nbsp;</i>) : ("")}

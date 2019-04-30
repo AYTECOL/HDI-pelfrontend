@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import store from '../../../../store';
 
 import Name from '../forms/name/Name';
@@ -9,7 +9,7 @@ import Addressadditional from '../forms/addressadditional/Addressadditional';
 import AutoCompleteCities from '../forms/autocompletecities/AutocompleteCities';
 import Map from "../map/Map.js"
 
-class SecondForm extends React.Component {
+class SecondForm extends Component {
 
     constructor(props) {
         super(props);

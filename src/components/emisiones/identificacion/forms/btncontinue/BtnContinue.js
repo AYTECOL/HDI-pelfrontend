@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 import {Link, withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
@@ -15,27 +15,27 @@ class BtnContinue extends Component {
         };
     }
 
-    saveAndExit() {
+    saveAndExit = () => {
         window.location.href = UrlSite + "/";
-    }
+    };
 
-    nextStep() {
+    nextStep = () => {
         window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
-    }
+    };
 
     render() {
         return (
-            <div>
+            <Fragment>
                 <div className={"return-button"}>
                     <Link to='/'><i className="back-icon">&nbsp;</i>Volver</Link>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={() => this.saveAndExit()}>Guardar y salir
+                        onClick={this.saveAndExit}>Guardar y salir
                 </button>
                 <button type="button" className={"btn btn-primary"}
-                        onClick={() => this.nextStep()}>Continuar
+                        onClick={this.nextStep}>Continuar
                 </button>
-            </div>
+            </Fragment>
         );
     }
 }

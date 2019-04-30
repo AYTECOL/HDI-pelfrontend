@@ -43,7 +43,7 @@ class AllBuildYears {
         if (typeof data.build_years === "undefined" || data.build_years.length === 0) {
             data = Default;
         }
-        return Helpers.orderArray(data.build_years,"buildYearCode");
+        return Helpers.orderArray(data.build_years, "buildYearCode");
     };
 }
 

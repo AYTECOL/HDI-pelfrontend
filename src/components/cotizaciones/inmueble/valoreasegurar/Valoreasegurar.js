@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 //Components
 import Segurarinmueble from '../forms/segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from '../forms/asegurarcontenidos/Asegurarcontenidos';
@@ -8,7 +8,7 @@ import AllInsurableLimits from '../../../../services/AllInsurableLimits';
 
 import {withRouter} from "react-router-dom";
 
-class Valoreasegurar extends React.Component {
+class Valoreasegurar extends Component {
 
     constructor(props) {
         super(props);

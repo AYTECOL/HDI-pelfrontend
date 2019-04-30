@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './Cards.scss';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
@@ -11,7 +11,7 @@ import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurarte
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import {saveInmuebleValue} from "../../../../actions";
 
-class Cards extends React.Component {
+class Cards extends Component {
 
     _isMounted = false;
 
@@ -108,7 +108,7 @@ class Cards extends React.Component {
             newItems[3].active === true &&
             newItems[4].active === true;
         newItems[1].inactiveToggle = newItems[0].active === true;
-        for(let i = 2; i < 5; i++) newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
+        for (let i = 2; i < 5; i++) newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
         if (this._isMounted) {
             this.setState({
                 ...this.state,
@@ -135,7 +135,7 @@ class Cards extends React.Component {
         });
     }
 
-    toggleItem(index) {
+    toggleItem = index => e => {
         let active = this.state.items[index].active;
         let newItems = this.state.items;
         let saved = false;
@@ -158,31 +158,31 @@ class Cards extends React.Component {
                 saved = true;
             }
         }
-        if( saved === false ) this.updateStoreItem(index);
+        if (saved === false) this.updateStoreItem(index);
 
         this.setState({
             ...this.state,
             items: newItems
         });
         this.validateToggle();
-    }
+    };
 
-    validateValue(e, index) {
-        e.value = Masknumbermoney.formatToMask(e.value);
+    validateValue = index => e => {
+        let target = e.target;
+        e.target.value = Masknumbermoney.formatToMask(target.value);
         let parent = this.state.items[index].parent;
         let component = new parent();
         component.validateValue(e);
-        let error = parent.validateField(e.value);
-
+        let error = parent.validateField(target.value);
         let newItems = this.state.items;
-        newItems[index].value = e.value;
+        newItems[index].value = target.value;
         newItems[index].errorValue = error;
         this.setState({
             ...this.state,
             items: newItems
         });
         this.validateToggle();
-    }
+    };
 
     render() {
         return (
@@ -193,20 +193,15 @@ class Cards extends React.Component {
                             <div className={"image image-" + (key + 1)}>&nbsp;</div>
                             <p>{option.parent.name()}</p>
                             <div className="wrapper-over">
-                                <div className={(option.inactiveAdd === true ? 'invisible' : '')+" btntoggle"} onClick={(e) => {
-                                    this.toggleItem(key)
-                                }}>+
+                                <div className={(option.inactiveAdd === true ? 'invisible' : '') + " btntoggle"}
+                                     onClick={this.toggleItem(key)}>+
                                 </div>
                                 <div className={"form-group " + (option.errorValue !== 0 ? 'error' : '')}>
                                     <label htmlFor="incendios">Valor</label>
                                     <input type="text" className={"form-control"} name="incendios" id="incendios"
                                            value={option.value}
-                                           onBlur={(e) => {
-                                               this.validateValue(e.target, key);
-                                           }}
-                                           onChange={(e) => {
-                                               this.validateValue(e.target, key);
-                                           }}
+                                           onBlur={this.validateValue(key)}
+                                           onChange={this.validateValue(key)}
                                     />
                                     <small
                                         className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(option.parent.min())} -
@@ -224,9 +219,8 @@ class Cards extends React.Component {
                                         Asegurado de {option.parent.name()} es superior al permitido.
                                     </small>
                                 </div>
-                                <span className={(option.inactiveToggle === true ? 'invisible' : '')} onClick={(e) => {
-                                    this.toggleItem(key)
-                                }}>No lo quiero</span>
+                                <span className={(option.inactiveToggle === true ? 'invisible' : '')}
+                                      onClick={this.toggleItem(key)}>No lo quiero</span>
                             </div>
                         </div>
                     </div>

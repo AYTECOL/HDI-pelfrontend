@@ -24,7 +24,7 @@ class Helpers {
         if (el != null) {
             if (el.className.indexOf(className) === -1) {
                 el.className += " " + className;
-                el.setAttribute(className,true);
+                el.setAttribute(className, true);
             }
         }
     }
@@ -35,7 +35,7 @@ class Helpers {
         if (el != null) {
             if (el.className.indexOf(className) === -1) {
                 el.className = el.className.replace(" " + className, "");
-                el.setAttribute(className,false);
+                el.setAttribute(className, false);
             }
         }
     }
@@ -59,13 +59,13 @@ class Helpers {
     static scrollElement(size, scrollElement, inverse) {
         if (typeof scrollElement === "undefined") {
             scrollElement = window;
-        }else{
+        } else {
             scrollElement = document.querySelector(scrollElement);
         }
         if (typeof inverse === "undefined") inverse = false;
         let scrollTop = scrollElement.scrollTop;
         scrollElement.scroll({
-            top: inverse?scrollTop-size:scrollTop+size,
+            top: inverse ? scrollTop - size : scrollTop + size,
             left: 0,
             behavior: 'smooth'
         });
@@ -76,6 +76,7 @@ class Helpers {
         let top = 0;
 
         if (typeof ignoreZero === "undefined") ignoreZero = false;
+
         function findValue(el) {
             if (el.offsetTop === 0 && el.offsetParent !== null && ignoreZero === false) {
                 return findValue(el.offsetParent);
@@ -89,7 +90,7 @@ class Helpers {
         if (typeof scrollElement === "undefined") behavior = 'smooth';
         if (typeof scrollElement === "undefined") {
             scrollElement = window;
-        }else{
+        } else {
             scrollElement = document.querySelector(scrollElement);
         }
         scrollElement.scroll({
@@ -99,7 +100,7 @@ class Helpers {
         });
     }
 
-    static orderArray(array, key){
+    static orderArray(array, key) {
         return array.sort(function (a, b) {
             a = parseInt(a[key]);
             b = parseInt(b[key]);

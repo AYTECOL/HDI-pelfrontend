@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import store from '../../../../store';
 //Components
 import NumeroDepiso from '../forms/numerodepiso/Numerodepiso';
@@ -11,7 +11,7 @@ import Refuerzoestructural from '../forms/refuerzoestructural/Refuerzoestructura
 import './Datosgenerales.scss';
 import {withRouter} from "react-router-dom";
 
-class Datosgenerales extends React.Component {
+class Datosgenerales extends Component {
 
     constructor(props) {
         super(props);

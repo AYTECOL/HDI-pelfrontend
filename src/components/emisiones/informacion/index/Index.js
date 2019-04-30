@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {Component} from 'react';
 //Component
 import BtnContinue from '../forms/btncontinue/BtnContinue';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 
-class Index extends React.Component {
+class Index extends Component {
 
     constructor(props) {
         super(props);
@@ -16,13 +16,13 @@ class Index extends React.Component {
 
     }
 
-    addContent() {
+    addContent = () => {
         let total = this.state.totalContent + 1;
         this.setState({
             ...this.state,
             totalContent: total
         })
-    }
+    };
 
     render() {
         if (this.state.step !== 2) return <div className="hide">&nbsp;</div>;
@@ -110,9 +110,7 @@ class Index extends React.Component {
                                 <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
 
 
-                                    <div className="more-items" onClick={(e) => {
-                                        this.addContent();
-                                    }}>
+                                    <div className="more-items" onClick={this.addContent}>
                                         <button type="button" className="more-btn">+</button>
                                         <p>Agregar contenido</p>
                                     </div>
@@ -180,9 +178,7 @@ class Index extends React.Component {
                         </div>
 
                         <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
-                            <div className="more-items" onClick={(e) => {
-                                this.togglePopUpPersona(1);
-                            }}>
+                            <div className="more-items" onClick={this.togglePopUpPersona(1)}>
                                 <button type="button" className="more-btn">+</button>
                                 <p>Agregar persona</p>
                             </div>

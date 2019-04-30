@@ -35,7 +35,9 @@ class Ubicadopiso extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        if (e === 'notempty') return;
+        e = e.target;
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".pisonumero", "error");
@@ -44,20 +46,15 @@ class Ubicadopiso extends Component {
             error: error
         });
         store.dispatch(saveInmuebleValue(e));
-    }
+    };
 
     render() {
         return (
             <div className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
                 <label htmlFor="pisonumero">Piso donde se encuentra ubicado</label>
                 <select name="pisonumero" className="form-control" value={this.state.value}
-                        onBlur={(e) => {
-                            this.validateEmpty(e.target);
-                        }}
-                        onChange={(e) => {
-                            this.validateEmpty(e.target);
-                        }}
-                >
+                        onBlur={this.validateEmpty}
+                        onChange={this.validateEmpty}>
                     <option value="">Seleccione</option>
                     {this.state.floors.map(option =>
                         <option key={option.floorCode} value={option.floorCode}>{option.answer}</option>

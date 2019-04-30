@@ -37,7 +37,9 @@ class Anoconstruccion extends Component {
         });
     }
 
-    validateEmpty(e) {
+    validateEmpty = e => {
+        if (e === 'notempty') return;
+        e = e.target;
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".anoconstruido", "error");
@@ -46,7 +48,7 @@ class Anoconstruccion extends Component {
             error: error
         });
         store.dispatch(saveInmuebleValue(e));
-    }
+    };
 
     render() {
         return (
@@ -55,13 +57,8 @@ class Anoconstruccion extends Component {
                 <select disabled={(this.state.disabled ? "disabled" : "")} name="anoconstruido" id="anoconstruido"
                         className={(this.state.disabled ? "disabled " : "") + "form-control"}
                         value={this.state.value}
-                        onBlur={(e) => {
-                            this.validateEmpty(e.target);
-                        }}
-                        onChange={(e) => {
-                            this.validateEmpty(e.target);
-                        }}
-                >
+                        onBlur={this.validateEmpty}
+                        onChange={this.validateEmpty}>
                     <option value="">Selecciona</option>
                     {this.state.years.map(option =>
                         <option key={option.buildYearCode} value={option.buildYearCode}>{option.answer}</option>

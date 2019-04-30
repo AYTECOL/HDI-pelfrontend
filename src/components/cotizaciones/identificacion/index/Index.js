@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 //Component
 import TipoDocumento from '../forms/tipodocumento/TipoDocumento';
 import NumeroIdentificacion from '../forms/numeroidentificacion/NumeroIdentificacion';
@@ -9,7 +9,7 @@ import SecondForm from '../secondform/SecondForm';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 
-class Index extends React.Component {
+class Index extends Component {
 
     constructor(props) {
         super(props);
