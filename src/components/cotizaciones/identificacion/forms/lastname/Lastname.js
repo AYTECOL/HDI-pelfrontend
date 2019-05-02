@@ -15,10 +15,9 @@ class Lastname extends Component {
         };
         store.subscribe(async () => {
             let storeState = store.getState();
-            let lastname = storeState.cotizacion.identification.lastname;
+            let lastname = Helpers.toCapitalize(storeState.cotizacion.identification.lastname);
             let disabledLastName = storeState.disabledLastName;
-            if (this.state.value !== lastname || this.state.disabledName !== disabledLastName) {
-                lastname = Helpers.toCapitalize(lastname);
+            if (this.state.value !== lastname || this.state.disabledLastName !== disabledLastName) {
                 this.setState({
                     ...this.state,
                     value: lastname,

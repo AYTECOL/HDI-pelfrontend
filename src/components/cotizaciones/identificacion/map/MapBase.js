@@ -24,7 +24,6 @@ class MapBase extends Component {
             department: storeState.cotizacion.identification.department
         };
         this.state.markerPosition = {lat: this.state.latitude, lng: this.state.longitude};
-
         window.stime = null;
         store.subscribe(() => {
             let storeState = store.getState();
@@ -35,13 +34,15 @@ class MapBase extends Component {
                 var it = this;
                 it.setState({
                     ...it.state,
+                    city: city,
+                    department: department,
                     address: address
                 });
                 clearTimeout(window.stime);
                 Helpers.removeClass(it.state.el, 'error');
                 window.stime = setTimeout(function () {
                     let state = store.getState();
-                    it.reqAddress(address + ", " + state.cityDescription).then(function (data) {
+                    MapBase.reqAddress(address + ", " + state.cityDescription).then(function (data) {
                         if (typeof data.lng !== "undefined" && typeof data.lat !== "undefined") {
                             it.setState({
                                 ...it.state,
@@ -71,7 +72,7 @@ class MapBase extends Component {
         });
     }
 
-    async reqAddress(address) {
+    static async reqAddress(address) {
         return await GetAddresInfo.get(address)
             .then(response => {
                 return response;

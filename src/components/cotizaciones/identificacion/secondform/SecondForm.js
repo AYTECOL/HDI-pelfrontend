@@ -21,10 +21,11 @@ class SecondForm extends Component {
 
         store.subscribe(() => {
             let storeState = store.getState();
-            if (storeState.stateFormIdentificacion !== this.state.show || storeState.typeDocument !== this.state.type) {
+            let stateFormIdentificacion = storeState.stateFormIdentificacion === 1;
+            if (stateFormIdentificacion !== this.state.show || storeState.typeDocument !== this.state.type) {
                 this.setState({
                     ...this.state,
-                    show: storeState.stateFormIdentificacion === 1,
+                    show: stateFormIdentificacion,
                     type: storeState.typeDocument
                 });
             }

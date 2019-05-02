@@ -13,6 +13,7 @@ class Adress extends Component {
             disabled: true,
             city: ""
         };
+        this.textInput = React.createRef();
         store.subscribe(async () => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
@@ -20,7 +21,8 @@ class Adress extends Component {
             let disabled = true;
             let error = false;
             if (address.length < 1 || address.length > 200) error = true;
-            if (this.state.address !== address || this.state.city !== city) {
+            let changeCity = this.state.city !== city;
+            if (this.state.address !== address || changeCity) {
                 if (city !== "") disabled = false;
                 this.setState({
                     ...this.state,
@@ -29,6 +31,7 @@ class Adress extends Component {
                     disabled: disabled,
                     error: error
                 });
+                if (changeCity) this.textInput.current.focus();
             }
         });
     }
@@ -60,6 +63,7 @@ class Adress extends Component {
                        autoCapitalize="none"
                        disabled={this.state.disabled === true}
                        onBlur={this.validateEmpty}
+                       ref={this.textInput}
                        onChange={this.validateEmpty}/>
                 <small className={"form-text only-errors " + (this.state.error ? 'show' : 'hide')}>Por favor ingrese la
                     dirreción del hogar.

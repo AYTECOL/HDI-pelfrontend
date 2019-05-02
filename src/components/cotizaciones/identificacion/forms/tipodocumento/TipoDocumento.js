@@ -20,7 +20,6 @@ class TipoDocumento extends Component {
         };
 
         this.getOptions();
-
         store.subscribe(() => {
             let storeState = store.getState();
             let newState = storeState.stateFormIdentificacion;
