@@ -24,7 +24,6 @@ class MapBase extends Component {
             department: storeState.cotizacion.identification.department
         };
         this.state.markerPosition = {lat: this.state.latitude, lng: this.state.longitude};
-
         window.stime = null;
         store.subscribe(() => {
             let storeState = store.getState();

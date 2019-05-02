@@ -166,7 +166,6 @@ class AutocompleteCities extends Component {
             this.onBlur("noempty");
             e.target.blur();
             if (Helpers.hasClass(element, 'active')) document.querySelector(element).click();
-            document.getElementById("address").focus();
         }
         if (typeof options !== 'undefined') {
             this.setState({

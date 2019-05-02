@@ -11,17 +11,17 @@ class Razonsocial extends Component {
         this.state = {
             error: false,
             value: "",
+            disabledbusinessname: false
         };
         store.subscribe(async () => {
             let storeState = store.getState();
-            let value = storeState.cotizacion.identification.businessname;
+            let value = Helpers.toCapitalize(storeState.cotizacion.identification.businessname);
             let disabledbusinessname = storeState.disabledbusinessname;
-            if (this.state.value !== value || this.state.disabledbusinessname !== disabledbusinessname) {
-                value = Helpers.toCapitalize(value);
+            if (Helpers.toCapitalize(this.state.value) !== value || this.state.disabledbusinessname !== disabledbusinessname) {
                 this.setState({
                     ...this.state,
                     value: value,
-                    disabledName: disabledbusinessname,
+                    disabledbusinessname: disabledbusinessname,
                 });
             }
         });
@@ -47,12 +47,12 @@ class Razonsocial extends Component {
     render() {
         return (
             <div className={"form-group " + (this.state.error ? 'error' : '')}>
-                <label htmlFor="doc-type-value">Razón social</label>
-                <input name="value" id="doc-type-value"
+                <label htmlFor="businessname">Razón social</label>
+                <input name="businessname" id="businessname"
                        type="text"
                        value={this.state.value}
-                       className={(this.state.disabledName ? "disabled " : "") + "form-control"}
-                       disabled={this.state.disabledName === true}
+                       className={(this.state.disabledbusinessname ? "disabled " : "") + "form-control"}
+                       disabled={this.state.disabledbusinessname === true}
                        placeholder="Ingresa la razón social"
                        onChange={this.validateEmpty}/>
             </div>

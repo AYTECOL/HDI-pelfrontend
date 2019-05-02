@@ -173,7 +173,7 @@ $color-font-btn-primary: #404040;
     }
 
     .form-control {
-      border: 1px solid $error-fields;
+      border: 1px solid $error-fields !important;
       background: #FFF5F5;
     }
 
@@ -191,7 +191,7 @@ $color-font-btn-primary: #404040;
       color: $error-fields;
       border: 2px solid $error-fields;
       border-radius: 100%;
-      padding: 1px 6px 0px;
+      padding: 1px 6px 0 5px;
       line-height: 1;
       font-size: 15px;
       font-weight: 700;

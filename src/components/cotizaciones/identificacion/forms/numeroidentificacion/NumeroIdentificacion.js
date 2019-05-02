@@ -92,6 +92,10 @@ class NumeroIdentificacion extends Component {
         });
     };
 
+    shouldComponentUpdate(nextProps, nextState){
+        return this.state.error !== nextState.error || this.state.disabled !== nextState.disabled || this.state.value !== nextState.value;
+    }
+
     render() {
         return (
             <div className={"form-group " + (this.state.error ? 'error' : '')}>

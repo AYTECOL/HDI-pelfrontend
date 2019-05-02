@@ -16,10 +16,9 @@ class Name extends Component {
         };
         store.subscribe(async () => {
             let storeState = store.getState();
-            let value = storeState.cotizacion.identification.name;
+            let value = Helpers.toCapitalize(storeState.cotizacion.identification.name);
             let disabledName = storeState.disabledName;
             if (this.state.value !== value || this.state.disabledName !== disabledName) {
-                value = Helpers.toCapitalize(value);
                 this.setState({
                     ...this.state,
                     value: value,
