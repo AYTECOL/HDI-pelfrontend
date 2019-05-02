@@ -12,6 +12,7 @@ import Emision from "./pages/emision/Emision";
 import NotFound from './pages/notfound/NotFound';
 import ErrorNetwork from './pages/errornetwork/ErrorNetwork';
 
+// 1679a3669b8d17cb1ee3df8ed85e69986d4105f2
 class App extends Component {
     render() {
         return (

@@ -100,13 +100,19 @@ class Segurarinmueble extends Component {
     validateValue = e => {
         e = e.target;
         let error = Segurarinmueble.validateField(e.value);
-        if (error === 0) Helpers.removeClass(".inmuebleasegudadovalor", "error");
-
+        if (error === 0) Helpers.removeClass("."+Segurarinmueble.nameModelValue, "error");
         let format = Masknumbermoney.formatToMask(e.value);
         store.dispatch(saveInmuebleValue({
             name: Segurarinmueble.nameModelValue,
             value: format,
         }));
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                errorValue: error,
+                value: format
+            });
+        }
     };
 
     render() {
