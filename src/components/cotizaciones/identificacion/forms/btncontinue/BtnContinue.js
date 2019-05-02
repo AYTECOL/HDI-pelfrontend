@@ -12,10 +12,12 @@ import {
 } from '../../../../../actions';
 import SaveIdentifications from '../../../../../services/Quote';
 import {Link, withRouter} from "react-router-dom";
+
 // Components
 import Name from '../name/Name';
 import LastName from '../lastname/Lastname';
 import RazonSocial from '../razonsocial/Razonsocial';
+
 // Services
 import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
 import {UrlSite} from "../../../../../config";
@@ -36,34 +38,24 @@ class BtnContinue extends Component {
             let stateForm = storeState.stateFormIdentificacion;
             let typeDoc = storeState.typeDocument;
             if (stateForm === 1) {
-                if (typeDoc === 2) {
-                    this.state.cotizacionExclude.push("name");
-                    this.state.cotizacionExclude.push("lastname");
-                    this.state.cotizacionExclude.push("addressadditional");
-                    this.state.cotizacionExclude.pop(this.state.cotizacionExclude.indexOf("businessname"));
-                } else {
-                    this.state.cotizacionExclude.pop(this.state.cotizacionExclude.indexOf("name"));
-                    this.state.cotizacionExclude.pop(this.state.cotizacionExclude.indexOf("lastname"));
-                    this.state.cotizacionExclude.push("businessname");
-                    this.state.cotizacionExclude.push("addressadditional");
-                }
                 let i = 0;
-                for (let item in storeState.cotizacion.identification) {
-                    if (storeState.cotizacion.identification[item] === "" && this.state.cotizacionExclude.indexOf(item) === -1) {
-                        i++;
-                    }
-                    if (typeDoc === 2) {
-                        if (item === "businessname" && storeState.cotizacion.identification[item].length > RazonSocial.limit()) {
-                            i++;
-                        }
-                    } else {
-                        if (item === "name" && storeState.cotizacion.identification[item].length > Name.limit()) {
-                            i++;
-                        }
-                        if (item === "lastname" && storeState.cotizacion.identification[item].length > LastName.limit()) {
-                            i++;
-                        }
-                    }
+                if (typeDoc === 2) {
+                    if (storeState.cotizacion.identification['businessname'].length > RazonSocial.limit() ||
+                        storeState.cotizacion.identification['businessname'] === ""
+                    ) i++;
+                } else {
+                    if (storeState.cotizacion.identification['name'].length > Name.limit() ||
+                        storeState.cotizacion.identification['lastname'].length > LastName.limit() ||
+                        storeState.cotizacion.identification['name'] === "" ||
+                        storeState.cotizacion.identification['lastname'] === ""
+                    ) i++;
+                }
+                if (
+                    storeState.cotizacion.identification['address'] === "" ||
+                    storeState.cotizacion.identification['department'] === "" ||
+                    storeState.cotizacion.identification['city'] === ""
+                ){
+                    i++;
                 }
                 storeState.continueButtonDisable = i !== 0;
             }

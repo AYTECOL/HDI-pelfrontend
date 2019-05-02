@@ -49,7 +49,7 @@ class Index extends Component {
                                         <span>?</span>
                                         <div className="text">La vivienda requiere que la revisemos más al detalle, si
                                             deseas emitir la póliza agendaremos una futura inspección. Ten presente los
-                                            siguientes datos: nombre de contacto y teléfono de contacto:
+                                            siguientes datos: Nombre de contacto y teléfono de contacto.
                                         </div>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@ class Index extends Component {
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                             <p><i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes descarga el
-                                fotmato <a
+                                formato <a
                                     href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF"
                                     rel="noopener noreferrer" target="_blank">aquí</a></p>
                         </div>

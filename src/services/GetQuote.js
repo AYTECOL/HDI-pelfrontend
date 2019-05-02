@@ -15,7 +15,7 @@ class GetQuote {
                 for (let i in items) if (items[i] === '""') items[i] = "";
                 return {
                     number: items.quoteId,
-                    typeDocument: items.document_type === '37' ? 2 : 1,
+                    typeDocument: parseInt(items.document_type) === 37 ? 2 : 1,
                     state: items.step,
                     identification: {
                         code: items.document_type,
