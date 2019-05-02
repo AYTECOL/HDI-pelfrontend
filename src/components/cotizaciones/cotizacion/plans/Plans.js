@@ -18,7 +18,7 @@ class Index extends Component {
             let storeState = store.getState();
             let plans = storeState.AllPlans;
             let index = storeState.indexPlan;
-            if (plans.length !== 0 || this.state.index !== index) {
+            if (plans !== this.state.plans || this.state.index !== index) {
                 this.setState({
                     ...this.state,
                     plans: plans,
