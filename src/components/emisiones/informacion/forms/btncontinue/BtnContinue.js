@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 
 import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class BtnContinue extends Component {
 
@@ -17,7 +18,7 @@ class BtnContinue extends Component {
     }
 
     saveAndExit = () => {
-        window.location.href = UrlSite + "/";
+        Helpers.goToHome();
     };
 
     nextStep = () => {

@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import './Submenu.scss';
 import store from "../../../store";
-import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actions";
-import Identifications from "../../../services/GetQuote";
-import ValorationById from "../../../services/ValorationById";
-import {UrlSite} from "../../../config";
+import {saveCotizacionNumber} from "../../../actions";
+import Helpers from "../../../common/helpers/helpers/Helpers";
 
 class Submenu extends Component {
 
@@ -15,45 +12,15 @@ class Submenu extends Component {
 
         this.state = {
             number: this.props.match.params.id,
+            path: '/cotizacion/' + this.props.match.params.step + '/' + this.props.match.params.id,
             step: parseInt(this.props.match.params.step),
-            path: '/cotizacion/' + this.props.match.params.step + '/' + this.props.match.params.id
         };
-
-        if (this.state.step > 3) {
-            window.location.href = UrlSite + "/404";
-        }
-
         store.dispatch(saveCotizacionNumber(this.state.number));
         store.subscribe(() => {
-            let storeState = store.getState();
-            let number = storeState.cotizacion.number;
-            if (this.state.number !== number) {
-                this.setState({
-                    number: number
-                });
-            }
+            let number = store.getState().cotizacion.number;
+            if (this.state.number !== number) this.setState({number: number});
         });
-
-        this.getRowById(this.state.number);
-    }
-
-    async getRowById(id) {
-        let cotizacion = await Identifications.getById(id);
-        if (typeof cotizacion.identification !== 'undefined') {
-            store.dispatch(restoreCotizacion(cotizacion));
-            if (cotizacion.state >= 2 && parseInt(this.props.match.params.step) >= 2) {
-                let riskData = await ValorationById.get(id);
-                if (riskData !== null) {
-                    store.dispatch(restoreCotizacionRisk(riskData));
-                }
-            }
-        } else if (typeof cotizacion.status !== 'undefined' && parseInt(this.props.match.params.step) !== 1) {
-            if (cotizacion.status === 400) {
-                window.location.href = UrlSite + "/404";
-            } else if (cotizacion.status === 0) {
-                window.location.href = UrlSite + "/";
-            }
-        }
+        Helpers.getRowById(this.state.number,this.props.match.params.step);
     }
 
     render() {

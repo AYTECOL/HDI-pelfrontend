@@ -16,11 +16,11 @@ export default class Entidad extends Component {
                             <h5 className="modal-title">Información adicional</h5>
                             <p className="modal-subtitle">Ingresa la información faltante, conocerla es importante para
                                 nosotros, no olvides asignar un rol</p>
-                            <button type="button" className="close" aria-label="Close"
-                                    onClick={this.props.toggle(0)}>&nbsp;</button>
+                            <button type="button" onClick={this.props.toggle(0)} className="close">&nbsp;</button>
                         </div>
                         <div className="modal-body">
                             <div className="content">
+
                                 <div className="row items-checkboxes">
                                     <div className="col col-sm-12 col-md-12 col-lg-12">
                                         <input type="checkbox" name="oneroso" id="oneroso" value="1"
@@ -29,8 +29,8 @@ export default class Entidad extends Component {
                                     </div>
                                 </div>
 
-
                                 <div className="row fields-row">
+
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                         <div className="numerodepisos input-select form-group "><label
                                             htmlFor="tipodedocuemnto">Tipo de documento</label>
@@ -40,6 +40,7 @@ export default class Entidad extends Component {
                                             </select>
                                         </div>
                                     </div>
+
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                                         <div className="pisonumero form-group "><label
                                             htmlFor="pisonumero">Identificación</label>
@@ -53,6 +54,7 @@ export default class Entidad extends Component {
                                             <input type="text" className="form-control" name="name"/>
                                         </div>
                                     </div>
+
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                                         <div className="pisonumero form-group "><label
                                             htmlFor="pisonumero">Fecha de constitución</label>
@@ -66,6 +68,7 @@ export default class Entidad extends Component {
                                             <input type="text" className="form-control" name="email" id="email"/>
                                         </div>
                                     </div>
+
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                                         <div className="pisonumero form-group "><label
                                             htmlFor="ciudad">Ciudad o municipio</label>
@@ -81,6 +84,7 @@ export default class Entidad extends Component {
                                             </select>
                                         </div>
                                     </div>
+
                                     <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                                         <div className="pisonumero form-group "><label
                                             htmlFor="address">Dirección</label>
@@ -92,9 +96,7 @@ export default class Entidad extends Component {
 
                             </div>
                             <div className="buttons">
-                                <button type="button" className="btn btn-primary"
-                                >Continuar
-                                </button>
+                                <button type="button" className="btn-primary btn">Continuar</button>
                             </div>
                         </div>
                     </div>

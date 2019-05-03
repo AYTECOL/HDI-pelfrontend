@@ -178,7 +178,7 @@ class Index extends Component {
                         </div>
 
                         <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
-                            <div className="more-items" onClick={this.togglePopUpPersona(1)}>
+                            <div className="more-items">
                                 <button type="button" className="more-btn">+</button>
                                 <p>Agregar persona</p>
                             </div>

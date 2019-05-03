@@ -1,3 +1,9 @@
+import {UrlSite} from "../../../config";
+import Identifications from "../../../services/GetQuote";
+import store from "../../../store";
+import {restoreCotizacion, restoreCotizacionRisk} from "../../../actions";
+import ValorationById from "../../../services/ValorationById";
+
 class Helpers {
 
     static toCapitalize(str) {
@@ -111,6 +117,34 @@ class Helpers {
             }
             return 0;
         });
+    }
+
+    static goToNotFound(){
+        window.location.href = UrlSite + "/404";
+    }
+
+    static goToHome(){
+        window.location.href = UrlSite + "/";
+    }
+
+    static async getRowById(id, step){
+        if (step > 3) window.location.href = UrlSite + "/404";
+        let cotizacion = await Identifications.getById(id);
+        if (typeof cotizacion.identification !== 'undefined') {
+            store.dispatch(restoreCotizacion(cotizacion));
+            if (cotizacion.state >= 2 && parseInt(step) >= 2) {
+                let riskData = await ValorationById.get(id);
+                if (riskData !== null) {
+                    store.dispatch(restoreCotizacionRisk(riskData));
+                }
+            }
+        } else if (typeof cotizacion.status !== 'undefined' && parseInt(step) !== 1) {
+            if (cotizacion.status === 400) {
+                Helpers.goToNotFound();
+            } else if (cotizacion.status === 0) {
+                Helpers.goToHome();
+            }
+        }
     }
 
     static calcularDigitoVerificacion(myNit) {
