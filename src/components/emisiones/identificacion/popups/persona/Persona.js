@@ -199,9 +199,7 @@ export default class Persona extends Component {
 
                             </div>
                             <div className="buttons">
-                                <button type="button" className="btn btn-primary"
-                                >Continuar
-                                </button>
+                                <button className="btn btn-primary" type="button">Continuar</button>
                             </div>
                         </div>
                     </div>

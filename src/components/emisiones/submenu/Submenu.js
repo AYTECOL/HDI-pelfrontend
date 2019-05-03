@@ -1,48 +1,28 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import './Submenu.scss';
 import store from "../../../store";
-import {restoreCotizacion, restoreCotizacionRisk, saveCotizacionNumber} from "../../../actions";
-import Identifications from "../../../services/GetQuote";
-import ValorationById from "../../../services/ValorationById";
+import {saveCotizacionNumber} from "../../../actions";
+import Helpers from "../../../common/helpers/helpers/Helpers";
 
 class Submenu extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             number: this.props.match.params.id,
             step: parseInt(this.props.match.params.step),
             path: '/emision/' + this.props.match.params.step + '/' + this.props.match.params.id
         };
-
         store.dispatch(saveCotizacionNumber(this.state.number));
         store.subscribe(() => {
             let storeState = store.getState();
             let number = storeState.cotizacion.number;
-            if (this.state.number !== number) {
-                this.setState({
-                    number: number
-                });
-            }
+            if (this.state.number !== number) this.setState({
+                number: number
+            });
         });
-
-        this.getRowById(this.state.number);
-    }
-
-    async getRowById(id) {
-        let cotizacion = await Identifications.getById(id);
-        if (typeof cotizacion.identification !== 'undefined') {
-            store.dispatch(restoreCotizacion(cotizacion));
-            if (cotizacion.state >= 2) {
-                let riskData = await ValorationById.get(id);
-                if (riskData !== null) {
-                    store.dispatch(restoreCotizacionRisk(riskData));
-                }
-            }
-        }
+        Helpers.getRowById(this.state.number,this.props.match.params.step);
     }
 
     render() {

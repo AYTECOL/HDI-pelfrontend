@@ -8,6 +8,7 @@
     "dotenv": "^7.0.0",
     "enzyme": "^3.9.0",
     "es6-promise-promise": "^1.0.0",
+    "jest-sonar-reporter": "^2.0.0",
     "node-sass": "^4.11.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
@@ -27,8 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test:ci": "react-scripts test --skipFilter true --watchAll false --coverage --coverageDirectory=coverage",
+    "test": "react-scripts test --skipFilter true --watchAll false --coverage --coverageDirectory=coverage",
     "eject": "react-scripts eject"
   },
   "jest": {
@@ -36,8 +36,15 @@
       "text",
       "html",
       "json",
-      "clover"
+      "clover",
+      "lcov"
     ]
+  },
+  "jestSonar": {
+    "sonar56x": true,
+    "reportPath": "coverage",
+    "reportFile": "sonar-report.xml",
+    "indent": 4
   },
   "eslintConfig": {
     "extends": "react-app"

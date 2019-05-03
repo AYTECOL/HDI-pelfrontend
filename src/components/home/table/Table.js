@@ -12,7 +12,7 @@ class Table extends Component {
         super(props);
         this.state = {
             options: {
-                quote: []
+                quotations: []
             }
         };
         this.getRows();
@@ -20,10 +20,10 @@ class Table extends Component {
 
     async getRows() {
         let cotizaciones = await Identifications.get();
-        if (typeof cotizaciones.quote !== "undefined" && cotizaciones.quote.length > 0) {
+        if (typeof cotizaciones.quotations !== "undefined" && cotizaciones.quotations.length > 0) {
             this.setState({
                 ...this.state,
-                options: await Identifications.get()
+                options: cotizaciones
             });
         }
     }
@@ -50,7 +50,7 @@ class Table extends Component {
                         <div className="col"><span>Estado</span></div>
                         <div className="col"><span>Acción</span></div>
                     </div>
-                    {this.state.options.quote.map(option =>
+                    {this.state.options.quotations.map(option =>
                         <div className="row body" key={option.quoteId}>
                             <div className="col"><p>{option.quoteId}</p></div>
                             <div className="col"><p>03/09/2019 <span>09:45</span></p></div>

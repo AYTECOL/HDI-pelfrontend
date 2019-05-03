@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
 
@@ -8,20 +9,22 @@ class BtnContinue extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            step: parseInt(this.props.match.params.step),
             continueButtonDisable: true,
             stateFormIdentificacion: 0,
             cotizacionExclude: [],
-            comeBack: UrlSite + "/cotizacion/2/" + this.props.match.params.id
+            step: parseInt(this.props.match.params.step),
+            id: this.props.match.params.id,
+            comeBack: UrlSite + "/cotizacion/2/"
         };
+        this.state.comeBack += this.state.id;
     }
 
-    saveAndExit = () => {
-        window.location.href = UrlSite + "/";
+    nextStep = () => {
+        window.location.href = UrlSite + "/cotizacion/4/" + this.state.id;
     };
 
-    nextStep = () => {
-        window.location.href = UrlSite + "/cotizacion/4/" + this.props.match.params.id;
+    saveAndExit = () => {
+        Helpers.goToHome();
     };
 
     render() {

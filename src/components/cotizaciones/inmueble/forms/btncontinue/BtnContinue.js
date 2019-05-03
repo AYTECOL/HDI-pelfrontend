@@ -26,7 +26,7 @@ class BtnContinue extends Component {
 
     saveService = async () => {
         await CreateOrUpdateValoration.get();
-        window.location.href = UrlSite + "/";
+        Helpers.goToHome();
     };
 
     saveServiceContinue = async () => {
