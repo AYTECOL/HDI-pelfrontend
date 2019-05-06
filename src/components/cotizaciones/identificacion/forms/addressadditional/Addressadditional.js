@@ -27,14 +27,16 @@ class Addressadditional extends Component {
         e = e.target;
         let error = false;
         if (e.value.length > 200) error = true;
+        store.dispatch(saveIdentificationValue(e));
         this.setState({
             ...this.state,
             error: error,
+            value: e.value
         });
-        store.dispatch(saveIdentificationValue(e));
     };
 
     render() {
+        console.log(this.state.error);
         return (
             <div className={"form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>

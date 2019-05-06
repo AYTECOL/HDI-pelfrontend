@@ -38,6 +38,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/forms/addressadditional/Addressadditional.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/forms/btncontinue/BtnContinue.js">
           <value>
             <set />
@@ -113,7 +118,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../panelweb_cy/src/components/pages/GstAdmin/GstAdmin.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../panelweb_cy/src/components/pages/GstAdmin/formOptions.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../panelweb_cy/src/components/pages/GstAdmin/formTwo.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../panelweb_cy/src/components/routers/AppRouter.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../panelweb_cy/src/services/colombia.json">
           <value>
             <set />
           </value>
