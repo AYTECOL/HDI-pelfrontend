@@ -8,11 +8,22 @@ image: python:3.7.2
 pipelines:
   default:
     - step:
-        caches:
-          - pip
-        script: # Modify the commands below to build your repository.
-          - pip install -r requirements.txt
-    - step:
+        name: "pipeline bitbucket to aws"
         script:
-          - s3 --region "	us-east-1" rm s3://libertyhomefront-dev-csv
-          - s3 --region "	us-east-1" sync . s3://libertyhomefront-dev-csv
+          - pytest test/test.py
+          - zip application.zip Dockerfile application.py cron.yaml Dockerrun.aws.json
+        artifacts: 
+          - application.zip
+    - step:
+        name: "bitbucket to aws s3"
+        deployment: production
+        script:
+        - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
+          variables:
+            AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+            AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+            AWS_DEFAULT_REGION: "us-east-1"
+            APPLICATION_NAME: "application-test"
+            ZIP_FILE: "application.zip"
+            S3_BUCKET: "application-test-bucket"
+            VERSION_LABEL: "deploy-$BITBUCKET_BUILD_NUMBER-multiple"
