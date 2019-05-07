@@ -18,7 +18,7 @@ pipelines:
             AWS_DEFAULT_REGION: "us-east-1"
             APPLICATION_NAME: "liberty_hogar"
             S3_BUCKET: "libertyhomefront-dev-csv"
-            LOCAL_PATH: "/local/path/build/*"
+            LOCAL_PATH: "/opt/atlassian/pipelines/agent/build"
             ACL: "public-read"
             CACHE_CONTROL: "max-age=3600"
             EXPIRES: "2018-10-01T00:00:00+00:00"
