@@ -8,13 +8,6 @@ image: python:3.7.2
 pipelines:
   default:
     - step:
-        name: "pipeline bitbucket to aws"
-        script:
-          - pytest test/test.py
-          - zip application.zip Dockerfile application.py cron.yaml Dockerrun.aws.json
-        artifacts: 
-          - application.zip
-    - step:
         name: "bitbucket to aws s3"
         deployment: production
         script:
