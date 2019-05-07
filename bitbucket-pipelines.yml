@@ -11,7 +11,7 @@ pipelines:
         name: "bitbucket to aws s3"
         deployment: production
         script:
-        - pipe: atlassian/aws-elasticbeanstalk-deploy:0.2.1
+        - pipe: atlassian/aws-libertyhogar-deploy:0.1
           variables:
             AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
             AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
