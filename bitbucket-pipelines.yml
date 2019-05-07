@@ -16,7 +16,6 @@ pipelines:
             AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
             AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
             AWS_DEFAULT_REGION: "us-east-1"
-            APPLICATION_NAME: "application-test"
-            ZIP_FILE: "application.zip"
-            S3_BUCKET: "application-test-bucket"
+            APPLICATION_NAME: "liberty_hogar"
+            S3_BUCKET: "libertyhomefront-dev-csv"
             VERSION_LABEL: "deploy-$BITBUCKET_BUILD_NUMBER-multiple"
