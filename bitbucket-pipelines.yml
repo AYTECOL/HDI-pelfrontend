@@ -12,9 +12,7 @@ pipelines:
           - pip
         script: # Modify the commands below to build your repository.
           - pip install -r requirements.txt
-  branches:
-    master:
-      - step:
-          script:
-            - s3 --region "	us-east-1" rm s3://libertyhomefront-dev-csv
-            - s3 --region "	us-east-1" sync . s3://libertyhomefront-dev-csv
+    - step:
+        script:
+          - s3 --region "	us-east-1" rm s3://libertyhomefront-dev-csv
+          - s3 --region "	us-east-1" sync . s3://libertyhomefront-dev-csv
