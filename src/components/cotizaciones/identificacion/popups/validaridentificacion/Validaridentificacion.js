@@ -26,7 +26,9 @@ class Validaridentificacion extends Component {
     }
 
     hide = () => {
-        document.getElementById("doc-type-value").removeAttribute("disabled");
+        if ( document.getElementById("doc-type-value") !== null){
+            document.getElementById("doc-type-value").removeAttribute("disabled");
+        }
         store.dispatch(showPopupIdentification(false));
     };
 
@@ -48,9 +50,12 @@ class Validaridentificacion extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <a href="/" className="btn btn-secondary" data-dismiss="modal">Terminar
-                                </a>
-                                <button type="button" className="btn btn-primary" onClick={this.hide}>Ajustar</button>
+                                {typeof this.props.toggle === "undefined"?(
+                                    <a href="/" className="btn btn-secondary" data-dismiss="modal">Terminar</a>
+                                ):(
+                                    <button type="button" className="btn btn-secondary" onClick={this.props.toggle(-2)}>Terminar</button>
+                                )}
+                                <button type="button" className="btn btn-primary" onClick={typeof this.props.changeValue === "undefined"?this.hide:this.props.changeValue}>Ajustar</button>
                             </div>
                         </div>
                         <div className="modal-footer">

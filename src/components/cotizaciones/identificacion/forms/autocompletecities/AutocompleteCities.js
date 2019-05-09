@@ -181,16 +181,17 @@ class AutocompleteCities extends Component {
     render() {
         return (
             <div className={"form-group autocomplete " + (this.state.empty ? 'error' : '')}>
-                <label htmlFor="city">Ciudad o municipio del hogar</label>
-                <input name="city" id="city" type="text" className="form-control"
+                <label className={typeof this.props.hideTitle !== "undefined"&&this.props.hideTitle===true?'hide':''} htmlFor="city">Ciudad o municipio del hogar</label>
+                <input name={this.props} id="city" type="text" className={"form-control "+(typeof this.props.disabled==='undefined'?'':(this.props.disabled===true?'disabled':''))}
                        placeholder="Ingresa ciudad o municipio del h..."
-                       value={this.state.value}
+                       value={typeof this.props.value==="undefined"?this.state.value:this.props.value}
+                       disabled={typeof this.props.disabled==='undefined'?false:this.props.disabled}
                        autoComplete="city"
                        autoCorrect="off"
                        autoCapitalize="none"
                        onKeyDown={this.moveOptions}
                        onBlur={this.onBlur}
-                       onChange={this.searchData}
+                       onChange={typeof this.props.onChange==="undefined"?this.searchData:this.props.onChange}
                 />
                 <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
                 <ul className={(this.state.toggle ? 'show' : 'hide') + " list-items"}>

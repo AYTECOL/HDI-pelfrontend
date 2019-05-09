@@ -5,7 +5,10 @@
 
       .fields-row {
         max-width: 624px;
-        margin: 40px auto 26px;
+        margin: 0 auto;
+      }
+      .form-group.error::after{
+        top: 15px;
       }
     }
 
@@ -17,6 +20,7 @@
         max-width: 400px;
         margin-left: auto;
         margin-right: auto;
+        margin-bottom: 40px;
 
         input, label {
           vertical-align: middle;
@@ -31,6 +35,10 @@
           display: block;
           text-align: left;
         }
+      }
+
+      .buttons{
+        margin-top: 26px;
       }
 
       .row.sarlaft {

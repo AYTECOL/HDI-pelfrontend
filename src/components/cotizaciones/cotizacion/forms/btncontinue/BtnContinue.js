@@ -20,7 +20,7 @@ class BtnContinue extends Component {
     }
 
     nextStep = () => {
-        window.location.href = UrlSite + "/cotizacion/4/" + this.state.id;
+        window.location.href = UrlSite + "/emision/1/" + this.state.id;
     };
 
     saveAndExit = () => {
