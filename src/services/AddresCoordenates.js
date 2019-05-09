@@ -11,12 +11,12 @@ class GetAddresInfo {
         address = address.replace("N°", " ");
         //let url = `https://maps.googleapis.com/maps/api/geocode/json?key=${APIKEY}&address=${address}`;
         let url = `${Cors}https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&key=${APIKEY}&input=${address}`;
-        return await Api.get(encodeURI(url), "", false)
+        return await Api.get(encodeURI(url), "")
             .then(response => {
                 //return response.results[0].geometry.location;
                 if (response.status === "ZERO_RESULTS") return {};
                 if (typeof response.candidates[0] === "undefined") return {};
-                return Api.get(encodeURI(`${Cors}https://maps.googleapis.com/maps/api/place/details/json?key=${APIKEY}&placeid=${response.candidates[0].place_id}`), "", false)
+                return Api.get(encodeURI(`${Cors}https://maps.googleapis.com/maps/api/place/details/json?key=${APIKEY}&placeid=${response.candidates[0].place_id}`), "")
                     .then(finalResponse => {
                         return (finalResponse.result.geometry.location)
                     });
@@ -24,7 +24,7 @@ class GetAddresInfo {
     };
 
     static async getAdressByCoors(coors) {
-        return Api.get(encodeURI(`${Cors}https://maps.googleapis.com/maps/api/geocode/json?latlng=${coors.lat()},${coors.lng()}&key=${APIKEY}`), "", false)
+        return Api.get(encodeURI(`${Cors}https://maps.googleapis.com/maps/api/geocode/json?latlng=${coors.lat()},${coors.lng()}&key=${APIKEY}`), "")
             .then(response => {
                 return response.results[0].formatted_address;
             });

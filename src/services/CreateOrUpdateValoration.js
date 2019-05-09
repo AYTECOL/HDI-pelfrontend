@@ -2,6 +2,7 @@ import Api from './Api';
 import Store from '../store';
 
 const BaseUrl = "/create-or-update-valoration/";
+const EndPoint = "https://tam1avgmn2.execute-api.us-east-1.amazonaws.com/dev";
 
 class CreateOrUpdateValoration {
     static async get() {
@@ -40,7 +41,9 @@ class CreateOrUpdateValoration {
             inmueble_asegudado_telefonosvalor: risks.inmuebleasegudadotelefonosvalor
         };
         for (let i in data) if (data[i] === "") data[i] = '""';
-        return await Api.post(BaseUrl + nCotizacion, data);
+        let response = await Api.post(BaseUrl + nCotizacion, data);
+        console.log(response);
+        return response;
     };
 }
 

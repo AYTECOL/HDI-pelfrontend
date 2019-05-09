@@ -8,6 +8,8 @@ import Tab from "../tab/Tab";
 import Btns from "../forms/btncontinue/BtnContinue";
 import Links from "../forms/links/Links";
 import Plans from "../plans/Plans";
+import store from "../../../../store";
+import {toggleLoading} from "../../../../actions";
 
 class Index extends Component {
 
@@ -16,6 +18,7 @@ class Index extends Component {
         this.state = {
             step: parseInt(this.props.match.params.step),
         };
+        store.dispatch(toggleLoading(true));
     }
 
     render() {
@@ -31,31 +34,6 @@ class Index extends Component {
                     </div>
 
                     <Cards/>
-
-                    <div className="row">
-                        <div className="col col-sm-12 col-md-12 col-lg-12 title">
-                            <p>Listo, te sugerimos un paquete recomendado, sin embargo puedes personalizarlo de acuerdo
-                                a la necesidad, quita o agrega lo que consideras podría ser de utilidad en el futuro</p>
-                        </div>
-                    </div>
-
-                    <div className="row justify-content-center">
-                        <div className="col col-sm-12 col-md-10 col-lg-10">
-                            <div className="tool-tip info tool-tip-new">
-                                <p>Póliza sujeta a <span>inspección en sitio</span></p>
-                                <div className="more-info">
-                                    <p>Más información</p>
-                                    <div className="span">
-                                        <span>?</span>
-                                        <div className="text">La vivienda requiere que la revisemos más al detalle, si
-                                            deseas emitir la póliza agendaremos una futura inspección. Ten presente los
-                                            siguientes datos: Nombre de contacto y teléfono de contacto.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <Plans/>
 

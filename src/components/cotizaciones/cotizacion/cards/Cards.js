@@ -9,7 +9,9 @@ import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
 import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
 import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {saveInmuebleValue} from "../../../../actions";
+import {saveInmuebleValue, toggleLoading} from "../../../../actions";
+import InspectionPolicy from "../../../../services/InspectionPolicy";
+import AllBuildYears from "../../../../services/AllBuildYears";
 
 class Cards extends Component {
 
@@ -40,8 +42,12 @@ class Cards extends Component {
                     type: 5,
                 }
             ],
+            anoconstruidos: [],
             Inmueble: store.getState().Inmueble,
-            InmuebleOk: false
+            InmuebleOk: false,
+            showInspect: false,
+            inspection_detail: '',
+            inspection: ''
         };
         for (let i = 0; i < 5; i++) {
             this.state.items[i].value = "";
@@ -51,7 +57,6 @@ class Cards extends Component {
             this.state.items[i].inactiveAdd = false;
         }
         this.state.items[0].active = false;
-
         store.subscribe(() => {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
@@ -82,11 +87,90 @@ class Cards extends Component {
                     Inmueble: inmueble,
                     InmuebleOk: true
                 });
+                setTimeout(function () {
+                    this.getInspectionPolicy();
+                }.bind(this),500);
             }
         });
 
         this.getAllInsurableLimits();
         this.validateToggle();
+        this.getAllBuildYears();
+    }
+
+    async getAllBuildYears(){
+        this.setState({
+            ...this.state,
+            anoconstruidos: await AllBuildYears.get()
+        });
+    }
+    async getInspectionPolicy(){
+        let Inmueble = store.getState().Inmueble;
+        let anoconstruidos = this.state.anoconstruidos;
+        let code = '-';
+        let insured_values = '-';
+        let zone = '-';
+        let insured_type = '-';
+        let year_construction = '-';
+        let in_closed_set = '-';
+        let insured_total = '-';
+        if ( Inmueble.inmuebleasegudado === 1 && Inmueble.contenidoasegudado === 0 ){
+            code = 1;
+            insured_values = 'inmueble';
+            insured_type = Inmueble.type_risk===1?'casa':'apartamento';
+            for (let i = 0; i < anoconstruidos.length; i++) {
+                if( anoconstruidos[i].buildYearCode.toString() === Inmueble.anoconstruido ){
+                    year_construction = anoconstruidos[i].answer;
+                }
+            }
+            in_closed_set = Inmueble.cojuntocerrado===1?'true':'false';
+            insured_total = Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadovalor);
+            zone = Inmueble.zona===1?'urbano':'rural';
+        }
+        if ( Inmueble.inmuebleasegudado === 0 && Inmueble.contenidoasegudado === 1 ){
+            code = 2;
+            insured_values = 'contenidos';
+            insured_total = Masknumbermoney.formatToNumber(Inmueble.contenidoasegudadovalor);
+            zone = Inmueble.zona===1?'urbano':'rural';
+            insured_type = Inmueble.type_risk===1?'casa':'apartamento';
+            in_closed_set = Inmueble.cojuntocerrado===1?'true':'false';
+        }
+        if ( Inmueble.inmuebleasegudado === 0 && Inmueble.contenidoasegudado === 1 && (Inmueble.inmuebleasegudadojoyas === 1 || Inmueble.inmuebleasegudadoobras === 1) ){
+            code = 3;
+            insured_values = 'contenidos especiales';
+            if (Inmueble.inmuebleasegudadojoyas === 1 && Inmueble.inmuebleasegudadoobras === 0) {
+                insured_type = 'joyas';
+                insured_total = Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadojoyasvalor);
+            }
+            if (Inmueble.inmuebleasegudadoobras === 1 && Inmueble.inmuebleasegudadojoyas === 0) {
+                insured_type = 'obras de arte';
+                insured_total = Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadoobrasvalor);
+            }
+        }
+        try {
+            let data = await InspectionPolicy.get(code,insured_values,zone,insured_type,year_construction,in_closed_set,insured_total);
+            if( typeof data.inspection_policy !== "undefined" ){
+                this.setState({
+                    ...this.state,
+                    inspection_detail: data.inspection_policy.inspection_detail,
+                    inspection: data.inspection_policy.inspection,
+                    showInspect: true
+                });
+            }else{
+                this.setState({
+                    ...this.state,
+                    showInspect: false
+                });
+            }
+        }catch (e) {
+            this.setState({
+                ...this.state,
+                showInspect: false
+            });
+        }
+        setTimeout(function () {
+            store.dispatch(toggleLoading(false));
+        },500);
     }
 
     componentDidMount() {
@@ -114,6 +198,9 @@ class Cards extends Component {
                 ...this.state,
                 items: newItems
             });
+            setTimeout(function () {
+                this.getInspectionPolicy();
+            }.bind(this),300);
         }
     }
 
@@ -186,46 +273,74 @@ class Cards extends Component {
 
     render() {
         return (
-            <div className="row row-boxes">
-                {this.state.items.map((option, key) =>
-                    <div className="col" key={key}>
-                        <div className={"box-col " + (this.state.items[key].active === true ? 'active' : '')}>
-                            <div className={"image image-" + (key + 1)}>&nbsp;</div>
-                            <p>{option.parent.name()}</p>
-                            <div className="wrapper-over">
-                                <div className={(option.inactiveAdd === true ? 'invisible' : '') + " btntoggle"}
-                                     onClick={this.toggleItem(key)}>+
+            <React.Fragment>
+                <div className="row row-boxes">
+                    {this.state.items.map((option, key) =>
+                        <div className="col" key={key}>
+                            <div className={"box-col " + (this.state.items[key].active === true ? 'active' : '')}>
+                                <div className={"image image-" + (key + 1)}>&nbsp;</div>
+                                <p>{option.parent.name()}</p>
+                                <div className="wrapper-over">
+                                    <div className={(option.inactiveAdd === true ? 'invisible' : '') + " btntoggle"}
+                                         onClick={this.toggleItem(key)}>+
+                                    </div>
+                                    <div className={"form-group " + (option.errorValue !== 0 ? 'error' : '')}>
+                                        <label htmlFor="incendios">Valor</label>
+                                        <input type="text" className={"form-control"} name="incendios" id="incendios"
+                                               value={option.value}
+                                               onBlur={this.validateValue(key)}
+                                               onChange={this.validateValue(key)}
+                                        />
+                                        <small
+                                            className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(option.parent.min())} -
+                                            Máximo. {Masknumbermoney.formatToMask(option.parent.max())}</small>
+                                        <small
+                                            className={"form-text only-errors " + (option.errorValue === 1 ? 'show' : 'hide')}>Por
+                                            Ingrese el valor asegurado de Teléfonos Móviles.
+                                        </small>
+                                        <small
+                                            className={"form-text only-errors " + (option.errorValue === 2 ? 'show' : 'hide')}>Valor
+                                            Asegurado de {option.parent.name()} es inferior al permitido.
+                                        </small>
+                                        <small
+                                            className={"form-text only-errors " + (option.errorValue === 3 ? 'show' : 'hide')}>Valor
+                                            Asegurado de {option.parent.name()} es superior al permitido.
+                                        </small>
+                                    </div>
+                                    <span className={(option.inactiveToggle === true ? 'invisible' : '')}
+                                          onClick={this.toggleItem(key)}>No lo quiero</span>
                                 </div>
-                                <div className={"form-group " + (option.errorValue !== 0 ? 'error' : '')}>
-                                    <label htmlFor="incendios">Valor</label>
-                                    <input type="text" className={"form-control"} name="incendios" id="incendios"
-                                           value={option.value}
-                                           onBlur={this.validateValue(key)}
-                                           onChange={this.validateValue(key)}
-                                    />
-                                    <small
-                                        className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(option.parent.min())} -
-                                        Máximo. {Masknumbermoney.formatToMask(option.parent.max())}</small>
-                                    <small
-                                        className={"form-text only-errors " + (option.errorValue === 1 ? 'show' : 'hide')}>Por
-                                        Ingrese el valor asegurado de Teléfonos Móviles.
-                                    </small>
-                                    <small
-                                        className={"form-text only-errors " + (option.errorValue === 2 ? 'show' : 'hide')}>Valor
-                                        Asegurado de {option.parent.name()} es inferior al permitido.
-                                    </small>
-                                    <small
-                                        className={"form-text only-errors " + (option.errorValue === 3 ? 'show' : 'hide')}>Valor
-                                        Asegurado de {option.parent.name()} es superior al permitido.
-                                    </small>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className="row">
+                    <div className="col col-sm-12 col-md-12 col-lg-12 title">
+                        <p>Listo, te sugerimos un paquete recomendado, sin embargo puedes personalizarlo de acuerdo
+                            a la necesidad, quita o agrega lo que consideras podría ser de utilidad en el futuro</p>
+                    </div>
+                </div>
+
+                <div className={"row justify-content-center "+(this.state.showInspect===false?'hide':'')}>
+                    <div className="col col-sm-12 col-md-10 col-lg-10">
+                        <div className="tool-tip info tool-tip-new">
+                            <p>Póliza sujeta a <span>{this.state.inspection_detail}</span></p>
+                            <div className="more-info">
+                                <p>Más información</p>
+                                <div className="span">
+                                    <span>?</span>
+                                    {this.state.inspection==="I.C"?(
+                                        <div className="text">La vivienda requiere que la revisemos más al detalle, ten presente los siguientes datos para poder agendar una futura inspección en sitio: Nombre de contacto, Teléfono de contacto.</div>
+                                    ):(
+                                        <div className="text">La vivienda requiere que la revisemos más al detalle, envíanos por favor un breve registro fotográfico de acuerdo a la siguiente guía: Una foto de la Fachada (Debe ser visible la estructura y todos los pisos del Edificio), Una foto de la Habitación principal y de Sala-Comedor, Una foto de los Baños y de la Cocina</div>
+                                    )}
                                 </div>
-                                <span className={(option.inactiveToggle === true ? 'invisible' : '')}
-                                      onClick={this.toggleItem(key)}>No lo quiero</span>
                             </div>
                         </div>
                     </div>
-                )}
-            </div>
+                </div>
+            </React.Fragment>
         )
     }
 

@@ -33,7 +33,8 @@ class BtnContinue extends Component {
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveAndExit}>Guardar y salir
                 </button>
-                <button type="button" className={"btn btn-primary"}
+                <button type="button" className={"btn btn-primary "+(this.props.inactiveBtn?'disabled':'')}
+                        disabled={this.props.inactiveBtn}
                         onClick={this.nextStep}>Continuar
                 </button>
             </Fragment>

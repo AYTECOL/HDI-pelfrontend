@@ -42,7 +42,10 @@
       background: #FFFFFF;
       box-shadow: 0 6px 24px rgba(52, 55, 65, 0.16);
       border-radius: 3px;
-      margin-bottom: 60px;
+      margin-bottom: 10px;
+      &:last-child{
+        margin-bottom: 60px;
+      }
 
       .icon-image {
         background-image: url("../../../../common/images/user.png");

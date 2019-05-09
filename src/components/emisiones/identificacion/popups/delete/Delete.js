@@ -31,8 +31,8 @@ export default class Delete extends Component {
                                         onClick={this.props.toggle(0)}>Cancelar
                                 </button>
                                 <button type="button" className="btn btn-primary"
-                                >Eliminar
-                                </button>
+                                onClick={this.props.removeItem}
+                                >Eliminar</button>
                             </div>
                         </div>
                     </div>

@@ -6,6 +6,8 @@ import Identifications from '../../../../../services/Identifications';
 
 class TipoDocumento extends Component {
 
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -15,7 +17,7 @@ class TipoDocumento extends Component {
             },
             error: false,
             stateForm: 0,
-            disabled: false,
+            disabled: typeof this.props.disabled === "undefined"?false:this.props.disabled,
             docType: 1,
         };
 
@@ -26,32 +28,46 @@ class TipoDocumento extends Component {
             let disabled = false;
             if (newState !== 0) disabled = true;
             if (this.state.stateForm !== newState) {
-                this.setState({
-                    ...this.state,
-                    stateForm: newState,
-                    disabled: disabled
-                });
+                if (this._isMounted){
+                    this.setState({
+                        ...this.state,
+                        stateForm: newState,
+                        disabled: disabled
+                    });
+                }
             }
         });
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     validateEmpty = e => {
         e = e.target;
         if (e.value.length < 1) {
-            this.setState({
-                ...this.state,
-                error: true
-            })
+            if (this._isMounted) {
+                this.setState({
+                    ...this.state,
+                    error: true
+                })
+            }
         }
         let type = e.selectedOptions[0].getAttribute("data");
         let typeDocument = 1;
         if (type === "Jurídica") typeDocument = 2;
         store.dispatch(saveIdentificationValue(e));
         store.dispatch(updateTypeDoc(typeDocument));
-        this.setState({
-            ...this.state,
-            value: e.value
-        });
+        if (this._isMounted) {
+            this.setState({
+                ...this.state,
+                value: e.value
+            });
+        }
     };
 
     async getOptions() {
@@ -65,10 +81,10 @@ class TipoDocumento extends Component {
         return (
             <div className={"form-group input-select " + this.state.error}>
                 <label htmlFor="doc-type">Tipo de identificación</label>
-                <select disabled={(this.state.disabled ? "disabled" : "")} name="code" id="doc-type"
-                        className={(this.state.disabled ? "disabled " : "") + "form-control"}
-                        value={this.state.value}
-                        onChange={this.validateEmpty}>
+                <select disabled={(typeof this.props.disabled === "undefined"?this.state.disabled:this.props.disabled ? "disabled" : "")} name="code" id="doc-type"
+                        className={((typeof this.props.disabled === "undefined"?this.state.disabled:this.props.disabled)  ? "disabled " : "") + "form-control"}
+                        value={typeof this.props.value === "undefined"?this.state.value:this.props.value}
+                        onChange={typeof this.props.onChange === "undefined" ?this.validateEmpty:this.props.onChange}>
                     {this.state.options.identifications.map(option =>
                         <option key={option.code} value={option.code}
                                 data={option.type_person}>{option.description}</option>

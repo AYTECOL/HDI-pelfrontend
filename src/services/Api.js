@@ -1,14 +1,11 @@
-import store from "../store";
-import {toggleLoading} from "../actions";
 import Promise from 'es6-promise';
 // Data from Env
 import {UrlService} from '../config';
 
 class Api {
 
-    static HttpRequest(method, url, data, overrideBase, showLoader) {
+    static HttpRequest(method, url, data, overrideBase) {
         return new Promise(function (resolve, reject) {
-            if (typeof showLoader === "undefined") store.dispatch(toggleLoading(true));
             var xhr = new XMLHttpRequest();
             if (typeof overrideBase === 'undefined') {
                 url = UrlService + url;
@@ -19,7 +16,6 @@ class Api {
             xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
             xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             xhr.onload = function () {
-                if (typeof showLoader === "undefined") store.dispatch(toggleLoading(false));
                 if (this.status >= 200 && this.status < 300) {
                     resolve(xhr.response);
                 } else {
@@ -30,7 +26,6 @@ class Api {
                 }
             };
             xhr.onerror = function () {
-                if (typeof showLoader === "undefined") store.dispatch(toggleLoading(false));
                 reject({
                     status: this.status,
                     statusText: xhr.statusText
@@ -45,20 +40,20 @@ class Api {
         });
     }
 
-    static async get(url, overrideBase, showLoader) {
-        return await Api.HttpRequest('GET', url, null, overrideBase, showLoader).then(function (response) {
+    static async get(url, overrideBase) {
+        return await Api.HttpRequest('GET', url, null, overrideBase).then(function (response) {
             return JSON.parse(response);
         })
     };
 
-    static async post(url, data, overrideBase, showLoader) {
-        return await Api.HttpRequest('POST', url, data, overrideBase, showLoader).then(function (response) {
+    static async post(url, data, overrideBase) {
+        return await Api.HttpRequest('POST', url, data, overrideBase).then(function (response) {
             return JSON.parse(response);
         });
     };
 
-    static async put(url, overrideBase, showLoader) {
-        return await Api.HttpRequest('PUT', url, null, overrideBase, showLoader).then(function (response) {
+    static async put(url, overrideBase) {
+        return await Api.HttpRequest('PUT', url, null, overrideBase).then(function (response) {
             return JSON.parse(response);
         })
     };
