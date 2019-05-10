@@ -126,6 +126,16 @@ $color-font-btn-primary: #404040;
     }
   }
 
+  &.btn-link{
+    &,&:hover,&:active{
+      border: 0;
+      background-color: transparent;
+      padding: 0;
+      margin: 0;
+      color: #404040;
+    }
+  }
+
   &.btn-default {
     &:hover {
       background: #e6e6e6 !important;
@@ -429,6 +439,17 @@ $color-font-btn-primary: #404040;
     transition: all 0.3s ease;
     border: 1px solid transparent;
 
+    &:hover{
+      .tool-tip-hover {
+        display: block !important;
+        left: -40%;
+        right: 0;
+        margin: 0 auto;
+        top: 75%;
+        width: 180%;
+      }
+    }
+
     &.active,
     &:hover {
       background: #28A3AF;
@@ -557,6 +578,7 @@ $color-font-btn-primary: #404040;
 .gridgrid {
   .grid-select {
     .col {
+      position: relative;
       &:nth-child(2n) {
         padding-right: 9px;
       }
@@ -858,5 +880,35 @@ $padding-aside: 36px;
         }
       }
     }
+  }
+}
+
+body #root .cotizacion .container .tool-tip-hover{
+  position: absolute;
+  z-index: 2;
+  background: #343741;
+  box-shadow: 0 2px 11px rgba(52, 55, 65, 0.543733);
+  padding: 15px;
+  display: none;
+  border-radius: 4px;
+  &::after{
+    content: '';
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #343741;
+    position: absolute;
+    top: -8px;
+    left: 47%;
+  }
+  p{
+    margin: 0;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 22px;
+    color: #FFFFFF;
+    text-align: left;
   }
 }

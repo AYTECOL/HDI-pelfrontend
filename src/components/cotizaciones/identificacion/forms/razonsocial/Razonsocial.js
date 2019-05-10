@@ -10,21 +10,26 @@ class Razonsocial extends Component {
         super(props);
         this.state = {
             error: false,
-            value: "",
-            disabledbusinessname: false
+            value: ""
         };
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = Helpers.toCapitalize(storeState.cotizacion.identification.businessname);
-            let disabledbusinessname = storeState.disabledbusinessname;
-            if (Helpers.toCapitalize(this.state.value) !== value || this.state.disabledbusinessname !== disabledbusinessname) {
+            if (Helpers.toCapitalize(this.state.value) !== value) {
                 this.setState({
                     ...this.state,
-                    value: value,
-                    disabledbusinessname: disabledbusinessname,
+                    value: value
                 });
             }
         });
+    }
+
+    static toggleDisable(status){
+        if (status === true){
+            Helpers.disabled('#businessname');
+        } else {
+            Helpers.enabled('#businessname');
+        }
     }
 
     static limit() {
@@ -51,8 +56,7 @@ class Razonsocial extends Component {
                 <input name="businessname" id="businessname"
                        type="text"
                        value={this.state.value}
-                       className={(this.state.disabledbusinessname ? "disabled " : "") + "form-control"}
-                       disabled={this.state.disabledbusinessname === true}
+                       className={"form-control"}
                        placeholder="Ingresa la razón social"
                        onChange={this.validateEmpty}/>
             </div>

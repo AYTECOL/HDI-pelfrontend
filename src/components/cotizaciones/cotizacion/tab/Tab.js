@@ -8,6 +8,7 @@ import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../action
 //Components
 import Coberturas from '../coberturas/Coberturas';
 import Asistencias from '../asistencias/Asistencias';
+import Loading from "../../../globals/loading/Loading";
 
 class Tab extends Component {
 
@@ -38,7 +39,7 @@ class Tab extends Component {
         });
     }
 
-    static toogleSlide = index => e => {
+    static toggleSlide = index => e => {
         let className = "close_item";
         if (Helpers.hasClass(".row_tab_" + index, className)) {
             Helpers.removeClass(".row_tab_" + index, className);
@@ -70,6 +71,7 @@ class Tab extends Component {
     }
 
     async getPlants() {
+        Loading.toggle(true);
         let plans = await AllPlans.get(this.state.typePlans);
         if (this.state.index === "") for (let i in plans) if (plans[i].isdefault === true) store.dispatch(indexPlanSelected(i));
         this.setState({
@@ -77,6 +79,7 @@ class Tab extends Component {
             plans: plans
         });
         store.dispatch(AllPlansCreator(plans));
+        Loading.toggle(false);
     }
 
     render() {
@@ -96,8 +99,8 @@ class Tab extends Component {
                     </div>
                 </div>
                 <div className="wrapper-items">
-                    <Coberturas toogleSlide={Tab.toogleSlide}/>
-                    <Asistencias toogleSlide={Tab.toogleSlide}/>
+                    <Coberturas toggleSlide={Tab.toggleSlide}/>
+                    <Asistencias toggleSlide={Tab.toggleSlide}/>
                 </div>
             </Fragment>
         )

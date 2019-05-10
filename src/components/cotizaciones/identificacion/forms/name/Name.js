@@ -12,20 +12,25 @@ class Name extends Component {
         this.state = {
             error: false,
             value: "",
-            disabledName: false,
         };
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = Helpers.toCapitalize(storeState.cotizacion.identification.name);
-            let disabledName = storeState.disabledName;
-            if (this.state.value !== value || this.state.disabledName !== disabledName) {
+            if (this.state.value !== value) {
                 this.setState({
                     ...this.state,
                     value: value,
-                    disabledName: disabledName,
                 });
             }
         });
+    }
+
+    static toggleDisable(status){
+        if (status === true){
+            Helpers.disabled('#name');
+        } else {
+            Helpers.enabled('#name');
+        }
     }
 
     static limit() {
@@ -52,8 +57,7 @@ class Name extends Component {
                 <input name="name" id="name"
                        type="text"
                        value={this.state.value}
-                       className={(this.state.disabledName ? "disabled " : "") + "form-control"}
-                       disabled={this.state.disabledName === true}
+                       className={"form-control"}
                        placeholder="Ingresa primer nombre"
                        onChange={this.validateEmpty}/>
             </div>

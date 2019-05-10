@@ -5,6 +5,7 @@ import store from '../../../store';
 import {restoreCotizacion} from '../../../actions';
 
 import Identifications from '../../../services/GetQuote';
+import Loading from "../../globals/loading/Loading";
 
 class Table extends Component {
 
@@ -20,12 +21,15 @@ class Table extends Component {
 
     async getRows() {
         let cotizaciones = await Identifications.get();
-        if (typeof cotizaciones.quotations !== "undefined" && cotizaciones.quotations.length > 0) {
+        if (cotizaciones.length > 0) {
+            let options = this.state.options;
+            options.quotations = cotizaciones;
             this.setState({
                 ...this.state,
-                options: cotizaciones
+                options: options
             });
         }
+        Loading.toggle(false);
     }
 
     getRowById = id => async e => {

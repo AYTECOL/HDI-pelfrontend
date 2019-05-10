@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './Persona.scss';
-import store from "../../../../../store";
-import {showPopupIdentification, toggleLoading} from "../../../../../actions";
+import Loading from "../../../../../components/globals/loading/Loading";
 import ConsultaPersonas from "../../../../../services/ConsultaPersonas";
 import TypeDocuments from "../../../../cotizaciones/identificacion/forms/tipodocumento/TipoDocumento";
 import Validaridentificacion from "../../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
@@ -111,13 +110,12 @@ export default class Persona extends Component {
 
      validateDoc = async e => {
         if ( this.state.person.value === "" ) return;
-        store.dispatch(toggleLoading(true));
         let code = this.state.person.code;
         try {
             let persona = await ConsultaPersonas.get(this.state.person.code, this.state.person.value);
-            store.dispatch(toggleLoading(false));
+            Loading.toggle(true);
             if (persona.consultarPersonaRs.personaRestringida === true) {
-                store.dispatch(showPopupIdentification(true));
+                Validaridentificacion.toggle(true);
                 this.setState({
                     ...this.state,
                     userRestricted: true
@@ -166,9 +164,10 @@ export default class Persona extends Component {
                     person: person,
                     userRestricted: false
                 });
+                Loading.toggle(false);
             }
         }catch (e) {
-
+            Loading.toggle(false);
         }
     };
 
@@ -179,7 +178,6 @@ export default class Persona extends Component {
             ...this.state,
             person: newPerson,
         });
-        store.dispatch(showPopupIdentification(false));
     };
 
     render() {

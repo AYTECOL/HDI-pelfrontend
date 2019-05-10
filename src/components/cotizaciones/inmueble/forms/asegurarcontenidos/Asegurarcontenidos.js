@@ -151,7 +151,7 @@ class Asegurarcontenidos extends Component {
                                 className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Asegurarcontenidos.min())} -
                                 Máximo. {Masknumbermoney.formatToMask(Asegurarcontenidos.max())}</small>
                             <small
-                                className={"form-text only-errors " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
+                                className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
                                 Ingrese el valor asegurado de Contenidos.
                             </small>
                             <small

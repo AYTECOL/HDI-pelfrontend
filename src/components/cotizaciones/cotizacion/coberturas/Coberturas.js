@@ -33,11 +33,11 @@ class Tab extends Component {
                     index: storeState.indexPlan,
                 });
                 setTimeout(function () {
+                    this.calcValue();
                     this.countCoverturas();
                 }.bind(this), 100);
             }
         });
-
     }
 
     static getSelectByItems(item) {
@@ -56,6 +56,15 @@ class Tab extends Component {
             }
         }
         return "";
+    }
+
+    calcValue(){
+        if (typeof this.state.plans[this.state.index] === "undefined") return;
+        let plans = this.state.plans;
+        for (let i = 0; i < plans[this.state.index].coverages; i++) {
+            let d = plans[this.state.index].coverages[i];
+            console.log(d);
+        }
     }
 
     countCoverturas() {
@@ -137,15 +146,28 @@ class Tab extends Component {
         }
     }
 
-    inputChange = () => {
-
+    inputChange = (k, key, type) => e => {
+        let plan = this.state.plans;
+        let item = plan[this.state.index].coverages[key];
+        if (type === 1){
+            console.log(item.values[k].value);
+            console.log(e.target.value);
+            item.values[k].value = e.target.value;
+        } else if(type === 2) {
+            for (let i = 0; i < item.values[k].values.length; i++) item.values[k].values[i].default = false;
+            item.values[k].values[e.target.value].default = true;
+        }
+        this.setState({
+            ...this.state,
+            plans: plan
+        })
     };
 
     render() {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                    <div className="row" onClick={this.props.toogleSlide(0)}>
+                    <div className="row" onClick={this.props.toggleSlide(0)}>
                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
                             <h4>
                                 <span>{this.state.coverturasTotal}</span>Coberturas
@@ -187,14 +209,14 @@ class Tab extends Component {
                                                                id={"item" + k + "_" + key}
                                                                placeholder={Masknumbermoney.formatToMask(opt.value)}
                                                                value={this.getValueFields(opt)}
-                                                               onChange={this.inputChange}
+                                                               onChange={this.inputChange(k, key, 1)}
                                                                disabled={(option.optional === false)}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}
                                                                 id={"item" + k + "_" + key}
                                                                 value={Tab.getSelectFields(opt.values)}
-                                                                onChange={this.inputChange}>
+                                                                onChange={this.inputChange(k, key, 2)}>
                                                             {opt.values.map((opt, k) =>
                                                                 <option key={k}
                                                                         value={k}>{Masknumbermoney.formatToMask(opt.limit)}</option>

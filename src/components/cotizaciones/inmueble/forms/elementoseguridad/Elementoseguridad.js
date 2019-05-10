@@ -20,7 +20,6 @@ class Elementoseguridad extends Component {
             reguladordevoltaje: 0,
         };
 
-
         store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.zona;
@@ -50,6 +49,7 @@ class Elementoseguridad extends Component {
                 newValue["circuitocerradotv"] = circuitocerradotv;
                 newValue["vigilanciapermanente"] = vigilanciapermanente;
                 newValue["reguladordevoltaje"] = reguladordevoltaje;
+                for(let i in newValue) if( newValue[i] === '""' ) newValue[i] = "";
                 this.setState({
                     ...this.state,
                     ...newValue,

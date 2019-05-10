@@ -1,10 +1,16 @@
 import Api from './Api';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const Url = "/quote/";
 
 class GetQuote {
     static async get() {
-        return await Api.get(Url);
+        let items = await Api.get(Url);
+        if( typeof items.quotations === "undefined"){
+            return [];
+        } else {
+            return Helpers.orderArray(items.quotations, 'quoteId', true).reverse();
+        }
     };
 
     static async getById(id) {

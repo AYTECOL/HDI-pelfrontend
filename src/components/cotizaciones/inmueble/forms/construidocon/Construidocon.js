@@ -57,7 +57,7 @@ class Construidocon extends Component {
             <div className={"construidocon no-icon gridgrid form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="construidocon">El inmueble está construido con</label>
                 <div className="row grid-select">
-                    {this.state.materials.map((option, key) =>
+                    {this.state.materials.map(option =>
                         <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
                             <div
                                 className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
@@ -82,6 +82,9 @@ class Construidocon extends Component {
                                 </div>
                                 <div className="col col-12 no-padding">
                                     <p>{option.answer}</p>
+                                </div>
+                                <div className="tool-tip-hover">
+                                    <p>{option.description}</p>
                                 </div>
                             </div>
                         </div>

@@ -8,8 +8,7 @@ import Tab from "../tab/Tab";
 import Btns from "../forms/btncontinue/BtnContinue";
 import Links from "../forms/links/Links";
 import Plans from "../plans/Plans";
-import store from "../../../../store";
-import {toggleLoading} from "../../../../actions";
+import Loading from "../../../globals/loading/Loading";
 
 class Index extends Component {
 
@@ -18,7 +17,10 @@ class Index extends Component {
         this.state = {
             step: parseInt(this.props.match.params.step),
         };
-        store.dispatch(toggleLoading(true));
+    }
+
+    componentDidMount() {
+        if (this.state.step === 3) Loading.toggle(true);
     }
 
     render() {
@@ -59,9 +61,7 @@ class Index extends Component {
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                             <p><i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes descarga el
-                                formato <a
-                                    href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF"
-                                    rel="noopener noreferrer" target="_blank">aquí</a></p>
+                                formato <a href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF" rel="noopener noreferrer" target="_blank">aquí</a></p>
                         </div>
                     </div>
 

@@ -83,7 +83,7 @@ class Tab extends Component {
                 {typeof this.state.plans[this.state.index].assists !== "undefined" && this.state.plans[this.state.index].assists.map((option, key) =>
                     <div className={"row row-max tabs-cotizaciones row_tab_1 " + (key + 1)} key={key}>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                            <div className="row" onClick={this.props.toogleSlide(key + 1)}>
+                            <div className="row" onClick={this.props.toggleSlide(key + 1)}>
                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
                                     <h4>
                                         <span>{this.state.assistsTotal}</span>{option.name}

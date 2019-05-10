@@ -23,6 +23,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/actions.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/common/helpers/helpers/Helpers.js">
           <value>
             <set />
@@ -43,12 +48,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/coberturas/Coberturas.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/forms/btncontinue/BtnContinue.js">
           <value>
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/forms/links/Links.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/index/Index.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/popups/sendmail/SendMail.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/tab/Tab.js">
           <value>
             <set />
           </value>
@@ -68,6 +93,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/forms/lastname/Lastname.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/forms/name/Name.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/forms/razonsocial/Razonsocial.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/forms/tipodocumento/TipoDocumento.js">
           <value>
             <set />
@@ -78,12 +123,52 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/asegurarcontenidos/Asegurarcontenidos.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/asegurarjoyas/Asegurarjoyas.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/asegurarobras/Asegurarobras.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/asegurartelefonos/Asegurartelefonos.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/btncontinue/BtnContinue.js">
           <value>
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/construidocon/Construidocon.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/elementoseguridad/Elementoseguridad.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/zona/Zona.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/index/Index.js">
           <value>
             <set />
           </value>
@@ -153,7 +238,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/globals/loading/Loading.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/home/table/Table.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/config.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/pages/cotizacion/Cotizacion.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/pages/home/Home.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/pages/polizaemitida/PolizaEmitida.js">
           <value>
             <set />
           </value>
@@ -169,6 +279,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/services/CreateOrUpdateValoration.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/GetQuote.js">
           <value>
             <set />
           </value>
