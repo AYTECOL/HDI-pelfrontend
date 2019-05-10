@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Loading.scss';
 import {ReactComponent as LoadingSvg} from './Loading.svg';
 import store from "../../../store";
+import Helpers from "../../../common/helpers/helpers/Helpers";
 
 class Loading extends Component {
     constructor(props) {
@@ -10,22 +11,21 @@ class Loading extends Component {
             active: store.getState().ShowLoader
         };
         this.animation();
-        store.subscribe(async () => {
-            let active = store.getState().ShowLoader;
-            if (active !== this.state.active) {
-                this.setState({
-                    active: active
-                })
-            }
-        });
+    }
+
+    static toggle(status) {
+        if (status === true) {
+            Helpers.removeClass('.app-loader', 'hide');
+        } else {
+            setTimeout(function () {
+                Helpers.addClass('.app-loader', 'hide');
+            }, 1000);
+        }
     }
 
     animation() {
-        if (this.state.active === false) return;
         let status = true;
-        let it = this;
         setInterval(function () {
-            if (it.state.active === false) return;
             status = !status;
             if (status === true) {
                 if (document.querySelector(".loader-background") !== null) {
@@ -51,7 +51,7 @@ class Loading extends Component {
 
     render() {
         return (
-            <div className={"app-loader " + (this.state.active === false ? 'hide' : 'show')}>
+            <div className={"app-loader hide"}>
                 <div className="content-loader">
                     <div className="image">
                         <LoadingSvg/>

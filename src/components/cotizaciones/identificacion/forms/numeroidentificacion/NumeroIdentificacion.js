@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 import store from '../../../../../store';
 import {continueButtonDisable, saveIdentificationValue} from '../../../../../actions';
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class NumeroIdentificacion extends Component {
 
@@ -9,13 +10,10 @@ class NumeroIdentificacion extends Component {
         super(props);
         let storeState = store.getState();
         this.state = {
-            options: {
-                cities: []
-            },
+            options: { cities: [] },
             value: "",
             error: false,
             idElement: "",
-            disabled: false,
             typeIdentification: storeState.cotizacion.identification.code,
             toggle: false,
             onChange: null
@@ -23,23 +21,24 @@ class NumeroIdentificacion extends Component {
 
         store.subscribe(() => {
             let storeState = store.getState();
-            let disabled = false;
             let value = this.state.value;
             let newState = storeState.stateFormIdentificacion;
-            if (newState !== 0) {
-                disabled = true;
-                value = storeState.cotizacion.identification.value;
-            }
-            if (storeState.cotizacion.identification.code !== this.state.typeIdentification && newState === 0) {
-                value = '';
-            }
+            if (newState !== 0) value = storeState.cotizacion.identification.value;
+            if (storeState.cotizacion.identification.code !== this.state.typeIdentification && newState === 0) value = '';
             this.setState({
                 ...this.state,
-                disabled: disabled,
                 typeIdentification: storeState.cotizacion.identification.code,
                 value: value
             });
         });
+    }
+
+    static toggleDisable(status){
+        if (status === true){
+            Helpers.disabled('#doc-type-value');
+        } else {
+            Helpers.enabled('#doc-type-value');
+        }
     }
 
     validateEmpty = event => {
@@ -100,9 +99,9 @@ class NumeroIdentificacion extends Component {
         return (
             <div className={"form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="doc-type-value">Número de identificación</label>
-                <input disabled={(this.state.disabled ? "disabled" : "")} name="value" id="doc-type-value"
+                <input name="value" id="doc-type-value"
                        type="text"
-                       className={(this.state.disabled ? "disabled " : "") + "form-control"}
+                       className={"form-control"}
                        value={this.state.value}
                        placeholder="Ingresa la identificación"
                        onBlur={this.validateEmpty}

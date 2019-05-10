@@ -52,22 +52,6 @@ const saveInmuebleValue = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE", data: {[element.name]: element.value}};
 };
 
-const showPopupIdentification = (state) => {
-    return {type: "SHOW_POP_UP_IDENTIFICATION", data: state}
-};
-
-const disabledName = () => {
-    return {type: "DISABLE_NAME", data: true}
-};
-
-const disabledLastName = () => {
-    return {type: "DISABLE_LASTNAME", data: true}
-};
-
-const disabledBusinessName = () => {
-    return {type: "DISABLE_BUSSINESSNAME", data: true}
-};
-
 const saveInmuebleValueSeguridad = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: {[element.name]: element.value}};
 };
@@ -88,14 +72,6 @@ const AllPlans = (data) => {
     return {type: "SAVE_ALL_PLANS", data: data}
 };
 
-// General
-const toggleLoading = (data) => {
-    return {type: "TOGGLE_LOADER", data: data}
-};
-const toggleTopUpSendMail = (data) => {
-    return {type: "TOGGLE_POPUP_SENDMAIL", data: data}
-};
-
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -109,16 +85,10 @@ export {
     NextStep,
     typeInmueble,
     saveInmuebleValue,
-    showPopupIdentification,
-    disabledLastName,
-    disabledName,
     saveInmuebleValueSeguridad,
-    disabledBusinessName,
     restoreCotizacionRisk,
     saveAllfloors,
     saveAllInsurableLimits,
     AllPlans,
-    indexPlanSelected,
-    toggleLoading,
-    toggleTopUpSendMail
+    indexPlanSelected
 };

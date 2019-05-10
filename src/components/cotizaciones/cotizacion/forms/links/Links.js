@@ -1,8 +1,6 @@
 import React, {Component, Fragment} from 'react';
-
 import './Links.scss';
-import store from "../../../../../store";
-import {toggleTopUpSendMail} from "../../../../../actions";
+import SendMail from "../../popups/sendmail/SendMail";
 
 class Links extends Component {
 
@@ -12,7 +10,7 @@ class Links extends Component {
     }
 
     openModal = () => {
-        store.dispatch(toggleTopUpSendMail(true));
+        SendMail.toggle(true);
     };
 
     render() {

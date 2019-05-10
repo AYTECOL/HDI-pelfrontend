@@ -9,7 +9,8 @@ import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
 import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
 import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {saveInmuebleValue, toggleLoading} from "../../../../actions";
+import {saveInmuebleValue} from "../../../../actions";
+import Loading from "../../../../components/globals/loading/Loading";
 import InspectionPolicy from "../../../../services/InspectionPolicy";
 import AllBuildYears from "../../../../services/AllBuildYears";
 
@@ -148,6 +149,7 @@ class Cards extends Component {
             }
         }
         try {
+            Loading.toggle(true);
             let data = await InspectionPolicy.get(code,insured_values,zone,insured_type,year_construction,in_closed_set,insured_total);
             if( typeof data.inspection_policy !== "undefined" ){
                 this.setState({
@@ -168,9 +170,7 @@ class Cards extends Component {
                 showInspect: false
             });
         }
-        setTimeout(function () {
-            store.dispatch(toggleLoading(false));
-        },500);
+        Loading.toggle(false);
     }
 
     componentDidMount() {

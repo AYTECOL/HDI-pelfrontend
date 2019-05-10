@@ -1,47 +1,32 @@
 import React, {Component} from 'react';
 import './Validaridentificacion.scss';
 import icono from '../../../../../common/images/icon.png';
-import store from "../../../../../store";
-import {showPopupIdentification} from "../../../../../actions";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Validaridentificacion extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            showPopUp: false,
-        };
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let showPopUp = storeState.showPopUp;
-            if (this.state.showPopUp !== showPopUp) {
-                this.setState({
-                    ...this.state,
-                    showPopUp: showPopUp,
-                });
-            }
-        });
+    static toggle(status){
+        if (status === true){
+            Helpers.removeClass('.validaridentificacion', 'hide');
+        } else {
+            Helpers.addClass('.validaridentificacion','hide');
+        }
     }
 
     hide = () => {
-        if ( document.getElementById("doc-type-value") !== null){
-            document.getElementById("doc-type-value").removeAttribute("disabled");
-        }
-        store.dispatch(showPopupIdentification(false));
+        Validaridentificacion.toggle(false);
     };
 
     render() {
         return (
-            <div className={"modal validaridentificacion " + ((this.state.showPopUp === true) ? 'show' : 'hide')}>
+            <div className={"modal validaridentificacion hide"}>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Ups, lo sentimos</h5>
                             <p className="modal-subtitle">La identificación que ingresaste no nos permite continuar con
                                 el proceso</p>
-                            <button type="button" className="close" aria-label="Close"></button>
+                            <button type="button" className="close" aria-label="Close" onClick={this.hide}>&nbsp;</button>
                         </div>
                         <div className="modal-body">
                             <div className="content">

@@ -12,6 +12,7 @@ import Risk from '../../../../services/AllRisks';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 import {saveInmuebleValue, typeInmueble} from "../../../../actions";
+import Loading from "../../../globals/loading/Loading";
 
 class Index extends Component {
 
@@ -42,12 +43,17 @@ class Index extends Component {
         });
     }
 
+    componentDidMount() {
+        if (this.state.step === 2) Loading.toggle(true);
+    }
+
     async getRisks() {
         let risks = await Risk.get();
         this.setState({
             ...this.state,
             options: risks
         });
+        Loading.toggle(false);
     }
 
     active = option => e => {

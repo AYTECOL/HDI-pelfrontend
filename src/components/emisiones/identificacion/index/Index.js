@@ -9,7 +9,7 @@ import PopUpPersona from '../popups/persona/Persona';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
-import {showPopupIdentification} from "../../../../actions";
+import Validaridentificacion from "../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
 
 class Index extends Component {
 
@@ -73,7 +73,7 @@ class Index extends Component {
             if( roles.indexOf(4) !== -1 ) type = 3;
         }
         this.showAnyPopup("showPopUpPersona", index, type);
-        store.dispatch(showPopupIdentification(false));
+        Validaridentificacion.toggle(false);
         if( index===-2 ){
 
         }

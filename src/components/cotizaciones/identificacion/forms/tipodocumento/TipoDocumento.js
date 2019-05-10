@@ -3,25 +3,20 @@ import React, {Component} from 'react';
 import store from '../../../../../store';
 import {saveIdentificationValue, updateTypeDoc} from '../../../../../actions';
 import Identifications from '../../../../../services/Identifications';
+import Loading from "../../../../globals/loading/Loading";
 
 class TipoDocumento extends Component {
-
-    _isMounted = false;
 
     constructor(props) {
         super(props);
         this.state = {
             value: "",
-            options: {
-                identifications: []
-            },
+            options: { identifications: [] },
             error: false,
             stateForm: 0,
             disabled: typeof this.props.disabled === "undefined"?false:this.props.disabled,
             docType: 1,
         };
-
-        this.getOptions();
         store.subscribe(() => {
             let storeState = store.getState();
             let newState = storeState.stateFormIdentificacion;
@@ -39,12 +34,22 @@ class TipoDocumento extends Component {
         });
     }
 
+    _isMounted = false;
+
+    componentWillUnmount() { this._isMounted = false; }
+
     componentDidMount() {
         this._isMounted = true;
+        Loading.toggle(true);
+        this.getOptions();
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
+    async getOptions() {
+        this.setState({
+            ...this.state,
+            options: await Identifications.get()
+        });
+        Loading.toggle(false);
     }
 
     validateEmpty = e => {
@@ -69,13 +74,6 @@ class TipoDocumento extends Component {
             });
         }
     };
-
-    async getOptions() {
-        this.setState({
-            ...this.state,
-            options: await Identifications.get()
-        });
-    }
 
     render() {
         return (

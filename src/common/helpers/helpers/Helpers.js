@@ -37,11 +37,12 @@ class Helpers {
 
     static enabled(selector) {
         let el = document.querySelector(selector);
+        console.log(el);
         let className = "disabled";
         if (el != null) {
             if (el.className.indexOf(className) === -1) {
                 el.className = el.className.replace(" " + className, "");
-                el.setAttribute(className, false);
+                el.removeAttribute(className);
             }
         }
     }

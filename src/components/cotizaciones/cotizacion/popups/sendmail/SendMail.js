@@ -1,34 +1,27 @@
 import React, {Component} from 'react';
 import './SendMail.scss';
-
-import {toggleTopUpSendMail} from '../../../../../actions';
-import store from "../../../../../store";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class SendMail extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-            showPopUp: false,
             errorValue: 0,
             totalItems: 1,
         };
+    }
 
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let showPopUp = storeState.ShowSendMail;
-            if (this.state.showPopUp !== showPopUp) {
-                this.setState({
-                    ...this.state,
-                    showPopUp: showPopUp,
-                });
-            }
-        });
+    static toggle(status){
+        if (status === true){
+            Helpers.disabled('.validaridentificacion');
+        } else {
+            Helpers.enabled('.validaridentificacion');
+        }
     }
 
     hide = () => {
-        store.dispatch(toggleTopUpSendMail(false));
+        SendMail.toggle(false);
     };
 
     moreItems = () => {
@@ -42,14 +35,14 @@ class SendMail extends Component {
 
     render() {
         return (
-            <div className={"modal validaridentificacion " + ((this.state.showPopUp === true) ? 'show' : 'hide')}>
+            <div className={"modal validaridentificacion hide"}>
                 <div className="modal-dialog sendmail" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Enviar cotización por correo</h5>
                             <p className="modal-subtitle">Ingresa el correo de la persona a la que deseas enviarle la
                                 cotización</p>
-                            <button type="button" className="close" onClick={this.hide}></button>
+                            <button type="button" className="close" onClick={this.hide}>&nbsp;</button>
                         </div>
                         <div className="modal-body">
                             <div className="content">
@@ -72,8 +65,7 @@ class SendMail extends Component {
                                 </div>
                             </div>
                             <div className="buttons">
-                                <a href="/" className="btn btn-secondary" data-dismiss="modal">Cancelar
-                                </a>
+                                <a href="/" className="btn btn-secondary" data-dismiss="modal">Cancelar</a>
                                 <button type="button" className="btn btn-primary" onClick={this.hide}>Enviar</button>
                             </div>
                         </div>

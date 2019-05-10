@@ -27,15 +27,11 @@ const initialState = {
             addressadditional: "",
         }
     },
-    disabledName: false,
-    disabledLastName: false,
-    disabledbusinessname: false,
     cityDescription: "",
     continueButtonDisable: true,
     stateFormIdentificacion: 0,
     typeDocument: 1,
     showMap: false,
-    showPopUp: false,
 
     // Segundo formulario Inmueble
     typeInmueble: 0,
@@ -78,10 +74,6 @@ const initialState = {
     Allfloors: [],
     allInsurableLimits: [],
     AllPlans: [],
-
-    //General
-    ShowLoader: false,
-    ShowSendMail: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -194,26 +186,6 @@ const reducer = (state = initialState, action) => {
                 }
             }
         }
-    } else if (action.type === "SHOW_POP_UP_IDENTIFICATION") {
-        return {
-            ...state,
-            showPopUp: action.data
-        }
-    } else if (action.type === "DISABLE_NAME") {
-        return {
-            ...state,
-            disabledName: action.data
-        }
-    } else if (action.type === "DISABLE_LASTNAME") {
-        return {
-            ...state,
-            disabledLastName: action.data
-        }
-    } else if (action.type === "DISABLE_BUSSINESSNAME") {
-        return {
-            ...state,
-            disabledbusinessname: action.data
-        }
     } else if (action.type === "SAVE_ALL_FLOORS") {
         return {
             ...state,
@@ -233,16 +205,6 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             indexPlan: action.data
-        }
-    } else if (action.type === "TOGGLE_LOADER") {
-        return {
-            ...state,
-            ShowLoader: action.data
-        }
-    } else if (action.type === "TOGGLE_POPUP_SENDMAIL") {
-        return {
-            ...state,
-            ShowSendMail: action.data
         }
     }
     return state;

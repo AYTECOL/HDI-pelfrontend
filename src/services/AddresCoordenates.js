@@ -1,19 +1,15 @@
 import Api from './Api';
+import {ApiKeyGoogle} from '../config';
 
-// const APIKEY = 'AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4';
-const APIKEY = 'AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU';
-const Cors = 'https://cors-anywhere.herokuapp.com/';
+const APIKEY = ApiKeyGoogle;
+const Cors = '';
 
 class GetAddresInfo {
     static async get(address) {
-        address = address + ", Colombia";
-        address = address.replace("#", " ");
-        address = address.replace("N°", " ");
-        //let url = `https://maps.googleapis.com/maps/api/geocode/json?key=${APIKEY}&address=${address}`;
+        address = address.replace("#", " ").replace("N°", " ") + ", Colombia";
         let url = `${Cors}https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&key=${APIKEY}&input=${address}`;
         return await Api.get(encodeURI(url), "")
             .then(response => {
-                //return response.results[0].geometry.location;
                 if (response.status === "ZERO_RESULTS") return {};
                 if (typeof response.candidates[0] === "undefined") return {};
                 return Api.get(encodeURI(`${Cors}https://maps.googleapis.com/maps/api/place/details/json?key=${APIKEY}&placeid=${response.candidates[0].place_id}`), "")

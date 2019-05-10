@@ -14,6 +14,7 @@ import Asegurarjoyas from "../asegurarjoyas/Asegurarjoyas";
 import Asegurarobras from "../asegurarobras/Asegurarobras";
 import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
 import {UrlSite} from "../../../../../config";
+import Loading from "../../../../globals/loading/Loading";
 
 class BtnContinue extends Component {
 
@@ -25,8 +26,16 @@ class BtnContinue extends Component {
     }
 
     saveService = async () => {
+        Loading.toggle(true);
         await CreateOrUpdateValoration.get();
         Helpers.goToHome();
+    };
+
+    goBack = async () => {
+        Loading.toggle(true);
+        let storeState = store.getState();
+        await CreateOrUpdateValoration.get();
+        window.location.href = UrlSite + "/cotizacion/1/" + storeState.cotizacion.number;
     };
 
     saveServiceContinue = async () => {
@@ -145,6 +154,7 @@ class BtnContinue extends Component {
         if (disabled !== false) {
             Helpers.scrollToElement(".error");
         } else {
+            Loading.toggle(true);
             store.dispatch(NextStep(3));
             await SaveIdentifications.save();
             await CreateOrUpdateValoration.get();
@@ -154,11 +164,10 @@ class BtnContinue extends Component {
     };
 
     render() {
-        let storeState = store.getState();
         return (
             <Fragment>
                 <div className={"return-button"}>
-                    <a href={"/cotizacion/1/" + storeState.cotizacion.number}><i className="back-icon">&nbsp;</i>Volver</a>
+                    <button className="btn btn-link" type="button" onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver</button>
                 </div>
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveService}>Guardar y salir

@@ -2,16 +2,12 @@ import React, {Component, Fragment} from 'react';
 
 import store from '../../../../../store';
 import {
-    disabledBusinessName,
-    disabledLastName,
-    disabledName,
     NextStep,
     nextStepIndentification,
-    saveIdentificationValue,
-    showPopupIdentification
+    saveIdentificationValue
 } from '../../../../../actions';
+import Loading from "../../../../../components/globals/loading/Loading";
 import SaveIdentifications from '../../../../../services/Quote';
-import {Link, withRouter} from "react-router-dom";
 
 // Components
 import Name from '../name/Name';
@@ -22,6 +18,8 @@ import RazonSocial from '../razonsocial/Razonsocial';
 import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
 import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import NumeroIdentificacion from "../numeroidentificacion/NumeroIdentificacion";
+import Validaridentificacion from "../../popups/validaridentificacion/Validaridentificacion";
 
 class BtnContinue extends Component {
 
@@ -79,6 +77,7 @@ class BtnContinue extends Component {
             await SaveIdentifications.save();
             window.location.href = UrlSite + '/cotizacion/2/' + storeState.cotizacion.number;
         } else {
+            Loading.toggle(true);
             this.setState({
                 ...this.state,
                 continueButtonDisable: true,
@@ -90,13 +89,14 @@ class BtnContinue extends Component {
             try {
                 let persona = await ConsultaPersonas.get(code, value);
                 if (persona.consultarPersonaRs.personaRestringida === true) {
-                    Helpers.enabled("doc-type-value");
-                    store.dispatch(showPopupIdentification(true));
+                    NumeroIdentificacion.toggleDisable(false);
+                    Validaridentificacion.toggle(true);
                 } else {
                     store.dispatch(nextStepIndentification());
                     if (persona.consultarPersonaRs.personaEncontradaIAXIS === true) {
                         let personaData = persona.consultarPersonaRs.persona;
                         let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;
+                        NumeroIdentificacion.toggleDisable(true);
 
                         personaData = personaData[(personaType === 2 ? 'personaJuridica' : 'personaNatural')];
                         if (typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '') {
@@ -104,32 +104,33 @@ class BtnContinue extends Component {
                                 name: 'name',
                                 value: personaData.primerNombre
                             }));
-                            store.dispatch(disabledName());
+                            Name.toggleDisable(true);
                         }
                         if (typeof personaData.primerApellido !== 'undefined' && personaData.primerApellido !== '') {
                             store.dispatch(saveIdentificationValue({
                                 name: 'lastname',
                                 value: personaData.primerApellido
                             }));
-                            store.dispatch(disabledLastName());
+                            LastName.toggleDisable(true);
                         }
                         if (typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '') {
                             store.dispatch(saveIdentificationValue({
                                 name: 'businessname',
                                 value: personaData.razonSocial
                             }));
-                            store.dispatch(disabledBusinessName());
+                            RazonSocial.toggleDisable(true);
                         }
-
                     }
                 }
             } catch (e) {
-                Helpers.enabled("doc-type-value");
+                NumeroIdentificacion.toggleDisable(false);
             }
+            Loading.toggle(false);
         }
     };
 
     saveAndExit = async () => {
+        Loading.toggle(true);
         await SaveIdentifications.save();
         Helpers.goToHome();
     };
@@ -137,7 +138,9 @@ class BtnContinue extends Component {
     render = () => (
         <Fragment>
             <div className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " return-button"}>
-                <Link to='/'><i className="back-icon">&nbsp;</i>Volver</Link>
+                <button type="button" className="btn btn-link" onClick={this.saveAndExit}>
+                    <i className="back-icon">&nbsp;</i>Volver
+                </button>
             </div>
             <button type="button"
                     className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}
@@ -151,7 +154,7 @@ class BtnContinue extends Component {
     );
 }
 
-export default withRouter(BtnContinue);
+export default BtnContinue;
 
 
 

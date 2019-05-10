@@ -1,24 +1,26 @@
 import React, {Component} from 'react';
-import './Home.scss';
-import Counter from "../../services/Counter";
 import store from "../../store";
-import {saveCotizacionNumber} from "../../actions";
-
+import Counter from "../../services/Counter";
+import Loading from "../../components/globals/loading/Loading";
 import Table from '../../components/home/table/Table';
+import './Home.scss';
 
 class Home extends Component {
 
+    componentDidMount() {
+        Loading.toggle(true);
+    }
+
     getNumber = async () => {
+        Loading.toggle(true);
         let storeState = store.getState();
         let number = await Counter.get();
         if (typeof number.currentValue !== 'undefined') {
             number = number.currentValue.toString();
             number = storeState.cotizacion.number.slice(number.length) + number;
-            store.dispatch(saveCotizacionNumber(number));
-            this.props.history.push('/cotizacion/1/' + number);
-        } else {
-            this.props.history.push('/');
+            window.location.href = '/cotizacion/1/' + number;
         }
+        setTimeout(Loading.toggle(false),500);
     };
 
     render() {
@@ -28,10 +30,7 @@ class Home extends Component {
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h2>Mis negocios en línea</h2>
-                            <button type="button" className="btn btn-primary btn-home"
-                                    onClick={this.getNumber}>Nueva
-                                cotización
-                            </button>
+                            <button type="button" className="btn btn-primary btn-home" onClick={this.getNumber}>Nueva cotización</button>
                         </div>
                     </div>
 

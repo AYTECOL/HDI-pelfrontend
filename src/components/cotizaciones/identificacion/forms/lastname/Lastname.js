@@ -10,21 +10,26 @@ class Lastname extends Component {
         super(props);
         this.state = {
             error: false,
-            value: "",
-            disabledLastName: false
+            value: ""
         };
         store.subscribe(async () => {
             let storeState = store.getState();
             let lastname = Helpers.toCapitalize(storeState.cotizacion.identification.lastname);
-            let disabledLastName = storeState.disabledLastName;
-            if (this.state.value !== lastname || this.state.disabledLastName !== disabledLastName) {
+            if (this.state.value !== lastname) {
                 this.setState({
                     ...this.state,
-                    value: lastname,
-                    disabledLastName: disabledLastName
+                    value: lastname
                 });
             }
         });
+    }
+
+    static toggleDisable(status){
+        if (status === true){
+            Helpers.disabled('#lastname');
+        } else {
+            Helpers.enabled('#lastname');
+        }
     }
 
     static limit() {
@@ -51,9 +56,8 @@ class Lastname extends Component {
                 <input name="lastname" id="lastname"
                        type="text"
                        value={this.state.value}
-                       disabled={this.state.disabledLastName === true}
                        autoComplete="lastname"
-                       className={(this.state.disabledLastName ? "disabled " : "") + "form-control"}
+                       className={"form-control"}
                        placeholder="Ingresa primer apellido"
                        onBlur={this.validateEmpty}
                        onChange={this.validateEmpty}/>
