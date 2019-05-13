@@ -452,3 +452,35 @@
 
   }
 }
+
+.wrapper-tabs.sticky-wrapper{
+  top: -72px;
+  transition: top 0.3s ease;
+}
+.wrapper-tabs.js-is-sticky{
+  box-shadow: 0 0 8px rgba(40, 163, 175, 0.32);
+  z-index: 99;
+  background-color: white;
+  width: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  .item-tab{
+    border: 0;
+    border-left: 1px solid #C0BFC0;
+    border-right: 1px solid #C0BFC0;
+    margin-bottom: 10px;
+    margin-top: 9px;
+    padding: 0;
+    &:hover,
+    &.active{
+      margin-top: 0;
+      margin-bottom: 0;
+      padding: 7px 0 10px;
+    }
+  }
+}
+.wrapper-tabs.js-is-sticky-truck{
+  position: fixed;
+  top: -72px;
+}

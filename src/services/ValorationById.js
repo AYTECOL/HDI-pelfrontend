@@ -1,6 +1,7 @@
 import Api from './Api';
 
 const BaseUrl = "/";
+const EndPoint = "https://fvu7ki6lb3.execute-api.us-east-1.amazonaws.com/dev";
 
 class ValorationById {
     static async get(id) {
