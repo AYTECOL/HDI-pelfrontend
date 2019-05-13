@@ -73,6 +73,7 @@ class BtnContinue extends Component {
     nextStepIndex = async () => {
         let storeState = store.getState();
         if (this.state.stateFormIdentificacion === 1) {
+            Loading.toggle(true);
             store.dispatch(NextStep(2));
             await SaveIdentifications.save();
             window.location.href = UrlSite + '/cotizacion/2/' + storeState.cotizacion.number;

@@ -33,6 +33,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/common/helpers/sticky/Sticky.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/common/scss/index.scss">
           <value>
             <set />
@@ -64,6 +69,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/index/Index.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/index/Index.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/plans/Plans.js">
           <value>
             <set />
           </value>
@@ -294,6 +309,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/services/QuoteIussed.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/ValorationById.js">
           <value>
             <set />
           </value>

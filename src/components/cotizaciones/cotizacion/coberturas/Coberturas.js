@@ -26,14 +26,14 @@ class Tab extends Component {
         store.subscribe(() => {
             let storeState = store.getState();
             if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
+                let plans = this.calcValue(storeState.AllPlans,storeState.indexPlan);
                 this.setState({
                     ...this.state,
-                    plans: storeState.AllPlans,
+                    plans: plans,
                     Inmueble: storeState.Inmueble,
                     index: storeState.indexPlan,
                 });
                 setTimeout(function () {
-                    this.calcValue();
                     this.countCoverturas();
                 }.bind(this), 100);
             }
@@ -58,13 +58,19 @@ class Tab extends Component {
         return "";
     }
 
-    calcValue(){
-        if (typeof this.state.plans[this.state.index] === "undefined") return;
-        let plans = this.state.plans;
-        for (let i = 0; i < plans[this.state.index].coverages; i++) {
-            let d = plans[this.state.index].coverages[i];
-            console.log(d);
+    calcValue(plans, index){
+        if (typeof plans[index] === "undefined") return;
+        for (let i = 0; i < plans[this.state.index].coverages.length; i++) {
+            let d = plans[this.state.index].coverages[i].values;
+            if ( typeof d !== "undefined"){
+                for (let j = 0; j < d.length; j++) {
+                    if (typeof d[j].value !== "undefined") {
+                        plans[this.state.index].coverages[i].values[j].value_show = this.getValueFields(d[j]);
+                    }
+                }
+            }
         }
+        return plans;
     }
 
     countCoverturas() {
@@ -150,9 +156,7 @@ class Tab extends Component {
         let plan = this.state.plans;
         let item = plan[this.state.index].coverages[key];
         if (type === 1){
-            console.log(item.values[k].value);
-            console.log(e.target.value);
-            item.values[k].value = e.target.value;
+            item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
         } else if(type === 2) {
             for (let i = 0; i < item.values[k].values.length; i++) item.values[k].values[i].default = false;
             item.values[k].values[e.target.value].default = true;
@@ -207,8 +211,8 @@ class Tab extends Component {
                                                     {typeof opt.value !== 'undefined' ? (
                                                         <input name={"item" + k + "_" + key}
                                                                id={"item" + k + "_" + key}
-                                                               placeholder={Masknumbermoney.formatToMask(opt.value)}
-                                                               value={this.getValueFields(opt)}
+                                                               placeholder={opt.value_show}
+                                                               value={opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
                                                                disabled={(option.optional === false)}
                                                                type="text" className={"form-control"}/>

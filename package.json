@@ -7,6 +7,7 @@
     "bootstrap": "^4.3.1",
     "dotenv": "^7.0.0",
     "enzyme": "^3.9.0",
+    "es6-promise": "^4.2.6",
     "es6-promise-promise": "^1.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "node-sass": "^4.11.0",
@@ -27,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scrYipts build",
     "test": "react-scripts test --skipFilter true --watchAll false --coverage --coverageDirectory=coverage",
     "eject": "react-scripts eject"
   },
@@ -54,5 +55,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {}
 }
