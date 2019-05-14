@@ -18,6 +18,7 @@ export default class Persona extends Component {
             typePerson: this.props.typePerson,
             nit: false,
             userRestricted: false,
+            ok: false,
             person: {}
         };
         if( this.props.item !== -1) this.state.person = this.props.persons[this.props.item];
@@ -34,6 +35,8 @@ export default class Persona extends Component {
         if ( typeof this.state.person.email === "undefined" ) this.state.person.email = "";
         if ( typeof this.state.person.ciudad === "undefined" ) this.state.person.ciudad = "";
         if ( typeof this.state.person.address === "undefined" ) this.state.person.address = "";
+        if ( typeof this.state.person.adresstype === "undefined" ) this.state.person.adresstype = "";
+        if ( typeof this.state.person.tipodetelefono === "undefined" ) this.state.person.tipodetelefono = "";
         if ( typeof this.state.person.role === "undefined" ) this.state.person.role = [];
         if ( this.state.typePerson !== 3 ){
             if ( typeof this.state.person.code === "undefined" ) this.state.person.code = "36";
@@ -45,7 +48,6 @@ export default class Persona extends Component {
         if ( typeof this.state.person.businessname === "undefined" ) this.state.person.businessname = "";
         if ( typeof this.state.person.sarlfaltActive === "undefined" ) this.state.person.sarlfaltActive = false;
         for(let i in this.state.person) if( typeof this.state.person[i+'Disabled'] === "undefined") this.state.person[i+'Disabled'] = false;
-        console.log(this.state.person);
     }
 
     changeTextFile = e => {
@@ -64,14 +66,16 @@ export default class Persona extends Component {
         }
     };
 
-    generoChange = index => e => {
-        let newPerson = this.state.person;
-        newPerson['genero'] = index;
-        this.setState({
-            ...this.state,
-            genero: index,
-            person: newPerson,
-        });
+    generoChange = index => () => {
+        if (this.state.person.generoDisabled !== true ){
+            let newPerson = this.state.person;
+            newPerson['genero'] = index;
+            this.setState({
+                ...this.state,
+                genero: index,
+                person: newPerson,
+            });
+        }
     };
 
     changeRole = role => e => {
@@ -112,8 +116,8 @@ export default class Persona extends Component {
         if ( this.state.person.value === "" ) return;
         let code = this.state.person.code;
         try {
-            let persona = await ConsultaPersonas.get(this.state.person.code, this.state.person.value);
             Loading.toggle(true);
+            let persona = await ConsultaPersonas.get(this.state.person.code, this.state.person.value);
             if (persona.consultarPersonaRs.personaRestringida === true) {
                 Validaridentificacion.toggle(true);
                 this.setState({
@@ -151,11 +155,19 @@ export default class Persona extends Component {
                         person.emailDisabled = true;
                     }
                 }
+                if (typeof contactos[0] !== "undefined"){
+                    person.tipodetelefonoDisabled = true;
+                    person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+                }
                 
                 person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
                 person.ciudadDisabled = true;
                 person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
                 person.addressDisabled = true;
+
+                person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                person.adresstypeDisabled = true;
+
                 person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
                 person.sarlfaltActiveDisabled = true;
 
@@ -171,13 +183,24 @@ export default class Persona extends Component {
         }
     };
 
-    changeValuePopup = e => {
+    changeValuePopup = () => {
         let newPerson = this.state.person;
         newPerson.value = "";
         this.setState({
             ...this.state,
             person: newPerson,
         });
+    };
+
+    validateAll = () => {
+        let total = 0;
+        if (this.state.typePerson === 1){
+            total = 16;
+        } else if( this.state.typePerson === 2 ){
+            total = 8;
+        } else {
+
+        }
     };
 
     render() {
@@ -342,11 +365,10 @@ export default class Persona extends Component {
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                             <div className="pisonumero form-group "><label
                                                 htmlFor="tipodetelefono">Tipo de teléfono</label>
-                                                <select name="tipodetelefono" id="tipodetelefono" className="form-control">
+                                                <select name="tipodetelefono" onChange={this.changeValue} id="tipodetelefono" value={this.state.person.tipodetelefono} className={"form-control "+(this.state.person.tipodetelefonoDisabled?'disabled':'')} disabled={this.state.person.tipodetelefonoDisabled}>
                                                     <option value="">Seleccione</option>
-                                                    <option value="fax">Fax</option>
-                                                    <option value="fijo">Fijo</option>
-                                                    <option value="celular">Celular</option>
+                                                    <option value="1">Teléfono</option>
+                                                    <option value="6">Tfno. móvil</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -397,8 +419,14 @@ export default class Persona extends Component {
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                             <div className="pisonumero form-group "><label
                                                 htmlFor="adresstype">Tipo de dirección</label>
-                                                <select name="adresstype" id="adresstype" className="form-control">
+                                                <select value={this.state.person.adresstype} onChange={this.changeValue} name="adresstype" id="adresstype" className={"form-control "+(this.state.person.emailDisabled?'disabled':'')} disabled={this.state.person.adresstypeDisabled}>
                                                     <option value="">Seleccione</option>
+                                                    <option value="9">Residencia</option>
+                                                    <option value="10">Oficina Principal</option>
+                                                    <option value="11">Sede Principal</option>
+                                                    <option value="12">Sucursal</option>
+                                                    <option value="13">Correspondencia</option>
+                                                    <option value="14">Apartado Aereo</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -426,9 +454,18 @@ export default class Persona extends Component {
                                         </div>
                                     </div>
 
+                                    <div className="row">
+                                        <div className="col">
+                                            <div className={"msj-total"}>
+                                                <p className="error no-margin">Haz diligenciado 2 de 15 campos</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
+
                                 <div className="buttons">
-                                    <button className="btn btn-primary" type="button" onClick={this.props.updatePerson(this.state.person)}>Continuar</button>
+                                    <button className="btn btn-primary" type="button" onClick={this.state.ok === false ?this.validateAll:this.props.updatePerson(this.state.person)}>Continuar</button>
                                 </div>
                             </div>
                         </div>

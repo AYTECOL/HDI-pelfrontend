@@ -210,7 +210,7 @@ class Index extends Component {
                     <div className="row">
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                            <BtnContinue inactiveBtn={this.state.inactiveBtn}/>
+                            <BtnContinue persons={this.state.persons} inactiveBtn={this.state.inactiveBtn}/>
                         </div>
                     </div>
                 </div>
