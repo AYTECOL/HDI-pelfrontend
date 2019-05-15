@@ -23,6 +23,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/public/google4a82cc37ae372083.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/public/index.html">
           <value>
             <set />
@@ -188,6 +193,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/segurarinmueble/Segurarinmueble.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/zona/Zona.scss">
           <value>
             <set />
@@ -279,6 +289,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/pages/cotizacion/Cotizacion.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/pages/emision/Emision.js">
           <value>
             <set />
           </value>

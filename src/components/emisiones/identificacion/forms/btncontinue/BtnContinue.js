@@ -6,6 +6,7 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 //Services
 import QuoteIussed from "../../../../../services/QuoteIussed";
+import store from "../../../../../store";
 
 class BtnContinue extends Component {
 
@@ -30,57 +31,49 @@ class BtnContinue extends Component {
     nextStep = async () => {
         let persons = this.props.persons;
         let takers = [];
+        let insured = [];
+        let benefists = [];
+        let onerous = [];
         for (let i = 0; i < persons.length; i++) {
-            if (persons[i]['role'].indexOf(1) !== -1){
-                takers.push({
-                    first_name: 'name',
-                    second_name: 'secondname',
-                    first_last_name: 'lastname',
-                    second_last_name: 'secondlastname',
-                    document_type: 'code',
-                    document: 'value',
-                    gender: 'genero',
-                    birthdate: 'fechadenacimiento',
-                    phone_type: '',
-                    phone: 'telefono',
-                    email: 'email',
-                    location: 'ciudad',
-                    address_type: '',
-                    address: 'address',
-                    sarlaft_document_url: 'sarlfaltActive',
-                });
-            }else if(persons[i]['role'].indexOf(2) !== -1){
-
-            }else if(persons[i]['role'].indexOf(3) !== -1){
-
+            let dataUser = {
+                first_name: 'name',
+                second_name: 'secondname',
+                first_last_name: 'lastname',
+                second_last_name: 'secondlastname',
+                document_type: 'code',
+                document: 'value',
+                gender: 'genero',
+                birthdate: 'fechadenacimiento',
+                phone_type: 'tipodetelefono',
+                phone: 'telefono',
+                email: 'email',
+                location: 'ciudad',
+                address_type: 'adresstype',
+                address: 'address',
+                sarlaft_document_url: 'sarlfaltActive',
+            };
+            for (let j = 0; j < persons[i]['role'].length; j++) {
+                if (persons[i]['role'][j] === 1){
+                    takers.push(dataUser);
+                }else if(persons[i]['role'][j] === 2){
+                    insured.push(dataUser);
+                }else if(persons[i]['role'][j] === 3){
+                    benefists.push(dataUser);
+                }else if(persons[i]['role'][j] === 4){
+                    onerous.push(dataUser);
+                }
             }
         }
-        let data = {
-            id: 0,
-            risk_valoration: 0,
-            taker:{
-                first_name: '',
-                second_name: '',
-                first_last_name: '',
-                second_last_name: '',
-                document_type: '',
-                document: '',
-                gender: '',
-                birthdate: '',
-                phone_type: '',
-                phone: '',
-                email: '',
-                location: '',
-                address_type: '',
-                address: '',
-                sarlaft_document_url: '',
-            },
-            insured:[],
-            benefist: [],
-            onerous: []
-        };
         console.log(persons);
-        let save = await QuoteIussed.get(persons);
+        let quouteId = this.props.match.params.id;
+        await QuoteIussed.get({
+            id: quouteId,
+            risk_valoration: quouteId,
+            taker: takers,
+            insured: insured,
+            benefist: benefists,
+            onerous: onerous
+        });
         return;
         window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
     };
