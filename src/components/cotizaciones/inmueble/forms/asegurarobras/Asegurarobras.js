@@ -154,8 +154,7 @@ class Asegurarobras extends Component {
                             <small
                                 className={"form-text"}>Máximo. {Masknumbermoney.formatToMask(Asegurarobras.max())}</small>
                             <small
-                                className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
-                                Ingrese el valor asegurado de Obras de Arte.
+                                className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por favor Ingrese el valor asegurado de Obras de Arte.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor
