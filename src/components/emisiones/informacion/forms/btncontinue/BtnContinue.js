@@ -3,6 +3,8 @@ import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import store from "../../../../../store";
+import CreateOrUpdateMoreInfo from "../../../../../services/CreateOrUpdateMoreInfo";
 
 class BtnContinue extends Component {
 
@@ -21,7 +23,22 @@ class BtnContinue extends Component {
         Helpers.goToHome();
     };
 
-    nextStep = () => {
+    nextStep = async () => {
+        let state = this.props.state;
+        console.log(state);
+        await CreateOrUpdateMoreInfo.get({
+            "quote_id": this.props.match.params.id,
+            "start_policy_date": state.initdate,
+            "area": state.area,
+            "risk_use": state.utilizado,
+            "order": 2,
+            "name":"DINAMICA",
+            "visit_personalue":{
+                "name": state.persons.name,
+                "phone": state.persons.telefono
+            },
+            "goods_over_cost":[]
+        });
         window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
     };
 

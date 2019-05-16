@@ -148,6 +148,17 @@ class Helpers {
         }
     }
 
+    static toggleSlide = index => e => {
+        let className = "close_item";
+        if (Helpers.hasClass(".row_tab_" + index, className)) {
+            Helpers.removeClass(".row_tab_" + index, className);
+        } else {
+            let el = document.querySelector(".row_tab_" + index + " .wrapper-box");
+            el.style.height = el.offsetHeight + "px";
+            Helpers.addClass(".row_tab_" + index, className);
+        }
+    };
+
     static calcularDigitoVerificacion(myNit) {
         // Se limpia el Nit
         myNit = myNit.toString();

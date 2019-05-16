@@ -27,15 +27,17 @@ class Tab extends Component {
             let storeState = store.getState();
             if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
                 let plans = this.calcValue(storeState.AllPlans,storeState.indexPlan);
-                this.setState({
-                    ...this.state,
-                    plans: plans,
-                    Inmueble: storeState.Inmueble,
-                    index: storeState.indexPlan,
-                });
-                setTimeout(function () {
-                    this.countCoverturas();
-                }.bind(this), 100);
+                if (typeof plans !== "undefined") {
+                    this.setState({
+                        ...this.state,
+                        plans: plans,
+                        Inmueble: storeState.Inmueble,
+                        index: storeState.indexPlan,
+                    });
+                    setTimeout(function () {
+                        this.countCoverturas();
+                    }.bind(this), 100);
+                }
             }
         });
     }
@@ -60,6 +62,8 @@ class Tab extends Component {
 
     calcValue(plans, index){
         if (typeof plans[index] === "undefined") return;
+        if (typeof plans[this.state.index] === "undefined") return;
+        if (typeof plans[this.state.index].coverages === "undefined") return;
         for (let i = 0; i < plans[this.state.index].coverages.length; i++) {
             let d = plans[this.state.index].coverages[i].values;
             if ( typeof d !== "undefined"){
@@ -219,6 +223,7 @@ class Tab extends Component {
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}
                                                                 id={"item" + k + "_" + key}
+                                                                disabled={(option.optional === false)}
                                                                 value={Tab.getSelectFields(opt.values)}
                                                                 onChange={this.inputChange(k, key, 2)}>
                                                             {opt.values.map((opt, k) =>

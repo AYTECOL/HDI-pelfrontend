@@ -82,6 +82,9 @@ html, body {
 $error-fields: #DD133C;
 $color-btn-primary: #99E5EA;
 $color-font-btn-primary: #404040;
+#root .react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected{
+  background-color: #28A3AF;
+}
 .btn {
   padding: 17px 0 14px;
   width: 200px;
@@ -140,6 +143,20 @@ $color-font-btn-primary: #404040;
     &:hover {
       background: #e6e6e6 !important;
       color: #404040 !important;
+    }
+  }
+
+  &.btn-download{
+    background: #28A3AF;
+    border-color: #28A3AF;
+    border-radius: 3px;
+    padding: 5px;
+    color: white;
+    width: auto;
+    min-width: 145px;
+    &:hover{
+      background: #1f707c;
+      border-color: #1f707c;
     }
   }
 
@@ -321,6 +338,7 @@ $color-font-btn-primary: #404040;
         padding: 10px 12px 8px;
         cursor: pointer;
         transition: background 0.3s ease;
+        text-align: left;
 
         &.active,
         &:hover {
@@ -759,6 +777,11 @@ $color-font-btn-primary: #404040;
   background-position: 97% center;
   background-repeat: no-repeat;
   cursor: pointer;
+}
+.react-datepicker__input-container,
+.react-datepicker-wrapper{
+  width: 100%;
+  display: block;
 }
 
 .more-info {

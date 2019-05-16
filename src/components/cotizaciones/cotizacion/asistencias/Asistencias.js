@@ -27,14 +27,16 @@ class Tab extends Component {
             let index = storeState.indexPlan;
             let plans = storeState.AllPlans;
             if (this.state.index !== index || this.state.plans !== plans) {
-                this.setState({
-                    ...this.state,
-                    index: index,
-                    plans: plans
-                });
-                setTimeout(function () {
-                    this.countAsistencias();
-                }.bind(this), 100);
+                if (index !== "") {
+                    this.setState({
+                        ...this.state,
+                        index: index,
+                        plans: plans
+                    });
+                    setTimeout(function () {
+                        this.countAsistencias();
+                    }.bind(this), 100);
+                }
             }
         });
 
@@ -104,6 +106,7 @@ class Tab extends Component {
                                                     <input type="checkbox" name={"itemm" + k + "_" + key}
                                                            id={"itemm" + k + "_" + key}
                                                            checked={(opt.checked === true ? 'checked' : false)}
+                                                           disabled={(opt.optional === false)}
                                                            onChange={this.checkAsistencia(this.state.index, key, k, 0, true)}
                                                     />
                                                     <div className="group">
@@ -117,6 +120,7 @@ class Tab extends Component {
                                                                 <input type="checkbox"
                                                                        name={"itemm" + k + "_" + key + "_" + i}
                                                                        id={"itemm" + k + "_" + key + "_" + i}
+                                                                       disabled={(opt.optional === false)}
                                                                        checked={(opt.checked === true ? 'checked' : false)}
                                                                        onChange={this.checkAsistencia(this.state.index, key, k, i)}
                                                                 />

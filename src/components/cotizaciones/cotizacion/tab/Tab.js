@@ -9,6 +9,7 @@ import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../action
 import Coberturas from '../coberturas/Coberturas';
 import Asistencias from '../asistencias/Asistencias';
 import Loading from "../../../globals/loading/Loading";
+import QuoteIussedById from "../../../../services/QuoteIussedById";
 
 class Tab extends Component {
 
@@ -39,17 +40,6 @@ class Tab extends Component {
         });
     }
 
-    static toggleSlide = index => e => {
-        let className = "close_item";
-        if (Helpers.hasClass(".row_tab_" + index, className)) {
-            Helpers.removeClass(".row_tab_" + index, className);
-        } else {
-            let el = document.querySelector(".row_tab_" + index + " .wrapper-box");
-            el.style.height = el.offsetHeight + "px";
-            Helpers.addClass(".row_tab_" + index, className);
-        }
-    };
-
     updateType() {
         let inmueble = store.getState().Inmueble;
         let type = this.state.typePlans;
@@ -73,7 +63,15 @@ class Tab extends Component {
     async getPlants() {
         Loading.toggle(true);
         let plans = await AllPlans.get(this.state.typePlans);
-        if (this.state.index === "") for (let i in plans) if (plans[i].isdefault === true) store.dispatch(indexPlanSelected(i));
+        let plan = await QuoteIussedById.get(this.props.match.params.id);
+        if( typeof plan.plan_selected_info.Item !== "undefined" ){
+            let selected = plan.plan_selected_info.Item;
+            let indexSelected = selected['assists'][0]['selected_id'];
+            plans[indexSelected] = selected;
+            store.dispatch(indexPlanSelected(indexSelected));
+        } else {
+            if (this.state.index === "") for (let i in plans) if (plans[i].isdefault === true) store.dispatch(indexPlanSelected(i));
+        }
         this.setState({
             ...this.state,
             plans: plans
@@ -99,8 +97,8 @@ class Tab extends Component {
                     </div>
                 </div>
                 <div className="wrapper-items">
-                    <Coberturas toggleSlide={Tab.toggleSlide}/>
-                    <Asistencias toggleSlide={Tab.toggleSlide}/>
+                    <Coberturas toggleSlide={Helpers.toggleSlide}/>
+                    <Asistencias toggleSlide={Helpers.toggleSlide}/>
                 </div>
             </Fragment>
         )
