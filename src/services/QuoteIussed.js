@@ -1,13 +1,11 @@
 import Api from './Api';
 
-const BaseUrl = "/new/quote_iussed";
+const BaseUrl = "/new/quote-iussed";
 const hybrid = "https://fvu7ki6lb3.execute-api.us-east-1.amazonaws.com/dev";
 
 class QuoteIussed {
     static async get(persons) {
-        let response = await Api.post(BaseUrl, persons, hybrid);
-        console.log(response);
-        return response;
+        return await Api.post(BaseUrl, persons, hybrid);
     };
 }
 

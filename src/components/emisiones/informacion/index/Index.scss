@@ -27,6 +27,15 @@
     max-width: 191px;
     margin: 13px auto 26px;
     padding: 10px 7px;
+    p{
+      color: #037B86;
+    }
+    &.active{
+      background-color: transparent;
+      box-shadow: inherit;
+      margin-top: -80px;
+      margin-bottom: 80px;
+    }
   }
 
   .msj-bottom {
@@ -81,4 +90,47 @@
     }
   }
 
+}
+#root .informacion-adicioonal .wrapper-more-items{
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-top: 20px;
+  .more-items{
+    max-width: 100%;
+    width: 90%;
+    margin: 0 auto;
+    padding: 40px 0 100px;
+    &::after{
+      display: none !important;
+    }
+    .trash{
+      display: block;
+      margin: 40px auto 0;
+      width: 30px;
+      &::before{
+        display: none !important;
+      }
+      &::after{
+        background-size: 14px auto;
+        background-position: center;
+      }
+    }
+    .row{
+      max-width: 100%;
+      flex: 1;
+      .sarlaft{
+        background-color: transparent;
+        margin: 0;
+        padding: 0;
+        margin-top: 16px;
+        span{
+          font-style: normal;
+          font-weight: normal;
+          font-size: 10px;
+          line-height: 11px;
+        }
+      }
+    }
+  }
 }

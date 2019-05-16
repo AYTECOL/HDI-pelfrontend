@@ -30,31 +30,31 @@ class BtnContinue extends Component {
 
     nextStep = async () => {
         let persons = this.props.persons;
-        let takers = [];
+        let takers = {};
         let insured = [];
         let benefists = [];
         let onerous = [];
         for (let i = 0; i < persons.length; i++) {
             let dataUser = {
-                first_name: 'name',
-                second_name: 'secondname',
-                first_last_name: 'lastname',
-                second_last_name: 'secondlastname',
-                document_type: 'code',
-                document: 'value',
-                gender: 'genero',
-                birthdate: 'fechadenacimiento',
-                phone_type: 'tipodetelefono',
-                phone: 'telefono',
-                email: 'email',
-                location: 'ciudad',
-                address_type: 'adresstype',
-                address: 'address',
-                sarlaft_document_url: 'sarlfaltActive',
+                first_name: persons[i]['name'],
+                second_name: persons[i]['secondname'],
+                first_last_name: persons[i]['lastname'],
+                second_last_name: persons[i]['secondlastname'],
+                document_type: persons[i]['code'],
+                document: persons[i]['value'],
+                gender: persons[i]['genero'],
+                birthdate: persons[i]['fechadenacimiento'],
+                phone_type: persons[i]['tipodetelefono'],
+                phone: persons[i]['telefono'],
+                email: persons[i]['email'],
+                location: persons[i]['ciudad'],
+                address_type: persons[i]['adresstype'],
+                address: persons[i]['address'],
+                sarlaft_document_url: persons[i]['sarlfaltActive'],
             };
             for (let j = 0; j < persons[i]['role'].length; j++) {
                 if (persons[i]['role'][j] === 1){
-                    takers.push(dataUser);
+                    takers = dataUser;
                 }else if(persons[i]['role'][j] === 2){
                     insured.push(dataUser);
                 }else if(persons[i]['role'][j] === 3){
@@ -64,7 +64,6 @@ class BtnContinue extends Component {
                 }
             }
         }
-        console.log(persons);
         let quouteId = this.props.match.params.id;
         await QuoteIussed.get({
             id: quouteId,
@@ -74,7 +73,6 @@ class BtnContinue extends Component {
             benefist: benefists,
             onerous: onerous
         });
-        return;
         window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
     };
 

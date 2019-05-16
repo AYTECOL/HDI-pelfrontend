@@ -5,11 +5,14 @@ import Helpers from '../../../../common/helpers/helpers/Helpers';
 import BtnContinue from '../forms/btncontinue/BtnContinue';
 import PopUpDelete from '../popups/delete/Delete';
 import PopUpPersona from '../popups/persona/Persona';
+import Card from '../card/Card';
 
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
 import Validaridentificacion from "../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
+import QuoteIussedById from "../../../../services/QuoteIussedById";
+import Loading from "../../../globals/loading/Loading";
 
 class Index extends Component {
 
@@ -24,11 +27,14 @@ class Index extends Component {
             persons: [],
             itemSelected: null,
             inactiveBtn: false,
-            typePerson: 1
+            typePerson: 1,
+            hasAccident: false,
+            hasExequias: false
         };
-
+        this.getData();
         this.togglePopUpDelete = this.togglePopUpDelete.bind(this);
         this.togglePopUpPersona = this.togglePopUpPersona.bind(this);
+        this.updatePerson = this.updatePerson.bind(this);
         store.subscribe(async () => {
             let storeState = store.getState();
             let cotizacion = storeState.cotizacion;
@@ -44,6 +50,56 @@ class Index extends Component {
                 });
             }
         });
+    }
+
+    async getData(){
+        Loading.toggle(true);
+        let persons = await QuoteIussedById.get(this.props.match.params.id);
+        if (typeof persons.quote_iussed_info.Item !== "undefined"){
+            let items = persons.quote_iussed_info.Item;
+            let person = [];
+            person.push(items.taker);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [1];
+            for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [2];
+
+            for (let i = 0; i < person.length; i++) {
+                person[i]['name'] = person[i]['first_name'];
+                person[i]['secondname'] = person[i]['second_name'];
+                person[i]['lastname'] = person[i]['first_last_name'];
+                person[i]['secondlastname'] = person[i]['second_last_name'];
+                person[i]['code'] = person[i]['document_type'];
+                person[i]['value'] = person[i]['document'];
+                person[i]['genero'] = person[i]['gender'];
+                person[i]['fechadenacimiento'] = person[i]['birthdate'];
+                person[i]['tipodetelefono'] = person[i]['phone_type'];
+                person[i]['telefono'] = person[i]['phone'];
+                person[i]['email'] = person[i]['email'];
+                person[i]['ciudad'] = person[i]['location'];
+                person[i]['adresstype'] = person[i]['address_type'];
+                person[i]['address'] = person[i]['address'];
+                person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
+            }
+
+            let hasExequias = false;
+            let hasAccident = false;
+            if(typeof persons.plan_selected_info.Item !== "undefined"){
+                console.log(persons.plan_selected_info.Item.coverages);
+                let coverange = persons.plan_selected_info.Item.coverages;
+                for (let i = 0; i < coverange.length; i++) {
+                    if (coverange[i]['id'] === 5 && coverange[i]['checked'] === true) hasAccident = true;
+                    if (coverange[i]['id'] === 6 && coverange[i]['checked'] === true) hasExequias = true;
+                }
+            }
+
+            this.setState({
+                ...this.state,
+                persons: person,
+                hasAccident: hasAccident,
+                hasExequias: hasExequias
+            });
+            Loading.toggle(false);
+        }
     }
 
     showAnyPopup(name,index,type) {
@@ -94,7 +150,7 @@ class Index extends Component {
         }.bind(this),100);
     };
 
-    updatePerson = person => e =>{
+    updatePerson(person){
         let persons = this.state.persons;
         if( person['role'].length <= 0 ){
 
@@ -112,7 +168,7 @@ class Index extends Component {
         setTimeout(function () {
             this.showAnyPopup("showPopUpPersona");
         }.bind(this),100);
-    };
+    }
 
     render() {
         if (this.state.step !== 1) return <div className="hide">&nbsp;</div>;
@@ -127,55 +183,10 @@ class Index extends Component {
                         </div>
                     </div>
 
-                    <div className="row">
-                        <div className="col wrapper-more-selected">
-
-                            {this.state.persons.map((item,key)=>
-                                <div key={key} className="row item-select">
-                                    <div className="col col-1">
-                                        <div className="icon-image">&nbsp</div>
-                                    </div>
-                                    <div className="col">
-                                        <span>Rol</span>
-                                        <p className="font-weight-bold">{
-                                            (item['role'].indexOf(1) !== -1?'Tomador ':'')+
-                                            (item['role'].indexOf(2) !== -1?'Asegurado ':'')+
-                                            (item['role'].indexOf(3) !== -1?'Beneficiario ':'')+
-                                            (item['role'].indexOf(4) !== -1?'Beneficiario oneroso ':'')+
-                                            (item['role'].indexOf(5) !== -1?'Exequias ':'')+
-                                            (item['role'].indexOf(6) !== -1?'Accidentes personales ':'')
-                                        }</p>
-                                    </div>
-                                    <div className="col">
-                                        <span>Identificación</span>
-                                        <p>{ item['value'] }</p>
-                                    </div>
-                                    {parseInt(item['code']) === 37?(
-                                        <div className="col">
-                                            <span>Razón social</span>
-                                            <p>{ item['businessname'] }</p>
-                                        </div>
-                                    ):(
-                                        <div className="col">
-                                            <span>Nombre y apellido</span>
-                                            <p>{ item['name'] } { item['lastname'] }</p>
-                                        </div>
-                                    )}
-                                    <div className="col">
-                                        <span>Dirección</span>
-                                        <p>{ item['address'] }</p>
-                                    </div>
-                                    <div className="col actions">
-                                        <p>
-                                            <i onClick={this.togglePopUpPersona(key)}>Modificar</i>
-                                            <span className="trash" onClick={this.togglePopUpDelete(key)}>&nbsp;</span>
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-
-                        </div>
-                    </div>
+                    <Card persons={this.state.persons}
+                          showEdit={true}
+                          togglePopUpPersona={this.togglePopUpPersona}
+                          togglePopUpDelete={this.togglePopUpDelete}/>
 
                     <div className="row">
                         <div className="col wrapper-more-items">
@@ -196,6 +207,7 @@ class Index extends Component {
                         </div>
                     </div>
 
+                    {(this.state.hasExequias === true || this.state.hasAccident === true) &&
                     <div className="row justify-content-center">
                         <div className="col col-md-8 col-lg-8 last-items-emision">
                             <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
@@ -206,6 +218,7 @@ class Index extends Component {
                             </div>
                         </div>
                     </div>
+                    }
 
                     <div className="row">
                         <div
@@ -219,6 +232,8 @@ class Index extends Component {
                     toggle={this.togglePopUpPersona}
                     persons={this.state.persons}
                     item={this.state.itemSelected}
+                    hasExequias={this.state.hasExequias}
+                    hasAccident={this.state.hasAccident}
                     typePerson={this.state.typePerson}
                     updatePerson={this.updatePerson}/>}
             </form>

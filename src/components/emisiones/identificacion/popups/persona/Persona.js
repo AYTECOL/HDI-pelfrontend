@@ -5,6 +5,9 @@ import ConsultaPersonas from "../../../../../services/ConsultaPersonas";
 import TypeDocuments from "../../../../cotizaciones/identificacion/forms/tipodocumento/TipoDocumento";
 import Validaridentificacion from "../../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
 import AutocompleteCities from "../../../../cotizaciones/identificacion/forms/autocompletecities/AutocompleteCities";
+import MomentJs from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default class Persona extends Component {
 
@@ -18,11 +21,15 @@ export default class Persona extends Component {
             typePerson: this.props.typePerson,
             nit: false,
             userRestricted: false,
-            ok: false,
+            ok: true,
+            total: 0,
+            errorFile: false,
             person: {}
         };
         if( this.props.item !== -1) this.state.person = this.props.persons[this.props.item];
         for (let i = 0; i < this.props.persons.length; i++) if( this.props.persons[i]['role'].indexOf(1) !== -1 ) this.state.exitsTomador = true;
+
+        if ( typeof this.state.person === "undefined" ) this.state.person = {};
 
         if ( typeof this.state.person.value === "undefined" ) this.state.person.value = "";
         if ( typeof this.state.person.genero === "undefined" ) this.state.person.genero = "";
@@ -48,22 +55,39 @@ export default class Persona extends Component {
         if ( typeof this.state.person.businessname === "undefined" ) this.state.person.businessname = "";
         if ( typeof this.state.person.sarlfaltActive === "undefined" ) this.state.person.sarlfaltActive = false;
         for(let i in this.state.person) if( typeof this.state.person[i+'Disabled'] === "undefined") this.state.person[i+'Disabled'] = false;
+
+        let total = 0;
+        if (this.state.typePerson === 1){
+            total = 16;
+        } else if( this.state.typePerson === 2 ){
+            total = 8;
+        } else if( this.state.typePerson === 4 ){
+            total = 6;
+        } else {
+            total = 9;
+        }
+        this.state.total = total;
     }
 
     changeTextFile = e => {
+        let name = "";
+        let status = true;
+        let errorFile = false;
         if (typeof e.target.files[0] !== "undefined") {
-            this.setState({
-                ...this.state,
-                textFile: e.target.files[0].name,
-                showDefaultTextFile: false
-            })
-        } else {
-            this.setState({
-                ...this.state,
-                textFile: '',
-                showDefaultTextFile: true
-            })
+            let formats = ["image/png", "image/jpeg", "image/jpg", "image/gif", "application/pdf"];
+            if( formats.indexOf(e.target.files[0].type) !== -1 ){
+                name = e.target.files[0].name;
+                status = false;
+            }else{
+                errorFile = true;
+            }
         }
+        this.setState({
+            ...this.state,
+            textFile: name,
+            errorFile: errorFile,
+            showDefaultTextFile: status
+        })
     };
 
     generoChange = index => () => {
@@ -97,6 +121,16 @@ export default class Persona extends Component {
     };
 
     changeValue = e => {
+        if (typeof e.target === "undefined"){
+            window.moment = MomentJs;
+            window.da = e;
+            e = {
+                target: {
+                    name: 'fechadenacimiento',
+                    value: MomentJs(e).format("YYYY-MM-DD")
+                }
+            }
+        }
         let v = e.target.value;
         let n = e.target.name;
         let nit = this.state.nit;
@@ -171,6 +205,8 @@ export default class Persona extends Component {
                 person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
                 person.sarlfaltActiveDisabled = true;
 
+                console.log(2222);
+
                 this.setState({
                     ...this.state,
                     person: person,
@@ -179,6 +215,21 @@ export default class Persona extends Component {
                 Loading.toggle(false);
             }
         }catch (e) {
+            let updatePerson = this.state.person;
+            for(let i in updatePerson){
+                if ( i.indexOf('Disabled') !== -1 ){
+                    updatePerson[i] = false;
+                }else{
+                    if(i !== 'value' && i !== 'code'){
+                        updatePerson[i] = "";
+                    }
+                }
+            }
+            this.setState({
+                ...this.state,
+                person: updatePerson,
+                userRestricted: false
+            });
             Loading.toggle(false);
         }
     };
@@ -192,14 +243,9 @@ export default class Persona extends Component {
         });
     };
 
-    validateAll = () => {
-        let total = 0;
-        if (this.state.typePerson === 1){
-            total = 16;
-        } else if( this.state.typePerson === 2 ){
-            total = 8;
-        } else {
-
+    validateAll = e => {
+        if (typeof this.props.updatePerson !== "undefined"){
+            this.props.updatePerson(this.state.person);
         }
     };
 
@@ -216,7 +262,7 @@ export default class Persona extends Component {
                                 <button type="button" className="close" aria-label="Close"
                                         onClick={this.props.toggle(0)}>&nbsp;</button>
                             </div>
-                            <div className={"modal-header "+(this.state.typePerson===2?'':'hide')}>
+                            <div className={"modal-header "+(this.state.typePerson===2||this.state.typePerson===4?'':'hide')}>
                                 <h5 className="modal-title">Personas adicionales</h5>
                                 <p className="modal-subtitle">Ingresa la información de las persona, selecciona los amparos que deseas para ella</p>
                                 <button type="button" className="close" aria-label="Close"
@@ -254,14 +300,14 @@ export default class Persona extends Component {
                                             <React.Fragment>
                                                 {this.state.typePerson === 2?(
                                                     <React.Fragment>
-                                                        <div className="col col-sm-12 col-md-6 col-lg-6">
+                                                        <div className={"col col-sm-12 col-md-6 col-lg-6 "+(this.props.hasExequias===true?'show':'hide')}>
                                                             <input type="checkbox" name="exequias" id="exequias" value="1"
                                                                    checked={this.state.person['role'].indexOf(5) !== -1}
                                                                    onChange={this.changeRole(5)}
                                                                    className="form-control"/>
                                                             <label htmlFor="exequias">Exequias</label>
                                                         </div>
-                                                        <div className="col col-sm-12 col-md-6 col-lg-6">
+                                                        <div className={"col col-sm-12 col-md-6 col-lg-6 "+(this.props.hasAccident===true?'show':'hide')}>
                                                             <input type="checkbox" name="accidentes" id="accidentes" value="3"
                                                                    checked={this.state.person['role'].indexOf(6) !== -1}
                                                                    onChange={this.changeRole(6)}
@@ -271,34 +317,38 @@ export default class Persona extends Component {
                                                     </React.Fragment>
                                                 ):(
                                                     <React.Fragment>
-                                                        <div className="col col-sm-12 col-md-6 col-lg-6">
-                                                            <input type="checkbox" name="oneroso" id="oneroso" value="1"
-                                                                   checked={this.state.person['role'].indexOf(4) !== -1}
-                                                                   onChange={this.changeRole(4)}
-                                                                   className="form-control"/>
-                                                            <label htmlFor="oneroso">Beneficiario oneroso</label>
-                                                        </div>
+                                                        {this.state.typePerson !== 4 &&
+                                                            <div className="col col-sm-12 col-md-6 col-lg-6">
+                                                                <input type="checkbox" name="oneroso" id="oneroso" value="1"
+                                                                       checked={this.state.person['role'].indexOf(4) !== -1}
+                                                                       onChange={this.changeRole(4)}
+                                                                       className="form-control"/>
+                                                                <label htmlFor="oneroso">Beneficiario oneroso</label>
+                                                            </div>
+                                                        }
                                                     </React.Fragment>
                                                 )}
                                             </React.Fragment>
                                         )}
                                     </div>
 
-                                    <div className="row fields-row">
-                                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                            <TypeDocuments disabled={this.state.person.codeDisabled} value={this.state.person.code} onChange={this.changeValue} />
-                                        </div>
+                                    {this.state.typePerson !== 4 &&
+                                        <div className="row fields-row">
+                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                                <TypeDocuments disabled={this.state.person.codeDisabled} value={this.state.person.code} onChange={this.changeValue} />
+                                            </div>
 
-                                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                            <div className="value form-group "><label
-                                                htmlFor="value">Identificación</label>
-                                                <input type="text" className={"form-control "+(this.state.person.valueDisabled?'disabled':'')} disabled={this.state.person.valueDisabled} name="value" value={this.state.person.value}
-                                                       onBlur={this.validateDoc} onChange={this.changeValue}/>
+                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                <div className="value form-group "><label
+                                                    htmlFor="value">Identificación</label>
+                                                    <input type="text" className={"form-control "+(this.state.person.valueDisabled?'disabled':'')} disabled={this.state.person.valueDisabled} name="value" value={this.state.person.value}
+                                                           onBlur={this.validateDoc} onChange={this.changeValue}/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
 
-                                    <div className={"row fields-row "+(this.state.typePerson===1||this.state.typePerson===2?'':'hide')}>
+                                    <div className={"row fields-row "+(this.state.typePerson===1||this.state.typePerson===2||this.state.typePerson===4?'':'hide')}>
 
                                         {this.state.nit===true?(
                                             <React.Fragment>
@@ -339,45 +389,52 @@ export default class Persona extends Component {
                                             </React.Fragment>
                                         )}
 
-                                        <div className={"col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right "+(this.state.nit?'hide':'')}>
-                                            <div
-                                                className={"inmuebleasegudadojoyas no-icon form-group " + this.state.error}>
-                                                <label htmlFor="doc-type-value">Genero</label>
-                                                <ul className="select-item">
-                                                    <li className={((this.state.person.genero === 1) ? 'active' : '')}
-                                                        onClick={this.generoChange(1)}
-                                                    >Masculino
-                                                    </li>
-                                                    <li className={((this.state.person.genero === 0) ? 'active' : '')}
-                                                        onClick={this.generoChange(0)}
-                                                    >Femenino
-                                                    </li>
-                                                </ul>
+                                        {this.state.typePerson!==2&&this.state.typePerson!==4 &&
+                                            <div className={"col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right "+(this.state.nit?'hide':'')}>
+                                                <div
+                                                    className={"inmuebleasegudadojoyas no-icon form-group " + this.state.error}>
+                                                    <label htmlFor="doc-type-value">Genero</label>
+                                                    <ul className="select-item">
+                                                        <li className={((this.state.person.genero === 1) ? 'active' : '')}
+                                                            onClick={this.generoChange(1)}
+                                                        >Masculino
+                                                        </li>
+                                                        <li className={((this.state.person.genero === 0) ? 'active' : '')}
+                                                            onClick={this.generoChange(0)}
+                                                        >Femenino
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className={"col col-12 col-sm-12 col-md-6 col-lg-6 "+(this.state.nit?'hide':'')}>
+                                        }
+
+                                        <div className={"col col-12 col-sm-12 col-md-6 col-lg-6 "+(this.state.nit||this.state.typePerson===4?'hide':'')}>
                                             <div className="pisonumero form-group "><label
                                                 htmlFor="fechadenacimiento">Fecha de nacimiento</label>
-                                                <input type="text" className={"form-control "+(this.state.person.fechadenacimientoDisabled?'disabled':'')} disabled={this.state.person.fechadenacimientoDisabled} name="fechadenacimiento" value={this.state.person.fechadenacimiento} onChange={this.changeValue}/>
+                                                <DatePicker name="fechadenacimiento" value={this.state.person.fechadenacimiento} selected={this.state.startDate} onChange={this.changeValue} disabled={this.state.person.fechadenacimientoDisabled} className={"form-control "+(this.state.person.fechadenacimientoDisabled?'disabled':'')} />
                                             </div>
                                         </div>
 
-                                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                            <div className="pisonumero form-group "><label
-                                                htmlFor="tipodetelefono">Tipo de teléfono</label>
-                                                <select name="tipodetelefono" onChange={this.changeValue} id="tipodetelefono" value={this.state.person.tipodetelefono} className={"form-control "+(this.state.person.tipodetelefonoDisabled?'disabled':'')} disabled={this.state.person.tipodetelefonoDisabled}>
-                                                    <option value="">Seleccione</option>
-                                                    <option value="1">Teléfono</option>
-                                                    <option value="6">Tfno. móvil</option>
-                                                </select>
+                                        {this.state.typePerson!==2 &&
+                                        <React.Fragment>
+                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                                <div className="pisonumero form-group "><label
+                                                    htmlFor="tipodetelefono">Tipo de teléfono</label>
+                                                    <select name="tipodetelefono" onChange={this.changeValue} id="tipodetelefono" value={this.state.person.tipodetelefono} className={"form-control "+(this.state.person.tipodetelefonoDisabled?'disabled':'')} disabled={this.state.person.tipodetelefonoDisabled}>
+                                                        <option value="">Seleccione</option>
+                                                        <option value="1">Teléfono</option>
+                                                        <option value="6">Tfno. móvil</option>
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                            <div className="pisonumero form-group "><label
-                                                htmlFor="telefono">Teléfono</label>
-                                                <input type="text" className={"form-control "+(this.state.person.telefonoDisabled?'disabled':'')} disabled={this.state.person.telefonoDisabled} name="telefono" value={this.state.person.telefono} onChange={this.changeValue}/>
+                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                <div className="pisonumero form-group "><label
+                                                    htmlFor="telefono">Teléfono</label>
+                                                    <input type="text" className={"form-control "+(this.state.person.telefonoDisabled?'disabled':'')} disabled={this.state.person.telefonoDisabled} name="telefono" value={this.state.person.telefono} onChange={this.changeValue}/>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </React.Fragment>
+                                        }
 
                                     </div>
 
@@ -399,6 +456,7 @@ export default class Persona extends Component {
 
                                     </div>
 
+                                    {this.state.typePerson!==2&&this.state.typePerson!==4 &&
                                     <div className="row fields-row">
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                             <div className="pisonumero form-group "><label
@@ -437,6 +495,7 @@ export default class Persona extends Component {
                                             </div>
                                         </div>
                                     </div>
+                                    }
 
                                     <div className={"row sarlaft "+(this.state.typePerson!==1||this.state.person.sarlfaltActive===true?'hide':'')}>
                                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -450,6 +509,9 @@ export default class Persona extends Component {
                                                 ) : (
                                                     <p>{this.state.textFile}</p>
                                                 )}
+                                                <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
+                                                <br/>
+                                                <span className={"error-file "+(this.state.errorFile===true?'show':'hide')}>Formato no permitido</span>
                                             </div>
                                         </div>
                                     </div>
@@ -457,7 +519,7 @@ export default class Persona extends Component {
                                     <div className="row">
                                         <div className="col">
                                             <div className={"msj-total"}>
-                                                <p className="error no-margin">Haz diligenciado 2 de 15 campos</p>
+                                                <p className="error no-margin">Haz diligenciado 0 de {this.state.total} campos</p>
                                             </div>
                                         </div>
                                     </div>
@@ -465,7 +527,7 @@ export default class Persona extends Component {
                                 </div>
 
                                 <div className="buttons">
-                                    <button className="btn btn-primary" type="button" onClick={this.state.ok === false ?this.validateAll:this.props.updatePerson(this.state.person)}>Continuar</button>
+                                    <button className="btn btn-primary" type="button" onClick={this.validateAll}>Continuar</button>
                                 </div>
                             </div>
                         </div>

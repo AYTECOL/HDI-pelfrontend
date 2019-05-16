@@ -24,7 +24,7 @@ class AutocompleteCities extends Component {
             valueLoadedCity: 0,
             valueLoadedDepartment: 0,
         };
-
+        if (typeof this.props.value==="undefined") this.state.value = this.props.value;
         this.getOptions();
         store.subscribe(() => {
             let storeState = store.getState();
@@ -103,6 +103,14 @@ class AutocompleteCities extends Component {
                 value: value,
                 empty: false
             });
+            if (typeof this.props.onChange !== "undefined"){
+                this.props.onChange({
+                    target: {
+                        value: value,
+                        name: this.props.name
+                    }
+                });
+            }
         }.bind(this), 200);
     };
 
@@ -182,16 +190,17 @@ class AutocompleteCities extends Component {
         return (
             <div className={"form-group autocomplete " + (this.state.empty ? 'error' : '')}>
                 <label className={typeof this.props.hideTitle !== "undefined"&&this.props.hideTitle===true?'hide':''} htmlFor="city">Ciudad o municipio del hogar</label>
-                <input name={this.props} id="city" type="text" className={"form-control "+(typeof this.props.disabled==='undefined'?'':(this.props.disabled===true?'disabled':''))}
+                <input name={typeof this.props.name !== "undefined"?'city':this.props.name} id="city" type="text"
+                       className={"form-control "+(typeof this.props.disabled==='undefined'?'':(this.props.disabled===true?'disabled':''))}
                        placeholder="Ingresa ciudad o municipio del h..."
-                       value={typeof this.props.value==="undefined"?this.state.value:this.props.value}
+                       value={this.state.value}
                        disabled={typeof this.props.disabled==='undefined'?false:this.props.disabled}
                        autoComplete="city"
                        autoCorrect="off"
                        autoCapitalize="none"
                        onKeyDown={this.moveOptions}
                        onBlur={this.onBlur}
-                       onChange={typeof this.props.onChange==="undefined"?this.searchData:this.props.onChange}
+                       onChange={this.searchData}
                 />
                 <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
                 <ul className={(this.state.toggle ? 'show' : 'hide') + " list-items"}>

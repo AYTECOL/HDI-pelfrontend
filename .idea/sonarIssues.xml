@@ -63,6 +63,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/asistencias/Asistencias.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/cards/Cards.js">
           <value>
             <set />
@@ -218,6 +223,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/identificacion/card/Card.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/emisiones/identificacion/forms/btncontinue/BtnContinue.js">
           <value>
             <set />
@@ -259,6 +269,26 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/components/emisiones/informacion/index/Index.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/informacion/index/Index.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/forms/btncontinue/BtnContinue.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/index/Index.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/index/Index.scss">
           <value>
             <set />
           </value>
@@ -318,6 +348,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/CreateOrUpdateMoreInfo.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/CreateOrUpdateValoration.js">
           <value>
             <set />
@@ -333,7 +368,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/NewPlanSelected.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/QuoteIussed.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/QuoteIussedById.js">
           <value>
             <set />
           </value>
