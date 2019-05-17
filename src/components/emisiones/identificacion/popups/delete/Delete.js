@@ -3,11 +3,6 @@ import './Delete.scss';
 import icono from '../../../../../common/images/trashtrash.png';
 
 export default class Delete extends Component {
-
-    /*    constructor(props) {
-            super(props);
-        }*/
-
     render() {
         return (
             <div className={"modal validaridentificacion show trash-popup"}>
