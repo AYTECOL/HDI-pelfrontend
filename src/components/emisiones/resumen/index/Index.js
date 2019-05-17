@@ -43,6 +43,9 @@ class Index extends Component {
                 });
             }
         });
+    }
+
+    componentDidMount() {
         this.getData();
     }
 
@@ -136,7 +139,6 @@ class Index extends Component {
     };
 
     render() {
-        if (this.state.step !== 3) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form emision">
                 <div className="container">

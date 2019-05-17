@@ -36,7 +36,6 @@ class BtnContinue extends Component {
         let additional = [];
         let exits = {};
         let personsMerge = {};
-        console.log(persons);
         for (let i = 0; i < persons.length; i++) {
             let person = persons[i];
             if( typeof personsMerge[person['value']] === "undefined" ){
@@ -47,11 +46,8 @@ class BtnContinue extends Component {
             }
         }
         let newPersons = [];
-        for(let i in personsMerge){
-            newPersons.push(personsMerge[i]);
-        }
+        for(let i in personsMerge) newPersons.push(personsMerge[i]);
         persons = newPersons;
-        console.log(persons);
         for (let i = 0; i < persons.length; i++) {
             let dataUser = {
                 first_name: persons[i]['name'],
@@ -89,13 +85,6 @@ class BtnContinue extends Component {
                 }
             }
         }
-        console.log({
-            taker: takers,
-            insured: insured,
-            benefist: benefists,
-            onerous: onerous,
-            persons_aditionals: additional
-        });
         let quouteId = this.props.match.params.id;
         await QuoteIussed.get({
             id: quouteId,
@@ -106,7 +95,7 @@ class BtnContinue extends Component {
             onerous: onerous,
             persons_aditionals: additional
         });
-        //window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
+        window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
     };
 
     render() {

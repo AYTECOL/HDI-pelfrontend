@@ -30,6 +30,9 @@ class Index extends Component {
             showPopUpPersona: false
         };
         this.updatePerson = this.updatePerson.bind(this);
+    }
+
+    componentDidMount() {
         this.getData();
     }
 
@@ -148,7 +151,6 @@ class Index extends Component {
     };
 
     render() {
-        if (this.state.step !== 2) return <div className="hide">&nbsp;</div>;
         return (
             <React.Fragment>
                 <form autoComplete="off" className="index-form emision informacion-adicioonal">
