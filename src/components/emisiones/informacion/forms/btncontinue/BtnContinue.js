@@ -3,7 +3,6 @@ import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
-import store from "../../../../../store";
 import CreateOrUpdateMoreInfo from "../../../../../services/CreateOrUpdateMoreInfo";
 
 class BtnContinue extends Component {
@@ -30,7 +29,12 @@ class BtnContinue extends Component {
                 if ( state.contents[i][j] === "" ) state.contents[i][j] = '""';
             }
         }
-        console.log(state.contents);
+        let name = "";
+        let phone = "";
+        if( state.contactperson !== null ){
+            name = state.persons[state.contactperson].name;
+            phone = state.persons[state.contactperson].telefono;
+        }
         await CreateOrUpdateMoreInfo.get({
             "quote_id": this.props.match.params.id,
             "start_policy_date": state.initdate,
@@ -39,8 +43,8 @@ class BtnContinue extends Component {
             "order": state.contactperson,
             "name":"DINAMICA",
             "visit_personalue":{
-                "name": state.persons[state.contactperson].name,
-                "phone": state.persons[state.contactperson].telefono
+                "name": name,
+                "phone": phone
             },
             "goods_over_cost": state.contents
         });

@@ -34,6 +34,24 @@ class BtnContinue extends Component {
         let benefists = [];
         let onerous = [];
         let additional = [];
+        let exits = {};
+        let personsMerge = {};
+        console.log(persons);
+        for (let i = 0; i < persons.length; i++) {
+            let person = persons[i];
+            if( typeof personsMerge[person['value']] === "undefined" ){
+                personsMerge[person['value']] = person;
+            }else{
+                person['role'] = person['role'].concat(personsMerge[person['value']]['role']);
+                personsMerge[person['value']]['role'] = [ ...new Set(person['role']) ].sort(Helpers.orderArrayNumeric);
+            }
+        }
+        let newPersons = [];
+        for(let i in personsMerge){
+            newPersons.push(personsMerge[i]);
+        }
+        persons = newPersons;
+        console.log(persons);
         for (let i = 0; i < persons.length; i++) {
             let dataUser = {
                 first_name: persons[i]['name'],
@@ -50,28 +68,34 @@ class BtnContinue extends Component {
                 location: persons[i]['ciudad'],
                 address_type: persons[i]['adresstype'],
                 address: persons[i]['address'],
-                sarlaft_document_url: persons[i]['sarlfaltActive'],
+                sarlaft_document_url: persons[i]['sarlaft'],
                 role: persons[i]['role'],
             };
-            for(let i in dataUser){
-                if( dataUser[i] === "" ){
-                    dataUser[i] = '""';
-                }
-            }
+            for(let i in dataUser) if( dataUser[i] === "" ) dataUser[i] = '""';
             for (let j = 0; j < persons[i]['role'].length; j++) {
-                if (persons[i]['role'][j] === 1){
-                    takers = dataUser;
-                }else if(persons[i]['role'][j] === 2){
-                    insured.push(dataUser);
-                }else if(persons[i]['role'][j] === 3){
-                    benefists.push(dataUser);
-                }else if(persons[i]['role'][j] === 4){
-                    onerous.push(dataUser);
-                }else if(persons[i]['role'][j] >= 5){
-                    additional.push(dataUser);
+                if( typeof exits[dataUser['document']] === "undefined" ) {
+                    if (persons[i]['role'][j] === 1){
+                        takers = dataUser;
+                    }else if(persons[i]['role'][j] === 2){
+                        insured.push(dataUser);
+                    }else if(persons[i]['role'][j] === 3){
+                        benefists.push(dataUser);
+                    }else if(persons[i]['role'][j] === 4){
+                        onerous.push(dataUser);
+                    }else if(persons[i]['role'][j] >= 5){
+                        additional.push(dataUser);
+                    }
+                    exits[dataUser['document']] = dataUser;
                 }
             }
         }
+        console.log({
+            taker: takers,
+            insured: insured,
+            benefist: benefists,
+            onerous: onerous,
+            persons_aditionals: additional
+        });
         let quouteId = this.props.match.params.id;
         await QuoteIussed.get({
             id: quouteId,
@@ -82,14 +106,14 @@ class BtnContinue extends Component {
             onerous: onerous,
             persons_aditionals: additional
         });
-        window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
+        //window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
     };
 
     render() {
         return (
             <Fragment>
                 <div className={"return-button"}>
-                    <a className="btn btn-link" href="#" onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver</a>
+                    <button className="btn btn-link" onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver</button>
                 </div>
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveAndExit}>Guardar y salir

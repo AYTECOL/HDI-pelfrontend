@@ -4,7 +4,6 @@ import Cities from '../../../../../services/Cities';
 import store from '../../../../../store';
 import {saveDescriptionCity, saveIdentificationValue} from '../../../../../actions';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
-import Loading from "../../../../globals/loading/Loading";
 
 class AutocompleteCities extends Component {
 
@@ -25,8 +24,7 @@ class AutocompleteCities extends Component {
             valueLoadedCity: 0,
             valueLoadedDepartment: 0,
         };
-        let v = typeof this.props.value==="undefined"?'':this.props.value.toString();
-        this.state.value = v;
+        this.state.value = typeof this.props.value === "undefined" ? '' : this.props.value.toString();
         store.subscribe(() => {
             let storeState = store.getState();
             let city = storeState.cotizacion.identification.city;
@@ -76,10 +74,12 @@ class AutocompleteCities extends Component {
                 break;
             }
         }
-        this.setState({
-            ...this.state,
-            value: value
-        });
+        if (value !== ""){
+            this.setState({
+                ...this.state,
+                value: value
+            });
+        }
     }
 
     onBlur = v => {

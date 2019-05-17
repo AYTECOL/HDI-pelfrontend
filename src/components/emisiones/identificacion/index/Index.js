@@ -84,24 +84,20 @@ class Index extends Component {
                 person[i]['fechadenacimiento'] = person[i]['birthdate'];
                 person[i]['tipodetelefono'] = person[i]['phone_type'];
                 person[i]['telefono'] = person[i]['phone'];
-                person[i]['email'] = person[i]['email'];
                 person[i]['ciudad'] = person[i]['location'];
                 person[i]['adresstype'] = person[i]['address_type'];
-                person[i]['address'] = person[i]['address'];
-                person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
+                person[i]['sarlfalt_url'] = person[i]['sarlaft_document_url'];
             }
 
             let hasExequias = false;
             let hasAccident = false;
             if(typeof persons.plan_selected_info.Item !== "undefined"){
-                console.log(persons.plan_selected_info.Item.coverages);
                 let coverange = persons.plan_selected_info.Item.coverages;
                 for (let i = 0; i < coverange.length; i++) {
                     if (coverange[i]['id'] === 5 && coverange[i]['checked'] === true) hasAccident = true;
                     if (coverange[i]['id'] === 6 && coverange[i]['checked'] === true) hasExequias = true;
                 }
             }
-
             this.setState({
                 ...this.state,
                 persons: person,
@@ -136,13 +132,11 @@ class Index extends Component {
         if(index!==-1 && index!==-2 && typeof type === "undefined"){
             let roles = this.state.persons[index]['role'];
             if( roles.indexOf(5) !== -1 || roles.indexOf(6) !== -1) type = 2;
-            if( roles.indexOf(4) !== -1 ) type = 3;
+            if( roles.indexOf(4) !== -1 || roles.indexOf(3) !== -1 ) type = 3;
+            if( roles.indexOf(1) !== -1 || roles.indexOf(2) !== -1 ) type = 1;
         }
         this.showAnyPopup("showPopUpPersona", index, type);
         Validaridentificacion.toggle(false);
-        if( index===-2 ){
-
-        }
     };
 
     removeItem = e => {
@@ -155,9 +149,9 @@ class Index extends Component {
             persons: newPerson,
             inactiveBtn: inactiveBtn
         });
-        setTimeout(function () {
+        setTimeout(() => {
             this.showAnyPopup("showPopUpDelete");
-        }.bind(this),100);
+        },100);
     };
 
     updatePerson(person){
@@ -171,9 +165,9 @@ class Index extends Component {
             ...this.state,
             person: persons
         });
-        setTimeout(function () {
+        setTimeout(()=>{
             this.showAnyPopup("showPopUpPersona");
-        }.bind(this),100);
+        },100);
     }
 
     render() {

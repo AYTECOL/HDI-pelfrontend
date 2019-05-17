@@ -63,9 +63,9 @@ class Api {
         })
     };
 
-    static async files(url, file, overrideBase){
+    static async files(url, name, file, overrideBase){
         let formData = new FormData();
-        formData.append("file", file);
+        formData.append(name, file);
         return await Api.HttpRequest('POST', url, formData, overrideBase, true).then(function (response) {
             return JSON.parse(response);
         })

@@ -36,7 +36,6 @@ class Index extends Component {
     async getData(){
         Loading.toggle(true);
         let data = await QuoteIussedById.get(this.props.match.params.id);
-        console.log(data);
         if (typeof data.more_info.Item !== "undefined"){
             let items = data.quote_iussed_info.Item;
             let person = [];
@@ -45,13 +44,14 @@ class Index extends Component {
             for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
 
             data = data.more_info.Item;
-            data['initdate'] = data.start_policy_date;
-            data['area'] = data.area;
-            data['utilizado'] = data.risk_use;
-            data['contents'] = data.goods_over_cost;
-            for (let i = 0; i < data['contents'].length; i++) {
-                for(let j in data.contents[i]){
-                    if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+            if( typeof data !== "undefined") {
+                if(typeof data.start_policy_date !== "undefined" ) data['initdate'] = data.start_policy_date;
+                if(typeof data.risk_use !== "undefined" ) data['utilizado'] = data.risk_use;
+                if(typeof data.goods_over_cost !== "undefined" ) data['contents'] = data.goods_over_cost;
+                for (let i = 0; i < data['contents'].length; i++) {
+                    for(let j in data.contents[i]){
+                        if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+                    }
                 }
             }
             this.setState({
@@ -144,8 +144,7 @@ class Index extends Component {
     };
 
     changeTextFile = async e => {
-      let file = await SarlaftFile.upload(e.target.files[0]);
-      console.log(file);
+      await SarlaftFile.upload(e.target.files[0]);
     };
 
     render() {
@@ -164,7 +163,13 @@ class Index extends Component {
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="form-group"><label
                                     htmlFor="pisonumero">¿Cuándo deseas que comience la póliza?</label>
-                                    <DatePicker showMonthDropdown minDate={new Date()} name="initdate" value={this.state.initdate} onChange={this.changeValue} className={"form-control pickerDate"} placeholderText={"Selecciona la fecha de inicio de vigencia"} />
+                                    <DatePicker showMonthDropdown
+                                                minDate={new Date()}
+                                                name="initdate"
+                                                value={this.state.initdate}
+                                                onChange={this.changeValue}
+                                                className={"form-control pickerDate"}
+                                                placeholderText={"Selecciona la fecha de inicio de vigencia"} />
                                 </div>
                             </div>
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
