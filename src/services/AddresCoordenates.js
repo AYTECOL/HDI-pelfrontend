@@ -3,7 +3,7 @@ import {ApiKeyGoogle} from '../config';
 
 const APIKEY = ApiKeyGoogle;
 // const Cors = '';
-const Cors = 'https://cors-anywhere.herokuapp.com/';
+const Cors = 'https://cors-anywhere.hegrokuapp.com/';
 
 class GetAddresInfo {
     static async get(address) {

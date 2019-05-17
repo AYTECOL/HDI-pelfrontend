@@ -25,6 +25,7 @@ const initialState = {
             department: "",
             address: "",
             addressadditional: "",
+            object: {}
         }
     },
     cityDescription: "",

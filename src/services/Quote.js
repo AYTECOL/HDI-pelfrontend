@@ -19,7 +19,8 @@ class IdentificationsCities {
             longitude: storeState.mapsOptions.longitude,
             name: storeState.cotizacion.identification.name,
             last_name: storeState.cotizacion.identification.lastname,
-            step: storeState.cotizacion.state
+            step: storeState.cotizacion.state,
+            person: storeState.cotizacion.identification.object
         };
         for (let i in data) if (data[i] === "") data[i] = '""';
         return await Api.post(Url, data);

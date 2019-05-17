@@ -6,6 +6,9 @@
       .fields-row {
         max-width: 624px;
         margin: 0 auto;
+        .col{
+          padding-right: 0;
+        }
       }
       .form-group.error::after{
         top: 15px;
@@ -31,10 +34,42 @@
           vertical-align: middle;
           display: inline-block;
         }
+        &.error{
+          label{
+            color: #DD133C
+          }
+          input::before{
+            border: 1px solid #DD133C !important;
+          }
+        }
       }
 
       .form-group {
         margin-bottom: 14px;
+        position: relative;
+        &.input-select:after{
+          top: 48px;
+        }
+        &.error{
+          .only-errors{
+            display: block;
+            text-align: left;
+          }
+          &::after{
+            top: 40px;
+          }
+          .form-control{
+            border: 1px solid #DD133C !important;
+          }
+          &.sarlaft{
+            &::after{
+              display: none;
+            }
+            p{
+              border: 2px dashed #DD133C !important;
+            }
+          }
+        }
 
         label {
           display: block;

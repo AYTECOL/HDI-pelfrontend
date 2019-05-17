@@ -25,6 +25,7 @@ class Index extends Component {
             step: parseInt(this.props.match.params.step),
             cotizacion: {},
             persons: [],
+            contents: [],
             itemSelected: null,
             typePerson: 1
         };
@@ -67,14 +68,23 @@ class Index extends Component {
 
 
 
-
         let persons = plan;
         let items = persons.quote_iussed_info.Item;
         let person = [];
         person.push(items.taker);
         for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [1];
+
         for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
         for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [2];
+
+        for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
+        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [3];
+
+        for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
+        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [4];
+
+        for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
+        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [5];
 
         for (let i = 0; i < person.length; i++) {
             person[i]['name'] = person[i]['first_name'];
@@ -96,10 +106,23 @@ class Index extends Component {
 
         console.log(person);
 
+
+
+        let data = plan.more_info.Item;
+        data['initdate'] = data.start_policy_date;
+        data['utilizado'] = data.risk_use;
+        data['contents'] = data.goods_over_cost;
+        for (let i = 0; i < data['contents'].length; i++) {
+            for(let j in data.contents[i]){
+                if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+            }
+        }
+
         this.setState({
             ...this.state,
             plans: plans,
-            persons: person
+            persons: person,
+            contents: data['contents']
         });
     }
 
@@ -218,7 +241,7 @@ class Index extends Component {
                                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
                                     <div className="row" onClick={Helpers.toggleSlide(3)}>
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
-                                            <h4><span>2</span>Items</h4>
+                                            <h4><span>{this.state.contents.length}</span>Items</h4>
                                         </div>
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
                                             <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
@@ -227,41 +250,27 @@ class Index extends Component {
                                     </div>
                                     <div className="wrapper-box">
                                         <div className="wrapper-content">
-                                            <div className="row">
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <p><span>Tipo de contenido</span></p>
-                                                    <p>Celular</p>
-                                                </div>
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <p><span>IMEI y características</span></p>
-                                                    <p>7654345 Samsung</p>
-                                                </div>
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <p><span>Valor</span></p>
-                                                    <p>$ 5.000.000</p>
-                                                </div>
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <a className="btn btn-download" href="#">Factura cel.pdf</a>
-                                                </div>
-                                            </div>
 
-                                            <div className="row">
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <p><span>Tipo de contenido</span></p>
-                                                    <p>Bicicleta</p>
+                                            {this.state.contents.map((item, key) =>
+                                                <div className="row" key={key}>
+                                                    <div className="col col-sm-6 col-md-3">
+                                                        <p><span>Tipo de contenido</span></p>
+                                                        <p>{item.type}</p>
+                                                    </div>
+                                                    <div className="col col-sm-6 col-md-3">
+                                                        <p><span>IMEI y características</span></p>
+                                                        <p>{item.caracte}</p>
+                                                    </div>
+                                                    <div className="col col-sm-6 col-md-3">
+                                                        <p><span>Valor</span></p>
+                                                        <p>{item.value}</p>
+                                                    </div>
+                                                    <div className="col col-sm-6 col-md-3">
+                                                        <a className="btn btn-download" href={item.urlfile}>Documento.pdf</a>
+                                                    </div>
                                                 </div>
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <p><span>IMEI y características</span></p>
-                                                    <p>Trek, negra de lujo</p>
-                                                </div>
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <p><span>Valor</span></p>
-                                                    <p>$ 5.000.000</p>
-                                                </div>
-                                                <div className="col col-sm-6 col-md-3">
-                                                    <a className="btn btn-download" href="#">Documento-1.pdf</a>
-                                                </div>
-                                            </div>
+                                            )}
+
                                         </div>
                                     </div>
                                 </div>

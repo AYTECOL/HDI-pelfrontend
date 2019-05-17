@@ -94,6 +94,10 @@ class BtnContinue extends Component {
                     Validaridentificacion.toggle(true);
                 } else {
                     store.dispatch(nextStepIndentification());
+                    store.dispatch(saveIdentificationValue({
+                        name: 'object',
+                        value: persona
+                    }));
                     if (persona.consultarPersonaRs.personaEncontradaIAXIS === true) {
                         let personaData = persona.consultarPersonaRs.persona;
                         let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;

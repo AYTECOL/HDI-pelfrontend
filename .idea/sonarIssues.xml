@@ -153,6 +153,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/map/Map.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js">
           <value>
             <set />
@@ -373,12 +378,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/Quote.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/QuoteIussed.js">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/services/QuoteIussedById.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/SarlaftFile.js">
           <value>
             <set />
           </value>

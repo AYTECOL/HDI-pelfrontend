@@ -38,7 +38,7 @@ class Index extends Component {
         store.subscribe(async () => {
             let storeState = store.getState();
             let cotizacion = storeState.cotizacion;
-            if (this.state.cotizacion !== cotizacion) {
+            if (this.state.cotizacion !== cotizacion && this.state.showPopUpPersona === false) {
                 let persons = [];
                 let tomador = cotizacion.identification;
                 tomador['role'] = [1];
@@ -60,8 +60,18 @@ class Index extends Component {
             let person = [];
             person.push(items.taker);
             for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [1];
+
             for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
             for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [2];
+
+            for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [3];
+
+            for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [4];
+
+            for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [5];
 
             for (let i = 0; i < person.length; i++) {
                 person[i]['name'] = person[i]['first_name'];
@@ -152,19 +162,15 @@ class Index extends Component {
 
     updatePerson(person){
         let persons = this.state.persons;
-        if( person['role'].length <= 0 ){
-
+        if( this.state.itemSelected === -1 ){
+            persons.push(person);
         }else{
-            if( this.state.itemSelected === -1 ){
-                persons.push(person);
-            }else{
-                persons[this.state.itemSelected] = person;
-            }
-            this.setState({
-                ...this.state,
-                person: persons
-            });
+            persons[this.state.itemSelected] = person;
         }
+        this.setState({
+            ...this.state,
+            person: persons
+        });
         setTimeout(function () {
             this.showAnyPopup("showPopUpPersona");
         }.bind(this),100);

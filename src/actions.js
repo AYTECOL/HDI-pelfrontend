@@ -2,6 +2,7 @@
 const saveIdentificationValue = (element) => {
     return {type: "SAVE_IDENTIFICATION_VALUE", data: {[element.name]: element.value}};
 };
+
 const setAddresMap = (data) => {
     return {type: "SET_ADDRES_MAP", data};
 };
@@ -41,7 +42,6 @@ const restoreCotizacionRisk = (cotizacion) => {
 const NextStep = (step) => {
     return {type: "NEXT_STEP", data: step}
 };
-
 
 // Segundo formulario
 const typeInmueble = (typeInmueble) => {
