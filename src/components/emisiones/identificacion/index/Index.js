@@ -97,8 +97,8 @@ class Index extends Component {
             if(typeof persons.plan_selected_info.Item !== "undefined"){
                 let coverange = persons.plan_selected_info.Item.coverages;
                 for (let i = 0; i < coverange.length; i++) {
-                    if (coverange[i]['id'] === 5 && coverange[i]['checked'] === true) hasAccident = true;
-                    if (coverange[i]['id'] === 6 && coverange[i]['checked'] === true) hasExequias = true;
+                    if (coverange[i]['name'].toLowerCase() === 'accidentes personales' && coverange[i]['checked'] === true) hasAccident = true;
+                    if (coverange[i]['name'].toLowerCase() === 'exequial' && coverange[i]['checked'] === true) hasExequias = true;
                 }
             }
             this.setState({
@@ -127,7 +127,7 @@ class Index extends Component {
         }
     }
 
-    togglePopUpDelete = index => e => {
+    togglePopUpDelete = index => () => {
         this.showAnyPopup("showPopUpDelete",index);
     };
 
@@ -142,7 +142,7 @@ class Index extends Component {
         Validaridentificacion.toggle(false);
     };
 
-    removeItem = e => {
+    removeItem = () => {
         let persons = this.state.persons;
         let newPerson = [];
         for (let i = 0; i < persons.length; i++) if( i !== this.state.itemSelected ) newPerson.push(persons[i]);
