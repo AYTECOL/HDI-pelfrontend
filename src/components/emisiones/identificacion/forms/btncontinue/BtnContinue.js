@@ -6,7 +6,6 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 //Services
 import QuoteIussed from "../../../../../services/QuoteIussed";
-import store from "../../../../../store";
 
 class BtnContinue extends Component {
 
@@ -34,6 +33,7 @@ class BtnContinue extends Component {
         let insured = [];
         let benefists = [];
         let onerous = [];
+        let additional = [];
         for (let i = 0; i < persons.length; i++) {
             let dataUser = {
                 first_name: persons[i]['name'],
@@ -51,7 +51,13 @@ class BtnContinue extends Component {
                 address_type: persons[i]['adresstype'],
                 address: persons[i]['address'],
                 sarlaft_document_url: persons[i]['sarlfaltActive'],
+                role: persons[i]['role'],
             };
+            for(let i in dataUser){
+                if( dataUser[i] === "" ){
+                    dataUser[i] = '""';
+                }
+            }
             for (let j = 0; j < persons[i]['role'].length; j++) {
                 if (persons[i]['role'][j] === 1){
                     takers = dataUser;
@@ -61,6 +67,8 @@ class BtnContinue extends Component {
                     benefists.push(dataUser);
                 }else if(persons[i]['role'][j] === 4){
                     onerous.push(dataUser);
+                }else if(persons[i]['role'][j] >= 5){
+                    additional.push(dataUser);
                 }
             }
         }
@@ -71,7 +79,8 @@ class BtnContinue extends Component {
             taker: takers,
             insured: insured,
             benefist: benefists,
-            onerous: onerous
+            onerous: onerous,
+            persons_aditionals: additional
         });
         window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
     };

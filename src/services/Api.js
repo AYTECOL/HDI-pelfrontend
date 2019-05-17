@@ -4,16 +4,19 @@ import {UrlService} from '../config';
 
 class Api {
 
-    static HttpRequest(method, url, data, overrideBase) {
+    static HttpRequest(method, url, data, overrideBase, formData) {
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
-            if (typeof overrideBase === 'undefined') {
+            if(typeof formData === "undefined") formData = false;
+            if (typeof overrideBase === "undefined") {
                 url = UrlService + url;
             } else {
                 url = overrideBase + url;
             }
             xhr.open(method, url);
-            xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+            if( formData === false ){
+                xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+            }
             xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             xhr.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
@@ -34,7 +37,9 @@ class Api {
             if (data === null) {
                 xhr.send();
             } else {
-                data = JSON.stringify(data).replace(/<(?:.|\n)*?>/gm, '');
+                if( formData === false ) {
+                    data = JSON.stringify(data).replace(/<(?:.|\n)*?>/gm, '');
+                }
                 xhr.send(data);
             }
         });
@@ -57,6 +62,14 @@ class Api {
             return JSON.parse(response);
         })
     };
+
+    static async files(url, file, overrideBase){
+        let formData = new FormData();
+        formData.append("file", file);
+        return await Api.HttpRequest('POST', url, formData, overrideBase, true).then(function (response) {
+            return JSON.parse(response);
+        })
+    }
 }
 
 export default Api;

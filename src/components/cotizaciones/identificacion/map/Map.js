@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import store from '../../../../store';
 import MapBase from './MapBase';
+import {ApiKeyGoogle} from '../../../../config';
 import './Map.scss';
 
 class Map extends Component {
@@ -27,7 +28,7 @@ class Map extends Component {
         return (
             <div className={(this.state.show ? "" : "hide") + " wrapper-map " + (this.state.error ? "error" : "")}>
                 <MapBase isMarkerShown
-                         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyBgo1kZwdmm7WnRiT9rkfXcVn87QJha6AU"
+                         googleMapURL={"https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key="+ApiKeyGoogle}
                          loadingElement={<div style={{height: `100%`}}/>}
                          containerElement={<div style={{height: `400px`}}/>}
                          mapElement={<div style={{height: `100%`}}/>}/>

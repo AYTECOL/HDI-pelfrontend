@@ -4,6 +4,7 @@ import Cities from '../../../../../services/Cities';
 import store from '../../../../../store';
 import {saveDescriptionCity, saveIdentificationValue} from '../../../../../actions';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import Loading from "../../../../globals/loading/Loading";
 
 class AutocompleteCities extends Component {
 
@@ -24,33 +25,46 @@ class AutocompleteCities extends Component {
             valueLoadedCity: 0,
             valueLoadedDepartment: 0,
         };
-        if (typeof this.props.value==="undefined") this.state.value = this.props.value;
-        this.getOptions();
+        let v = typeof this.props.value==="undefined"?'':this.props.value.toString();
+        this.state.value = v;
         store.subscribe(() => {
             let storeState = store.getState();
             let city = storeState.cotizacion.identification.city;
             let department = storeState.cotizacion.identification.department;
             if (city !== this.state.valueLoadedCity || department !== this.state.valueLoadedDepartment) {
-                this.setState({
-                    ...this.state,
-                    valueLoadedCity: city,
-                    valueLoadedDepartment: department,
-                });
+                if (this._isMounted){
+                    this.setState({
+                        ...this.state,
+                        valueLoadedCity: city,
+                        valueLoadedDepartment: department,
+                    });
+                }
             }
         });
+    }
+
+    _isMounted = false;
+
+    componentWillUnmount() { this._isMounted = false; }
+
+    componentDidMount() {
+        this._isMounted = true;
+        this.getOptions();
     }
 
     async getOptions() {
         let data = await Cities.get();
         let it = this;
-        this.setState({
-            ...it.state,
-            options: data,
-            originalOptions: data
-        });
-        setTimeout(function () {
-            it.getTextById();
-        }, 300);
+        if (this._isMounted) {
+            this.setState({
+                ...it.state,
+                options: data,
+                originalOptions: data
+            });
+            setTimeout(function () {
+                it.getTextById();
+            }, 300);
+        }
     }
 
     getTextById() {
@@ -125,7 +139,6 @@ class AutocompleteCities extends Component {
             }
             return true;
         });
-
         this.setState({
             ...this.state,
             value: value,
@@ -189,7 +202,7 @@ class AutocompleteCities extends Component {
     render() {
         return (
             <div className={"form-group autocomplete " + (this.state.empty ? 'error' : '')}>
-                <label className={typeof this.props.hideTitle !== "undefined"&&this.props.hideTitle===true?'hide':''} htmlFor="city">Ciudad o municipio del hogar</label>
+                <label className={typeof this.props.hideTitle !== "undefined"&&this.props.hideTitle===true?'hide':''} htmlFor="city">{typeof this.props.label === "undefined"?'Ciudad o municipio del hogar':this.props.label}</label>
                 <input name={typeof this.props.name !== "undefined"?'city':this.props.name} id="city" type="text"
                        className={"form-control "+(typeof this.props.disabled==='undefined'?'':(this.props.disabled===true?'disabled':''))}
                        placeholder="Ingresa ciudad o municipio del h..."
@@ -202,7 +215,7 @@ class AutocompleteCities extends Component {
                        onBlur={this.onBlur}
                        onChange={this.searchData}
                 />
-                <small className="form-text only-errors">Por favor ingrese la Ciudad o Municipio del Hogar.</small>
+                <small className="form-text only-errors">Por favor ingrese la {typeof this.props.label === "undefined"?'Ciudad o municipio del hogar':this.props.label}.</small>
                 <ul className={(this.state.toggle ? 'show' : 'hide') + " list-items"}>
                     {this.state.options.cities.map((option, key) =>
                         <li key={key} value={option.code_city} className={option.active ? 'active' : ''}

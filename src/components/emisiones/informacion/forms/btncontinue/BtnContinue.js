@@ -25,19 +25,24 @@ class BtnContinue extends Component {
 
     nextStep = async () => {
         let state = this.props.state;
-        console.log(state);
+        for (let i = 0; i < state.contents.length; i++) {
+            for(let j in state.contents[i]){
+                if ( state.contents[i][j] === "" ) state.contents[i][j] = '""';
+            }
+        }
+        console.log(state.contents);
         await CreateOrUpdateMoreInfo.get({
             "quote_id": this.props.match.params.id,
             "start_policy_date": state.initdate,
             "area": state.area,
             "risk_use": state.utilizado,
-            "order": 2,
+            "order": state.contactperson,
             "name":"DINAMICA",
             "visit_personalue":{
-                "name": state.persons.name,
-                "phone": state.persons.telefono
+                "name": state.persons[state.contactperson].name,
+                "phone": state.persons[state.contactperson].telefono
             },
-            "goods_over_cost":[]
+            "goods_over_cost": state.contents
         });
         window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
     };

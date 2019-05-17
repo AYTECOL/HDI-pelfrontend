@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import store from "../../store";
 import Counter from "../../services/Counter";
 import Loading from "../../components/globals/loading/Loading";
 import Table from '../../components/home/table/Table';
@@ -13,11 +12,9 @@ class Home extends Component {
 
     getNumber = async () => {
         Loading.toggle(true);
-        let storeState = store.getState();
         let number = await Counter.get();
         if (typeof number.currentValue !== 'undefined') {
             number = number.currentValue.toString();
-            number = storeState.cotizacion.number.slice(number.length) + number;
             window.location.href = '/cotizacion/1/' + number;
         }
         setTimeout(Loading.toggle(false),500);

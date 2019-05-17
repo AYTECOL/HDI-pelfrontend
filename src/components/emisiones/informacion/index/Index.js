@@ -12,6 +12,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import PopUpPersona from '../../identificacion/popups/persona/Persona';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
+import SarlaftFile from "../../../../services/SarlaftFile";
 
 class Index extends Component {
 
@@ -24,6 +25,7 @@ class Index extends Component {
             persons: [],
             contents: [],
             area: '',
+            addNewPerson: true,
             itemSelected: null,
             showPopUpPersona: false
         };
@@ -34,6 +36,7 @@ class Index extends Component {
     async getData(){
         Loading.toggle(true);
         let data = await QuoteIussedById.get(this.props.match.params.id);
+        console.log(data);
         if (typeof data.more_info.Item !== "undefined"){
             let items = data.quote_iussed_info.Item;
             let person = [];
@@ -41,11 +44,16 @@ class Index extends Component {
             for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
             for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
 
-            console.log(data.quote_iussed_info.Item);
             data = data.more_info.Item;
             data['initdate'] = data.start_policy_date;
             data['area'] = data.area;
             data['utilizado'] = data.risk_use;
+            data['contents'] = data.goods_over_cost;
+            for (let i = 0; i < data['contents'].length; i++) {
+                for(let j in data.contents[i]){
+                    if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+                }
+            }
             this.setState({
                 ...this.state,
                 ...data,
@@ -108,10 +116,13 @@ class Index extends Component {
     };
 
     updatePerson(person){
+        let persons = this.state.persons;
+        persons.push(person);
         this.setState({
             ...this.state,
-            persons: person,
-            showPopUpPersona: false
+            persons: persons,
+            showPopUpPersona: false,
+            addNewPerson: false
         });
     }
 
@@ -121,6 +132,20 @@ class Index extends Component {
             ...this.state,
             showPopUpPersona: showPopUpPersona
         })
+    };
+
+    updateContent = key => e => {
+        let contents = this.state.contents;
+        contents[key][e.target.name] = e.target.value;
+        this.setState({
+            ...this.state,
+            contents: contents
+        })
+    };
+
+    changeTextFile = async e => {
+      let file = await SarlaftFile.upload(e.target.files[0]);
+      console.log(file);
     };
 
     render() {
@@ -218,7 +243,7 @@ class Index extends Component {
                                                 <div className="col no-padding-right">
                                                     <div className="name form-group input-select"><label
                                                         htmlFor="name">Tipo de item</label>
-                                                        <select className="form-control" name="type" id="type" value={item.type}>
+                                                        <select className="form-control" name="type" id="type" value={item.type} onChange={this.updateContent(key)}>
                                                             <option value="0"></option>
                                                         </select>
                                                     </div>
@@ -226,13 +251,13 @@ class Index extends Component {
                                                 <div className="col no-padding-right">
                                                     <div className="name form-group "><label
                                                         htmlFor="name">Características</label>
-                                                        <input type="text" className="form-control" name="caracte" value={item.caracte}/>
+                                                        <input type="text" className="form-control" name="caracte" value={item.caracte} onChange={this.updateContent(key)}/>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
                                                     <div className="name form-group "><label
                                                         htmlFor="name">Valor</label>
-                                                        <input type="text" className="form-control" name="value" value={item.value}/>
+                                                        <input type="text" className="form-control" name="value" value={item.value} onChange={this.updateContent(key)}/>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
@@ -304,7 +329,7 @@ class Index extends Component {
                                                         <i className="userperson">&nbsp;</i>
                                                     </div>
                                                     <div className="col col-12 no-padding">
-                                                        <p>{item.first_name}</p>
+                                                        <p>{typeof item.first_name !== "undefined"?item.first_name:item.name}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -314,12 +339,14 @@ class Index extends Component {
                                 </div>
                             </div>
 
+                            {this.state.addNewPerson === true &&
                             <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
                                 <div className="more-items" onClick={this.togglePerson(-1,-1)}>
                                     <button type="button" className="more-btn">+</button>
                                     <p>Agregar persona</p>
                                 </div>
                             </div>
+                            }
 
                         </div>
 
