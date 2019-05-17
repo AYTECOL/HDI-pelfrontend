@@ -10,7 +10,6 @@ import Btns from '../forms/btncontinue/BtnContinue';
 import Risk from '../../../../services/AllRisks';
 
 import './Index.scss';
-import {withRouter} from "react-router-dom";
 import {saveInmuebleValue, typeInmueble} from "../../../../actions";
 import Loading from "../../../globals/loading/Loading";
 
@@ -19,7 +18,6 @@ class Index extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            step: parseInt(this.props.match.params.step),
             activecasa: 0,
             activeapartamento: 0,
             typeInmueble: 0,
@@ -44,7 +42,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        if (this.state.step === 2) Loading.toggle(true);
+        Loading.toggle(true);
     }
 
     async getRisks() {
@@ -76,7 +74,6 @@ class Index extends Component {
     };
 
     render() {
-        if (this.state.step !== 2) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form inmueble">
                 <div className="container">
@@ -134,4 +131,4 @@ class Index extends Component {
     }
 }
 
-export default withRouter(Index);
+export default Index;

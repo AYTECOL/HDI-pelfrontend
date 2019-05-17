@@ -7,19 +7,10 @@ import BtnContinue from '../forms/btncontinue/BtnContinue';
 import SecondForm from '../secondform/SecondForm';
 
 import './Index.scss';
-import {withRouter} from "react-router-dom";
 
 class Index extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            step: parseInt(this.props.match.params.step),
-        };
-    }
-
     render() {
-        if (this.state.step !== 1) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form">
                 <div className="container">
@@ -54,4 +45,4 @@ class Index extends Component {
 
 }
 
-export default withRouter(Index);
+export default Index;

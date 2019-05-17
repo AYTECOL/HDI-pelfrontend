@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {withRouter} from "react-router-dom";
+
 // Components
 import Submenu from '../../components/cotizaciones/submenu/Submenu';
 import Identificacion from '../../components/cotizaciones/identificacion/index/Index';
@@ -11,16 +13,17 @@ import Validaridentificacion
 class Cotizacion extends Component {
 
     render() {
+        let step = parseInt(this.props.match.params.step);
         return (
             <div className="cotizacion">
                 <Submenu/>
-                <Identificacion/>
-                <Inmueble/>
-                <CotizacionForm/>
+                {step === 1 && <Identificacion/> }
+                {step === 2 && <Inmueble/> }
+                {step === 3 && <CotizacionForm/> }
                 <Validaridentificacion/>
             </div>
         );
     }
 }
 
-export default Cotizacion;
+export default withRouter(Cotizacion);

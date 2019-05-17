@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './Index.scss';
-import {withRouter} from "react-router-dom";
 //Component
 import SendMail from "../popups/sendmail/SendMail";
 import Cards from "../cards/Cards";
@@ -14,17 +13,10 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            step: parseInt(this.props.match.params.step),
-        };
-    }
-
-    componentDidMount() {
-        if (this.state.step === 3) Loading.toggle(true);
+        Loading.toggle(true);
     }
 
     render() {
-        if (this.state.step !== 3) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form contizacion-form">
                 <div className="container">
@@ -73,4 +65,4 @@ class Index extends Component {
 
 }
 
-export default withRouter(Index);
+export default Index;

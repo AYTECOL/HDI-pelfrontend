@@ -31,7 +31,6 @@ class Index extends Component {
             hasAccident: false,
             hasExequias: false
         };
-        this.getData();
         this.togglePopUpDelete = this.togglePopUpDelete.bind(this);
         this.togglePopUpPersona = this.togglePopUpPersona.bind(this);
         this.updatePerson = this.updatePerson.bind(this);
@@ -50,6 +49,10 @@ class Index extends Component {
                 });
             }
         });
+    }
+
+    componentDidMount() {
+        this.getData();
     }
 
     async getData(){
@@ -171,7 +174,6 @@ class Index extends Component {
     }
 
     render() {
-        if (this.state.step !== 1) return <div className="hide">&nbsp;</div>;
         return (
             <form autoComplete="off" className="index-form emision">
                 <div className="container">
