@@ -37,7 +37,6 @@ class Helpers {
 
     static enabled(selector) {
         let el = document.querySelector(selector);
-        console.log(el);
         let className = "disabled";
         if (el != null) {
             if (el.className.indexOf(className) === -1) {
@@ -118,6 +117,10 @@ class Helpers {
             }
             return 0;
         });
+    }
+
+    static orderArrayNumeric(a, b){
+        return a - b;
     }
 
     static goToNotFound(){

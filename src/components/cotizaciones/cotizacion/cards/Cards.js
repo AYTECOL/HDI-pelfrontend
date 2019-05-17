@@ -87,9 +87,9 @@ class Cards extends Component {
                     Inmueble: inmueble,
                     InmuebleOk: true
                 });
-                setTimeout(function () {
+                setTimeout(() => {
                     this.getInspectionPolicy();
-                }.bind(this),500);
+                },500);
             }
         });
 

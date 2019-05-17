@@ -14,7 +14,6 @@ import Coberturas from '../../../cotizaciones/cotizacion/coberturas/Coberturas';
 import Asistencias from '../../../cotizaciones/cotizacion/asistencias/Asistencias';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
-import AllPlans from "../../../../services/AllPlans";
 import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
 
 class Index extends Component {
@@ -64,8 +63,6 @@ class Index extends Component {
         }
         store.dispatch(indexPlanSelected(0));
         store.dispatch(AllPlansCreator(plans));
-        console.log(plans);
-
 
 
         let persons = plan;
@@ -97,25 +94,24 @@ class Index extends Component {
             person[i]['fechadenacimiento'] = person[i]['birthdate'];
             person[i]['tipodetelefono'] = person[i]['phone_type'];
             person[i]['telefono'] = person[i]['phone'];
-            person[i]['email'] = person[i]['email'];
             person[i]['ciudad'] = person[i]['location'];
             person[i]['adresstype'] = person[i]['address_type'];
-            person[i]['address'] = person[i]['address'];
             person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
         }
 
-        console.log(person);
-
-
 
         let data = plan.more_info.Item;
-        data['initdate'] = data.start_policy_date;
-        data['utilizado'] = data.risk_use;
-        data['contents'] = data.goods_over_cost;
-        for (let i = 0; i < data['contents'].length; i++) {
-            for(let j in data.contents[i]){
-                if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+        if( typeof data !== "undefined"){
+            if(typeof data.start_policy_date !== "undefined" ) data['initdate'] = data.start_policy_date;
+            if(typeof data.risk_use !== "undefined" ) data['utilizado'] = data.risk_use;
+            if(typeof data.goods_over_cost !== "undefined" ) data['contents'] = data.goods_over_cost;
+            for (let i = 0; i < data['contents'].length; i++) {
+                for(let j in data.contents[i]){
+                    if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+                }
             }
+        }else{
+            data = [];
         }
 
         this.setState({

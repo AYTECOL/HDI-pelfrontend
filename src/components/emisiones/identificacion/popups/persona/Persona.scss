@@ -29,10 +29,24 @@
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 40px;
+        .col{
+          padding-top: 10px !important;
+          text-align: center;
+        }
+        &.type-person-class-5{
+          .col{
+            width: 50%;
+            flex: 0 0 50%;
+            max-width: 50%;
+            text-align: left;
+          }
+        }
 
         input, label {
           vertical-align: middle;
           display: inline-block;
+        }
+        label{
         }
         &.error{
           label{

@@ -9,8 +9,13 @@ import AutocompleteCities from "../../../../cotizaciones/identificacion/forms/au
 import MomentJs from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import SarlaftFile from "../../../../../services/SarlaftFile";
+import CheckBoxes from './Checkboxes';
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 export default class Persona extends Component {
+
+    _isMounted = false;
 
     constructor(props) {
         super(props);
@@ -42,7 +47,7 @@ export default class Persona extends Component {
                 "businessname",
                 "fechadecontitucion",
                 "email",
-                "city",
+                "ciudad",
                 "sarlfaltActive",
                 "adresstype",
                 "address",
@@ -81,15 +86,28 @@ export default class Persona extends Component {
         }
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+        setTimeout(() => {
+            if( this._isMounted ) this.validateAll(null , false, false);
+        },600);
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     changeTextFile = e => {
         let name = "";
         let status = true;
         let errorFile = false;
+        let person = this.state.person;
         if (typeof e.target.files[0] !== "undefined") {
             let formats = ["image/png", "image/jpeg", "image/jpg", "image/gif", "application/pdf"];
             if (formats.indexOf(e.target.files[0].type) !== -1) {
                 name = e.target.files[0].name;
                 status = false;
+                person.sarlaft = e.target.files[0];
             } else {
                 errorFile = true;
             }
@@ -98,69 +116,48 @@ export default class Persona extends Component {
             ...this.state,
             textFile: name,
             errorFile: errorFile,
-            showDefaultTextFile: status
+            showDefaultTextFile: status,
+            person: person,
+            sarlfalt_url: undefined
         });
-        this.validateItem('sarlaft');
+        setTimeout(()=>{
+            this.validateAll('sarlaft');
+        },250);
     };
 
     generoChange = index => () => {
         if (this.state.person.generoDisabled !== true) {
-            let newPerson = this.state.person;
-            newPerson['genero'] = index;
-            this.setState({
-                ...this.state,
-                genero: index,
-                person: newPerson,
+            this.changeValue({
+                target: {
+                    name: 'genero',
+                    value: index
+                }
             });
-            this.validateItem('genero');
         }
     };
 
-    changeRole = role => e => {
-        let newPerson = this.state.person;
-        if (typeof newPerson['role'] === "undefined") newPerson['role'] = [];
-        let roles = newPerson['role'];
-        if (roles === "") roles = [];
-        if (roles.indexOf(role) !== -1) {
-            let newRoles = [];
-            for (let i = 0; i < roles.length; i++) if (role !== roles[i]) newRoles.push(roles[i]);
-            roles = newRoles;
-        } else {
-            roles.push(role);
-        }
-        newPerson['role'] = roles;
-        this.setState({
-            ...this.state,
-            person: newPerson,
+    changeDates = e => {
+        this.changeValue({
+            target: {
+                name: (this.state.typePerson===3)?'fechadecontitucion':'fechadenacimiento',
+                value: MomentJs(e).format("YYYY-MM-DD")
+            }
         });
-        this.validateItem('role');
     };
 
     changeValue = e => {
-        if (typeof e.target === "undefined") {
-            window.moment = MomentJs;
-            window.da = e;
-            e = {
-                target: {
-                    name: (this.state.typePerson===3)?'fechadecontitucion':'fechadenacimiento',
-                    value: MomentJs(e).format("YYYY-MM-DD")
-                }
-            }
-        }
         let v = e.target.value;
         let n = e.target.name;
         let nit = this.state.nit;
         let newPerson = this.state.person;
         newPerson[n] = v;
-        if (n === 'code') {
-            nit = parseInt(v) === 37;
-        }
+        if (n === 'code') nit = parseInt(v) === 37;
         this.setState({
             ...this.state,
             person: newPerson,
             nit: nit
         });
-        this.validateItem(n);
+        this.validateAll(n);
     };
 
     validateDoc = async e => {
@@ -259,57 +256,40 @@ export default class Persona extends Component {
         });
     };
 
-    validateItem(name) {
-        let fields = document.querySelectorAll(".modal-content input, .modal-content select");
-        for (let i = 0; i < fields.length; i++) {
-            if (name === "fechadenacimiento") {
-                if (this.state.person.fechadenacimiento === "") {
-                    document.querySelector(".fechadenacimiento").className += " error";
-                } else {
-                    document.querySelector(".fechadenacimiento").className = document.querySelector(".fechadenacimiento").className.replace(' error', '');
-                }
-            } else if (name === "genero") {
-                if (this.state.person.genero === "") {
-                    document.querySelector(".generofield").className += " error";
-                } else {
-                    document.querySelector(".generofield").className = document.querySelector(".generofield").className.replace(' error', '');
-                }
-            } else {
-                if (fields[i].name === name) {
-                    if (fields[i].value !== "") {
-                        fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
-                    } else {
-                        fields[i].parentElement.className += " error";
-                    }
-                }
+    saveFile = async () =>{
+        if( this.state.typePerson === 1 && typeof this.state.person.sarlfalt_url === "undefined" ){
+            let person = this.state.person;
+            let file = await SarlaftFile.upload("Sarlaft",person.sarlaft);
+            if( typeof file['location'] !== "undefined" ){
+                person.sarlaft = file['location'];
+                this.setState({
+                    ...this.state,
+                    person: person
+                });
             }
         }
-        if (name === 'role') {
-            if (this.state.person.role.length === 0) {
-                document.querySelector(".items-checkboxes").className += " error";
-            } else {
-                document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
-            }
-        }
-        this.validateAll(false);
-    }
+    };
 
-    validateAll(printErrors) {
+    async validateAll(name, printErrors, saveData) {
         if (typeof this.props.updatePerson !== "undefined") {
-            printErrors = typeof printErrors === "undefined";
+            if(typeof printErrors === "undefined") printErrors = false;
             let errors = [];
             let fields = document.querySelectorAll(".modal-content input, .modal-content select");
             for (let i = 0; i < fields.length; i++) {
                 fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
                 if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox') {
                     errors.push(fields[i].name);
-                    if( printErrors ) fields[i].parentElement.className += " error";
+                    if( printErrors || fields[i].name === name ) fields[i].parentElement.className += " error";
                 }
+            }
+            if( typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" ){
+                errors.splice(errors.indexOf('sarlfalt'), 1);
+                Helpers.removeClass('.sarlaft.error','error');
             }
             if( this.state.typePerson === 1 ){
                 if (this.state.person.genero === "") {
                     errors.push('genero');
-                    if( printErrors ) document.querySelector(".generofield").className += " error";
+                    if( printErrors || 'genero' === name ) document.querySelector(".generofield").className += " error";
                 } else {
                     document.querySelector(".generofield").className = document.querySelector(".generofield").className.replace(' error', '');
                 }
@@ -317,7 +297,7 @@ export default class Persona extends Component {
             if( this.state.typePerson === 1 || this.state.typePerson === 2 ) {
                 if (this.state.person.fechadenacimiento === "") {
                     errors.push('fechadenacimiento');
-                    if (printErrors) document.querySelector(".fechadenacimiento").className += " error";
+                    if (printErrors || 'fechadenacimiento' === name) document.querySelector(".fechadenacimiento").className += " error";
                 } else {
                     document.querySelector(".fechadenacimiento").className = document.querySelector(".fechadenacimiento").className.replace(' error', '');
                 }
@@ -325,7 +305,7 @@ export default class Persona extends Component {
             if( this.state.typePerson === 3 ){
                 if (this.state.person.fechadecontitucion === "") {
                     errors.push('fechadecontitucion');
-                    if( printErrors ) document.querySelector(".fechadecontitucion").className += " error";
+                    if( printErrors || 'fechadecontitucion' === name ) document.querySelector(".fechadecontitucion").className += " error";
                 } else {
                     document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
                 }
@@ -333,13 +313,15 @@ export default class Persona extends Component {
             if( this.state.typePerson !== 4 ) {
                 if (this.state.person.role.length === 0) {
                     errors.push('role');
-                    if( printErrors ) document.querySelector(".items-checkboxes").className += " error";
+                    if( printErrors || 'role' === name ) document.querySelector(".items-checkboxes").className += " error";
                 } else {
                     document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
                 }
             }
             let ok = this.state.total - errors.length;
-            if (errors.length === 0 && printErrors) {
+            if (errors.length === 0 && saveData) {
+                await this.saveFile();
+                if( typeof this.state.person.code === "undefined" ) this.state.person.code = this.state.typePerson !== 3 ? '36' : '37';
                 this.props.updatePerson(this.state.person);
             } else {
                 this.setState({
@@ -375,73 +357,13 @@ export default class Persona extends Component {
                             </div>
                             <div className="modal-body">
                                 <div className="content">
-                                    <div className="row items-checkboxes justify-content-center">
-                                        {this.state.typePerson === 1 ? (
-                                            <React.Fragment>
-                                                <div className="col col-sm-12 col-md-4 col-lg-4">
-                                                    <input type="checkbox" name="asegurado" id="asegurado" value="1"
-                                                           checked={this.state.person['role'].indexOf(2) !== -1}
-                                                           onChange={this.changeRole(2)}
-                                                           className="form-control"/>
-                                                    <label htmlFor="asegurado">Asegurado</label>
-                                                </div>
-                                                <div
-                                                    className={"col col-sm-12 col-md-4 col-lg-4 " + (this.state.exitsTomador ? 'hide' : '')}>
-                                                    <input type="checkbox" name="tomado" id="tomado" value="2"
-                                                           checked={this.state.person['role'].indexOf(1) !== -1}
-                                                           onChange={this.changeRole(1)}
-                                                           disabled={this.state.exitsTomador}
-                                                           className={"form-control " + (this.state.exitsTomador ? 'disabled' : '')}/>
-                                                    <label htmlFor="tomado">Tomador</label>
-                                                </div>
-                                                <div className="col col-sm-12 col-md-4 col-lg-4">
-                                                    <input type="checkbox" name="beneficiario" id="beneficiario"
-                                                           value="3"
-                                                           checked={this.state.person['role'].indexOf(3) !== -1}
-                                                           onChange={this.changeRole(3)}
-                                                           className="form-control"/>
-                                                    <label htmlFor="beneficiario">Beneficiario</label>
-                                                </div>
-                                            </React.Fragment>
-                                        ) : (
-                                            <React.Fragment>
-                                                {this.state.typePerson === 2 ? (
-                                                    <React.Fragment>
-                                                        <div
-                                                            className={"col col-sm-12 col-md-6 col-lg-6 " + (this.props.hasExequias === true ? 'show' : 'hide')}>
-                                                            <input type="checkbox" name="exequias" id="exequias"
-                                                                   value="1"
-                                                                   checked={this.state.person['role'].indexOf(5) !== -1}
-                                                                   onChange={this.changeRole(5)}
-                                                                   className="form-control"/>
-                                                            <label htmlFor="exequias">Exequias</label>
-                                                        </div>
-                                                        <div
-                                                            className={"col col-sm-12 col-md-6 col-lg-6 " + (this.props.hasAccident === true ? 'show' : 'hide')}>
-                                                            <input type="checkbox" name="accidentes" id="accidentes"
-                                                                   value="3"
-                                                                   checked={this.state.person['role'].indexOf(6) !== -1}
-                                                                   onChange={this.changeRole(6)}
-                                                                   className="form-control"/>
-                                                            <label htmlFor="accidentes">Accidentes personales</label>
-                                                        </div>
-                                                    </React.Fragment>
-                                                ) : (
-                                                    <React.Fragment>
-                                                        {this.state.typePerson !== 4 &&
-                                                        <div className="col col-sm-12 col-md-6 col-lg-6">
-                                                            <input type="checkbox" name="oneroso" id="oneroso" value="1"
-                                                                   checked={this.state.person['role'].indexOf(4) !== -1}
-                                                                   onChange={this.changeRole(4)}
-                                                                   className="form-control"/>
-                                                            <label htmlFor="oneroso">Beneficiario oneroso</label>
-                                                        </div>
-                                                        }
-                                                    </React.Fragment>
-                                                )}
-                                            </React.Fragment>
-                                        )}
-                                    </div>
+
+                                    <CheckBoxes person={this.state.person}
+                                                changeValue={this.changeValue}
+                                                typePerson={this.props.typePerson}
+                                                exitsTomador={this.state.exitsTomador}
+                                                hasAccident={this.props.hasAccident}
+                                                hasExequias={this.props.hasExequias} />
 
                                     {this.state.typePerson !== 4 &&
                                     <div className="row fields-row">
@@ -580,7 +502,9 @@ export default class Persona extends Component {
                                                 htmlFor="fechadenacimiento">Fecha de nacimiento</label>
                                                 <DatePicker name="fechadenacimiento"
                                                             value={this.state.person.fechadenacimiento}
-                                                            selected={this.state.startDate} onChange={this.changeValue}
+                                                            selected={this.state.startDate} onChange={this.changeDates}
+                                                            showMonthDropdown
+                                                            showYearDropdown
                                                             disabled={this.state.person.fechadenacimientoDisabled}
                                                             className={"form-control " + (this.state.person.fechadenacimientoDisabled ? 'disabled' : '')}/>
                                                 <small className="form-text only-errors">Falta información requerida
@@ -649,7 +573,7 @@ export default class Persona extends Component {
                                                 <label htmlFor="businessname">Fecha de constitución</label>
                                                 <DatePicker name="fechadecontitucion"
                                                             value={this.state.person.fechadecontitucion}
-                                                            selected={this.state.fechadecontitucion} onChange={this.changeValue}
+                                                            selected={this.state.fechadecontitucion} onChange={this.changeDates}
                                                             disabled={this.state.person.fechadecontitucionDisabled}
                                                             className={"form-control " + (this.state.person.fechadecontitucionDisabled ? 'disabled' : '')}/>
                                                 <small className="form-text only-errors">Falta información requerida
@@ -680,7 +604,7 @@ export default class Persona extends Component {
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                                             <div className="pisonumero form-group">
                                                 <AutocompleteCities disabled={this.state.person.ciudadDisabled}
-                                                                    label={"Ciudad o municipio"} name="city"
+                                                                    label={"Ciudad o municipio"} name="ciudad"
                                                                     value={this.state.person.ciudad}
                                                                     onChange={this.changeValue} hideTitle={false}/>
                                             </div>
@@ -721,7 +645,6 @@ export default class Persona extends Component {
                                         </div>
                                     </div>
                                     }
-
                                     {(this.state.typePerson === 1 && this.state.person.sarlfaltActive === false) &&
                                     <div
                                         className={"row sarlaft"}>
@@ -729,14 +652,19 @@ export default class Persona extends Component {
                                             <div className="sarlaft form-group">
                                                 <label htmlFor="address">Es necesario el sarlaft</label>
                                                 <span>Adjunta el Sarlaft diligenciado</span>
-                                                <input type="file" className="form-control" name="sarlaft"
-                                                       onChange={this.changeTextFile}/>
+                                                <input type="file" className="form-control" name="sarlaft" onChange={this.changeTextFile}/>
                                                 {this.state.showDefaultTextFile ? (
                                                     <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                                 ) : (
                                                     <p>{this.state.textFile}</p>
                                                 )}
                                                 <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
+                                                { typeof this.state.person.sarlfalt_url !== "undefined" &&
+                                                <React.Fragment>
+                                                    <br/>
+                                                    <span><a href={this.state.person.sarlfalt_url}>{this.state.person.sarlfalt_url.split('/').slice(-1)}</a></span>
+                                                </React.Fragment>
+                                                }
                                                 <br/>
                                                 <span
                                                     className={"error-file " + (this.state.errorFile === true ? 'show' : 'hide')}>Formato no permitido</span>
@@ -758,7 +686,7 @@ export default class Persona extends Component {
 
                                 <div className="buttons">
                                     <button className="btn btn-primary" type="button" onClick={() => {
-                                        this.validateAll()
+                                        this.validateAll(null , true, true)
                                     }}>Continuar
                                     </button>
                                 </div>

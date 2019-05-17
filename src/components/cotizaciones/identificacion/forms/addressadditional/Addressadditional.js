@@ -36,7 +36,6 @@ class Addressadditional extends Component {
     };
 
     render() {
-        console.log(this.state.error);
         return (
             <div className={"form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="addressadditional">Ingresa información adicional (opcional)</label>
