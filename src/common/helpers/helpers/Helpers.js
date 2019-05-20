@@ -162,6 +162,13 @@ class Helpers {
         }
     };
 
+    static validateFile(file){
+        if (typeof file !== "undefined") {
+            let formats = ["image/png", "image/jpeg", "image/jpg", "image/gif", "application/pdf"];
+            return formats.indexOf(file.type) !== -1;
+        }
+    }
+
     static calcularDigitoVerificacion(myNit) {
         // Se limpia el Nit
         myNit = myNit.toString();
