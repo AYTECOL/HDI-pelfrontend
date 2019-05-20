@@ -15,6 +15,9 @@ import Asistencias from '../../../cotizaciones/cotizacion/asistencias/Asistencia
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
+import AllPropertiesZones from "../../../../services/AllPropertiesZones";
+import AllBuildMaterial from "../../../../services/AllBuildMaterial";
+import AllBuildYears from "../../../../services/AllBuildYears";
 
 class Index extends Component {
 
@@ -26,6 +29,9 @@ class Index extends Component {
             persons: [],
             contents: [],
             itemSelected: null,
+            inmueble: {
+                identificacion: {}
+            },
             typePerson: 1
         };
         store.subscribe(async () => {
@@ -102,27 +108,58 @@ class Index extends Component {
             person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
         }
 
-
         let data = plan.more_info.Item;
         if( typeof data !== "undefined"){
             if(typeof data.start_policy_date !== "undefined" ) data['initdate'] = data.start_policy_date;
             if(typeof data.risk_use !== "undefined" ) data['utilizado'] = data.risk_use;
             if(typeof data.goods_over_cost !== "undefined" ) data['contents'] = data.goods_over_cost;
-            for (let i = 0; i < data['contents'].length; i++) {
-                for(let j in data.contents[i]){
-                    if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
-                }
-            }
+            for (let i = 0; i < data['contents'].length; i++) for(let j in data.contents[i]) if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
         }else{
             data = [];
         }
+
+        let inmueble = plan.risk_valoration_info.Item;
+        let zones = [];
+        let materials = [];
+        let buildYears = [];
+        if( typeof inmueble !== "undefined" ) {
+            zones = await AllPropertiesZones.get();
+            materials = await AllBuildMaterial.get();
+            buildYears = await AllBuildYears.get();
+            inmueble.identificacion = store.getState().cotizacion.identification;
+            for (let i = 0; i < zones.length; i++) if( parseInt(zones[i].zoneCode) === inmueble.location_zone ) inmueble.location_zone = zones[i].answer;
+            for (let i = 0; i < materials.length; i++) {
+                if (parseInt(materials[i].buildMaterialCode) === parseInt(inmueble.build_material)) inmueble.build_material = materials[i].answer;
+            }
+            for (let i = 0; i < buildYears.length; i++) {
+                if( parseInt(buildYears[i].buildYearCode) === parseInt(inmueble.build_year) ) inmueble.build_year = buildYears[i].answer;
+            }
+            let seguridad = [
+                'Alarma monitoreada',
+                'Puertas con control domótica',
+                'Caja fuerte',
+                'Puerta de seguridad blindada',
+                'Circuito cerrado de televisión',
+                'Vigilancia permanente',
+                'Regulador de voltaje',
+            ];
+            let newSecurity = [];
+            for (let i = 0; i < inmueble.seguridad.length; i++) {
+                if (inmueble.segurida[i] === 1){
+                    // newSecurity[]
+                }
+            }
+        }
+        console.log(inmueble);
 
         this.setState({
             ...this.state,
             plans: plans,
             persons: person,
-            contents: data['contents']
+            inmueble: inmueble,
+            contents: data['contents'],
         });
+        Loading.toggle(false);
     }
 
     togglePopUpPersona = (index, type) => e => {
@@ -158,34 +195,40 @@ class Index extends Component {
                         <div className="col subwrapper">
                             <div className="row">
                                 <div className="col col-sm-12 col-md-5 first-group">
-                                    <div className="icon apartamento">&nbsp;</div>
-                                    <h4>Calle 134 # 23b 34 piso 3 torre b</h4>
-                                    <p>Apartamento / Bogotá </p>
-                                    <span>$ 270.000.000</span>
+                                    {this.state.inmueble.risk_type === 2 ? (
+                                        <div className="icon apartamento">&nbsp;</div>
+                                    ):(
+                                        <div className="icon home">&nbsp;</div>
+                                    )}
+                                    <h4>{this.state.inmueble.identificacion.address}</h4>
+                                    <p>
+                                        {this.state.inmueble.risk_type === 2 ? ("Apartamento "):("Casa ")}
+                                        / Bogotá </p>
+                                    <span>{this.state.inmueble.inmueble_asegudadovalor}</span>
                                 </div>
                                 <div className="col col-sm-12 col-md-7 no-margin second-group">
                                     <div className="row">
                                         <div className="col col-sm-12 col-md-3 gray-box first">
                                             <p><b>Contenidos</b></p>
-                                            <p className="big-number">$ 20.000.000</p>
+                                            <p className="big-number">{this.state.inmueble.contenido_asegudado === 1 ? (this.state.inmueble.contenido_asegudado_valor) : ("Ningúno")}</p>
                                         </div>
                                         <div className="col col-sm-12 col-md-9 no-padding">
                                             <div className="row">
                                                 <div className="col col-sm-12 col-md-4">
                                                     <p><b>Número de pisos</b></p>
-                                                    <p>16</p>
+                                                    <p>{this.state.inmueble.floors_number}</p>
                                                 </div>
                                                 <div className="col col-sm-12 col-md-4">
                                                     <p><b>Ubicado en</b></p>
-                                                    <p>Zona urbana</p>
+                                                    <p>Zona {this.state.inmueble.location_zone}</p>
                                                 </div>
                                                 <div className="col col-sm-12 col-md-4">
                                                     <p><b>Año</b></p>
-                                                    <p>2000-2018</p>
+                                                    <p>{this.state.inmueble.build_year}</p>
                                                 </div>
                                                 <div className="col col-sm-12 col-md-4">
                                                     <p><b>Ubicado en el piso</b></p>
-                                                    <p>9</p>
+                                                    <p>{this.state.inmueble.location_floor}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -196,11 +239,11 @@ class Index extends Component {
                                             <div className="row">
                                                 <div className="col col-12 gray-box">
                                                     <p><b>Obras de arte</b></p>
-                                                    <p className="big-number">$ 20.000.000</p>
+                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? (this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
                                                 </div>
                                                 <div className="col col-12 gray-box">
                                                     <p><b>Joyas</b></p>
-                                                    <p className="big-number">$ 10.000.000</p>
+                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? (this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,8 +259,7 @@ class Index extends Component {
                                                 </div>
                                                 <div className="col col-sm-12 col-md-4">
                                                     <p><b>Construido</b></p>
-                                                    <p>Ladrillo y
-                                                        cemento</p>
+                                                    <p>{this.state.inmueble.build_material}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -248,12 +290,16 @@ class Index extends Component {
                                     </div>
                                     <div className="wrapper-box">
                                         <div className="wrapper-content">
-
                                             {this.state.contents.map((item, key) =>
                                                 <div className="row" key={key}>
                                                     <div className="col col-sm-6 col-md-3">
                                                         <p><span>Tipo de contenido</span></p>
-                                                        <p>{item.type}</p>
+                                                        <p>
+                                                            {parseInt(item.type) === 1 && 'Contenidos'}
+                                                            {parseInt(item.type) === 2 && 'Obras de Arte'}
+                                                            {parseInt(item.type) === 3 && 'Joyas'}
+                                                            {parseInt(item.type) === 4 && 'Celulares'}
+                                                        </p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
                                                         <p><span>IMEI y características</span></p>
@@ -264,11 +310,10 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <a className="btn btn-download" href={item.urlfile}>Documento.pdf</a>
+                                                        <a className="btn btn-download" target="_blank" href={item.textFile}>Documento.pdf</a>
                                                     </div>
                                                 </div>
                                             )}
-
                                         </div>
                                     </div>
                                 </div>

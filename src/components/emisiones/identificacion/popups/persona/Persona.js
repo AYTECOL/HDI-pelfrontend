@@ -9,7 +9,7 @@ import AutocompleteCities from "../../../../cotizaciones/identificacion/forms/au
 import MomentJs from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import SarlaftFile from "../../../../../services/SarlaftFile";
+import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
@@ -257,7 +257,7 @@ export default class Persona extends Component {
     saveFile = async () =>{
         if( this.state.typePerson === 1 && typeof this.state.person.sarlfalt_url === "undefined" ){
             let person = this.state.person;
-            let file = await SarlaftFile.upload("Sarlaft",person.sarlaft);
+            let file = await UploadFile.upload("Sarlaft",person.sarlaft);
             if( typeof file['location'] !== "undefined" ){
                 person.sarlaft = file['location'];
                 this.setState({
