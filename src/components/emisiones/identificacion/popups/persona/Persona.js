@@ -34,6 +34,7 @@ export default class Persona extends Component {
             person: {},
             fields: [
                 "role",
+                "code",
                 "value",
                 "name",
                 "name",
