@@ -13,6 +13,7 @@ import PopUpPersona from '../../identificacion/popups/persona/Persona';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
+import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 
 class Index extends Component {
 
@@ -35,6 +36,7 @@ class Index extends Component {
 
     componentDidMount() {
         this.getData();
+        Helpers.fieldNumeric();
     }
 
     async getData(){
@@ -168,7 +170,11 @@ class Index extends Component {
 
     updateContent = key => e => {
         let contents = this.state.contents;
-        contents[key][e.target.name] = e.target.value;
+        if( e.target.name === "value" ){
+            contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
+        } else {
+            contents[key][e.target.name] = e.target.value;
+        }
         this.setState({
             ...this.state,
             contents: contents
@@ -236,8 +242,8 @@ class Index extends Component {
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="form-group "><label
                                     htmlFor="area">Metros construidos de vivienda (Opcional)</label>
-                                    <input type="text" className="form-control" name="area" value={this.state.area} onChange={this.changeValue}
-                                           placeholder={"Ingresa el tamañó de la vivienda"}/>
+                                    <input type="text" className="form-control number" name="area" value={this.state.area} onChange={this.changeValue}
+                                           placeholder={"Ingresa el tamaño de la vivienda"}/>
                                 </div>
                             </div>
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
