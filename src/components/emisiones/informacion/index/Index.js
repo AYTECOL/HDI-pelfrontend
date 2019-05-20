@@ -12,7 +12,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import PopUpPersona from '../../identificacion/popups/persona/Persona';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
-import SarlaftFile from "../../../../services/SarlaftFile";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class Index extends Component {
@@ -56,8 +55,15 @@ class Index extends Component {
                 if(typeof data.risk_use !== "undefined" ) data['utilizado'] = data.risk_use;
                 if(typeof data.goods_over_cost !== "undefined" ) data['contents'] = data.goods_over_cost;
                 for (let i = 0; i < data['contents'].length; i++) {
-                    for(let j in data.contents[i]){
-                        if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+                    for(let j in data.contents[i]) if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+                }
+                if( typeof data.visit_person !== "undefined" && typeof data.visit_person.active !== "undefined" ){
+                    data['contactperson'] = data.visit_person.active;
+                    if( typeof data.visit_person.phone !== "undefined" && data.visit_person.phone !== "" ) {
+                        persons.push({
+                            name: data.visit_person.name,
+                            telefono: data.visit_person.phone,
+                        });
                     }
                 }
             }
@@ -73,7 +79,6 @@ class Index extends Component {
                 if (inmueble.inmueble_asegudado_joyas === 1) joyas = true;
                 if (inmueble.inmueble_asegudado_telefonos === 1) celulares = true;
             }
-            console.log(inmueble);
         }
         this.setState({
             ...this.state,
@@ -114,7 +119,8 @@ class Index extends Component {
             type: '',
             caracte: '',
             value: '',
-            urlfile: ''
+            urlfile: '',
+            showDefaultTextFile: true,
         });
         this.setState({
             ...this.state,
@@ -171,28 +177,37 @@ class Index extends Component {
 
     changeTextFile = key => async e => {
         let validFile = Helpers.validateFile(e.target.files[0]);
-        let doc = e.target.files[0];
+        let doc = null;
         let showDefaultTextFile = true;
-        let textFile = e.target.files[0].name;
+        let textFile = '';
         let errorFile = false;
-
+        let uploaded = false;
         if (validFile) {
-
+            showDefaultTextFile = false;
+            doc = e.target.files[0];
+            textFile = e.target.files[0].name;
         }else{
-
+            doc = null;
+            errorFile = true;
         }
-
         let contents = this.state.contents;
-        contents[key][e.target.name] = e.target.value;
         contents[key]['doc'] = doc;
         contents[key]['showDefaultTextFile'] = showDefaultTextFile;
         contents[key]['textFile'] = textFile;
         contents[key]['errorFile'] = errorFile;
+        contents[key]['uploaded'] = uploaded;
+
+        console.log(contents);
         this.setState({
             ...this.state,
             contents: contents
         });
     };
+
+    static showName(name){
+        let s = name.split("/");
+        return s[s.length-1];
+    }
 
     render() {
         return (
@@ -320,12 +335,12 @@ class Index extends Component {
                                                     <div className="row sarlaft no-gutters">
                                                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                                             <div className="sarlaft form-group">
-                                                                <input type="file" className="form-control" name="doc" value={item.doc}
-                                                                       onChange={this.changeTextFile}/>
+                                                                <input type="file" className="form-control" name="doc"
+                                                                       onChange={this.changeTextFile(key)}/>
                                                                 {item.showDefaultTextFile ? (
                                                                     <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                                                 ) : (
-                                                                    <p>{item.textFile}</p>
+                                                                    <p>{Index.showName(item.textFile)}</p>
                                                                 )}
                                                                 <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
                                                                 <br/>
