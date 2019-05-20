@@ -102,15 +102,13 @@ export default class Persona extends Component {
         let status = true;
         let errorFile = false;
         let person = this.state.person;
-        if (typeof e.target.files[0] !== "undefined") {
-            let formats = ["image/png", "image/jpeg", "image/jpg", "image/gif", "application/pdf"];
-            if (formats.indexOf(e.target.files[0].type) !== -1) {
-                name = e.target.files[0].name;
-                status = false;
-                person.sarlaft = e.target.files[0];
-            } else {
-                errorFile = true;
-            }
+        let validFile = Helpers.validateFile(e.target.files[0]);
+        if (validFile){
+            name = e.target.files[0].name;
+            status = false;
+            person.sarlaft = e.target.files[0];
+        } else {
+            errorFile = true;
         }
         this.setState({
             ...this.state,

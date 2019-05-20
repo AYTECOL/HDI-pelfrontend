@@ -13,6 +13,7 @@ import PopUpPersona from '../../identificacion/popups/persona/Persona';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import SarlaftFile from "../../../../services/SarlaftFile";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class Index extends Component {
 
@@ -24,6 +25,7 @@ class Index extends Component {
             initdate: '',
             persons: [],
             contents: [],
+            inmueble: {},
             area: '',
             addNewPerson: true,
             itemSelected: null,
@@ -39,13 +41,15 @@ class Index extends Component {
     async getData(){
         Loading.toggle(true);
         let data = await QuoteIussedById.get(this.props.match.params.id);
-        if (typeof data.more_info.Item !== "undefined"){
+        let inmueble = data.risk_valoration_info.Item;
+        let persons = this.state.persons;
+        if(typeof data.quote_iussed_info.Item !== "undefined"){
             let items = data.quote_iussed_info.Item;
-            let person = [];
-            person.push(items.taker);
-            for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
-            for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
-
+            persons.push(items.taker);
+            persons = persons.concat(items.insured);
+            persons = persons.concat(items.benefist);
+        }
+        if (typeof data.more_info.Item !== "undefined"){
             data = data.more_info.Item;
             if( typeof data !== "undefined") {
                 if(typeof data.start_policy_date !== "undefined" ) data['initdate'] = data.start_policy_date;
@@ -57,12 +61,31 @@ class Index extends Component {
                     }
                 }
             }
-            this.setState({
-                ...this.state,
-                ...data,
-                persons: person
-            });
         }
+        let contenidos = false;
+        let obras = false;
+        let joyas = false;
+        let celulares = false;
+        if (typeof inmueble !== "undefined") {
+            if( inmueble.contenido_asegudado === 1 ) {
+                contenidos = true;
+                if (inmueble.inmueble_asegudado_obras === 1) obras = true;
+                if (inmueble.inmueble_asegudado_joyas === 1) joyas = true;
+                if (inmueble.inmueble_asegudado_telefonos === 1) celulares = true;
+            }
+            console.log(inmueble);
+        }
+        this.setState({
+            ...this.state,
+            ...data,
+            inmueble: inmueble,
+            persons: persons,
+            contenidos: contenidos,
+            obras: obras,
+            joyas: joyas,
+            celulares: celulares,
+        });
+        Loading.toggle(false);
     }
 
     selectItems = (name, value) => () => {
@@ -100,16 +123,16 @@ class Index extends Component {
         });
     };
 
-    changeValue = e => {
-        if (typeof e.target === "undefined"){
-            e = {
-                target: {
-                    name: 'initdate',
-                    // value: MomentJs(e).format("YYYY-MM-DD")
-                    value: MomentJs(e).format("dddd, MMMM Do YYYY")
-                }
+    changeDates = e => {
+        this.changeValue({
+            target: {
+                name: 'initdate',
+                value: MomentJs(e).format("dddd, MMMM Do YYYY")
             }
-        }
+        });
+    };
+
+    changeValue = e => {
         let v = e.target.value;
         let n = e.target.name;
         this.setState({
@@ -146,8 +169,29 @@ class Index extends Component {
         })
     };
 
-    changeTextFile = async e => {
-      await SarlaftFile.upload(e.target.files[0]);
+    changeTextFile = key => async e => {
+        let validFile = Helpers.validateFile(e.target.files[0]);
+        let doc = e.target.files[0];
+        let showDefaultTextFile = true;
+        let textFile = e.target.files[0].name;
+        let errorFile = false;
+
+        if (validFile) {
+
+        }else{
+
+        }
+
+        let contents = this.state.contents;
+        contents[key][e.target.name] = e.target.value;
+        contents[key]['doc'] = doc;
+        contents[key]['showDefaultTextFile'] = showDefaultTextFile;
+        contents[key]['textFile'] = textFile;
+        contents[key]['errorFile'] = errorFile;
+        this.setState({
+            ...this.state,
+            contents: contents
+        });
     };
 
     render() {
@@ -169,7 +213,7 @@ class Index extends Component {
                                                 minDate={new Date()}
                                                 name="initdate"
                                                 value={this.state.initdate}
-                                                onChange={this.changeValue}
+                                                onChange={this.changeDates}
                                                 className={"form-control pickerDate"}
                                                 placeholderText={"Selecciona la fecha de inicio de vigencia"} />
                                 </div>
@@ -223,6 +267,7 @@ class Index extends Component {
                             </div>
                         </div>
 
+                        {this.state.contenidos === true &&
                         <div className="row row-full justify-content-center box-blue-full">
                             <div className="col col-sm-12 col-md-8 col-lg-8 text-center">
                                 <h4>Relaciona los bienes individuales que superen los siguientes valores</h4>
@@ -251,7 +296,11 @@ class Index extends Component {
                                                     <div className="name form-group input-select"><label
                                                         htmlFor="name">Tipo de item</label>
                                                         <select className="form-control" name="type" id="type" value={item.type} onChange={this.updateContent(key)}>
-                                                            <option value="0"></option>
+                                                            <option value="0"> </option>
+                                                            <option value="1">Contenidos</option>
+                                                            { this.state.obras === true && <option value="2">Obras de Arte</option>}
+                                                            { this.state.joyas === true && <option value="3">Joyas</option>}
+                                                            { this.state.celulares === true && <option value="5">Celulares</option>}
                                                         </select>
                                                     </div>
                                                 </div>
@@ -271,16 +320,16 @@ class Index extends Component {
                                                     <div className="row sarlaft no-gutters">
                                                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                                             <div className="sarlaft form-group">
-                                                                <input type="file" className="form-control" name="sarlaft" value={item.urlfile}
+                                                                <input type="file" className="form-control" name="doc" value={item.doc}
                                                                        onChange={this.changeTextFile}/>
-                                                                {this.state.showDefaultTextFile ? (
+                                                                {item.showDefaultTextFile ? (
                                                                     <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                                                 ) : (
-                                                                    <p>{this.state.textFile}</p>
+                                                                    <p>{item.textFile}</p>
                                                                 )}
                                                                 <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
                                                                 <br/>
-                                                                <span className={"error-file "+(this.state.errorFile===true?'show':'hide')}>Formato no permitido</span>
+                                                                <span className={"error-file "+(item.errorFile===true?'show':'hide')}>Formato no permitido</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -309,6 +358,7 @@ class Index extends Component {
                                     responder de forma efectiva</p>
                             </div>
                         </div>
+                        }
 
                         <div className="row row-full text-right">
                             <div className="col col-sm-12 col-md-12 col-lg-12">
