@@ -167,6 +167,7 @@ export default class Persona extends Component {
             Loading.toggle(true);
             let persona = await ConsultaPersonas.get(this.state.person.code, this.state.person.value);
             if (persona.consultarPersonaRs.personaRestringida === true) {
+                Loading.toggle(false);
                 Validaridentificacion.toggle(true);
                 this.setState({
                     ...this.state,

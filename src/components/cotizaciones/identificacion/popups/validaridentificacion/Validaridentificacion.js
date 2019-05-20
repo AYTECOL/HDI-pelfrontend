@@ -7,9 +7,9 @@ class Validaridentificacion extends Component {
 
     static toggle(status){
         if (status === true){
-            Helpers.removeClass('.validaridentificacion', 'hide');
+            Helpers.removeClass('.validaridentificacion.msj', 'hide');
         } else {
-            Helpers.addClass('.validaridentificacion','hide');
+            Helpers.addClass('.validaridentificacion.msj','hide');
         }
     }
 
@@ -19,7 +19,7 @@ class Validaridentificacion extends Component {
 
     render() {
         return (
-            <div className={"modal validaridentificacion hide"}>
+            <div className={"modal validaridentificacion msj hide"}>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">

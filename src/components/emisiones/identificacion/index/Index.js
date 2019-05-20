@@ -239,6 +239,7 @@ class Index extends Component {
                     hasAccident={this.state.hasAccident}
                     typePerson={this.state.typePerson}
                     updatePerson={this.updatePerson}/>}
+                <Validaridentificacion/>
             </form>
         )
     }

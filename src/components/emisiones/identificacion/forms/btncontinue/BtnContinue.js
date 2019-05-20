@@ -66,6 +66,8 @@ class BtnContinue extends Component {
                 address: persons[i]['address'],
                 sarlaft_document_url: persons[i]['sarlaft'],
                 role: persons[i]['role'],
+                businessname: persons[i]['businessname'],
+                fechadecontitucion: persons[i]['fechadecontitucion']
             };
             for(let i in dataUser) if( dataUser[i] === "" ) dataUser[i] = '""';
             for (let j = 0; j < persons[i]['role'].length; j++) {

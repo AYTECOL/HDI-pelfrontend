@@ -258,6 +258,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/identificacion/popups/delete/Delete.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/emisiones/identificacion/popups/entidad/Entidad.js">
           <value>
             <set />
