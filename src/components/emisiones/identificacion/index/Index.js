@@ -108,6 +108,8 @@ class Index extends Component {
                 hasExequias: hasExequias
             });
             Loading.toggle(false);
+        }else{
+            Loading.toggle(false);
         }
     }
 
