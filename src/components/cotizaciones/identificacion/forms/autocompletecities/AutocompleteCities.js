@@ -206,7 +206,7 @@ class AutocompleteCities extends Component {
                 <input name={typeof this.props.name !== "undefined"?'city':this.props.name} id="city" type="text"
                        className={"form-control "+(typeof this.props.disabled==='undefined'?'':(this.props.disabled===true?'disabled':''))}
                        placeholder="Ingresa ciudad o municipio del h..."
-                       value={this.state.value}
+                       value={this.state.value !== '' ? this.state.value : this.props.value}
                        disabled={typeof this.props.disabled==='undefined'?false:this.props.disabled}
                        autoComplete="city"
                        autoCorrect="off"
