@@ -162,6 +162,30 @@ class Index extends Component {
         Loading.toggle(false);
     }
 
+    showAnyPopup(name,index,type) {
+        if (typeof type === "undefined") type = 1;
+        let state = !this.state[name];
+        this.setState({
+            ...this.state,
+            [name]: state,
+            itemSelected: index,
+            typePerson: type
+        });
+        if (!Helpers.hasClass("body", "popup")) {
+            Helpers.addClass("body", "popup");
+        } else {
+            Helpers.removeClass("body", "popup");
+        }
+        setTimeout(()=>{
+            let els = document.querySelectorAll("input, select");
+            for (let i = 0; i < els.length; i++) {
+                els[i].setAttribute('disabled', true);
+                els[i].className += " disabled";
+                els[i].parentElement.className += " disabled";
+            }
+        },200);
+    }
+
     togglePopUpPersona = (index, type) => e => {
         if (index !== -1 && index !== -2 && typeof type === "undefined") {
             let roles = this.state.persons[index]['role'];
