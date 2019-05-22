@@ -35,6 +35,59 @@ node('linux'){
                 body: "Despliegue realizado validar ambiente Dev en: http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com/ Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
 	
 	}
+	stage('Test sonarqube'){
+		withSonarQubeEnv('sonarqube') {
+          	 sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+	 }
+	}
+	stage ('cloudfront'){
+      "AWSTemplateFormatVersion" : "2010-09-09",
+        "Resources" : {
+            "myDistribution" : {
+                "Type" : "AWS::CloudFront::Distribution",
+                "Properties" : {
+                    "DistributionConfig" : {
+                        "Origins" : [ {
+                            "Id" : "poliza-express-hogar-front",
+							"DomainName" : "arn:aws:s3:::poliza-express-hogar-front",
+                            "S3OriginConfig" : {
+                              "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"     
+                            }
+						}, 
+						{
+							"Id" : "libertyseguros",
+							"DomainName" : "hogar-uat.libertyseguros.co",
+							"CustomOriginConfig" : {
+								"HTTPPort" : "80",
+								"HTTPSPort" : "443",
+								"OriginProtocolPolicy" : "http-only"
+							}
+						}
+						],
+                        "Enabled" : "true",
+                        "Comment" : "Some comment",
+                        "DefaultRootObject" : "index.html",
+                        "Logging" : {
+                            "IncludeCookies" : "false",
+                            "Bucket" : "poliza-express-hogar-front"
+                        },
+                        "Aliases" : [ "hogar-uat.libertyseguros.co" , "hogar.libertyseguros.co"],
+                        "DefaultCacheBehavior" : {
+                            "AllowedMethods" : [ "DELETE", "GET", "OPTIONS", "POST", "PUT" ],  
+                            "TargetOriginId" : "WebApp",
+                            "ForwardedValues" : {
+                                "QueryString" : "false",
+                                "Cookies" : { "Forward" : "none" }
+                            },
+                            "ViewerProtocolPolicy" : "allow-all"
+                        },
+                      "PriceClass" : "PriceClass_200",
+                      "ViewerCertificate" : { "CloudFrontDefaultCertificate" : "true" }  
+                    }
+                }
+            }
+        }
+    }
 
 	stage('Testing'){
 		  
