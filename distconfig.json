@@ -41,6 +41,11 @@
               "Forward": "none"
             }
           },
+          "TrustedSigners": {
+            "Enabled":false,
+            "Quantity": 0
+          },
+          "MinTTL": 1,
           "ViewerProtocolPolicy": "allow-all"
         },
         "PriceClass": "PriceClass_200",
