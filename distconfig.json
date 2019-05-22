@@ -19,7 +19,9 @@
         "Comment": "Some comment",
         "DefaultRootObject": "index.html",
         "Logging": {
-          "IncludeCookies": "false",
+          "Enabled": true,
+          "Prefix": "poliza",
+          "IncludeCookies": false,
           "Bucket": "poliza-express-hogar-front"
         },
         "Aliases": ["hogar-uat.libertyseguros.co", "hogar.libertyseguros.co"],
@@ -27,7 +29,7 @@
           "AllowedMethods": ["DELETE", "GET", "OPTIONS", "POST", "PUT"],
           "TargetOriginId": "WebApp",
           "ForwardedValues": {
-            "QueryString": "false",
+            "QueryString": false,
             "Cookies": {
               "Forward": "none"
             }
