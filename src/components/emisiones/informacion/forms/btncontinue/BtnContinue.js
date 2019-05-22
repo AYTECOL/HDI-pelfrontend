@@ -25,6 +25,14 @@ class BtnContinue extends Component {
 
     nextStep = async () => {
         let state = this.props.state;
+
+        //Validations
+        if( state.celulares === true ){
+            console.log(state);
+        }
+
+
+
         for (let i = 0; i < state.contents.length; i++) {
             for(let j in state.contents[i]) if ( state.contents[i][j] === "" ) state.contents[i][j] = '""';
             if (state.contents[i].uploaded === false){
