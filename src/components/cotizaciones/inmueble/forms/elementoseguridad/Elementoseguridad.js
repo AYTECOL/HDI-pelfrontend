@@ -83,7 +83,7 @@ class Elementoseguridad extends Component {
                         <div className="col col-12 col-md-6">
                             <input type="checkbox"
                                    checked={(this.state.alarma === 0 || this.state.alarma === "" ? false : 'checked')}
-                                   name="alarma"
+                                       name="alarma"
                                    id="alarma"
                                    onChange={this.saveValue({
                                        value: 1,
@@ -94,7 +94,7 @@ class Elementoseguridad extends Component {
                         <div className="col col-12 col-md-6">
                             <input type="checkbox"
                                    checked={(this.state.cajafuerte === 0 || this.state.cajafuerte === "" ? false : 'checked')}
-                                   name="cajafuerte" id="cajafuerte"
+                                       name="cajafuerte" id="cajafuerte"
                                    onChange={this.saveValue({
                                        value: 1,
                                        name: "cajafuerte"
@@ -106,7 +106,7 @@ class Elementoseguridad extends Component {
                         <div className="col col-12 col-md-6">
                             <input type="checkbox"
                                    checked={(this.state.puertascontroldomotico === 0 || this.state.puertascontroldomotico === "" ? false : 'checked')}
-                                   name="puertascontroldomotico" id="puertascontroldomotico"
+                                       name="puertascontroldomotico" id="puertascontroldomotico"
                                    onChange={this.saveValue({
                                        value: 1,
                                        name: "puertascontroldomotico"
@@ -116,7 +116,7 @@ class Elementoseguridad extends Component {
                         <div className="col col-12 col-md-6">
                             <input type="checkbox"
                                    checked={(this.state.puertasseguridadblindada === 0 || this.state.puertasseguridadblindada === "" ? false : 'checked')}
-                                   name="puertasseguridadblindada" id="puertasseguridadblindada"
+                                       name="puertasseguridadblindada" id="puertasseguridadblindada"
                                    onChange={this.saveValue({
                                        value: 1,
                                        name: "puertasseguridadblindada"
@@ -128,7 +128,7 @@ class Elementoseguridad extends Component {
                         <div className="col col-12 col-md-6">
                             <input type="checkbox"
                                    checked={(this.state.circuitocerradotv === 0 || this.state.circuitocerradotv === "" ? false : 'checked')}
-                                   name="circuitocerradotv" id="circuitocerradotv"
+                                       name="circuitocerradotv" id="circuitocerradotv"
                                    onChange={this.saveValue({
                                        value: 1,
                                        name: "circuitocerradotv"
@@ -138,7 +138,7 @@ class Elementoseguridad extends Component {
                         <div className="col col-12 col-md-6">
                             <input type="checkbox"
                                    checked={(this.state.vigilanciapermanente === 0 || this.state.vigilanciapermanente === "" ? false : 'checked')}
-                                   name="vigilanciapermanente" id="vigilanciapermanente"
+                                       name="vigilanciapermanente" id="vigilanciapermanente"
                                    onChange={this.saveValue({
                                        value: 1,
                                        name: "vigilanciapermanente"
@@ -150,7 +150,7 @@ class Elementoseguridad extends Component {
                         <div className="col col-12 col-md-6">
                             <input type="checkbox"
                                    checked={(this.state.reguladordevoltaje === 0 || this.state.reguladordevoltaje === "" ? false : 'checked')}
-                                   name="reguladordevoltaje" id="reguladordevoltaje"
+                                       name="reguladordevoltaje" id="reguladordevoltaje"
                                    onChange={this.saveValue({
                                        value: 1,
                                        name: "reguladordevoltaje"

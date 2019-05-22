@@ -6,8 +6,9 @@ import './Index.scss';
 import {withRouter} from "react-router-dom";
 import 'moment/locale/es';
 import MomentJs from "moment";
-import DatePicker  from "react-datepicker";
+import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
+import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 
 import PopUpPersona from '../../identificacion/popups/persona/Persona';
 import Loading from "../../../globals/loading/Loading";
@@ -19,10 +20,12 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
+        let formatDate = "dddd, MMMM Do YYYY";
         this.state = {
             step: parseInt(this.props.match.params.step),
             totalContent: 0,
-            initdate: '',
+            initdate: MomentJs().format(formatDate),
+            formatDate: formatDate,
             persons: [],
             contents: [],
             inmueble: {},
@@ -32,6 +35,7 @@ class Index extends Component {
             showPopUpPersona: false
         };
         this.updatePerson = this.updatePerson.bind(this);
+        console.log(MomentJs().add(1, 'M').toDate());
     }
 
     componentDidMount() {
@@ -135,7 +139,7 @@ class Index extends Component {
         this.changeValue({
             target: {
                 name: 'initdate',
-                value: MomentJs(e).format("dddd, MMMM Do YYYY")
+                value: MomentJs(e).format(this.state.formatDate)
             }
         });
     };
@@ -230,8 +234,11 @@ class Index extends Component {
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="form-group"><label
                                     htmlFor="pisonumero">¿Cuándo deseas que comience la póliza?</label>
-                                    <DatePicker showMonthDropdown
+                                    <DatePicker locale={es}
+                                                showMonthDropdown
+                                                showYearDropdown
                                                 minDate={new Date()}
+                                                maxDate={MomentJs().add(1, 'M').toDate()}
                                                 name="initdate"
                                                 value={this.state.initdate}
                                                 onChange={this.changeDates}
