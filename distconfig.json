@@ -22,7 +22,7 @@
           "Enabled": true,
           "Prefix": "poliza",
           "IncludeCookies": false,
-          "Bucket": "poliza-express-hogar-front"
+          "Bucket": "arn:aws:s3:::poliza-express-hogar-front"
         },
         "Aliases": {
           "Quantity":2,
