@@ -2,6 +2,10 @@ import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
 import "./Asistencias.scss";
+import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
+import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
+import {AllPlans as AllPlansCreator} from "../../../../actions";
+import Loading from "../../../globals/loading/Loading";
 
 class Tab extends Component {
 
@@ -60,6 +64,18 @@ class Tab extends Component {
         });
     }
 
+    async sendAndValidate(){
+        Loading.toggle(true);
+        await CreateOrUpdateValoration.save();
+        let total = await DeterminePolizaPrima.get(this.props.match.params.id);
+        if( typeof total.total_pay_prospect !== "undefined" ){
+            let plans = this.state.plans;
+            plans[this.state.index].value = total.total_pay_prospect;
+            store.dispatch(AllPlansCreator(plans));
+            Loading.toggle(false);
+        }
+    }
+
     checkAsistencia = (index, key, k, i, parent) => e => {
         let check;
         let newPlans;
@@ -77,6 +93,9 @@ class Tab extends Component {
             plans: newPlans
         });
         this.countAsistencias();
+        setTimeout(()=>{
+            this.sendAndValidate();
+        },500);
     };
 
     render() {

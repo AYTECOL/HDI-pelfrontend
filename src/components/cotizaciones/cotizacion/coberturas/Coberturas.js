@@ -2,6 +2,10 @@ import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
+import Loading from "../../../globals/loading/Loading";
+import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
+import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
+import {AllPlans as AllPlansCreator} from "../../../../actions";
 
 class Tab extends Component {
 
@@ -40,6 +44,18 @@ class Tab extends Component {
                 }
             }
         });
+    }
+
+    async sendAndValidate(){
+        Loading.toggle(true);
+        await CreateOrUpdateValoration.save();
+        let total = await DeterminePolizaPrima.get(this.props.match.params.id);
+        if( typeof total.total_pay_prospect !== "undefined" ){
+            let plans = this.state.plans;
+            plans[this.state.index].value = total.total_pay_prospect;
+            store.dispatch(AllPlansCreator(plans));
+            Loading.toggle(false);
+        }
     }
 
     static getSelectByItems(item) {
@@ -101,6 +117,9 @@ class Tab extends Component {
             plans: newPlans
         });
         this.countCoverturas();
+        setTimeout(()=>{
+            this.sendAndValidate();
+        },500);
     };
 
     getCoverangeById(id) {

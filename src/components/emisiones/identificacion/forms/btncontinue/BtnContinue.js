@@ -5,6 +5,9 @@ import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 //Services
 import QuoteIussed from "../../../../../services/QuoteIussed";
+import store from "../../../../../store";
+import {NextStep} from "../../../../../actions";
+import SaveIdentifications from "../../../../../services/Quote";
 
 class BtnContinue extends Component {
 
@@ -96,6 +99,8 @@ class BtnContinue extends Component {
             onerous: onerous,
             persons_aditionals: additional
         });
+        store.dispatch(NextStep(5));
+        await SaveIdentifications.save();
         window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
     };
 

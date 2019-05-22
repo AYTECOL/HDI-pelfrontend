@@ -4,6 +4,7 @@ import {withRouter} from "react-router-dom";
 import store from "../../../../store";
 import {indexPlanSelected} from "../../../../actions";
 import Sticky from "../../../../common/helpers/sticky/Sticky";
+import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 
 class Index extends Component {
 
@@ -19,13 +20,11 @@ class Index extends Component {
             let storeState = store.getState();
             let plans = storeState.AllPlans;
             let index = storeState.indexPlan;
-            if (plans !== this.state.plans || this.state.index !== index) {
-                this.setState({
-                    ...this.state,
-                    plans: plans,
-                    index: index
-                });
-            }
+            this.setState({
+                ...this.state,
+                plans: plans,
+                index: index
+            });
         });
     }
 
@@ -46,7 +45,7 @@ class Index extends Component {
                             <div className={"item-tab " + (parseInt(this.state.index) === key ? 'active' : '')}
                                  onClick={this.changeIndexPlan(key)}>
                                 <span>{option.name}</span>
-                                <p>$ 000.000</p>
+                                <p>{ typeof option.value === "undefined"? '$0' : Masknumbermoney.formatToMask(option.value)}</p>
                             </div>
                         </div>
                     )}
