@@ -32,7 +32,8 @@ class Index extends Component {
             area: '',
             addNewPerson: true,
             itemSelected: null,
-            showPopUpPersona: false
+            showPopUpPersona: false,
+            errorPhone: false
         };
         this.updatePerson = this.updatePerson.bind(this);
         console.log(MomentJs().add(1, 'M').toDate());
@@ -311,7 +312,11 @@ class Index extends Component {
                                         <p><b>Obras de Arte:</b> $ 3.000.000</p>
                                         <p><b>Contenidos Móviles:</b> $ 3.000.000</p>
                                     </div>
-
+                                    { this.state.celulares === true &&
+                                    <div className="col col-sm-12 col-md-12 col-lg-12">
+                                        <p>Recuerda que, para emitir la póliza, debes relacionar las características y el número IMEI de cada teléfono móvil. </p>
+                                    </div>
+                                    }
                                 </div>
                             </div>
 
@@ -336,12 +341,14 @@ class Index extends Component {
                                                     <div className="name form-group "><label
                                                         htmlFor="name">Características</label>
                                                         <input type="text" className="form-control" name="caracte" value={item.caracte} onChange={this.updateContent(key)}/>
+                                                        <small className="form-text d-block text-left">Ej: Marca, referencia, Numero IMEI, color...</small>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
                                                     <div className="name form-group "><label
                                                         htmlFor="name">Valor</label>
                                                         <input type="text" className="form-control" name="value" value={item.value} onChange={this.updateContent(key)}/>
+                                                        <small className="form-text d-block text-left">$ 20.000.000</small>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
@@ -362,12 +369,17 @@ class Index extends Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col col-1 text-center">
+                                                <div className="col col-1 text-center no-padding-left">
                                                     <span className="trash" onClick={this.removeContent}>&nbsp;</span>
                                                 </div>
                                             </div>
                                         </div>
                                     )}
+                                </div>
+                                <div className="msj-error">
+                                    {this.state.errorPhone === true &&
+                                    <p className={"error"}>Falta relacionar los Teléfonos Móviles y las características de cada uno</p>
+                                    }
                                 </div>
                             </div>
 
@@ -381,10 +393,12 @@ class Index extends Component {
                                     </div>
                                 </div>
                             </div>
+                            {this.state.contenidos === false &&
                             <div className="col col-sm-12 col-md-12 col-lg-12 msj-bottom text-center">
                                 <p>Es importante conocer este tipo de artículos, esto nos permite al momento del siniestro
                                     responder de forma efectiva</p>
                             </div>
+                            }
                         </div>
                         }
 

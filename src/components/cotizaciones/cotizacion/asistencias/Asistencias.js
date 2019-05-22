@@ -111,7 +111,7 @@ class Tab extends Component {
                                                     />
                                                     <div className="group">
                                                         <label htmlFor={"itemm" + k + "_" + key}>{opt.name}</label>
-                                                        <p>plomería, electricidad, vidrios y cerrajería</p>
+                                                        <p>{opt.description}</p>
                                                     </div>
                                                     {opt.assists.map((opt, i) =>
                                                         <div className="row" key={i}>
