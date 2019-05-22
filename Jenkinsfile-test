@@ -41,11 +41,9 @@ node('linux'){
 	 }
 	}
 	stage('cloudfront'){
-      steps {
         echo "Inicia el cloud front"
 		sh 'aws cloudfront list-distributions'
 		  echo "Finaliza el cloud front"
-      }   
     }
 	stage('Testing'){
 		  
