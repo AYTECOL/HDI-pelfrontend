@@ -12,7 +12,7 @@ node('linux'){
 	stage('cloudfront'){
 		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
          echo "Inicia el cloud front"
-		sh 'aws cloudfront  create-distribution --distribution-config ./distconfig.json'
+		sh 'aws cloudfront  create-distribution --distribution-config file://distconfig.json'
 		  echo "Finaliza el cloud front"
 		}
        
