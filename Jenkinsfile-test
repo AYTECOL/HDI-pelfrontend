@@ -40,8 +40,7 @@ node('linux'){
           	 sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 }
 	}
-	    stage ('cloudfront'){
-        "AWSTemplateFormatVersion" : "2010-09-09",
+	stage ('cloudfront'){
         "Resources" : {
             "myDistribution" : {
                 "Type" : "AWS::CloudFront::Distribution",
