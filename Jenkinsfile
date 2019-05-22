@@ -24,6 +24,46 @@ pipeline {
         }
       }
     }
+    stage ('cloudfront'){
+        "AWSTemplateFormatVersion" : "2010-09-09",
+        "Resources" : {
+            "myDistribution" : {
+                "Type" : "AWS::CloudFront::Distribution",
+                "Properties" : {
+                    "DistributionConfig" : {
+                        "Origins" : [ {
+                            "DomainName" : "hogar-uat.libertyseguros.co",
+                            "HTTPPort" : 80,
+                            "HTTPSPort" : 443,
+                            "OriginProtocolPolicy": "https-only"
+                            "S3OriginConfig" : {
+                              "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app",      
+                            }
+                        }],
+                        "Enabled" : "true",
+                        "Comment" : "Some comment",
+                        "DefaultRootObject" : "index.html",
+                        "Logging" : {
+                            "IncludeCookies" : "false",
+                            "Bucket" : "poliza-express-hogar-front"
+                        },
+                        "Aliases" : [ "hogar-uat.libertyseguros.co" , "hogar.libertyseguros.co"],
+                        "DefaultCacheBehavior" : {
+                            "AllowedMethods" : [ "DELETE", "GET", "OPTIONS", "POST", "PUT" ],  
+                            "TargetOriginId" : "WebApp",
+                            "ForwardedValues" : {
+                                "QueryString" : "false",
+                                "Cookies" : { "Forward" : "none" }
+                            },
+                            "ViewerProtocolPolicy" : "allow-all"
+                        },
+                      "PriceClass" : "PriceClass_200",
+                      "ViewerCertificate" : { "CloudFrontDefaultCertificate" : "true" }  
+                    }
+                }
+            }
+        }
+    }
     stage('Test') {
       steps {
         script {
