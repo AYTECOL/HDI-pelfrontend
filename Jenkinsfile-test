@@ -48,7 +48,7 @@ node('linux'){
                 "Properties" : {
                     "DistributionConfig" : {
                         "Origins" : [ {
-                            "Id" : "poliza-express-hogar-front",
+                            "Id" : "poliza",
 							"DomainName" : "arn:aws:s3:::poliza-express-hogar-front",
                             "S3OriginConfig" : {
                               "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"     
