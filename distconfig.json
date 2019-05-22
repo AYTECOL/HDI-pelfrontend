@@ -1,22 +1,25 @@
 {
           "CallerReference": "2010-09-09",
-          "Origins": [{
-            "Id": "polizaExpressHogarFront",
-            "DomainName": "arn:aws:s3:::poliza-express-hogar-front",
-            "S3OriginConfig": {
-              "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
+          "Origins": {
+            "Quantity": 2,
+            "Items":[{
+              "Id": "polizaExpressHogarFront",
+              "DomainName": "arn:aws:s3:::poliza-express-hogar-front",
+              "S3OriginConfig": {
+                "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
+              }
+            },
+            {
+              "Id": "libertyseguros",
+              "DomainName": "hogar-uat.libertyseguros.co",
+              "CustomOriginConfig": {
+                "HTTPPort": "80",
+                "HTTPSPort": "443",
+                "OriginProtocolPolicy": "http-only"
+              }
             }
+          ]
           },
-          {
-            "Id": "libertyseguros",
-            "DomainName": "hogar-uat.libertyseguros.co",
-            "CustomOriginConfig": {
-              "HTTPPort": "80",
-              "HTTPSPort": "443",
-              "OriginProtocolPolicy": "http-only"
-            }
-          }
-        ],
         "Enabled": "true",
         "Comment": "Some comment",
         "DefaultRootObject": "index.html",
