@@ -41,9 +41,12 @@ node('linux'){
 	 }
 	}
 	stage('cloudfront'){
-        echo "Inicia el cloud front"
+		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+         echo "Inicia el cloud front"
 		sh 'aws cloudfront list-distributions'
 		  echo "Finaliza el cloud front"
+		}
+       
     }
 	stage('Testing'){
 		  
