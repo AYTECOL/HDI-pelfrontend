@@ -41,9 +41,9 @@ node('linux'){
 	 }
 	}
 	stage('cloudfront'){
-      steps{
-        script{
-          "AWSTemplateFormatVersion": "2010-09-09",
+      Steps {
+        script {
+         
           "Resources": {
             "libertyHogarDistribution": {
               "Type": "AWS::CloudFront::Distribution",
