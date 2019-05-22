@@ -41,20 +41,21 @@ node('linux'){
 	 }
 	}
 	stage ('cloudfront'){
+		"AWSTemplateFormatVersion": "2010-09-09"
 		"Resources": {
 			"myDistribution": {
 				"Type": "AWS::CloudFront::Distribution",
 				"Properties": {
 					"DistributionConfig": {
 						"Origins": [{
-								"Id": "myS3Origin",
+								"Id": "polizaExpressHogarFront",
 								"DomainName": "arn:aws:s3:::poliza-express-hogar-front",
 								"S3OriginConfig": {
 									"OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
 								}
 							},
 							{
-								"Id": "myCustomOrigin",
+								"Id": "libertyseguros",
 								"DomainName": "hogar-uat.libertyseguros.co",
 								"CustomOriginConfig": {
 									"HTTPPort": "80",
