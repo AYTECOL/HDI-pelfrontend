@@ -24,7 +24,7 @@
           "IncludeCookies": false,
           "Bucket": "poliza-express-hogar-front"
         },
-        "Aliases": ["hogar-uat.libertyseguros.co", "hogar.libertyseguros.co"],
+        "Aliases": "hogar-uat.libertyseguros.co",
         "DefaultCacheBehavior": {
           "AllowedMethods": ["DELETE", "GET", "OPTIONS", "POST", "PUT"],
           "TargetOriginId": "WebApp",
@@ -38,7 +38,7 @@
         },
         "PriceClass": "PriceClass_200",
         "ViewerCertificate": {
-          "CloudFrontDefaultCertificate": "true"
+          "CloudFrontDefaultCertificate": true
         }
 
         }
