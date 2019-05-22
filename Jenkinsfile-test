@@ -12,25 +12,16 @@ node('linux'){
 
 	stage('Dev Deploy') {
 		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-        
-			sh """
-				aws s3 mb s3://$BUCKET_NAME
-				
+        	sh """
+				aws s3 mb s3://$BUCKET_NAME				
 				ls -ltr
-				
 				npm install	
 				npm run-script build
-					
 				ls -ltr
 				aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
 				aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
 			"""
-		}
-	}
-
-	    stage ('cloudfront'){
-        "AWSTemplateFormatVersion" : "2010-09-09",
-        "Resources" : {
+			"Resources" : {
             "myDistribution" : {
                 "Type" : "AWS::CloudFront::Distribution",
                 "Properties" : {
@@ -67,7 +58,9 @@ node('linux'){
                 }
             }
         }
-    }
+		}
+	}
+
 	stage('Completion Email'){
 		    
 	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
