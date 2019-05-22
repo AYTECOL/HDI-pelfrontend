@@ -15,7 +15,7 @@
             }
           ]
           },
-        "Enabled": "true",
+        "Enabled": true,
         "Comment": "Some comment",
         "DefaultRootObject": "index.html",
         "Logging": {
