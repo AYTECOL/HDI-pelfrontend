@@ -46,7 +46,7 @@ class BtnContinue extends Component {
                         onClick={this.saveAndExit}>Guardar y salir
                 </button>
                 <button type="button" className={"btn btn-primary"}
-                        onClick={this.nextStep}>Continuar
+                        onClick={this.nextStep}>Iniciar emisión
                 </button>
             </Fragment>
         );
@@ -54,6 +54,3 @@ class BtnContinue extends Component {
 }
 
 export default withRouter(BtnContinue);
-
-
-

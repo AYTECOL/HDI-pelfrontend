@@ -149,7 +149,6 @@ class BtnContinue extends Component {
             }
         }
 
-
         let disabled = errors !== 0;
         if (disabled !== false) {
             Helpers.scrollToElement(".error");
@@ -157,10 +156,9 @@ class BtnContinue extends Component {
             Loading.toggle(true);
             store.dispatch(NextStep(3));
             await SaveIdentifications.save();
-            await CreateOrUpdateValoration.get();
+            await CreateOrUpdateValoration.save();
             window.location.href = UrlSite + '/cotizacion/3/' + storeState.cotizacion.number;
         }
-
     };
 
     render() {
@@ -183,6 +181,3 @@ class BtnContinue extends Component {
 }
 
 export default withRouter(BtnContinue);
-
-
-

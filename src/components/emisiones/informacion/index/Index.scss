@@ -29,6 +29,13 @@
     padding: 10px 7px;
     p{
       color: #037B86;
+      &.error{
+        color: #DD133C !important;
+        text-align: left;
+      }
+    }
+    small{
+      text-align: left;
     }
     &.active{
       background-color: transparent;
