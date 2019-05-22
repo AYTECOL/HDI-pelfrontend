@@ -41,54 +41,57 @@ node('linux'){
 	 }
 	}
 	stage ('cloudfront'){
-      "AWSTemplateFormatVersion" : "2010-09-09",
-        "Resources" : {
-            "myDistribution" : {
-                "Type" : "AWS::CloudFront::Distribution",
-                "Properties" : {
-                    "DistributionConfig" : {
-                        "Origins" : [ {
-                            "Id" : "poliza",
-							"DomainName" : "arn:aws:s3:::poliza-express-hogar-front",
-                            "S3OriginConfig" : {
-                              "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"     
-                            }
-						}, 
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Resources": {
+		"myDistribution": {
+			"Type": "AWS::CloudFront::Distribution",
+			"Properties": {
+				"DistributionConfig": {
+					"Origins": [{
+							"Id": "myS3Origin",
+							"DomainName": "arn:aws:s3:::poliza-express-hogar-front",
+							"S3OriginConfig": {
+								"OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
+							}
+						},
 						{
-							"Id" : "libertyseguros",
-							"DomainName" : "hogar-uat.libertyseguros.co",
-							"CustomOriginConfig" : {
-								"HTTPPort" : "80",
-								"HTTPSPort" : "443",
-								"OriginProtocolPolicy" : "http-only"
+							"Id": "myCustomOrigin",
+							"DomainName": "hogar-uat.libertyseguros.co",
+							"CustomOriginConfig": {
+								"HTTPPort": "80",
+								"HTTPSPort": "443",
+								"OriginProtocolPolicy": "http-only"
 							}
 						}
-						],
-                        "Enabled" : "true",
-                        "Comment" : "Some comment",
-                        "DefaultRootObject" : "index.html",
-                        "Logging" : {
-                            "IncludeCookies" : "false",
-                            "Bucket" : "poliza-express-hogar-front"
-                        },
-                        "Aliases" : [ "hogar-uat.libertyseguros.co" , "hogar.libertyseguros.co"],
-                        "DefaultCacheBehavior" : {
-                            "AllowedMethods" : [ "DELETE", "GET", "OPTIONS", "POST", "PUT" ],  
-                            "TargetOriginId" : "WebApp",
-                            "ForwardedValues" : {
-                                "QueryString" : "false",
-                                "Cookies" : { "Forward" : "none" }
-                            },
-                            "ViewerProtocolPolicy" : "allow-all"
-                        },
-                      "PriceClass" : "PriceClass_200",
-                      "ViewerCertificate" : { "CloudFrontDefaultCertificate" : "true" }  
-                    }
-                }
-            }
-        }
-    }
-
+					],
+					"Enabled": "true",
+					"Comment": "Some comment",
+					"DefaultRootObject": "index.html",
+					"Logging": {
+						"IncludeCookies": "false",
+						"Bucket": "poliza-express-hogar-front"
+					},
+					"Aliases": ["hogar-uat.libertyseguros.co", "hogar.libertyseguros.co"],
+					"DefaultCacheBehavior": {
+						"AllowedMethods": ["DELETE", "GET", "OPTIONS", "POST", "PUT"],
+						"TargetOriginId": "WebApp",
+						"ForwardedValues": {
+							"QueryString": "false",
+							"Cookies": {
+								"Forward": "none"
+							}
+						},
+						"ViewerProtocolPolicy": "allow-all"
+					},
+					"PriceClass": "PriceClass_200",
+					"ViewerCertificate": {
+						"CloudFrontDefaultCertificate": "true"
+					}
+				}
+			}
+		}
+	}
+}
 	stage('Testing'){
 		  
 		sh 'curl -X POST  http://cunate:38a9806ece2c583ef858ffde13ae9498@10.142.137.77:8080/job/sahi-test/build?token=08b214cb68e0ed63132813dca24a7233'
