@@ -11,12 +11,7 @@
             },
             {
               "Id": "libertyseguros",
-              "DomainName": "hogar-uat.libertyseguros.co",
-              "CustomOriginConfig": {
-                "HTTPPort": "80",
-                "HTTPSPort": "443",
-                "OriginProtocolPolicy": "http-only"
-              }
+              "DomainName": "hogar-uat.libertyseguros.co"
             }
           ]
           },
