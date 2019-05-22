@@ -4,7 +4,7 @@ import {UrlService} from '../config';
 
 class Api {
 
-    static HttpRequest(method, url, data, overrideBase, formData) {
+    static HttpRequest(method, url, data, overrideBase, formData, headers) {
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
             if(typeof formData === "undefined") formData = false;
@@ -14,8 +14,9 @@ class Api {
                 url = overrideBase + url;
             }
             xhr.open(method, url);
-            if( formData === false ){
-                xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+            if( formData === false ) xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+            if (typeof headers !== "undefined"){
+                for(let j in headers) xhr.setRequestHeader(j, headers[j]);
             }
             xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             xhr.onload = function () {
@@ -51,8 +52,8 @@ class Api {
         })
     };
 
-    static async post(url, data, overrideBase) {
-        return await Api.HttpRequest('POST', url, data, overrideBase).then(function (response) {
+    static async post(url, data, overrideBase, formData, headers) {
+        return await Api.HttpRequest('POST', url, data, overrideBase, formData, headers).then(function (response) {
             return JSON.parse(response);
         });
     };

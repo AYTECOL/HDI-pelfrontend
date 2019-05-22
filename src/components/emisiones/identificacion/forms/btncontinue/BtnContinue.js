@@ -3,7 +3,6 @@ import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
-
 //Services
 import QuoteIussed from "../../../../../services/QuoteIussed";
 
@@ -38,15 +37,15 @@ class BtnContinue extends Component {
         let personsMerge = {};
         for (let i = 0; i < persons.length; i++) {
             let person = persons[i];
-            if( typeof personsMerge[person['value']] === "undefined" ){
+            if (typeof personsMerge[person['value']] === "undefined") {
                 personsMerge[person['value']] = person;
-            }else{
+            } else {
                 person['role'] = person['role'].concat(personsMerge[person['value']]['role']);
-                personsMerge[person['value']]['role'] = [ ...new Set(person['role']) ].sort(Helpers.orderArrayNumeric);
+                personsMerge[person['value']]['role'] = [...new Set(person['role'])].sort(Helpers.orderArrayNumeric);
             }
         }
         let newPersons = [];
-        for(let i in personsMerge) newPersons.push(personsMerge[i]);
+        for (let i in personsMerge) newPersons.push(personsMerge[i]);
         persons = newPersons;
         for (let i = 0; i < persons.length; i++) {
             let dataUser = {
@@ -69,18 +68,18 @@ class BtnContinue extends Component {
                 businessname: persons[i]['businessname'],
                 fechadecontitucion: persons[i]['fechadecontitucion']
             };
-            for(let i in dataUser) if( dataUser[i] === "" ) dataUser[i] = '""';
+            for (let i in dataUser) if (dataUser[i] === "") dataUser[i] = '""';
             for (let j = 0; j < persons[i]['role'].length; j++) {
-                if( typeof exits[dataUser['document']] === "undefined" ) {
-                    if (persons[i]['role'][j] === 1){
+                if (typeof exits[dataUser['document']] === "undefined") {
+                    if (persons[i]['role'][j] === 1) {
                         takers = dataUser;
-                    }else if(persons[i]['role'][j] === 2){
+                    } else if (persons[i]['role'][j] === 2) {
                         insured.push(dataUser);
-                    }else if(persons[i]['role'][j] === 3){
+                    } else if (persons[i]['role'][j] === 3) {
                         benefists.push(dataUser);
-                    }else if(persons[i]['role'][j] === 4){
+                    } else if (persons[i]['role'][j] === 4) {
                         onerous.push(dataUser);
-                    }else if(persons[i]['role'][j] >= 5){
+                    } else if (persons[i]['role'][j] >= 5) {
                         additional.push(dataUser);
                     }
                     exits[dataUser['document']] = dataUser;
@@ -104,12 +103,14 @@ class BtnContinue extends Component {
         return (
             <Fragment>
                 <div className={"return-button"}>
-                    <button className="btn btn-link" onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver</button>
+                    <button type="button" className="btn btn-link"
+                            onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver
+                    </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveAndExit}>Guardar y salir
                 </button>
-                <button type="button" className={"btn btn-primary "+(this.props.inactiveBtn?'disabled':'')}
+                <button type="button" className={"btn btn-primary " + (this.props.inactiveBtn ? 'disabled' : '')}
                         disabled={this.props.inactiveBtn}
                         onClick={this.nextStep}>Continuar
                 </button>

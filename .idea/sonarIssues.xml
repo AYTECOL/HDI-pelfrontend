@@ -3,6 +3,11 @@
   <component name="issues">
     <option name="index">
       <map>
+        <entry key="$APPLICATION_CONFIG_DIR$/scratches/scratch.json">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../green-react-native/pages/LoginPage.js">
           <value>
             <set />
@@ -364,6 +369,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/services/Api.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/ConsultaPersonas.js">
           <value>
             <set />
           </value>

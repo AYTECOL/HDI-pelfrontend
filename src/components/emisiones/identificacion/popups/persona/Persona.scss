@@ -137,6 +137,8 @@
     position: relative;
     z-index: 2;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .form-group {
@@ -157,6 +159,8 @@
     line-height: 16px;
     color: #333740;
     border-radius: 4px;
+    white-space: pre;
+    max-width: 230px;
 
     &::before {
       content: '';

@@ -174,16 +174,16 @@ class Helpers {
         function validateNumber(e){
             if (typeof e.which !== "undefined"){
                 var k = e.which;
-                if (!(e.shiftKey == false && (k == 190 || k == 46 || k == 8 || k == 37 || k == 39 || (k >= 48 && k <= 57)))) {
+                if (!(e.shiftKey === false && (k === 190 || k === 46 || k === 8 || k === 37 || k === 39 || (k >= 48 && k <= 57)))) {
                     e.preventDefault();
                     return;
                 }
-                if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode == 188 || e.keyCode == 190) {
+                if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode === 188 || e.keyCode === 190) {
                     e.preventDefault();
                     return;
                 }
             }
-            e.target.value = e.target.value.replace(/\.(?=\.)|\G(?!^)\.|\`|,/gm, '');
+            e.target.value = e.target.value.replace(/\.(?=\.)|G(?!^)\.|`|,/gm, '');
         }
         for (let i = 0; i < els.length; i++) {
             let events = ['input','change','paste', 'keypress'];

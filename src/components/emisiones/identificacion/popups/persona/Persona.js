@@ -9,6 +9,7 @@ import AutocompleteCities from "../../../../cotizaciones/identificacion/forms/au
 import MomentJs from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
@@ -500,9 +501,11 @@ export default class Persona extends Component {
                                             className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
                                             <div className="fechadenacimiento form-group "><label
                                                 htmlFor="fechadenacimiento">Fecha de nacimiento</label>
-                                                <DatePicker name="fechadenacimiento"
+                                                <DatePicker locale={es}
+                                                            name="fechadenacimiento"
                                                             value={this.state.person.fechadenacimiento}
-                                                            selected={this.state.startDate} onChange={this.changeDates}
+                                                            selected={this.state.person.fechadenacimiento}
+                                                            onChange={this.changeDates}
                                                             showMonthDropdown
                                                             showYearDropdown
                                                             disabled={this.state.person.fechadenacimientoDisabled}

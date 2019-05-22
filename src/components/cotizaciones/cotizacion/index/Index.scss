@@ -362,6 +362,7 @@
           color: #343741;
           mix-blend-mode: normal;
           opacity: 0.75;
+          margin-bottom: 20px;
         }
 
         .group {
@@ -369,6 +370,12 @@
           vertical-align: top;
           margin-left: 20px;
           max-width: 90%;
+        }
+
+        .row{
+          p{
+            margin-bottom: 0;
+          }
         }
 
         .items-checkboxes input {
