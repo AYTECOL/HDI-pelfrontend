@@ -444,7 +444,15 @@ $color-font-btn-primary: #404040;
     }
   }
 }
-
+#root {
+  .msj-error{
+    margin: 0 0 40px;
+    .only-errors {
+      display: block;
+      color: $error-fields;
+    }
+  }
+}
 .cotizacion .container .grid-select {
   .select-item {
     background: #FFFFFF;
