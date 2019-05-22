@@ -30,6 +30,7 @@ class Index extends Component {
             contents: [],
             inmueble: {},
             area: '',
+            disableBtn: false,
             addNewPerson: true,
             itemSelected: null,
             showPopUpPersona: false,
@@ -211,25 +212,38 @@ class Index extends Component {
 
     updateContent = key => e => {
         let contents = this.state.contents;
-        if (e.target.name === "value") {
-            contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
-        } else {
-            contents[key][e.target.name] = e.target.value;
-        }
+        contents[key][e.target.name] = e.target.value;
         this.setState({
             ...this.state,
             contents: contents
-        })
+        });
     };
 
     validateContent = key => e => {
-        let content = this.state.contents[key];
-        let limits = this.state.limits[content.type];
+        let contents = this.state.contents;
+        let disableBtn = this.state.disableBtn;
+        let limits = this.state.limits[contents[key].type];
         let v = Masknumbermoney.formatToNumber(e.target.value);
-        if ( v > limits.min || v <limits.max ){
-            console.log("error");
+        if( v < limits.min ) {
+            contents[key]['error1'] = true;
+            disableBtn = true;
+        }else{
+            contents[key]['error1'] = false;
+            disableBtn = false;
         }
-        console.log(limits);
+        if( v > limits.max ) {
+            contents[key]['error2'] = true;
+            disableBtn = true;
+        }else{
+            contents[key]['error2'] = false;
+            disableBtn = false;
+        }
+        contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
+        this.setState({
+            ...this.state,
+            contents: contents,
+            disableBtn: disableBtn
+        });
     };
 
     changeTextFile = key => async e => {
@@ -396,12 +410,13 @@ class Index extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
-                                                    <div className="name form-group "><label
+                                                    <div className={"name form-group "+(item.error1||item.error2?'error':'')}><label
                                                         htmlFor="name">Valor</label>
                                                         <input type="text" className="form-control" name="value"
                                                                value={item.value} onChange={this.validateContent(key)}/>
                                                         <small className="form-text d-block text-left">$ 20.000.000</small>
-                                                        <small className={"form-text only-errors "+(item.error1 === true?'show':'hide')}>Valor Asegurado del ítem Contenidos es inferior al permitido</small>
+                                                        <small className={"form-text only-errors "+(item.error1 === true?'show':'hide')}>Valor Asegurado del ítem {this.state.items[item.type]} es inferior al permitido</small>
+                                                        <small className={"form-text only-errors "+(item.error2 === true?'show':'hide')}>Valor Asegurado del ítem {this.state.items[item.type]} es mayor al permitido</small>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
@@ -518,7 +533,7 @@ class Index extends Component {
                         <div className="row">
                             <div
                                 className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                                <BtnContinue state={this.state} toggleErrorPhone={this.toggleErrorPhone}/>
+                                <BtnContinue disable={this.state.disableBtn} state={this.state} toggleErrorPhone={this.toggleErrorPhone}/>
                             </div>
                         </div>
                     </div>

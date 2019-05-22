@@ -80,17 +80,25 @@ class Index extends Component {
         person.push(items.taker);
         for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [1];
 
-        for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
-        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [2];
+        if( typeof items.benefist !== "undefined" ) {
+            for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [2];
+        }
 
-        for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
-        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [3];
+        if( typeof items.benefist !== "undefined" ) {
+            for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [3];
+        }
 
-        for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
-        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [4];
+        if( typeof items.onerous !== "undefined" ) {
+            for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [4];
+        }
 
-        for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
-        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [5];
+        if( typeof items.persons_aditionals !== "undefined" ){
+            for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
+            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [5];
+        }
 
         for (let i = 0; i < person.length; i++) {
             person[i]['name'] = person[i]['first_name'];

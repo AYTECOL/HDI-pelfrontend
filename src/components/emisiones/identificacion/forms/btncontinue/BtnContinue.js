@@ -8,6 +8,7 @@ import QuoteIussed from "../../../../../services/QuoteIussed";
 import store from "../../../../../store";
 import {NextStep} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
+import Loading from "../../../../globals/loading/Loading";
 
 class BtnContinue extends Component {
 
@@ -30,6 +31,7 @@ class BtnContinue extends Component {
     };
 
     nextStep = async () => {
+        Loading.toggle(true);
         let persons = this.props.persons;
         let takers = {};
         let insured = [];
@@ -102,6 +104,7 @@ class BtnContinue extends Component {
         store.dispatch(NextStep(5));
         await SaveIdentifications.save();
         window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
+        Loading.toggle(false);
     };
 
     render() {
