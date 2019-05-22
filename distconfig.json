@@ -32,7 +32,8 @@
           ]
         },
         "DefaultCacheBehavior": {
-          "AllowedMethods": ["DELETE", "GET", "OPTIONS", "POST", "PUT"],
+          "AllowedMethods": {"Quantity":2,
+            "Items": ["DELETE", "GET", "OPTIONS", "POST", "PUT"] },
           "TargetOriginId": "WebApp",
           "ForwardedValues": {
             "QueryString": false,
