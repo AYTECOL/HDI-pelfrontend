@@ -239,17 +239,17 @@ class Index extends Component {
         console.log(inmubles.contenido_asegudado_valor);
         console.log(total_contenido_asegudado);
         if( inmubles.contenido_asegudado === 1 && disabled === false && total_contenido_asegudado !== 0){
-            if( inmubles.contenido_asegudado_valor > total_contenido_asegudado ){
+            if( inmubles.contenido_asegudado_valor < total_contenido_asegudado ){
                 disabled = true;
             }
         }
         if( inmubles.inmueble_asegudado_obras === 1 && disabled === false && total_inmueble_asegudado_obras !== 0){
-            if( inmubles.inmueble_asegudado_obrasvalor > total_inmueble_asegudado_obras ){
+            if( inmubles.inmueble_asegudado_obrasvalor < total_inmueble_asegudado_obras ){
                 disabled = true;
             }
         }
         if( inmubles.inmueble_asegudado_joyas === 1 && disabled === false && total_inmueble_asegudado_joyas !== 0){
-            if( inmubles.inmueble_asegudado_joyasvalor > total_inmueble_asegudado_joyas ){
+            if( inmubles.inmueble_asegudado_joyasvalor < total_inmueble_asegudado_joyas ){
                 disabled = true;
             }
         }
