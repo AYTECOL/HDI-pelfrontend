@@ -48,6 +48,17 @@
             text-align: left;
           }
         }
+        .form-control.disabled{
+            cursor: not-allowed;
+            &:checked{
+              background: #E6E6E6;
+              border: 1px solid #E6E6E6;
+            }
+            &:checked::before{
+              background: #227c88;
+              border: 1px solid #227c88;
+            }
+        }
 
         input, label {
           vertical-align: middle;
@@ -167,7 +178,7 @@
     color: #333740;
     border-radius: 4px;
     white-space: pre;
-    max-width: 230px;
+    max-width: 384px;
 
     &::before {
       content: '';
