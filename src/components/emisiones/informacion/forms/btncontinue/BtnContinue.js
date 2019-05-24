@@ -5,6 +5,9 @@ import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import CreateOrUpdateMoreInfo from "../../../../../services/CreateOrUpdateMoreInfo";
 import UploadFile from "../../../../../services/UploadFile";
+import store from "../../../../../store";
+import {NextStep} from "../../../../../actions";
+import SaveIdentifications from "../../../../../services/Quote";
 
 class BtnContinue extends Component {
 
@@ -25,6 +28,25 @@ class BtnContinue extends Component {
 
     nextStep = async () => {
         let state = this.props.state;
+
+        //Validations
+        if( state.celulares === true ){
+            console.log(state.contents);
+            let status = false;
+            for (let i = 0; i < state.contents.length; i++) {
+                if( state.contents[i].type === 5 ) {
+                    status = true;
+                }
+            }
+            if (status === false){
+                this.props.toggleErrorPhone(true);
+                return;
+            }
+        }
+        return;
+
+
+
         for (let i = 0; i < state.contents.length; i++) {
             for(let j in state.contents[i]) if ( state.contents[i][j] === "" ) state.contents[i][j] = '""';
             if (state.contents[i].uploaded === false){
@@ -55,6 +77,9 @@ class BtnContinue extends Component {
             },
             "goods_over_cost": state.contents
         });
+
+        store.dispatch(NextStep(6));
+        await SaveIdentifications.save();
         window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
     };
 
@@ -67,7 +92,9 @@ class BtnContinue extends Component {
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveAndExit}>Guardar y salir
                 </button>
-                <button type="button" className={"btn btn-primary"}
+                <button type="button"
+                        disabled={this.props.disable}
+                        className={"btn btn-primary "+(this.props.disable===true?'disabled':'')}
                         onClick={this.nextStep}>Continuar
                 </button>
             </Fragment>

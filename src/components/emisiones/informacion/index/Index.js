@@ -30,12 +30,43 @@ class Index extends Component {
             contents: [],
             inmueble: {},
             area: '',
+            disableBtn: false,
             addNewPerson: true,
             itemSelected: null,
-            showPopUpPersona: false
+            showPopUpPersona: false,
+            errorPhone: false,
+            items: [
+                "Contenidos",
+                "Obras de Arte",
+                "Joyas",
+                "Celulares",
+            ],
+            limits: [
+                {
+                    "min": 1,
+                    "max": 50000000
+                },
+                {
+                    "min": 1,
+                    "max": 20000000
+                },
+                {
+                    "min": 900000,
+                    "max": 20000000
+                },
+                {
+                    "min": 900000,
+                    "max": 10000000
+                }
+            ]
         };
         this.updatePerson = this.updatePerson.bind(this);
-        console.log(MomentJs().add(1, 'M').toDate());
+        this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
+    }
+
+    static showName(name) {
+        let s = name.split("/");
+        return s[s.length - 1];
     }
 
     componentDidMount() {
@@ -43,29 +74,29 @@ class Index extends Component {
         Helpers.fieldNumeric();
     }
 
-    async getData(){
+    async getData() {
         Loading.toggle(true);
         let data = await QuoteIussedById.get(this.props.match.params.id);
         let inmueble = data.risk_valoration_info.Item;
         let persons = this.state.persons;
-        if(typeof data.quote_iussed_info.Item !== "undefined"){
+        if (typeof data.quote_iussed_info.Item !== "undefined") {
             let items = data.quote_iussed_info.Item;
             persons.push(items.taker);
             persons = persons.concat(items.insured);
             persons = persons.concat(items.benefist);
         }
-        if (typeof data.more_info.Item !== "undefined"){
+        if (typeof data.more_info.Item !== "undefined") {
             data = data.more_info.Item;
-            if( typeof data !== "undefined") {
-                if(typeof data.start_policy_date !== "undefined" ) data['initdate'] = data.start_policy_date;
-                if(typeof data.risk_use !== "undefined" ) data['utilizado'] = data.risk_use;
-                if(typeof data.goods_over_cost !== "undefined" ) data['contents'] = data.goods_over_cost;
+            if (typeof data !== "undefined") {
+                if (typeof data.start_policy_date !== "undefined") data['initdate'] = data.start_policy_date;
+                if (typeof data.risk_use !== "undefined") data['utilizado'] = data.risk_use;
+                if (typeof data.goods_over_cost !== "undefined") data['contents'] = data.goods_over_cost;
                 for (let i = 0; i < data['contents'].length; i++) {
-                    for(let j in data.contents[i]) if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
+                    for (let j in data.contents[i]) if (data.contents[i][j] === '""') data.contents[i][j] = '';
                 }
-                if( typeof data.visit_person !== "undefined" && typeof data.visit_person.active !== "undefined" ){
+                if (typeof data.visit_person !== "undefined" && typeof data.visit_person.active !== "undefined") {
                     data['contactperson'] = data.visit_person.active;
-                    if( typeof data.visit_person.phone !== "undefined" && data.visit_person.phone !== "" ) {
+                    if (typeof data.visit_person.phone !== "undefined" && data.visit_person.phone !== "") {
                         persons.push({
                             name: data.visit_person.name,
                             telefono: data.visit_person.phone,
@@ -79,7 +110,7 @@ class Index extends Component {
         let joyas = false;
         let celulares = false;
         if (typeof inmueble !== "undefined") {
-            if( inmueble.contenido_asegudado === 1 ) {
+            if (inmueble.contenido_asegudado === 1) {
                 contenidos = true;
                 if (inmueble.inmueble_asegudado_obras === 1) obras = true;
                 if (inmueble.inmueble_asegudado_joyas === 1) joyas = true;
@@ -97,6 +128,13 @@ class Index extends Component {
             celulares: celulares,
         });
         Loading.toggle(false);
+    }
+
+    toggleErrorPhone(status) {
+        this.setState({
+            ...this.state,
+            errorPhone: status
+        })
     }
 
     selectItems = (name, value) => () => {
@@ -153,7 +191,7 @@ class Index extends Component {
         });
     };
 
-    updatePerson(person){
+    updatePerson(person) {
         let persons = this.state.persons;
         persons.push(person);
         this.setState({
@@ -164,7 +202,7 @@ class Index extends Component {
         });
     }
 
-    togglePerson = (index,type) => () => {
+    togglePerson = (index, type) => () => {
         let showPopUpPersona = !this.state.showPopUpPersona;
         this.setState({
             ...this.state,
@@ -174,15 +212,38 @@ class Index extends Component {
 
     updateContent = key => e => {
         let contents = this.state.contents;
-        if( e.target.name === "value" ){
-            contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
-        } else {
-            contents[key][e.target.name] = e.target.value;
-        }
+        contents[key][e.target.name] = e.target.value;
         this.setState({
             ...this.state,
             contents: contents
-        })
+        });
+    };
+
+    validateContent = key => e => {
+        let contents = this.state.contents;
+        let disableBtn = this.state.disableBtn;
+        let limits = this.state.limits[contents[key].type];
+        let v = Masknumbermoney.formatToNumber(e.target.value);
+        if( v < limits.min ) {
+            contents[key]['error1'] = true;
+            disableBtn = true;
+        }else{
+            contents[key]['error1'] = false;
+            disableBtn = false;
+        }
+        if( v > limits.max ) {
+            contents[key]['error2'] = true;
+            disableBtn = true;
+        }else{
+            contents[key]['error2'] = false;
+            disableBtn = false;
+        }
+        contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
+        this.setState({
+            ...this.state,
+            contents: contents,
+            disableBtn: disableBtn
+        });
     };
 
     changeTextFile = key => async e => {
@@ -196,7 +257,7 @@ class Index extends Component {
             showDefaultTextFile = false;
             doc = e.target.files[0];
             textFile = e.target.files[0].name;
-        }else{
+        } else {
             doc = null;
             errorFile = true;
         }
@@ -213,11 +274,6 @@ class Index extends Component {
             contents: contents
         });
     };
-
-    static showName(name){
-        let s = name.split("/");
-        return s[s.length-1];
-    }
 
     render() {
         return (
@@ -243,13 +299,14 @@ class Index extends Component {
                                                 value={this.state.initdate}
                                                 onChange={this.changeDates}
                                                 className={"form-control pickerDate"}
-                                                placeholderText={"Selecciona la fecha de inicio de vigencia"} />
+                                                placeholderText={"Selecciona la fecha de inicio de vigencia"}/>
                                 </div>
                             </div>
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="form-group "><label
                                     htmlFor="area">Metros construidos de vivienda (Opcional)</label>
-                                    <input type="text" className="form-control number" name="area" value={this.state.area} onChange={this.changeValue}
+                                    <input type="text" className="form-control number" name="area"
+                                           value={this.state.area} onChange={this.changeValue}
                                            placeholder={"Ingresa el tamaño de la vivienda"}/>
                                 </div>
                             </div>
@@ -260,7 +317,9 @@ class Index extends Component {
                                     <div className="row grid-select">
 
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                                            <div className={"select-item row "+(this.state.utilizado===0?'active':'')} onClick={this.selectItems('utilizado', 0)}>
+                                            <div
+                                                className={"select-item row " + (this.state.utilizado === 0 ? 'active' : '')}
+                                                onClick={this.selectItems('utilizado', 0)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="home-icon">&nbsp;</i>
                                                 </div>
@@ -270,7 +329,9 @@ class Index extends Component {
                                             </div>
                                         </div>
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                                            <div className={"select-item row "+(this.state.utilizado===1?'active':'')} onClick={this.selectItems('utilizado', 1)}>
+                                            <div
+                                                className={"select-item row " + (this.state.utilizado === 1 ? 'active' : '')}
+                                                onClick={this.selectItems('utilizado', 1)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="summer">&nbsp;</i>
                                                 </div>
@@ -280,7 +341,9 @@ class Index extends Component {
                                             </div>
                                         </div>
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
-                                            <div className={"select-item row "+(this.state.utilizado===2?'active':'')} onClick={this.selectItems('utilizado', 2)}>
+                                            <div
+                                                className={"select-item row " + (this.state.utilizado === 2 ? 'active' : '')}
+                                                onClick={this.selectItems('utilizado', 2)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="home-pay">&nbsp;</i>
                                                 </div>
@@ -311,37 +374,49 @@ class Index extends Component {
                                         <p><b>Obras de Arte:</b> $ 3.000.000</p>
                                         <p><b>Contenidos Móviles:</b> $ 3.000.000</p>
                                     </div>
-
+                                    {this.state.celulares === true &&
+                                    <div className="col col-sm-12 col-md-12 col-lg-12">
+                                        <p>Recuerda que, para emitir la póliza, debes relacionar las características y
+                                            el número IMEI de cada teléfono móvil. </p>
+                                    </div>
+                                    }
                                 </div>
                             </div>
 
                             <div className="wrapper-more-items">
-                                <div className={"more-items "+(this.state.contents.length!==0?'show':'hide')}>
-                                    {this.state.contents.map((item,key)=>
+                                <div className={"more-items " + (this.state.contents.length !== 0 ? 'show' : 'hide')}>
+                                    {this.state.contents.map((item, key) =>
                                         <div className="moreitems" key={key}>
                                             <div className="row">
                                                 <div className="col no-padding-right">
                                                     <div className="name form-group input-select"><label
                                                         htmlFor="name">Tipo de item</label>
                                                         <select className="form-control" name="type" id="type" value={item.type} onChange={this.updateContent(key)}>
-                                                            <option value="0"> </option>
-                                                            <option value="1">Contenidos</option>
-                                                            { this.state.obras === true && <option value="2">Obras de Arte</option>}
-                                                            { this.state.joyas === true && <option value="3">Joyas</option>}
-                                                            { this.state.celulares === true && <option value="5">Celulares</option>}
+                                                            <option value="0"></option>
+                                                            {this.state.items.map((i,k)=>
+                                                                <option value={k} key={k}>{i}</option>
+                                                            )}
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
                                                     <div className="name form-group "><label
                                                         htmlFor="name">Características</label>
-                                                        <input type="text" className="form-control" name="caracte" value={item.caracte} onChange={this.updateContent(key)}/>
+                                                        <input type="text" className="form-control" name="caracte"
+                                                               value={item.caracte} onChange={this.updateContent(key)}/>
+                                                        <small className="form-text d-block text-left">Ej: Marca,
+                                                            referencia, Numero IMEI, color...
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
-                                                    <div className="name form-group "><label
+                                                    <div className={"name form-group "+(item.error1||item.error2?'error':'')}><label
                                                         htmlFor="name">Valor</label>
-                                                        <input type="text" className="form-control" name="value" value={item.value} onChange={this.updateContent(key)}/>
+                                                        <input type="text" className="form-control" name="value"
+                                                               value={item.value} onChange={this.validateContent(key)}/>
+                                                        <small className="form-text d-block text-left">$ 20.000.000</small>
+                                                        <small className={"form-text only-errors "+(item.error1 === true?'show':'hide')}>Valor Asegurado del ítem {this.state.items[item.type]} es inferior al permitido</small>
+                                                        <small className={"form-text only-errors "+(item.error2 === true?'show':'hide')}>Valor Asegurado del ítem {this.state.items[item.type]} es mayor al permitido</small>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
@@ -351,18 +426,20 @@ class Index extends Component {
                                                                 <input type="file" className="form-control" name="doc"
                                                                        onChange={this.changeTextFile(key)}/>
                                                                 {item.showDefaultTextFile ? (
-                                                                    <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
+                                                                    <p>Arrastre archivos para adjuntar, o <b>buscar</b>
+                                                                    </p>
                                                                 ) : (
                                                                     <p>{Index.showName(item.textFile)}</p>
                                                                 )}
                                                                 <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
                                                                 <br/>
-                                                                <span className={"error-file "+(item.errorFile===true?'show':'hide')}>Formato no permitido</span>
+                                                                <span
+                                                                    className={"error-file " + (item.errorFile === true ? 'show' : 'hide')}>Formato no permitido</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col col-1 text-center">
+                                                <div className="col col-1 text-center no-padding-left">
                                                     <span className="trash" onClick={this.removeContent}>&nbsp;</span>
                                                 </div>
                                             </div>
@@ -374,17 +451,32 @@ class Index extends Component {
                             <div className="col col-sm-12 col-md-12 col-lg-12">
                                 <div className="row">
                                     <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
-                                        <div className={"more-items "+(this.state.contents.length!==0?'active':'')} onClick={this.addContent}>
+                                        <div
+                                            className={"more-items " + (this.state.contents.length !== 0 ? 'active' : '')}
+                                            onClick={this.addContent}>
                                             <button type="button" className="more-btn">+</button>
                                             <p>Agregar contenido</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="col col-sm-12 col-md-12 col-lg-12">
+                                <div className="msj-error text-center">
+                                    {this.state.errorPhone === true &&
+                                    <p className="form-text only-errors">Falta relacionar los Teléfonos Móviles y las
+                                        características de cada uno</p>
+                                    }
+                                </div>
+                            </div>
+
+                            {this.state.contenidos === false &&
                             <div className="col col-sm-12 col-md-12 col-lg-12 msj-bottom text-center">
-                                <p>Es importante conocer este tipo de artículos, esto nos permite al momento del siniestro
+                                <p>Es importante conocer este tipo de artículos, esto nos permite al momento del
+                                    siniestro
                                     responder de forma efectiva</p>
                             </div>
+                            }
                         </div>
                         }
 
@@ -399,7 +491,8 @@ class Index extends Component {
                         <div className="row text-center sujeta-block justify-content-center">
                             <div className="col col-sm-12 col-md-12 col-lg-12">
                                 <h5>La póliza está sujeta a inspección en sitio</h5>
-                                <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la inspección en el
+                                <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la inspección
+                                    en el
                                     inmueble</p>
                             </div>
                             <div className="col col-sm-12 col-md-8 col-lg-8">
@@ -407,14 +500,16 @@ class Index extends Component {
 
                                     <div className="row grid-select justify-content-center  ">
 
-                                        {this.state.persons.map((item, key)=>
+                                        {this.state.persons.map((item, key) =>
                                             <div className="col col-6 col-sm-12 col-md-4 col-lg-4" key={key}>
-                                                <div className={"select-item row "+(this.state.contactperson===key?'active':'')} onClick={this.selectItems('contactperson', key)}>
+                                                <div
+                                                    className={"select-item row " + (this.state.contactperson === key ? 'active' : '')}
+                                                    onClick={this.selectItems('contactperson', key)}>
                                                     <div className="col col-12 no-padding">
                                                         <i className="userperson">&nbsp;</i>
                                                     </div>
                                                     <div className="col col-12 no-padding">
-                                                        <p>{typeof item.first_name !== "undefined"?item.first_name:item.name}</p>
+                                                        <p>{typeof item.first_name !== "undefined" ? item.first_name : item.name}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -426,7 +521,7 @@ class Index extends Component {
 
                             {this.state.addNewPerson === true &&
                             <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
-                                <div className="more-items" onClick={this.togglePerson(-1,-1)}>
+                                <div className="more-items" onClick={this.togglePerson(-1, -1)}>
                                     <button type="button" className="more-btn">+</button>
                                     <p>Agregar persona</p>
                                 </div>
@@ -438,7 +533,7 @@ class Index extends Component {
                         <div className="row">
                             <div
                                 className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                                <BtnContinue state={this.state}/>
+                                <BtnContinue disable={this.state.disableBtn} state={this.state} toggleErrorPhone={this.toggleErrorPhone}/>
                             </div>
                         </div>
                     </div>
