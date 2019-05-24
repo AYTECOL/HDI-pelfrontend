@@ -6,9 +6,7 @@
             "S3OriginConfig": {
               "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
             },
-            "DomainName": " poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com",
-            "Enabled": true,
-            "IncludeCookies": false
+            "DomainName": " poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com"
         }
         ],
         "Quantity": 1
