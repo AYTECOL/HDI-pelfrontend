@@ -19,17 +19,12 @@ node('linux'){
 				aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
 				aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
 			"""
+			 echo "Inicia el cloud front"
+				sh 'aws cloudfront  create-distribution --distribution-config file://distconfig.json'
+		  echo "Finaliza el cloud front"
 		}
 	}
 	
-	stage('cloudfront'){
-		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-      echo "Inicia el cloud front"
-				sh 'aws cloudfront  create-distribution --distribution-config file://distconfig.json'
-		  echo "Finaliza el cloud front"
-		}     
-  }
-
 	stage('Completion Email'){
 		    
 	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
