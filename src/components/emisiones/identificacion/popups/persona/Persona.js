@@ -504,7 +504,6 @@ export default class Persona extends Component {
                                                 <DatePicker locale={es}
                                                             name="fechadenacimiento"
                                                             value={this.state.person.fechadenacimiento}
-                                                            selected={this.state.person.fechadenacimiento}
                                                             onChange={this.changeDates}
                                                             showMonthDropdown
                                                             showYearDropdown
