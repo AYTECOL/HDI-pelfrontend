@@ -54,6 +54,9 @@ class BtnContinue extends Component {
         }else{
             state.contactperson = 0;
         }
+
+        state.area = state.area === ""?0:state.area;
+        state.utilizado = state.utilizado === ""?0:state.utilizado;
         await CreateOrUpdateMoreInfo.get({
             "quote_id": this.props.match.params.id,
             "start_policy_date": state.initdate,

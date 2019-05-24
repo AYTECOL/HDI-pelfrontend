@@ -63,6 +63,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/common/helpers/masknumbermoney/Masknumbermoney.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/common/helpers/sticky/Sticky.js">
           <value>
             <set />
@@ -223,6 +228,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/elementoseguridad/Elementoseguridad.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/segurarinmueble/Segurarinmueble.js">
           <value>
             <set />
@@ -374,6 +384,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/services/AddresCoordenates.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/AllSecurity.js">
           <value>
             <set />
           </value>

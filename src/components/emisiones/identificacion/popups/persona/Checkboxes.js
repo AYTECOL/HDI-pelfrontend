@@ -8,7 +8,7 @@ export default class Checkboxes extends Component {
         let roles = this.props.person['role'];
         if (!e.target.checked) {
             let index = roles.indexOf(role);
-            roles.splice(index,1);
+            roles.splice(index, 1);
         } else {
             roles.push(role);
         }
@@ -23,13 +23,15 @@ export default class Checkboxes extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className={"row items-checkboxes justify-content-center type-person-class-"+(this.props.person['role'].length)}>
+                <div
+                    className={"row items-checkboxes justify-content-center type-person-class-" + (this.props.person['role'].length)}>
                     {(this.props.typePerson === 1 || this.props.person['role'].indexOf(2) !== -1) &&
                     <div className="col col-sm-12 col-md-4 col-lg-4 no-padding">
                         <input type="checkbox" name="asegurado" id="asegurado" value="1"
                                checked={this.props.person['role'].indexOf(2) !== -1}
                                onChange={this.changeRole(2)}
-                               className="form-control"/>
+                               disabled={(typeof this.props.disabledAll !== "undefined")}
+                               className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
                         <label htmlFor="asegurado">Asegurado</label>
                     </div>
                     }
@@ -40,8 +42,8 @@ export default class Checkboxes extends Component {
                             <input type="checkbox" name="tomado" id="tomado" value="2"
                                    checked={this.props.person['role'].indexOf(1) !== -1}
                                    onChange={this.changeRole(1)}
-                                   disabled={this.props.exitsTomador}
-                                   className={"form-control " + (this.props.exitsTomador ? 'disabled' : '')}/>
+                                   disabled={this.props.exitsTomador || typeof this.props.disabledAll !== "undefined"}
+                                   className={"form-control " + (this.props.exitsTomador || typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
                             <label htmlFor="tomado">Tomador</label>
                         </div>
                         }
@@ -53,7 +55,8 @@ export default class Checkboxes extends Component {
                                value="3"
                                checked={this.props.person['role'].indexOf(3) !== -1}
                                onChange={this.changeRole(3)}
-                               className="form-control"/>
+                               disabled={(typeof this.props.disabledAll !== "undefined")}
+                               className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
                         <label htmlFor="beneficiario">Beneficiario</label>
                     </div>
                     }
@@ -65,7 +68,8 @@ export default class Checkboxes extends Component {
                                    value="1"
                                    checked={this.props.person['role'].indexOf(5) !== -1}
                                    onChange={this.changeRole(5)}
-                                   className="form-control"/>
+                                   disabled={(typeof this.props.disabledAll !== "undefined")}
+                                   className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
                             <label htmlFor="exequias">Exequias</label>
                         </div>
                         }
@@ -79,7 +83,8 @@ export default class Checkboxes extends Component {
                                    value="3"
                                    checked={this.props.person['role'].indexOf(6) !== -1}
                                    onChange={this.changeRole(6)}
-                                   className="form-control"/>
+                                   disabled={(typeof this.props.disabledAll !== "undefined")}
+                                   className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
                             <label htmlFor="accidentes">Accidentes personales</label>
                         </div>
                         }
@@ -90,7 +95,8 @@ export default class Checkboxes extends Component {
                         <input type="checkbox" name="oneroso" id="oneroso" value="1"
                                checked={this.props.person['role'].indexOf(4) !== -1}
                                onChange={this.changeRole(4)}
-                               className="form-control"/>
+                               disabled={(typeof this.props.disabledAll !== "undefined")}
+                               className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
                         <label htmlFor="oneroso">Beneficiario oneroso</label>
                     </div>
                     }

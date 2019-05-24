@@ -18,6 +18,9 @@ import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../action
 import AllPropertiesZones from "../../../../services/AllPropertiesZones";
 import AllBuildMaterial from "../../../../services/AllBuildMaterial";
 import AllBuildYears from "../../../../services/AllBuildYears";
+import AllSecurity from "../../../../services/AllSecurity";
+import Elementoseguridad from "../../../cotizaciones/inmueble/forms/elementoseguridad/Elementoseguridad";
+import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 
 class Index extends Component {
 
@@ -29,6 +32,7 @@ class Index extends Component {
             persons: [],
             contents: [],
             itemSelected: null,
+            newSecurity: [],
             inmueble: {
                 identificacion: {}
             },
@@ -68,11 +72,16 @@ class Index extends Component {
             }
             for (let j = 0; j < plans[i].assists.length; j++) {
                 plans[i].assists[j].optional = false;
+                for (let k = 0; k < plans[i].assists[j].values.length; k++) {
+                    plans[i].assists[j].values[k].optional = false;
+                    for (let l = 0; l < plans[i].assists[j].values[k].assists.length; l++) {
+                        plans[i].assists[j].values[k].assists[l].optional = false;
+                    }
+                }
             }
         }
         store.dispatch(indexPlanSelected(0));
         store.dispatch(AllPlansCreator(plans));
-
 
         let persons = plan;
         let items = persons.quote_iussed_info.Item;
@@ -130,6 +139,7 @@ class Index extends Component {
         let zones = [];
         let materials = [];
         let buildYears = [];
+        let newSecurity = [];
         if( typeof inmueble !== "undefined" ) {
             zones = await AllPropertiesZones.get();
             materials = await AllBuildMaterial.get();
@@ -142,23 +152,25 @@ class Index extends Component {
             for (let i = 0; i < buildYears.length; i++) {
                 if( parseInt(buildYears[i].buildYearCode) === parseInt(inmueble.build_year) ) inmueble.build_year = buildYears[i].answer;
             }
-            let seguridad = [
-                'Alarma monitoreada',
-                'Puertas con control domótica',
-                'Caja fuerte',
-                'Puerta de seguridad blindada',
-                'Circuito cerrado de televisión',
-                'Vigilancia permanente',
-                'Regulador de voltaje',
-            ];
-            let newSecurity = [];
-            for (let i = 0; i < inmueble.seguridad.length; i++) {
-                if (inmueble.segurida[i] === 1){
-                    // newSecurity[]
+            let seguridad = await AllSecurity.get();
+            let Map = {
+                "1": { name: "alarma"},
+                "2": { name: "caja_fuerte"},
+                "3": { name: "circuito_cerrado_tv"},
+                "5": { name: "puertas_control_domotico"},
+                "6": { name: "puertas_seguridad_blindada"},
+                "4": { name: "regulador_de_voltaje"},
+                "7": { name: "vigilancia_permanente"},
+            };
+            for (let i = 0; i < seguridad.length; i++) {
+                if( typeof seguridad[i]['id'] !== "undefined" && typeof Map[seguridad[i]['id']] !== "undefined"){
+                    let key = Map[seguridad[i]['id']].name;
+                    if( typeof inmueble.seguridad[key] !== "undefined" && parseInt(inmueble.seguridad[key]) === 1 ){
+                        newSecurity.push(seguridad[i]['description']);
+                    }
                 }
             }
         }
-        console.log(inmueble);
 
         this.setState({
             ...this.state,
@@ -166,6 +178,7 @@ class Index extends Component {
             persons: person,
             inmueble: inmueble,
             contents: data['contents'],
+            newSecurity: newSecurity
         });
         Loading.toggle(false);
     }
@@ -177,21 +190,13 @@ class Index extends Component {
             ...this.state,
             [name]: state,
             itemSelected: index,
-            typePerson: type
+            typePerson: type,
         });
         if (!Helpers.hasClass("body", "popup")) {
             Helpers.addClass("body", "popup");
         } else {
             Helpers.removeClass("body", "popup");
         }
-        setTimeout(()=>{
-            let els = document.querySelectorAll("input, select");
-            for (let i = 0; i < els.length; i++) {
-                els[i].setAttribute('disabled', true);
-                els[i].className += " disabled";
-                els[i].parentElement.className += " disabled";
-            }
-        },200);
     }
 
     togglePopUpPersona = (index, type) => e => {
@@ -202,9 +207,6 @@ class Index extends Component {
         }
         this.showAnyPopup("showPopUpPersona", index, type);
         Validaridentificacion.toggle(false);
-        if (index === -2) {
-
-        }
     };
 
     render() {
@@ -236,7 +238,7 @@ class Index extends Component {
                                     <p>
                                         {this.state.inmueble.risk_type === 2 ? ("Apartamento "):("Casa ")}
                                         / Bogotá </p>
-                                    <span>{this.state.inmueble.inmueble_asegudadovalor}</span>
+                                    <span>{Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudadovalor)}</span>
                                 </div>
                                 <div className="col col-sm-12 col-md-7 no-margin second-group">
                                     <div className="row">
@@ -287,7 +289,9 @@ class Index extends Component {
                                                 </div>
                                                 <div className="col col-sm-12 col-md-4">
                                                     <p><b>Seguridad</b></p>
-                                                    <p>Alarma Extintor Circuito cerra…</p>
+                                                    <p>{this.state.newSecurity.map(item=>
+                                                        item+"\n"
+                                                    )}</p>
                                                 </div>
                                                 <div className="col col-sm-12 col-md-4">
                                                     <p><b>Construido</b></p>
@@ -315,12 +319,12 @@ class Index extends Component {
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
                                             <h4><span>{this.state.contents.length}</span>Items</h4>
                                         </div>
-                                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
+                                        <div className={"col col-12 col-sm-12 col-md-6 col-lg-6 text-right "+(this.state.contents.length === 0?'hide':'')}>
                                             <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
                                             <div className="close-section open">Ver <i>&nbsp;</i></div>
                                         </div>
                                     </div>
-                                    <div className="wrapper-box">
+                                    <div className={"wrapper-box "+(this.state.contents.length === 0?'hide':'')}>
                                         <div className="wrapper-content">
                                             {this.state.contents.map((item, key) =>
                                                 <div className="row" key={key}>
@@ -364,6 +368,7 @@ class Index extends Component {
                     toggle={this.togglePopUpPersona}
                     persons={this.state.persons}
                     item={this.state.itemSelected}
+                    disabledAll={true}
                     typePerson={this.state.typePerson}/>}
             </form>
         )
