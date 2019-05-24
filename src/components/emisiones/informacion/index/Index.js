@@ -219,6 +219,50 @@ class Index extends Component {
         });
     };
 
+    validateTotalAsegurado(){
+        let contents = this.state.contents;
+        let inmubles = this.state.inmueble;
+        let disabled = false;
+
+        let total_contenido_asegudado = 0;
+        let total_inmueble_asegudado_obras = 0;
+        let total_inmueble_asegudado_joyas = 0;
+        let total_inmueble_asegudado_telefonos = 0;
+
+        for (let i = 0; i < contents.length; i++) {
+            let value = Masknumbermoney.formatToNumber(contents[i].value);
+            if( parseInt(contents[i].type) === 0 ) total_contenido_asegudado += value;
+            if( parseInt(contents[i].type) === 1 ) total_inmueble_asegudado_obras += value;
+            if( parseInt(contents[i].type) === 2 ) total_inmueble_asegudado_joyas += value;
+            if( parseInt(contents[i].type) === 3 ) total_inmueble_asegudado_telefonos += value;
+        }
+        console.log(inmubles.contenido_asegudado_valor);
+        console.log(total_contenido_asegudado);
+        if( inmubles.contenido_asegudado === 1 && disabled === false && total_contenido_asegudado !== 0){
+            if( inmubles.contenido_asegudado_valor > total_contenido_asegudado ){
+                disabled = true;
+            }
+        }
+        if( inmubles.inmueble_asegudado_obras === 1 && disabled === false && total_inmueble_asegudado_obras !== 0){
+            if( inmubles.inmueble_asegudado_obrasvalor > total_inmueble_asegudado_obras ){
+                disabled = true;
+            }
+        }
+        if( inmubles.inmueble_asegudado_joyas === 1 && disabled === false && total_inmueble_asegudado_joyas !== 0){
+            if( inmubles.inmueble_asegudado_joyasvalor > total_inmueble_asegudado_joyas ){
+                disabled = true;
+            }
+        }
+        if( inmubles.inmueble_asegudado_telefonos === 1 && disabled === false ){
+            disabled = inmubles.inmueble_asegudado_telefonosvalor !== total_inmueble_asegudado_telefonos;
+        }
+
+        this.setState({
+            ...this.state,
+            disableBtn: disabled
+        });
+    }
+
     validateContent = key => e => {
         let contents = this.state.contents;
         let disableBtn = this.state.disableBtn;
@@ -239,6 +283,9 @@ class Index extends Component {
             contents: contents,
             disableBtn: disableBtn
         });
+        setTimeout(()=>{
+            this.validateTotalAsegurado();
+        },250);
     };
 
     changeTextFile = key => async e => {
