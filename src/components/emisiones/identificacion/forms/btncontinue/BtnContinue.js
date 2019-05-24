@@ -116,7 +116,7 @@ class BtnContinue extends Component {
                     </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={this.this.nextStep(undefined)}>Guardar y salir
+                        onClick={this.nextStep(undefined)}>Guardar y salir
                 </button>
                 <button type="button" className={"btn btn-primary " + (this.props.inactiveBtn ? 'disabled' : '')}
                         disabled={this.props.inactiveBtn}

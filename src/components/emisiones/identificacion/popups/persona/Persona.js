@@ -78,13 +78,12 @@ export default class Persona extends Component {
                 if (this.props.persons[i]['role'].indexOf(1) !== -1) this.state.exitsTomador = true;
             }
         }
-
-        if (this.state.typePerson === 1) {
+        if (this.state.typePerson === 1 || this.state.typePerson === 3) {
             this.state.total = 16;
         } else if (this.state.typePerson === 2) {
             this.state.total = 8;
         } else if (this.state.typePerson === 4) {
-            this.state.total = 6;
+            this.state.total = 3;
         }
     }
 
@@ -274,6 +273,7 @@ export default class Persona extends Component {
     async validateAll(name, printErrors, saveData) {
         if (typeof this.props.updatePerson !== "undefined") {
             if(typeof printErrors === "undefined") printErrors = false;
+            let msj4 = true;
             let errors = [];
             let fields = document.querySelectorAll(".modal-content input, .modal-content select");
             for (let i = 0; i < fields.length; i++) {
@@ -320,6 +320,7 @@ export default class Persona extends Component {
                 }
             }
             let ok = this.state.total - errors.length;
+            if( ok === 0 ) msj4 = false;
             if (errors.length === 0 && saveData) {
                 await this.saveFile();
                 if( typeof this.state.person.code === "undefined" ) this.state.person.code = this.state.typePerson !== 3 ? '36' : '37';
@@ -327,7 +328,8 @@ export default class Persona extends Component {
             } else {
                 this.setState({
                     ...this.state,
-                    ok: ok
+                    ok: ok,
+                    msj4: msj4
                 })
             }
         }
@@ -389,7 +391,57 @@ export default class Persona extends Component {
                                     </div>
                                     }
 
-                                    {(this.state.typePerson === 1 || this.state.typePerson === 2 || this.state.typePerson === 4) &&
+                                    {this.state.typePerson === 4 &&
+                                    <div className={"row fields-row"}>
+                                        <div
+                                            className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                            <div className="name form-group "><label
+                                                htmlFor="name">Nombre y Apellidos del Contacto</label>
+                                                <input type="text"
+                                                       className={"form-control " + (this.state.person.nameDisabled ? 'disabled' : '')}
+                                                       disabled={this.state.person.nameDisabled} name="name"
+                                                       value={this.state.person.name}
+                                                       onChange={this.changeValue}/>
+                                                <small className="form-text only-errors">Falta información
+                                                    requerida para el Tomador. Por favor revise el campo Primer
+                                                    nombre
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                            <div className="name form-group "><label
+                                                htmlFor="telefono">Número de teléfono del Contacto</label>
+                                                <input type="text"
+                                                       className={"form-control " + (this.state.person.telefonoDisabled ? 'disabled' : '')}
+                                                       disabled={this.state.person.telefonoDisabled} name="telefono"
+                                                       value={this.state.person.telefono}
+                                                       onChange={this.changeValue}/>
+                                                <small className="form-text only-errors">Falta información
+                                                    requerida para el Tomador. Por favor revise el campo Primer
+                                                    nombre
+                                                </small>
+                                            </div>
+                                        </div>
+                                        <div
+                                            className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                            <div className="email form-group "><label
+                                                htmlFor="email">Correo electrónico del Contacto</label>
+                                                <input type="text"
+                                                       className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
+                                                       disabled={this.state.person.emailDisabled} name="email"
+                                                       value={this.state.person.email}
+                                                       onChange={this.changeValue}/>
+                                                <small className="form-text only-errors">Falta información
+                                                    requerida para el Tomador. Por favor revise el campo Primer
+                                                    nombre
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    }
+
+                                    {(this.state.typePerson === 1 || this.state.typePerson === 2 || this.state.typePerson !== 4) &&
                                     <div className={"row fields-row"}>
 
                                         {this.state.nit === true ? (
@@ -687,6 +739,9 @@ export default class Persona extends Component {
                                 </div>
 
                                 <div className="buttons">
+                                    {this.state.msj4 === true &&
+                                        <p className="error">Falta información requerida para el Contacto. Por favor revise los detalles de los datos de Contacto</p>
+                                    }
                                     <button className="btn btn-primary" type="button" onClick={() => {
                                         this.validateAll(null , true, true)
                                     }}>Continuar
