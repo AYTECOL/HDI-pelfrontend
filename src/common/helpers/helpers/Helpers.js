@@ -132,7 +132,6 @@ class Helpers {
     }
 
     static async getRowById(id, step){
-        if (step > 3) window.location.href = UrlSite + "/404";
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
             store.dispatch(restoreCotizacion(cotizacion));

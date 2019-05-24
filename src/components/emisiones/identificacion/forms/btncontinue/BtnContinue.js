@@ -26,11 +26,7 @@ class BtnContinue extends Component {
         window.location.href = UrlSite + "/cotizacion/3/" + this.props.match.params.id;
     };
 
-    saveAndExit = () => {
-        Helpers.goToHome();
-    };
-
-    nextStep = async () => {
+    nextStep = total => async () => {
         Loading.toggle(true);
         let persons = this.props.persons;
         let takers = {};
@@ -101,9 +97,13 @@ class BtnContinue extends Component {
             onerous: onerous,
             persons_aditionals: additional
         });
-        store.dispatch(NextStep(5));
-        await SaveIdentifications.save();
-        window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
+        if( typeof total !== "undefined" ){
+            store.dispatch(NextStep(5));
+            await SaveIdentifications.save();
+            window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
+        }else{
+            Helpers.goToHome();
+        }
         Loading.toggle(false);
     };
 
@@ -116,11 +116,11 @@ class BtnContinue extends Component {
                     </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={this.saveAndExit}>Guardar y salir
+                        onClick={this.this.nextStep(undefined)}>Guardar y salir
                 </button>
                 <button type="button" className={"btn btn-primary " + (this.props.inactiveBtn ? 'disabled' : '')}
                         disabled={this.props.inactiveBtn}
-                        onClick={this.nextStep}>Continuar
+                        onClick={this.nextStep(true)}>Continuar
                 </button>
             </Fragment>
         );
