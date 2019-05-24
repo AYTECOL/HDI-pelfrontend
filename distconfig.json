@@ -4,7 +4,7 @@
             "Quantity": 2,
             "Items":[{
               "Id": "polizaExpressHogarFront",
-              "DomainName": "http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com",
+              "DomainName": "hogar.libertyseguros.co",
               "S3OriginConfig": {
                 "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
               }
@@ -18,6 +18,12 @@
         "Enabled": true,
         "Comment": "Some comment",
         "DefaultRootObject": "index.html",
+        "Logging": {
+          "Enabled": true,
+          "Prefix": "poliza",
+          "IncludeCookies": false,
+          "Bucket": "http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com"
+        },
         "Aliases": {
           "Quantity":2,
           "Items": [
