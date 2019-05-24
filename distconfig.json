@@ -3,6 +3,10 @@
     "Origins": {
         "Items":[
         {
+            "OriginPath": "",
+            "S3OriginConfig": {
+              "OriginAccessIdentity": "origin-access-identity/cloudfront/"
+            },
             "Id": "WebApp",
             "DomainName": "poliza-express-hogar-front.s3.amazonaws.com"
         }
