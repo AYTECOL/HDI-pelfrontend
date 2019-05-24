@@ -1,5 +1,13 @@
 {
   "CallerReference": "2010-09-09",
+  "OriginAccessIdentity": {
+    "Type" : "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    "Properties" : {
+        "CloudFrontOriginAccessIdentityConfig" : {
+            "Comment": "cloudfront de liberty hogar"
+        }
+    }
+  },
     "Origins": {
         "Items":[
         {
@@ -10,7 +18,7 @@
                   [
                       "origin-access-identity/cloudfront/",
                       {
-                          "Ref": "ebonds-front-infr"
+                          "Ref": "OriginAccessIdentity"
                       }
                   ]
               ]
