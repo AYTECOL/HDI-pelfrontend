@@ -9,14 +9,7 @@ node('linux'){
 	stage('Git Checkout'){
 		checkout scm develop
 	}
-	stage('cloudfront'){
-		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-         echo "Inicia el cloud front"
-		sh 'aws cloudfront  create-distribution --distribution-config file://distconfig.json'
-		  echo "Finaliza el cloud front"
-		}
-       
-    }
+	
 	stage('Dev Deploy') {
 		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
         
