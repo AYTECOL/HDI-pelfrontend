@@ -4,14 +4,14 @@
             "Quantity": 2,
             "Items":[{
               "Id": "polizaExpressHogarFront",
-              "DomainName": "arn:aws:s3:::poliza-express-hogar-front",
+              "DomainName": "http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com",
               "S3OriginConfig": {
                 "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
               }
             },
             {
               "Id": "libertyseguros",
-              "DomainName": "hogar-uat.libertyseguros.co"
+              "DomainName": " arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809" 
             }
           ]
           },
@@ -22,7 +22,7 @@
           "Enabled": true,
           "Prefix": "poliza",
           "IncludeCookies": false,
-          "Bucket": "arn:aws:s3:::poliza-express-hogar-front"
+          "Bucket": "http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com"
         },
         "Aliases": {
           "Quantity":2,
