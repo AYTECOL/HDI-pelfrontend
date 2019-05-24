@@ -1,4 +1,5 @@
 import Api from './Api';
+import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
 
 const BaseUrl = "/";
 
@@ -30,15 +31,15 @@ class ValorationById {
                     reguladordevoltaje: item.seguridad.regulador_de_voltaje,
                 },
                 inmuebleasegudado: item.inmueble_asegudado,
-                inmuebleasegudadovalor: item.inmueble_asegudadovalor,
+                inmuebleasegudadovalor: Masknumbermoney.formatToMask(item.inmueble_asegudadovalor),
                 contenidoasegudado: item.contenido_asegudado,
-                contenidoasegudadovalor: item.contenido_asegudado_valor,
+                contenidoasegudadovalor: Masknumbermoney.formatToMask(item.contenido_asegudado_valor),
                 inmuebleasegudadojoyas: item.inmueble_asegudado_joyas,
-                inmuebleasegudadojoyasvalor: item.inmueble_asegudado_joyasvalor,
+                inmuebleasegudadojoyasvalor: Masknumbermoney.formatToMask(item.inmueble_asegudado_joyasvalor),
                 inmuebleasegudadoobras: item.inmueble_asegudado_obras,
-                inmuebleasegudadoobrasvalor: item.inmueble_asegudado_obrasvalor,
+                inmuebleasegudadoobrasvalor: Masknumbermoney.formatToMask(item.inmueble_asegudado_obrasvalor),
                 inmuebleasegudadotelefonos: item.inmueble_asegudado_telefonos,
-                inmuebleasegudadotelefonosvalor: item.inmueble_asegudado_telefonosvalor
+                inmuebleasegudadotelefonosvalor: Masknumbermoney.formatToMask(item.inmueble_asegudado_telefonosvalor)
             };
         } else {
             return null;

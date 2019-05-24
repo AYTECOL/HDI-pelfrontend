@@ -77,6 +77,20 @@
 }
 
 .index-form.emision.informacion-adicioonal {
+
+  .gridgrid{
+    padding-top: 20px;
+  }
+  p{
+    margin-bottom: 0;
+  }
+
+  .moreitems{
+    .row.sarlaft p{
+      max-width: 234px !important;
+    }
+  }
+
   .row {
     max-width: 614px;
 

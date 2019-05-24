@@ -85,6 +85,12 @@ export default class Persona extends Component {
         } else if (this.state.typePerson === 4) {
             this.state.total = 3;
         }
+
+        if( typeof this.props.disabledAll !== "undefined" ){
+            for(let i in this.state.person){
+                this.state.person[i+"Disabled"] = true;
+            }
+        }
     }
 
     componentDidMount() {
@@ -364,6 +370,7 @@ export default class Persona extends Component {
                                     <CheckBoxes person={this.state.person}
                                                 changeValue={this.changeValue}
                                                 typePerson={this.props.typePerson}
+                                                disabledAll={this.props.disabledAll}
                                                 exitsTomador={this.state.exitsTomador}
                                                 hasAccident={this.props.hasAccident}
                                                 hasExequias={this.props.hasExequias} />
@@ -699,7 +706,7 @@ export default class Persona extends Component {
                                         </div>
                                     </div>
                                     }
-                                    {(this.state.typePerson === 1 && this.state.person.sarlfaltActive === false) &&
+                                    {(this.state.typePerson === 1 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
                                     <div
                                         className={"row sarlaft"}>
                                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -727,6 +734,7 @@ export default class Persona extends Component {
                                     </div>
                                     }
 
+                                    {typeof this.props.disabledAll === "undefined" &&
                                     <div className="row">
                                         <div className="col">
                                             <div className={"msj-total"}>
@@ -735,18 +743,23 @@ export default class Persona extends Component {
                                             </div>
                                         </div>
                                     </div>
-
-                                </div>
-
-                                <div className="buttons">
-                                    {this.state.msj4 === true &&
-                                        <p className="error">Falta información requerida para el Contacto. Por favor revise los detalles de los datos de Contacto</p>
                                     }
-                                    <button className="btn btn-primary" type="button" onClick={() => {
-                                        this.validateAll(null , true, true)
-                                    }}>Continuar
-                                    </button>
+
                                 </div>
+
+                                {typeof this.props.disabledAll === "undefined" &&
+                                <React.Fragment>
+                                    <div className="buttons">
+                                        {this.state.msj4 === true &&
+                                        <p className="error">Falta información requerida para el Contacto. Por favor revise los detalles de los datos de Contacto</p>
+                                        }
+                                        <button className="btn btn-primary" type="button" onClick={() => {
+                                            this.validateAll(null , true, true)
+                                        }}>Continuar
+                                        </button>
+                                    </div>
+                                </React.Fragment>
+                                }
                             </div>
                         </div>
                     </div>

@@ -117,7 +117,7 @@ class Tab extends Component {
                             </div>
                             <div className="wrapper-box asistencias">
                                 {option.values.map((opt, k) =>
-                                    <div className="rowor" key={k}>
+                                    <div className={"rowor "+(opt.optional === false?'disabled-item':'')} key={k}>
                                         <div className="row">
                                             <div
                                                 className="col col-12 col-sm-12 col-md-12 col-lg-12 asistencia items-checkboxes">
@@ -135,7 +135,7 @@ class Tab extends Component {
                                                     {opt.assists.map((opt, i) =>
                                                         <div className="row" key={i}>
                                                             <div
-                                                                className="col col-12 col-sm-12 col-md-12 col-lg-12 items-checkboxes">
+                                                                className={"col col-12 col-sm-12 col-md-12 col-lg-12 items-checkboxes "+(opt.optional === false?'disabled':'')}>
                                                                 <input type="checkbox"
                                                                        name={"itemm" + k + "_" + key + "_" + i}
                                                                        id={"itemm" + k + "_" + key + "_" + i}

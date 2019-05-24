@@ -4,6 +4,7 @@ import store from '../../../../../store';
 import {saveInmuebleValueSeguridad} from '../../../../../actions';
 
 import './Elementoseguridad.scss';
+import AllSecurity from "../../../../../services/AllSecurity";
 
 class Elementoseguridad extends Component {
 
@@ -18,6 +19,30 @@ class Elementoseguridad extends Component {
             circuitocerradotv: 0,
             vigilanciapermanente: 0,
             reguladordevoltaje: 0,
+            data: [],
+            keys: {
+                "1": {
+                    name: "alarma",
+                },
+                "2": {
+                    name: "cajafuerte"
+                },
+                "3": {
+                    name: "circuitocerradotv"
+                },
+                "4": {
+                    name: "reguladordevoltaje"
+                },
+                "5": {
+                    name: "puertascontroldomotico"
+                },
+                "6": {
+                    name: "puertasseguridadblindada"
+                },
+                "7": {
+                    name: "vigilanciapermanente"
+                },
+            }
         };
 
         store.subscribe(async () => {
@@ -56,9 +81,18 @@ class Elementoseguridad extends Component {
                 });
             }
         });
+        this.getData();
     }
 
-    saveValue = e => event => {
+    async getData(){
+        let data = await AllSecurity.get();
+        this.setState({
+            ...this.state,
+            data: data
+        })
+    }
+
+    saveValue = e => () => {
         if (this.state[e.name] === 1) {
             e.value = 0;
         } else if (this.state[e.name] === 0) {
@@ -80,85 +114,20 @@ class Elementoseguridad extends Component {
                     inmueble</p>
                 <ul className="items-checkboxes">
                     <li className="row">
-                        <div className="col col-12 col-md-6">
-                            <input type="checkbox"
-                                   checked={(this.state.alarma === 0 || this.state.alarma === "" ? false : 'checked')}
-                                       name="alarma"
-                                   id="alarma"
-                                   onChange={this.saveValue({
-                                       value: 1,
-                                       name: "alarma"
-                                   })}/>
-                            <label htmlFor="alarma">Alarma monitoreada</label>
-                        </div>
-                        <div className="col col-12 col-md-6">
-                            <input type="checkbox"
-                                   checked={(this.state.cajafuerte === 0 || this.state.cajafuerte === "" ? false : 'checked')}
-                                       name="cajafuerte" id="cajafuerte"
-                                   onChange={this.saveValue({
-                                       value: 1,
-                                       name: "cajafuerte"
-                                   })}/>
-                            <label htmlFor="cajafuerte">Puertas con control domótica</label>
-                        </div>
+                        {this.state.data.map((item,key) =>
+                            <div key={item.id} className="col col-12 col-md-6 lirow">
+                                <input type="checkbox"
+                                       checked={this.state[this.state.keys[item.id].name]}
+                                       name={this.state.keys[item.id].name}
+                                       id={this.state.keys[item.id].name}
+                                       onChange={this.saveValue({
+                                           value: 1,
+                                           name: this.state.keys[item.id].name
+                                       })}/>
+                                <label htmlFor={this.state.keys[item.id].name}>{item.description}</label>
+                            </div>
+                        )}
                     </li>
-                    <li className="row">
-                        <div className="col col-12 col-md-6">
-                            <input type="checkbox"
-                                   checked={(this.state.puertascontroldomotico === 0 || this.state.puertascontroldomotico === "" ? false : 'checked')}
-                                       name="puertascontroldomotico" id="puertascontroldomotico"
-                                   onChange={this.saveValue({
-                                       value: 1,
-                                       name: "puertascontroldomotico"
-                                   })}/>
-                            <label htmlFor="puertascontroldomotico">Caja fuerte</label>
-                        </div>
-                        <div className="col col-12 col-md-6">
-                            <input type="checkbox"
-                                   checked={(this.state.puertasseguridadblindada === 0 || this.state.puertasseguridadblindada === "" ? false : 'checked')}
-                                       name="puertasseguridadblindada" id="puertasseguridadblindada"
-                                   onChange={this.saveValue({
-                                       value: 1,
-                                       name: "puertasseguridadblindada"
-                                   })}/>
-                            <label htmlFor="puertasseguridadblindada">Puerta de seguridad blindada</label>
-                        </div>
-                    </li>
-                    <li className="row">
-                        <div className="col col-12 col-md-6">
-                            <input type="checkbox"
-                                   checked={(this.state.circuitocerradotv === 0 || this.state.circuitocerradotv === "" ? false : 'checked')}
-                                       name="circuitocerradotv" id="circuitocerradotv"
-                                   onChange={this.saveValue({
-                                       value: 1,
-                                       name: "circuitocerradotv"
-                                   })}/>
-                            <label htmlFor="circuitocerradotv">Circuito cerrado de televisión</label>
-                        </div>
-                        <div className="col col-12 col-md-6">
-                            <input type="checkbox"
-                                   checked={(this.state.vigilanciapermanente === 0 || this.state.vigilanciapermanente === "" ? false : 'checked')}
-                                       name="vigilanciapermanente" id="vigilanciapermanente"
-                                   onChange={this.saveValue({
-                                       value: 1,
-                                       name: "vigilanciapermanente"
-                                   })}/>
-                            <label htmlFor="vigilanciapermanente">Vigilancia permanente</label>
-                        </div>
-                    </li>
-                    <li className="row">
-                        <div className="col col-12 col-md-6">
-                            <input type="checkbox"
-                                   checked={(this.state.reguladordevoltaje === 0 || this.state.reguladordevoltaje === "" ? false : 'checked')}
-                                       name="reguladordevoltaje" id="reguladordevoltaje"
-                                   onChange={this.saveValue({
-                                       value: 1,
-                                       name: "reguladordevoltaje"
-                                   })}/>
-                            <label htmlFor="reguladordevoltaje">Regulador de voltaje</label>
-                        </div>
-                    </li>
-
                 </ul>
             </div>
         );
