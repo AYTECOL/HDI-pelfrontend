@@ -1,56 +1,54 @@
 {
-          "CallerReference": "2010-09-09",
-          "Origins": {
-            "Quantity": 2,
-            "Items":[{
-              "Id": "polizaExpressHogarFront",
-              "DomainName": "hogar.libertyseguros.co",
-              "S3OriginConfig": {
-                "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
-              }
+  "CallerReference": "2010-09-09",
+    "Origins": {
+        "Items":[
+        {
+            "S3OriginConfig": {
+              "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
             },
-            {
-              "Id": "libertyseguros",
-              "DomainName": " arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809" 
-            }
-          ]
-          },
-        "Enabled": true,
-        "Comment": "Some comment",
-        "DefaultRootObject": "index.html",
-        "Logging": {
-          "Enabled": true,
-          "Prefix": "poliza",
-          "IncludeCookies": false,
-          "Bucket": "poliza-express-hogar-front.s3.amazonaws.com"
-        },
-        "Aliases": {
-          "Quantity":2,
-          "Items": [
-            "hogar-uat.libertyseguros.co", 
-            "hogar.libertyseguros.co"
-          ]
-        },
-        "DefaultCacheBehavior": {
-          "AllowedMethods": {"Quantity":2,
-            "Items": ["DELETE", "GET", "OPTIONS", "POST", "PUT"] },
-          "TargetOriginId": "WebApp",
-          "ForwardedValues": {
-            "QueryString": false,
-            "Cookies": {
+            "DomainName": " poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com",
+            "Enabled": true,
+            "IncludeCookies": false
+        }
+        ],
+        "Quantity": 1
+    },
+    "Enabled": true,
+    "Comment": "cloudfront de liberty hogar",
+    "DefaultRootObject": "index.html",
+    "Aliases": {
+      "Quantity":1,
+        "Items": [
+          "hogar-uat.libertyseguros.co"
+        ]
+    },
+    "DefaultCacheBehavior": {
+      "AllowedMethods": {
+        "Quantity":2,
+        "Items": [
+          "DELETE", 
+          "GET", 
+          "OPTIONS", 
+          "POST", 
+          "PUT"
+        ] 
+      },
+    "TargetOriginId": "WebApp",
+      "ForwardedValues": {
+        "QueryString": false,
+          "Cookies": {
               "Forward": "none"
-            }
-          },
-          "TrustedSigners": {
-            "Enabled":false,
-            "Quantity": 0
-          },
-          "MinTTL": 1,
-          "ViewerProtocolPolicy": "allow-all"
-        },
-        "PriceClass": "PriceClass_200",
-        "ViewerCertificate": {
-          "CloudFrontDefaultCertificate": true
-        }
-
-        }
+          }
+      },
+      "TrustedSigners": {
+        "Enabled":false,
+        "Quantity": 0
+      },
+      "MinTTL": 1,
+      "ViewerProtocolPolicy": "allow-all"
+    },
+    "PriceClass": "PriceClass_200",
+    "ViewerCertificate": {
+      "CloudFrontDefaultCertificate": true
+    }
+}
