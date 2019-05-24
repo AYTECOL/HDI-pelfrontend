@@ -224,19 +224,14 @@ class Index extends Component {
         let disableBtn = this.state.disableBtn;
         let limits = this.state.limits[contents[key].type];
         let v = Masknumbermoney.formatToNumber(e.target.value);
-        if( v < limits.min ) {
-            contents[key]['error1'] = true;
-            disableBtn = true;
-        }else{
+        if( v > limits.min && v < limits.max ) {
             contents[key]['error1'] = false;
-            disableBtn = false;
-        }
-        if( v > limits.max ) {
-            contents[key]['error2'] = true;
-            disableBtn = true;
-        }else{
             contents[key]['error2'] = false;
             disableBtn = false;
+        }else{
+            if( v < limits.min ) contents[key]['error1'] = true;
+            if( v > limits.max ) contents[key]['error2'] = true;
+            disableBtn = true;
         }
         contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
         this.setState({
