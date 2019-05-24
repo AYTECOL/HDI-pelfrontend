@@ -1,12 +1,28 @@
 {
   "CallerReference": "2010-09-09",
+  "OriginAccessIdentity": {
+    "Type" : "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    "Properties" : {
+        "CloudFrontOriginAccessIdentityConfig" : {
+            "Comment": "cloudfront de liberty hogar"
+        }
+    }
+  },
     "Origins": {
         "Items":[
         {
             "OriginPath": "",
-            "S3OriginConfig": {
-              "OriginAccessIdentity": "origin-access-identity/cloudfront/"
-            },
+            "S3OriginConfig":  {
+              "Fn::Join": [
+                  "",
+                  [
+                      "origin-access-identity/cloudfront/",
+                      {
+                          "Ref": "OriginAccessIdentity"
+                      }
+                  ]
+              ]
+          },
             "Id": "WebApp",
             "DomainName": "poliza-express-hogar-front.s3.amazonaws.com"
         }
