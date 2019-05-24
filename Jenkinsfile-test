@@ -9,7 +9,7 @@ node('linux'){
 	stage('Git Checkout'){
 		checkout scm develop
 	}
-	
+
 	stage('Dev Deploy') {
 		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
         
@@ -28,6 +28,14 @@ node('linux'){
 		}
 	}
 	
+	stage('cloudfront'){
+		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+      echo "Inicia el cloud front"
+				sh 'aws cloudfront  create-distribution --distribution-config file://distconfig.json'
+		  echo "Finaliza el cloud front"
+		}     
+  }
+
 	stage('Completion Email'){
 		    
 	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
