@@ -10,7 +10,7 @@
                   [
                       "origin-access-identity/cloudfront/",
                       {
-                          "Ref": "OriginAccessIdentity"
+                          "Ref": "ebonds-front-infr"
                       }
                   ]
               ]
