@@ -21,8 +21,9 @@
         "Logging": {
           "Enabled": true,
           "Prefix": "poliza",
-          "IncludeCookies": false
-              },
+          "IncludeCookies": false,
+          "Bucket": "poliza-express-hogar-front"
+        },
         "Aliases": {
           "Quantity":2,
           "Items": [
