@@ -7,7 +7,7 @@
               "OriginAccessIdentity": "origin-access-identity/cloudfront/libertyhome-dev-app"
             },
             "Id": "WebApp",
-            "DomainName": " poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com"
+            "DomainName": "poliza-express-hogar-front.s3.amazonaws.com"
         }
         ],
         "Quantity": 1
