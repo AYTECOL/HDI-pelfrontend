@@ -22,7 +22,7 @@
           "Enabled": true,
           "Prefix": "poliza",
           "IncludeCookies": false,
-          "Bucket": "poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com"
+          "Bucket": "poliza-express-hogar-front.s3.amazonaws.com"
         },
         "Aliases": {
           "Quantity":2,
