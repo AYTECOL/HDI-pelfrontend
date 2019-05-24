@@ -22,29 +22,20 @@ class BtnContinue extends Component {
         };
     }
 
-    saveAndExit = () => {
-        Helpers.goToHome();
-    };
-
-    nextStep = async () => {
+    nextStep = total => async () => {
         let state = this.props.state;
+        let status = true;
 
         //Validations
         if( state.celulares === true ){
             console.log(state.contents);
-            let status = false;
             for (let i = 0; i < state.contents.length; i++) {
-                if( state.contents[i].type === 5 ) {
-                    status = true;
+                if( state.contents[i].uploaded !== true && typeof state.contents[i].doc === "undefined" ){
+                    status = false;
                 }
-            }
-            if (status === false){
-                this.props.toggleErrorPhone(true);
-                return;
+                if (status === false && state.contents[i].type === 4) this.props.toggleErrorPhone(true);
             }
         }
-        return;
-
 
 
         for (let i = 0; i < state.contents.length; i++) {
@@ -78,9 +69,15 @@ class BtnContinue extends Component {
             "goods_over_cost": state.contents
         });
 
-        store.dispatch(NextStep(6));
-        await SaveIdentifications.save();
-        window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
+        if( typeof total !== "undefined" ){
+            if( status === true ){
+                store.dispatch(NextStep(6));
+                await SaveIdentifications.save();
+                window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
+            }
+        }else{
+            Helpers.goToHome();
+        }
     };
 
     render() {
@@ -90,12 +87,12 @@ class BtnContinue extends Component {
                     <a href={this.state.comeBack}><i className="back-icon">&nbsp;</i>Volver</a>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={this.saveAndExit}>Guardar y salir
+                        onClick={this.nextStep(undefined)}>Guardar y salir
                 </button>
                 <button type="button"
                         disabled={this.props.disable}
                         className={"btn btn-primary "+(this.props.disable===true?'disabled':'')}
-                        onClick={this.nextStep}>Continuar
+                        onClick={this.nextStep(true)}>Continuar
                 </button>
             </Fragment>
         );
