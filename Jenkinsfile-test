@@ -25,7 +25,7 @@ node('linux'){
 				aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
 			"""
 			 echo "Inicia el cloud front"
-				sh 'aws cloudfront  create-distribution --distribution-config file://serverless.yml'
+				sh 'sls deploy'
 		  echo "Finaliza el cloud front"
 		}
 	}
