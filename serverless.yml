@@ -40,7 +40,7 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-              Principal: {"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity", { Ref: WebsiteOriginAccessIdentity } ] ] }
+              Principal:
               CanonicalUser:
                     {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
@@ -63,7 +63,7 @@ resources:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-           - hogar.libertyseguros.co
+           - hogar-uat.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -80,7 +80,7 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/264da02c-42e8-40c8-ad52-dd8aa33ba74b
+            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
