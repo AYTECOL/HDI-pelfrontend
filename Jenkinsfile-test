@@ -13,6 +13,7 @@ node('linux'){
 	stage('Dev Deploy') {
 		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
 			sh """
+            	 aws s3 mb s3://$BUCKET_NAME
 				ls -ltr
                 npm install	
 				npm run-script build
