@@ -55,9 +55,9 @@ class Tab extends Component {
             Inmueble: inmueble,
             typePlans: type,
         });
-        setTimeout(function () {
+        setTimeout(() => {
             this.getPlants();
-        }.bind(this), 4);
+        }, 4);
     }
 
     async getPlants() {

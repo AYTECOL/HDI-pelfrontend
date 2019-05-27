@@ -943,3 +943,12 @@ body #root .cotizacion .container .tool-tip-hover{
     text-align: left;
   }
 }
+
+.msj-box{
+  p.error{
+    text-align: left;
+    color: $error-fields;
+    margin-bottom: 0;
+    font-size: 14px;
+  }
+}

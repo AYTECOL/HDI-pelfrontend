@@ -14,7 +14,9 @@ class Tab extends Component {
         this.state = {
             index: 1,
             plans: store.getState().AllPlans,
-            assistsTotal: 0
+            assistsTotal: 0,
+            error1: false,
+            error2: false,
         };
         for (let i = 0; i < 3; i++) {
             this.state.plans[i] = {
@@ -37,9 +39,9 @@ class Tab extends Component {
                         index: index,
                         plans: plans
                     });
-                    setTimeout(function () {
+                    setTimeout(() => {
                         this.countAsistencias();
-                    }.bind(this), 100);
+                    }, 100);
                 }
             }
         });
@@ -67,35 +69,91 @@ class Tab extends Component {
     async sendAndValidate(){
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
-        let total = await DeterminePolizaPrima.get(this.props.match.params.id);
-        if( typeof total.total_pay_prospect !== "undefined" ){
-            let plans = this.state.plans;
-            plans[this.state.index].value = total.total_pay_prospect;
-            store.dispatch(AllPlansCreator(plans));
+        try {
+            let total = await DeterminePolizaPrima.get(this.props.match.params.id);
+            if( typeof total.total_pay_prospect !== "undefined" ){
+                let plans = this.state.plans;
+                plans[this.state.index].value = total.total_pay_prospect;
+                store.dispatch(AllPlansCreator(plans));
+                Loading.toggle(false);
+            }
+        }catch (e) {
             Loading.toggle(false);
         }
+    }
+
+    isCheckedAssistsByCode(code){
+        let index = this.state.index;
+        let status = false;
+        for (let i = 0; i < this.state.plans[index].assists.length; i++) {
+            for (let j = 0; j < this.state.plans[index].assists[i].values.length; j++) {
+                for (let k = 0; k < this.state.plans[index].assists[i].values[j].assists.length; k++) {
+                    if( parseInt(this.state.plans[index].assists[i].values[j].assists[k].code) === parseInt(code) ){
+                        status = this.state.plans[index].assists[i].values[j].assists[k].checked;
+                    }
+                }
+            }
+        }
+        return status;
+    }
+
+    unCheckAssistsNextsByKey(key){
+        let index = this.state.index;
+        let newPlans = this.state.plans;
+        for (let i = 0; i < newPlans[index].assists.length; i++) {
+            for (let j = 0; j < newPlans[index].assists[i].values.length; j++) {
+                for (let k = 0; k < newPlans[index].assists[i].values[j].assists.length; k++) {
+                    if( k >= key ) newPlans[index].assists[i].values[j].assists[k].checked = false;
+                }
+            }
+        }
+        return newPlans;
     }
 
     checkAsistencia = (index, key, k, i, parent) => e => {
         let check;
         let newPlans;
+        let error1 = false;
+        let error2 = false;
         if (typeof parent !== 'undefined') {
             check = this.state.plans[index].assists[key].values[k].checked;
             newPlans = this.state.plans;
             newPlans[index].assists[key].values[k].checked = !check;
+            if( !check === false ) newPlans = this.unCheckAssistsNextsByKey(0);
         } else {
             check = this.state.plans[index].assists[key].values[k].assists[i].checked;
             newPlans = this.state.plans;
-            newPlans[index].assists[key].values[k].assists[i].checked = !check;
+            if( parseInt(newPlans[index].assists[key].values[k].assists[i].code) === 9695 ){
+                if( newPlans[index].assists[key].values[k].checked === false ){
+                    error1 = true;
+                    error2 = false;
+                }else{
+                    newPlans[index].assists[key].values[k].assists[i].checked = !check;
+                    if( !check === false ) newPlans = this.unCheckAssistsNextsByKey(i);
+                }
+            }else{
+                if( this.isCheckedAssistsByCode(9695) === false ){
+                    error1 = false;
+                    error2 = true;
+                }else{
+                    newPlans[index].assists[key].values[k].assists[i].checked = !check;
+                }
+            }
         }
         this.setState({
             ...this.state,
-            plans: newPlans
+            plans: newPlans,
+            error1: error1,
+            error2: error2,
         });
-        this.countAsistencias();
-        setTimeout(()=>{
-            this.sendAndValidate();
-        },500);
+        if( error1 === false && error2 === false ){
+            setTimeout(()=>{
+                this.countAsistencias();
+            },250);
+            setTimeout(()=>{
+                this.sendAndValidate();
+            },500);
+        }
     };
 
     render() {
@@ -157,6 +215,11 @@ class Tab extends Component {
                                     </div>
                                 )}
                             </div>
+                            <div className="msj-box">
+                                <p className={"error "+(this.state.error1 === true?'show':'hide')}>Por favor seleccione la Asistencia Básica</p>
+                                <p className={"error "+(this.state.error2 === true?'show':'hide')}>Por favor seleccione la Asistencia Básica y la Asistencia Hogar Plus</p>
+                            </div>
+
                         </div>
                     </div>
                 )}

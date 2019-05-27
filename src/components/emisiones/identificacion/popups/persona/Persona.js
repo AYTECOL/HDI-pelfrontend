@@ -215,13 +215,21 @@ export default class Persona extends Component {
                     person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
                 }
 
-                person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
-                person.ciudadDisabled = true;
-                person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
-                person.addressDisabled = true;
+                if( typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined" ){
+                    if( typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined" ){
+                        person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+                        person.addressDisabled = true;
 
-                person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
-                person.adresstypeDisabled = true;
+                        if( typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined" ) {
+                            person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                            person.ciudadDisabled = true;
+                        }
+                        if( typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined" ) {
+                            person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                            person.adresstypeDisabled = true;
+                        }
+                    }
+                }
 
                 person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
                 person.sarlfaltActiveDisabled = true;
@@ -231,6 +239,7 @@ export default class Persona extends Component {
                     userRestricted: false,
                     personExists: true
                 });
+
                 Loading.toggle(false);
             }
         } catch (e) {
@@ -750,7 +759,7 @@ export default class Persona extends Component {
                                 {typeof this.props.disabledAll === "undefined" &&
                                 <React.Fragment>
                                     <div className="buttons">
-                                        {this.state.msj4 === true &&
+                                        {(this.state.msj4 === true && this.state.typePerson === 4) &&
                                         <p className="error">Falta información requerida para el Contacto. Por favor revise los detalles de los datos de Contacto</p>
                                         }
                                         <button className="btn btn-primary" type="button" onClick={() => {

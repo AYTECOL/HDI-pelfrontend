@@ -197,9 +197,9 @@ class Cards extends Component {
                 ...this.state,
                 items: newItems
             });
-            setTimeout(function () {
+            setTimeout(() => {
                 this.getInspectionPolicy();
-            }.bind(this),300);
+            },300);
         }
     }
 

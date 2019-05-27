@@ -59,7 +59,7 @@ class AutocompleteCities extends Component {
                 options: data,
                 originalOptions: data
             });
-            setTimeout(function () {
+            setTimeout(() => {
                 it.getTextById();
             }, 300);
         }
@@ -87,13 +87,13 @@ class AutocompleteCities extends Component {
             v = v.target.value;
             let empty = false;
             if (v === "") empty = true;
-            setTimeout(function () {
+            setTimeout(() => {
                 this.setState({
                     ...this.state,
                     toggle: false,
                     empty: empty
                 });
-            }.bind(this), 200);
+            }, 200);
         }
     };
 
@@ -102,7 +102,7 @@ class AutocompleteCities extends Component {
         let value = option.description;
         let description = option.department;
         let codeDepartment = option.code_department;
-        setTimeout(function () {
+        setTimeout(()=>{
             store.dispatch(saveIdentificationValue({
                 name: "city",
                 value: code
@@ -125,7 +125,7 @@ class AutocompleteCities extends Component {
                     }
                 });
             }
-        }.bind(this), 200);
+        }, 200);
     };
 
     searchData = value => {
@@ -193,7 +193,7 @@ class AutocompleteCities extends Component {
                 ...this.state,
                 options: options
             });
-            setTimeout(function () {
+            setTimeout(() => {
                 if (Helpers.hasClass(element, 'active')) Helpers.scrollToElement(element, ".form-group.autocomplete .list-items", 'auto', true);
             }, 100);
         }

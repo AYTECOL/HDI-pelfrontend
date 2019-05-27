@@ -39,7 +39,7 @@ class Helpers {
         let el = document.querySelector(selector);
         let className = "disabled";
         if (el != null) {
-            if (el.className.indexOf(className) === -1) {
+            if (el.className.indexOf(className) !== -1) {
                 el.className = el.className.replace(" " + className, "");
                 el.removeAttribute(className);
             }
