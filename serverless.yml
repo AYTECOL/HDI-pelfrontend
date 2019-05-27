@@ -81,9 +81,9 @@ resources:
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
-          ViewerCertificate:
-            AcmCertificateArn: arn:aws:iam::710809157942:server-certificate/AWSDEVEXT.LIBERTYCOLOMBIA.COM.CO_SAN_2018
-            SslSupportMethod: sni-only
+          #ViewerCertificate:
+            #AcmCertificateArn: arn:aws:iam::710809157942:server-certificate/AWSDEVEXT.LIBERTYCOLOMBIA.COM.CO_SAN_2018
+            #SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:
