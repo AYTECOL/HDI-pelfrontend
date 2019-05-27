@@ -21,6 +21,7 @@ functions:
   hello:
     handler: handler.hello
 
+    
 resources:
   Resources:
     WebAppS3Bucket:
