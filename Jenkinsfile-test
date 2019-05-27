@@ -35,8 +35,8 @@ node('linux'){
                 dir('dist/andino-flex-touch-front'){
                     sh 'pwd'
                     sh 'ls'
+					sh 'SLS_DEBUG=true'
                 }
-				sh 'SLS_DEBUG=true'
             }
         }
     }
