@@ -13,9 +13,10 @@ node('linux'){
 	stage('Dev Deploy') {
 		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
 			sh """
+            	pwd
+                ls
                 s3 rm s3://$BUCKET_NAME --recursive
                 ls -ltr
-				
 				npm install	
 				npm run-script build
 				ls -ltr
