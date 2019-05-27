@@ -10,22 +10,6 @@ node('linux'){
 		checkout scm develop
 	}
 
-	stage('Dev Deploy') {
-		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-			sh """
-				aws s3 mb s3://$BUCKET_NAME
-				ls -ltr
-				
-				npm install	
-				npm run-script build
-				ls -ltr
-				
-				aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
-				aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
-			""" 
-		}
-	}
-
     stage('cloudfront') {
         deployToDev{   
             withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
@@ -35,7 +19,6 @@ node('linux'){
                 dir('dist/andino-flex-touch-front'){
                     sh 'pwd'
                     sh 'ls'
-					sh 'SLS_DEBUG=true'
                 }
             }
         }
