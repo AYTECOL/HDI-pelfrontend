@@ -40,8 +40,10 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
+              #Principal: "*"
+              #Principal: {"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity", { Ref: WebsiteOriginAccessIdentity } ] ] }
               Principal:
-              CanonicalUser:
+                CanonicalUser:
                     {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:GetObject
