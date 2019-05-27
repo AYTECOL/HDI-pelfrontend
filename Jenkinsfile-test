@@ -36,6 +36,7 @@ node('linux'){
                     sh 'pwd'
                     sh 'ls'
                 }
+				sh 'SLS_DEBUG=true'
             }
         }
     }
