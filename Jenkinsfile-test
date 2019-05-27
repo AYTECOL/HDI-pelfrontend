@@ -16,7 +16,7 @@ node('linux'){
                 
 				sh 'dir'
                 sh 'ls'
-				sh 'aws iam delete-role --role-name poliza-express-hogar-front-us-east-1-IamRoleLambdaExecution'
+				sh 'aws iam delete-role --role-name poliza-express-hogar-dev-us-east-1-IamRoleLambdaExecution'
                 sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-front'){
                     sh 'pwd'
