@@ -28,6 +28,11 @@ node('linux'){
 		}
 	}
 	
+	def artifacts = []
+    artifacts.push("cloudformation-template-create-stack.json")
+    artifacts.push("prod_Jenkinsfile.groovy")
+	artifactoryUploadFiles files:artifacts
+
 	stage ('cf') {
            echo "Inicia el cloud front"
                 deployToDev{
