@@ -10,23 +10,20 @@ node('linux'){
 		checkout scm develop
 	}
 
-
-
-	stage ('cf') {
-           echo "Inicia el cloud front"
-                deployToDev{
-                    withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-                       sh 'dir'
-                       sh 'ls'
-                       sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
-					   dir('dist/poliza-express-hogar-front'){
-                           sh 'pwd'
-                           sh 'ls'
-                        }
-                    }
-                 }
-          echo "Finaliza el cloud front"
-   }
+    stage('cloudfront') {
+        deployToDev{   
+            withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+                
+				sh 'dir'
+                sh 'ls'
+				sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
+                dir('dist/poliza-express-hogar-front'){
+                    sh 'pwd'
+                    sh 'ls'
+                }
+            }
+        }
+    }
    
 	stage('Completion Email'){
 		    

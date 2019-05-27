@@ -11,7 +11,7 @@ provider:
         - Effect: "Allow"
           Action:
             - s3:PutItem
-            - s3:List*
+            #- s3:List*
           Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
@@ -40,8 +40,10 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
+              #Principal: "*"
+              #Principal: {"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity", { Ref: WebsiteOriginAccessIdentity } ] ] }
               Principal:
-              CanonicalUser:
+                CanonicalUser:
                     {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:GetObject
@@ -62,8 +64,8 @@ resources:
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
-          Aliases:
-           - hogar-dev.libertyseguros.co
+          #Aliases:
+          # - hogar-dev.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -79,10 +81,11 @@ resources:
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
-          ViewerCertificate:
-            AcmCertificateArn: arn:aws:iam::710809157942:server-certificate/AWSDEVEXT.LIBERTYCOLOMBIA.COM.CO_SAN_2018
-            SslSupportMethod: sni-only
+          #ViewerCertificate:
+            #AcmCertificateArn: arn:aws:iam::710809157942:server-certificate/AWSDEVEXT.LIBERTYCOLOMBIA.COM.CO_SAN_2018
+            #SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+        
