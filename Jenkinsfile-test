@@ -10,23 +10,23 @@ node('linux'){
 		checkout scm develop
 	}
 
+	stage('Dev Deploy') {
+		withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+			sh """
+				aws s3 mb s3://$BUCKET_NAME
+				ls -ltr
+				
+				npm install	
+				npm run-script build
+				ls -ltr
+				
+				aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
+				aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
+			""" 
+		}
+	}
 
 
-	stage ('cf') {
-           echo "Inicia el cloud front"
-                deployToDev{
-                    withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-                       sh 'dir'
-                       sh 'ls'
-                       sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
-					   dir('dist/poliza-express-hogar-front'){
-                           sh 'pwd'
-                           sh 'ls'
-                        }
-                    }
-                 }
-          echo "Finaliza el cloud front"
-   }
    
 	stage('Completion Email'){
 		    
