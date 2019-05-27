@@ -346,10 +346,11 @@ class Index extends Component {
                             </div>
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                 <div className="form-group "><label
-                                    htmlFor="area">Metros construidos de vivienda (Opcional)</label>
+                                    htmlFor="area">Metros construidos de vivienda (m2) (Opcional)</label>
                                     <input type="text" className="form-control number" name="area"
                                            value={this.state.area} onChange={this.changeValue}
                                            placeholder={"Ingresa el tamaño de la vivienda"}/>
+                                    <small>Ingresa la información en M2</small>
                                 </div>
                             </div>
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -422,6 +423,11 @@ class Index extends Component {
                                             el número IMEI de cada teléfono móvil. </p>
                                     </div>
                                     }
+                                    <div className="col col-sm-12 col-md-12 col-lg-12">
+                                        <p className="text-center">Es importante conocer este tipo de artículos, esto nos permite al momento del siniestro <br/>
+
+                                            responder de forma efectiva de acuerdo a la necesidad. </p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -436,7 +442,11 @@ class Index extends Component {
                                                         <select className="form-control" name="type" id="type" value={item.type} onChange={this.updateContent(key)}>
                                                             <option value="0"></option>
                                                             {this.state.items.map((i,k)=>
-                                                                <option value={k} key={k}>{i}</option>
+                                                                <React.Fragment key={k}>
+                                                                    { ((this.state.contenidos === true && k === 0) || (this.state.obras === true && k === 1) || (this.state.joyas === true && k === 2) || (this.state.celulares === true && k === 3)) &&
+                                                                    <option value={k}>{i}</option>
+                                                                    }
+                                                                </React.Fragment>
                                                             )}
                                                         </select>
                                                     </div>

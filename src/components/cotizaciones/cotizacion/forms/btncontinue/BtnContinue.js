@@ -5,6 +5,8 @@ import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
 import NewPlanSelected from "../../../../../services/NewPlanSelected";
 import store from "../../../../../store";
+import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
+import Loading from "../../../../globals/loading/Loading";
 
 class BtnContinue extends Component {
 
@@ -22,14 +24,17 @@ class BtnContinue extends Component {
     }
 
     nextStep = async () => {
+        Loading.toggle(true);
         let storeState = store.getState();
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
         let plan = plans[index];
         plan['quote_id'] = this.props.match.params.id;
         plan['assists'][0]['selected_id'] = index;
+        await CreateOrUpdateValoration.save();
         await NewPlanSelected.get(plan);
         window.location.href = UrlSite + "/emision/1/" + this.state.id;
+        Loading.toggle(false);
     };
 
     saveAndExit = () => {
@@ -45,7 +50,7 @@ class BtnContinue extends Component {
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveAndExit}>Guardar y salir
                 </button>
-                <button type="button" className={"btn btn-primary"}
+                <button type="button" className={"btn btn-primary next-step"}
                         onClick={this.nextStep}>Iniciar emisión
                 </button>
             </Fragment>

@@ -8,6 +8,7 @@ import UploadFile from "../../../../../services/UploadFile";
 import store from "../../../../../store";
 import {NextStep} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
+import Loading from "../../../../globals/loading/Loading";
 
 class BtnContinue extends Component {
 
@@ -23,6 +24,7 @@ class BtnContinue extends Component {
     }
 
     nextStep = total => async () => {
+        Loading.toggle(true);
         let state = this.props.state;
         let status = true;
 
@@ -79,8 +81,10 @@ class BtnContinue extends Component {
                 window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
             }
         }else{
+            await SaveIdentifications.save();
             Helpers.goToHome();
         }
+        Loading.toggle(false);
     };
 
     render() {

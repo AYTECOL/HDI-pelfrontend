@@ -6,6 +6,7 @@ import Loading from "../../../globals/loading/Loading";
 import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import {AllPlans as AllPlansCreator} from "../../../../actions";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class Tab extends Component {
 
@@ -30,7 +31,7 @@ class Tab extends Component {
         store.subscribe(() => {
             let storeState = store.getState();
             if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
-                let plans = this.calcValue(storeState.AllPlans,storeState.indexPlan);
+                let plans = this.calcValue(storeState.AllPlans, storeState.indexPlan);
                 if (typeof plans !== "undefined") {
                     this.setState({
                         ...this.state,
@@ -38,24 +39,12 @@ class Tab extends Component {
                         Inmueble: storeState.Inmueble,
                         index: storeState.indexPlan,
                     });
-                    setTimeout(function () {
+                    setTimeout(() => {
                         this.countCoverturas();
-                    }.bind(this), 100);
+                    }, 100);
                 }
             }
         });
-    }
-
-    async sendAndValidate(){
-        Loading.toggle(true);
-        await CreateOrUpdateValoration.save();
-        let total = await DeterminePolizaPrima.get(this.props.match.params.id);
-        if( typeof total.total_pay_prospect !== "undefined" ){
-            let plans = this.state.plans;
-            plans[this.state.index].value = total.total_pay_prospect;
-            store.dispatch(AllPlansCreator(plans));
-            Loading.toggle(false);
-        }
     }
 
     static getSelectByItems(item) {
@@ -76,13 +65,25 @@ class Tab extends Component {
         return "";
     }
 
-    calcValue(plans, index){
+    async sendAndValidate() {
+        Loading.toggle(true);
+        await CreateOrUpdateValoration.save();
+        let total = await DeterminePolizaPrima.get(this.props.match.params.id);
+        if (typeof total.total_pay_prospect !== "undefined") {
+            let plans = this.state.plans;
+            plans[this.state.index].value = total.total_pay_prospect;
+            store.dispatch(AllPlansCreator(plans));
+            Loading.toggle(false);
+        }
+    }
+
+    calcValue(plans, index) {
         if (typeof plans[index] === "undefined") return;
         if (typeof plans[this.state.index] === "undefined") return;
         if (typeof plans[this.state.index].coverages === "undefined") return;
         for (let i = 0; i < plans[this.state.index].coverages.length; i++) {
             let d = plans[this.state.index].coverages[i].values;
-            if ( typeof d !== "undefined"){
+            if (typeof d !== "undefined") {
                 for (let j = 0; j < d.length; j++) {
                     if (typeof d[j].value !== "undefined") {
                         plans[this.state.index].coverages[i].values[j].value_show = this.getValueFields(d[j]);
@@ -117,9 +118,9 @@ class Tab extends Component {
             plans: newPlans
         });
         this.countCoverturas();
-        setTimeout(()=>{
+        setTimeout(() => {
             this.sendAndValidate();
-        },500);
+        }, 500);
     };
 
     getCoverangeById(id) {
@@ -175,12 +176,67 @@ class Tab extends Component {
         }
     }
 
+    getCoverangeByCode(code) {
+        let plans = this.state.plans[this.state.index].coverages;
+        let coverange = {};
+        for (let i = 0; i < plans.length; i++) {
+            if (typeof plans[i].values !== "undefined") {
+                for (let j = 0; j < plans[i].values.length; j++) {
+                    if (plans[i].values[j].code === code) {
+                        coverange = plans[i];
+                    }
+                }
+            }
+        }
+        return coverange;
+    }
+
     inputChange = (k, key, type) => e => {
+
+
         let plan = this.state.plans;
         let item = plan[this.state.index].coverages[key];
-        if (type === 1){
+
+        //Input
+        if (type === 1) {
+
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
-        } else if(type === 2) {
+            item.values[k].errors = [];
+
+            console.log(true);
+            if (parseInt(item.values[k].code) === 9692 || parseInt(item.values[k].code) === 3017 || parseInt(item.values[k].code) === 3008) {
+                let coverange = this.getCoverangeByCode(9667);
+                for (let i = 0; i < coverange.values.length; i++) {
+                    if (coverange.values[i].id === item.values[k].id) {
+                        if (Masknumbermoney.formatToNumber(coverange.values[i].value_show) < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
+                            let n = coverange.values[i].name.toUpperCase().replace('VALOR ', '');
+                            if (parseInt(item.values[k].code) === 3008) {
+                                item.values[k].errors.push('Valor asegurado del amparo ' + item.name + ', es mayor al reportado en “' + n + '” del amparo de INCENDIO ');
+                            } else {
+                                item.values[k].errors.push('Valor asegurado de ' + n + ' es mayor al reportado en INCENDIO');
+                            }
+                        }
+                    }
+                }
+
+                if (parseInt(item.values[k].code) === 3008) {
+                    if (500000000 < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
+                        item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es superior al permitido.');
+                    }
+                    if (0 >= Masknumbermoney.formatToNumber(item.values[k].value_show)) {
+                        item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es superior al permitido.');
+                    }
+                }
+
+                if (item.values[k].errors.length > 0) {
+                    Helpers.disabled('.next-step');
+                } else {
+                    Helpers.enabled('.next-step');
+                }
+            }
+
+            //Select
+        } else if (type === 2) {
             for (let i = 0; i < item.values[k].values.length; i++) item.values[k].values[i].default = false;
             item.values[k].values[e.target.value].default = true;
         }
@@ -228,14 +284,14 @@ class Tab extends Component {
                                         <Fragment>
                                             {option.values.map((opt, k) =>
                                                 <div
-                                                    className={"form-group " + (typeof opt.value !== 'undefined' ? '' : 'input-select')}
+                                                    className={"form-group " + (typeof opt.value !== 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '')}
                                                     key={k}>
                                                     <label htmlFor={"item" + k + "_" + key}>{opt.name}</label>
                                                     {typeof opt.value !== 'undefined' ? (
                                                         <input name={"item" + k + "_" + key}
                                                                id={"item" + k + "_" + key}
                                                                placeholder={opt.value_show}
-                                                               value={opt.value_show}
+                                                               value={typeof opt.value_show === "undefined" ? '$0' : opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
                                                                disabled={(option.optional === false)}
                                                                type="text" className={"form-control"}/>
@@ -250,6 +306,10 @@ class Tab extends Component {
                                                                         value={k}>{Masknumbermoney.formatToMask(opt.limit)}</option>
                                                             )}
                                                         </select>
+                                                    )}
+                                                    {typeof opt.errors !== "undefined" && opt.errors.map((item, key) =>
+                                                        <small key={key}
+                                                               className={"form-text only-errors"}>{item}</small>
                                                     )}
                                                 </div>
                                             )}

@@ -17,7 +17,7 @@ class Loading extends Component {
         if (status === true) {
             Helpers.removeClass('.app-loader', 'hide');
         } else {
-            setTimeout(function () {
+            setTimeout(() => {
                 Helpers.addClass('.app-loader', 'hide');
             }, 1000);
         }
@@ -25,13 +25,13 @@ class Loading extends Component {
 
     animation() {
         let status = true;
-        setInterval(function () {
+        setInterval(() => {
             status = !status;
             if (status === true) {
                 if (document.querySelector(".loader-background") !== null) {
                     document.querySelector(".loader-background").setAttribute("class", "loader-background active");
                 }
-                setTimeout(function () {
+                setTimeout(() => {
                     if (document.querySelector(".loader-background-2") !== null) {
                         document.querySelector(".loader-background-2").setAttribute("class", "loader-background-2");
                     }
@@ -40,7 +40,7 @@ class Loading extends Component {
                 if (document.querySelector(".loader-background-2") !== null) {
                     document.querySelector(".loader-background-2").setAttribute("class", "loader-background-2 active");
                 }
-                setTimeout(function () {
+                setTimeout(() => {
                     if (document.querySelector(".loader-background") !== null) {
                         document.querySelector(".loader-background").setAttribute("class", "loader-background");
                     }
