@@ -21,7 +21,7 @@ functions:
   hello:
     handler: handler.hello
 
-    
+
 resources:
   Resources:
     WebAppS3Bucket:
@@ -76,6 +76,8 @@ resources:
             AllowedMethods:
               - GET
               - HEAD
+              - POST 
+              - PUT
             TargetOriginId: WebApp
             ForwardedValues:
               QueryString: 'false'
