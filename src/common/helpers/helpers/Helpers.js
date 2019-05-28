@@ -239,7 +239,7 @@ class Helpers {
         let data = null;
         let queryString = window.location.search.replace("?","").split("&");
         let parameters = {};
-        window.history.pushState({}, document.title, "/");
+        window.history.pushState({}, document.title, window.location.pathname);
         for (let i = 0; i < queryString.length; i++) {
             let d = queryString[i].split("=");
             if( typeof d[1] !== "undefined" ) parameters[d[0]] = d[1];
