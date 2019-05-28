@@ -255,7 +255,6 @@ class Helpers {
             let dataRquest = localStorage.getItem('request');
             if( dataRquest !== null ) data = JSON.parse(Base64.decode(Base64.decode(Base64.decode(dataRquest))));
         }
-        Loading.toggle(false);
         return data;
     }
 }
