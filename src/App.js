@@ -39,6 +39,7 @@ class App extends Component {
                 ...this.state,
                 data: await Helpers.getUser()
             });
+            Loading.toggle(false);
         }
     }
 
