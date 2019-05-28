@@ -7,6 +7,7 @@ import NewPlanSelected from "../../../../../services/NewPlanSelected";
 import store from "../../../../../store";
 import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
 import Loading from "../../../../globals/loading/Loading";
+import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
 
 class BtnContinue extends Component {
 
@@ -23,6 +24,22 @@ class BtnContinue extends Component {
         this.state.comeBack += this.state.id;
     }
 
+    toNumberCoverrange(plan){
+        for (let i = 0; i < plan.coverages.length; i++) {
+            if ( typeof plan.coverages[i].values !== "undefined" ){
+                for (let j = 0; j < plan.coverages[i].values.length; j++) {
+                    let v = plan.coverages[i].values[j].value_show;
+                    if( typeof v !== "undefined" ){
+                        plan.coverages[i].values[j].value_show = Masknumbermoney.formatToNumber(v);
+                    }else{
+                        plan.coverages[i].values[j].value_show = 0;
+                    }
+                }
+            }
+        }
+        return plan;
+    }
+
     nextStep = async () => {
         Loading.toggle(true);
         let storeState = store.getState();
@@ -31,6 +48,9 @@ class BtnContinue extends Component {
         let plan = plans[index];
         plan['quote_id'] = this.props.match.params.id;
         plan['assists'][0]['selected_id'] = index;
+
+        plan = this.toNumberCoverrange(plan);
+
         await CreateOrUpdateValoration.save();
         await NewPlanSelected.get(plan);
         window.location.href = UrlSite + "/emision/1/" + this.state.id;
