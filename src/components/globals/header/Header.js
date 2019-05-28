@@ -7,9 +7,7 @@ class Header extends Component {
     render() {
         let path = this.props.location.pathname;
         let activeMenu1 = "";
-        if (path === "/") {
-            activeMenu1 = "active";
-        }
+        if (path === "/") activeMenu1 = "active";
         return (
             <header className="App-header">
                 <div className="header container">
@@ -22,7 +20,7 @@ class Header extends Component {
                                 <li className={activeMenu1}>
                                     <a href='/'><i className="icon1">&nbsp;</i>Mis negocios</a>
                                 </li>
-                                <li><a href="/#"><i className="icon2">&nbsp;</i>Andres Salamanca</a></li>
+                                <li><a href="/#"><i className="icon2">&nbsp;</i>{this.props.data !== null?this.props.data['name']:'User Name'}</a></li>
                                 <li className="logout"><a href="/#"><i className="icon3">&nbsp;</i>Salir</a></li>
                             </ul>
                         </div>
