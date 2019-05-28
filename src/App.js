@@ -11,13 +11,41 @@ import PolizaEmitida from './pages/polizaemitida/PolizaEmitida';
 import Emision from "./pages/emision/Emision";
 import NotFound from './pages/notfound/NotFound';
 import ErrorNetwork from './pages/errornetwork/ErrorNetwork';
+import Helpers from "./common/helpers/helpers/Helpers";
 
-// 1679a3669b8d17cb1ee3df8ed85e69986d4105f2
 class App extends Component {
+
+    _isMounted = false;
+
+    constructor(props){
+        super(props);
+        this.state = {
+            data: null
+        };
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+        this.getUser();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
+    async getUser(){
+        if( this._isMounted === true ){
+            this.setState({
+                ...this.state,
+                data: await Helpers.getUser()
+            });
+        }
+    }
+
     render() {
         return (
             <div className="App">
-                <Header/>
+                <Header data={this.state.data}/>
                 <main>
                     <Switch>
                         <Route exact path="/" component={Home}/>
