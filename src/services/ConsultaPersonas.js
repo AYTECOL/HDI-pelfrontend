@@ -1,14 +1,7 @@
 import Service from './Api';
 
-// const UrlServicePerson = "https://4yt70dl1a7.execute-api.us-east-1.amazonaws.com/dev/flex/";
 const UrlServicePerson = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev/";
 const Baseurl = "consultarpersona";
-
-/*class Consultapersonas {
-    static async get(type, value) {
-        return await Service.post(Baseurl + type + "/" + value, {}, "");
-    };
-}*/
 
 class Consultapersonas {
     static async get(type, value) {
@@ -28,7 +21,7 @@ class Consultapersonas {
             }
         };
         return await Service.post(Baseurl, data, UrlServicePerson, undefined, {
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDbGF2ZSI6IjQwOTA4MzMiLCJFbWFpbCI6ImRhcmkuaGVybmFuZGV6QGxpYmVydHljb2xvbWJpYS5jb20iLCJOdW1lcm9JZCI6IjEyMzQ1NTAwIiwiU3VyY3Vyc2FsIjoiMTE5IiwiVGlwb0lkIjoiQ0MiLCJuYW1lIjoidmFyaWFzIGNsYXZlcywgQU5BIElTQUJFTCAoQ29sb21iaWEpIiwic3RpY2siOiIyMDE5LjA1LjI3IDA4LjExLjQxLjk0NCIsInVzdWFyaW8iOiJjYzEyMzQ1NTAwIiwidXN1YXJpb0JQTSI6IkxJcy80c2tHRVNsZHE0dGprZkJMS2c9PSIsImNsaWVudF9pZCI6Im9JNVZrVnpqekVTNDc4Nlh3RWhWREFkeU4zQXBpYVRNIiwiY2xpZW50X3NlY3JldCI6Ik1OaHJKR1A2Y0c0MTk2R3QiLCJpYXQiOjE1NTg5NjI3MDUsImV4cCI6MTU1OTA0OTEwNX0.NjP6_-UZFywFIG2bVF0gESWZZvnbtzrtjz5lStoYOwg"
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDbGF2ZSI6IjQwOTA4MzMiLCJFbWFpbCI6ImRhcmkuaGVybmFuZGV6QGxpYmVydHljb2xvbWJpYS5jb20iLCJOdW1lcm9JZCI6IjEyMzQ1NTAwIiwiU3VyY3Vyc2FsIjoiMTE5IiwiVGlwb0lkIjoiQ0MiLCJuYW1lIjoidmFyaWFzIGNsYXZlcywgQU5BIElTQUJFTCAoQ29sb21iaWEpIiwic3RpY2siOiIyMDE5LjA1LjI4IDA5LjQ3LjQ5LjQzMCIsInVzdWFyaW8iOiJjYzEyMzQ1NTAwIiwidXN1YXJpb0JQTSI6IkxJcy80c2tHRVNsZHE0dGprZkJMS2c9PSIsImNsaWVudF9pZCI6Im9JNVZrVnpqekVTNDc4Nlh3RWhWREFkeU4zQXBpYVRNIiwiY2xpZW50X3NlY3JldCI6Ik1OaHJKR1A2Y0c0MTk2R3QiLCJpYXQiOjE1NTkwNTQ4NzIsImV4cCI6MTU1OTE0MTI3Mn0.GasuL8gEexNywka9jPBpw9iAFRWAcjM0eZ_n-WeUIQY"
         });
     };
 }
