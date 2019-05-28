@@ -204,29 +204,29 @@ export default class Persona extends Component {
                     let contacto = contactos[i];
                     if (contacto['idContacto'] === 1) {
                         person.telefono = contacto['textoContacto'];
-                        person.telefonoDisabled = true;
+                        // person.telefonoDisabled = true;
                     } else if (contacto['idContacto'] === 2) {
                         person.email = contacto['textoContacto'];
-                        person.emailDisabled = true;
+                        // person.emailDisabled = true;
                     }
                 }
                 if (typeof contactos[0] !== "undefined") {
-                    person.tipodetelefonoDisabled = true;
                     person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+                    // person.tipodetelefonoDisabled = true;
                 }
 
                 if( typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined" ){
                     if( typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined" ){
                         person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
-                        person.addressDisabled = true;
+                        // person.addressDisabled = true;
 
                         if( typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined" ) {
                             person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
-                            person.ciudadDisabled = true;
+                            // person.ciudadDisabled = true;
                         }
                         if( typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined" ) {
                             person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
-                            person.adresstypeDisabled = true;
+                            // person.adresstypeDisabled = true;
                         }
                     }
                 }
