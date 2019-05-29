@@ -587,7 +587,7 @@ export default class Persona extends Component {
                                         {this.state.typePerson !== 2 &&
                                         <React.Fragment>
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className="pisonumero form-group "><label
+                                                <div className="pisonumero form-group input-select"><label
                                                     htmlFor="tipodetelefono">Tipo de teléfono</label>
                                                     <select name="tipodetelefono" onChange={this.changeValue}
                                                             id="tipodetelefono" value={this.state.person.tipodetelefono}
@@ -682,7 +682,7 @@ export default class Persona extends Component {
 
 
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                            <div className="pisonumero form-group "><label
+                                            <div className="pisonumero form-group input-select"><label
                                                 htmlFor="adresstype">Tipo de dirección</label>
                                                 <select value={this.state.person.adresstype} onChange={this.changeValue}
                                                         name="adresstype" id="adresstype"

@@ -224,7 +224,7 @@ class Tab extends Component {
                         item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es superior al permitido.');
                     }
                     if (0 >= Masknumbermoney.formatToNumber(item.values[k].value_show)) {
-                        item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es superior al permitido.');
+                        item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es inferior al permitido.');
                     }
                 }
 

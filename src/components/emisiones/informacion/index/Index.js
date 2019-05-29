@@ -236,8 +236,6 @@ class Index extends Component {
             if( parseInt(contents[i].type) === 2 ) total_inmueble_asegudado_joyas += value;
             if( parseInt(contents[i].type) === 3 ) total_inmueble_asegudado_telefonos += value;
         }
-        console.log(inmubles.contenido_asegudado_valor);
-        console.log(total_contenido_asegudado);
         if( inmubles.contenido_asegudado === 1 && disabled === false && total_contenido_asegudado !== 0){
             if( inmubles.contenido_asegudado_valor < total_contenido_asegudado ){
                 disabled = true;

@@ -30,15 +30,19 @@ class BtnContinue extends Component {
 
         //Validations
         if( state.celulares === true ){
-            console.log(state.contents);
             for (let i = 0; i < state.contents.length; i++) {
+                console.log(state.contents[i]);
                 if( state.contents[i].uploaded !== true && typeof state.contents[i].doc === "undefined" ){
                     status = false;
                 }
                 if (status === false && state.contents[i].type === 4) this.props.toggleErrorPhone(true);
             }
+            if( state.contents.length === 0 ){
+                status = false;
+                this.props.toggleErrorPhone(true);
+                Loading.toggle(false);
+            }
         }
-
 
         for (let i = 0; i < state.contents.length; i++) {
             for(let j in state.contents[i]) if ( state.contents[i][j] === "" ) state.contents[i][j] = '""';
