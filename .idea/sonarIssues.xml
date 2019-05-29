@@ -68,6 +68,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/common/helpers/base64/Base64.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/common/helpers/helpers/Helpers.js">
           <value>
             <set />
@@ -358,6 +363,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/globals/header/Header.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/globals/loading/Loading.js">
           <value>
             <set />
@@ -389,6 +399,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/pages/polizaemitida/PolizaEmitida.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/AccessToken.js">
           <value>
             <set />
           </value>

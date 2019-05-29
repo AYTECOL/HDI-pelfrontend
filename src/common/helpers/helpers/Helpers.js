@@ -3,6 +3,9 @@ import Identifications from "../../../services/GetQuote";
 import store from "../../../store";
 import {restoreCotizacion, restoreCotizacionRisk} from "../../../actions";
 import ValorationById from "../../../services/ValorationById";
+import Base64 from "../base64/Base64";
+import AccessToken from "../../../services/AccessToken";
+import Loading from "../../../components/globals/loading/Loading";
 
 class Helpers {
 
@@ -229,6 +232,30 @@ class Helpers {
         }
         y = x % 11;
         return (y > 1) ? 11 - y : y;
+    }
+
+    static async getUser(){
+        Loading.toggle(true);
+        let data = null;
+        let queryString = window.location.search.replace("?","").split("&");
+        let parameters = {};
+        window.history.pushState({}, document.title, window.location.pathname);
+        for (let i = 0; i < queryString.length; i++) {
+            let d = queryString[i].split("=");
+            if( typeof d[1] !== "undefined" ) parameters[d[0]] = d[1];
+        }
+        if( typeof parameters['refer'] !== "undefined" ){
+            let dataRquest = await AccessToken.get(parameters['refer']);
+            if( dataRquest !== null ) {
+                localStorage.clear();
+                localStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquest)))));
+                data = dataRquest;
+            }
+        }else{
+            let dataRquest = localStorage.getItem('request');
+            if( dataRquest !== null ) data = JSON.parse(Base64.decode(Base64.decode(Base64.decode(dataRquest))));
+        }
+        return data;
     }
 }
 
