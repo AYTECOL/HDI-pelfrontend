@@ -38,7 +38,7 @@ node('linux'){
                 aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
             """
         }
-		sh 'aws cloudfront create-invalidation --distribution-id=YOUR_DISTRIBUTION_ID --paths "/*"'
+        
     }
    
    
