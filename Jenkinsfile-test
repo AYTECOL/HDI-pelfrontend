@@ -19,6 +19,7 @@ node('linux'){
                 dir('dist/poliza-express-hogar-front'){
                 	sh 'pwd'
                     sh 'ls'
+                aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"    
                 }
             }
         }
@@ -38,20 +39,7 @@ node('linux'){
         }
 		
     }
-
-    stage('cache') {
-        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh """
-                npm install
-                npm run-script build
-                ls -ltr
-                aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"
-            """
-        }
-		
-    }
-   
-   
+      
 	stage('Completion Email'){
 		    
 	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
