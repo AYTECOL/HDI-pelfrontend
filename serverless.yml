@@ -43,7 +43,7 @@ resources:
               Effect: Allow
               #Principal: "*"
               Principal: {
-                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO"
+                "Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] 
               }
               Action:
               - s3:GetObject
