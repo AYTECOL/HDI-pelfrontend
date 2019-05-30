@@ -193,6 +193,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/index/Index.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/map/Map.js">
           <value>
             <set />
@@ -234,6 +239,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/construidocon/Construidocon.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/construidocon/Construidocon.scss">
           <value>
             <set />
           </value>
@@ -363,7 +373,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/globals/footer/Footer.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/globals/header/Header.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/globals/header/Header.scss">
           <value>
             <set />
           </value>
@@ -394,6 +414,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/pages/home/Home.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/pages/home/Home.scss">
           <value>
             <set />
           </value>
@@ -529,6 +554,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../panelweb_cy/src/services/colombia.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/.env">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/package.json">
           <value>
             <set />
           </value>

@@ -473,6 +473,12 @@ $color-font-btn-primary: #404040;
         margin: 0 auto;
         top: 75%;
         width: 180%;
+
+        @media (max-width: 769px) {
+          width: 100%;
+          left: 0;
+        }
+
       }
     }
 
@@ -596,6 +602,10 @@ $color-font-btn-primary: #404040;
       line-height: 16px;
       color: #565656;
       margin-bottom: 0;
+
+      @media (max-width: 769px) {
+        font-size: 12px;
+      }
     }
   }
 
@@ -607,12 +617,18 @@ $color-font-btn-primary: #404040;
       position: relative;
       &:nth-child(2n) {
         padding-right: 9px;
+        @media (max-width: 769px) {
+          padding: 0 9px !important;
+        }
       }
 
       &:last-child {
         padding-left: 9px;
         padding-right: 0;
+        @media (max-width: 769px) {
+        }
       }
+
     }
   }
 }
@@ -826,7 +842,9 @@ $padding-aside: 36px;
   @media (max-width: 769px) {
     height: auto;
     padding-top: 10px;
-    padding-bottom: 0;
+    padding-bottom: 10px;
+    background-color: #F5F5F5;
+    margin-bottom: 0;
   }
 
   #id-cotizacion {
@@ -837,6 +855,10 @@ $padding-aside: 36px;
       font-size: 14px;
       color: #808080;
       margin: 0;
+
+      @media (max-width: 769px) {
+        text-align: center;
+      }
 
       span {
         color: #28A3AF;
@@ -857,7 +879,6 @@ $padding-aside: 36px;
       position: relative;
       top: 4px;
       @media (max-width: 769px) {
-        display: block;
         text-align: left;
         margin-top: 10px;
       }
@@ -873,10 +894,17 @@ $padding-aside: 36px;
 
         @media (max-width: 769px) {
           width: 100%;
-          display: block;
           height: 30px;
           margin-bottom: 5px;
           padding: 0 15px;
+          font-size: 0;
+          text-align: center;
+          span{
+            font-size: 16px;
+            display: inline-block;
+            margin: 0 auto;
+            padding: 5px 8px 4px !important;
+          }
         }
 
         &.active {
@@ -941,6 +969,10 @@ body #root .cotizacion .container .tool-tip-hover{
     line-height: 22px;
     color: #FFFFFF;
     text-align: left;
+    @media (max-width: 769px) {
+      font-size: 12px;
+      line-height: 18px;
+    }
   }
 }
 

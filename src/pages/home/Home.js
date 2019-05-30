@@ -33,9 +33,9 @@ class Home extends Component {
 
                     <div className="top-bar">
                         <ul className="menus">
-                            <li>Cotizaciones <span>12</span></li>
-                            <li className="active">Proceso de emisión <span>43</span></li>
-                            <li>Pólizas emitidas <span>12</span></li>
+                            <li><p>Cotizaciones</p> <span>12</span></li>
+                            <li className="active"><p>Proceso de emisión</p> <span>43</span></li>
+                            <li><p>Pólizas emitidas</p> <span>12</span></li>
                         </ul>
                         <div className="search">
                             <div className={"form-group input-select"}>

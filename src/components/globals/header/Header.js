@@ -17,10 +17,10 @@ class Header extends Component {
                         </div>
                         <div id="main-menu" className="col col-12 col-sm-12 col-md-8 col-lg-8">
                             <ul>
-                                <li className={activeMenu1}>
+                                <li className={"item-home "+activeMenu1}>
                                     <a href='/'><i className="icon1">&nbsp;</i>Mis negocios</a>
                                 </li>
-                                <li><a href="/#"><i className="icon2">&nbsp;</i>{this.props.data !== null?this.props.data['name']:'User Name'}</a></li>
+                                <li className="item-user"><a href="/#"><i className="icon2">&nbsp;</i>{this.props.data !== null?this.props.data['name']:'User Name'}</a></li>
                                 <li className="logout"><a href="/#"><i className="icon3">&nbsp;</i>Salir</a></li>
                             </ul>
                         </div>

@@ -32,7 +32,7 @@ class Card extends Component {
                                     <p>{ item['businessname'] }</p>
                                 </div>
                             ):(
-                                <div className="col">
+                                <div className="col name">
                                     <span>Nombre y apellido</span>
                                     <p>{ item['name'] } { item['lastname'] }</p>
                                 </div>
