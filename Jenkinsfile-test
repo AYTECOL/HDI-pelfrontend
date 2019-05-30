@@ -19,7 +19,7 @@ node('linux'){
                 dir('dist/poliza-express-hogar-front'){
                 	sh 'pwd'
                     sh 'ls'
-                aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"    
+                //aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"    
                 }
             }
         }
