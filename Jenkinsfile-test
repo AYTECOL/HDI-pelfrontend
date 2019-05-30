@@ -36,7 +36,19 @@ node('linux'){
 
                 aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
                 aws s3 website s3://$BUCKET_NAME/ --index-document index.html --error-document index.html
-                
+                aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"
+            """
+        }
+		
+    }
+
+        stage('cache') {
+        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+            sh """
+                npm install
+                npm run-script build
+                ls -ltr
+                aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"
             """
         }
 		
