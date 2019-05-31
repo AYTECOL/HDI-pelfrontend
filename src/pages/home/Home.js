@@ -17,7 +17,7 @@ class Home extends Component {
             number = number.currentValue.toString();
             window.location.href = '/cotizacion/1/' + number;
         }
-        setTimeout(Loading.toggle(false),500);
+        setTimeout(Loading.toggle(false), 500);
     };
 
     render() {
@@ -27,7 +27,9 @@ class Home extends Component {
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h2>Mis negocios en línea</h2>
-                            <button type="button" className="btn btn-primary btn-home" onClick={this.getNumber}>Nueva cotización</button>
+                            <button type="button" className="btn btn-primary btn-home" onClick={this.getNumber}>Nueva
+                                cotización
+                            </button>
                         </div>
                     </div>
 

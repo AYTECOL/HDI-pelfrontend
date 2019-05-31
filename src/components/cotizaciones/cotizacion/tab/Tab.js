@@ -64,7 +64,7 @@ class Tab extends Component {
         Loading.toggle(true);
         let plans = await AllPlans.get(this.state.typePlans);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
-        if( typeof plan.plan_selected_info.Item !== "undefined" ){
+        if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             let indexSelected = selected['assists'][0]['selected_id'];
             plans[indexSelected] = selected;

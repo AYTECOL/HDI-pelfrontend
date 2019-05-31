@@ -24,8 +24,8 @@ class Lastname extends Component {
         });
     }
 
-    static toggleDisable(status){
-        if (status === true){
+    static toggleDisable(status) {
+        if (status === true) {
             Helpers.disabled('#lastname');
         } else {
             Helpers.enabled('#lastname');

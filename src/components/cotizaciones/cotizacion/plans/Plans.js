@@ -45,7 +45,7 @@ class Index extends Component {
                             <div className={"item-tab " + (parseInt(this.state.index) === key ? 'active' : '')}
                                  onClick={this.changeIndexPlan(key)}>
                                 <span>{option.name}</span>
-                                <p>{ typeof option.value === "undefined"? '$0' : Masknumbermoney.formatToMask(option.value)}</p>
+                                <p>{typeof option.value === "undefined" ? '$0' : Masknumbermoney.formatToMask(option.value)}</p>
                             </div>
                         </div>
                     )}

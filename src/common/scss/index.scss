@@ -82,9 +82,10 @@ html, body {
 $error-fields: #DD133C;
 $color-btn-primary: #99E5EA;
 $color-font-btn-primary: #404040;
-#root .react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected{
+#root .react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected {
   background-color: #28A3AF;
 }
+
 .btn {
   padding: 17px 0 14px;
   width: 200px;
@@ -129,8 +130,8 @@ $color-font-btn-primary: #404040;
     }
   }
 
-  &.btn-link{
-    &,&:hover,&:active{
+  &.btn-link {
+    &, &:hover, &:active {
       border: 0;
       background-color: transparent;
       padding: 0;
@@ -146,7 +147,7 @@ $color-font-btn-primary: #404040;
     }
   }
 
-  &.btn-download{
+  &.btn-download {
     background: #28A3AF;
     border-color: #28A3AF;
     border-radius: 3px;
@@ -154,7 +155,8 @@ $color-font-btn-primary: #404040;
     color: white;
     width: auto;
     min-width: 145px;
-    &:hover{
+
+    &:hover {
       background: #1f707c;
       border-color: #1f707c;
     }
@@ -444,15 +446,18 @@ $color-font-btn-primary: #404040;
     }
   }
 }
+
 #root {
-  .msj-error{
+  .msj-error {
     margin: 0 0 40px;
+
     .only-errors {
       display: block;
       color: $error-fields;
     }
   }
 }
+
 .cotizacion .container .grid-select {
   .select-item {
     background: #FFFFFF;
@@ -465,7 +470,7 @@ $color-font-btn-primary: #404040;
     transition: all 0.3s ease;
     border: 1px solid transparent;
 
-    &:hover{
+    &:hover {
       .tool-tip-hover {
         display: block !important;
         left: -40%;
@@ -615,6 +620,7 @@ $color-font-btn-primary: #404040;
   .grid-select {
     .col {
       position: relative;
+
       &:nth-child(2n) {
         padding-right: 9px;
         @media (max-width: 769px) {
@@ -802,8 +808,9 @@ $color-font-btn-primary: #404040;
   background-repeat: no-repeat;
   cursor: pointer;
 }
+
 .react-datepicker__input-container,
-.react-datepicker-wrapper{
+.react-datepicker-wrapper {
   width: 100%;
   display: block;
 }
@@ -899,7 +906,7 @@ $padding-aside: 36px;
           padding: 0 15px;
           font-size: 0;
           text-align: center;
-          span{
+          span {
             font-size: 16px;
             display: inline-block;
             margin: 0 auto;
@@ -942,7 +949,7 @@ $padding-aside: 36px;
   }
 }
 
-body #root .cotizacion .container .tool-tip-hover{
+body #root .cotizacion .container .tool-tip-hover {
   position: absolute;
   z-index: 2;
   background: #343741;
@@ -950,7 +957,8 @@ body #root .cotizacion .container .tool-tip-hover{
   padding: 15px;
   display: none;
   border-radius: 4px;
-  &::after{
+
+  &::after {
     content: '';
     width: 0;
     height: 0;
@@ -961,7 +969,8 @@ body #root .cotizacion .container .tool-tip-hover{
     top: -8px;
     left: 47%;
   }
-  p{
+
+  p {
     margin: 0;
     font-style: normal;
     font-weight: normal;
@@ -976,8 +985,8 @@ body #root .cotizacion .container .tool-tip-hover{
   }
 }
 
-.msj-box{
-  p.error{
+.msj-box {
+  p.error {
     text-align: left;
     color: $error-fields;
     margin-bottom: 0;

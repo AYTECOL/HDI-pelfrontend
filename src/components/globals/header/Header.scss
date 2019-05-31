@@ -191,18 +191,21 @@ header {
             display: block;
             position: absolute;
             text-align: center;
-            a{
+
+            a {
               color: transparent;
               line-height: 1;
               font-size: 0;
             }
-            i{
+
+            i {
               background-color: rgba(#fff, 0.5) !important;
               width: 34px !important;
               height: 34px !important;
               margin: 0 auto !important;
               display: block;
-              &::before{
+
+              &::before {
                 background-size: 70% auto !important;
               }
             }
@@ -210,7 +213,7 @@ header {
           &.item-home {
             left: 0;
           }
-          &.logout{
+          &.logout {
             right: 0;
           }
         }

@@ -1,19 +1,13 @@
 import React, {Component, Fragment} from 'react';
 
 import store from '../../../../../store';
-import {
-    NextStep,
-    nextStepIndentification,
-    saveIdentificationValue
-} from '../../../../../actions';
+import {NextStep, nextStepIndentification, saveIdentificationValue} from '../../../../../actions';
 import Loading from "../../../../../components/globals/loading/Loading";
 import SaveIdentifications from '../../../../../services/Quote';
-
 // Components
 import Name from '../name/Name';
 import LastName from '../lastname/Lastname';
 import RazonSocial from '../razonsocial/Razonsocial';
-
 // Services
 import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
 import {UrlSite} from "../../../../../config";
@@ -52,7 +46,7 @@ class BtnContinue extends Component {
                     storeState.cotizacion.identification['address'] === "" ||
                     storeState.cotizacion.identification['department'] === "" ||
                     storeState.cotizacion.identification['city'] === ""
-                ){
+                ) {
                     i++;
                 }
                 storeState.continueButtonDisable = i !== 0;

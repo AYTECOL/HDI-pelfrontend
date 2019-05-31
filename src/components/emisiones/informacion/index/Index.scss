@@ -27,17 +27,21 @@
     max-width: 191px;
     margin: 13px auto 26px;
     padding: 10px 7px;
-    p{
+
+    p {
       color: #037B86;
-      &.error{
+
+      &.error {
         color: #DD133C !important;
         text-align: left;
       }
     }
-    small{
+
+    small {
       text-align: left;
     }
-    &.active{
+
+    &.active {
       background-color: transparent;
       box-shadow: inherit;
       margin-top: -80px;
@@ -78,15 +82,16 @@
 
 .index-form.emision.informacion-adicioonal {
 
-  .gridgrid{
+  .gridgrid {
     padding-top: 20px;
   }
-  p{
+
+  p {
     margin-bottom: 0;
   }
 
-  .moreitems{
-    .row.sarlaft p{
+  .moreitems {
+    .row.sarlaft p {
       max-width: 234px !important;
     }
   }
@@ -102,7 +107,7 @@
   .sujeta-block {
     max-width: 730px;
 
-    h5{
+    h5 {
       font-style: normal;
       font-weight: bold;
       font-size: 24px;
@@ -119,40 +124,49 @@
   }
 
 }
-#root .informacion-adicioonal .wrapper-more-items{
+
+#root .informacion-adicioonal .wrapper-more-items {
   display: block;
   width: 100%;
   padding: 0;
   margin-top: 20px;
-  .more-items{
+
+  .more-items {
     max-width: 100%;
     width: 90%;
     margin: 0 auto;
     padding: 40px 0 100px;
-    &::after{
+
+    &::after {
       display: none !important;
     }
-    .trash{
+
+    .trash {
       display: block;
       margin: 40px auto 0;
       width: 30px;
-      &::before{
+
+      &::before {
         display: none !important;
       }
-      &::after{
+
+      &::after {
         background-size: 14px auto;
         background-position: center;
       }
     }
-    .row{
+
+    .row {
       max-width: 100%;
       flex: 1;
-      .sarlaft{
+
+      .sarlaft {
         background-color: transparent;
         margin: 0;
         padding: 0;
         margin-top: 16px;
-        span{
+
+        span {
           font-style: normal;
           font-weight: normal;
           font-size: 10px;

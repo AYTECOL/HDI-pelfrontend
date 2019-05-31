@@ -88,7 +88,8 @@
         padding: 28px 16px 21px;
         position: relative;
         cursor: pointer;
-        p{
+
+        p {
           font-style: normal;
           font-weight: normal;
           font-size: 18px;
@@ -97,8 +98,9 @@
           display: inline-block;
           margin-bottom: 0;
         }
+
         @media (min-width: 992px) {
-          p{
+          p {
             font-size: 15px;
           }
         }
@@ -110,10 +112,10 @@
           flex-direction: column-reverse;
           background-color: white;
           margin-right: 6px;
-          &:last-child{
+          &:last-child {
             margin-right: 0;
           }
-          p{
+          p {
             font-size: 14px;
             line-height: 1;
             min-height: 30px;
