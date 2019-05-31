@@ -43,6 +43,7 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
                   #{"Fn::Join": [ WebsiteOriginAccessIdentity , S3CanonicalUserId, arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO, { Ref: WebsiteOriginAccessIdentity }, ]}
                   #{"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] }
               Action:
