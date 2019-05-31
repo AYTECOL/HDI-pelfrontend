@@ -46,6 +46,7 @@ class BtnContinue extends Component {
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
         let plan = plans[index];
+        plan['value'] = 2;
         plan['quote_id'] = this.props.match.params.id;
         plan['assists'][0]['selected_id'] = index;
 
