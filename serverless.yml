@@ -44,6 +44,7 @@ resources:
               Principal:
                 CanonicalUser:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+
                   #{"Fn::Join": [ WebsiteOriginAccessIdentity , S3CanonicalUserId, arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO, { Ref: WebsiteOriginAccessIdentity }, ]}
                   #{"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] }
               Action:
@@ -62,8 +63,8 @@ resources:
           Origins:
             #- DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
             - DomainName: ${self:custom.s3Bucket}.s3-website-us-east-1.amazonaws.com
-              #Id: WebApp
-              Id : poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com
+              Id: WebApp
+              #Id : poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
