@@ -35,9 +35,9 @@ class Table extends Component {
     getRowById = id => async e => {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
-            if( cotizacion.state > 3 ){
-                this.props.history.push('/emision/' + (cotizacion.state-3) + '/' + id);
-            }else{
+            if (cotizacion.state > 3) {
+                this.props.history.push('/emision/' + (cotizacion.state - 3) + '/' + id);
+            } else {
                 this.props.history.push('/cotizacion/' + cotizacion.state + '/' + id);
             }
             store.dispatch(restoreCotizacion(cotizacion));

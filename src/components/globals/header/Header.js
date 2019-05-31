@@ -4,10 +4,33 @@ import logo from '../../../common/images/logo.png';
 import {withRouter} from "react-router-dom";
 
 class Header extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            path: this.props.location.pathname,
+            activeMenu1: "",
+            name: 'User name'
+        };
+        if (this.state.path === "/") this.state.activeMenu1 = "active";
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (typeof nextProps.data === "undefined" || nextProps.data === null) return;
+        let state = this.state;
+        if (typeof nextProps.data.name !== "undefined") {
+            state.name = nextProps.data.name;
+        } else if (typeof nextProps.data.nombreUsuario !== "undefined") {
+            state.name = nextProps.data.nombreUsuario;
+        }
+        if (state.name !== this.state.name) {
+            this.setState({
+                ...state
+            })
+        }
+    }
+
     render() {
-        let path = this.props.location.pathname;
-        let activeMenu1 = "";
-        if (path === "/") activeMenu1 = "active";
         return (
             <header className="App-header">
                 <div className="header container">
@@ -17,10 +40,11 @@ class Header extends Component {
                         </div>
                         <div id="main-menu" className="col col-12 col-sm-12 col-md-8 col-lg-8">
                             <ul>
-                                <li className={activeMenu1}>
+                                <li className={"item-home " + this.state.activeMenu1}>
                                     <a href='/'><i className="icon1">&nbsp;</i>Mis negocios</a>
                                 </li>
-                                <li><a href="/#"><i className="icon2">&nbsp;</i>{this.props.data !== null?this.props.data['name']:'User Name'}</a></li>
+                                <li className="item-user"><a href="/#"><i className="icon2">&nbsp;</i>{this.state.name}
+                                </a></li>
                                 <li className="logout"><a href="/#"><i className="icon3">&nbsp;</i>Salir</a></li>
                             </ul>
                         </div>

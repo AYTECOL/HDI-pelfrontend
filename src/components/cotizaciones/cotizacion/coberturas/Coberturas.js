@@ -251,12 +251,12 @@ class Tab extends Component {
             <div className="row row-max tabs-cotizaciones row_tab_0">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
                     <div className="row" onClick={this.props.toggleSlide(0)}>
-                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
+                        <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
                             <h4>
                                 <span>{this.state.coverturasTotal}</span>Coberturas
                             </h4>
                         </div>
-                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
+                        <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-right">
                             <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
                             <div className="close-section open">Ver <i>&nbsp;</i></div>
                         </div>

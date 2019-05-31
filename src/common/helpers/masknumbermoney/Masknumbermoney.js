@@ -15,7 +15,7 @@ const Args = {
 class Masknumbermoney {
 
     static formatToMask(v) {
-        if( v === undefined ) v = 0;
+        if (v === undefined) v = 0;
         let format = SimpleMaskMoney.formatToMask(v, Args).split(",")[0];
         return format === "$0." ? '$0' : format;
     }

@@ -34,7 +34,7 @@ class BtnContinue extends Component {
     goBack = async () => {
         Loading.toggle(true);
         let storeState = store.getState();
-        await CreateOrUpdateValoration.get();
+        await CreateOrUpdateValoration.save();
         window.location.href = UrlSite + "/cotizacion/1/" + storeState.cotizacion.number;
     };
 
@@ -165,7 +165,9 @@ class BtnContinue extends Component {
         return (
             <Fragment>
                 <div className={"return-button"}>
-                    <button className="btn btn-link" type="button" onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver</button>
+                    <button className="btn btn-link" type="button" onClick={this.goBack}><i
+                        className="back-icon">&nbsp;</i>Volver
+                    </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveService}>Guardar y salir

@@ -219,7 +219,7 @@ class Index extends Component {
         });
     };
 
-    validateTotalAsegurado(){
+    validateTotalAsegurado() {
         let contents = this.state.contents;
         let inmubles = this.state.inmueble;
         let disabled = false;
@@ -231,27 +231,27 @@ class Index extends Component {
 
         for (let i = 0; i < contents.length; i++) {
             let value = Masknumbermoney.formatToNumber(contents[i].value);
-            if( parseInt(contents[i].type) === 0 ) total_contenido_asegudado += value;
-            if( parseInt(contents[i].type) === 1 ) total_inmueble_asegudado_obras += value;
-            if( parseInt(contents[i].type) === 2 ) total_inmueble_asegudado_joyas += value;
-            if( parseInt(contents[i].type) === 3 ) total_inmueble_asegudado_telefonos += value;
+            if (parseInt(contents[i].type) === 0) total_contenido_asegudado += value;
+            if (parseInt(contents[i].type) === 1) total_inmueble_asegudado_obras += value;
+            if (parseInt(contents[i].type) === 2) total_inmueble_asegudado_joyas += value;
+            if (parseInt(contents[i].type) === 3) total_inmueble_asegudado_telefonos += value;
         }
-        if( inmubles.contenido_asegudado === 1 && disabled === false && total_contenido_asegudado !== 0){
-            if( inmubles.contenido_asegudado_valor < total_contenido_asegudado ){
+        if (inmubles.contenido_asegudado === 1 && disabled === false && total_contenido_asegudado !== 0) {
+            if (inmubles.contenido_asegudado_valor < total_contenido_asegudado) {
                 disabled = true;
             }
         }
-        if( inmubles.inmueble_asegudado_obras === 1 && disabled === false && total_inmueble_asegudado_obras !== 0){
-            if( inmubles.inmueble_asegudado_obrasvalor < total_inmueble_asegudado_obras ){
+        if (inmubles.inmueble_asegudado_obras === 1 && disabled === false && total_inmueble_asegudado_obras !== 0) {
+            if (inmubles.inmueble_asegudado_obrasvalor < total_inmueble_asegudado_obras) {
                 disabled = true;
             }
         }
-        if( inmubles.inmueble_asegudado_joyas === 1 && disabled === false && total_inmueble_asegudado_joyas !== 0){
-            if( inmubles.inmueble_asegudado_joyasvalor < total_inmueble_asegudado_joyas ){
+        if (inmubles.inmueble_asegudado_joyas === 1 && disabled === false && total_inmueble_asegudado_joyas !== 0) {
+            if (inmubles.inmueble_asegudado_joyasvalor < total_inmueble_asegudado_joyas) {
                 disabled = true;
             }
         }
-        if( inmubles.inmueble_asegudado_telefonos === 1 && disabled === false ){
+        if (inmubles.inmueble_asegudado_telefonos === 1 && disabled === false) {
             disabled = inmubles.inmueble_asegudado_telefonosvalor !== total_inmueble_asegudado_telefonos;
         }
 
@@ -266,13 +266,13 @@ class Index extends Component {
         let disableBtn = this.state.disableBtn;
         let limits = this.state.limits[contents[key].type];
         let v = Masknumbermoney.formatToNumber(e.target.value);
-        if( v > limits.min && v < limits.max ) {
+        if (v > limits.min && v < limits.max) {
             contents[key]['error1'] = false;
             contents[key]['error2'] = false;
             disableBtn = false;
-        }else{
-            if( v < limits.min ) contents[key]['error1'] = true;
-            if( v > limits.max ) contents[key]['error2'] = true;
+        } else {
+            if (v < limits.min) contents[key]['error1'] = true;
+            if (v > limits.max) contents[key]['error2'] = true;
             disableBtn = true;
         }
         contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
@@ -281,9 +281,9 @@ class Index extends Component {
             contents: contents,
             disableBtn: disableBtn
         });
-        setTimeout(()=>{
+        setTimeout(() => {
             this.validateTotalAsegurado();
-        },250);
+        }, 250);
     };
 
     changeTextFile = key => async e => {
@@ -422,7 +422,8 @@ class Index extends Component {
                                     </div>
                                     }
                                     <div className="col col-sm-12 col-md-12 col-lg-12">
-                                        <p className="text-center">Es importante conocer este tipo de artículos, esto nos permite al momento del siniestro <br/>
+                                        <p className="text-center">Es importante conocer este tipo de artículos, esto
+                                            nos permite al momento del siniestro <br/>
 
                                             responder de forma efectiva de acuerdo a la necesidad. </p>
                                     </div>
@@ -437,11 +438,12 @@ class Index extends Component {
                                                 <div className="col no-padding-right">
                                                     <div className="name form-group input-select"><label
                                                         htmlFor="name">Tipo de item</label>
-                                                        <select className="form-control" name="type" id="type" value={item.type} onChange={this.updateContent(key)}>
+                                                        <select className="form-control" name="type" id="type"
+                                                                value={item.type} onChange={this.updateContent(key)}>
                                                             <option value="0"></option>
-                                                            {this.state.items.map((i,k)=>
+                                                            {this.state.items.map((i, k) =>
                                                                 <React.Fragment key={k}>
-                                                                    { ((this.state.contenidos === true && k === 0) || (this.state.obras === true && k === 1) || (this.state.joyas === true && k === 2) || (this.state.celulares === true && k === 3)) &&
+                                                                    {((this.state.contenidos === true && k === 0) || (this.state.obras === true && k === 1) || (this.state.joyas === true && k === 2) || (this.state.celulares === true && k === 3)) &&
                                                                     <option value={k}>{i}</option>
                                                                     }
                                                                 </React.Fragment>
@@ -460,13 +462,24 @@ class Index extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
-                                                    <div className={"name form-group "+(item.error1||item.error2?'error':'')}><label
-                                                        htmlFor="name">Valor</label>
+                                                    <div
+                                                        className={"name form-group " + (item.error1 || item.error2 ? 'error' : '')}>
+                                                        <label
+                                                            htmlFor="name">Valor</label>
                                                         <input type="text" className="form-control" name="value"
                                                                value={item.value} onChange={this.validateContent(key)}/>
-                                                        <small className="form-text d-block text-left">$ 20.000.000</small>
-                                                        <small className={"form-text only-errors "+(item.error1 === true?'show':'hide')}>Valor Asegurado del ítem {this.state.items[item.type]} es inferior al permitido</small>
-                                                        <small className={"form-text only-errors "+(item.error2 === true?'show':'hide')}>Valor Asegurado del ítem {this.state.items[item.type]} es mayor al permitido</small>
+                                                        <small className="form-text d-block text-left">$ 20.000.000
+                                                        </small>
+                                                        <small
+                                                            className={"form-text only-errors " + (item.error1 === true ? 'show' : 'hide')}>Valor
+                                                            Asegurado del ítem {this.state.items[item.type]} es inferior
+                                                            al permitido
+                                                        </small>
+                                                        <small
+                                                            className={"form-text only-errors " + (item.error2 === true ? 'show' : 'hide')}>Valor
+                                                            Asegurado del ítem {this.state.items[item.type]} es mayor al
+                                                            permitido
+                                                        </small>
                                                     </div>
                                                 </div>
                                                 <div className="col no-padding-right">
@@ -539,13 +552,13 @@ class Index extends Component {
                         </div>
 
                         <div className="row text-center sujeta-block justify-content-center">
-                            <div className="col col-sm-12 col-md-12 col-lg-12">
+                            <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                 <h5>La póliza está sujeta a inspección en sitio</h5>
                                 <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la inspección
                                     en el
                                     inmueble</p>
                             </div>
-                            <div className="col col-sm-12 col-md-8 col-lg-8">
+                            <div className="col col-12 col-sm-12 col-md-8 col-lg-8">
                                 <div className={"no-icon gridgrid form-group"}>
 
                                     <div className="row grid-select justify-content-center  ">
@@ -583,7 +596,8 @@ class Index extends Component {
                         <div className="row">
                             <div
                                 className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                                <BtnContinue disable={this.state.disableBtn} state={this.state} toggleErrorPhone={this.toggleErrorPhone}/>
+                                <BtnContinue disable={this.state.disableBtn} state={this.state}
+                                             toggleErrorPhone={this.toggleErrorPhone}/>
                             </div>
                         </div>
                     </div>

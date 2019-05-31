@@ -7,14 +7,16 @@ import Loading from "../../../../globals/loading/Loading";
 
 class TipoDocumento extends Component {
 
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
             value: "",
-            options: { identifications: [] },
+            options: {identifications: []},
             error: false,
             stateForm: 0,
-            disabled: typeof this.props.disabled === "undefined"?false:this.props.disabled,
+            disabled: typeof this.props.disabled === "undefined" ? false : this.props.disabled,
             docType: 1,
         };
         store.subscribe(() => {
@@ -23,7 +25,7 @@ class TipoDocumento extends Component {
             let disabled = false;
             if (newState !== 0) disabled = true;
             if (this.state.stateForm !== newState) {
-                if (this._isMounted){
+                if (this._isMounted) {
                     this.setState({
                         ...this.state,
                         stateForm: newState,
@@ -34,9 +36,9 @@ class TipoDocumento extends Component {
         });
     }
 
-    _isMounted = false;
-
-    componentWillUnmount() { this._isMounted = false; }
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     componentDidMount() {
         this._isMounted = true;
@@ -79,10 +81,12 @@ class TipoDocumento extends Component {
         return (
             <div className={"form-group input-select " + this.state.error}>
                 <label htmlFor="doc-type">Tipo de identificación</label>
-                <select disabled={(typeof this.props.disabled === "undefined"?this.state.disabled:this.props.disabled ? "disabled" : "")} name="code" id="doc-type"
-                        className={((typeof this.props.disabled === "undefined"?this.state.disabled:this.props.disabled)  ? "disabled " : "") + "form-control"}
-                        value={typeof this.props.value === "undefined"?this.state.value:this.props.value}
-                        onChange={typeof this.props.onChange === "undefined" ?this.validateEmpty:this.props.onChange}>
+                <select
+                    disabled={(typeof this.props.disabled === "undefined" ? this.state.disabled : this.props.disabled ? "disabled" : "")}
+                    name="code" id="doc-type"
+                    className={((typeof this.props.disabled === "undefined" ? this.state.disabled : this.props.disabled) ? "disabled " : "") + "form-control"}
+                    value={typeof this.props.value === "undefined" ? this.state.value : this.props.value}
+                    onChange={typeof this.props.onChange === "undefined" ? this.validateEmpty : this.props.onChange}>
                     {this.state.options.identifications.map(option =>
                         <option key={option.code} value={option.code}
                                 data={option.type_person}>{option.description}</option>

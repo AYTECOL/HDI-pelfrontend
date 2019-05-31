@@ -29,15 +29,15 @@ class BtnContinue extends Component {
         let status = true;
 
         //Validations
-        if( state.celulares === true ){
+        if (state.celulares === true) {
             for (let i = 0; i < state.contents.length; i++) {
                 console.log(state.contents[i]);
-                if( state.contents[i].uploaded !== true && typeof state.contents[i].doc === "undefined" ){
+                if (state.contents[i].uploaded !== true && typeof state.contents[i].doc === "undefined") {
                     status = false;
                 }
                 if (status === false && state.contents[i].type === 4) this.props.toggleErrorPhone(true);
             }
-            if( state.contents.length === 0 ){
+            if (state.contents.length === 0) {
                 status = false;
                 this.props.toggleErrorPhone(true);
                 Loading.toggle(false);
@@ -45,32 +45,32 @@ class BtnContinue extends Component {
         }
 
         for (let i = 0; i < state.contents.length; i++) {
-            for(let j in state.contents[i]) if ( state.contents[i][j] === "" ) state.contents[i][j] = '""';
-            if (state.contents[i].uploaded === false){
-                let url = await UploadFile.upload('Docs',state.contents[i].doc);
+            for (let j in state.contents[i]) if (state.contents[i][j] === "") state.contents[i][j] = '""';
+            if (state.contents[i].uploaded === false) {
+                let url = await UploadFile.upload('Docs', state.contents[i].doc);
                 state.contents[i].textFile = url.location;
                 state.contents[i].uploaded = true;
             }
         }
         let name = "";
         let phone = "";
-        if( typeof state.contactperson !== "undefined" && state.contactperson !== null ){
+        if (typeof state.contactperson !== "undefined" && state.contactperson !== null) {
             name = state.persons[state.contactperson].name;
             phone = state.persons[state.contactperson].telefono;
-        }else{
+        } else {
             state.contactperson = 0;
         }
 
-        state.area = state.area === ""?0:state.area;
-        state.utilizado = state.utilizado === ""?0:state.utilizado;
+        state.area = state.area === "" ? 0 : state.area;
+        state.utilizado = state.utilizado === "" ? 0 : state.utilizado;
         await CreateOrUpdateMoreInfo.get({
             "quote_id": this.props.match.params.id,
             "start_policy_date": state.initdate,
             "area": state.area,
             "risk_use": state.utilizado,
             "order": state.contactperson,
-            "name":"DINAMICA",
-            "visit_person":{
+            "name": "DINAMICA",
+            "visit_person": {
                 "name": name,
                 "phone": phone,
                 "active": state.contactperson
@@ -78,13 +78,13 @@ class BtnContinue extends Component {
             "goods_over_cost": state.contents
         });
 
-        if( typeof total !== "undefined" ){
-            if( status === true ){
+        if (typeof total !== "undefined") {
+            if (status === true) {
                 store.dispatch(NextStep(6));
                 await SaveIdentifications.save();
                 window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
             }
-        }else{
+        } else {
             await SaveIdentifications.save();
             Helpers.goToHome();
         }
@@ -102,7 +102,7 @@ class BtnContinue extends Component {
                 </button>
                 <button type="button"
                         disabled={this.props.disable}
-                        className={"btn btn-primary "+(this.props.disable===true?'disabled':'')}
+                        className={"btn btn-primary " + (this.props.disable === true ? 'disabled' : '')}
                         onClick={this.nextStep(true)}>Continuar
                 </button>
             </Fragment>

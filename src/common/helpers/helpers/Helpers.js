@@ -122,19 +122,25 @@ class Helpers {
         });
     }
 
-    static orderArrayNumeric(a, b){
+    static orderArrayNumeric(a, b) {
         return a - b;
     }
 
-    static goToNotFound(){
+    static goToNotFound() {
         window.location.href = UrlSite + "/404";
     }
 
-    static goToHome(){
+    static goToHome() {
         window.location.href = UrlSite + "/";
     }
 
-    static async getRowById(id, step){
+    static goToError() {
+        if (window.location.pathname !== '/error') {
+            window.location.href = UrlSite + "/error";
+        }
+    }
+
+    static async getRowById(id, step) {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
             store.dispatch(restoreCotizacion(cotizacion));
@@ -164,7 +170,7 @@ class Helpers {
         }
     };
 
-    static validateFile(file){
+    static validateFile(file) {
         if (typeof file !== "undefined") {
             let formats = ["image/png", "image/jpeg", "image/jpg", "image/gif", "application/pdf"];
             return formats.indexOf(file.type) !== -1;
@@ -173,8 +179,9 @@ class Helpers {
 
     static fieldNumeric = function () {
         let els = document.querySelectorAll('input.number');
-        function validateNumber(e){
-            if (typeof e.which !== "undefined"){
+
+        function validateNumber(e) {
+            if (typeof e.which !== "undefined") {
                 var k = e.which;
                 if (!(e.shiftKey === false && (k === 190 || k === 46 || k === 8 || k === 37 || k === 39 || (k >= 48 && k <= 57)))) {
                     e.preventDefault();
@@ -187,8 +194,9 @@ class Helpers {
             }
             e.target.value = e.target.value.replace(/\.(?=\.)|G(?!^)\.|`|,/gm, '');
         }
+
         for (let i = 0; i < els.length; i++) {
-            let events = ['input','change','paste', 'keypress'];
+            let events = ['input', 'change', 'paste', 'keypress'];
             for (let j = 0; j < events.length; j++) {
                 els[i].addEventListener(events[j], validateNumber);
             }
@@ -234,26 +242,46 @@ class Helpers {
         return (y > 1) ? 11 - y : y;
     }
 
-    static async getUser(){
+    static async getUser() {
         Loading.toggle(true);
         let data = null;
-        let queryString = window.location.search.replace("?","").split("&");
+        let queryString = window.location.search.replace("?", "").split("&");
         let parameters = {};
-        window.history.pushState({}, document.title, window.location.pathname);
+        // window.history.pushState({}, document.title, window.location.pathname);
         for (let i = 0; i < queryString.length; i++) {
             let d = queryString[i].split("=");
-            if( typeof d[1] !== "undefined" ) parameters[d[0]] = d[1];
+            if (typeof d[1] !== "undefined") parameters[d[0]] = d[1];
         }
-        if( typeof parameters['refer'] !== "undefined" ){
+        if (typeof parameters['refer'] !== "undefined") {
             let dataRquest = await AccessToken.get(parameters['refer']);
-            if( dataRquest !== null ) {
+            if (dataRquest !== null) {
+                dataRquest['refer'] = parameters['refer'];
                 localStorage.clear();
                 localStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquest)))));
                 data = dataRquest;
             }
-        }else{
+        } else {
             let dataRquest = localStorage.getItem('request');
-            if( dataRquest !== null ) data = JSON.parse(Base64.decode(Base64.decode(Base64.decode(dataRquest))));
+            if (typeof dataRquest === "undefined" || dataRquest === null) {
+                Helpers.goToError();
+                return data;
+            }
+
+            data = JSON.parse(Base64.decode(Base64.decode(Base64.decode(dataRquest))));
+            if (typeof data['refer'] === "undefined") {
+                Helpers.goToError();
+                return data;
+            }
+
+            let dataRquestVerify = await AccessToken.get(data['refer']);
+            if (dataRquestVerify !== null) {
+                dataRquestVerify['refer'] = data['refer'];
+                localStorage.clear();
+                localStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquestVerify)))));
+            } else {
+                Helpers.goToError();
+            }
+
         }
         return data;
     }

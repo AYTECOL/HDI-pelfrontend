@@ -86,9 +86,9 @@ export default class Persona extends Component {
             this.state.total = 3;
         }
 
-        if( typeof this.props.disabledAll !== "undefined" ){
-            for(let i in this.state.person){
-                this.state.person[i+"Disabled"] = true;
+        if (typeof this.props.disabledAll !== "undefined") {
+            for (let i in this.state.person) {
+                this.state.person[i + "Disabled"] = true;
             }
         }
     }
@@ -96,8 +96,8 @@ export default class Persona extends Component {
     componentDidMount() {
         this._isMounted = true;
         setTimeout(() => {
-            if( this._isMounted ) this.validateAll(null , false, false);
-        },600);
+            if (this._isMounted) this.validateAll(null, false, false);
+        }, 600);
     }
 
     componentWillUnmount() {
@@ -110,7 +110,7 @@ export default class Persona extends Component {
         let errorFile = false;
         let person = this.state.person;
         let validFile = Helpers.validateFile(e.target.files[0]);
-        if (validFile){
+        if (validFile) {
             name = e.target.files[0].name;
             status = false;
             person.sarlaft = e.target.files[0];
@@ -125,9 +125,9 @@ export default class Persona extends Component {
             person: person,
             sarlfalt_url: undefined
         });
-        setTimeout(()=>{
+        setTimeout(() => {
             this.validateAll('sarlaft');
-        },250);
+        }, 250);
     };
 
     generoChange = index => () => {
@@ -144,7 +144,7 @@ export default class Persona extends Component {
     changeDates = e => {
         this.changeValue({
             target: {
-                name: (this.state.typePerson===3)?'fechadecontitucion':'fechadenacimiento',
+                name: (this.state.typePerson === 3) ? 'fechadecontitucion' : 'fechadenacimiento',
                 value: MomentJs(e).format("YYYY-MM-DD")
             }
         });
@@ -215,16 +215,16 @@ export default class Persona extends Component {
                     // person.tipodetelefonoDisabled = true;
                 }
 
-                if( typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined" ){
-                    if( typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined" ){
+                if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
+                    if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
                         person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
                         // person.addressDisabled = true;
 
-                        if( typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined" ) {
+                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
                             person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
                             // person.ciudadDisabled = true;
                         }
-                        if( typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined" ) {
+                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
                             person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
                             // person.adresstypeDisabled = true;
                         }
@@ -243,7 +243,7 @@ export default class Persona extends Component {
                 Loading.toggle(false);
             }
         } catch (e) {
-            if (this.state.personExists){
+            if (this.state.personExists) {
                 let updatePerson = this.state.person;
                 for (let i in updatePerson) {
                     if (i.indexOf('Disabled') !== -1 || i.indexOf('Error') !== -1) {
@@ -271,11 +271,11 @@ export default class Persona extends Component {
         });
     };
 
-    saveFile = async () =>{
-        if( this.state.typePerson === 1 && typeof this.state.person.sarlfalt_url === "undefined" ){
+    saveFile = async () => {
+        if (this.state.typePerson === 1 && typeof this.state.person.sarlfalt_url === "undefined") {
             let person = this.state.person;
-            let file = await UploadFile.upload("Sarlaft",person.sarlaft);
-            if( typeof file['location'] !== "undefined" ){
+            let file = await UploadFile.upload("Sarlaft", person.sarlaft);
+            if (typeof file['location'] !== "undefined") {
                 person.sarlaft = file['location'];
                 this.setState({
                     ...this.state,
@@ -287,7 +287,7 @@ export default class Persona extends Component {
 
     async validateAll(name, printErrors, saveData) {
         if (typeof this.props.updatePerson !== "undefined") {
-            if(typeof printErrors === "undefined") printErrors = false;
+            if (typeof printErrors === "undefined") printErrors = false;
             let msj4 = true;
             let errors = [];
             let fields = document.querySelectorAll(".modal-content input, .modal-content select");
@@ -295,22 +295,22 @@ export default class Persona extends Component {
                 fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
                 if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox') {
                     errors.push(fields[i].name);
-                    if( printErrors || fields[i].name === name ) fields[i].parentElement.className += " error";
+                    if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                 }
             }
-            if( typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" ){
+            if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "") {
                 errors.splice(errors.indexOf('sarlfalt'), 1);
-                Helpers.removeClass('.sarlaft.error','error');
+                Helpers.removeClass('.sarlaft.error', 'error');
             }
-            if( this.state.typePerson === 1 ){
+            if (this.state.typePerson === 1) {
                 if (this.state.person.genero === "") {
                     errors.push('genero');
-                    if( printErrors || 'genero' === name ) document.querySelector(".generofield").className += " error";
+                    if (printErrors || 'genero' === name) document.querySelector(".generofield").className += " error";
                 } else {
                     document.querySelector(".generofield").className = document.querySelector(".generofield").className.replace(' error', '');
                 }
             }
-            if( this.state.typePerson === 1 || this.state.typePerson === 2 ) {
+            if (this.state.typePerson === 1 || this.state.typePerson === 2) {
                 if (this.state.person.fechadenacimiento === "") {
                     errors.push('fechadenacimiento');
                     if (printErrors || 'fechadenacimiento' === name) document.querySelector(".fechadenacimiento").className += " error";
@@ -318,27 +318,27 @@ export default class Persona extends Component {
                     document.querySelector(".fechadenacimiento").className = document.querySelector(".fechadenacimiento").className.replace(' error', '');
                 }
             }
-            if( this.state.typePerson === 3 ){
+            if (this.state.typePerson === 3) {
                 if (this.state.person.fechadecontitucion === "") {
                     errors.push('fechadecontitucion');
-                    if( printErrors || 'fechadecontitucion' === name ) document.querySelector(".fechadecontitucion").className += " error";
+                    if (printErrors || 'fechadecontitucion' === name) document.querySelector(".fechadecontitucion").className += " error";
                 } else {
                     document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
                 }
             }
-            if( this.state.typePerson !== 4 ) {
+            if (this.state.typePerson !== 4) {
                 if (this.state.person.role.length === 0) {
                     errors.push('role');
-                    if( printErrors || 'role' === name ) document.querySelector(".items-checkboxes").className += " error";
+                    if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
                 } else {
                     document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
                 }
             }
             let ok = this.state.total - errors.length;
-            if( ok === 0 ) msj4 = false;
+            if (ok === 0) msj4 = false;
             if (errors.length === 0 && saveData) {
                 await this.saveFile();
-                if( typeof this.state.person.code === "undefined" ) this.state.person.code = this.state.typePerson !== 3 ? '36' : '37';
+                if (typeof this.state.person.code === "undefined") this.state.person.code = this.state.typePerson !== 3 ? '36' : '37';
                 this.props.updatePerson(this.state.person);
             } else {
                 this.setState({
@@ -382,7 +382,7 @@ export default class Persona extends Component {
                                                 disabledAll={this.props.disabledAll}
                                                 exitsTomador={this.state.exitsTomador}
                                                 hasAccident={this.props.hasAccident}
-                                                hasExequias={this.props.hasExequias} />
+                                                hasExequias={this.props.hasExequias}/>
 
                                     {this.state.typePerson !== 4 &&
                                     <div className="row fields-row">
@@ -643,7 +643,8 @@ export default class Persona extends Component {
                                                 <label htmlFor="businessname">Fecha de constitución</label>
                                                 <DatePicker name="fechadecontitucion"
                                                             value={this.state.person.fechadecontitucion}
-                                                            selected={this.state.fechadecontitucion} onChange={this.changeDates}
+                                                            selected={this.state.fechadecontitucion}
+                                                            onChange={this.changeDates}
                                                             disabled={this.state.person.fechadecontitucionDisabled}
                                                             className={"form-control " + (this.state.person.fechadecontitucionDisabled ? 'disabled' : '')}/>
                                                 <small className="form-text only-errors">Falta información requerida
@@ -722,17 +723,19 @@ export default class Persona extends Component {
                                             <div className="sarlaft form-group">
                                                 <label htmlFor="address">Es necesario el sarlaft</label>
                                                 <span>Adjunta el Sarlaft diligenciado</span>
-                                                <input type="file" className="form-control" name="sarlaft" onChange={this.changeTextFile}/>
+                                                <input type="file" className="form-control" name="sarlaft"
+                                                       onChange={this.changeTextFile}/>
                                                 {this.state.showDefaultTextFile ? (
                                                     <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                                 ) : (
                                                     <p>{this.state.textFile}</p>
                                                 )}
                                                 <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
-                                                { typeof this.state.person.sarlfalt_url !== "undefined" &&
+                                                {typeof this.state.person.sarlfalt_url !== "undefined" &&
                                                 <React.Fragment>
                                                     <br/>
-                                                    <span><a href={this.state.person.sarlfalt_url}>{this.state.person.sarlfalt_url.split('/').slice(-1)}</a></span>
+                                                    <span><a
+                                                        href={this.state.person.sarlfalt_url}>{this.state.person.sarlfalt_url.split('/').slice(-1)}</a></span>
                                                 </React.Fragment>
                                                 }
                                                 <br/>
@@ -760,10 +763,11 @@ export default class Persona extends Component {
                                 <React.Fragment>
                                     <div className="buttons">
                                         {(this.state.msj4 === true && this.state.typePerson === 4) &&
-                                        <p className="error">Falta información requerida para el Contacto. Por favor revise los detalles de los datos de Contacto</p>
+                                        <p className="error">Falta información requerida para el Contacto. Por favor
+                                            revise los detalles de los datos de Contacto</p>
                                         }
                                         <button className="btn btn-primary" type="button" onClick={() => {
-                                            this.validateAll(null , true, true)
+                                            this.validateAll(null, true, true)
                                         }}>Continuar
                                         </button>
                                     </div>
