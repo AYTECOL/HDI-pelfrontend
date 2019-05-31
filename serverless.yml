@@ -42,8 +42,8 @@ resources:
             - Sid: PublicReadGetObject
               Effect: Allow
               Principal:
-                #{"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] }
-               CanonicalUser:
+                {"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] }
+              CanonicalUser:
                    {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:GetObject
