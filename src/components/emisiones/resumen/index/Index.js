@@ -19,7 +19,6 @@ import AllPropertiesZones from "../../../../services/AllPropertiesZones";
 import AllBuildMaterial from "../../../../services/AllBuildMaterial";
 import AllBuildYears from "../../../../services/AllBuildYears";
 import AllSecurity from "../../../../services/AllSecurity";
-import Elementoseguridad from "../../../cotizaciones/inmueble/forms/elementoseguridad/Elementoseguridad";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 
 class Index extends Component {
@@ -59,7 +58,7 @@ class Index extends Component {
         this.getData();
     }
 
-    async getData(){
+    async getData() {
         Loading.toggle(true);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
         let plans = [];
@@ -87,26 +86,26 @@ class Index extends Component {
         let items = persons.quote_iussed_info.Item;
         let person = [];
         person.push(items.taker);
-        for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [1];
+        for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
-        if( typeof items.benefist !== "undefined" ) {
+        if (typeof items.benefist !== "undefined") {
             for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
-            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [2];
+            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [2];
         }
 
-        if( typeof items.benefist !== "undefined" ) {
+        if (typeof items.benefist !== "undefined") {
             for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
-            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [3];
+            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [3];
         }
 
-        if( typeof items.onerous !== "undefined" ) {
+        if (typeof items.onerous !== "undefined") {
             for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
-            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [4];
+            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [4];
         }
 
-        if( typeof items.persons_aditionals !== "undefined" ){
+        if (typeof items.persons_aditionals !== "undefined") {
             for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
-            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [5];
+            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [5];
         }
 
         for (let i = 0; i < person.length; i++) {
@@ -126,12 +125,12 @@ class Index extends Component {
         }
 
         let data = plan.more_info.Item;
-        if( typeof data !== "undefined"){
-            if(typeof data.start_policy_date !== "undefined" ) data['initdate'] = data.start_policy_date;
-            if(typeof data.risk_use !== "undefined" ) data['utilizado'] = data.risk_use;
-            if(typeof data.goods_over_cost !== "undefined" ) data['contents'] = data.goods_over_cost;
-            for (let i = 0; i < data['contents'].length; i++) for(let j in data.contents[i]) if ( data.contents[i][j] === '""' ) data.contents[i][j] = '';
-        }else{
+        if (typeof data !== "undefined") {
+            if (typeof data.start_policy_date !== "undefined") data['initdate'] = data.start_policy_date;
+            if (typeof data.risk_use !== "undefined") data['utilizado'] = data.risk_use;
+            if (typeof data.goods_over_cost !== "undefined") data['contents'] = data.goods_over_cost;
+            for (let i = 0; i < data['contents'].length; i++) for (let j in data.contents[i]) if (data.contents[i][j] === '""') data.contents[i][j] = '';
+        } else {
             data = [];
         }
 
@@ -140,32 +139,32 @@ class Index extends Component {
         let materials = [];
         let buildYears = [];
         let newSecurity = [];
-        if( typeof inmueble !== "undefined" ) {
+        if (typeof inmueble !== "undefined") {
             zones = await AllPropertiesZones.get();
             materials = await AllBuildMaterial.get();
             buildYears = await AllBuildYears.get();
             inmueble.identificacion = store.getState().cotizacion.identification;
-            for (let i = 0; i < zones.length; i++) if( parseInt(zones[i].zoneCode) === inmueble.location_zone ) inmueble.location_zone = zones[i].answer;
+            for (let i = 0; i < zones.length; i++) if (parseInt(zones[i].zoneCode) === inmueble.location_zone) inmueble.location_zone = zones[i].answer;
             for (let i = 0; i < materials.length; i++) {
                 if (parseInt(materials[i].buildMaterialCode) === parseInt(inmueble.build_material)) inmueble.build_material = materials[i].answer;
             }
             for (let i = 0; i < buildYears.length; i++) {
-                if( parseInt(buildYears[i].buildYearCode) === parseInt(inmueble.build_year) ) inmueble.build_year = buildYears[i].answer;
+                if (parseInt(buildYears[i].buildYearCode) === parseInt(inmueble.build_year)) inmueble.build_year = buildYears[i].answer;
             }
             let seguridad = await AllSecurity.get();
             let Map = {
-                "1": { name: "alarma"},
-                "2": { name: "caja_fuerte"},
-                "3": { name: "circuito_cerrado_tv"},
-                "5": { name: "puertas_control_domotico"},
-                "6": { name: "puertas_seguridad_blindada"},
-                "4": { name: "regulador_de_voltaje"},
-                "7": { name: "vigilancia_permanente"},
+                "1": {name: "alarma"},
+                "2": {name: "caja_fuerte"},
+                "3": {name: "circuito_cerrado_tv"},
+                "5": {name: "puertas_control_domotico"},
+                "6": {name: "puertas_seguridad_blindada"},
+                "4": {name: "regulador_de_voltaje"},
+                "7": {name: "vigilancia_permanente"},
             };
             for (let i = 0; i < seguridad.length; i++) {
-                if( typeof seguridad[i]['id'] !== "undefined" && typeof Map[seguridad[i]['id']] !== "undefined"){
+                if (typeof seguridad[i]['id'] !== "undefined" && typeof Map[seguridad[i]['id']] !== "undefined") {
                     let key = Map[seguridad[i]['id']].name;
-                    if( typeof inmueble.seguridad[key] !== "undefined" && parseInt(inmueble.seguridad[key]) === 1 ){
+                    if (typeof inmueble.seguridad[key] !== "undefined" && parseInt(inmueble.seguridad[key]) === 1) {
                         newSecurity.push(seguridad[i]['description']);
                     }
                 }
@@ -183,7 +182,7 @@ class Index extends Component {
         Loading.toggle(false);
     }
 
-    showAnyPopup(name,index,type) {
+    showAnyPopup(name, index, type) {
         if (typeof type === "undefined") type = 1;
         let state = !this.state[name];
         this.setState({
@@ -228,39 +227,41 @@ class Index extends Component {
                     <div className="wrapper-items">
                         <div className="col subwrapper">
                             <div className="row">
-                                <div className="col col-sm-12 col-md-5 first-group">
+                                <div className="col col-12 col-sm-12 col-md-5 col-lg-5 first-group">
                                     {this.state.inmueble.risk_type === 2 ? (
                                         <div className="icon apartamento">&nbsp;</div>
-                                    ):(
+                                    ) : (
                                         <div className="icon home">&nbsp;</div>
                                     )}
-                                    <h4>{this.state.inmueble.identificacion.address}</h4>
-                                    <p>
-                                        {this.state.inmueble.risk_type === 2 ? ("Apartamento "):("Casa ")}
-                                        / Bogotá </p>
-                                    <span>{Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudadovalor)}</span>
+                                    <div className="content-wrapper">
+                                        <h4>{this.state.inmueble.identificacion.address}</h4>
+                                        <p>
+                                            {this.state.inmueble.risk_type === 2 ? ("Apartamento ") : ("Casa ")}
+                                            / Bogotá </p>
+                                        <span>{Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudadovalor)}</span>
+                                    </div>
                                 </div>
-                                <div className="col col-sm-12 col-md-7 no-margin second-group">
+                                <div className="col col-12 col-sm-12 col-md-7 no-margin second-group">
                                     <div className="row">
-                                        <div className="col col-sm-12 col-md-3 gray-box first">
+                                        <div className="col col-5 col-sm-5 col-md-3 gray-box first">
                                             <p><b>Contenidos</b></p>
                                             <p className="big-number">{this.state.inmueble.contenido_asegudado === 1 ? (this.state.inmueble.contenido_asegudado_valor) : ("Ningúno")}</p>
                                         </div>
-                                        <div className="col col-sm-12 col-md-9 no-padding">
+                                        <div className="col col-7 col-sm-7 col-md-9 no-padding">
                                             <div className="row">
-                                                <div className="col col-sm-12 col-md-4">
+                                                <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Número de pisos</b></p>
                                                     <p>{this.state.inmueble.floors_number}</p>
                                                 </div>
-                                                <div className="col col-sm-12 col-md-4">
+                                                <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Ubicado en</b></p>
                                                     <p>Zona {this.state.inmueble.location_zone}</p>
                                                 </div>
-                                                <div className="col col-sm-12 col-md-4">
+                                                <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Año</b></p>
                                                     <p>{this.state.inmueble.build_year}</p>
                                                 </div>
-                                                <div className="col col-sm-12 col-md-4">
+                                                <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Ubicado en el piso</b></p>
                                                     <p>{this.state.inmueble.location_floor}</p>
                                                 </div>
@@ -269,31 +270,31 @@ class Index extends Component {
                                     </div>
 
                                     <div className="row">
-                                        <div className="col col-sm-12 col-md-3 no-padding">
+                                        <div className="col col-5 col-sm-5 col-md-3 no-padding">
                                             <div className="row">
-                                                <div className="col col-12 gray-box">
+                                                <div className="col col-12 col-12 gray-box">
                                                     <p><b>Obras de arte</b></p>
                                                     <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? (this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
                                                 </div>
-                                                <div className="col col-12 gray-box">
+                                                <div className="col col-12 col-12 gray-box">
                                                     <p><b>Joyas</b></p>
                                                     <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? (this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col col-sm-12 col-md-9 no-padding">
+                                        <div className="col col-7 col-sm-7 col-md-9 no-padding">
                                             <div className="row">
-                                                <div className="col col-sm-12 col-md-4">
+                                                <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Conjunto cerrado</b></p>
                                                     <p>Si</p>
                                                 </div>
-                                                <div className="col col-sm-12 col-md-4">
+                                                <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Seguridad</b></p>
-                                                    <p>{this.state.newSecurity.map(item=>
-                                                        item+"\n"
+                                                    <p>{this.state.newSecurity.map(item =>
+                                                        item + "\n"
                                                     )}</p>
                                                 </div>
-                                                <div className="col col-sm-12 col-md-4">
+                                                <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Construido</b></p>
                                                     <p>{this.state.inmueble.build_material}</p>
                                                 </div>
@@ -319,12 +320,13 @@ class Index extends Component {
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
                                             <h4><span>{this.state.contents.length}</span>Items</h4>
                                         </div>
-                                        <div className={"col col-12 col-sm-12 col-md-6 col-lg-6 text-right "+(this.state.contents.length === 0?'hide':'')}>
+                                        <div
+                                            className={"col col-12 col-sm-12 col-md-6 col-lg-6 text-right " + (this.state.contents.length === 0 ? 'hide' : '')}>
                                             <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
                                             <div className="close-section open">Ver <i>&nbsp;</i></div>
                                         </div>
                                     </div>
-                                    <div className={"wrapper-box "+(this.state.contents.length === 0?'hide':'')}>
+                                    <div className={"wrapper-box " + (this.state.contents.length === 0 ? 'hide' : '')}>
                                         <div className="wrapper-content">
                                             {this.state.contents.map((item, key) =>
                                                 <div className="row" key={key}>
@@ -346,7 +348,8 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <a className="btn btn-download" target="_blank" href={item.textFile}>Documento.pdf</a>
+                                                        <a className="btn btn-download" target="_blank"
+                                                           href={item.textFile}>Documento.pdf</a>
                                                     </div>
                                                 </div>
                                             )}

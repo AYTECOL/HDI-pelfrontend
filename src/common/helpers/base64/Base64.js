@@ -7,7 +7,7 @@ class Base64 {
      *
      **/
 
-    // private property
+        // private property
     static _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
     // public method for encoding
@@ -77,7 +77,7 @@ class Base64 {
 
         output = Base64._utf8_decode(output);
 
-        return output.replace(/\0.*$/g,'');
+        return output.replace(/\0.*$/g, '');
 
     };
 

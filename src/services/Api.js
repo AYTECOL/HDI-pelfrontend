@@ -7,16 +7,16 @@ class Api {
     static HttpRequest(method, url, data, overrideBase, formData, headers) {
         return new Promise(function (resolve, reject) {
             var xhr = new XMLHttpRequest();
-            if(typeof formData === "undefined") formData = false;
+            if (typeof formData === "undefined") formData = false;
             if (typeof overrideBase === "undefined") {
                 url = UrlService + url;
             } else {
                 url = overrideBase + url;
             }
             xhr.open(method, url);
-            if( formData === false ) xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
-            if (typeof headers !== "undefined"){
-                for(let j in headers) xhr.setRequestHeader(j, headers[j]);
+            if (formData === false) xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+            if (typeof headers !== "undefined") {
+                for (let j in headers) xhr.setRequestHeader(j, headers[j]);
             }
             xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             xhr.onload = function () {
@@ -38,7 +38,7 @@ class Api {
             if (data === null) {
                 xhr.send();
             } else {
-                if( formData === false ) {
+                if (formData === false) {
                     data = JSON.stringify(data).replace(/<(?:.|\n)*?>/gm, '');
                 }
                 xhr.send(data);
@@ -64,7 +64,7 @@ class Api {
         })
     };
 
-    static async files(url, name, file, overrideBase){
+    static async files(url, name, file, overrideBase) {
         let formData = new FormData();
         formData.append(name, file);
         return await Api.HttpRequest('POST', url, formData, overrideBase, true).then(function (response) {

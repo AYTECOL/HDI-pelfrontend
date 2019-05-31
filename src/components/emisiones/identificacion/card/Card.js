@@ -6,7 +6,7 @@ class Card extends Component {
         return (
             <div className="row">
                 <div className="col wrapper-more-selected">
-                    {this.props.persons.map((item,key)=>
+                    {this.props.persons.map((item, key) =>
                         <div key={key} className="row item-select">
                             <div className="col col-1">
                                 <div className="icon-image">&nbsp</div>
@@ -14,32 +14,32 @@ class Card extends Component {
                             <div className="col">
                                 <span>Rol</span>
                                 <p className="font-weight-bold">{
-                                    (item['role'].indexOf(1) !== -1?'Tomador ':'')+
-                                    (item['role'].indexOf(2) !== -1?'Asegurado ':'')+
-                                    (item['role'].indexOf(3) !== -1?'Beneficiario ':'')+
-                                    (item['role'].indexOf(4) !== -1?'Beneficiario oneroso ':'')+
-                                    (item['role'].indexOf(5) !== -1?'Exequias ':'')+
-                                    (item['role'].indexOf(6) !== -1?'Accidentes personales ':'')
+                                    (item['role'].indexOf(1) !== -1 ? 'Tomador ' : '') +
+                                    (item['role'].indexOf(2) !== -1 ? 'Asegurado ' : '') +
+                                    (item['role'].indexOf(3) !== -1 ? 'Beneficiario ' : '') +
+                                    (item['role'].indexOf(4) !== -1 ? 'Beneficiario oneroso ' : '') +
+                                    (item['role'].indexOf(5) !== -1 ? 'Exequias ' : '') +
+                                    (item['role'].indexOf(6) !== -1 ? 'Accidentes personales ' : '')
                                 }</p>
                             </div>
                             <div className="col col-sm-2 col-md-2">
                                 <span>Identificación</span>
-                                <p>{ item['value'] }</p>
+                                <p>{item['value']}</p>
                             </div>
-                            {parseInt(item['code']) === 37?(
+                            {parseInt(item['code']) === 37 ? (
                                 <div className="col">
                                     <span>Razón social</span>
-                                    <p>{ item['businessname'] }</p>
+                                    <p>{item['businessname']}</p>
                                 </div>
-                            ):(
-                                <div className="col">
+                            ) : (
+                                <div className="col name">
                                     <span>Nombre y apellido</span>
-                                    <p>{ item['name'] } { item['lastname'] }</p>
+                                    <p>{item['name']} {item['lastname']}</p>
                                 </div>
                             )}
                             <div className="col col-sm-3 col-md-3">
                                 <span>Dirección</span>
-                                <p>{ item['address'] }</p>
+                                <p>{item['address']}</p>
                             </div>
                             <div className="col actions">
                                 {this.props.showEdit === true &&

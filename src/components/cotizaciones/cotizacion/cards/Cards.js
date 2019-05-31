@@ -89,7 +89,7 @@ class Cards extends Component {
                 });
                 setTimeout(() => {
                     this.getInspectionPolicy();
-                },500);
+                }, 500);
             }
         });
 
@@ -98,13 +98,14 @@ class Cards extends Component {
         this.getAllBuildYears();
     }
 
-    async getAllBuildYears(){
+    async getAllBuildYears() {
         this.setState({
             ...this.state,
             anoconstruidos: await AllBuildYears.get()
         });
     }
-    async getInspectionPolicy(){
+
+    async getInspectionPolicy() {
         new InspectionPolicy();
 
         /*let Inmueble = store.getState().Inmueble;
@@ -199,7 +200,7 @@ class Cards extends Component {
             });
             setTimeout(() => {
                 this.getInspectionPolicy();
-            },300);
+            }, 300);
         }
     }
 
@@ -321,7 +322,7 @@ class Cards extends Component {
                     </div>
                 </div>
 
-                <div className={"row justify-content-center "+(this.state.showInspect===false?'hide':'')}>
+                <div className={"row justify-content-center " + (this.state.showInspect === false ? 'hide' : '')}>
                     <div className="col col-sm-12 col-md-10 col-lg-10">
                         <div className="tool-tip info tool-tip-new">
                             <p>Póliza sujeta a <span>{this.state.inspection_detail}</span></p>
@@ -329,10 +330,16 @@ class Cards extends Component {
                                 <p>Más información</p>
                                 <div className="span">
                                     <span>?</span>
-                                    {this.state.inspection==="I.C"?(
-                                        <div className="text">La vivienda requiere que la revisemos más al detalle, ten presente los siguientes datos para poder agendar una futura inspección en sitio: Nombre de contacto, Teléfono de contacto.</div>
-                                    ):(
-                                        <div className="text">La vivienda requiere que la revisemos más al detalle, envíanos por favor un breve registro fotográfico de acuerdo a la siguiente guía: Una foto de la Fachada (Debe ser visible la estructura y todos los pisos del Edificio), Una foto de la Habitación principal y de Sala-Comedor, Una foto de los Baños y de la Cocina</div>
+                                    {this.state.inspection === "I.C" ? (
+                                        <div className="text">La vivienda requiere que la revisemos más al detalle, ten
+                                            presente los siguientes datos para poder agendar una futura inspección en
+                                            sitio: Nombre de contacto, Teléfono de contacto.</div>
+                                    ) : (
+                                        <div className="text">La vivienda requiere que la revisemos más al detalle,
+                                            envíanos por favor un breve registro fotográfico de acuerdo a la siguiente
+                                            guía: Una foto de la Fachada (Debe ser visible la estructura y todos los
+                                            pisos del Edificio), Una foto de la Habitación principal y de Sala-Comedor,
+                                            Una foto de los Baños y de la Cocina</div>
                                     )}
                                 </div>
                             </div>

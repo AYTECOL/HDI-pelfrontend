@@ -25,8 +25,8 @@ class Name extends Component {
         });
     }
 
-    static toggleDisable(status){
-        if (status === true){
+    static toggleDisable(status) {
+        if (status === true) {
             Helpers.disabled('#name');
         } else {
             Helpers.enabled('#name');

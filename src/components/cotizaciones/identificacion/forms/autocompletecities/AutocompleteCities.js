@@ -7,6 +7,8 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class AutocompleteCities extends Component {
 
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -30,7 +32,7 @@ class AutocompleteCities extends Component {
             let city = storeState.cotizacion.identification.city;
             let department = storeState.cotizacion.identification.department;
             if (city !== this.state.valueLoadedCity || department !== this.state.valueLoadedDepartment) {
-                if (this._isMounted){
+                if (this._isMounted) {
                     this.setState({
                         ...this.state,
                         valueLoadedCity: city,
@@ -41,9 +43,9 @@ class AutocompleteCities extends Component {
         });
     }
 
-    _isMounted = false;
-
-    componentWillUnmount() { this._isMounted = false; }
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     componentDidMount() {
         this._isMounted = true;
@@ -74,7 +76,7 @@ class AutocompleteCities extends Component {
                 break;
             }
         }
-        if (value !== ""){
+        if (value !== "") {
             this.setState({
                 ...this.state,
                 value: value
@@ -102,7 +104,7 @@ class AutocompleteCities extends Component {
         let value = option.description;
         let description = option.department;
         let codeDepartment = option.code_department;
-        setTimeout(()=>{
+        setTimeout(() => {
             store.dispatch(saveIdentificationValue({
                 name: "city",
                 value: code
@@ -117,7 +119,7 @@ class AutocompleteCities extends Component {
                 value: value,
                 empty: false
             });
-            if (typeof this.props.onChange !== "undefined"){
+            if (typeof this.props.onChange !== "undefined") {
                 this.props.onChange({
                     target: {
                         value: value,
@@ -202,12 +204,14 @@ class AutocompleteCities extends Component {
     render() {
         return (
             <div className={"form-group autocomplete " + (this.state.empty ? 'error' : '')}>
-                <label className={typeof this.props.hideTitle !== "undefined"&&this.props.hideTitle===true?'hide':''} htmlFor="city">{typeof this.props.label === "undefined"?'Ciudad o municipio del hogar':this.props.label}</label>
-                <input name={typeof this.props.name !== "undefined"?'city':this.props.name} id="city" type="text"
-                       className={"form-control "+(typeof this.props.disabled==='undefined'?'':(this.props.disabled===true?'disabled':''))}
+                <label
+                    className={typeof this.props.hideTitle !== "undefined" && this.props.hideTitle === true ? 'hide' : ''}
+                    htmlFor="city">{typeof this.props.label === "undefined" ? 'Ciudad o municipio del hogar' : this.props.label}</label>
+                <input name={typeof this.props.name !== "undefined" ? 'city' : this.props.name} id="city" type="text"
+                       className={"form-control " + (typeof this.props.disabled === 'undefined' ? '' : (this.props.disabled === true ? 'disabled' : ''))}
                        placeholder="Ingresa ciudad o municipio del h..."
                        value={this.state.value !== '' ? this.state.value : this.props.value}
-                       disabled={typeof this.props.disabled==='undefined'?false:this.props.disabled}
+                       disabled={typeof this.props.disabled === 'undefined' ? false : this.props.disabled}
                        autoComplete="city"
                        autoCorrect="off"
                        autoCapitalize="none"
@@ -215,7 +219,9 @@ class AutocompleteCities extends Component {
                        onBlur={this.onBlur}
                        onChange={this.searchData}
                 />
-                <small className="form-text only-errors">Por favor ingrese la {typeof this.props.label === "undefined"?'Ciudad o municipio del hogar':this.props.label}.</small>
+                <small className="form-text only-errors">Por favor ingrese
+                    la {typeof this.props.label === "undefined" ? 'Ciudad o municipio del hogar' : this.props.label}.
+                </small>
                 <ul className={(this.state.toggle ? 'show' : 'hide') + " list-items"}>
                     {this.state.options.cities.map((option, key) =>
                         <li key={key} value={option.code_city} className={option.active ? 'active' : ''}

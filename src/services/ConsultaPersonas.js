@@ -15,7 +15,7 @@ class Consultapersonas {
                     "terminal": "1",
                     "ip": "1.1.1.1"
                 },
-                "tipoDocumento": { "codigo": type },
+                "tipoDocumento": {"codigo": type},
                 "numeroDocumento": value,
                 "consultarCreditScore": true,
                 "consultarAniosExperiencia": false
@@ -23,9 +23,9 @@ class Consultapersonas {
         };
 
         let token = await Helpers.getUser();
-        token = token === null ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDbGF2ZSI6IjQwOTA4MzMiLCJFbWFpbCI6ImRhcmkuaGVybmFuZGV6QGxpYmVydHljb2xvbWJpYS5jb20iLCJOdW1lcm9JZCI6IjEyMzQ1NTAwIiwiU3VyY3Vyc2FsIjoiMTE5IiwiVGlwb0lkIjoiQ0MiLCJuYW1lIjoidmFyaWFzIGNsYXZlcywgQU5BIElTQUJFTCAoQ29sb21iaWEpIiwic3RpY2siOiIyMDE5LjA1LjI5IDE1LjE0LjU2LjE2MSIsInVzdWFyaW8iOiJjYzEyMzQ1NTAwIiwidXN1YXJpb0JQTSI6IkxJcy80c2tHRVNsZHE0dGprZkJMS2c9PSIsImNsaWVudF9pZCI6Im9JNVZrVnpqekVTNDc4Nlh3RWhWREFkeU4zQXBpYVRNIiwiY2xpZW50X3NlY3JldCI6Ik1OaHJKR1A2Y0c0MTk2R3QiLCJpYXQiOjE1NTkxNjA4OTgsImV4cCI6MTU1OTI0NzI5OH0.o-Ck95r9Z5DS6r9vDS4LhXdP8_Hr4-fQvnp-xsd9qxA':token.accessToken;
+        token = token === null ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudGUiOiI0MDkwODMzIiwiYXBwIjoiQ09UV0VCIiwibm9tYnJlVXN1YXJpbyI6IiwgQVNFU09SSUFTIEVOIFNFR1VST1MgVVJJQkUgTE9QRVogWSBDSUEuIExUREEuIChDb2xvbWJpYSkiLCJwZXJmaWwiOiJURF9DT1RXRUIiLCJzdGljayI6IjIwMTkuMDUuMzEgMTEuNTMuMjcuNjE2IiwidXN1YXJpbyI6ImNjMTIzNDU1MDAiLCJjbGllbnRfaWQiOiJvSTVWa1Z6anpFUzQ3ODZYd0VoVkRBZHlOM0FwaWFUTSIsImNsaWVudF9zZWNyZXQiOiJNTmhySkdQNmNHNDE5Nkd0IiwiaWF0IjoxNTU5MzIxNjU1LCJleHAiOjE1NTk0MDgwNTV9.jUkQ0Hj3QlLBPzB0AIY03G1CUwjqEsTK46VzHsPU1qk' : token.accessToken;
         return await Service.post(Baseurl, data, UrlServicePerson, undefined, {
-            "Authorization": "Bearer "+token
+            "Authorization": "Bearer " + token
         });
     };
 }

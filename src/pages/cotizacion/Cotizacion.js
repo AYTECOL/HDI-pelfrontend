@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
-
 // Components
 import Submenu from '../../components/cotizaciones/submenu/Submenu';
 import Identificacion from '../../components/cotizaciones/identificacion/index/Index';
@@ -17,9 +16,9 @@ class Cotizacion extends Component {
         return (
             <div className="cotizacion">
                 <Submenu/>
-                {step === 1 && <Identificacion/> }
-                {step === 2 && <Inmueble/> }
-                {step === 3 && <CotizacionForm/> }
+                {step === 1 && <Identificacion/>}
+                {step === 2 && <Inmueble/>}
+                {step === 3 && <CotizacionForm/>}
                 <Validaridentificacion/>
             </div>
         );

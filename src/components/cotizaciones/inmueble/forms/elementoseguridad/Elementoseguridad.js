@@ -74,7 +74,7 @@ class Elementoseguridad extends Component {
                 newValue["circuitocerradotv"] = circuitocerradotv;
                 newValue["vigilanciapermanente"] = vigilanciapermanente;
                 newValue["reguladordevoltaje"] = reguladordevoltaje;
-                for(let i in newValue) if( newValue[i] === '""' ) newValue[i] = "";
+                for (let i in newValue) if (newValue[i] === '""') newValue[i] = "";
                 this.setState({
                     ...this.state,
                     ...newValue,
@@ -84,7 +84,7 @@ class Elementoseguridad extends Component {
         this.getData();
     }
 
-    async getData(){
+    async getData() {
         let data = await AllSecurity.get();
         this.setState({
             ...this.state,
@@ -114,7 +114,7 @@ class Elementoseguridad extends Component {
                     inmueble</p>
                 <ul className="items-checkboxes">
                     <li className="row">
-                        {this.state.data.map((item,key) =>
+                        {this.state.data.map((item, key) =>
                             <div key={item.id} className="col col-12 col-md-6 lirow">
                                 <input type="checkbox"
                                        checked={this.state[this.state.keys[item.id].name]}

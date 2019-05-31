@@ -20,22 +20,21 @@ header {
   #main-menu {
     @media (max-width: 769px) {
       padding: 0;
+      position: static;
     }
 
     ul {
       display: flex;
       justify-content: flex-end;
       margin: 0;
+      @media (max-width: 769px) {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+      }
 
       li {
-        @media (max-width: 769px) {
-          min-width: 33%;
-          &:last-child a,
-          &:first-child a {
-            padding-top: 27px !important;
-          }
-        }
-
         a {
           font-weight: 400;
           display: block;
@@ -93,7 +92,6 @@ header {
             vertical-align: middle;
             margin-right: 7px;
             @media (max-width: 769px) {
-              display: none;
             }
 
             &::before {
@@ -178,6 +176,45 @@ header {
           a {
             font-weight: bold;
             padding-top: $padding-header + 5;
+          }
+        }
+
+        @media (max-width: 769px) {
+          display: none;
+          min-width: 33%;
+          &:last-child a,
+          &:first-child a {
+            padding-top: 27px !important;
+          }
+          &.logout,
+          &.item-home {
+            display: block;
+            position: absolute;
+            text-align: center;
+
+            a {
+              color: transparent;
+              line-height: 1;
+              font-size: 0;
+            }
+
+            i {
+              background-color: rgba(#fff, 0.5) !important;
+              width: 34px !important;
+              height: 34px !important;
+              margin: 0 auto !important;
+              display: block;
+
+              &::before {
+                background-size: 70% auto !important;
+              }
+            }
+          }
+          &.item-home {
+            left: 0;
+          }
+          &.logout {
+            right: 0;
           }
         }
       }

@@ -12,8 +12,8 @@ class SendMail extends Component {
         };
     }
 
-    static toggle(status){
-        if (status === true){
+    static toggle(status) {
+        if (status === true) {
             Helpers.disabled('.validaridentificacion');
         } else {
             Helpers.enabled('.validaridentificacion');
