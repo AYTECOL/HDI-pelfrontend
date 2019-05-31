@@ -10,7 +10,8 @@ import Card from '../card/Card';
 import './Index.scss';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
-import Validaridentificacion from "../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
+import Validaridentificacion
+    from "../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Loading from "../../../globals/loading/Loading";
 
@@ -55,33 +56,33 @@ class Index extends Component {
         this.getData();
     }
 
-    async getData(){
+    async getData() {
         Loading.toggle(true);
         let persons = await QuoteIussedById.get(this.props.match.params.id);
-        if (typeof persons.quote_iussed_info.Item !== "undefined"){
+        if (typeof persons.quote_iussed_info.Item !== "undefined") {
             let items = persons.quote_iussed_info.Item;
             let person = [];
             person.push(items.taker);
-            for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [1];
+            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
-            if( typeof items.benefist !== "undefined" ) {
+            if (typeof items.benefist !== "undefined") {
                 for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
-                for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [2];
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [2];
             }
 
-            if( typeof items.benefist !== "undefined" ) {
+            if (typeof items.benefist !== "undefined") {
                 for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
-                for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [3];
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [3];
             }
 
-            if( typeof items.onerous !== "undefined" ) {
+            if (typeof items.onerous !== "undefined") {
                 for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
-                for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [4];
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [4];
             }
 
-            if( typeof items.persons_aditionals !== "undefined" ){
+            if (typeof items.persons_aditionals !== "undefined") {
                 for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
-                for (let i = 0; i < person.length; i++) if ( typeof person[i].role === "undefined" ) person[i].role = [5];
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [5];
             }
 
             for (let i = 0; i < person.length; i++) {
@@ -102,7 +103,7 @@ class Index extends Component {
 
             let hasExequias = false;
             let hasAccident = false;
-            if(typeof persons.plan_selected_info.Item !== "undefined"){
+            if (typeof persons.plan_selected_info.Item !== "undefined") {
                 let coverange = persons.plan_selected_info.Item.coverages;
                 for (let i = 0; i < coverange.length; i++) {
                     if (coverange[i]['name'].toLowerCase() === 'accidentes personales' && coverange[i]['checked'] === true) hasAccident = true;
@@ -116,12 +117,12 @@ class Index extends Component {
                 hasExequias: hasExequias
             });
             Loading.toggle(false);
-        }else{
+        } else {
             Loading.toggle(false);
         }
     }
 
-    showAnyPopup(name,index,type) {
+    showAnyPopup(name, index, type) {
         if (typeof type === "undefined") type = 1;
         let state = !this.state[name];
         this.setState({
@@ -138,15 +139,15 @@ class Index extends Component {
     }
 
     togglePopUpDelete = index => () => {
-        this.showAnyPopup("showPopUpDelete",index);
+        this.showAnyPopup("showPopUpDelete", index);
     };
 
-    togglePopUpPersona = (index,type) => e => {
-        if(index!==-1 && index!==-2 && typeof type === "undefined"){
+    togglePopUpPersona = (index, type) => e => {
+        if (index !== -1 && index !== -2 && typeof type === "undefined") {
             let roles = this.state.persons[index]['role'];
-            if( roles.indexOf(5) !== -1 || roles.indexOf(6) !== -1) type = 2;
-            if( roles.indexOf(4) !== -1 || roles.indexOf(3) !== -1 ) type = 3;
-            if( roles.indexOf(1) !== -1 || roles.indexOf(2) !== -1 ) type = 1;
+            if (roles.indexOf(5) !== -1 || roles.indexOf(6) !== -1) type = 2;
+            if (roles.indexOf(4) !== -1 || roles.indexOf(3) !== -1) type = 3;
+            if (roles.indexOf(1) !== -1 || roles.indexOf(2) !== -1) type = 1;
         }
         this.showAnyPopup("showPopUpPersona", index, type);
         Validaridentificacion.toggle(false);
@@ -155,7 +156,7 @@ class Index extends Component {
     removeItem = () => {
         let persons = this.state.persons;
         let newPerson = [];
-        for (let i = 0; i < persons.length; i++) if( i !== this.state.itemSelected ) newPerson.push(persons[i]);
+        for (let i = 0; i < persons.length; i++) if (i !== this.state.itemSelected) newPerson.push(persons[i]);
         let inactiveBtn = newPerson.length <= 0;
         this.setState({
             ...this.state,
@@ -164,23 +165,23 @@ class Index extends Component {
         });
         setTimeout(() => {
             this.showAnyPopup("showPopUpDelete");
-        },100);
+        }, 100);
     };
 
-    updatePerson(person){
+    updatePerson(person) {
         let persons = this.state.persons;
-        if( this.state.itemSelected === -1 ){
+        if (this.state.itemSelected === -1) {
             persons.push(person);
-        }else{
+        } else {
             persons[this.state.itemSelected] = person;
         }
         this.setState({
             ...this.state,
             person: persons
         });
-        setTimeout(()=>{
+        setTimeout(() => {
             this.showAnyPopup("showPopUpPersona");
-        },100);
+        }, 100);
     }
 
     render() {
@@ -233,12 +234,14 @@ class Index extends Component {
                     }
 
                     <div className="row">
-                        <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
+                        <div
+                            className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                             <BtnContinue persons={this.state.persons} inactiveBtn={this.state.inactiveBtn}/>
                         </div>
                     </div>
                 </div>
-                {this.state.showPopUpDelete === true && <PopUpDelete toggle={this.togglePopUpDelete} removeItem={this.removeItem}/>}
+                {this.state.showPopUpDelete === true &&
+                <PopUpDelete toggle={this.togglePopUpDelete} removeItem={this.removeItem}/>}
                 {this.state.showPopUpPersona === true && <PopUpPersona
                     toggle={this.togglePopUpPersona}
                     persons={this.state.persons}

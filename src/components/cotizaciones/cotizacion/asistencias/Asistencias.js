@@ -66,29 +66,29 @@ class Tab extends Component {
         });
     }
 
-    async sendAndValidate(){
+    async sendAndValidate() {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
         try {
             let total = await DeterminePolizaPrima.get(this.props.match.params.id);
-            if( typeof total.total_pay_prospect !== "undefined" ){
+            if (typeof total.total_pay_prospect !== "undefined") {
                 let plans = this.state.plans;
                 plans[this.state.index].value = total.total_pay_prospect;
                 store.dispatch(AllPlansCreator(plans));
                 Loading.toggle(false);
             }
-        }catch (e) {
+        } catch (e) {
             Loading.toggle(false);
         }
     }
 
-    isCheckedAssistsByCode(code){
+    isCheckedAssistsByCode(code) {
         let index = this.state.index;
         let status = false;
         for (let i = 0; i < this.state.plans[index].assists.length; i++) {
             for (let j = 0; j < this.state.plans[index].assists[i].values.length; j++) {
                 for (let k = 0; k < this.state.plans[index].assists[i].values[j].assists.length; k++) {
-                    if( parseInt(this.state.plans[index].assists[i].values[j].assists[k].code) === parseInt(code) ){
+                    if (parseInt(this.state.plans[index].assists[i].values[j].assists[k].code) === parseInt(code)) {
                         status = this.state.plans[index].assists[i].values[j].assists[k].checked;
                     }
                 }
@@ -97,13 +97,13 @@ class Tab extends Component {
         return status;
     }
 
-    unCheckAssistsNextsByKey(key){
+    unCheckAssistsNextsByKey(key) {
         let index = this.state.index;
         let newPlans = this.state.plans;
         for (let i = 0; i < newPlans[index].assists.length; i++) {
             for (let j = 0; j < newPlans[index].assists[i].values.length; j++) {
                 for (let k = 0; k < newPlans[index].assists[i].values[j].assists.length; k++) {
-                    if( k >= key ) newPlans[index].assists[i].values[j].assists[k].checked = false;
+                    if (k >= key) newPlans[index].assists[i].values[j].assists[k].checked = false;
                 }
             }
         }
@@ -119,23 +119,23 @@ class Tab extends Component {
             check = this.state.plans[index].assists[key].values[k].checked;
             newPlans = this.state.plans;
             newPlans[index].assists[key].values[k].checked = !check;
-            if( !check === false ) newPlans = this.unCheckAssistsNextsByKey(0);
+            if (!check === false) newPlans = this.unCheckAssistsNextsByKey(0);
         } else {
             check = this.state.plans[index].assists[key].values[k].assists[i].checked;
             newPlans = this.state.plans;
-            if( parseInt(newPlans[index].assists[key].values[k].assists[i].code) === 9695 ){
-                if( newPlans[index].assists[key].values[k].checked === false ){
+            if (parseInt(newPlans[index].assists[key].values[k].assists[i].code) === 9695) {
+                if (newPlans[index].assists[key].values[k].checked === false) {
                     error1 = true;
                     error2 = false;
-                }else{
+                } else {
                     newPlans[index].assists[key].values[k].assists[i].checked = !check;
-                    if( !check === false ) newPlans = this.unCheckAssistsNextsByKey(i);
+                    if (!check === false) newPlans = this.unCheckAssistsNextsByKey(i);
                 }
-            }else{
-                if( this.isCheckedAssistsByCode(9695) === false ){
+            } else {
+                if (this.isCheckedAssistsByCode(9695) === false) {
                     error1 = false;
                     error2 = true;
-                }else{
+                } else {
                     newPlans[index].assists[key].values[k].assists[i].checked = !check;
                 }
             }
@@ -146,13 +146,13 @@ class Tab extends Component {
             error1: error1,
             error2: error2,
         });
-        if( error1 === false && error2 === false ){
-            setTimeout(()=>{
+        if (error1 === false && error2 === false) {
+            setTimeout(() => {
                 this.countAsistencias();
-            },250);
-            setTimeout(()=>{
+            }, 250);
+            setTimeout(() => {
                 this.sendAndValidate();
-            },500);
+            }, 500);
         }
     };
 
@@ -163,19 +163,19 @@ class Tab extends Component {
                     <div className={"row row-max tabs-cotizaciones row_tab_1 " + (key + 1)} key={key}>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
                             <div className="row" onClick={this.props.toggleSlide(key + 1)}>
-                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
+                                <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
                                     <h4>
                                         <span>{this.state.assistsTotal}</span>{option.name}
                                     </h4>
                                 </div>
-                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-right">
+                                <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-right">
                                     <div className="close-section closeclose">Ocultar <i>&nbsp;</i></div>
                                     <div className="close-section open">Ver <i>&nbsp;</i></div>
                                 </div>
                             </div>
                             <div className="wrapper-box asistencias">
                                 {option.values.map((opt, k) =>
-                                    <div className={"rowor "+(opt.optional === false?'disabled-item':'')} key={k}>
+                                    <div className={"rowor " + (opt.optional === false ? 'disabled-item' : '')} key={k}>
                                         <div className="row">
                                             <div
                                                 className="col col-12 col-sm-12 col-md-12 col-lg-12 asistencia items-checkboxes">
@@ -193,7 +193,7 @@ class Tab extends Component {
                                                     {opt.assists.map((opt, i) =>
                                                         <div className="row" key={i}>
                                                             <div
-                                                                className={"col col-12 col-sm-12 col-md-12 col-lg-12 items-checkboxes "+(opt.optional === false?'disabled':'')}>
+                                                                className={"col col-12 col-sm-12 col-md-12 col-lg-12 items-checkboxes " + (opt.optional === false ? 'disabled' : '')}>
                                                                 <input type="checkbox"
                                                                        name={"itemm" + k + "_" + key + "_" + i}
                                                                        id={"itemm" + k + "_" + key + "_" + i}
@@ -216,8 +216,10 @@ class Tab extends Component {
                                 )}
                             </div>
                             <div className="msj-box">
-                                <p className={"error "+(this.state.error1 === true?'show':'hide')}>Por favor seleccione la Asistencia Básica</p>
-                                <p className={"error "+(this.state.error2 === true?'show':'hide')}>Por favor seleccione la Asistencia Básica y la Asistencia Hogar Plus</p>
+                                <p className={"error " + (this.state.error1 === true ? 'show' : 'hide')}>Por favor
+                                    seleccione la Asistencia Básica</p>
+                                <p className={"error " + (this.state.error2 === true ? 'show' : 'hide')}>Por favor
+                                    seleccione la Asistencia Básica y la Asistencia Hogar Plus</p>
                             </div>
 
                         </div>

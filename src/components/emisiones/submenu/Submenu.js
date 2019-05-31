@@ -22,7 +22,7 @@ class Submenu extends Component {
                 number: number
             });
         });
-        Helpers.getRowById(this.state.number,this.props.match.params.step);
+        Helpers.getRowById(this.state.number, this.props.match.params.step);
     }
 
     render() {

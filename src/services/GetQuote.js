@@ -6,7 +6,7 @@ const Url = "/quote/";
 class GetQuote {
     static async get() {
         let items = await Api.get(Url);
-        if( typeof items.quotations === "undefined"){
+        if (typeof items.quotations === "undefined") {
             return [];
         } else {
             return Helpers.orderArray(items.quotations, 'quoteId', true).reverse();

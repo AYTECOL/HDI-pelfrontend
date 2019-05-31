@@ -156,7 +156,8 @@ class Asegurarjoyas extends Component {
                             <small className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Asegurarjoyas.min())} -
                                 Máximo. {Masknumbermoney.formatToMask(Asegurarjoyas.max())}</small>
                             <small
-                                className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por favor Ingrese el valor asegurado de Joyas.
+                                className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
+                                favor Ingrese el valor asegurado de Joyas.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor

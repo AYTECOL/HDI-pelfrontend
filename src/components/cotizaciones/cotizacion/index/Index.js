@@ -53,7 +53,9 @@ class Index extends Component {
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                             <p><i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes descarga el
-                                formato <a href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF" rel="noopener noreferrer" target="_blank">aquí</a></p>
+                                formato <a
+                                    href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF"
+                                    rel="noopener noreferrer" target="_blank">aquí</a></p>
                         </div>
                     </div>
 

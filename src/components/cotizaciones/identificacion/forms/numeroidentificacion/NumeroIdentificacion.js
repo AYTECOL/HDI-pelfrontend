@@ -10,7 +10,7 @@ class NumeroIdentificacion extends Component {
         super(props);
         let storeState = store.getState();
         this.state = {
-            options: { cities: [] },
+            options: {cities: []},
             value: "",
             error: false,
             idElement: "",
@@ -33,8 +33,8 @@ class NumeroIdentificacion extends Component {
         });
     }
 
-    static toggleDisable(status){
-        if (status === true){
+    static toggleDisable(status) {
+        if (status === true) {
             Helpers.disabled('#doc-type-value');
         } else {
             Helpers.enabled('#doc-type-value');
@@ -91,7 +91,7 @@ class NumeroIdentificacion extends Component {
         });
     };
 
-    shouldComponentUpdate(nextProps, nextState){
+    shouldComponentUpdate(nextProps, nextState) {
         return this.state.error !== nextState.error || this.state.disabled !== nextState.disabled || this.state.value !== nextState.value;
     }
 

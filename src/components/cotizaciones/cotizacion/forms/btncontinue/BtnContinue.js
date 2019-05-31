@@ -24,14 +24,14 @@ class BtnContinue extends Component {
         this.state.comeBack += this.state.id;
     }
 
-    toNumberCoverrange(plan){
+    toNumberCoverrange(plan) {
         for (let i = 0; i < plan.coverages.length; i++) {
-            if ( typeof plan.coverages[i].values !== "undefined" ){
+            if (typeof plan.coverages[i].values !== "undefined") {
                 for (let j = 0; j < plan.coverages[i].values.length; j++) {
                     let v = plan.coverages[i].values[j].value_show;
-                    if( typeof v !== "undefined" ){
+                    if (typeof v !== "undefined") {
                         plan.coverages[i].values[j].value_show = Masknumbermoney.formatToNumber(v);
-                    }else{
+                    } else {
                         plan.coverages[i].values[j].value_show = 0;
                     }
                 }
@@ -46,6 +46,7 @@ class BtnContinue extends Component {
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
         let plan = plans[index];
+        plan['value'] = 2;
         plan['quote_id'] = this.props.match.params.id;
         plan['assists'][0]['selected_id'] = index;
 

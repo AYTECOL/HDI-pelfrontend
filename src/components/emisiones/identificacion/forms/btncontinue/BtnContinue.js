@@ -97,11 +97,11 @@ class BtnContinue extends Component {
             onerous: onerous,
             persons_aditionals: additional
         });
-        if( typeof total !== "undefined" ){
+        if (typeof total !== "undefined") {
             store.dispatch(NextStep(5));
             await SaveIdentifications.save();
             window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
-        }else{
+        } else {
             Helpers.goToHome();
         }
         Loading.toggle(false);

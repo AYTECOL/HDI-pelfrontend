@@ -17,7 +17,7 @@ class App extends Component {
 
     _isMounted = false;
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             data: null
@@ -33,8 +33,8 @@ class App extends Component {
         this._isMounted = false;
     }
 
-    async getUser(){
-        if( this._isMounted === true ){
+    async getUser() {
+        if (this._isMounted === true && this.state.data === null) {
             this.setState({
                 ...this.state,
                 data: await Helpers.getUser()

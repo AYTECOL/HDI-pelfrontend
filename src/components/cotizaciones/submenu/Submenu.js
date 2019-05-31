@@ -20,7 +20,7 @@ class Submenu extends Component {
             let number = store.getState().cotizacion.number;
             if (this.state.number !== number) this.setState({number: number});
         });
-        Helpers.getRowById(this.state.number,this.props.match.params.step);
+        Helpers.getRowById(this.state.number, this.props.match.params.step);
     }
 
     render() {

@@ -10,14 +10,14 @@ class AccessToken {
             "refer": refer
         };
         try {
-            let reponse =  await Api.post(Url, data, BaseUrl);
-            if( typeof reponse['accessToken'] !== "undefined" ){
+            let reponse = await Api.post(Url, data, BaseUrl);
+            if (typeof reponse['accessToken'] !== "undefined") {
                 return reponse;
-            }else{
+            } else {
                 return null;
             }
-        }catch (e) {
-            if( e.status === 401 ){
+        } catch (e) {
+            if (e.status === 401) {
                 return null;
             }
         }

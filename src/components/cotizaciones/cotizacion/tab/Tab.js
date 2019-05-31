@@ -60,14 +60,30 @@ class Tab extends Component {
         }, 4);
     }
 
+    assignValuesSaved(selected, normal){
+        for (let j = 0; j < normal.coverages.length; j++) {
+            normal.coverages[j].optional = selected.coverages[j].optional;
+        }
+        for (let j = 0; j < normal.assists.length; j++) {
+            normal.assists[j].optional = selected.assists[j].optional;
+            for (let k = 0; k < normal.assists[j].values.length; k++) {
+                normal.assists[j].values[k].optional = selected.assists[j].values[k].optional;
+                for (let l = 0; l < normal.assists[j].values[k].assists.length; l++) {
+                    normal.assists[j].values[k].assists[l].optional = selected.assists[j].values[k].assists[l].optional;
+                }
+            }
+        }
+        return normal;
+    }
+
     async getPlants() {
         Loading.toggle(true);
         let plans = await AllPlans.get(this.state.typePlans);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
-        if( typeof plan.plan_selected_info.Item !== "undefined" ){
+        if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             let indexSelected = selected['assists'][0]['selected_id'];
-            plans[indexSelected] = selected;
+            plans[indexSelected] = this.assignValuesSaved(selected, plans[indexSelected]);
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
             if (this.state.index === "") for (let i in plans) if (plans[i].isdefault === true) store.dispatch(indexPlanSelected(i));

@@ -6,6 +6,7 @@ import {restoreCotizacion} from '../../../actions';
 
 import Identifications from '../../../services/GetQuote';
 import Loading from "../../globals/loading/Loading";
+import {UrlSite} from "../../../config";
 
 class Table extends Component {
 
@@ -35,10 +36,10 @@ class Table extends Component {
     getRowById = id => async e => {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
-            if( cotizacion.state > 3 ){
-                this.props.history.push('/emision/' + (cotizacion.state-3) + '/' + id);
-            }else{
-                this.props.history.push('/cotizacion/' + cotizacion.state + '/' + id);
+            if (cotizacion.state > 3) {
+                window.location.href = UrlSite + '/emision/' + (cotizacion.state - 3) + '/' + id;
+            } else {
+                window.location.href = UrlSite + '/cotizacion/' + cotizacion.state + '/' + id;
             }
             store.dispatch(restoreCotizacion(cotizacion));
         }
