@@ -8,12 +8,12 @@ provider:
   stage: nonprod 
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
-  #iamRoleStatements:
-  #      - Effect: "Allow"
-  #        Action:
-  #          - s3:PutItem
+  iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - s3:PutItem
             #- s3:List*
-  #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+          Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
   s3Bucket: poliza-express-hogar-front
@@ -49,9 +49,9 @@ resources:
                   #{"Fn::Join": [ WebsiteOriginAccessIdentity , S3CanonicalUserId, arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO, { Ref: WebsiteOriginAccessIdentity }, ]}
                   #{"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] }
               Action:
-              #- s3:GetObject
-              #- s3:PutObject
-              - s3:*
+              - s3:GetObject
+              - s3:PutObject
+              #- s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
