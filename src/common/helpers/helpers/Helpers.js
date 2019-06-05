@@ -136,7 +136,7 @@ class Helpers {
 
     static goToError() {
         if (window.location.pathname !== '/error') {
-            window.location.href = UrlSite + "/error";
+            // window.location.href = UrlSite + "/error";
         }
     }
 
@@ -259,6 +259,8 @@ class Helpers {
                 localStorage.clear();
                 localStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquest)))));
                 data = dataRquest;
+            }else{
+                Helpers.goToError();
             }
         } else {
             let dataRquest = localStorage.getItem('request');
