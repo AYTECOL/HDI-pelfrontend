@@ -244,8 +244,13 @@ class Tab extends Component {
             ...this.state,
             plans: plan
         })
+        
     };
-
+    // componentDidUpdate(){
+    //     console.log("____________________-------_________");
+    //     console.log(this.state);
+    //     console.log(this.props);
+    // }
     render() {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
