@@ -10,7 +10,7 @@ import Validaridentificacion
     from '../../components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
 
 class Cotizacion extends Component {
-
+ 
     render() {
         let step = parseInt(this.props.match.params.step);
         return (
