@@ -27,37 +27,9 @@ node('linux'){
         //}
     }
 
-    stage('prod Deploy') {
-        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh """
-                ls -ltr
-
-                npm install
-                npm run-script build
-                ls -ltr
-
-                aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
-            """
-        }
-		
-    }
-      
-	stage('Completion Email'){
-		    
-	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
-                subject: "prod Infra Deployment: ${env.JOB_NAME}", 
-                body: "Despliegue realizado validar ambiente prod en: http://poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
-	
-	}
 	stage('Test sonarqube'){
 		withSonarQubeEnv('sonarqube') {
         	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 	}
 	}	
-	stage('Testing'){
-		  
-		sh 'curl -X POST  http://cunate:38a9806ece2c583ef858ffde13ae9498@10.142.137.77:8080/job/sahi-test/build?token=08b214cb68e0ed63132813dca24a7233'
-		echo 'Ver resultados test funcional en: 9 http://10.142.137.77:9999/_s_/dyn/pro/DBReports'
-    
-	}
  }
