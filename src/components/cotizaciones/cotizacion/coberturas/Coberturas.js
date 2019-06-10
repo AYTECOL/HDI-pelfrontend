@@ -67,14 +67,14 @@ class Tab extends Component {
 
     async sendAndValidate() {
         Loading.toggle(true);
+        let plans = this.state.plans;
         await CreateOrUpdateValoration.save();
-        let total = await DeterminePolizaPrima.get(this.props.match.params.id);
+        let total = await DeterminePolizaPrima.get(plans[this.state.index], this.props.match.params.id);
         if (typeof total.total_pay_prospect !== "undefined") {
-            let plans = this.state.plans;
             plans[this.state.index].value = total.total_pay_prospect;
             store.dispatch(AllPlansCreator(plans));
-            Loading.toggle(false);
         }
+        Loading.toggle(false);
     }
 
     calcValue(plans, index) {

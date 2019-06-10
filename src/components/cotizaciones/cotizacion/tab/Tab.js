@@ -25,6 +25,9 @@ class Tab extends Component {
             index: "",
             quotationId: store.getState().cotizacion.number
         };
+    }
+    componentDidMount() {
+        Loading.toggle(true);
         store.subscribe(() => {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
@@ -81,7 +84,6 @@ class Tab extends Component {
     getValueFields(item) {
         try {
             let inmueble = store.getState().Inmueble;
-            console.log(inmueble);
             // Inmueble
             if (item.id === 1) {
                 return Masknumbermoney.formatToMask(
@@ -123,7 +125,6 @@ class Tab extends Component {
         }
     }
     calcValue(plans, index) {
-        console.log(plans[index])
         if (typeof plans[index] === "undefined") return;
         if (typeof plans[index] === "undefined") return;
         if (typeof plans[index].coverages === "undefined") return;
@@ -132,8 +133,6 @@ class Tab extends Component {
             if (typeof d !== "undefined") {
                 for (let j = 0; j < d.length; j++) {
                     if (typeof d[j].value !== "undefined") {
-                        console.log("Just value");
-                        console.log(plans[index].coverages[i])
                         plans[index].coverages[i].values[j].value_show = this.getValueFields(d[j]);
                     }
                     else {
@@ -165,18 +164,12 @@ class Tab extends Component {
         return plan;
     }
     async getPlants() {
-        Loading.toggle(true);
         const quotateId = this.state.quotationId;
         let plans = await AllPlans.get(this.state.typePlans);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
         for(let i = 0; i < plans.length; i++){
              let currentPlan = this.calcValue(plans, i);
-            console.log("Not defined");
-            console.log(currentPlan);
-            currentPlan = this.toNumberCoverrange(plans[i]);
-            console.log("Not defined 1");
-            console.log(currentPlan);
-            
+            currentPlan = this.toNumberCoverrange(plans[i]); 
             let prospect = await PrevDeterminePolizaPrima.post(quotateId, currentPlan);
             plans[i].value = prospect.prospect;
         }
