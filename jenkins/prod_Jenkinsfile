@@ -11,7 +11,7 @@ node('linux'){
 	}
 
     stage('cloudfront') {
-    	deployToProd{
+    	deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
 				sh 'dir'
                 sh 'ls'
