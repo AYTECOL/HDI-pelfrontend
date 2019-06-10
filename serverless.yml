@@ -15,15 +15,15 @@ provider:
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   
-  #iamRoleStatements:
-  #      - Effect: "Allow"
-  #        Action:
-  #          - s3:PutItem
+  iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - s3:PutItem
   #          - s3:List*
-  #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+          Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
-  s3Bucket: poliza-express-hogar-front-uat
+  s3Bucket: poliza-express-hogar
 
 functions:
   hello:
@@ -75,7 +75,7 @@ resources:
           #Aliases PROD
           Aliases:
            - hogar.libertyseguros.co 
-          
+           
           # Aliases UAT
           #Aliases:
           # - hogar-uat.libertyseguros.co 
