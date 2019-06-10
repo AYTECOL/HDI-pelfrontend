@@ -6,9 +6,18 @@ def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
 node('linux'){
 
-	stage('Git Checkout'){
-		checkout scm develop
-	}
+stage('Preparation') {
+
+         git credentialsId: 'intl_gituser', url: 'https://intl_gituser@bitbucket-latam.aws.lmig.com/scm/aa/andino-flex-touch-front.git', branch: 'prod'
+         sh 'npm --version'
+         sh 'aws --version'
+         sh 'npm install'
+         sh 'echo $PATH'
+         sh 'sls --version'
+         sh 'pwd'
+         sh 'ls'
+         sh 'dir'
+      }
 
     stage('Build') {
     	//deployToNonProd{
@@ -25,11 +34,9 @@ node('linux'){
                 }
             }
         //}
-    }
-
-	stage('Test sonarqube'){
-		withSonarQubeEnv('sonarqube') {
+        	withSonarQubeEnv('sonarqube') {
         	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 	}
-	}	
+    }
+
  }
