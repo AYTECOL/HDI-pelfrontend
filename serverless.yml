@@ -73,16 +73,16 @@ resources:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           #Aliases PROD
-          #Aliases:
-          # - hogar.libertyseguros.co 
+          Aliases:
+           - hogar.libertyseguros.co 
           
           # Aliases UAT
           #Aliases:
           # - hogar-uat.libertyseguros.co 
           
           # Aliases DEV
-          Aliases:
-           - hogar-dev.libertyseguros.co 
+          #Aliases:
+          # - hogar-dev.libertyseguros.co 
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
