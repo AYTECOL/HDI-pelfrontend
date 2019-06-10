@@ -1,11 +1,17 @@
-
+###### change the comment line with the stage, arn and url that you needed ##### 
 service: poliza-express-hogar 
 
 provider:
   name: aws
   runtime: nodejs8.10
-  #stage: dev 
-  stage: nonprod 
+  # Stage DEV
+  # stage: dev
+
+  # stage NONPROD 
+  stage: nonprod
+  
+  # stage PROD
+  #stage: prod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   
@@ -46,9 +52,6 @@ resources:
               Principal:
                 CanonicalUser:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
-
-                  #{"Fn::Join": [ WebsiteOriginAccessIdentity , S3CanonicalUserId, arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO, { Ref: WebsiteOriginAccessIdentity }, ]}
-                  #{"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] }
               Action:
               - s3:GetObject
               - s3:PutObject
@@ -65,19 +68,27 @@ resources:
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
-            #- DomainName: ${self:custom.s3Bucket}.s3-website-us-east-1.amazonaws.com
               Id: WebApp
-              #Id : poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
+          #Aliases PROD
+          #Aliases:
+          # - hogar.libertyseguros.co 
+          
+          # Aliases UAT
           Aliases:
            - hogar-uat.libertyseguros.co 
+          
+          # Aliases DEV
+          #Aliases:
+          # - hogar-dev.libertyseguros.co 
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: /index.html
+              ErrorCachingMinTTL: '30'
           DefaultCacheBehavior:
             AllowedMethods:
               - GET
@@ -88,11 +99,16 @@ resources:
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
+            MinTTL: '100'
           ViewerCertificate:
             #ARN dev
             #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             #ARN nonprod
             AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            #ARN prod 
+            #AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
+
+ 
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
