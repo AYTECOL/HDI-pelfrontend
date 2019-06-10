@@ -10,19 +10,21 @@ node('linux'){
 		checkout scm develop
 	}
 
-    stage('cloudfront') {
-    	deployToNonProd{
+    stage('Build') {
+    	//deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-				sh 'dir'
+				sh "npm run build -- --configuration=prod"
+                sh 'dir'
                 sh 'ls'
 				sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-front'){
                 	sh 'pwd'
                     sh 'ls'
-                //aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"    
+                    sh 'aws s3 rm s3://poliza-express-hogar-prod --recursive' // Clean bucket
+                    sh 'aws s3 sync .  s3://poliza-express-hogar-prod' // Sync bucket
                 }
             }
-        }
+        //}
     }
 
     stage('prod Deploy') {
