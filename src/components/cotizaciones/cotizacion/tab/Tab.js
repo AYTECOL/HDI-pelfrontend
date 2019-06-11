@@ -26,6 +26,7 @@ class Tab extends Component {
             quotationId: store.getState().cotizacion.number
         };
     }
+
     componentDidMount() {
         Loading.toggle(true);
         store.subscribe(() => {
@@ -81,6 +82,7 @@ class Tab extends Component {
         }
         return normal;
     }
+
     getValueFields(item) {
         try {
             let inmueble = store.getState().Inmueble;
