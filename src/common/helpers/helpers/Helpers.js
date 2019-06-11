@@ -136,7 +136,7 @@ class Helpers {
 
     static goToError() {
         if (window.location.pathname !== '/error') {
-             window.location.href = UrlSite + "/error";
+            // window.location.href = UrlSite + "/error";
         }
     }
 
