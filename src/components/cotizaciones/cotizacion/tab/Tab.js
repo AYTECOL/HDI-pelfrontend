@@ -26,6 +26,7 @@ class Tab extends Component {
             quotationId: store.getState().cotizacion.number
         };
     }
+
     componentDidMount() {
         Loading.toggle(true);
         store.subscribe(() => {
@@ -81,6 +82,7 @@ class Tab extends Component {
         }
         return normal;
     }
+
     getValueFields(item) {
         try {
             let inmueble = store.getState().Inmueble;
@@ -137,7 +139,7 @@ class Tab extends Component {
                     }
                     else {
                        for (let limit = 0; limit <  d[j].values.length; limit ++) {
-                           if(d[j].values[limit].default == true){
+                           if(d[j].values[limit].default === true){
                             plans[index].coverages[i].values[j].value = d[j].values[limit].limit;
                             plans[index].coverages[i].values[j].value_show = this.getValueFields(d[j]);
                            }
@@ -178,7 +180,7 @@ class Tab extends Component {
         if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             let indexSelected = selected['assists'][0]['selected_id'];
-                selected = this.toNumberCoverrange(plans[indexSelected]);
+                // selected = this.toNumberCoverrange(plans[indexSelected]);
                 store.dispatch(indexPlanSelected(indexSelected));
         } else {
             if (this.state.index === "") for (let i in plans){

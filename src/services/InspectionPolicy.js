@@ -4,7 +4,7 @@ import store from "../store";
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
 
 const BaseUrl = "/rs_ws/REST/LT_HOME_INSPECCION/LT_HOME_INSPECCION/DetermineInspeccion/";
-const hybrid = "https://wlsnonprod.libertycolombia.com.co";
+const hybrid = "https://cors-anywhere.herokuapp.com/https://wlsnonprod.libertycolombia.com.co";
 
 class InspectionPolicy {
     static async get() {
