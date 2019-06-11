@@ -59,9 +59,11 @@ class Index extends Component {
     async getData() {
         Loading.toggle(true);
         let persons = await QuoteIussedById.get(this.props.match.params.id);
+        let person = [];
+        let hasExequias = false;
+        let hasAccident = false;
         if (typeof persons.quote_iussed_info.Item !== "undefined") {
             let items = persons.quote_iussed_info.Item;
-            let person = [];
             person.push(items.taker);
             for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
@@ -100,26 +102,31 @@ class Index extends Component {
                 person[i]['adresstype'] = person[i]['address_type'];
                 person[i]['sarlfalt_url'] = person[i]['sarlaft_document_url'];
             }
+        }
 
-            let hasExequias = false;
-            let hasAccident = false;
-            if (typeof persons.plan_selected_info.Item !== "undefined") {
-                let coverange = persons.plan_selected_info.Item.coverages;
-                for (let i = 0; i < coverange.length; i++) {
-                    if (coverange[i]['name'].toLowerCase() === 'accidentes personales' && coverange[i]['checked'] === true) hasAccident = true;
-                    if (coverange[i]['name'].toLowerCase() === 'exequial' && coverange[i]['checked'] === true) hasExequias = true;
-                }
+        if (typeof persons.plan_selected_info.Item !== "undefined") {
+            let coverange = persons.plan_selected_info.Item.coverages;
+            for (let i = 0; i < coverange.length; i++) {
+                if (coverange[i]['name'].toLowerCase() === 'accidentes personales' && coverange[i]['checked'] === true) hasAccident = true;
+                if (coverange[i]['name'].toLowerCase() === 'exequial' && coverange[i]['checked'] === true) hasExequias = true;
             }
+        }
+
+        if( person.length === 0 ){
+            this.setState({
+                ...this.state,
+                hasAccident: hasAccident,
+                hasExequias: hasExequias
+            });
+        }else{
             this.setState({
                 ...this.state,
                 persons: person,
                 hasAccident: hasAccident,
                 hasExequias: hasExequias
             });
-            Loading.toggle(false);
-        } else {
-            Loading.toggle(false);
         }
+        Loading.toggle(false);
     }
 
     showAnyPopup(name, index, type) {
