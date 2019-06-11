@@ -19,9 +19,9 @@ class Links extends Component {
                 <div className="generatepdf link-item">
                     <p><i>&nbsp;</i> Generar cotización en PDF</p>
                 </div>
-                <div className="sendpdf link-item" onClick={this.openModal}>
-                    <p><i>&nbsp;</i> Enviar por correo</p>
-                </div>
+                {/*<div className="sendpdf link-item" onClick={this.openModal}>*/}
+                    {/*<p><i>&nbsp;</i> Enviar por correo</p>*/}
+                {/*</div>*/}
             </Fragment>
         );
     }
