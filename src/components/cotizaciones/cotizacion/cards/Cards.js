@@ -279,7 +279,7 @@ class Cards extends Component {
                                 <p>Más información</p>
                                 <div className="span">
                                     <span>?</span>
-                                    {this.state.inspection === "I.C" ? (
+                                    {this.state.inspection === "IC" ? (
                                         <div className="text">La vivienda requiere que la revisemos más al detalle, ten
                                             presente los siguientes datos para poder agendar una futura inspección en
                                             sitio: Nombre de contacto, Teléfono de contacto.</div>

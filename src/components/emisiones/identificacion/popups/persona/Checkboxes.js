@@ -25,19 +25,9 @@ export default class Checkboxes extends Component {
             <React.Fragment>
                 <div
                     className={"row items-checkboxes justify-content-center type-person-class-" + (this.props.person['role'].length)}>
-                    {(this.props.typePerson === 1 || this.props.person['role'].indexOf(2) !== -1) &&
-                    <div className="col col-sm-12 col-md-4 col-lg-4 no-padding">
-                        <input type="checkbox" name="asegurado" id="asegurado" value="1"
-                               checked={this.props.person['role'].indexOf(2) !== -1}
-                               onChange={this.changeRole(2)}
-                               disabled={(typeof this.props.disabledAll !== "undefined")}
-                               className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
-                        <label htmlFor="asegurado">Asegurado</label>
-                    </div>
-                    }
-                    {(this.props.typePerson === 1 || this.props.person['role'].indexOf(1) !== -1) &&
+                    {(this.props.typePerson === 1) &&
                     <React.Fragment>
-                        {this.props.exitsTomador === false &&
+                        {(this.props.exitsTomador === false || this.props.person['role'].indexOf(1) !== -1) &&
                         <div className={"col col-sm-12 col-md-4 col-lg-4 no-padding"}>
                             <input type="checkbox" name="tomado" id="tomado" value="2"
                                    checked={this.props.person['role'].indexOf(1) !== -1}
@@ -48,6 +38,16 @@ export default class Checkboxes extends Component {
                         </div>
                         }
                     </React.Fragment>
+                    }
+                    {(this.props.typePerson === 1 || this.props.person['role'].indexOf(2) !== -1) &&
+                    <div className="col col-sm-12 col-md-4 col-lg-4 no-padding">
+                        <input type="checkbox" name="asegurado" id="asegurado" value="1"
+                               checked={this.props.person['role'].indexOf(2) !== -1}
+                               onChange={this.changeRole(2)}
+                               disabled={(typeof this.props.disabledAll !== "undefined")}
+                               className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
+                        <label htmlFor="asegurado">Asegurado</label>
+                    </div>
                     }
                     {(this.props.typePerson === 1 || this.props.person['role'].indexOf(3) !== -1) &&
                     <div className="col col-sm-12 col-md-4 col-lg-4 no-padding">
