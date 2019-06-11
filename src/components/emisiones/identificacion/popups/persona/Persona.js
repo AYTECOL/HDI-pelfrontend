@@ -78,8 +78,10 @@ export default class Persona extends Component {
                 if (this.props.persons[i]['role'].indexOf(1) !== -1) this.state.exitsTomador = true;
             }
         }
-        if (this.state.typePerson === 1 || this.state.typePerson === 3) {
+        if (this.state.typePerson === 1) {
             this.state.total = 16;
+        } else if (this.state.typePerson === 3) {
+            this.state.total = 8;
         } else if (this.state.typePerson === 2) {
             this.state.total = 8;
         } else if (this.state.typePerson === 4) {
@@ -326,7 +328,7 @@ export default class Persona extends Component {
                     document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
                 }
             }
-            if (this.state.typePerson !== 4) {
+            if (this.state.typePerson !== 4 && this.state.typePerson !== 3) {
                 if (this.state.person.role.length === 0) {
                     errors.push('role');
                     if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
@@ -339,6 +341,7 @@ export default class Persona extends Component {
             if (errors.length === 0 && saveData) {
                 await this.saveFile();
                 if (typeof this.state.person.code === "undefined") this.state.person.code = this.state.typePerson !== 3 ? '36' : '37';
+                if( this.state.typePerson === 3 ) this.state.person.role.push(3);
                 this.props.updatePerson(this.state.person);
             } else {
                 this.setState({
@@ -387,7 +390,7 @@ export default class Persona extends Component {
                                     {this.state.typePerson !== 4 &&
                                     <div className="row fields-row">
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                            <TypeDocuments disabled={this.state.person.codeDisabled}
+                                            <TypeDocuments disabled={this.state.person.codeDisabled || this.state.typePerson === 3}
                                                            value={this.state.person.code} onChange={this.changeValue}/>
                                         </div>
 
@@ -395,7 +398,7 @@ export default class Persona extends Component {
                                             <div className="value form-group "><label
                                                 htmlFor="value">Identificación</label>
                                                 <input type="text"
-                                                       className={"form-control " + (this.state.person.valueDisabled ? 'disabled' : '')}
+                                                       className={"form-control " + ((this.state.person.valueDisabled) ? 'disabled' : '')}
                                                        disabled={this.state.person.valueDisabled} name="value"
                                                        value={this.state.person.value} onBlur={this.validateDoc}
                                                        onChange={this.changeValue}/>
@@ -479,70 +482,74 @@ export default class Persona extends Component {
                                             </React.Fragment>
                                         ) : (
                                             <React.Fragment>
-                                                <div
-                                                    className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                    <div className="name form-group "><label
-                                                        htmlFor="name">Primer nombre</label>
-                                                        <input type="text"
-                                                               className={"form-control " + (this.state.person.nameDisabled ? 'disabled' : '')}
-                                                               disabled={this.state.person.nameDisabled} name="name"
-                                                               value={this.state.person.name}
-                                                               onChange={this.changeValue}/>
-                                                        <small className="form-text only-errors">Falta información
-                                                            requerida para el Tomador. Por favor revise el campo Primer
-                                                            nombre
-                                                        </small>
+                                                {this.state.typePerson !== 3 &&
+                                                <React.Fragment>
+                                                    <div
+                                                        className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                                        <div className="name form-group "><label
+                                                            htmlFor="name">Primer nombre</label>
+                                                            <input type="text"
+                                                                   className={"form-control " + (this.state.person.nameDisabled ? 'disabled' : '')}
+                                                                   disabled={this.state.person.nameDisabled} name="name"
+                                                                   value={this.state.person.name}
+                                                                   onChange={this.changeValue}/>
+                                                            <small className="form-text only-errors">Falta información
+                                                                requerida para el Tomador. Por favor revise el campo Primer
+                                                                nombre
+                                                            </small>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                    <div className="pisonumero form-group "><label
-                                                        htmlFor="pisonumero">Segundo nombre</label>
-                                                        <input type="text"
-                                                               className={"form-control " + (this.state.person.secondnameDisabled ? 'disabled' : '')}
-                                                               disabled={this.state.person.secondnameDisabled}
-                                                               name="secondname" value={this.state.person.secondname}
-                                                               onChange={this.changeValue}/>
-                                                        <small className="form-text only-errors">Falta información
-                                                            requerida para el Tomador. Por favor revise el campo Segundo
-                                                            nombre
-                                                        </small>
+                                                    <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                        <div className="pisonumero form-group "><label
+                                                            htmlFor="pisonumero">Segundo nombre</label>
+                                                            <input type="text"
+                                                                   className={"form-control " + (this.state.person.secondnameDisabled ? 'disabled' : '')}
+                                                                   disabled={this.state.person.secondnameDisabled}
+                                                                   name="secondname" value={this.state.person.secondname}
+                                                                   onChange={this.changeValue}/>
+                                                            <small className="form-text only-errors">Falta información
+                                                                requerida para el Tomador. Por favor revise el campo Segundo
+                                                                nombre
+                                                            </small>
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                                <div
-                                                    className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                    <div className="pisonumero form-group "><label
-                                                        htmlFor="pisonumero">Primer apellido</label>
-                                                        <input type="text"
-                                                               className={"form-control " + (this.state.person.lastnameDisabled ? 'disabled' : '')}
-                                                               disabled={this.state.person.lastnameDisabled}
-                                                               name="lastname" value={this.state.person.lastname}
-                                                               onChange={this.changeValue}/>
-                                                        <small className="form-text only-errors">Falta información
-                                                            requerida para el Tomador. Por favor revise el campo Primer
-                                                            apellido
-                                                        </small>
+                                                    <div
+                                                        className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                                        <div className="pisonumero form-group "><label
+                                                            htmlFor="pisonumero">Primer apellido</label>
+                                                            <input type="text"
+                                                                   className={"form-control " + (this.state.person.lastnameDisabled ? 'disabled' : '')}
+                                                                   disabled={this.state.person.lastnameDisabled}
+                                                                   name="lastname" value={this.state.person.lastname}
+                                                                   onChange={this.changeValue}/>
+                                                            <small className="form-text only-errors">Falta información
+                                                                requerida para el Tomador. Por favor revise el campo Primer
+                                                                apellido
+                                                            </small>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                    <div className="pisonumero form-group "><label
-                                                        htmlFor="pisonumero">Segundo apellido</label>
-                                                        <input type="text"
-                                                               className={"form-control " + (this.state.person.secondlastnameDisabled ? 'disabled' : '')}
-                                                               disabled={this.state.person.secondlastnameDisabled}
-                                                               name="secondlastname"
-                                                               value={this.state.person.secondlastname}
-                                                               onChange={this.changeValue}/>
-                                                        <small className="form-text only-errors">Falta información
-                                                            requerida para el Tomador. Por favor revise el campo Segundo
-                                                            apellido
-                                                        </small>
+                                                    <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                        <div className="pisonumero form-group "><label
+                                                            htmlFor="pisonumero">Segundo apellido</label>
+                                                            <input type="text"
+                                                                   className={"form-control " + (this.state.person.secondlastnameDisabled ? 'disabled' : '')}
+                                                                   disabled={this.state.person.secondlastnameDisabled}
+                                                                   name="secondlastname"
+                                                                   value={this.state.person.secondlastname}
+                                                                   onChange={this.changeValue}/>
+                                                            <small className="form-text only-errors">Falta información
+                                                                requerida para el Tomador. Por favor revise el campo Segundo
+                                                                apellido
+                                                            </small>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </React.Fragment>
+                                                }
                                             </React.Fragment>
                                         )}
 
-                                        {this.state.typePerson !== 2 && this.state.typePerson !== 4 &&
+                                        {(this.state.typePerson !== 2 && this.state.typePerson !== 4 && this.state.typePerson !== 3) &&
                                         <div
                                             className={"col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right " + (this.state.nit ? 'hide' : '')}>
                                             <div className={"generofield no-icon form-group"}>
@@ -564,7 +571,7 @@ export default class Persona extends Component {
                                         </div>
                                         }
 
-                                        {(this.state.nit === false && this.state.typePerson !== 4) &&
+                                        {(this.state.nit === false && this.state.typePerson !== 4 && this.state.typePerson !== 3) &&
                                         <div
                                             className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
                                             <div className="fechadenacimiento form-group "><label
@@ -584,7 +591,7 @@ export default class Persona extends Component {
                                         </div>
                                         }
 
-                                        {this.state.typePerson !== 2 &&
+                                        {(this.state.typePerson !== 2 && this.state.typePerson !== 3) &&
                                         <React.Fragment>
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                 <div className="pisonumero form-group input-select"><label
@@ -617,7 +624,6 @@ export default class Persona extends Component {
                                             </div>
                                         </React.Fragment>
                                         }
-
                                     </div>
                                     }
 
