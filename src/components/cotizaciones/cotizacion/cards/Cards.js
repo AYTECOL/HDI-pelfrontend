@@ -106,71 +106,20 @@ class Cards extends Component {
     }
 
     async getInspectionPolicy() {
-        new InspectionPolicy();
-
-        /*let Inmueble = store.getState().Inmueble;
-        let anoconstruidos = this.state.anoconstruidos;
-        let code = '-';
-        let insured_values = '-';
-        let zone = '-';
-        let insured_type = '-';
-        let year_construction = '-';
-        let in_closed_set = '-';
-        let insured_total = '-';
-        if ( Inmueble.inmuebleasegudado === 1 && Inmueble.contenidoasegudado === 0 ){
-            code = 1;
-            insured_values = 'inmueble';
-            insured_type = Inmueble.type_risk===1?'casa':'apartamento';
-            for (let i = 0; i < anoconstruidos.length; i++) {
-                if( anoconstruidos[i].buildYearCode.toString() === Inmueble.anoconstruido ){
-                    year_construction = anoconstruidos[i].answer;
-                }
-            }
-            in_closed_set = Inmueble.cojuntocerrado===1?'true':'false';
-            insured_total = Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadovalor);
-            zone = Inmueble.zona===1?'urbano':'rural';
-        }
-        if ( Inmueble.inmuebleasegudado === 0 && Inmueble.contenidoasegudado === 1 ){
-            code = 2;
-            insured_values = 'contenidos';
-            insured_total = Masknumbermoney.formatToNumber(Inmueble.contenidoasegudadovalor);
-            zone = Inmueble.zona===1?'urbano':'rural';
-            insured_type = Inmueble.type_risk===1?'casa':'apartamento';
-            in_closed_set = Inmueble.cojuntocerrado===1?'true':'false';
-        }
-        if ( Inmueble.inmuebleasegudado === 0 && Inmueble.contenidoasegudado === 1 && (Inmueble.inmuebleasegudadojoyas === 1 || Inmueble.inmuebleasegudadoobras === 1) ){
-            code = 3;
-            insured_values = 'contenidos especiales';
-            if (Inmueble.inmuebleasegudadojoyas === 1 && Inmueble.inmuebleasegudadoobras === 0) {
-                insured_type = 'joyas';
-                insured_total = Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadojoyasvalor);
-            }
-            if (Inmueble.inmuebleasegudadoobras === 1 && Inmueble.inmuebleasegudadojoyas === 0) {
-                insured_type = 'obras de arte';
-                insured_total = Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadoobrasvalor);
-            }
-        }
-        try {
-            let data = await InspectionPolicy.get(code,insured_values,zone,insured_type,year_construction,in_closed_set,insured_total);
-            if( typeof data.inspection_policy !== "undefined" ){
-                this.setState({
-                    ...this.state,
-                    inspection_detail: data.inspection_policy.inspection_detail,
-                    inspection: data.inspection_policy.inspection,
-                    showInspect: true
-                });
-            }else{
-                this.setState({
-                    ...this.state,
-                    showInspect: false
-                });
-            }
-        }catch (e) {
+        let inspect = await InspectionPolicy.get();
+        if( typeof inspect[1] !== "undefined" && inspect[1] !== "NA" ){
+            this.setState({
+                ...this.state,
+                inspection_detail: inspect[0],
+                inspection: inspect[1],
+                showInspect: true
+            });
+        }else{
             this.setState({
                 ...this.state,
                 showInspect: false
             });
-        }*/
+        }
     }
 
     componentDidMount() {
