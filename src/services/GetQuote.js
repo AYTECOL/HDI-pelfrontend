@@ -33,6 +33,7 @@ class GetQuote {
                         department: items.department,
                         address: items.address,
                         addressadditional: items.address_additional,
+                        object: items.person
                     },
                     mapsOptions: {
                         longitude: items.longitude,

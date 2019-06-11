@@ -13,6 +13,7 @@ import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import store from "../../../../../store";
 
 export default class Persona extends Component {
 
@@ -98,7 +99,15 @@ export default class Persona extends Component {
     componentDidMount() {
         this._isMounted = true;
         setTimeout(() => {
-            if (this._isMounted) this.validateAll(null, false, false);
+            if (this._isMounted) {
+                this.validateAll(null, false, false);
+                let personObject = store.getState().cotizacion.identification.object;
+                if( typeof personObject !== "undefined" && this.props.item !== -1 ){
+                    this.validateDoc({
+                        person: personObject
+                    });
+                }
+            }
         }, 600);
     }
 
@@ -173,8 +182,13 @@ export default class Persona extends Component {
         let code = this.state.person.code;
         try {
             Loading.toggle(true);
-            let persona = await ConsultaPersonas.get(this.state.person.code, this.state.person.value);
-            if (persona.consultarPersonaRs.personaRestringida === true) {
+            let persona = null;
+            if( typeof e.person === "undefined" ){
+                persona = await ConsultaPersonas.get(this.state.person.code, this.state.person.value);
+            }else{
+                persona = e.person;
+            }
+            if (persona !== null && persona.consultarPersonaRs.personaRestringida === true) {
                 Loading.toggle(false);
                 Validaridentificacion.toggle(true);
                 this.setState({
@@ -206,29 +220,23 @@ export default class Persona extends Component {
                     let contacto = contactos[i];
                     if (contacto['idContacto'] === 1) {
                         person.telefono = contacto['textoContacto'];
-                        // person.telefonoDisabled = true;
                     } else if (contacto['idContacto'] === 2) {
                         person.email = contacto['textoContacto'];
-                        // person.emailDisabled = true;
                     }
                 }
                 if (typeof contactos[0] !== "undefined") {
                     person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
-                    // person.tipodetelefonoDisabled = true;
                 }
 
                 if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
                     if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
                         person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
-                        // person.addressDisabled = true;
 
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
                             person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
-                            // person.ciudadDisabled = true;
                         }
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
                             person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
-                            // person.adresstypeDisabled = true;
                         }
                     }
                 }

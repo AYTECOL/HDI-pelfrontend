@@ -348,7 +348,7 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <a className="btn btn-download" target="_blank"
+                                                        <a className="btn btn-download" target="_blank" rel="noopener noreferrer"
                                                            href={item.textFile}>Documento.pdf</a>
                                                     </div>
                                                 </div>
