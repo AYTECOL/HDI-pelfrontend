@@ -93,7 +93,7 @@ export default class Checkboxes extends Component {
                     {(this.props.typePerson === 3 || this.props.person['role'].indexOf(4) !== -1) &&
                     <div className="col col-sm-12 col-md-6 col-lg-6 no-padding">
                         <input type="checkbox" name="oneroso" id="oneroso" value="1"
-                               checked={this.props.person['role'].indexOf(4) !== -1}
+                               checked={this.props.person['role'].indexOf(4) !== -1||this.props.typePerson === 3}
                                onChange={this.changeRole(4)}
                                disabled={(typeof this.props.disabledAll !== "undefined")}
                                className={"form-control " + (typeof this.props.disabledAll !== "undefined" ? 'disabled' : '')}/>
