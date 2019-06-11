@@ -112,6 +112,10 @@ class Index extends Component {
             }
         }
 
+        setTimeout(()=>{
+            this.validateRoles();
+        },500);
+
         if( person.length === 0 ){
             this.setState({
                 ...this.state,
@@ -175,15 +179,9 @@ class Index extends Component {
         }, 100);
     };
 
-    updatePerson(person) {
+    validateRoles(){
         let persons = this.state.persons;
         let inactiveBtn = this.state.inactiveBtn;
-        if (this.state.itemSelected === -1) {
-            persons.push(person);
-        } else {
-            persons[this.state.itemSelected] = person;
-        }
-
         let status = [];
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
@@ -197,6 +195,24 @@ class Index extends Component {
             ...this.state,
             person: persons,
             inactiveBtn: inactiveBtn
+        });
+    }
+
+    updatePerson(person) {
+        let persons = this.state.persons;
+        if (this.state.itemSelected === -1) {
+            persons.push(person);
+        } else {
+            persons[this.state.itemSelected] = person;
+        }
+
+        setTimeout(()=>{
+            this.validateRoles();
+        },500);
+
+        this.setState({
+            ...this.state,
+            person: persons,
         });
         setTimeout(() => {
             this.showAnyPopup("showPopUpPersona");

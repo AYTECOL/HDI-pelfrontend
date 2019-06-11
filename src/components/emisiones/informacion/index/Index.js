@@ -551,6 +551,7 @@ class Index extends Component {
                             </div>
                         </div>
 
+                        {(typeof this.state.inmueble.inspection_policies !== "undefined" && this.state.inmueble.inspection_policies === "IC") &&
                         <div className="row text-center sujeta-block justify-content-center">
                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                 <h5>La póliza está sujeta a inspección en sitio</h5>
@@ -590,8 +591,8 @@ class Index extends Component {
                                 </div>
                             </div>
                             }
-
                         </div>
+                        }
 
                         <div className="row">
                             <div
