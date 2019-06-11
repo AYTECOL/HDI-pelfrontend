@@ -543,55 +543,56 @@ class Index extends Component {
                         </div>
                         }
 
-                        <div className="row row-full text-right">
-                            <div className="col col-sm-12 col-md-12 col-lg-12">
-                                <div className="more-info">
-                                    <p>Más información <span>?</span></p>
-                                </div>
-                            </div>
-                        </div>
-
                         {(typeof this.state.inmueble.inspection_policies !== "undefined" && this.state.inmueble.inspection_policies === "IC") &&
-                        <div className="row text-center sujeta-block justify-content-center">
-                            <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                                <h5>La póliza está sujeta a inspección en sitio</h5>
-                                <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la inspección
-                                    en el
-                                    inmueble</p>
-                            </div>
-                            <div className="col col-12 col-sm-12 col-md-8 col-lg-8">
-                                <div className={"no-icon gridgrid form-group"}>
-
-                                    <div className="row grid-select justify-content-center  ">
-
-                                        {this.state.persons.map((item, key) =>
-                                            <div className="col col-6 col-sm-12 col-md-4 col-lg-4" key={key}>
-                                                <div
-                                                    className={"select-item row " + (this.state.contactperson === key ? 'active' : '')}
-                                                    onClick={this.selectItems('contactperson', key)}>
-                                                    <div className="col col-12 no-padding">
-                                                        <i className="userperson">&nbsp;</i>
-                                                    </div>
-                                                    <div className="col col-12 no-padding">
-                                                        <p>{typeof item.first_name !== "undefined" ? item.first_name : item.name}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )}
-
+                        <React.Fragment>
+                            <div className="row row-full text-right">
+                                <div className="col col-sm-12 col-md-12 col-lg-12">
+                                    <div className="more-info">
+                                        <p>Más información <span>?</span></p>
                                     </div>
                                 </div>
                             </div>
-
-                            {this.state.addNewPerson === true &&
-                            <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
-                                <div className="more-items" onClick={this.togglePerson(-1, -1)}>
-                                    <button type="button" className="more-btn">+</button>
-                                    <p>Agregar persona</p>
+                            <div className="row text-center sujeta-block justify-content-center">
+                                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <h5>La póliza está sujeta a inspección en sitio</h5>
+                                    <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la inspección
+                                        en el
+                                        inmueble</p>
                                 </div>
+                                <div className="col col-12 col-sm-12 col-md-8 col-lg-8">
+                                    <div className={"no-icon gridgrid form-group"}>
+
+                                        <div className="row grid-select justify-content-center  ">
+
+                                            {this.state.persons.map((item, key) =>
+                                                <div className="col col-6 col-sm-12 col-md-4 col-lg-4" key={key}>
+                                                    <div
+                                                        className={"select-item row " + (this.state.contactperson === key ? 'active' : '')}
+                                                        onClick={this.selectItems('contactperson', key)}>
+                                                        <div className="col col-12 no-padding">
+                                                            <i className="userperson">&nbsp;</i>
+                                                        </div>
+                                                        <div className="col col-12 no-padding">
+                                                            <p>{typeof item.first_name !== "undefined" ? item.first_name : item.name}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {this.state.addNewPerson === true &&
+                                <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
+                                    <div className="more-items" onClick={this.togglePerson(-1, -1)}>
+                                        <button type="button" className="more-btn">+</button>
+                                        <p>Agregar persona</p>
+                                    </div>
+                                </div>
+                                }
                             </div>
-                            }
-                        </div>
+                        </React.Fragment>
                         }
 
                         <div className="row">
