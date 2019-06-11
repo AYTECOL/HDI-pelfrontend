@@ -108,6 +108,10 @@ class Cards extends Component {
     async getInspectionPolicy() {
         let inspect = await InspectionPolicy.get();
         if( typeof inspect[1] !== "undefined" && inspect[1] !== "NA" ){
+            store.dispatch(saveInmuebleValue({
+                value: inspect[1],
+                name: 'inspection_policies'
+            }));
             this.setState({
                 ...this.state,
                 inspection_detail: inspect[0],

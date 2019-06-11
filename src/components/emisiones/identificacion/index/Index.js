@@ -27,7 +27,7 @@ class Index extends Component {
             cotizacion: {},
             persons: [],
             itemSelected: null,
-            inactiveBtn: false,
+            inactiveBtn: true,
             typePerson: 1,
             hasAccident: false,
             hasExequias: false
@@ -112,6 +112,10 @@ class Index extends Component {
             }
         }
 
+        setTimeout(()=>{
+            this.validateRoles();
+        },500);
+
         if( person.length === 0 ){
             this.setState({
                 ...this.state,
@@ -175,6 +179,25 @@ class Index extends Component {
         }, 100);
     };
 
+    validateRoles(){
+        let persons = this.state.persons;
+        let inactiveBtn = this.state.inactiveBtn;
+        let status = [];
+        for (let i = 0; i < persons.length; i++) {
+            for (let j = 0; j < persons[i].role.length; j++) {
+                if( persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 ){
+                    status.push(i);
+                }
+            }
+        }
+        inactiveBtn = status.length < 3;
+        this.setState({
+            ...this.state,
+            person: persons,
+            inactiveBtn: inactiveBtn
+        });
+    }
+
     updatePerson(person) {
         let persons = this.state.persons;
         if (this.state.itemSelected === -1) {
@@ -182,9 +205,14 @@ class Index extends Component {
         } else {
             persons[this.state.itemSelected] = person;
         }
+
+        setTimeout(()=>{
+            this.validateRoles();
+        },500);
+
         this.setState({
             ...this.state,
-            person: persons
+            person: persons,
         });
         setTimeout(() => {
             this.showAnyPopup("showPopUpPersona");
