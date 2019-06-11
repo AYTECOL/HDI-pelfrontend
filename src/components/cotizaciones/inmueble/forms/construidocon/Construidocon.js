@@ -57,8 +57,8 @@ class Construidocon extends Component {
             <div className={"construidocon no-icon gridgrid form-group " + (this.state.error ? 'error' : '')}>
                 <label htmlFor="construidocon">El inmueble está construido con</label>
                 <div className="row grid-select">
-                    {this.state.materials.map(option =>
-                        <div key={option.buildMaterialCode} className="col col-6 col-sm-12 col-md-4 col-lg-4">
+                    {this.state.materials.map((option, key) =>
+                        <div key={key} className="col col-6 col-sm-12 col-md-4 col-lg-4">
                             <div
                                 className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
                                 onClick={this.validateEmpty({
