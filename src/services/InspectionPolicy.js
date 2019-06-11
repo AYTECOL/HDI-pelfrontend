@@ -1,8 +1,71 @@
 import Api from './Api';
+import momentJs from 'moment';
+import store from "../store";
+import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
+
+const BaseUrl = "/rs_ws/REST/LT_HOME_INSPECCION/LT_HOME_INSPECCION/DetermineInspeccion/";
+const hybrid = "https://wlsnonprod.libertycolombia.com.co";
 
 class InspectionPolicy {
-    static async get(code, insured_values, zone, insured_type, year_construction, in_closed_set, insured_total) {
-        return await Api.get('/inspection-policy/' + code + '/' + insured_values + '/' + zone + '/' + insured_type + '/' + year_construction + '/' + in_closed_set + '/' + insured_total);
+    static async get() {
+        let Inmueble = store.getState().Inmueble;
+        let dataToSend = {
+            "runtimeContext": {
+                "currentDate": momentJs().toISOString(),
+                "requestDate": momentJs().toISOString(),
+                "lob": "string" /*quemados*/,
+                "nature": "string" /*quemados*/,
+                "usState": "AL" /*quemados*/,
+                "country": "AL" /*quemados*/,
+                "usRegion": "MW" /*quemados*/,
+                "currency": "ALL" /*quemados*/,
+                "lang": "ALB" /*quemados*/,
+                "region": "NCSA" /*quemados*/,
+                "caProvince": "AB" /*quemados*/,
+                "caRegion": "QC" /*quemados*/
+            },
+            "inspecciones": {
+                "ciudad": 0 /*quemados*/,
+                "departamento": 0 /*quemados*/,
+                "tipoVivienda": parseInt(Inmueble.type_risk),
+                "zonaVivienda": parseInt(Inmueble.zona),
+                "conjuntoCerrado": Inmueble.cojuntocerrado === 1 ? 1 : 0,
+                "inmuebleUtilizado": 1 /*quemados*/,
+                "anoConstruccionVivienda": typeof Inmueble.anoconstruido !== "undefined" ? parseInt(Inmueble.anoconstruido) : 0,
+                "normasSismoresistentes": typeof Inmueble.refuerzo !== "undefined" ? parseInt(Inmueble.refuerzo) : 0,
+                "anoRehabilitacionVivienda": typeof Inmueble.anorefuerzo !== "undefined" ? parseInt(Inmueble.refuerzo) === 1 ? parseInt(Inmueble.anorefuerzo) : 0 : 0,
+                "tipoConstruccionVivienda": parseInt(Inmueble.construidocon),
+                "actividadesRiesgo": 0 /*quemados*/,
+                "numeroPisosRiesgo": parseInt(Inmueble.numerodepisos),
+                "pisoRiesgo": parseInt(Inmueble.type_risk) === 1 ? 0 : parseInt(Inmueble.pisonumero),
+                "sumaAseguradaInmueble": parseInt(Inmueble.inmuebleasegudado) === 1 ? Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadovalor) : 0,
+                "sumaAseguradaContenido": parseInt(Inmueble.contenidoasegudado) === 1 ? Masknumbermoney.formatToNumber(Inmueble.contenidoasegudadovalor) : 0,
+                "sumaAseguradaJoyas": parseInt(Inmueble.inmuebleasegudadojoyas) === 1 ? Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadojoyasvalor) : 0,
+                "sumaAseguradaObrasArte": parseInt(Inmueble.inmuebleasegudadoobras) === 1 ? Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadoobrasvalor) : 0,
+                "vigilanciaPermanente": Inmueble.seguridad.vigilanciapermanente,
+                "alarmaMonitoreada": Inmueble.seguridad.alarma,
+                "circuitoCerrado": Inmueble.seguridad.circuitocerradotv,
+                "puertaSeguridad": Inmueble.seguridad.puertasseguridadblindada,
+                "cajaFuerte": Inmueble.seguridad.cajafuerte,
+                "reguladorVoltaje": Inmueble.seguridad.reguladordevoltaje,
+                "puertasControl": Inmueble.seguridad.puertascontroldomotico,
+                "respuestaInspeccion": ""
+            }
+        };
+        let response = await Api.post(BaseUrl, dataToSend, hybrid);
+        if (typeof response.results === "undefined") {
+            response = null;
+        } else {
+            if (typeof response.results[response.results.length - 1] === "undefined") {
+                response = null;
+            } else {
+                response = response.results[response.results.length - 1];
+                if (response[1] === 'IC') response[0] = "Inspección en campo";
+                if (response[1] === 'RF') response[0] = "Registro fotográfico";
+                if (response[1] === 'NA') response[0] = "No Aplica";
+            }
+        }
+        return response;
     };
 }
 

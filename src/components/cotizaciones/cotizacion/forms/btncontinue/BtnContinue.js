@@ -46,8 +46,9 @@ class BtnContinue extends Component {
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
         let plan = plans[index];
-        plan['value'] = 2;
+        plan['prospect'] = 2;
         plan['quote_id'] = this.props.match.params.id;
+        plan['inspect_type'] = 'IC';
         plan['assists'][0]['selected_id'] = index;
 
         plan = this.toNumberCoverrange(plan);
