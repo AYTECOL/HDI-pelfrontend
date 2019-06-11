@@ -4,21 +4,21 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  # Stage DEV
-  # stage: dev
+  ######Stage DEV######
+  #stage: dev
 
-  # stage NONPROD 
-  #stage: nonprod
+  ######stage NONPROD##### 
+  stage: nonprod
   
-  # stage PROD
-  stage: prod
+  #####stage PROD#####
+  #stage: prod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   
   iamRoleStatements:
         - Effect: "Allow"
           Action:
-            - s3:PutItem
+           - s3:PutItem
   #          - s3:List*
           Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
@@ -51,12 +51,12 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
-              Action:
-              - s3:GetObject
-              - s3:PutObject
-              #- s3:*
-              Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+                    {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+                Action:
+                - s3:GetObject
+                - s3:PutObject
+                #- s3:*
+                Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
@@ -72,15 +72,15 @@ resources:
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
-          #Aliases PROD
-          Aliases:
-           - hogar.libertyseguros.co 
-           
-          # Aliases UAT
+          ####Aliases PROD#####
           #Aliases:
-          # - hogar-uat.libertyseguros.co 
+          # - hogar.libertyseguros.co 
+           
+          ##### Aliases UAT/ NON_PROD#####
+          Aliases:
+           - hogar-uat.libertyseguros.co 
           
-          # Aliases DEV
+          ##### Aliases DEV#####
           #Aliases:
           # - hogar-dev.libertyseguros.co 
           DefaultRootObject: index.html
@@ -101,12 +101,12 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
             MinTTL: '100'
           ViewerCertificate:
-            #ARN dev
+            #####ARN dev####
             #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
-            #ARN nonprod
-            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
-            #ARN prod 
-            AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
+            #ARN nonprod#####
+            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            #ARN prod#####
+            #AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
