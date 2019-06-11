@@ -29,8 +29,8 @@ stage('Preparation') {
                 dir('dist/poliza-express-hogar-front'){
                 	sh 'pwd'
                     sh 'ls'
-                    sh 'aws s3 rm s3://poliza-express-hogar-prod --recursive' // Clean bucket
-                    sh 'aws s3 sync .  s3://poliza-express-hogar-prod' // Sync bucket
+                    sh 'aws s3 rm s3://poliza-express-hogar --recursive' // Clean bucket
+                    sh 'aws s3 sync .  s3://poliza-express-hogar' // Sync bucket
                 }
             }
         //}
