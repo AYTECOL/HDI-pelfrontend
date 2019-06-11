@@ -50,7 +50,7 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            #- Sid: PublicReadGetObject
+            - Sid: PublicReadGetObject
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -58,6 +58,7 @@ resources:
                 Action:
                 - s3:GetObject
                 - s3:PutObject
+                - s3:RestoreObject
                 #- s3:*
                 Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
