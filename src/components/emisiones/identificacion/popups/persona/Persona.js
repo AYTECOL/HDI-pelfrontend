@@ -177,6 +177,7 @@ export default class Persona extends Component {
     };
 
     validateDoc = async e => {
+
         if (this.state.person.value === "") return;
         if (this.state.typePerson === 2) return;
         let code = this.state.person.code;

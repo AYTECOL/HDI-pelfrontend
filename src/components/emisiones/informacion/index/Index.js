@@ -440,7 +440,7 @@ class Index extends Component {
                                                         htmlFor="name">Tipo de item</label>
                                                         <select className="form-control" name="type" id="type"
                                                                 value={item.type} onChange={this.updateContent(key)}>
-                                                            <option value="0"></option>
+                                                            <option value=""></option>
                                                             {this.state.items.map((i, k) =>
                                                                 <React.Fragment key={k}>
                                                                     {((this.state.contenidos === true && k === 0) || (this.state.obras === true && k === 1) || (this.state.joyas === true && k === 2) || (this.state.celulares === true && k === 3)) &&

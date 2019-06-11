@@ -88,13 +88,13 @@ class Cards extends Component {
                     InmuebleOk: true
                 });
                 setTimeout(() => {
+                    this.validateToggle();
                     this.getInspectionPolicy();
                 }, 500);
             }
         });
 
         this.getAllInsurableLimits();
-        this.validateToggle();
         this.getAllBuildYears();
     }
 
@@ -128,6 +128,7 @@ class Cards extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+        this.validateToggle();
     }
 
     componentWillUnmount() {
