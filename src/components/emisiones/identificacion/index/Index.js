@@ -27,7 +27,7 @@ class Index extends Component {
             cotizacion: {},
             persons: [],
             itemSelected: null,
-            inactiveBtn: false,
+            inactiveBtn: true,
             typePerson: 1,
             hasAccident: false,
             hasExequias: false
@@ -177,14 +177,26 @@ class Index extends Component {
 
     updatePerson(person) {
         let persons = this.state.persons;
+        let inactiveBtn = this.state.inactiveBtn;
         if (this.state.itemSelected === -1) {
             persons.push(person);
         } else {
             persons[this.state.itemSelected] = person;
         }
+
+        let status = [];
+        for (let i = 0; i < persons.length; i++) {
+            for (let j = 0; j < persons[i].role.length; j++) {
+                if( persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 ){
+                    status.push(i);
+                }
+            }
+        }
+        inactiveBtn = status.length < 3;
         this.setState({
             ...this.state,
-            person: persons
+            person: persons,
+            inactiveBtn: inactiveBtn
         });
         setTimeout(() => {
             this.showAnyPopup("showPopUpPersona");
