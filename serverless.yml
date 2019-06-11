@@ -50,7 +50,7 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            #- Sid: PublicReadGetObject
+            - Sid: PublicReadGetObject
               Effect: Allow
               Principal:
                 CanonicalUser:
