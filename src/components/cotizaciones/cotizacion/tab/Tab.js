@@ -180,7 +180,7 @@ class Tab extends Component {
         if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             let indexSelected = selected['assists'][0]['selected_id'];
-                selected = this.toNumberCoverrange(plans[indexSelected]);
+                // selected = this.toNumberCoverrange(plans[indexSelected]);
                 store.dispatch(indexPlanSelected(indexSelected));
         } else {
             if (this.state.index === "") for (let i in plans){
