@@ -1,11 +1,15 @@
 import Api from './Api';
 import Store from '../store';
+import Helpers from "../common/helpers/helpers/Helpers";
 
 const Url = "/quote";
 
 class IdentificationsCities {
     static async save() {
         let storeState = Store.getState();
+        let user = await Helpers.getUser();
+        let newUser = {};
+        if( user !== null ) for(let i in user) if( i !== 'accessToken' && i !== 'refer' ) newUser[i] = user[i];
         let data = {
             quoteId: storeState.cotizacion.number,
             document_type: parseInt(storeState.cotizacion.identification.code),
@@ -20,9 +24,12 @@ class IdentificationsCities {
             name: storeState.cotizacion.identification.name,
             last_name: storeState.cotizacion.identification.lastname,
             step: storeState.cotizacion.state,
-            person: storeState.cotizacion.identification.object
+            person: storeState.cotizacion.identification.object,
+            pdf_info: storeState.pdf_info,
+            intntermediate: newUser
         };
         for (let i in data) if (data[i] === "") data[i] = '""';
+        console.log(data);
         return await Api.post(Url, data);
     };
 }

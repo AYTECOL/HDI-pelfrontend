@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 
 import store from '../../../../../store';
-import {NextStep, nextStepIndentification, saveIdentificationValue} from '../../../../../actions';
+import {NextStep, nextStepIndentification, saveIdentificationValue, savePdfInfo} from '../../../../../actions';
 import Loading from "../../../../../components/globals/loading/Loading";
 import SaveIdentifications from '../../../../../services/Quote';
 // Components

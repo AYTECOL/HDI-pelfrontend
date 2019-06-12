@@ -3,8 +3,7 @@ import momentJs from 'moment';
 import store from "../store";
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
 
-const BaseUrl = "/rs_ws/REST/LT_HOME_INSPECCION/LT_HOME_INSPECCION/DetermineInspeccion/";
-const hybrid = "https://cors-anywhere.herokuapp.com/https://wlsnonprod.libertycolombia.com.co";
+const BaseUrl = "/determine-inspection-policies";
 
 class InspectionPolicy {
     static async get() {
@@ -42,17 +41,19 @@ class InspectionPolicy {
                 "sumaAseguradaContenido": parseInt(Inmueble.contenidoasegudado) === 1 ? Masknumbermoney.formatToNumber(Inmueble.contenidoasegudadovalor) : 0,
                 "sumaAseguradaJoyas": parseInt(Inmueble.inmuebleasegudadojoyas) === 1 ? Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadojoyasvalor) : 0,
                 "sumaAseguradaObrasArte": parseInt(Inmueble.inmuebleasegudadoobras) === 1 ? Masknumbermoney.formatToNumber(Inmueble.inmuebleasegudadoobrasvalor) : 0,
-                "vigilanciaPermanente": Inmueble.seguridad.vigilanciapermanente,
-                "alarmaMonitoreada": Inmueble.seguridad.alarma,
-                "circuitoCerrado": Inmueble.seguridad.circuitocerradotv,
-                "puertaSeguridad": Inmueble.seguridad.puertasseguridadblindada,
-                "cajaFuerte": Inmueble.seguridad.cajafuerte,
-                "reguladorVoltaje": Inmueble.seguridad.reguladordevoltaje,
-                "puertasControl": Inmueble.seguridad.puertascontroldomotico,
+
+                "vigilanciaPermanente": Inmueble.seguridad.vigilanciapermanente === 1,
+                "alarmaMonitoreada": Inmueble.seguridad.alarma === 1,
+                "circuitoCerrado": Inmueble.seguridad.circuitocerradotv === 1,
+                "puertaSeguridad": Inmueble.seguridad.puertasseguridadblindada === 1,
+                "cajaFuerte": Inmueble.seguridad.cajafuerte === 1,
+                "reguladorVoltaje": Inmueble.seguridad.reguladordevoltaje === 1,
+                "puertasControl": Inmueble.seguridad.puertascontroldomotico === 1,
                 "respuestaInspeccion": ""
             }
         };
-        let response = await Api.post(BaseUrl, dataToSend, hybrid);
+        console.log(dataToSend);
+        let response = await Api.post(BaseUrl, dataToSend);
         if (typeof response.results === "undefined") {
             response = null;
         } else {

@@ -54,16 +54,15 @@ class AutocompleteCities extends Component {
 
     async getOptions() {
         let data = await Cities.get();
-        let it = this;
         if (this._isMounted) {
             this.setState({
-                ...it.state,
+                ...this.state,
                 options: data,
                 originalOptions: data
             });
             setTimeout(() => {
-                it.getTextById();
-            }, 300);
+                this.getTextById();
+            }, 500);
         }
     }
 
@@ -76,7 +75,7 @@ class AutocompleteCities extends Component {
                 break;
             }
         }
-        if (value !== "") {
+        if (value !== "" && this._isMounted) {
             this.setState({
                 ...this.state,
                 value: value
@@ -105,6 +104,13 @@ class AutocompleteCities extends Component {
         let description = option.department;
         let codeDepartment = option.code_department;
         setTimeout(() => {
+            console.log(option);
+            Helpers.updatePdfInfo({
+                'city': option.city
+            });
+            Helpers.updatePdfInfo({
+                'department': option.department
+            });
             store.dispatch(saveIdentificationValue({
                 name: "city",
                 value: code
@@ -207,10 +213,10 @@ class AutocompleteCities extends Component {
                 <label
                     className={typeof this.props.hideTitle !== "undefined" && this.props.hideTitle === true ? 'hide' : ''}
                     htmlFor="city">{typeof this.props.label === "undefined" ? 'Ciudad o municipio del hogar' : this.props.label}</label>
-                <input name={typeof this.props.name !== "undefined" ? 'city' : this.props.name} id="city" type="text"
+                <input name={typeof this.props.name === "undefined" ? 'city' : this.props.name} id="city" type="text"
                        className={"form-control " + (typeof this.props.disabled === 'undefined' ? '' : (this.props.disabled === true ? 'disabled' : ''))}
                        placeholder="Ingresa ciudad o municipio del h..."
-                       value={this.state.value !== '' ? this.state.value : this.props.value}
+                       value={typeof this.props.value === "undefined" ? this.state.value : this.props.value}
                        disabled={typeof this.props.disabled === 'undefined' ? false : this.props.disabled}
                        autoComplete="city"
                        autoCorrect="off"

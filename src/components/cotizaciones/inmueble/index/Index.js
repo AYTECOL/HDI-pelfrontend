@@ -12,6 +12,7 @@ import Risk from '../../../../services/AllRisks';
 import './Index.scss';
 import {saveInmuebleValue, typeInmueble} from "../../../../actions";
 import Loading from "../../../globals/loading/Loading";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class Index extends Component {
 
@@ -66,6 +67,9 @@ class Index extends Component {
             name: "type_risk_id",
             value: item
         }));
+        Helpers.updatePdfInfo({
+            'type_risk': option.risk_type
+        });
         this.setState({
             ...this.state,
             active: item,

@@ -40,11 +40,14 @@ class Construidocon extends Component {
         });
     }
 
-    validateEmpty = e => event => {
+    validateEmpty = e => () => {
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".construidocon", "error");
         store.dispatch(saveInmuebleValue(e));
+        Helpers.updatePdfInfo({
+            [e.name]: e.text
+        });
         this.setState({
             ...this.state,
             error: error,
@@ -60,24 +63,25 @@ class Construidocon extends Component {
                     {this.state.materials.map((option, key) =>
                         <div key={key} className="col col-6 col-sm-12 col-md-4 col-lg-4">
                             <div
-                                className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
+                                className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.order)) ? 'active' : '')}
                                 onClick={this.validateEmpty({
-                                    data: option.buildMaterialCode,
+                                    data: option.order,
                                     value: option.buildMaterialCode,
+                                    text: option.answer,
                                     name: "construidocon"
                                 })}>
                                 <div className="col col-12 no-padding">
-                                    {(parseInt(option.buildMaterialCode) === 1) ? (
+                                    {(parseInt(option.order) === 1) ? (
                                         <i className="concreto">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 2) ? (
+                                    {(parseInt(option.order) === 2) ? (
                                         <i className="ladrillo">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 3) ? (
+                                    {(parseInt(option.order) === 3) ? (
                                         <i className="aceror">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 4) ? (
+                                    {(parseInt(option.order) === 4) ? (
                                         <i className="bahareque">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 5) ? (
+                                    {(parseInt(option.order) === 5) ? (
                                         <i className="madera">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.buildMaterialCode) === 6) ? (
+                                    {(parseInt(option.order) === 6) ? (
                                         <i className="adobe">&nbsp;</i>) : ("")}
                                 </div>
                                 <div className="col col-12 no-padding">

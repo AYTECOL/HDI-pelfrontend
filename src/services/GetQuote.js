@@ -43,7 +43,8 @@ class GetQuote {
                         }
                     },
                     stateFormIdentificacion: 1,
-                    showMap: true
+                    showMap: true,
+                    pdf_info: items.pdf_info
                 };
             } else {
                 return {};
