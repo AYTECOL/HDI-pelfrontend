@@ -256,14 +256,14 @@ class Helpers {
             let dataRquest = await AccessToken.get(parameters['refer']);
             if (dataRquest !== null) {
                 dataRquest['refer'] = parameters['refer'];
-                localStorage.clear();
-                localStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquest)))));
+                sessionStorage.clear();
+                sessionStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquest)))));
                 data = dataRquest;
             }else{
                 Helpers.goToError();
             }
         } else {
-            let dataRquest = localStorage.getItem('request');
+            let dataRquest = sessionStorage.getItem('request');
             if (typeof dataRquest === "undefined" || dataRquest === null) {
                 Helpers.goToError();
                 return data;
@@ -278,8 +278,8 @@ class Helpers {
             let dataRquestVerify = await AccessToken.get(data['refer']);
             if (dataRquestVerify !== null) {
                 dataRquestVerify['refer'] = data['refer'];
-                localStorage.clear();
-                localStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquestVerify)))));
+                sessionStorage.clear();
+                sessionStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquestVerify)))));
             } else {
                 Helpers.goToError();
             }

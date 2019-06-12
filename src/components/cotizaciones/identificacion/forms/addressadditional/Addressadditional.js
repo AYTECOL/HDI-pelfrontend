@@ -44,7 +44,7 @@ class Addressadditional extends Component {
                        value={this.state.value}
                        autoComplete="addressadditional"
                        className={"form-control"}
-                       placeholder="Ingresa la dirección"
+                       placeholder="Ingresa información adicional"
                        onChange={this.validateEmpty}/>
                 <small className="form-text text-muted">Ejemplo: Interior 6, apto 201</small>
             </div>

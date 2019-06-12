@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {GoogleMap, Marker, withGoogleMap, withScriptjs} from "react-google-maps";
 import './Map.scss';
 import store from "../../../../store";
-import {saveIdentificationValue, setAddresMap} from "../../../../actions";
+import {setAddresMap} from "../../../../actions";
 import GetAddresInfo from "../../../../services/AddresCoordenates";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 
@@ -87,10 +87,10 @@ class MapBase extends Component {
                 isMarkerShown: true,
             });
             Helpers.removeClass(this.state.el, 'error');
-            store.dispatch(saveIdentificationValue({
-                name: 'address',
-                value: response
-            }));
+            // store.dispatch(saveIdentificationValue({
+            //     name: 'address',
+            //     value: response
+            // }));
         });
     }
 

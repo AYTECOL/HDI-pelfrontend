@@ -66,15 +66,17 @@ class Index extends Component {
         let selected = plan.plan_selected_info.Item;
         plans.push(selected);
         for (let i = 0; i < plans.length; i++) {
-            for (let j = 0; j < plans[i].coverages.length; j++) {
-                plans[i].coverages[j].optional = false;
-            }
-            for (let j = 0; j < plans[i].assists.length; j++) {
-                plans[i].assists[j].optional = false;
-                for (let k = 0; k < plans[i].assists[j].values.length; k++) {
-                    plans[i].assists[j].values[k].optional = false;
-                    for (let l = 0; l < plans[i].assists[j].values[k].assists.length; l++) {
-                        plans[i].assists[j].values[k].assists[l].optional = false;
+            if( typeof plans[i] !== "undefined" ){
+                for (let j = 0; j < plans[i].coverages.length; j++) {
+                    plans[i].coverages[j].optional = false;
+                }
+                for (let j = 0; j < plans[i].assists.length; j++) {
+                    plans[i].assists[j].optional = false;
+                    for (let k = 0; k < plans[i].assists[j].values.length; k++) {
+                        plans[i].assists[j].values[k].optional = false;
+                        for (let l = 0; l < plans[i].assists[j].values[k].assists.length; l++) {
+                            plans[i].assists[j].values[k].assists[l].optional = false;
+                        }
                     }
                 }
             }
@@ -245,7 +247,7 @@ class Index extends Component {
                                     <div className="row">
                                         <div className="col col-5 col-sm-5 col-md-3 gray-box first">
                                             <p><b>Contenidos</b></p>
-                                            <p className="big-number">{this.state.inmueble.contenido_asegudado === 1 ? (this.state.inmueble.contenido_asegudado_valor) : ("Ningúno")}</p>
+                                            <p className="big-number">{this.state.inmueble.contenido_asegudado === 1 ? (Masknumbermoney.formatToMask(this.state.inmueble.contenido_asegudado_valor)) : ("Ningúno")}</p>
                                         </div>
                                         <div className="col col-7 col-sm-7 col-md-9 no-padding">
                                             <div className="row">
@@ -272,14 +274,18 @@ class Index extends Component {
                                     <div className="row">
                                         <div className="col col-5 col-sm-5 col-md-3 no-padding">
                                             <div className="row">
+                                                {this.state.inmueble.inmueble_asegudado_obras === 1 &&
                                                 <div className="col col-12 col-12 gray-box">
                                                     <p><b>Obras de arte</b></p>
                                                     <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? (this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
                                                 </div>
+                                                }
+                                                {this.state.inmueble.inmueble_asegudado_joyas === 1 &&
                                                 <div className="col col-12 col-12 gray-box">
                                                     <p><b>Joyas</b></p>
                                                     <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? (this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
                                                 </div>
+                                                }
                                             </div>
                                         </div>
                                         <div className="col col-7 col-sm-7 col-md-9 no-padding">
@@ -296,7 +302,7 @@ class Index extends Component {
                                                 </div>
                                                 <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Construido</b></p>
-                                                    <p>{this.state.inmueble.build_material}</p>
+                                                    <p>{typeof this.state.inmueble.build_material !== "undefined"?this.state.inmueble.build_material:''}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -304,8 +310,12 @@ class Index extends Component {
                                 </div>
                             </div>
 
-                            <Coberturas toggleSlide={Helpers.toggleSlide}/>
-                            <Asistencias toggleSlide={Helpers.toggleSlide}/>
+                            {typeof this.plans !== "undefined" &&
+                            <React.Fragment>
+                                <Coberturas toggleSlide={Helpers.toggleSlide}/>
+                                <Asistencias toggleSlide={Helpers.toggleSlide}/>
+                            </React.Fragment>
+                            }
                         </div>
                     </div>
 

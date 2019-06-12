@@ -76,9 +76,6 @@ const AllPlans = (data) => {
 const savePdfInfo = (data) => {
     return {type: "PDF_INFO", data: data}
 };
-const saveIntntermediate = (data) => {
-    return {type: "INTNTERMEDIATE", data: data}
-};
 
 export {
     nextStepIndentification,
@@ -100,5 +97,4 @@ export {
     AllPlans,
     indexPlanSelected,
     savePdfInfo,
-    saveIntntermediate
 };
