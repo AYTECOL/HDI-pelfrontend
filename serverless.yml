@@ -19,7 +19,7 @@ provider:
         - Effect: "Allow"
           Action:
            - s3:PutItem
-  #          - s3:List*
+           - s3:List*
           Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
@@ -37,9 +37,9 @@ resources:
       Properties:
         BucketName: ${self:custom.s3Bucket}
         ##### uat y dev #####
-        #AccessControl: PublicRead 
+        AccessControl: PublicRead 
         ##### prod #####
-        AccessControl: Private 
+        #AccessControl: Private 
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
@@ -50,7 +50,7 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            - Sid: PrivateReadGetObject
+            - Sid: PublicReadGetObject
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -58,7 +58,7 @@ resources:
                 Action:
                 - s3:GetObject
                 - s3:PutObject
-                - s3:RestoreObject
+                #- s3:RestoreObject
                 #- s3:*
                 Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
