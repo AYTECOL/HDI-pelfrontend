@@ -47,7 +47,17 @@ class Anoconstruccion extends Component {
             ...this.state,
             error: error
         });
+        let text = "";
+        for (let i = 0; i < this.state.years.length; i++) {
+            if( parseInt(e.value) === parseInt(this.state.years[i].buildYearCode) ){
+                text = this.state.years[i].answer;
+                break;
+            }
+        }
         store.dispatch(saveInmuebleValue(e));
+        Helpers.updatePdfInfo({
+            [e.name]: text
+        });
     };
 
     render() {

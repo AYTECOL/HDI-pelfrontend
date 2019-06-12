@@ -4,6 +4,7 @@ import store from '../../../../../store';
 import {saveIdentificationValue, updateTypeDoc} from '../../../../../actions';
 import Identifications from '../../../../../services/Identifications';
 import Loading from "../../../../globals/loading/Loading";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class TipoDocumento extends Component {
 
@@ -69,6 +70,16 @@ class TipoDocumento extends Component {
         if (type === "Jurídica") typeDocument = 2;
         store.dispatch(saveIdentificationValue(e));
         store.dispatch(updateTypeDoc(typeDocument));
+        let text = "";
+        for (let i = 0; i < this.state.options.identifications.length; i++) {
+            if( parseInt(this.state.options.identifications[i].code) === parseInt(e.value) ){
+                text = this.state.options.identifications[i].description;
+                break;
+            }
+        }
+        Helpers.updatePdfInfo({
+            'doc_type': text
+        });
         if (this._isMounted) {
             this.setState({
                 ...this.state,

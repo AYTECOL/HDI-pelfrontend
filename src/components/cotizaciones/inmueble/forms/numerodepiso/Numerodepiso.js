@@ -46,6 +46,9 @@ class Numerodepiso extends Component {
             error: error,
             value: e.value
         });
+        Helpers.updatePdfInfo({
+            [e.name]: e.value
+        });
         store.dispatch(saveInmuebleValue(e));
     };
 

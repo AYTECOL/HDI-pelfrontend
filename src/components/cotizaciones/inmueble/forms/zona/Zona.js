@@ -45,6 +45,9 @@ class Zona extends Component {
             ...this.state,
             active: e.value
         });
+        Helpers.updatePdfInfo({
+            [e.name]: e.text
+        });
     };
 
     render() {
@@ -57,7 +60,8 @@ class Zona extends Component {
                             className={parseInt(this.state.active) === parseInt(option.zoneCode) ? 'active' : ''}
                             onClick={this.saveData({
                                 value: parseInt(option.zoneCode),
-                                name: "zona"
+                                name: "zona",
+                                text: option.answer
                             })}>
                             {option.answer}
                         </li>

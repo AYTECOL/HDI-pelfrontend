@@ -72,6 +72,14 @@ const AllPlans = (data) => {
     return {type: "SAVE_ALL_PLANS", data: data}
 };
 
+//General
+const savePdfInfo = (data) => {
+    return {type: "PDF_INFO", data: data}
+};
+const saveIntntermediate = (data) => {
+    return {type: "INTNTERMEDIATE", data: data}
+};
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -90,5 +98,7 @@ export {
     saveAllfloors,
     saveAllInsurableLimits,
     AllPlans,
-    indexPlanSelected
+    indexPlanSelected,
+    savePdfInfo,
+    saveIntntermediate
 };

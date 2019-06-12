@@ -25,9 +25,10 @@ const initialState = {
             department: "",
             address: "",
             addressadditional: "",
-            object: {}
+            object: {},
         }
     },
+    pdf_info: {},
     cityDescription: "",
     continueButtonDisable: true,
     stateFormIdentificacion: 0,
@@ -147,7 +148,8 @@ const reducer = (state = initialState, action) => {
             typeDocument: action.data.typeDocument,
             stateFormIdentificacion: action.data.stateFormIdentificacion,
             showMap: action.data.showMap,
-            mapsOptions: action.data.mapsOptions
+            mapsOptions: action.data.mapsOptions,
+            pdf_info: action.data.pdf_info,
         }
     } else if (action.type === "RESTORE_COTIZACION_RISK") {
         return {
@@ -206,6 +208,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             indexPlan: action.data
+        }
+    } else if (action.type === "PDF_INFO") {
+        return {
+            ...state,
+            pdf_info: action.data
         }
     }
     return state;

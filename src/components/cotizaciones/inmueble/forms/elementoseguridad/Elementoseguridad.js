@@ -5,6 +5,7 @@ import {saveInmuebleValueSeguridad} from '../../../../../actions';
 
 import './Elementoseguridad.scss';
 import AllSecurity from "../../../../../services/AllSecurity";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Elementoseguridad extends Component {
 
@@ -99,6 +100,9 @@ class Elementoseguridad extends Component {
             e.value = 1;
         }
         store.dispatch(saveInmuebleValueSeguridad(e));
+        Helpers.updatePdfInfo({
+            [e.name]: e.text
+        });
         let newValue = {};
         newValue[e.name] = e.value;
         this.setState({
@@ -122,7 +126,8 @@ class Elementoseguridad extends Component {
                                        id={this.state.keys[item.id].name}
                                        onChange={this.saveValue({
                                            value: 1,
-                                           name: this.state.keys[item.id].name
+                                           name: this.state.keys[item.id].name,
+                                           text: item.description
                                        })}/>
                                 <label htmlFor={this.state.keys[item.id].name}>{item.description}</label>
                             </div>
