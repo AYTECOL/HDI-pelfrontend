@@ -8,7 +8,7 @@ node('linux'){
 
 stage('Preparation') {
 
-         git credentialsId: 'intl_gituser', url: 'https://intl_gituser@bitbucket-latam.aws.lmig.com/scm/aa/andino-flex-touch-front.git', branch: 'prod'
+         git credentialsId: 'intl_gituser', url: ' https://intl_gituser@bitbucket-latam.aws.lmig.com/scm/rt/pelhfrontend.git', branch: 'master'
          sh 'npm --version'
          sh 'aws --version'
          sh 'npm install'
