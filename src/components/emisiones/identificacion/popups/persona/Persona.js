@@ -168,12 +168,15 @@ export default class Persona extends Component {
         let newPerson = this.state.person;
         newPerson[n] = v;
         if (n === 'code') nit = parseInt(v) === 37;
+        console.log(nit);
         this.setState({
             ...this.state,
             person: newPerson,
             nit: nit
         });
-        this.validateAll(n);
+        setTimeout(()=>{
+            this.validateAll(n);
+        },500);
     };
 
     validateDoc = async e => {
@@ -345,7 +348,9 @@ export default class Persona extends Component {
                     document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
                 }
             }
-            let ok = this.state.total - errors.length;
+            let total = this.state.total;
+            if( this.state.nit === true && this.state.typePerson === 1 ) total = 13;
+            let ok = total - errors.length;
             if (ok === 0) msj4 = false;
             if (errors.length === 0 && saveData) {
                 await this.saveFile();
@@ -471,7 +476,6 @@ export default class Persona extends Component {
 
                                     {(this.state.typePerson === 1 || this.state.typePerson === 2 || this.state.typePerson !== 4) &&
                                     <div className={"row fields-row"}>
-
                                         {this.state.nit === true ? (
                                             <React.Fragment>
                                                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12">

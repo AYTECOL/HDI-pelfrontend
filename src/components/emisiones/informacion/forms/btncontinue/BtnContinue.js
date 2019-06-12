@@ -52,8 +52,8 @@ class BtnContinue extends Component {
                 state.contents[i].uploaded = true;
             }
         }
-        let name = "";
-        let phone = "";
+        let name = "-";
+        let phone = "-";
         if (typeof state.contactperson !== "undefined" && state.contactperson !== null) {
             name = state.persons[state.contactperson].name;
             phone = state.persons[state.contactperson].telefono;

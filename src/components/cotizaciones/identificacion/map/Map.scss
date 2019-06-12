@@ -157,3 +157,7 @@
     }
   }
 }
+
+.gm-style:first-of-type > div:nth-child(1) {
+  cursor: pointer !important;
+}

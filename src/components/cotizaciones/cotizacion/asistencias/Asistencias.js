@@ -183,28 +183,28 @@ class Tab extends Component {
                                                     <input type="checkbox" name={"itemm" + k + "_" + key}
                                                            id={"itemm" + k + "_" + key}
                                                            checked={(opt.checked === true ? 'checked' : false)}
-                                                           disabled={(opt.optional === false)}
+                                                           disabled={opt.optional === false}
                                                            onChange={this.checkAsistencia(this.state.index, key, k, 0, true)}
                                                     />
                                                     <div className="group">
                                                         <label htmlFor={"itemm" + k + "_" + key}>{opt.name}</label>
                                                         <p>{opt.description}</p>
                                                     </div>
-                                                    {opt.assists.map((opt, i) =>
+                                                    {opt.assists.map((op, i) =>
                                                         <div className="row" key={i}>
                                                             <div
-                                                                className={"col col-12 col-sm-12 col-md-12 col-lg-12 items-checkboxes " + (opt.optional === false ? 'disabled' : '')}>
+                                                                className={"col col-12 col-sm-12 col-md-12 col-lg-12 items-checkboxes " + (op.optional === false ? 'disabled' : '')}>
                                                                 <input type="checkbox"
                                                                        name={"itemm" + k + "_" + key + "_" + i}
                                                                        id={"itemm" + k + "_" + key + "_" + i}
-                                                                       disabled={(opt.optional === false)}
-                                                                       checked={(opt.checked === true ? 'checked' : false)}
+                                                                       disabled={op.optional === false||opt.optional === false}
+                                                                       checked={(op.checked === true ? 'checked' : false)}
                                                                        onChange={this.checkAsistencia(this.state.index, key, k, i)}
                                                                 />
                                                                 <div className="group">
                                                                     <label
-                                                                        htmlFor={"itemm" + k + "_" + key + "_" + i}>{opt.name}</label>
-                                                                    <p>{opt.description}</p>
+                                                                        htmlFor={"itemm" + k + "_" + key + "_" + i}>{op.name}</label>
+                                                                    <p>{op.description}</p>
                                                                 </div>
                                                             </div>
                                                         </div>

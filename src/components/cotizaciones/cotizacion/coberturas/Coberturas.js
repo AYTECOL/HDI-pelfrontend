@@ -246,11 +246,6 @@ class Tab extends Component {
         })
         
     };
-    // componentDidUpdate(){
-    //     console.log("____________________-------_________");
-    //     console.log(this.state);
-    //     console.log(this.props);
-    // }
     render() {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
@@ -284,7 +279,7 @@ class Tab extends Component {
                                             <label htmlFor={"itemcheck" + key}>{option.name}</label>
                                         </div>
                                     </div>
-                                    <div className="col col-12 col-sm-12 col-md-3 col-lg-3 middle">
+                                    <div className={"col col-12 col-sm-12 col-md-3 col-lg-3 middle "+ (option.checked === false?' disabled-item':'')}>
                                         {typeof option.values !== "undefined" &&
                                         <Fragment>
                                             {option.values.map((opt, k) =>
@@ -298,12 +293,12 @@ class Tab extends Component {
                                                                placeholder={opt.value_show}
                                                                value={typeof opt.value_show === "undefined" ? '$0' : opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
-                                                               disabled={(option.optional === false)}
+                                                               disabled={(option.optional === false||option.checked === false)}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}
                                                                 id={"item" + k + "_" + key}
-                                                                disabled={(option.optional === false)}
+                                                                disabled={(option.optional === false||option.checked === false)}
                                                                 value={Tab.getSelectFields(opt.values)}
                                                                 onChange={this.inputChange(k, key, 2)}>
                                                             {opt.values.map((opt, k) =>
@@ -328,7 +323,7 @@ class Tab extends Component {
                                                 <label htmlFor={"itemdeducible" + key}>Deducible</label>
                                                 <select name={"itemdeducible" + key} id={"itemdeducible" + key}
                                                         className="form-control"
-                                                        disabled={(option.optional === false)}
+                                                        disabled={(option.optional === false||option.checked === false)}
                                                         defaultValue={Tab.getSelectByItems(option.deductible)}>
                                                     <option value="">Sin Deducible</option>
                                                     {option.deductible.map((opt, k) =>

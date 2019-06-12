@@ -18,7 +18,7 @@ class NotFound extends Component {
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h1>¡Ups!</h1>
                             <h2>No hemos localizado la página que buscas</h2>
-                            <a href="/" className={"btn btn-primary btn-block"}>Ir a oficina en línea</a>
+                            <a href="https://oficinaenlineauat.libertycolombia.com" className={"btn btn-primary btn-block"}>Ir a oficina en línea</a>
 
                             <h3>Error 404</h3>
                         </div>
