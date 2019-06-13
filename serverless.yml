@@ -25,9 +25,9 @@ provider:
 custom:
   s3Bucket: poliza-express-hogar-uat
 
-functions:
-  hello:
-    handler: handler.hello
+#functions:
+ # hello:
+  #  handler: handler.hello
 
 
 resources:
