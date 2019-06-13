@@ -52,7 +52,6 @@ class InspectionPolicy {
                 "respuestaInspeccion": ""
             }
         };
-        console.log(dataToSend);
         let response = await Api.post(BaseUrl, dataToSend);
         if (typeof response.results === "undefined") {
             response = null;

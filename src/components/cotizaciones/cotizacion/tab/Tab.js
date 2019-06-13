@@ -6,12 +6,12 @@ import Helpers from "../../../../common/helpers/helpers/Helpers";
 import store from "../../../../store";
 import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import PrevDeterminePolizaPrima from "../../../../services/PrevDeterminePolizaPrima";
 //Components
 import Coberturas from '../coberturas/Coberturas';
 import Asistencias from '../asistencias/Asistencias';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
+import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 
 class Tab extends Component {
 
@@ -172,7 +172,7 @@ class Tab extends Component {
         for(let i = 0; i < plans.length; i++){
              let currentPlan = this.calcValue(plans, i);
             currentPlan = this.toNumberCoverrange(plans[i]); 
-            let prospect = await PrevDeterminePolizaPrima.post(quotateId, currentPlan);
+            let prospect = await DeterminePolizaPrima.get(currentPlan, quotateId);
             plans[i].value = prospect.prospect;
         }
        
