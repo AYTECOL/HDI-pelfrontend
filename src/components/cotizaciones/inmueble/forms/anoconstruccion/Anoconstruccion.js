@@ -49,7 +49,7 @@ class Anoconstruccion extends Component {
         });
         let text = "";
         for (let i = 0; i < this.state.years.length; i++) {
-            if( parseInt(e.value) === parseInt(this.state.years[i].buildYearCode) ){
+            if (parseInt(e.value) === parseInt(this.state.years[i].buildYearCode)) {
                 text = this.state.years[i].answer;
                 break;
             }

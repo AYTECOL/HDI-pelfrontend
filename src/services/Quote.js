@@ -9,7 +9,7 @@ class IdentificationsCities {
         let storeState = Store.getState();
         let user = await Helpers.getUser();
         let newUser = {};
-        if( user !== null ) for(let i in user) if( i !== 'accessToken' && i !== 'refer' ) newUser[i] = user[i];
+        if (user !== null) for (let i in user) if (i !== 'accessToken' && i !== 'refer') newUser[i] = user[i];
         let data = {
             quoteId: storeState.cotizacion.number,
             document_type: parseInt(storeState.cotizacion.identification.code),
@@ -29,7 +29,6 @@ class IdentificationsCities {
             intntermediate: newUser
         };
         for (let i in data) if (data[i] === "") data[i] = '""';
-        console.log(data);
         return await Api.post(Url, data);
     };
 }

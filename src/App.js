@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, withRouter} from 'react-router-dom';
 
 import Header from './components/globals/header/Header';
 import Footer from './components/globals/footer/Footer';
@@ -34,12 +34,16 @@ class App extends Component {
     }
 
     async getUser() {
-        if (this._isMounted === true && this.state.data === null) {
-            this.setState({
-                ...this.state,
-                data: await Helpers.getUser()
-            });
-            Loading.toggle(false);
+        let path = this.props.location.pathname;
+        if( path.indexOf("cotizacion") !== -1 ||
+            path.indexOf("emision") !== -1 ||
+            path.indexOf("exito") !== -1 ){
+            if (this._isMounted === true && this.state.data === null) {
+                this.setState({
+                    ...this.state,
+                    data: await Helpers.getUser()
+                });
+            }
         }
     }
 
@@ -50,7 +54,7 @@ class App extends Component {
                 <main>
                     <Switch>
                         <Route exact path="/" component={Home}/>
-                        <Route exact path="/exito" component={PolizaEmitida}/>
+                        <Route exact path="/exito/:id" component={PolizaEmitida}/>
                         <Route exact path="/cotizacion/:step/:id" component={Cotizacion}/>
                         <Route exact path="/emision/:step/:id" component={Emision}/>
                         <Route exact path="/error" component={ErrorNetwork}/>
@@ -64,4 +68,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withRouter(App);

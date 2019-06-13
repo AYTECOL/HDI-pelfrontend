@@ -72,7 +72,7 @@ class TipoDocumento extends Component {
         store.dispatch(updateTypeDoc(typeDocument));
         let text = "";
         for (let i = 0; i < this.state.options.identifications.length; i++) {
-            if( parseInt(this.state.options.identifications[i].code) === parseInt(e.value) ){
+            if (parseInt(this.state.options.identifications[i].code) === parseInt(e.value)) {
                 text = this.state.options.identifications[i].description;
                 break;
             }

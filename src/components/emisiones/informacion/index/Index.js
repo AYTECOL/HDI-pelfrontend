@@ -308,7 +308,6 @@ class Index extends Component {
         contents[key]['errorFile'] = errorFile;
         contents[key]['uploaded'] = uploaded;
 
-        console.log(contents);
         this.setState({
             ...this.state,
             contents: contents
@@ -555,7 +554,8 @@ class Index extends Component {
                             <div className="row text-center sujeta-block justify-content-center">
                                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                     <h5>La póliza está sujeta a inspección en sitio</h5>
-                                    <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la inspección
+                                    <p>Selecciona la persona con la cuál nos vamos a contactar para realizar la
+                                        inspección
                                         en el
                                         inmueble</p>
                                 </div>
@@ -599,6 +599,7 @@ class Index extends Component {
                             <div
                                 className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                                 <BtnContinue disable={this.state.disableBtn} state={this.state}
+                                             items={this.state.items}
                                              toggleErrorPhone={this.toggleErrorPhone}/>
                             </div>
                         </div>

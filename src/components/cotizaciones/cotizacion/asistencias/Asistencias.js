@@ -7,7 +7,7 @@ import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import {AllPlans as AllPlansCreator} from "../../../../actions";
 import Loading from "../../../globals/loading/Loading";
 
-class Tab extends Component {
+class Asistencias extends Component {
 
     constructor(props) {
         super(props);
@@ -197,7 +197,7 @@ class Tab extends Component {
                                                                 <input type="checkbox"
                                                                        name={"itemm" + k + "_" + key + "_" + i}
                                                                        id={"itemm" + k + "_" + key + "_" + i}
-                                                                       disabled={op.optional === false||opt.optional === false}
+                                                                       disabled={op.optional === false || opt.optional === false}
                                                                        checked={(op.checked === true ? 'checked' : false)}
                                                                        onChange={this.checkAsistencia(this.state.index, key, k, i)}
                                                                 />
@@ -231,4 +231,4 @@ class Tab extends Component {
 
 }
 
-export default withRouter(Tab);
+export default withRouter(Asistencias);

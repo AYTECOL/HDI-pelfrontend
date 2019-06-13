@@ -74,9 +74,9 @@ class Refuerzoestructural extends Component {
         if (error === false) Helpers.removeClass(".anorefuerzo", "error");
         store.dispatch(saveInmuebleValue(e));
         let text = "";
-        if( parseInt(e.value) === 1 ) text = "1985-1997";
-        if( parseInt(e.value) === 2 ) text = "1998-2010";
-        if( parseInt(e.value) === 3 ) text = "2011 en adelante";
+        if (parseInt(e.value) === 1) text = "1985-1997";
+        if (parseInt(e.value) === 2) text = "1998-2010";
+        if (parseInt(e.value) === 3) text = "2011 en adelante";
         Helpers.updatePdfInfo({
             [e.name]: text
         });
