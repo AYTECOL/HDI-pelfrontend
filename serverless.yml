@@ -19,7 +19,6 @@ provider:
         - Effect: "Allow"
           Action:
            - s3:PutItem
-           - s3:List*
           Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
@@ -80,7 +79,7 @@ resources:
           #- hogar.libertyseguros.co 
            
           ##### Aliases UAT/ NON_PROD#####
-          - hogar-uat.libertyseguros.co 
+           - hogar-uat.libertyseguros.co 
           
           ##### Aliases DEV#####
           #- hogar-dev.libertyseguros.co 
@@ -100,7 +99,6 @@ resources:
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
-            MinTTL: '100'
           ViewerCertificate:
             ##### ARN dev ####
             #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
