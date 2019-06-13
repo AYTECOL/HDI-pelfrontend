@@ -157,7 +157,8 @@ class Index extends Component {
         if (index !== -1 && index !== -2 && typeof type === "undefined") {
             let roles = this.state.persons[index]['role'];
             if (roles.indexOf(5) !== -1 || roles.indexOf(6) !== -1) type = 2;
-            if (roles.indexOf(4) !== -1 || roles.indexOf(3) !== -1) type = 3;
+            if (roles.indexOf(3) !== -1) type = 3;
+            if (roles.indexOf(4) !== -1) type = 4;
             if (roles.indexOf(1) !== -1 || roles.indexOf(2) !== -1) type = 1;
         }
         this.showAnyPopup("showPopUpPersona", index, type);
@@ -242,7 +243,7 @@ class Index extends Component {
                                 <button type="button" className="more-btn">+</button>
                                 <p>Agregar persona</p>
                             </div>
-                            <div className="more-items" onClick={this.togglePopUpPersona(-1, 3)}>
+                            <div className="more-items" onClick={this.togglePopUpPersona(-1, 4)}>
                                 <button type="button" className="more-btn">+</button>
                                 <p>Agregar beneficiario oneroso</p>
                             </div>
