@@ -56,7 +56,7 @@ resources:
               - s3:PutObject
               #- s3:GetObject
               #- s3:PutObject
-              - s3:*
+              #- s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
