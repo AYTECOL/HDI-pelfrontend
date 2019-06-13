@@ -27,8 +27,7 @@ custom:
 
 functions:
       hello:
-      handler: handler.helloH
-
+      handler: handler.hello
 
 resources:
   Resources:
