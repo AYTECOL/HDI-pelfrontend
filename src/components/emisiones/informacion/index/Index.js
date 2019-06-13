@@ -608,7 +608,7 @@ class Index extends Component {
                     toggle={this.togglePerson}
                     persons={this.state.persons}
                     item={this.state.itemSelected}
-                    typePerson={4}
+                    typePerson={7}
                     contactPerson={true}
                     updatePerson={this.updatePerson}/>}
             </React.Fragment>

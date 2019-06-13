@@ -64,11 +64,14 @@ class BtnContinue extends Component {
                 location: persons[i]['ciudad'],
                 address_type: persons[i]['adresstype'],
                 address: persons[i]['address'],
-                sarlaft_document_url: persons[i]['sarlaft'],
+                sarlaft_document_url: '-',
                 role: persons[i]['role'],
                 businessname: persons[i]['businessname'],
                 fechadecontitucion: persons[i]['fechadecontitucion']
             };
+            if( typeof persons[i]['sarlaft'] !== "undefined" ) dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];
+            if( typeof persons[i]['sarlaft_document_url'] !== "undefined" ) dataUser['sarlaft_document_url'] = persons[i]['sarlaft_document_url'];
+            if( typeof persons[i]['sarlfalt_url'] !== "undefined" ) dataUser['sarlaft_document_url'] = persons[i]['sarlfalt_url'];
             for (let i in dataUser) if (dataUser[i] === "") dataUser[i] = '""';
             for (let j = 0; j < persons[i]['role'].length; j++) {
                 if (typeof exits[dataUser['document']] === "undefined") {
