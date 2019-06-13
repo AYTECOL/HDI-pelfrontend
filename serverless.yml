@@ -15,11 +15,11 @@ provider:
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   
-  iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-           - s3:PutItem
-          Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+  #iamRoleStatements:
+        #- Effect: "Allow"
+          #Action:
+           #- s3:PutItem
+          #Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
   s3Bucket: poliza-express-hogar-uat
@@ -54,8 +54,8 @@ resources:
                 CanonicalUser:
                     {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
                 Action:
-                #- s3:GetObject
-                #- s3:PutObject                
+                - s3:GetObject
+                - s3:PutObject                
                 - s3:* 
                 Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
