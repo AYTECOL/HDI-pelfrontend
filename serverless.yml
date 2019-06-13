@@ -16,7 +16,6 @@ provider:
   #          - s3:PutItem
             #- s3:List*
           Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
-  #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
   s3Bucket: poliza-express-hogar-front-uat
@@ -24,7 +23,6 @@ custom:
 functions:
   hello:
     handler: handler.hello
-
 
 resources:
   Resources:
@@ -49,8 +47,8 @@ resources:
                 CanonicalUser:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
-              #- s3:GetObject
-              #- s3:PutObject
+              - s3:GetObject
+              - s3:PutObject
               #- s3:GetObject
               #- s3:PutObject 
               - s3:*
