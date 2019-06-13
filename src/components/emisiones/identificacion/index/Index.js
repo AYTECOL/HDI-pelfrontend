@@ -112,17 +112,17 @@ class Index extends Component {
             }
         }
 
-        setTimeout(()=>{
+        setTimeout(() => {
             this.validateRoles();
-        },500);
+        }, 500);
 
-        if( person.length === 0 ){
+        if (person.length === 0) {
             this.setState({
                 ...this.state,
                 hasAccident: hasAccident,
                 hasExequias: hasExequias
             });
-        }else{
+        } else {
             this.setState({
                 ...this.state,
                 persons: person,
@@ -180,13 +180,13 @@ class Index extends Component {
         }, 100);
     };
 
-    validateRoles(){
+    validateRoles() {
         let persons = this.state.persons;
         let inactiveBtn = this.state.inactiveBtn;
         let status = [];
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
-                if( persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 ){
+                if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3) {
                     status.push(i);
                 }
             }
@@ -207,9 +207,9 @@ class Index extends Component {
             persons[this.state.itemSelected] = person;
         }
 
-        setTimeout(()=>{
+        setTimeout(() => {
             this.validateRoles();
-        },500);
+        }, 500);
 
         this.setState({
             ...this.state,

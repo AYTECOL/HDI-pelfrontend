@@ -1,6 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import './Links.scss';
 import SendMail from "../../popups/sendmail/SendMail";
+import PrevPdfPolizaPrima from "../../../../../services/PrevPdfPolizaPrima";
+import {withRouter} from "react-router-dom";
+import store from "../../../../../store";
+import Loading from "../../../../globals/loading/Loading";
 
 class Links extends Component {
 
@@ -13,21 +17,36 @@ class Links extends Component {
         SendMail.toggle(true);
     };
 
+    getPdf = async () => {
+        let quote = this.props.match.params.id;
+        let storeState = store.getState();
+        let plans = storeState.AllPlans;
+        let index = storeState.indexPlan;
+        let plan = plans[index];
+
+        try {
+            let pdf = await PrevPdfPolizaPrima.get(plan, quote);
+            console.log(pdf);
+        } catch (e) {
+            Loading.toggle(true);
+        }
+    };
+
     render() {
         return (
             <Fragment>
-                <div className="generatepdf link-item">
+                <div className="generatepdf link-item" onClick={this.getPdf}>
                     <p><i>&nbsp;</i> Generar cotización en PDF</p>
                 </div>
                 {/*<div className="sendpdf link-item" onClick={this.openModal}>*/}
-                    {/*<p><i>&nbsp;</i> Enviar por correo</p>*/}
+                {/*<p><i>&nbsp;</i> Enviar por correo</p>*/}
                 {/*</div>*/}
             </Fragment>
         );
     }
 }
 
-export default Links;
+export default withRouter(Links);
 
 
 

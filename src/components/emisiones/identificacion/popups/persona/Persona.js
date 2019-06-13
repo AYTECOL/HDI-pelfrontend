@@ -81,7 +81,7 @@ export default class Persona extends Component {
         }
         if (this.state.typePerson === 1 || this.state.typePerson === 3 || this.state.typePerson === 2) {
             this.state.total = 16;
-        }else if (this.state.typePerson === 2) {
+        } else if (this.state.typePerson === 7) {
             this.state.total = 3;
         } else if (this.state.typePerson === 4) {
             this.state.total = 8;
@@ -92,7 +92,7 @@ export default class Persona extends Component {
                 this.state.person[i + "Disabled"] = true;
             }
         }
-        if(this.state.typePerson !== 4 && this.state.typePerson !== 2 && this.state.person.code === "37"){
+        if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && this.state.person.code === "37") {
             this.state.nit = true;
         }
     }
@@ -103,7 +103,7 @@ export default class Persona extends Component {
             if (this._isMounted) {
                 this.validateAll(null, false, false);
                 let personObject = store.getState().cotizacion.identification.object;
-                if( typeof personObject !== "undefined" && this.props.item !== -1 ){
+                if (typeof personObject !== "undefined" && this.props.item !== -1) {
                     this.validateDoc({
                         person: personObject
                     });
@@ -174,9 +174,9 @@ export default class Persona extends Component {
             person: newPerson,
             nit: nit
         });
-        setTimeout(()=>{
+        setTimeout(() => {
             this.validateAll(n);
-        },500);
+        }, 500);
     };
 
     validateDoc = async e => {
@@ -187,9 +187,9 @@ export default class Persona extends Component {
         try {
             Loading.toggle(true);
             let persona = null;
-            if( typeof e.person === "undefined" ){
+            if (typeof e.person === "undefined") {
                 persona = await ConsultaPersonas.get(this.state.person.code, this.state.person.value);
-            }else{
+            } else {
                 persona = e.person;
             }
             if (persona !== null && persona.consultarPersonaRs.personaRestringida === true) {
@@ -340,7 +340,7 @@ export default class Persona extends Component {
                     document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
                 }
             }
-            if (this.state.typePerson !== 4) {
+            if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
                 if (this.state.person.role.length === 0) {
                     errors.push('role');
                     if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
@@ -349,20 +349,20 @@ export default class Persona extends Component {
                 }
             }
             let total = this.state.total;
-            if( this.state.typePerson !== 4 ){
-                if( this.state.nit === true ){
+            if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
+                if (this.state.nit === true) {
                     total = 11;
-                }else{
+                } else {
                     total = 16;
                 }
             }
             let ok = total - errors.length;
-            if (ok === 0) msj4 = false;
+            if (errors.length === 0) msj4 = false;
             if (errors.length === 0 && saveData) {
                 await this.saveFile();
                 let state = this.state;
                 if (typeof state.person.code === "undefined") state.person.code = state.typePerson !== 4 ? '36' : '37';
-                if( state.typePerson === 4 ) state.person.role.push(4);
+                if (state.typePerson === 4) state.person.role.push(4);
                 this.props.updatePerson(state.person);
             } else {
                 this.setState({
@@ -412,8 +412,9 @@ export default class Persona extends Component {
                                     {this.state.typePerson !== 7 &&
                                     <div className="row fields-row">
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                            <TypeDocuments disabled={this.state.person.codeDisabled || this.state.typePerson === 4}
-                                                           value={this.state.person.code} onChange={this.changeValue}/>
+                                            <TypeDocuments
+                                                disabled={this.state.person.codeDisabled || this.state.typePerson === 4}
+                                                value={this.state.person.code} onChange={this.changeValue}/>
                                         </div>
 
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
@@ -492,7 +493,8 @@ export default class Persona extends Component {
                                                         <input type="text"
                                                                className={"form-control " + (this.state.person.businessnameDisabled ? 'disabled' : '')}
                                                                disabled={this.state.person.businessnameDisabled}
-                                                               name="businessname" value={this.state.person.businessname}
+                                                               name="businessname"
+                                                               value={this.state.person.businessname}
                                                                onChange={this.changeValue}/>
                                                         <small className="form-text only-errors">Falta información
                                                             requerida para el Tomador. Por favor revise el campo Razón
@@ -515,7 +517,8 @@ export default class Persona extends Component {
                                                                    value={this.state.person.name}
                                                                    onChange={this.changeValue}/>
                                                             <small className="form-text only-errors">Falta información
-                                                                requerida para el Tomador. Por favor revise el campo Primer
+                                                                requerida para el Tomador. Por favor revise el campo
+                                                                Primer
                                                                 nombre
                                                             </small>
                                                         </div>
@@ -526,10 +529,12 @@ export default class Persona extends Component {
                                                             <input type="text"
                                                                    className={"form-control " + (this.state.person.secondnameDisabled ? 'disabled' : '')}
                                                                    disabled={this.state.person.secondnameDisabled}
-                                                                   name="secondname" value={this.state.person.secondname}
+                                                                   name="secondname"
+                                                                   value={this.state.person.secondname}
                                                                    onChange={this.changeValue}/>
                                                             <small className="form-text only-errors">Falta información
-                                                                requerida para el Tomador. Por favor revise el campo Segundo
+                                                                requerida para el Tomador. Por favor revise el campo
+                                                                Segundo
                                                                 nombre
                                                             </small>
                                                         </div>
@@ -545,7 +550,8 @@ export default class Persona extends Component {
                                                                    name="lastname" value={this.state.person.lastname}
                                                                    onChange={this.changeValue}/>
                                                             <small className="form-text only-errors">Falta información
-                                                                requerida para el Tomador. Por favor revise el campo Primer
+                                                                requerida para el Tomador. Por favor revise el campo
+                                                                Primer
                                                                 apellido
                                                             </small>
                                                         </div>
@@ -560,7 +566,8 @@ export default class Persona extends Component {
                                                                    value={this.state.person.secondlastname}
                                                                    onChange={this.changeValue}/>
                                                             <small className="form-text only-errors">Falta información
-                                                                requerida para el Tomador. Por favor revise el campo Segundo
+                                                                requerida para el Tomador. Por favor revise el campo
+                                                                Segundo
                                                                 apellido
                                                             </small>
                                                         </div>
