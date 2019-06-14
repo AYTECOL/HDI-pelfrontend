@@ -43,8 +43,8 @@ resources:
               Effect: Allow
               Principal: "*"
               Action:
-              - s3:AbortMultipartUpload
-              - s3:*
+              - s3:GetAccountPublicAccessBlock
+              #- s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
