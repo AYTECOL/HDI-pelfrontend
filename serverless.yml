@@ -21,6 +21,7 @@ functions:
   hello:
     handler: handler.hello
 
+
 resources:
   Resources:
     WebAppS3Bucket:
@@ -40,7 +41,9 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-              Principal: "*"
+              Principal:
+                CanonicalUser:
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:List*
               - s3:Get*
