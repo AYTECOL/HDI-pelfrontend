@@ -30,7 +30,7 @@ resources:
         BucketName: ${self:custom.s3Bucket}
         AccessControl: PublicRead
         WebsiteConfiguration:
-          IndexDocument: index.html
+          IndexDocument: ./build/index.html
           ErrorDocument: error.html
           #HttpErrorCodeReturnedEquals: 'AccessDenied'
           #KeyPrefixEquals: ./public/index.html
