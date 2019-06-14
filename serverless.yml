@@ -39,11 +39,9 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            - Sid: PublicReadGetObject
+            - Sid: AddPerm
               Effect: Allow
-              Principal:
-                CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+              Principal: "*"
               Action:
               - s3:List*
               - s3:Get*
