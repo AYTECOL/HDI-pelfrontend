@@ -30,8 +30,8 @@ resources:
         BucketName: ${self:custom.s3Bucket}
         AccessControl: PublicRead
         WebsiteConfiguration:
-          IndexDocument: index.html
-          ErrorDocument: 404.html
+          IndexDocument: s.html
+          ErrorDocument: 4.html
           #HttpErrorCodeReturnedEquals: 'AccessDenied'
           #KeyPrefixEquals: ./public/index.html
     WebAppS3BucketPolicy:
