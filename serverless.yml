@@ -44,9 +44,6 @@ resources:
               Principal:
                 CanonicalUser:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
-
-                  #{"Fn::Join": [ WebsiteOriginAccessIdentity , S3CanonicalUserId, arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO, { Ref: WebsiteOriginAccessIdentity }, ]}
-                  #{"Fn::Join" : [" ",["arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E1KRJBQ8DHRAGO", { Ref: WebsiteOriginAccessIdentity } ] ] }
               Action:
               #- s3:GetObject
               #- s3:PutObject
@@ -76,6 +73,7 @@ resources:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: /index.html
+              ErrorCachingMinTTL: '30'
           DefaultCacheBehavior:
             AllowedMethods:
               - GET
@@ -86,6 +84,7 @@ resources:
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
+            MinTTL: '100'
           ViewerCertificate:
             #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             AcmCertificateArn:  arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
