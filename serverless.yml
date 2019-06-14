@@ -43,8 +43,7 @@ resources:
               Effect: Allow
               Principal: "*"
               Action:
-              - s3:List*
-              - s3:Get*
+              - s3:AbortMultipartUpload
               - s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
