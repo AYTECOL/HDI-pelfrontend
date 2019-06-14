@@ -32,8 +32,8 @@ resources:
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: error.html
-          HttpErrorCodeReturnedEquals: 'AccessDenied'
-          KeyPrefixEquals: ./public/index.html
+          #HttpErrorCodeReturnedEquals: 'AccessDenied'
+          #KeyPrefixEquals: ./public/index.html
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -75,7 +75,7 @@ resources:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: /index.html
-              ErrorCachingMinTTL: '30'
+              ErrorCachingMinTTL: '0'
           DefaultCacheBehavior:
             AllowedMethods:
               - GET
