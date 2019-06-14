@@ -46,7 +46,7 @@ resources:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:*
-              Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+              Resource: "arn:aws:s3:::${self:custom.s3Bucket}/*"
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
