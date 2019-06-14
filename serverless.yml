@@ -32,6 +32,8 @@ resources:
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: error.html
+          HttpErrorCodeReturnedEquals: 'AccessDenied'
+          KeyPrefixEquals: index.html
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
