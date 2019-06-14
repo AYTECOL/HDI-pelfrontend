@@ -31,8 +31,7 @@ resources:
         AccessControl: PublicRead
         WebsiteConfiguration:
           IndexDocument: index.html
-          ErrorDocument: index.html
-          RedirectAllRequestsTo: index.html
+          ErrorDocument: error.html
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
