@@ -4,9 +4,9 @@ import Helpers from "../common/helpers/helpers/Helpers";
 const BaseUrl = "/poliza-anexo-hogar/";
 
 class PolizaAnexoHogar {
-    static async get(data, id) {
+    static async get(id) {
         let user = await Helpers.getUser();
-        return await Api.post(BaseUrl + id, data, undefined, undefined, {
+        return await Api.get(BaseUrl + id, undefined,{
             pelhauthorization: user !== null ? user['accessToken'] : ''
         });
     };

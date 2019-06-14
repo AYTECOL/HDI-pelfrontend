@@ -26,7 +26,18 @@ class Links extends Component {
 
         try {
             let pdf = await PrevPdfPolizaPrima.get(plan, quote);
-            console.log(pdf);
+            Loading.toggle(false);
+            if( typeof pdf.pdfQuotationFile !== "undefined" ){
+                const a = document.createElement("a");
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.href = pdf.pdfQuotationFile;
+                a.setAttribute("target", "_blank");
+                a.setAttribute("download", pdf.pdfQuotationFile);
+                a.click();
+                document.body.removeChild(a);
+            }
+            Loading.toggle(false);
         } catch (e) {
             Loading.toggle(true);
         }
