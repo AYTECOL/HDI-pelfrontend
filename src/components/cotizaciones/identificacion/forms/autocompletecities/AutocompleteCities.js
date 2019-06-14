@@ -131,6 +131,18 @@ class AutocompleteCities extends Component {
                         name: this.props.name
                     }
                 });
+                this.props.onChange({
+                    target: {
+                        value:parseInt(code),
+                        name: "city_code"
+                    }
+                });
+                this.props.onChange({
+                    target: {
+                        value:parseInt(codeDepartment),
+                        name: "department_code"
+                    }
+                });
             }
         }, 200);
     };
@@ -215,7 +227,7 @@ class AutocompleteCities extends Component {
                 <input name={typeof this.props.name === "undefined" ? 'city' : this.props.name} id="city" type="text"
                        className={"form-control " + (typeof this.props.disabled === 'undefined' ? '' : (this.props.disabled === true ? 'disabled' : ''))}
                        placeholder="Ingresa ciudad o municipio del h..."
-                       value={typeof this.props.value === "undefined"? this.state.value : (this.props.value!==""?this.props.value:this.state.value)}
+                       value={typeof this.props.value === "undefined" ? this.state.value : (this.props.value !== "" ? this.props.value : this.state.value)}
                        disabled={typeof this.props.disabled === 'undefined' ? false : this.props.disabled}
                        autoComplete="city"
                        autoCorrect="off"

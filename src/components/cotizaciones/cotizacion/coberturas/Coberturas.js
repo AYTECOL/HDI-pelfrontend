@@ -8,7 +8,7 @@ import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import {AllPlans as AllPlansCreator} from "../../../../actions";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 
-class Tab extends Component {
+class Coberturas extends Component {
 
     constructor(props) {
         super(props);
@@ -31,7 +31,7 @@ class Tab extends Component {
         store.subscribe(() => {
             let storeState = store.getState();
             if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
-                let plans = this.calcValue(storeState.AllPlans, storeState.indexPlan);
+                let plans = Coberturas.calcValue(storeState.AllPlans, storeState.indexPlan);
                 if (typeof plans !== "undefined") {
                     this.setState({
                         ...this.state,
@@ -65,6 +65,73 @@ class Tab extends Component {
         return "";
     }
 
+    static calcValue(plans, index) {
+        if (typeof plans[index] === "undefined") return;
+        if (typeof plans[index].coverages === "undefined") return;
+        for (let i = 0; i < plans[index].coverages.length; i++) {
+            let d = plans[index].coverages[i].values;
+            if (typeof d !== "undefined") {
+                for (let j = 0; j < d.length; j++) {
+                    if (typeof d[j].value !== "undefined") {
+                        plans[index].coverages[i].values[j].value_show = Coberturas.getValueFields(d[j]);
+                    } else {
+                        for (let limit = 0; limit < d[j].values.length; limit++) {
+                            if (d[j].values[limit].default === true) {
+                                plans[index].coverages[i].values[j].value = d[j].values[limit].limit;
+                                plans[index].coverages[i].values[j].value_show = Coberturas.getValueFields(d[j]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return plans;
+    }
+
+    static getValueFields(item) {
+        try {
+            let inmueble = store.getState().Inmueble;
+            // Inmueble
+            if (item.id === 1) {
+                return Masknumbermoney.formatToMask(
+                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) * parseInt(item.value) / 100);
+                //Contenidos
+            } else if (item.id === 2) {
+                return Masknumbermoney.formatToMask(
+                    Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * parseInt(item.value) / 100);
+                //Obras
+            } else if (item.id === 3) {
+                return Masknumbermoney.formatToMask(
+                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobrasvalor) * parseInt(item.value) / 100);
+                //Telefonos moviles
+            } else if (item.id === 4) {
+                return Masknumbermoney.formatToMask(
+                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
+                //Hurto siempre basado en hurto calificado
+            } else if (item.id === 5) {
+                let dataHurto = [];
+                let hurto = this.getCoverangeById(3);
+                for (let i = 0; i < hurto.values.length; i++) dataHurto.push(Coberturas.getValueFields(hurto.values[i]));
+                return Masknumbermoney.formatToMask(
+                    (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
+                //Joyas
+            } else if (item.id === 6) {
+                return Masknumbermoney.formatToMask(
+                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
+                //Contenido mobile
+            } else if (item.id === 7) {
+                let joyas = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * 100 / 100;
+                let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * 10 / 100;
+                let telefonos = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * 100 / 100;
+                return Masknumbermoney.formatToMask(
+                    (joyas + contenido + telefonos) * parseInt(item.value) / 100);
+            }
+            return 'N/A';
+        } catch (e) {
+            return 'N/A';
+        }
+    }
+
     async sendAndValidate() {
         Loading.toggle(true);
         let plans = this.state.plans;
@@ -75,23 +142,6 @@ class Tab extends Component {
             store.dispatch(AllPlansCreator(plans));
         }
         Loading.toggle(false);
-    }
-
-    calcValue(plans, index) {
-        if (typeof plans[index] === "undefined") return;
-        if (typeof plans[this.state.index] === "undefined") return;
-        if (typeof plans[this.state.index].coverages === "undefined") return;
-        for (let i = 0; i < plans[this.state.index].coverages.length; i++) {
-            let d = plans[this.state.index].coverages[i].values;
-            if (typeof d !== "undefined") {
-                for (let j = 0; j < d.length; j++) {
-                    if (typeof d[j].value !== "undefined") {
-                        plans[this.state.index].coverages[i].values[j].value_show = this.getValueFields(d[j]);
-                    }
-                }
-            }
-        }
-        return plans;
     }
 
     countCoverturas() {
@@ -132,50 +182,6 @@ class Tab extends Component {
         }
     }
 
-    getValueFields(item) {
-        try {
-            let inmueble = store.getState().Inmueble;
-            // Inmueble
-            if (item.id === 1) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) * parseInt(item.value) / 100);
-                //Contenidos
-            } else if (item.id === 2) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * parseInt(item.value) / 100);
-                //Obras
-            } else if (item.id === 3) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobrasvalor) * parseInt(item.value) / 100);
-                //Telefonos moviles
-            } else if (item.id === 4) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
-                //Hurto siempre basado en hurto calificado
-            } else if (item.id === 5) {
-                let dataHurto = [];
-                let hurto = this.getCoverangeById(3);
-                for (let i = 0; i < hurto.values.length; i++) dataHurto.push(this.getValueFields(hurto.values[i]));
-                return Masknumbermoney.formatToMask(
-                    (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
-                //Joyas
-            } else if (item.id === 6) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
-                //Contenido mobile
-            } else if (item.id === 7) {
-                let joyas = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * 100 / 100;
-                let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * 10 / 100;
-                let telefonos = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * 100 / 100;
-                return Masknumbermoney.formatToMask(
-                    (joyas + contenido + telefonos) * parseInt(item.value) / 100);
-            }
-            return 'N/A';
-        } catch (e) {
-            return 'N/A';
-        }
-    }
-
     getCoverangeByCode(code) {
         let plans = this.state.plans[this.state.index].coverages;
         let coverange = {};
@@ -203,7 +209,6 @@ class Tab extends Component {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
             item.values[k].errors = [];
 
-            console.log(true);
             if (parseInt(item.values[k].code) === 9692 || parseInt(item.values[k].code) === 3017 || parseInt(item.values[k].code) === 3008) {
                 let coverange = this.getCoverangeByCode(9667);
                 for (let i = 0; i < coverange.values.length; i++) {
@@ -244,8 +249,9 @@ class Tab extends Component {
             ...this.state,
             plans: plan
         })
-        
+
     };
+
     render() {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
@@ -279,7 +285,8 @@ class Tab extends Component {
                                             <label htmlFor={"itemcheck" + key}>{option.name}</label>
                                         </div>
                                     </div>
-                                    <div className={"col col-12 col-sm-12 col-md-3 col-lg-3 middle "+ (option.checked === false?' disabled-item':'')}>
+                                    <div
+                                        className={"col col-12 col-sm-12 col-md-3 col-lg-3 middle " + (option.checked === false ? ' disabled-item' : '')}>
                                         {typeof option.values !== "undefined" &&
                                         <Fragment>
                                             {option.values.map((opt, k) =>
@@ -293,13 +300,13 @@ class Tab extends Component {
                                                                placeholder={opt.value_show}
                                                                value={typeof opt.value_show === "undefined" ? '$0' : opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
-                                                               disabled={(option.optional === false||option.checked === false)}
+                                                               disabled={(option.optional === false || option.checked === false)}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}
                                                                 id={"item" + k + "_" + key}
-                                                                disabled={(option.optional === false||option.checked === false)}
-                                                                value={Tab.getSelectFields(opt.values)}
+                                                                disabled={(option.optional === false || option.checked === false)}
+                                                                value={Coberturas.getSelectFields(opt.values)}
                                                                 onChange={this.inputChange(k, key, 2)}>
                                                             {opt.values.map((opt, k) =>
                                                                 <option key={k}
@@ -323,8 +330,8 @@ class Tab extends Component {
                                                 <label htmlFor={"itemdeducible" + key}>Deducible</label>
                                                 <select name={"itemdeducible" + key} id={"itemdeducible" + key}
                                                         className="form-control"
-                                                        disabled={(option.optional === false||option.checked === false)}
-                                                        defaultValue={Tab.getSelectByItems(option.deductible)}>
+                                                        disabled={(option.optional === false || option.checked === false)}
+                                                        defaultValue={Coberturas.getSelectByItems(option.deductible)}>
                                                     <option value="">Sin Deducible</option>
                                                     {option.deductible.map((opt, k) =>
                                                         <option key={k} value={opt.id}>{opt.name}</option>
@@ -345,4 +352,4 @@ class Tab extends Component {
 
 }
 
-export default withRouter(Tab);
+export default withRouter(Coberturas);

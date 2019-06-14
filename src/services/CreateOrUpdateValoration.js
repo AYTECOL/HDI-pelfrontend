@@ -45,9 +45,9 @@ class CreateOrUpdateValoration {
             "inmueble_asegudado_telefonos": risks.inmuebleasegudadotelefonos,
             "inmueble_asegudado_telefonosvalor": parseInt(risks.inmuebleasegudadotelefonos) === 0 ? 0 : Masknumbermoney.formatToNumber(risks.inmuebleasegudadotelefonosvalor),
 
-            "inspection_policies": typeof risks.inspection_policies === "undefined"?0:risks.inspection_policies,
+            "inspection_policies": typeof risks.inspection_policies === "undefined" ? 0 : risks.inspection_policies,
 
-            "distribution_of_insured_securities_split" : {
+            "distribution_of_insured_securities_split": {
                 "runtimeContext": {
                     "currentDate": momentJs().toISOString(),
                     "requestDate": momentJs().toISOString(),

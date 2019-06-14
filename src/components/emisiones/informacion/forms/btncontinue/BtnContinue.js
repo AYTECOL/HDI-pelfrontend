@@ -50,7 +50,10 @@ class BtnContinue extends Component {
                 let url = await UploadFile.upload('Docs', state.contents[i].doc);
                 state.contents[i].textFile = url.location;
                 state.contents[i].uploaded = true;
+                status = false;
             }
+            state.contents[i].nameType = this.props.items[state.contents[i].type];
+            state.contents[i].typeCode = 90161;
         }
         let name = "-";
         let phone = "-";
@@ -63,6 +66,7 @@ class BtnContinue extends Component {
 
         state.area = state.area === "" ? 0 : state.area;
         state.utilizado = state.utilizado === "" ? 0 : state.utilizado;
+
         await CreateOrUpdateMoreInfo.get({
             "quote_id": this.props.match.params.id,
             "start_policy_date": state.initdate,

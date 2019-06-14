@@ -259,7 +259,7 @@ class Helpers {
                 sessionStorage.clear();
                 sessionStorage.setItem('request', Base64.encode(Base64.encode(Base64.encode(JSON.stringify(dataRquest)))));
                 data = dataRquest;
-            }else{
+            } else {
                 Helpers.goToError();
             }
         } else {
@@ -288,19 +288,19 @@ class Helpers {
         return data;
     }
 
-    static getFormData(){
+    static getFormData() {
         let data = {};
         let els = document.querySelector(".index-form").querySelectorAll("input, select");
         for (let i = 0; i < els.length; i++) {
             let v = els[i].value;
-            if( v !== '' ){
+            if (v !== '') {
                 data[els[i].getAttribute('name')] = v;
             }
         }
         return data;
     }
 
-    static savePdfInfo(){
+    static savePdfInfo() {
         let pdfinfo = store.getState().pdf_info;
         pdfinfo = {
             ...pdfinfo,
@@ -309,7 +309,7 @@ class Helpers {
         store.dispatch(savePdfInfo(pdfinfo));
     }
 
-    static updatePdfInfo(data){
+    static updatePdfInfo(data) {
         let pdfinfo = store.getState().pdf_info;
         pdfinfo = {
             ...pdfinfo,

@@ -37,21 +37,6 @@ class Index extends Component {
             },
             typePerson: 1
         };
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let cotizacion = storeState.cotizacion;
-            if (this.state.cotizacion !== cotizacion) {
-                let persons = [];
-                let tomador = cotizacion.identification;
-                tomador['role'] = [1];
-                persons.push(tomador);
-                this.setState({
-                    ...this.state,
-                    cotizacion: cotizacion,
-                    persons: persons
-                });
-            }
-        });
     }
 
     componentDidMount() {
@@ -61,28 +46,26 @@ class Index extends Component {
     async getData() {
         Loading.toggle(true);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
-        let plans = [];
+        let plansLoader = [];
 
         let selected = plan.plan_selected_info.Item;
-        plans.push(selected);
-        for (let i = 0; i < plans.length; i++) {
-            if( typeof plans[i] !== "undefined" ){
-                for (let j = 0; j < plans[i].coverages.length; j++) {
-                    plans[i].coverages[j].optional = false;
+        plansLoader.push(selected);
+        for (let i = 0; i < plansLoader.length; i++) {
+            if (typeof plansLoader[i] !== "undefined") {
+                for (let j = 0; j < plansLoader[i].coverages.length; j++) {
+                    plansLoader[i].coverages[j].optional = false;
                 }
-                for (let j = 0; j < plans[i].assists.length; j++) {
-                    plans[i].assists[j].optional = false;
-                    for (let k = 0; k < plans[i].assists[j].values.length; k++) {
-                        plans[i].assists[j].values[k].optional = false;
-                        for (let l = 0; l < plans[i].assists[j].values[k].assists.length; l++) {
-                            plans[i].assists[j].values[k].assists[l].optional = false;
+                for (let j = 0; j < plansLoader[i].assists.length; j++) {
+                    plansLoader[i].assists[j].optional = false;
+                    for (let k = 0; k < plansLoader[i].assists[j].values.length; k++) {
+                        plansLoader[i].assists[j].values[k].optional = false;
+                        for (let l = 0; l < plansLoader[i].assists[j].values[k].assists.length; l++) {
+                            plansLoader[i].assists[j].values[k].assists[l].optional = false;
                         }
                     }
                 }
             }
         }
-        store.dispatch(indexPlanSelected(0));
-        store.dispatch(AllPlansCreator(plans));
 
         let persons = plan;
         let items = persons.quote_iussed_info.Item;
@@ -175,12 +158,14 @@ class Index extends Component {
 
         this.setState({
             ...this.state,
-            plans: plans,
+            plans: plansLoader,
             persons: person,
             inmueble: inmueble,
             contents: data['contents'],
             newSecurity: newSecurity
         });
+        store.dispatch(indexPlanSelected(0));
+        store.dispatch(AllPlansCreator(plansLoader));
         Loading.toggle(false);
     }
 
@@ -302,7 +287,7 @@ class Index extends Component {
                                                 </div>
                                                 <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Construido</b></p>
-                                                    <p>{typeof this.state.inmueble.build_material !== "undefined"?this.state.inmueble.build_material:''}</p>
+                                                    <p>{typeof this.state.inmueble.build_material !== "undefined" ? this.state.inmueble.build_material : ''}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -310,7 +295,7 @@ class Index extends Component {
                                 </div>
                             </div>
 
-                            {typeof this.plans !== "undefined" &&
+                            {typeof this.state.plans !== "undefined" &&
                             <React.Fragment>
                                 <Coberturas toggleSlide={Helpers.toggleSlide}/>
                                 <Asistencias toggleSlide={Helpers.toggleSlide}/>
@@ -343,10 +328,10 @@ class Index extends Component {
                                                     <div className="col col-sm-6 col-md-3">
                                                         <p><span>Tipo de contenido</span></p>
                                                         <p>
-                                                            {parseInt(item.type) === 1 && 'Contenidos'}
-                                                            {parseInt(item.type) === 2 && 'Obras de Arte'}
-                                                            {parseInt(item.type) === 3 && 'Joyas'}
-                                                            {parseInt(item.type) === 4 && 'Celulares'}
+                                                            {parseInt(item.type) === 0 && 'Contenidos'}
+                                                            {parseInt(item.type) === 1 && 'Obras de Arte'}
+                                                            {parseInt(item.type) === 2 && 'Joyas'}
+                                                            {parseInt(item.type) === 3 && 'Celulares'}
                                                         </p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
@@ -358,7 +343,8 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <a className="btn btn-download" target="_blank" rel="noopener noreferrer"
+                                                        <a className="btn btn-download" target="_blank"
+                                                           rel="noopener noreferrer"
                                                            href={item.textFile}>Documento.pdf</a>
                                                     </div>
                                                 </div>
