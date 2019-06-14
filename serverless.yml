@@ -15,7 +15,7 @@ provider:
   #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
-  s3Bucket: poliza-express-hogar-front
+  s3Bucket: poliza-express-hogar-front-dev
 
 functions:
   hello:
@@ -94,5 +94,5 @@ resources:
     WebAppCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
-        
+
         
