@@ -32,6 +32,7 @@ resources:
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
+          RedirectAllRequestsTo: index.html
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
