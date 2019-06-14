@@ -39,12 +39,13 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            - Sid: AddPerm
+            - Sid: PublicReadGetObject
               Effect: Allow
-              Principal: "*"
+              Principal:
+                CanonicalUser:
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:GetAccountPublicAccessBlock
-              #- s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
