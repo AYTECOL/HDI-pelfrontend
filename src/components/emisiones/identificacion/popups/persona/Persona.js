@@ -79,6 +79,7 @@ export default class Persona extends Component {
                 if (this.props.persons[i]['role'].indexOf(1) !== -1) this.state.exitsTomador = true;
             }
         }
+
         if (this.state.typePerson === 1 || this.state.typePerson === 3 || this.state.typePerson === 2) {
             this.state.total = 16;
         } else if (this.state.typePerson === 7) {
@@ -92,6 +93,12 @@ export default class Persona extends Component {
                 this.state.person[i + "Disabled"] = true;
             }
         }
+
+        if( typeof this.state.person !== "undefined" && typeof this.state.person['city_code'] === "undefined" && typeof this.state.person['department_code'] === "undefined"){
+            this.state.person['city_code'] = 0;
+            this.state.person['department_code'] = 0;
+        }
+
         if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && this.state.person.code === "37") {
             this.state.nit = true;
         }
@@ -201,6 +208,7 @@ export default class Persona extends Component {
                 });
             } else {
                 let person = this.state.person;
+                person.person = persona;
                 if (parseInt(code) === 37) {
                     person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
                     person.businessnameDisabled = true;

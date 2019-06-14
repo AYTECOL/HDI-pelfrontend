@@ -70,6 +70,8 @@ class BtnContinue extends Component {
                 role: persons[i]['role'],
                 businessname: persons[i]['businessname'],
                 fechadecontitucion: persons[i]['fechadecontitucion'],
+                city_code: persons[i]['city_code'],
+                department_code: persons[i]['department_code'],
                 ciudad: typeof extraLocation[0] !== "undefined"?extraLocation[0]:' ',
                 departamento: typeof extraLocation[extraLocation.length-1] !== "undefined"?extraLocation[extraLocation.length-1]:' ',
             };
