@@ -102,6 +102,9 @@ export default class Persona extends Component {
         if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && this.state.person.code === "37") {
             this.state.nit = true;
         }
+        if( typeof this.state.person.sarlfalt_url !== 'string' ){
+            this.state.person.sarlfalt_url = "";
+        }
     }
 
     componentDidMount() {
@@ -133,6 +136,8 @@ export default class Persona extends Component {
             name = e.target.files[0].name;
             status = false;
             person.sarlaft = e.target.files[0];
+            person.sarlaft_document_url = person.sarlaft;
+            person.sarlfalt_url = undefined;
         } else {
             errorFile = true;
         }
@@ -299,6 +304,8 @@ export default class Persona extends Component {
             let file = await UploadFile.upload("Sarlaft", person.sarlaft);
             if (typeof file['location'] !== "undefined") {
                 person.sarlaft = file['location'];
+                person.sarlaft_document_url = file['location'];
+                person.sarlfalt_url = file['location'];
                 this.setState({
                     ...this.state,
                     person: person

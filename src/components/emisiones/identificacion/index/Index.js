@@ -200,6 +200,7 @@ class Index extends Component {
     }
 
     updatePerson(person) {
+        console.log(person);
         let persons = this.state.persons;
         if (this.state.itemSelected === -1) {
             persons.push(person);
