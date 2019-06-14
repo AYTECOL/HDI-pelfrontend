@@ -49,6 +49,8 @@ class BtnContinue extends Component {
         for (let i in personsMerge) newPersons.push(personsMerge[i]);
         persons = newPersons;
         for (let i = 0; i < persons.length; i++) {
+            let location = persons[i]['ciudad'];
+            let extraLocation = typeof location !== "undefined"?location.split(", "):[];
             let dataUser = {
                 first_name: persons[i]['name'],
                 second_name: persons[i]['secondname'],
@@ -61,25 +63,31 @@ class BtnContinue extends Component {
                 phone_type: persons[i]['tipodetelefono'],
                 phone: persons[i]['telefono'],
                 email: persons[i]['email'],
-                location: persons[i]['ciudad'],
+                location: location,
                 address_type: persons[i]['adresstype'],
                 address: persons[i]['address'],
                 sarlaft_document_url: '-',
                 role: persons[i]['role'],
                 businessname: persons[i]['businessname'],
-                fechadecontitucion: persons[i]['fechadecontitucion']
+                fechadecontitucion: persons[i]['fechadecontitucion'],
+                ciudad: typeof extraLocation[0] !== "undefined"?extraLocation[0]:' ',
+                departamento: typeof extraLocation[extraLocation.length-1] !== "undefined"?extraLocation[extraLocation.length-1]:' ',
             };
             if (typeof persons[i]['sarlaft'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];
             if (typeof persons[i]['sarlaft_document_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft_document_url'];
             if (typeof persons[i]['sarlfalt_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlfalt_url'];
-            for (let i in dataUser) if (dataUser[i] === "") dataUser[i] = '""';
+            for (let i in dataUser) if (dataUser[i] === '""') dataUser[i] = ' ';
+            for (let i in dataUser) if (dataUser[i] === "") dataUser[i] = ' ';
             for (let j = 0; j < persons[i]['role'].length; j++) {
                 if (typeof exits[dataUser['document']] === "undefined") {
                     if (persons[i]['role'][j] === 1) {
+                        dataUser['code_sarlaft'] = 120;
                         takers = dataUser;
                     } else if (persons[i]['role'][j] === 2) {
+                        dataUser['code_sarlaft'] = 120;
                         insured.push(dataUser);
                     } else if (persons[i]['role'][j] === 3) {
+                        dataUser['code_sarlaft'] = 120;
                         benefists.push(dataUser);
                     } else if (persons[i]['role'][j] === 4) {
                         onerous.push(dataUser);
