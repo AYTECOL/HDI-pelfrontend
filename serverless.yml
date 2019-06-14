@@ -33,7 +33,7 @@ resources:
           IndexDocument: index.html
           ErrorDocument: error.html
           HttpErrorCodeReturnedEquals: 'AccessDenied'
-          KeyPrefixEquals: index.html
+          KeyPrefixEquals: ./public/index.html
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
