@@ -21,7 +21,6 @@ functions:
   hello:
     handler: handler.hello
 
-
 resources:
   Resources:
     WebAppS3Bucket:
@@ -41,18 +40,12 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-              Principal:
-                CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+              Principal: "*"
               Action:
               #- s3:GetObject
               #- s3:PutObject
               - s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
-              S3BucketPolicy:
-                 - Effect: 'Allow'
-                   Action: 's3:GetObject'
-                   Principal: '*'
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
