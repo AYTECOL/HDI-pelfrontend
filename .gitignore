@@ -19,6 +19,8 @@
 /build
 /dist
 /build.zip
+/new
+/new.zip
 
 # misc
 .DS_Store
