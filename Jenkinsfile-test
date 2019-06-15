@@ -44,7 +44,7 @@ node('linux'){
                 ls -ltr
 
                 npm install
-                npm run-script new
+                npm run-script build
                 ls -ltr
 
                 aws s3 cp new s3://poliza-express-hogar-front-dev  --recursive --acl public-read
