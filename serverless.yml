@@ -68,7 +68,7 @@ resources:
           CustomErrorResponses:
             - ErrorCode: 404
               ResponseCode: 200
-              ResponsePagePath: ./build/index.html
+              ResponsePagePath: /build/index.html
               ErrorCachingMinTTL: '0'
           DefaultCacheBehavior:
             AllowedMethods:
