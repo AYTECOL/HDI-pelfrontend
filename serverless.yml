@@ -58,15 +58,12 @@ resources:
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
-            #- DomainName: ${self:custom.s3Bucket}.s3-website-us-east-1.amazonaws.com
               Id: WebApp
-              #Id : poliza-express-hogar-front.s3-website-us-east-1.amazonaws.com
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
            - hogar-dev.libertyseguros.co 
-          DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
               ResponseCode: 200
