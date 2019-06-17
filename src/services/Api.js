@@ -48,8 +48,8 @@ class Api {
         });
     }
 
-    static async get(url, overrideBase) {
-        return await Api.HttpRequest('GET', url, null, overrideBase).then(function (response) {
+    static async get(url, overrideBase, headers) {
+        return await Api.HttpRequest('GET', url, null, overrideBase, undefined, headers).then(function (response) {
             return JSON.parse(response);
         })
     };

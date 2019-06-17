@@ -5,33 +5,84 @@ import Loading from "../../components/globals/loading/Loading";
 import QuoteIussedById from "../../services/QuoteIussedById";
 import PrevPdfPolizaPrima from "../../services/PrevPdfPolizaPrima";
 import PolizaAnexoHogar from "../../services/PolizaAnexoHogar";
+import PdfEndosoHogar from "../../services/PdfEndosoHogar";
 
 class PolizaEmitida extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            quote: this.props.match.params.id
+            quote: this.props.match.params.id,
+            data: {}
         };
     }
 
-    componentDidMount() {
+    async getData(){
+        Loading.toggle(true);
+        let data = await QuoteIussedById.get(this.state.quote);
+        let endoso = undefined;
+
+        if( typeof data.quote_iussed_info !== "undefined" ){
+            if( typeof data.quote_iussed_info.Item !== "undefined" && typeof data.quote_iussed_info.Item.onerous !== "undefined" ){
+                if( data.quote_iussed_info.Item.onerous.length > 0 ){
+                    endoso = true;
+                }
+            }
+        }
+        this.setState({
+            ...this.state,
+            data: data,
+            endoso: endoso
+        });
+        console.log(data);
         Loading.toggle(false);
+    }
+
+    componentDidMount() {
+        this.getData();
     }
 
     openModal = () => {
         SendMail.toggle(true);
     };
 
+    getPdfEndoso = async () =>{
+        let pdfEndoso = await PdfEndosoHogar.get(this.state.quote);
+
+        let a = document.createElement("a");
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.href = pdfEndoso.processEndrosementHomePDF;
+        a.setAttribute("target", "_blank");
+        a.setAttribute("download", pdfEndoso.processEndrosementHomePDF);
+        a.click();
+        document.body.removeChild(a);
+    };
+
     getPdf = async () => {
         Loading.toggle(true);
-        let data = await QuoteIussedById.get(this.state.quote);
-        let plan = data.plan_selected_info.Item;
         try {
-            let pdfAnexo = await PolizaAnexoHogar.get(plan, this.state.quote);
-            let pdf = await PrevPdfPolizaPrima.get(plan, this.state.quote);
-            console.log(pdf);
-            console.log(pdfAnexo);
+            let pdfAnexo = await PolizaAnexoHogar.get(this.state.quote);
+            let a = document.createElement("a");
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.href = pdfAnexo.processPolicyHomeAnnex;
+            a.setAttribute("target", "_blank");
+            a.setAttribute("download", pdfAnexo.processPolicyHomeAnnex);
+            a.click();
+            document.body.removeChild(a);
+
+            let pdf = await PrevPdfPolizaPrima.get(this.state.quote);
+            a = document.createElement("a");
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.href = pdf.pdfQuotationFile;
+            a.setAttribute("target", "_blank");
+            a.setAttribute("download", pdf.pdfQuotationFile);
+            a.click();
+            document.body.removeChild(a);
+
+            Loading.toggle(false);
         } catch (e) {
             Loading.toggle(true);
         }
@@ -54,8 +105,12 @@ class PolizaEmitida extends Component {
 
                         <div className={"row text-center links-row"}>
                             <div className="col col-sm-12 col-md-12 col-lg-12">
-                                <div className="generatepdf link-item" onClick={this.getPdf}>
-                                    <p><i>&nbsp;</i> Generar cotización en PDF</p>
+                                <div className="generatepdf link-item">
+                                    <p onClick={this.getPdf}><i>&nbsp;</i> Generar cotización en PDF</p>
+                                    <br/>
+                                    {(typeof this.state.endoso !== "undefined") &&
+                                    <p onClick={this.getPdfEndoso}><i>&nbsp;</i> Generar cotización en PDF endoso</p>
+                                    }
                                 </div>
                                 {/*<div className="sendpdf link-item" onClick={this.openModal}>*/}
                                 {/*<p><i>&nbsp;</i> Enviar por correo</p>*/}

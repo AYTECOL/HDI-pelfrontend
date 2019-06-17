@@ -35,7 +35,7 @@ class App extends Component {
 
     async getUser() {
         let path = this.props.location.pathname;
-        if( path.indexOf("cotizacion") !== -1 ||
+        if( path.indexOf("/") !== -1 ||
             path.indexOf("emision") !== -1 ||
             path.indexOf("exito") !== -1 ){
             if (this._isMounted === true && this.state.data === null) {

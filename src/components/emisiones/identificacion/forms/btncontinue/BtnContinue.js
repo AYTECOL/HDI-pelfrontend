@@ -9,6 +9,7 @@ import store from "../../../../../store";
 import {NextStep} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Loading from "../../../../globals/loading/Loading";
+import Persona from "../../popups/persona/Persona";
 
 class BtnContinue extends Component {
 
@@ -52,6 +53,7 @@ class BtnContinue extends Component {
             let location = persons[i]['ciudad'];
             let extraLocation = typeof location !== "undefined"?location.split(", "):[];
             let dataUser = {
+                person: persons[i].person,
                 first_name: persons[i]['name'],
                 second_name: persons[i]['secondname'],
                 first_last_name: persons[i]['lastname'],
@@ -75,6 +77,10 @@ class BtnContinue extends Component {
                 ciudad: typeof extraLocation[0] !== "undefined"?extraLocation[0]:' ',
                 departamento: typeof extraLocation[extraLocation.length-1] !== "undefined"?extraLocation[extraLocation.length-1]:' ',
             };
+            if( typeof persons[i].person !== "undefined"  && persons[i].person !== "" ){
+                Persona.extractDataFromIaxis(persons[i].person,persons[i]['code'],dataUser);
+            }
+
             if (typeof persons[i]['sarlaft'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];
             if (typeof persons[i]['sarlaft_document_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft_document_url'];
             if (typeof persons[i]['sarlfalt_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlfalt_url'];
