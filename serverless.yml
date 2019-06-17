@@ -68,7 +68,7 @@ resources:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: index.html
-              ErrorCachingMinTTL: '0'
+              #ErrorCachingMinTTL: '0'
           DefaultCacheBehavior:
             AllowedMethods:
               - GET
