@@ -27,7 +27,7 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.s3Bucket}
-        AccessControl: PublicRead
+        AccessControl: BucketOwnerFullControl
         WebsiteConfiguration:
           RedirectAllRequestsTo:
             HostName: WebAppS3Bucket
