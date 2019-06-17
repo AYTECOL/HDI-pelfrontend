@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && mv ./build ./builddos",
     "test": "react-scripts test --skipFilter true --watchAll false --coverage --coverageDirectory=coverage",
     "eject": "react-scripts eject"
   },
