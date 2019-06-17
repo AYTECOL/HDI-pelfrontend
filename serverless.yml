@@ -7,12 +7,12 @@ provider:
   stage: nonprod 
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
-  #iamRoleStatements:
-  #      - Effect: "Allow"
-  #        Action:
-  #          - s3:PutItem
-            #- s3:List*
-  #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+  iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - s3:PutItem
+            - s3:List*
+          Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
   s3Bucket: poliza-express-hogar-front-uat
@@ -29,16 +29,8 @@ resources:
         BucketName: ${self:custom.s3Bucket}
         AccessControl: PublicRead
         WebsiteConfiguration:
-          IndexDocument: index.html
-          ErrorDocument: index.html
-          RoutingRules:
-          - RedirectRule:
-              #HostName: foo.amazonaws.com
-              #HttpRedirectCode: "307"
-              #Protocol: https
-              ReplaceKeyPrefixWith: index.html
-            RoutingRuleCondition:
-              KeyPrefixEquals: /
+          RedirectAllRequestsTo:
+            HostName: WebAppS3Bucket
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
