@@ -30,7 +30,15 @@ resources:
         AccessControl: PublicRead
         WebsiteConfiguration:
           IndexDocument: index.html
-          ErrorDocument: index.html 
+          ErrorDocument: index.html
+          RoutingRules:
+          - RedirectRule:
+              #HostName: foo.amazonaws.com
+              #HttpRedirectCode: "307"
+              #Protocol: https
+              ReplaceKeyPrefixWith: index.html
+            RoutingRuleCondition:
+              KeyPrefixEquals: /
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
