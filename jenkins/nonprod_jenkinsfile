@@ -31,7 +31,7 @@ node('linux'){
                 ls -ltr
 
                 npm install
-                npm run-script build
+                npm run build
                 ls -ltr
 
                 aws s3api get-bucket-website --bucket poliza-express-hogar-front-uat
