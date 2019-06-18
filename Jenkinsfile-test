@@ -37,8 +37,10 @@ node('linux'){
 
                 aws s3 cp build s3://poliza-express-hogar-front-dev  --recursive --acl public-read
                 aws s3 website s3://poliza-express-hogar-front-dev --index-document index.html --error-document index.html
-                aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths /* 
             """
+            echo 'aca esty en el CloudFront invalidate cache INICIO'
+            sh 'aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/index.html"'
+            echo 'aca esty en el CloudFront invalidate cache fin'
         }
 		
     }
