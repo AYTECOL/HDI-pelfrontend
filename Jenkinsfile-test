@@ -15,8 +15,8 @@ node('linux'){
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
 				sh 'dir'
                 sh 'ls'
-                sh "sls deploy -v --stage dev"
-				//sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
+                //sh "sls deploy -v --stage dev"
+				sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-front-dev'){
                 	sh 'pwd'
                     sh 'ls'
