@@ -4,18 +4,27 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: prod 
+  stage: dev 
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
         - Effect: "Allow"
           Action:
             - s3:PutItem
-            #- s3:List*
+            - s3:List*
           Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+         
 
 custom:
-  s3Bucket: poliza-express-hogar
+  s3Bucket: poliza-express-hogar-dev
+  
+  
+package:
+  include:
+   # - .git/**
+  exclude:
+  #  - .git/**
+  excludeDevDependencies: true
 
 functions:
   hello:
@@ -45,8 +54,7 @@ resources:
                 CanonicalUser:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
-              - s3:GetObject
-              - s3:PutObject
+              - s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
@@ -59,12 +67,13 @@ resources:
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
+            #- DomainName: d3t2k0yy2qo7gs.cloudfront.net
               Id: WebApp
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
-          Aliases:
-           - hogar.libertyseguros.co 
+          #Aliases:
+          # - hogar-dev.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -81,8 +90,8 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
-            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
+            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
