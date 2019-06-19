@@ -66,7 +66,8 @@ resources:
       Properties:
         DistributionConfig:
           Origins:
-            - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
+            #- DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
+            - DomainName: d3t2k0yy2qo7gs.cloudfront.net
               Id: WebApp
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
