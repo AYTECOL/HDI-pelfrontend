@@ -7,12 +7,12 @@ provider:
   stage: dev 
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
-  #iamRoleStatements:
-  #      - Effect: "Allow"
-  #        Action:
-  #          - s3:PutItem
-            #- s3:List*
-  #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+  iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - s3:PutItem
+            - s3:List*
+          Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
          
 
 custom:
