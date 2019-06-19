@@ -16,7 +16,7 @@ provider:
          
 
 custom:
-  s3Bucket: poliza-express-hogar-front-dev
+  s3Bucket: poliza-express-hogar-dev
   
   
 package:
