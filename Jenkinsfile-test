@@ -43,7 +43,7 @@ node('linux'){
     }
     stage('Test sonarqube'){
 		withSonarQubeEnv('sonarqube') {
-        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-dev -Dsonar.projectName=-dev -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front-dev -Dsonar.projectName=-dev -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 	}
 	}  
 	/*stage('Completion Email'){
