@@ -20,31 +20,30 @@ class TipoDocumento extends Component {
             disabled: typeof this.props.disabled === "undefined" ? false : this.props.disabled,
             docType: 1,
         };
-        store.subscribe(() => {
-            let storeState = store.getState();
-            let newState = storeState.stateFormIdentificacion;
-            let disabled = false;
-            if (newState !== 0) disabled = true;
-            if (this.state.stateForm !== newState) {
-                if (this._isMounted) {
-                    this.setState({
-                        ...this.state,
-                        stateForm: newState,
-                        disabled: disabled
-                    });
-                }
-            }
-        });
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
     }
 
     componentDidMount() {
         this._isMounted = true;
         Loading.toggle(true);
         this.getOptions();
+        this.unsubscribe = store.subscribe(() => {
+            let storeState = store.getState();
+            let newState = storeState.stateFormIdentificacion;
+            let disabled = false;
+            if (newState !== 0) disabled = true;
+            if (this.state.stateForm !== newState) {
+                this.setState({
+                    ...this.state,
+                    stateForm: newState,
+                    disabled: disabled
+                });
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+        this.unsubscribe();
     }
 
     async getOptions() {

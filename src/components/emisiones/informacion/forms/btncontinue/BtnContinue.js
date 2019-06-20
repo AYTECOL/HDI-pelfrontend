@@ -15,13 +15,15 @@ class BtnContinue extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            step: parseInt(this.props.match.params.step),
             continueButtonDisable: true,
             stateFormIdentificacion: 0,
             cotizacionExclude: [],
-            comeBack: UrlSite + "/emision/1/" + this.props.match.params.id
         };
     }
+
+    goBack = () => {
+        this.props.history.push(UrlSite + "/emision/1/" + this.props.match.params.id);
+    };
 
     nextStep = total => async () => {
         Loading.toggle(true);
@@ -86,11 +88,11 @@ class BtnContinue extends Component {
             if (status === true) {
                 store.dispatch(NextStep(6));
                 await SaveIdentifications.save();
-                window.location.href = UrlSite + "/emision/3/" + this.props.match.params.id;
+                this.props.history.push(UrlSite + "/emision/3/" + this.props.match.params.id);
             }
         } else {
             await SaveIdentifications.save();
-            Helpers.goToHome();
+            Helpers.goToHome(this.props.history);
         }
         Loading.toggle(false);
     };
@@ -99,7 +101,9 @@ class BtnContinue extends Component {
         return (
             <Fragment>
                 <div className={"return-button"}>
-                    <a href={this.state.comeBack}><i className="back-icon">&nbsp;</i>Volver</a>
+                    <button type="button" className="btn btn-link"
+                            onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver
+                    </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
                         onClick={this.nextStep(undefined)}>Guardar y salir

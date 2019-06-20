@@ -14,7 +14,10 @@ class Asegurarcontenidoadicional extends Component {
         this.state = {
             active: 0
         };
-        store.subscribe(async () => {
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let contenidoasegudado = storeState.Inmueble.contenidoasegudado;
             if (this.state.active !== contenidoasegudado && contenidoasegudado !== "") {
@@ -24,6 +27,10 @@ class Asegurarcontenidoadicional extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {

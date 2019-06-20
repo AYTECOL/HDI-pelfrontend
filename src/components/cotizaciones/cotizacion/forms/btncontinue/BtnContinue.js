@@ -8,6 +8,8 @@ import store from "../../../../../store";
 import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
 import Loading from "../../../../globals/loading/Loading";
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import {NextStep} from "../../../../../actions";
+import SaveIdentifications from "../../../../../services/Quote";
 
 class BtnContinue extends Component {
 
@@ -17,11 +19,7 @@ class BtnContinue extends Component {
             continueButtonDisable: true,
             stateFormIdentificacion: 0,
             cotizacionExclude: [],
-            step: parseInt(this.props.match.params.step),
-            id: this.props.match.params.id,
-            comeBack: UrlSite + "/cotizacion/2/"
         };
-        this.state.comeBack += this.state.id;
     }
 
     static toNumberCoverrange(plan) {
@@ -52,21 +50,31 @@ class BtnContinue extends Component {
 
         plan = BtnContinue.toNumberCoverrange(plan);
 
+        store.dispatch(NextStep(4));
+        await SaveIdentifications.save();
         await CreateOrUpdateValoration.save();
         await NewPlanSelected.get(plan);
-        window.location.href = UrlSite + "/emision/1/" + this.state.id;
+        this.props.history.push(UrlSite + "/emision/1/" + this.props.match.params.id);
         Loading.toggle(false);
     };
 
     saveAndExit = () => {
-        Helpers.goToHome();
+        Helpers.goToHome(this.props.history);
+    };
+
+    goBack = async () => {
+        Loading.toggle(true);
+        await CreateOrUpdateValoration.save();
+        this.props.history.push(UrlSite + "/cotizacion/2/" + this.props.match.params.id);
     };
 
     render() {
         return (
             <Fragment>
-                <div className={"return-button"}>
-                    <a href={this.state.comeBack}><i className="back-icon">&nbsp;</i>Volver</a>
+                <div className="return-button">
+                    <button className="btn btn-link" type="button" onClick={this.goBack}><i
+                        className="back-icon">&nbsp;</i>Volver
+                    </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
                         onClick={this.saveAndExit}>Guardar y salir

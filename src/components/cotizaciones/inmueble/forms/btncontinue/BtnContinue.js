@@ -27,8 +27,8 @@ class BtnContinue extends Component {
 
     saveService = async () => {
         Loading.toggle(true);
-        await CreateOrUpdateValoration.get();
-        Helpers.goToHome();
+        await CreateOrUpdateValoration.save();
+        Helpers.goToHome(this.props.history);
     };
 
     goBack = async () => {
@@ -156,7 +156,7 @@ class BtnContinue extends Component {
             store.dispatch(NextStep(3));
             await SaveIdentifications.save();
             await CreateOrUpdateValoration.save();
-            window.location.href = UrlSite + '/cotizacion/3/' + storeState.cotizacion.number;
+            this.props.history.push(UrlSite + '/cotizacion/3/' + storeState.cotizacion.number);
         }
     };
 

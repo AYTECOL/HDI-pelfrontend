@@ -24,7 +24,7 @@ class BtnContinue extends Component {
     }
 
     goBack = () => {
-        window.location.href = UrlSite + "/cotizacion/3/" + this.props.match.params.id;
+        this.props.history.push(UrlSite + "/cotizacion/3/" + this.props.match.params.id);
     };
 
     nextStep = total => async () => {
@@ -51,7 +51,7 @@ class BtnContinue extends Component {
         persons = newPersons;
         for (let i = 0; i < persons.length; i++) {
             let location = persons[i]['ciudad'];
-            let extraLocation = typeof location !== "undefined"?location.split(", "):[];
+            let extraLocation = typeof location !== "undefined" ? location.split(", ") : [];
             let dataUser = {
                 person: persons[i].person,
                 first_name: persons[i]['name'],
@@ -74,11 +74,11 @@ class BtnContinue extends Component {
                 fechadecontitucion: persons[i]['fechadecontitucion'],
                 city_code: persons[i]['city_code'],
                 department_code: persons[i]['department_code'],
-                ciudad: typeof extraLocation[0] !== "undefined"?extraLocation[0]:' ',
-                departamento: typeof extraLocation[extraLocation.length-1] !== "undefined"?extraLocation[extraLocation.length-1]:' ',
+                ciudad: typeof extraLocation[0] !== "undefined" ? extraLocation[0] : ' ',
+                departamento: typeof extraLocation[extraLocation.length - 1] !== "undefined" ? extraLocation[extraLocation.length - 1] : ' ',
             };
-            if( typeof persons[i].person !== "undefined"  && persons[i].person !== "" ){
-                Persona.extractDataFromIaxis(persons[i].person,persons[i]['code'],dataUser);
+            if (typeof persons[i].person !== "undefined" && persons[i].person !== "") {
+                Persona.extractDataFromIaxis(persons[i].person, persons[i]['code'], dataUser);
             }
 
             if (typeof persons[i]['sarlaft'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];
@@ -119,9 +119,9 @@ class BtnContinue extends Component {
         if (typeof total !== "undefined") {
             store.dispatch(NextStep(5));
             await SaveIdentifications.save();
-            window.location.href = UrlSite + "/emision/2/" + this.props.match.params.id;
+            this.props.history.push(UrlSite + "/emision/2/" + this.props.match.params.id);
         } else {
-            Helpers.goToHome();
+            Helpers.goToHome(this.props.history);
         }
         Loading.toggle(false);
     };

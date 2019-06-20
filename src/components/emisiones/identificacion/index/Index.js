@@ -35,7 +35,10 @@ class Index extends Component {
         this.togglePopUpDelete = this.togglePopUpDelete.bind(this);
         this.togglePopUpPersona = this.togglePopUpPersona.bind(this);
         this.updatePerson = this.updatePerson.bind(this);
-        store.subscribe(async () => {
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let cotizacion = storeState.cotizacion;
             if (this.state.cotizacion !== cotizacion && this.state.showPopUpPersona === false) {
@@ -50,10 +53,11 @@ class Index extends Component {
                 });
             }
         });
+        this.getData();
     }
 
-    componentDidMount() {
-        this.getData();
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getData() {
@@ -153,7 +157,7 @@ class Index extends Component {
         this.showAnyPopup("showPopUpDelete", index);
     };
 
-    togglePopUpPersona = (index, type) => e => {
+    togglePopUpPersona = (index, type) => () => {
         if (index !== -1 && index !== -2 && typeof type === "undefined") {
             let roles = this.state.persons[index]['role'];
             if (roles.indexOf(5) !== -1 || roles.indexOf(6) !== -1) type = 2;

@@ -28,23 +28,6 @@ class Coberturas extends Component {
                 ]
             }
         }
-        store.subscribe(() => {
-            let storeState = store.getState();
-            if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
-                let plans = Coberturas.calcValue(storeState.AllPlans, storeState.indexPlan);
-                if (typeof plans !== "undefined") {
-                    this.setState({
-                        ...this.state,
-                        plans: plans,
-                        Inmueble: storeState.Inmueble,
-                        index: storeState.indexPlan,
-                    });
-                    setTimeout(() => {
-                        this.countCoverturas();
-                    }, 100);
-                }
-            }
-        });
     }
 
     static getSelectByItems(item) {
@@ -132,6 +115,30 @@ class Coberturas extends Component {
         }
     }
 
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
+            let storeState = store.getState();
+            if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
+                let plans = Coberturas.calcValue(storeState.AllPlans, storeState.indexPlan);
+                if (typeof plans !== "undefined") {
+                    this.setState({
+                        ...this.state,
+                        plans: plans,
+                        Inmueble: storeState.Inmueble,
+                        index: storeState.indexPlan,
+                    });
+                    setTimeout(() => {
+                        this.countCoverturas();
+                    }, 100);
+                }
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
     async sendAndValidate() {
         Loading.toggle(true);
         let plans = this.state.plans;
@@ -198,17 +205,12 @@ class Coberturas extends Component {
     }
 
     inputChange = (k, key, type) => e => {
-
-
         let plan = this.state.plans;
         let item = plan[this.state.index].coverages[key];
-
         //Input
         if (type === 1) {
-
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
             item.values[k].errors = [];
-
             if (parseInt(item.values[k].code) === 9692 || parseInt(item.values[k].code) === 3017 || parseInt(item.values[k].code) === 3008) {
                 let coverange = this.getCoverangeByCode(9667);
                 for (let i = 0; i < coverange.values.length; i++) {
@@ -223,7 +225,6 @@ class Coberturas extends Component {
                         }
                     }
                 }
-
                 if (parseInt(item.values[k].code) === 3008) {
                     if (500000000 < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
                         item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es superior al permitido.');
@@ -232,14 +233,12 @@ class Coberturas extends Component {
                         item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es inferior al permitido.');
                     }
                 }
-
                 if (item.values[k].errors.length > 0) {
                     Helpers.disabled('.next-step');
                 } else {
                     Helpers.enabled('.next-step');
                 }
             }
-
             //Select
         } else if (type === 2) {
             for (let i = 0; i < item.values[k].values.length; i++) item.values[k].values[i].default = false;
@@ -249,7 +248,6 @@ class Coberturas extends Component {
             ...this.state,
             plans: plan
         })
-
     };
 
     render() {

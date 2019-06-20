@@ -17,8 +17,10 @@ class Counter extends Component {
             error: 0,
             ok: 0,
         };
+    }
 
-        store.subscribe(() => {
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let errors = 0;
             let inmueble = storeState.Inmueble;
@@ -72,6 +74,10 @@ class Counter extends Component {
                 total: total
             });
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {

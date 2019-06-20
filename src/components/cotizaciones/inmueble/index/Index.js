@@ -28,7 +28,11 @@ class Index extends Component {
         };
 
         this.getRisks();
-        store.subscribe(() => {
+    }
+
+    componentDidMount() {
+        Loading.toggle(true);
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let typeInmueble = storeState.typeInmueble;
             let type = storeState.Inmueble.type_risk_id;
@@ -42,8 +46,8 @@ class Index extends Component {
         });
     }
 
-    componentDidMount() {
-        Loading.toggle(true);
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getRisks() {

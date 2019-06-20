@@ -15,8 +15,6 @@ import AllBuildYears from "../../../../services/AllBuildYears";
 
 class Cards extends Component {
 
-    _isMounted = false;
-
     constructor(props) {
         super(props);
         this.state = {
@@ -57,43 +55,6 @@ class Cards extends Component {
             this.state.items[i].inactiveAdd = false;
         }
         this.state.items[0].active = false;
-        store.subscribe(() => {
-            let storeState = store.getState();
-            let inmueble = storeState.Inmueble;
-            if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
-                let items = this.state.items;
-                for (let i = 0; i < 5; i++) {
-                    if (items[i].type === 1) {
-                        items[i].value = inmueble.inmuebleasegudadovalor;
-                        items[i].active = inmueble.inmuebleasegudado === 0;
-                    } else if (items[i].type === 2) {
-                        items[i].value = inmueble.contenidoasegudadovalor;
-                        items[i].active = inmueble.contenidoasegudado === 0;
-                    } else if (items[i].type === 3) {
-                        items[i].value = inmueble.inmuebleasegudadoobrasvalor;
-                        items[i].active = inmueble.inmuebleasegudadoobras === 0;
-                    } else if (items[i].type === 4) {
-                        items[i].value = inmueble.inmuebleasegudadojoyasvalor;
-                        items[i].active = inmueble.inmuebleasegudadojoyas === 0;
-                    } else if (items[i].type === 5) {
-                        items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
-                        items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
-                    }
-                }
-                for (let i = 0; i < 5; i++) if (this.state.items[i].value === '""') this.state.items[i].value = "";
-                this.setState({
-                    ...this.state,
-                    items: items,
-                    Inmueble: inmueble,
-                    InmuebleOk: true
-                });
-                setTimeout(() => {
-                    this.validateToggle();
-                    this.getInspectionPolicy();
-                }, 500);
-            }
-        });
-
         this.getAllInsurableLimits();
         this.getAllBuildYears();
     }
@@ -127,12 +88,47 @@ class Cards extends Component {
     }
 
     componentDidMount() {
-        this._isMounted = true;
         this.validateToggle();
+        this.unsubscribe = store.subscribe(() => {
+            let storeState = store.getState();
+            let inmueble = storeState.Inmueble;
+            if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
+                let items = this.state.items;
+                for (let i = 0; i < 5; i++) {
+                    if (items[i].type === 1) {
+                        items[i].value = inmueble.inmuebleasegudadovalor;
+                        items[i].active = inmueble.inmuebleasegudado === 0;
+                    } else if (items[i].type === 2) {
+                        items[i].value = inmueble.contenidoasegudadovalor;
+                        items[i].active = inmueble.contenidoasegudado === 0;
+                    } else if (items[i].type === 3) {
+                        items[i].value = inmueble.inmuebleasegudadoobrasvalor;
+                        items[i].active = inmueble.inmuebleasegudadoobras === 0;
+                    } else if (items[i].type === 4) {
+                        items[i].value = inmueble.inmuebleasegudadojoyasvalor;
+                        items[i].active = inmueble.inmuebleasegudadojoyas === 0;
+                    } else if (items[i].type === 5) {
+                        items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
+                        items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
+                    }
+                }
+                for (let i = 0; i < 5; i++) if (items[i].value === '""') items[i].value = "";
+                this.setState({
+                    ...this.state,
+                    items: items,
+                    Inmueble: inmueble,
+                    InmuebleOk: true
+                });
+                setTimeout(() => {
+                    this.validateToggle();
+                    this.getInspectionPolicy();
+                }, 500);
+            }
+        });
     }
 
     componentWillUnmount() {
-        this._isMounted = false;
+        this.unsubscribe();
     }
 
     async getAllInsurableLimits() {
@@ -147,15 +143,13 @@ class Cards extends Component {
             newItems[4].active === true;
         newItems[1].inactiveToggle = newItems[0].active === true;
         for (let i = 2; i < 5; i++) newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
-        if (this._isMounted) {
-            this.setState({
-                ...this.state,
-                items: newItems
-            });
-            setTimeout(() => {
-                this.getInspectionPolicy();
-            }, 300);
-        }
+        this.setState({
+            ...this.state,
+            items: newItems
+        });
+        setTimeout(() => {
+            this.getInspectionPolicy();
+        }, 300);
     }
 
     updateStoreItem(index) {
@@ -176,7 +170,7 @@ class Cards extends Component {
         });
     }
 
-    toggleItem = index => e => {
+    toggleItem = index => () => {
         let active = this.state.items[index].active;
         let newItems = this.state.items;
         let saved = false;

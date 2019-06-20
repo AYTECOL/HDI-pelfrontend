@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import './Links.scss';
-import SendMail from "../../popups/sendmail/SendMail";
+// import SendMail from "../../popups/sendmail/SendMail";
 import PrevPdfPolizaPrima from "../../../../../services/PrevPdfPolizaPrima";
 import {withRouter} from "react-router-dom";
 import store from "../../../../../store";
@@ -13,9 +13,9 @@ class Links extends Component {
         this.state = {};
     }
 
-    openModal = () => {
-        SendMail.toggle(true);
-    };
+    /*    openModal = () => {
+            SendMail.toggle(true);
+        };*/
 
     getPdf = async () => {
         let quote = this.props.match.params.id;
@@ -27,7 +27,7 @@ class Links extends Component {
         try {
             let pdf = await PrevPdfPolizaPrima.get(plan, quote);
             Loading.toggle(false);
-            if( typeof pdf.pdfQuotationFile !== "undefined" ){
+            if (typeof pdf.pdfQuotationFile !== "undefined") {
                 const a = document.createElement("a");
                 a.style.display = "none";
                 document.body.appendChild(a);

@@ -11,7 +11,7 @@ class Emision extends Component {
     render() {
         let params = this.props.match.params;
         params.step = parseInt(params.step);
-        Helpers.getRowById(params.id, params.step);
+        Helpers.getRowById(params.id, params.step, this.props.history);
         return (
             <div className="cotizacion">
                 <Submenu step={params.step}

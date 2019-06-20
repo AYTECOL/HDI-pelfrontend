@@ -10,7 +10,6 @@ class Segurarinmueble extends Component {
 
     static nameModel = "inmuebleasegudado";
     static nameModelValue = "inmuebleasegudadovalor";
-
     _isMounted = false;
 
     constructor(props) {
@@ -22,21 +21,6 @@ class Segurarinmueble extends Component {
             errorValue: 0,
             value: "",
         };
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let active = storeState.Inmueble.inmuebleasegudado;
-            let value = storeState.Inmueble.inmuebleasegudadovalor;
-            if (this.state.active !== active || this.state.value !== value) {
-                if (this._isMounted) {
-                    this.setState({
-                        ...this.state,
-                        active: active,
-                        value: value,
-                    });
-                }
-            }
-        });
     }
 
     static name() {
@@ -79,20 +63,31 @@ class Segurarinmueble extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+        this.unsubscribe = store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.inmuebleasegudado;
+            let value = storeState.Inmueble.inmuebleasegudadovalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    active: active,
+                    value: value,
+                });
+            }
+        });
     }
 
     componentWillUnmount() {
         this._isMounted = false;
+        this.unsubscribe();
     }
 
-    validateEmpty = e => event => {
+    validateEmpty = e => () => {
         store.dispatch(saveInmuebleValue(e));
-        if (this._isMounted) {
-            this.setState({
-                ...this.state,
-                active: e.value
-            });
-        }
+        this.setState({
+            ...this.state,
+            active: e.value
+        });
         Helpers.removeClass(".contenidoasegudado", "error");
         Helpers.removeClass(".inmuebleasegudado", "error");
     };

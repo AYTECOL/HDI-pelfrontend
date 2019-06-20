@@ -18,8 +18,10 @@ class Datosgenerales extends Component {
         this.state = {
             typeInmueble: 0
         };
+    }
 
-        store.subscribe(async () => {
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let typeInmueble = storeState.typeInmueble;
             if (this.state.typeInmueble !== typeInmueble) {
@@ -29,6 +31,10 @@ class Datosgenerales extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {

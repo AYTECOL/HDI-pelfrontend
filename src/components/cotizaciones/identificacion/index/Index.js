@@ -7,8 +7,12 @@ import BtnContinue from '../forms/btncontinue/BtnContinue';
 import SecondForm from '../secondform/SecondForm';
 
 import './Index.scss';
+import Loading from "../../../globals/loading/Loading";
 
 class Index extends Component {
+    componentDidMount() {
+        Loading.toggle(true);
+    }
 
     render() {
         return (
@@ -42,7 +46,6 @@ class Index extends Component {
             </form>
         )
     }
-
 }
 
 export default Index;

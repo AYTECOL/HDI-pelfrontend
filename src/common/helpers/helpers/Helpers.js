@@ -126,8 +126,8 @@ class Helpers {
         return a - b;
     }
 
-    static goToNotFound() {
-        window.location.href = UrlSite + "/404";
+    static goToNotFound(history) {
+        history.push(UrlSite + "/404");
     }
 
     static goToHome(history) {
@@ -140,7 +140,7 @@ class Helpers {
         }
     }
 
-    static async getRowById(id, step) {
+    static async getRowById(id, step, history) {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
             store.dispatch(restoreCotizacion(cotizacion));
@@ -152,9 +152,9 @@ class Helpers {
             }
         } else if (typeof cotizacion.status !== 'undefined' && parseInt(step) !== 1) {
             if (cotizacion.status === 400) {
-                Helpers.goToNotFound();
+                Helpers.goToNotFound(history);
             } else if (cotizacion.status === 0) {
-                Helpers.goToHome();
+                Helpers.goToHome(history);
             }
         }
     }

@@ -18,8 +18,18 @@ class NumeroIdentificacion extends Component {
             toggle: false,
             onChange: null
         };
+    }
 
-        store.subscribe(() => {
+    static toggleDisable(status) {
+        if (status === true) {
+            Helpers.disabled('#doc-type-value');
+        } else {
+            Helpers.enabled('#doc-type-value');
+        }
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let value = this.state.value;
             let newState = storeState.stateFormIdentificacion;
@@ -33,12 +43,8 @@ class NumeroIdentificacion extends Component {
         });
     }
 
-    static toggleDisable(status) {
-        if (status === true) {
-            Helpers.disabled('#doc-type-value');
-        } else {
-            Helpers.enabled('#doc-type-value');
-        }
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = event => {

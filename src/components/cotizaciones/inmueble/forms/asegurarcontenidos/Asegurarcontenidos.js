@@ -9,7 +9,6 @@ class Asegurarcontenidos extends Component {
 
     static nameModel = "contenidoasegudado";
     static nameModelValue = "contenidoasegudadovalor";
-
     _isMounted = false;
 
     constructor(props) {
@@ -21,21 +20,6 @@ class Asegurarcontenidos extends Component {
             errorValue: 0,
             value: ""
         };
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let active = storeState.Inmueble.contenidoasegudado;
-            let value = storeState.Inmueble.contenidoasegudadovalor;
-            if (this.state.active !== active || this.state.value !== value) {
-                if (this._isMounted) {
-                    this.setState({
-                        ...this.state,
-                        value: value,
-                        active: active,
-                    });
-                }
-            }
-        });
     }
 
     static name() {
@@ -80,10 +64,23 @@ class Asegurarcontenidos extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+        this.unsubscribe = store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.contenidoasegudado;
+            let value = storeState.Inmueble.contenidoasegudadovalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    value: value,
+                    active: active,
+                });
+            }
+        });
     }
 
     componentWillUnmount() {
         this._isMounted = false;
+        this.unsubscribe();
     }
 
     validateEmpty = e => event => {

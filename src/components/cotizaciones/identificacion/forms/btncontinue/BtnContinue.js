@@ -25,8 +25,10 @@ class BtnContinue extends Component {
             stateFormIdentificacion: 0,
             cotizacionExclude: [],
         };
+    }
 
-        store.subscribe(() => {
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let stateForm = storeState.stateFormIdentificacion;
             let typeDoc = storeState.typeDocument;
@@ -63,6 +65,10 @@ class BtnContinue extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     nextStepIndex = async () => {

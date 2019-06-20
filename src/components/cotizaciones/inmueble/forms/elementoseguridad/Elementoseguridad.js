@@ -45,8 +45,11 @@ class Elementoseguridad extends Component {
                 },
             }
         };
+        this.getData();
+    }
 
-        store.subscribe(async () => {
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.zona;
             let alarma = storeState.Inmueble.seguridad.alarma;
@@ -82,7 +85,10 @@ class Elementoseguridad extends Component {
                 });
             }
         });
-        this.getData();
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getData() {

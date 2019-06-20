@@ -94,7 +94,7 @@ export default class Persona extends Component {
             }
         }
 
-        if( typeof this.state.person !== "undefined" && typeof this.state.person['city_code'] === "undefined" && typeof this.state.person['department_code'] === "undefined"){
+        if (typeof this.state.person !== "undefined" && typeof this.state.person['city_code'] === "undefined" && typeof this.state.person['department_code'] === "undefined") {
             this.state.person['city_code'] = 0;
             this.state.person['department_code'] = 0;
         }
@@ -102,10 +102,67 @@ export default class Persona extends Component {
         if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && this.state.person.code === "37") {
             this.state.nit = true;
         }
-        if( typeof this.state.person.sarlfalt_url !== 'string' ){
+        if (typeof this.state.person.sarlfalt_url !== 'string') {
             this.state.person.sarlfalt_url = "";
         }
     }
+
+    static extractDataFromIaxis(persona, code, person) {
+        if (parseInt(code) === 37) {
+            person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
+            person.businessnameDisabled = true;
+        } else {
+            if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
+                person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
+                person.generoDisabled = true;
+                person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
+                person.nameDisabled = true;
+                person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
+                person.secondname = person.secondname === null ? '' : person.secondname;
+                person.secondnameDisabled = person.secondname !== '';
+                person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
+                person.lastnameDisabled = true;
+                person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
+                person.secondlastnameDisabled = true;
+                person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'].split("T")[0];
+                person.fechadenacimientoDisabled = true;
+                person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
+            }
+        }
+        let contactos = persona['consultarPersonaRs']['persona']['contacto'];
+        person.contacto = contactos;
+        person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
+        for (let i = 0; i < contactos.length; i++) {
+            let contacto = contactos[i];
+            if (contacto['idContacto'] === 1) {
+                person.telefono = contacto['textoContacto'];
+            } else if (contacto['idContacto'] === 2) {
+                person.email = contacto['textoContacto'];
+            }
+        }
+        if (typeof contactos[0] !== "undefined") {
+            person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+        }
+
+        if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
+            person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
+            if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
+                person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+
+                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
+                    person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                }
+                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
+                    person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                }
+            }
+        }
+
+        person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
+        person.sarlfaltActiveDisabled = true;
+
+        return person;
+    };
 
     componentDidMount() {
         this._isMounted = true;
@@ -189,61 +246,6 @@ export default class Persona extends Component {
         setTimeout(() => {
             this.validateAll(n);
         }, 500);
-    };
-
-    static extractDataFromIaxis(persona, code, person){
-        if (parseInt(code) === 37) {
-            person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
-            person.businessnameDisabled = true;
-        } else {
-            person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
-            person.generoDisabled = true;
-            person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
-            person.nameDisabled = true;
-            person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
-            person.secondname = person.secondname === null ? '' : person.secondname;
-            person.secondnameDisabled = person.secondname !== '';
-            person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
-            person.lastnameDisabled = true;
-            person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
-            person.secondlastnameDisabled = true;
-            person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'].split("T")[0];
-            person.fechadenacimientoDisabled = true;
-            person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
-        }
-        let contactos = persona['consultarPersonaRs']['persona']['contacto'];
-        person.contacto = contactos;
-        person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
-        for (let i = 0; i < contactos.length; i++) {
-            let contacto = contactos[i];
-            if (contacto['idContacto'] === 1) {
-                person.telefono = contacto['textoContacto'];
-            } else if (contacto['idContacto'] === 2) {
-                person.email = contacto['textoContacto'];
-            }
-        }
-        if (typeof contactos[0] !== "undefined") {
-            person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
-        }
-
-        if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
-            person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
-            if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
-                person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
-
-                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
-                    person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
-                }
-                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
-                    person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
-                }
-            }
-        }
-
-        person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
-        person.sarlfaltActiveDisabled = true;
-
-        return person;
     };
 
     validateDoc = async e => {

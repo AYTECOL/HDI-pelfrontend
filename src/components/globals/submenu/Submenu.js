@@ -10,8 +10,9 @@ const Submenu = (props) => {
                     </div>
                     <div id="cotizacion-menu" className="col col-12 col-sm-8 col-md-8 col-lg-8">
                         <ul>
-                            {props.options.map((item, key)=>
-                                <li key={key} className={props.step === (key+1) ? 'active' : ''}><span>{key+1}</span>{item}</li>
+                            {props.options.map((item, key) =>
+                                <li key={key} className={props.step === (key + 1) ? 'active' : ''}>
+                                    <span>{key + 1}</span>{item}</li>
                             )}
                         </ul>
                     </div>
