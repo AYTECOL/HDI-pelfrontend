@@ -9,7 +9,7 @@ pipeline {
 
     stage('cloudfront') {
         steps {
-            withAWS(credentials: , region: 'us-east-1') {
+            withAWS(credentials: 'jeison_castaneda', region: 'us-east-1') {
             //sh "sls deploy -v --stage dev"
             sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
             dir('dist/poliza-express-hogar-dev') {
