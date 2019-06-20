@@ -33,8 +33,8 @@ node('linux'){
                 npm run-script build
                 ls -ltr
 
-                aws s3 cp build s3://poliza-express-hogar-dev  --recursive --acl public-read
-                aws s3 website s3://poliza-express-hogar-dev --index-document index.html --error-document index.html
+                aws s3 cp build s3://poliza-express-hogar  --recursive --acl public-read
+                aws s3 website s3://poliza-express-hogar --index-document index.html --error-document index.html
             """
             //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
             //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
