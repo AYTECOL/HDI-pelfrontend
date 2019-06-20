@@ -16,7 +16,7 @@ node('linux'){
 				sh 'dir'
                 sh 'ls'
 				sh "sls deploy -v --stage ${env.APPENV.replace('_', '')}"
-                dir('dist/poliza-express-hogar-front'){
+                dir('dist/poliza-express-hogar-front-uat'){
                 	sh 'pwd'
                     sh 'ls'
                 //aws cloudfront create-invalidation --distribution-id= E1KRJBQ8DHRAGO --paths "/*"    
@@ -31,10 +31,14 @@ node('linux'){
                 ls -ltr
 
                 npm install
-                npm run-script build
+                npm run build
                 ls -ltr
 
-                aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
+                aws s3api get-bucket-website --bucket poliza-express-hogar-front-uat
+                aws s3 cp builddos s3://poliza-express-hogar-front-uat  --recursive --acl public-read
+                aws s3 website s3://poliza-express-hogar-front-uat --index-document index.html --error-document index.html
+                aws s3api get-bucket-website --bucket poliza-express-hogar-front-uat
+                aws s3 ls s3://poliza-express-hogar-front-uat --recursive
             """
         }
 		
@@ -49,7 +53,7 @@ node('linux'){
 	}
 	stage('Test sonarqube'){
 		withSonarQubeEnv('sonarqube') {
-        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front-uat -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 	}
 	}	
 	stage('Testing'){

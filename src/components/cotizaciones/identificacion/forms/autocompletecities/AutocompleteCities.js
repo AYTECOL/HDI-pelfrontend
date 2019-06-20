@@ -131,6 +131,18 @@ class AutocompleteCities extends Component {
                         name: this.props.name
                     }
                 });
+                this.props.onChange({
+                    target: {
+                        value:parseInt(code),
+                        name: "city_code"
+                    }
+                });
+                this.props.onChange({
+                    target: {
+                        value:parseInt(codeDepartment),
+                        name: "department_code"
+                    }
+                });
             }
         }, 200);
     };

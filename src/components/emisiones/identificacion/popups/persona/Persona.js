@@ -79,6 +79,7 @@ export default class Persona extends Component {
                 if (this.props.persons[i]['role'].indexOf(1) !== -1) this.state.exitsTomador = true;
             }
         }
+
         if (this.state.typePerson === 1 || this.state.typePerson === 3 || this.state.typePerson === 2) {
             this.state.total = 16;
         } else if (this.state.typePerson === 7) {
@@ -92,8 +93,17 @@ export default class Persona extends Component {
                 this.state.person[i + "Disabled"] = true;
             }
         }
+
+        if( typeof this.state.person !== "undefined" && typeof this.state.person['city_code'] === "undefined" && typeof this.state.person['department_code'] === "undefined"){
+            this.state.person['city_code'] = 0;
+            this.state.person['department_code'] = 0;
+        }
+
         if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && this.state.person.code === "37") {
             this.state.nit = true;
+        }
+        if( typeof this.state.person.sarlfalt_url !== 'string' ){
+            this.state.person.sarlfalt_url = "";
         }
     }
 
@@ -126,6 +136,8 @@ export default class Persona extends Component {
             name = e.target.files[0].name;
             status = false;
             person.sarlaft = e.target.files[0];
+            person.sarlaft_document_url = person.sarlaft;
+            person.sarlfalt_url = undefined;
         } else {
             errorFile = true;
         }
@@ -179,6 +191,61 @@ export default class Persona extends Component {
         }, 500);
     };
 
+    static extractDataFromIaxis(persona, code, person){
+        if (parseInt(code) === 37) {
+            person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
+            person.businessnameDisabled = true;
+        } else {
+            person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
+            person.generoDisabled = true;
+            person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
+            person.nameDisabled = true;
+            person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
+            person.secondname = person.secondname === null ? '' : person.secondname;
+            person.secondnameDisabled = person.secondname !== '';
+            person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
+            person.lastnameDisabled = true;
+            person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
+            person.secondlastnameDisabled = true;
+            person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'].split("T")[0];
+            person.fechadenacimientoDisabled = true;
+            person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
+        }
+        let contactos = persona['consultarPersonaRs']['persona']['contacto'];
+        person.contacto = contactos;
+        person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
+        for (let i = 0; i < contactos.length; i++) {
+            let contacto = contactos[i];
+            if (contacto['idContacto'] === 1) {
+                person.telefono = contacto['textoContacto'];
+            } else if (contacto['idContacto'] === 2) {
+                person.email = contacto['textoContacto'];
+            }
+        }
+        if (typeof contactos[0] !== "undefined") {
+            person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+        }
+
+        if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
+            person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
+            if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
+                person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+
+                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
+                    person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                }
+                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
+                    person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                }
+            }
+        }
+
+        person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
+        person.sarlfaltActiveDisabled = true;
+
+        return person;
+    };
+
     validateDoc = async e => {
 
         if (this.state.person.value === "") return;
@@ -201,52 +268,8 @@ export default class Persona extends Component {
                 });
             } else {
                 let person = this.state.person;
-                if (parseInt(code) === 37) {
-                    person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
-                    person.businessnameDisabled = true;
-                } else {
-                    person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
-                    person.generoDisabled = true;
-                    person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
-                    person.nameDisabled = true;
-                    person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
-                    person.secondname = person.secondname === null ? '' : person.secondname;
-                    person.secondnameDisabled = person.secondname !== '';
-                    person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
-                    person.lastnameDisabled = true;
-                    person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
-                    person.secondlastnameDisabled = true;
-                    person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'].split("T")[0];
-                    person.fechadenacimientoDisabled = true;
-                }
-                let contactos = persona['consultarPersonaRs']['persona']['contacto'];
-                for (let i = 0; i < contactos.length; i++) {
-                    let contacto = contactos[i];
-                    if (contacto['idContacto'] === 1) {
-                        person.telefono = contacto['textoContacto'];
-                    } else if (contacto['idContacto'] === 2) {
-                        person.email = contacto['textoContacto'];
-                    }
-                }
-                if (typeof contactos[0] !== "undefined") {
-                    person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
-                }
-
-                if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
-                    if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
-                        person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
-
-                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
-                            person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
-                        }
-                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
-                            person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
-                        }
-                    }
-                }
-
-                person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
-                person.sarlfaltActiveDisabled = true;
+                person.person = persona;
+                Persona.extractDataFromIaxis(persona, code, person);
                 this.setState({
                     ...this.state,
                     person: person,
@@ -291,6 +314,8 @@ export default class Persona extends Component {
             let file = await UploadFile.upload("Sarlaft", person.sarlaft);
             if (typeof file['location'] !== "undefined") {
                 person.sarlaft = file['location'];
+                person.sarlaft_document_url = file['location'];
+                person.sarlfalt_url = file['location'];
                 this.setState({
                     ...this.state,
                     person: person
