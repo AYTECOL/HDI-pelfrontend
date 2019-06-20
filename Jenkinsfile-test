@@ -1,4 +1,3 @@
-library ('utils@master') _
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
