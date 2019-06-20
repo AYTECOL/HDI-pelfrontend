@@ -10,7 +10,7 @@ pipeline {
     // }
     stage('cloudfront') {
         steps {
-            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: env.AWS_ACCESS_KEY_ID, credentialsId: '1e902a3f-ad7c-471e-ba4d-bb593159d38d	', secretKeyVariable: env.AWS_SECRET_ACCESS_KEY]]) { 
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: env.AWS_ACCESS_KEY_ID, credentialsId: '1e902a3f-ad7c-471e-ba4d-bb593159d38d', secretKeyVariable: env.AWS_SECRET_ACCESS_KEY]]) { 
              withAWS(region: 'us-east-1') {
                 //sh "sls deploy -v --stage dev"
                 sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
@@ -27,7 +27,7 @@ pipeline {
 
     stage('Dev Deploy') {
         steps {
-           withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: env.AWS_ACCESS_KEY_ID, credentialsId: '1e902a3f-ad7c-471e-ba4d-bb593159d38d	', secretKeyVariable: env.AWS_SECRET_ACCESS_KEY]]) { 
+           withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: env.AWS_ACCESS_KEY_ID, credentialsId: '1e902a3f-ad7c-471e-ba4d-bb593159d38d', secretKeyVariable: env.AWS_SECRET_ACCESS_KEY]]) { 
             withAWS(credentials: 'default', region: 'us-east-1') {
                 sh 'ls - ltr'
                 sh 'npm install'
