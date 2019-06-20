@@ -13,8 +13,6 @@ node('linux'){
     stage('cloudfront') {
     	deployToDev{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-				sh 'dir'
-                sh 'ls'
                 //sh "sls deploy -v --stage dev"
 				sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-dev'){
@@ -46,7 +44,11 @@ node('linux'){
         }
 		
     }
-      
+    stage('Test sonarqube'){
+		withSonarQubeEnv('sonarqube') {
+        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-dev -Dsonar.projectName=-dev -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+	 	}
+	}  
 	/*stage('Completion Email'){
 		    
 	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
@@ -54,11 +56,7 @@ node('linux'){
                 body: "Despliegue realizado validar ambiente Dev en: http://poliza-express-hogar-front-dev.s3-website-us-east-1.amazonaws.com/ Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
 	
 	}
-	stage('Test sonarqube'){
-		withSonarQubeEnv('sonarqube') {
-        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front-dev -Dsonar.projectName=-dev -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
-	 	}
-	}	
+	
 	stage('Testing'){
 		  
 		sh 'curl -X POST  http://cunate:38a9806ece2c583ef858ffde13ae9498@10.142.137.77:8080/job/sahi-test/build?token=08b214cb68e0ed63132813dca24a7233'
