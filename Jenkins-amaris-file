@@ -8,7 +8,6 @@ pipeline {
     // stage('Git Checkout') {
     //   checkout scm develop
     // }
-aws
     stage('cloudfront') {
         steps {
             withAWS(credentials: 'default', region: 'us-east-1') {
