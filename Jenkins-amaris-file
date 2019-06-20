@@ -12,7 +12,7 @@ pipeline {
         steps {
             // withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: env.AWS_ACCESS_KEY_ID, credentialsId:'398563379039', secretKeyVariable: env.AWS_SECRET_ACCESS_KEY]]) { 
              withAWS() {
-                //sh "sls deploy -v --stage dev"
+                sh "npm i -g serverless"
                 sh "sls deploy -v --force --stage dev"
                 dir('dist/poliza-express-hogar-dev') {
                     sh 'pwd'
