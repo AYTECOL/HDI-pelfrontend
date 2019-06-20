@@ -18,6 +18,7 @@ class Table extends Component {
     };
     this.getRows();
   }
+
   async getRows() {
     let cotizaciones = await Identifications.get();
     if (cotizaciones.length > 0) {
@@ -28,6 +29,7 @@ class Table extends Component {
         options: options
       });
     }
+    Loading.toggle(false);
   }
 
   getRowById = id => async e => {
