@@ -4,7 +4,7 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: nonprod 
+  stage: dev 
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
@@ -89,8 +89,8 @@ resources:
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
-		  Aliases:
-          	- hogar-uat.libertyseguros.co
+		  #Aliases:
+          #	- hogar-uat.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -110,8 +110,8 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
-            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
+            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
