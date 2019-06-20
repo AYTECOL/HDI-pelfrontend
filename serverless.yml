@@ -3,7 +3,7 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: nonprod 
+  stage: dev 
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
@@ -14,8 +14,8 @@ provider:
           Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
           
 custom:
-  s3Bucket: poliza-express-hogar-uat
-#  s3BucketPDF: poliza-express-hogar-pdf
+  s3Bucket: poliza-express-hogar-dev
+  s3BucketPDF: poliza-express-hogar-pdf-dev
   
 package:
   include:
@@ -53,26 +53,26 @@ resources:
               Action:
               - s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
-#    PdfS3Bucket:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: ${self:custom.s3BucketPDF}
-#        AccessControl: PublicReadWrite
-#    PdfS3BucketPolicy:
-#      Type: AWS::S3::BucketPolicy
-#      Properties:
-#        Bucket:
-#          Ref: PdfS3Bucket
-#        PolicyDocument:
-#          Statement:
-#            - Sid: PublicReadGetObject
-#              Effect: Allow
-#              Principal:
-#                CanonicalUser:
-#                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
-#              Action:
-#              - s3:*
-#              Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
+    PdfS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.s3BucketPDF}
+        AccessControl: PublicReadWrite
+    PdfS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: PdfS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal:
+                CanonicalUser:
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+              Action:
+              - s3:*
+              Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
@@ -88,8 +88,8 @@ resources:
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
-          Aliases:
-           - hogar-uat.libertyseguros.co
+          #Aliases:
+          # - hogar-uat.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -109,9 +109,8 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            #AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
-            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
-            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
