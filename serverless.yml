@@ -15,6 +15,7 @@ provider:
           
 custom:
   s3Bucket: poliza-express-hogar-dev
+  s3BucketPDF: poliza-express-hogar-pdf-dev
   
 package:
   include:
@@ -52,6 +53,26 @@ resources:
               Action:
               - s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    PdfS3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.s3BucketPDF}
+        AccessControl: PublicReadWrite
+    PdfS3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket:
+          Ref: PdfS3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal:
+                CanonicalUser:
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+              Action:
+              - s3:*
+              Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
