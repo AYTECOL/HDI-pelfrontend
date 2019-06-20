@@ -25,8 +25,8 @@ package:
   excludeDevDependencies: true
 
 functions:
-  hello:
-    handler: handler.hello
+  hogar:
+    handler: handler.hogar
 
 resources:
   Resources:
