@@ -1,55 +1,57 @@
-
+@Library('github.com/releaseworks/jenkinslib') _
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
-//def  = "intl-latam-poliza-backend-jenks"
-//def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
-node('linux'){
-
-	stage('Git Checkout'){
-		checkout scm develop
-	}
-
+pipeline {
+  agent any
+  stages {
+    // stage('Git Checkout') {
+    //   checkout scm develop
+    // }
     stage('cloudfront') {
-    	deployToDev{
-        	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+        steps {
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: env.AWS_ACCESS_KEY_ID, credentialsId:env.AWS_TOKEN, secretKeyVariable: env.AWS_SECRET_ACCESS_KEY]]) { 
+             withAWS(region: 'us-east-1') {
                 //sh "sls deploy -v --stage dev"
-				sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
-                dir('dist/poliza-express-hogar-dev'){
-                	sh 'pwd'
+                sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+                dir('dist/poliza-express-hogar-dev') {
+                    sh 'pwd'
                     sh 'ls'
-                   //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
+                    //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
+                }
                 }
             }
+            
         }
     }
 
     stage('Dev Deploy') {
-        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh """
-                ls -ltr
-
-                npm install
-                npm run-script build
-                ls -ltr
-
-                aws s3 cp build s3://poliza-express-hogar  --recursive --acl public-read
-                aws s3 website s3://poliza-express-hogar --index-document index.html --error-document index.html
-            """
-            //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
-            //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
-            //sh 'aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*" '
-            //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
-            //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
+        steps {
+           withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: ${env.AWS_ACCESS_KEY_ID}, credentialsId:env.AWS_TOKEN, secretKeyVariable: ${env.AWS_SECRET_ACCESS_KEY}]]) { 
+            withAWS(credentials: 'default', region: 'us-east-1') {
+                sh 'ls - ltr'
+                sh 'npm install'
+                sh 'npm run - script build'
+                sh 'ls - ltr'
+                sh 'aws s3 cp build s3: //poliza-express-hogar  --recursive --acl public-read'
+                sh 'aws s3 website s3: //poliza-express-hogar --index-document index.html --error-document index.html'
+                //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
+                //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
+                //sh 'aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*" '
+                //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
+                //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
+                }
+            }
         }
-		
     }
-    stage('Test sonarqube'){
-		withSonarQubeEnv('sonarqube') {
-        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-dev -Dsonar.projectName=-dev -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
-	 	}
-	}  
-	/*stage('Completion Email'){
+    // stage('Test sonarqube') {
+    //     steps {
+    //         withSonarQubeEnv('sonarqube') {
+    //             sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-dev -Dsonar.projectName=-dev -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+    //         }
+    //     }
+    // }
+    /*stage('Completion Email'){
 		    
 	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
                 subject: "Dev Infra Deployment: ${env.JOB_NAME}", 
@@ -63,4 +65,6 @@ node('linux'){
 		echo 'Ver resultados test funcional en: 9 http://10.142.137.77:9999/_s_/dyn/pro/DBReports'
     
 	}*/
- }
+
+  }
+}

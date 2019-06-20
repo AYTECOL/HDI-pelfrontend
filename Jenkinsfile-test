@@ -33,14 +33,11 @@ node('linux'){
                 npm run-script build
                 ls -ltr
 
-                aws s3 cp build s3://poliza-express-hogar  --recursive --acl public-read
-                aws s3 website s3://poliza-express-hogar --index-document index.html --error-document index.html
             """
-            //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
-            //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
-            //sh 'aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*" '
-            //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
-            //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
+            sh 'aws s3 sync build s3://poliza-express-hogar --delete'
+            //sh 'aws s3 cp build s3://poliza-express-hogar  --recursive --metadata-directive REPLACE --acl public-read'
+            //sh 'aws s3 cp build s3://poliza-express-hogar -metadata-directive REPLACE --recursive --cache-control max-age=0 --acl public-read'    
+            sh 'aws cloudfront create-invalidation --distribution-id E5I3B39X17TNY --paths "/*" '
         }
 		
     }
