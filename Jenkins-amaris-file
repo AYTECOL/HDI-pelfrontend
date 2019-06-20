@@ -10,8 +10,7 @@ pipeline {
     // }
     stage('cloudfront') {
         steps {
-            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: env.AWS_ACCESS_KEY_ID, credentialsId:'aws_job_credentials', secretKeyVariable: env.AWS_SECRET_ACCESS_KEY]]) { 
-             withAWS(region: 'us-east-1') {
+             withAWS(region: 'us-east-1', accessKeyVariable: env.AWS_ACCESS_KEY_ID, secretKeyVariable: env.AWS_SECRET_ACCESS_KEY) {
                 //sh "sls deploy -v --stage dev"
                 sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-dev') {
@@ -20,15 +19,14 @@ pipeline {
                     //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
                 }
                 }
-            }
             
         }
     }
 
     stage('Dev Deploy') {
         steps {
-           withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: ${env.AWS_ACCESS_KEY_ID}, credentialsId:'aws_job_credentials', secretKeyVariable: ${env.AWS_SECRET_ACCESS_KEY}]]) { 
-            withAWS(credentials: 'default', region: 'us-east-1') {
+            withAWS(region: 'us-east-1', accessKeyVariable: env.AWS_ACCESS_KEY_ID, secretKeyVariable: env.AWS_SECRET_ACCESS_KEY) {
+
                 sh 'ls - ltr'
                 sh 'npm install'
                 sh 'npm run - script build'
@@ -41,7 +39,6 @@ pipeline {
                 //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
                 //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
                 }
-            }
         }
     }
     // stage('Test sonarqube') {
