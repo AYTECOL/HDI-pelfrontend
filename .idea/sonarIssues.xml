@@ -393,6 +393,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/globals/submenu/Submenu.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/home/table/Table.js">
           <value>
             <set />
@@ -483,6 +488,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/Policy.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/Quote.js">
           <value>
             <set />
@@ -564,6 +574,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend/package.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../server.js">
           <value>
             <set />
           </value>

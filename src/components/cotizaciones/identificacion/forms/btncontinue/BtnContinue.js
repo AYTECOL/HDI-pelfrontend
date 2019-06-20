@@ -14,6 +14,7 @@ import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import NumeroIdentificacion from "../numeroidentificacion/NumeroIdentificacion";
 import Validaridentificacion from "../../popups/validaridentificacion/Validaridentificacion";
+import {withRouter} from "react-router-dom";
 
 class BtnContinue extends Component {
 
@@ -70,7 +71,7 @@ class BtnContinue extends Component {
             Loading.toggle(true);
             store.dispatch(NextStep(2));
             await SaveIdentifications.save();
-            window.location.href = UrlSite + '/cotizacion/2/' + storeState.cotizacion.number;
+            this.props.history.push(UrlSite + '/cotizacion/2/' + storeState.cotizacion.number);
         } else {
             Loading.toggle(true);
             this.setState({
@@ -131,7 +132,7 @@ class BtnContinue extends Component {
     saveAndExit = async () => {
         Loading.toggle(true);
         await SaveIdentifications.save();
-        Helpers.goToHome();
+        Helpers.goToHome(this.props.history);
     };
 
     render = () => (
@@ -153,7 +154,7 @@ class BtnContinue extends Component {
     );
 }
 
-export default BtnContinue;
+export default withRouter(BtnContinue);
 
 
 

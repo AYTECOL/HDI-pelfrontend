@@ -82,7 +82,7 @@ class Helpers {
 
     static scrollToElement(selector, scrollElement, behavior, ignoreZero) {
         let el = document.querySelector(selector);
-        let top = 0;
+        let top;
 
         if (typeof ignoreZero === "undefined") ignoreZero = false;
 
@@ -130,8 +130,8 @@ class Helpers {
         window.location.href = UrlSite + "/404";
     }
 
-    static goToHome() {
-        window.location.href = UrlSite + "/";
+    static goToHome(history) {
+        history.push(UrlSite + '/');
     }
 
     static goToError() {
@@ -159,7 +159,7 @@ class Helpers {
         }
     }
 
-    static toggleSlide = index => e => {
+    static toggleSlide = index => () => {
         let className = "close_item";
         if (Helpers.hasClass(".row_tab_" + index, className)) {
             Helpers.removeClass(".row_tab_" + index, className);

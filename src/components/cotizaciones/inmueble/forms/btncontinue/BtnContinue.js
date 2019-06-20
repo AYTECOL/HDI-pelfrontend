@@ -33,9 +33,8 @@ class BtnContinue extends Component {
 
     goBack = async () => {
         Loading.toggle(true);
-        let storeState = store.getState();
         await CreateOrUpdateValoration.save();
-        window.location.href = UrlSite + "/cotizacion/1/" + storeState.cotizacion.number;
+        this.props.history.push(UrlSite + "/cotizacion/1/" + this.props.match.params.id);
     };
 
     saveServiceContinue = async () => {

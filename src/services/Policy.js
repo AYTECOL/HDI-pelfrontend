@@ -1,5 +1,4 @@
 import Api from "./Api";
-import Store from "../store";
 import Helpers from "../common/helpers/helpers/Helpers";
 
 const Url = "/emit-policy/";
