@@ -67,9 +67,10 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-              Principal:
-                CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+#              Principal:
+#                CanonicalUser:
+#                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+              Principal: "*"
               Action:
               - s3:*
               Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
