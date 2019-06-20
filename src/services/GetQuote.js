@@ -16,7 +16,7 @@ class GetQuote {
 
   static async getById(id) {
     try {
-      let items = await Api.get(Url + id);
+      let items = await Api.get("/quote/" + id);
       if (typeof items.quote !== "undefined") {
         items = items.quote;
         for (let i in items) if (items[i] === '""') items[i] = "";

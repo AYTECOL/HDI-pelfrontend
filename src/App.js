@@ -48,7 +48,7 @@ class App extends Component {
         <Header data={this.state.data} />
         <main>
           <Switch>
-            <Route path="/exito" component={PolizaEmitida} />
+            <Route path="/exito/:polizaId" component={PolizaEmitida} />
             <Route path="/cotizacion/:step/:id" component={Cotizacion} />
             <Route path="/emision/:step/:id" component={Emision} />
             <Route path="/error" component={ErrorNetwork} />
