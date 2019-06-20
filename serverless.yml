@@ -1,4 +1,3 @@
-
 service: poliza-express-hogar 
 
 provider:
@@ -89,8 +88,8 @@ resources:
               S3OriginConfig:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
-		  Aliases:
-            - hogar-uat.libertyseguros.co
+          Aliases:
+           - hogar-uat.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
