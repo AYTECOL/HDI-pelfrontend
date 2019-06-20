@@ -13,8 +13,10 @@ class Conjuntocerrado extends Component {
             show: false,
             active: 0
         };
+    }
 
-        store.subscribe(async () => {
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.cojuntocerrado;
             if (this.state.active !== value) {
@@ -24,6 +26,10 @@ class Conjuntocerrado extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = e => event => {

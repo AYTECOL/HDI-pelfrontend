@@ -82,7 +82,7 @@ class Helpers {
 
     static scrollToElement(selector, scrollElement, behavior, ignoreZero) {
         let el = document.querySelector(selector);
-        let top = 0;
+        let top;
 
         if (typeof ignoreZero === "undefined") ignoreZero = false;
 
@@ -126,12 +126,12 @@ class Helpers {
         return a - b;
     }
 
-    static goToNotFound() {
-        window.location.href = UrlSite + "/404";
+    static goToNotFound(history) {
+        history.push(UrlSite + "/404");
     }
 
-    static goToHome() {
-        window.location.href = UrlSite + "/";
+    static goToHome(history) {
+        history.push(UrlSite + '/');
     }
 
     static goToError() {
@@ -140,7 +140,7 @@ class Helpers {
         }
     }
 
-    static async getRowById(id, step) {
+    static async getRowById(id, step, history) {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== 'undefined') {
             store.dispatch(restoreCotizacion(cotizacion));
@@ -152,14 +152,14 @@ class Helpers {
             }
         } else if (typeof cotizacion.status !== 'undefined' && parseInt(step) !== 1) {
             if (cotizacion.status === 400) {
-                Helpers.goToNotFound();
+                Helpers.goToNotFound(history);
             } else if (cotizacion.status === 0) {
-                Helpers.goToHome();
+                Helpers.goToHome(history);
             }
         }
     }
 
-    static toggleSlide = index => e => {
+    static toggleSlide = index => () => {
         let className = "close_item";
         if (Helpers.hasClass(".row_tab_" + index, className)) {
             Helpers.removeClass(".row_tab_" + index, className);

@@ -16,7 +16,11 @@ class Index extends Component {
             index: 1,
         };
         for (let i = 0; i < 3; i++) this.state.plans[i] = {name: "------"};
-        store.subscribe(() => {
+    }
+
+    componentDidMount() {
+        new Sticky("wrapper-tabs");
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let plans = storeState.AllPlans;
             let index = storeState.indexPlan;
@@ -28,8 +32,8 @@ class Index extends Component {
         });
     }
 
-    componentDidMount() {
-        new Sticky("wrapper-tabs");
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     changeIndexPlan = index => e => {

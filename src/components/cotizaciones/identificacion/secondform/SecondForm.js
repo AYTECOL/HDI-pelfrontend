@@ -18,8 +18,10 @@ class SecondForm extends Component {
             type: storeState.typeDocument,
             show: storeState.stateFormIdentificacion === 1
         };
+    }
 
-        store.subscribe(() => {
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let stateFormIdentificacion = storeState.stateFormIdentificacion === 1;
             if (stateFormIdentificacion !== this.state.show || storeState.typeDocument !== this.state.type) {
@@ -30,6 +32,10 @@ class SecondForm extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {

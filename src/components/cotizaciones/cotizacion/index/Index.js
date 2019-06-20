@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Index.scss';
 //Component
-import SendMail from "../popups/sendmail/SendMail";
+/*import SendMail from "../popups/sendmail/SendMail";*/
 import Cards from "../cards/Cards";
 import Tab from "../tab/Tab";
 import Btns from "../forms/btncontinue/BtnContinue";
@@ -11,8 +11,7 @@ import Loading from "../../../globals/loading/Loading";
 
 class Index extends Component {
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
         Loading.toggle(true);
     }
 
@@ -60,7 +59,7 @@ class Index extends Component {
                     </div>
 
                 </div>
-                <SendMail/>
+                {/*<SendMail/>*/}
             </form>
         )
     }

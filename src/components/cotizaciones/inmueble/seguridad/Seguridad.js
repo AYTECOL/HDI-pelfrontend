@@ -6,12 +6,6 @@ import Elementoseguridad from '../forms/elementoseguridad/Elementoseguridad';
 import {withRouter} from "react-router-dom";
 
 class Seguridad extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
-
     render() {
         return (
             <div className="inmuebleform">

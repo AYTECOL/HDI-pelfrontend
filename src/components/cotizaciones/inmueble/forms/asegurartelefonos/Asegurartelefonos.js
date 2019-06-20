@@ -9,7 +9,6 @@ class Asegurartelefonos extends Component {
 
     static nameModel = "inmuebleasegudadotelefonos";
     static nameModelValue = "inmuebleasegudadotelefonosvalor";
-
     _isMounted = false;
 
     constructor(props) {
@@ -21,21 +20,6 @@ class Asegurartelefonos extends Component {
             errorValue: 0,
             value: ""
         };
-
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let active = storeState.Inmueble.inmuebleasegudadotelefonos;
-            let value = storeState.Inmueble.inmuebleasegudadotelefonosvalor;
-            if (this.state.active !== active || this.state.value !== value) {
-                if (this._isMounted) {
-                    this.setState({
-                        ...this.state,
-                        active: active,
-                        value: value,
-                    });
-                }
-            }
-        });
     }
 
     static name() {
@@ -80,20 +64,31 @@ class Asegurartelefonos extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+        this.unsubscribe = store.subscribe(async () => {
+            let storeState = store.getState();
+            let active = storeState.Inmueble.inmuebleasegudadotelefonos;
+            let value = storeState.Inmueble.inmuebleasegudadotelefonosvalor;
+            if (this.state.active !== active || this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    active: active,
+                    value: value,
+                });
+            }
+        });
     }
 
     componentWillUnmount() {
         this._isMounted = false;
+        this.unsubscribe();
     }
 
     validateEmpty = e => event => {
         store.dispatch(saveInmuebleValue(e));
-        if (this._isMounted) {
-            this.setState({
-                ...this.state,
-                active: e.value
-            });
-        }
+        this.setState({
+            ...this.state,
+            active: e.value
+        });
         Helpers.removeClass(".inmuebleasegudadotelefonos", "error");
     };
 

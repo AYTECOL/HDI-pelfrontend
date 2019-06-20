@@ -28,7 +28,10 @@ class Asistencias extends Component {
                 ]
             }
         }
-        store.subscribe(() => {
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let index = storeState.indexPlan;
             let plans = storeState.AllPlans;
@@ -45,7 +48,10 @@ class Asistencias extends Component {
                 }
             }
         });
+    }
 
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     countAsistencias() {

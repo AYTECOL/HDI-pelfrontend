@@ -996,20 +996,22 @@ body #root .cotizacion .container .tool-tip-hover {
 
 #root {
   .react-datepicker__month-read-view--selected-month,
-  .react-datepicker__year-read-view--selected-year{
+  .react-datepicker__year-read-view--selected-year {
     font-size: 18px;
     text-transform: capitalize;
   }
-  .react-datepicker__navigation{
+
+  .react-datepicker__navigation {
     top: 15px;
   }
 
   .react-datepicker__month-read-view--down-arrow,
   .react-datepicker__month-year-read-view--down-arrow,
-  .react-datepicker__year-read-view--down-arrow{
+  .react-datepicker__year-read-view--down-arrow {
     top: 11px;
   }
-  .react-datepicker__current-month{
+
+  .react-datepicker__current-month {
     color: transparent;
     height: 0;
     margin-bottom: -20px;
