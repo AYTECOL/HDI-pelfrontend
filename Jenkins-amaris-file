@@ -23,18 +23,12 @@ pipeline {
 
     stage('Dev Deploy') {
       withAWS(credentials: getAWSCredentialID(environment: "${env.APPENV}"), region: 'us-east-1') {
-        sh ""
-        "
-        ls - ltr
-
-        npm install
-        npm run - script build
-        ls - ltr
-
-        aws s3 cp build s3: //poliza-express-hogar  --recursive --acl public-read
-          aws s3 website s3: //poliza-express-hogar --index-document index.html --error-document index.html
-          ""
-        "
+        sh 'ls - ltr'
+        sh 'npm install'
+        sh 'npm run - script build'
+        sh 'ls - ltr'
+        sh 'aws s3 cp build s3: //poliza-express-hogar  --recursive --acl public-read'
+        sh 'aws s3 website s3: //poliza-express-hogar --index-document index.html --error-document index.html'
         //sh 'aws cloudfront get-distribution-config --id E1KRJBQ8DHRAGO'
         //sh 'aws cloudfront list-invalidations --distribution-id E1KRJBQ8DHRAGO'
         //sh 'aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*" '
