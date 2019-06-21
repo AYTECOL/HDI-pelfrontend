@@ -8,6 +8,51 @@
             <set />
           </value>
         </entry>
+        <entry key="/a.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="/dummy.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="/generated.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="37e37b89-31d4-4e91-9443-2b95ac1dae6d/schema/luxco/table/nutritions.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="37e37b89-31d4-4e91-9443-2b95ac1dae6d/schema/luxco/table/users.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$APPLICATION_CONFIG_DIR$/consoles/db/37e37b89-31d4-4e91-9443-2b95ac1dae6d/console.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$APPLICATION_CONFIG_DIR$/consoles/db/37e37b89-31d4-4e91-9443-2b95ac1dae6d/console_1.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$APPLICATION_CONFIG_DIR$/consoles/db/37e37b89-31d4-4e91-9443-2b95ac1dae6d/console_2.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$APPLICATION_CONFIG_DIR$/consoles/db/37e37b89-31d4-4e91-9443-2b95ac1dae6d/console_5.sql">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$APPLICATION_CONFIG_DIR$/scratches/scratch.json">
           <value>
             <set />

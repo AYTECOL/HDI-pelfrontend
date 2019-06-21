@@ -17,8 +17,14 @@ class Links extends Component {
             SendMail.toggle(true);
         };*/
 
-    getPdf = async () => {
-        let quote = this.props.match.params.id;
+    getPdf = () => {
+        Loading.toggle(true);
+        Links.pdf(this);
+        Loading.toggle(true);
+    };
+
+    static async pdf(it, download = true) {
+        let quote = it.props.match.params.id;
         let storeState = store.getState();
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
@@ -26,8 +32,7 @@ class Links extends Component {
 
         try {
             let pdf = await PrevPdfPolizaPrima.get(plan, quote);
-            Loading.toggle(false);
-            if (typeof pdf.pdfQuotationFile !== "undefined") {
+            if (typeof pdf.pdfQuotationFile !== "undefined" && download === true) {
                 const a = document.createElement("a");
                 a.style.display = "none";
                 document.body.appendChild(a);
@@ -37,11 +42,10 @@ class Links extends Component {
                 a.click();
                 document.body.removeChild(a);
             }
-            Loading.toggle(false);
         } catch (e) {
-            Loading.toggle(true);
+
         }
-    };
+    }
 
     render() {
         return (

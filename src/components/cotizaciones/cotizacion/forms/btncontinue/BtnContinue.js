@@ -10,6 +10,7 @@ import Loading from "../../../../globals/loading/Loading";
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import {NextStep} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
+import Links from "../links/Links";
 
 class BtnContinue extends Component {
 
@@ -49,6 +50,8 @@ class BtnContinue extends Component {
         plan['assists'][0]['selected_id'] = index;
 
         plan = BtnContinue.toNumberCoverrange(plan);
+
+        await Links.pdf(this, false);
 
         store.dispatch(NextStep(4));
         await SaveIdentifications.save();
