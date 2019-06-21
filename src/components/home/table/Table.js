@@ -33,7 +33,7 @@ const Table = props => {
     console.log(fecha);
   };
   const getRowById = id => async e => {
-    const { history } = this.props;
+    const { history } = props;
     let cotizacion = await Identifications.getById(id);
     if (typeof cotizacion.identification !== "undefined") {
       if (cotizacion.state > 3) {

@@ -29,19 +29,6 @@
       display: block;
       position: relative;
       padding: 36px 0;
-
-      &::after {
-        content: "";
-        width: 1px;
-        height: 68px;
-        top: 0;
-        bottom: 0;
-        margin: auto 0;
-        right: 0;
-        background-color: rgba(#979797, 0.29);
-        display: block;
-        position: absolute;
-      }
     }
 
     .col {
@@ -127,7 +114,7 @@
 
           &::after {
             content: "";
-            width: 10px;
+            width: 60%;
             height: 1px;
             background-color: #28a3af;
             left: 10px;
@@ -189,7 +176,6 @@
     padding: 9px 15px 8px;
     margin: 0;
   }
-
   .pagination {
     display: inline-block;
   }
