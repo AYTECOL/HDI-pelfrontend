@@ -8,7 +8,7 @@ class PrevPdfPolizaPrima {
         let user = await Helpers.getUser();
         return await Api.post(BaseUrl + quoteId, plan, undefined, undefined, {
             pelhauthorization: user !== null ? user["accessToken"] : ""
-        });
+        },true);
     }
 }
 
