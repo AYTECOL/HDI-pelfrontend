@@ -48,15 +48,15 @@ class Api {
         });
     }
 
-    static async get(url, overrideBase, headers) {
+    static async get(url, overrideBase, headers, format) {
         return await Api.HttpRequest('GET', url, null, overrideBase, undefined, headers).then(function (response) {
-            return JSON.parse(response);
+            return typeof format === "undefined" ? JSON.parse(response) : response;
         })
     };
 
-    static async post(url, data, overrideBase, formData, headers) {
+    static async post(url, data, overrideBase, formData, headers, format) {
         return await Api.HttpRequest('POST', url, data, overrideBase, formData, headers).then(function (response) {
-            return JSON.parse(response);
+            return typeof format === "undefined" ? JSON.parse(response) : response;
         });
     };
 

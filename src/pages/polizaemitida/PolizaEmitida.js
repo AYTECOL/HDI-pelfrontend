@@ -18,12 +18,16 @@ class PolizaEmitida extends Component {
 
     state = {
         quote: this.props.match.params.polizaId,
-        data: {}
+        data: {},
+        emitedPolicy: 0
     };
 
     async getData() {
         Loading.toggle(true);
         let data = await QuoteIussedById.get(this.state.quote);
+
+        let {params} = this.props.match;
+        let {emmitedId: emitedPolicy} = params;
         let endoso = undefined;
 
         if (typeof data.quote_iussed_info !== "undefined") {
@@ -37,26 +41,17 @@ class PolizaEmitida extends Component {
             }
         }
         this.setState(
-            state =>
-                console.log("from poliza emitida", state) || {
-                    ...state,
-                    data,
-                    endoso
-                }
+            state => ({
+                ...state,
+                data,
+                endoso,
+                emitedPolicy
+            })
         );
-        console.log(this.state);
         Loading.toggle(false);
     }
 
     componentDidMount() {
-        console.log(this.props.match.params.polizaId);
-        // this.setState(
-        //   state =>
-        //     console.log("from poliza emitida", state) || {
-        //       ...state,
-        //       quote: this.props.match.params.polizaId
-        //     }
-        // );
         this.getData();
     }
 
@@ -70,9 +65,8 @@ class PolizaEmitida extends Component {
         let a = document.createElement("a");
         a.style.display = "none";
         document.body.appendChild(a);
-        a.href = pdfEndoso.processEndrosementHomePDF;
-        a.setAttribute("target", "_blank");
-        a.setAttribute("download", pdfEndoso.processEndrosementHomePDF);
+        a.href = "data:application/pdf;base64," + pdfEndoso;
+        a.setAttribute("download", 'PdfEndosoHogar.pdf');
         a.click();
         document.body.removeChild(a);
     };
@@ -80,30 +74,30 @@ class PolizaEmitida extends Component {
     getPdf = async () => {
         Loading.toggle(true);
         try {
-            console.log("from getPdf=>", this.props.match);
             let pdfAnexo = await PolizaAnexoHogar.get(this.state.quote);
             let a = document.createElement("a");
             a.style.display = "none";
             document.body.appendChild(a);
-            a.href = pdfAnexo.processPolicyHomeAnnex;
-            a.setAttribute("target", "_blank");
-            a.setAttribute("download", pdfAnexo.processPolicyHomeAnnex);
+            a.href = "data:application/pdf;base64," + pdfAnexo;
+            a.setAttribute("download", 'PolizaAnexoHogar.pdf');
             a.click();
             document.body.removeChild(a);
 
-            let pdf = await PrevPdfPolizaPrima.get(this.state.quote);
+            let plan = await QuoteIussedById.get(this.state.quote);
+            plan = plan.plan_selected_info.Item;
+
+            let pdf = await PrevPdfPolizaPrima.get(plan, this.state.quote);
             a = document.createElement("a");
             a.style.display = "none";
             document.body.appendChild(a);
-            a.href = pdf.pdfQuotationFile;
-            a.setAttribute("target", "_blank");
-            a.setAttribute("download", pdf.pdfQuotationFile);
+            a.href = "data:application/pdf;base64," + pdf;
+            a.setAttribute("download", 'PdfPolizaPrima.pdf');
             a.click();
             document.body.removeChild(a);
 
             Loading.toggle(false);
         } catch (e) {
-            Loading.toggle(true);
+            Loading.toggle(false);
         }
     };
 
@@ -120,7 +114,7 @@ class PolizaEmitida extends Component {
                                     de la poliza e información de utilidad
                                 </h3>
                                 <p>
-                                    Póliza <span>{this.state.quote}</span>
+                                    Póliza <span>{this.state.emitedPolicy}</span>
                                 </p>
                                 <div className="image">&nbsp;</div>
                             </div>

@@ -1,11 +1,10 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import "./Table.scss";
 import store from "../../../store";
 import { restoreCotizacion } from "../../../actions";
 
 import Identifications from "../../../services/GetQuote";
-import Loading from "../../globals/loading/Loading";
 import { UrlSite } from "../../../config";
 import Pagination from "../../../common/helpers/Pagination/Pagination";
 

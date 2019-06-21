@@ -4,6 +4,10 @@ import {withRouter} from "react-router-dom";
 import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import PolicyService from "../../../../../services/Policy";
+import Loading from "../../../../globals/loading/Loading";
+import store from "../../../../../store";
+import {NextStep} from "../../../../../actions";
+import SaveIdentifications from "../../../../../services/Quote";
 
 class BtnContinue extends Component {
     constructor(props) {
@@ -12,44 +16,50 @@ class BtnContinue extends Component {
             step: parseInt(this.props.match.params.step),
             continueButtonDisable: true,
             stateFormIdentificacion: 0,
-            cotizacionExclude: [],
+            cotizacionExclude: []
         };
     }
 
     goBack = () => {
-        this.props.history.push(UrlSite + "/emision/2/" + this.props.match.params.id);
+        this.props.history.push(
+            UrlSite + "/emision/2/" + this.props.match.params.id
+        );
     };
 
     saveAndExit = () => {
         Helpers.goToHome(this.props.history);
     };
 
-    getPolicyNumber = emmitedPolicy => {
-        const {
-            data: {body}
-        } = emmitedPolicy;
-        const {crearPolizaIAXISRs} = body || {};
-        const {emisionPoliza} = crearPolizaIAXISRs || {};
-        const {numeroPoliza: policyNumber} = emisionPoliza || {};
-
-        return policyNumber;
+    getPolicyEmitedNumber = emmitedPolicy => {
+        const {policy} = emmitedPolicy;
+        const {emissionId} = policy || {};
+        return emissionId;
     };
 
     nextStep = async () => {
         const {match, history} = this.props;
         const {params} = match;
         const {id} = params;
-        let result = await PolicyService.emit(id);
-        let policyNumber = this.getPolicyNumber(result);
-        history.push(`${UrlSite}/exito/${policyNumber}`);
+        try {
+            let result = await PolicyService.emit(id);
+            let emitedPolicyNumber = this.getPolicyEmitedNumber(result);
+
+            store.dispatch(NextStep(7));
+            await SaveIdentifications.save();
+
+            history.push(`${UrlSite}/exito/${id}/${emitedPolicyNumber}`);
+            Loading.toggle(false);
+        } catch (e) {
+            Loading.toggle(false);
+        }
     };
 
     render() {
         return (
             <Fragment>
                 <div className={"return-button"}>
-                    <button type="button" className="btn btn-link"
-                            onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver
+                    <button type="button" className="btn btn-link" onClick={this.goBack}>
+                        <i className="back-icon">&nbsp;</i>Volver
                     </button>
                 </div>
                 <button
