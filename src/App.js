@@ -50,11 +50,11 @@ class App extends Component {
                 <Header data={this.state.data}/>
                 <main>
                     <Switch>
-                        <Route path="/exito/:polizaId" component={PolizaEmitida}/>
-                        <Route path="/cotizacion/:step/:id" component={Cotizacion}/>
-                        <Route path="/emision/:step/:id" component={Emision}/>
-                        <Route path="/error" component={ErrorNetwork}/>
-                        <Route path="/" component={Home}/>
+                        <Route exact path="/exito/:polizaId" component={PolizaEmitida}/>
+                        <Route exact path="/cotizacion/:step/:id" component={Cotizacion}/>
+                        <Route exact path="/emision/:step/:id" component={Emision}/>
+                        <Route exact path="/error" component={ErrorNetwork}/>
+                        <Route exact path="/" component={Home}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </main>
