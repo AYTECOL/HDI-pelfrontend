@@ -35,7 +35,7 @@ class App extends Component {
     async getUser() {
         if (this._isMounted === true && this.state.data === null) {
             const {pathname} = this.props.location;
-            if (pathname.indexOf('exito') !== -1 || pathname.indexOf('cotizacion') !== -1 || pathname.indexOf('emision') !== -1) {
+            if (pathname === "/" || pathname.indexOf('exito') !== -1 || pathname.indexOf('cotizacion') !== -1 || pathname.indexOf('emision') !== -1) {
                 this.setState({
                     ...this.state,
                     data: await Helpers.getUser()
