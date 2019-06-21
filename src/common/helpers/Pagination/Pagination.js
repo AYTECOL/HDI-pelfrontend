@@ -21,6 +21,7 @@ class Pagination extends React.Component {
 
   componentWillMount() {
     // set page if items array isn't empty
+
     if (this.props.items && this.props.items.length) {
       this.setPage(this.props.initialPage);
     }
@@ -111,31 +112,32 @@ class Pagination extends React.Component {
     }
 
     return (
-      <div>
-        <button
-          onClick={() => this.setPage(pager.currentPage - 1)}
-          type="button"
-          className="pager prev"
-        >
-          &nbsp;
-        </button>
-        <ul>
+      <div className="row footer ">
+        <ul className="pagination">
+          <a
+            className="pager prev"
+            onClick={() => this.setPage(pager.currentPage - 1)}
+          >
+            &lt;
+          </a>
+
           {pager.pages.map((page, index) => (
-            <li
-              key={index}
-              className={pager.currentPage === page ? "active" : ""}
-            >
-              <a onClick={() => this.setPage(page)}>{page}</a>
+            <li key={index}>
+              <a
+                className={pager.currentPage === page ? "active" : ""}
+                onClick={() => this.setPage(page)}
+              >
+                {page}
+              </a>
             </li>
           ))}
+          <a
+            className="pager next"
+            onClick={() => this.setPage(pager.currentPage + 1)}
+          >
+            &gt;
+          </a>
         </ul>
-        <button
-          onClick={() => this.setPage(pager.currentPage + 1)}
-          type="button"
-          className="pager next"
-        >
-          &nbsp;
-        </button>
       </div>
     );
   }
