@@ -46,10 +46,9 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-#              Principal:
-#                CanonicalUser:
-#                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
-              Principal: "*"
+              Principal:
+                CanonicalUser:
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:*
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
@@ -67,10 +66,9 @@ resources:
           Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
-#              Principal:
-#                CanonicalUser:
-#                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
-              Principal: "*"
+              Principal:
+                CanonicalUser:
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
               - s3:*
               Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
@@ -95,10 +93,7 @@ resources:
           CustomErrorResponses:
             - ErrorCode: 404
               ResponseCode: 200
-              ResponsePagePath: /index.html
-            - ErrorCode: 403
-              ResponseCode: 200
-              ResponsePagePath: /index.html  
+              ResponsePagePath: index.html
           DefaultCacheBehavior:
             AllowedMethods:
               - GET
