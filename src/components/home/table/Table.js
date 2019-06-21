@@ -12,13 +12,9 @@ import Pagination from "../../../common/helpers/Pagination/Pagination";
 const Table = props => {
   const [quotesItems, useQuotesItems] = useState([]);
   const [pageOfItems, usePageOfItems] = useState([]);
-  console.log("render table");
-  console.log(props.quotesData);
-  // this.getRows();
 
   const initialData = dataProps => {
     // const dataTemp = [...dataProps];
-    console.log(dataProps);
     useQuotesItems(dataProps);
   };
 
@@ -29,9 +25,7 @@ const Table = props => {
   const onChangePage = pageOfItems => {
     usePageOfItems(pageOfItems);
   };
-  const orderByArray = fecha => event => {
-    console.log(fecha);
-  };
+
   const getRowById = id => async e => {
     const { history } = props;
     let cotizacion = await Identifications.getById(id);
@@ -49,7 +43,11 @@ const Table = props => {
       store.dispatch(restoreCotizacion(cotizacion));
     }
   };
+  const onClickOrdeArray = ({ target }) => {
+    const { handleChange } = props;
 
+    handleChange();
+  };
   return (
     <div className="table-solicitudes">
       <div className="wrapper">
@@ -58,7 +56,10 @@ const Table = props => {
             <span>N. de solicitud</span>
           </div>
           <div className="col">
-            <span onClick={orderByArray("fecha")}>Fecha</span>
+            <span onClick={event => onClickOrdeArray(event)}>
+              Fecha
+              <i className="tagTable">&#8597;</i>
+            </span>
           </div>
           <div className="col">
             <span>Tomador</span>

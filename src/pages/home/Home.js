@@ -13,17 +13,37 @@ class Home extends PureComponent {
     search: "",
     originalQuoteData: [],
     quotesData: [],
-    parameterDays: 30
+    parameterDays: 30,
+    orderParameter: "ASC"
   };
   componentDidMount = () => {
     Loading.toggle(true);
     this.quotesDataApi();
   };
+  orderByArray = event => {
+    let quotesItems = this.state.quotesData;
+    let arrayOrder;
+    if (this.state.orderParameter === "ASC") {
+      arrayOrder = quotesItems.sort((a, b) => {
+        return new Date(a.create_data) - new Date(b.create_data);
+      });
+      this.setState({ orderParameter: "DESC" });
+    } else {
+      arrayOrder = quotesItems.sort((a, b) => {
+        return new Date(b.create_data) - new Date(a.create_data);
+      });
+      this.setState({ orderParameter: "ASC" });
+    }
+
+    this.setState({ quotesData: [...arrayOrder] });
+  };
   formatDate = startDate => {
     let endDate = MomentJs.utc();
     startDate = MomentJs.utc(startDate);
     let duration = MomentJs.duration(endDate.diff(startDate));
-    return parseInt(this.state.parameterDays) - parseInt(duration._days);
+    return (
+      parseInt(this.state.parameterDays) - parseInt(duration["_data"]["days"])
+    );
   };
   formatData = dataArray => {
     var dataFormat = [];
@@ -35,14 +55,14 @@ class Home extends PureComponent {
         name: `${dataArray[i].name} ${dataArray[i].last_name}`,
         address: dataArray[i].address,
         document_number: dataArray[i].document_number,
-        validity: this.formatDate(dataArray[i].create_at)
+        validity: this.formatDate(dataArray[i].create_at),
+        create_data: dataArray[i].create_at
       };
     }
     return dataFormat;
   };
 
   filterByAny = event => {
-    console.log(event);
     const dataElements = this.state.originalQuoteData;
     this.transformData(dataElements, event);
   };
@@ -139,7 +159,10 @@ class Home extends PureComponent {
               <li>Opción 2</li>
             </ul>
           </div>
-          <Table quotesData={this.state.quotesData} />
+          <Table
+            quotesData={this.state.quotesData}
+            handleChange={this.orderByArray}
+          />
         </div>
       </div>
     );
