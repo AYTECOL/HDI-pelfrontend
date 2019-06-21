@@ -44,7 +44,8 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            - Sid: PublicReadGetObject
+            #- Sid: PublicReadGetObject
+            - Sid: AllowPublicRead
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -64,7 +65,8 @@ resources:
           Ref: PdfS3Bucket
         PolicyDocument:
           Statement:
-            - Sid: PublicReadGetObject
+            #- Sid: PublicReadGetObject
+            - Sid: AllowPublicReadWrite
               Effect: Allow
               Principal:
                 CanonicalUser:
