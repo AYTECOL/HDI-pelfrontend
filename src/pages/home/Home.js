@@ -20,19 +20,34 @@ class Home extends PureComponent {
     Loading.toggle(true);
     this.quotesDataApi();
   };
-  orderByArray = event => {
+  orderByArray = typeFilter => {
     let quotesItems = this.state.quotesData;
     let arrayOrder;
-    if (this.state.orderParameter === "ASC") {
-      arrayOrder = quotesItems.sort((a, b) => {
-        return new Date(a.create_data) - new Date(b.create_data);
-      });
-      this.setState({ orderParameter: "DESC" });
-    } else {
-      arrayOrder = quotesItems.sort((a, b) => {
-        return new Date(b.create_data) - new Date(a.create_data);
-      });
-      this.setState({ orderParameter: "ASC" });
+    if (typeFilter === "date") {
+      if (this.state.orderParameter === "ASC") {
+        arrayOrder = quotesItems.sort((a, b) => {
+          return new Date(a.create_data) - new Date(b.create_data);
+        });
+        this.setState({ orderParameter: "DESC" });
+      } else {
+        arrayOrder = quotesItems.sort((a, b) => {
+          return new Date(b.create_data) - new Date(a.create_data);
+        });
+        this.setState({ orderParameter: "ASC" });
+      }
+    }
+    if (typeFilter === "quoteId") {
+      if (this.state.orderParameter === "ASC") {
+        arrayOrder = quotesItems.sort((a, b) => {
+          return parseInt(a.quoteId) - parseInt(b.quoteId);
+        });
+        this.setState({ orderParameter: "DESC" });
+      } else {
+        arrayOrder = quotesItems.sort((a, b) => {
+          return parseInt(b.quoteId) - parseInt(a.quoteId);
+        });
+        this.setState({ orderParameter: "ASC" });
+      }
     }
 
     this.setState({ quotesData: [...arrayOrder] });
@@ -78,7 +93,11 @@ class Home extends PureComponent {
           (quoteItem.name &&
             quoteItem.name.toLowerCase().includes(search.toLowerCase())) ||
           (quoteItem.name &&
-            quoteItem.address.toLowerCase().includes(search.toLowerCase()))
+            quoteItem.address.toLowerCase().includes(search.toLowerCase())) ||
+          (quoteItem.document_number &&
+            quoteItem.document_number
+              .toLowerCase()
+              .includes(search.toLowerCase()))
       );
     }
 
@@ -152,13 +171,7 @@ class Home extends PureComponent {
               handleChange={this.filterByAny}
             />
           </div>
-          <div className="tabs row">
-            <ul>
-              <li className="active">Ver todo</li>
-              <li>Opción 1</li>
-              <li>Opción 2</li>
-            </ul>
-          </div>
+
           <Table
             quotesData={this.state.quotesData}
             handleChange={this.orderByArray}

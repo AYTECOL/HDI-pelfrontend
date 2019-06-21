@@ -43,20 +43,22 @@ const Table = props => {
       store.dispatch(restoreCotizacion(cotizacion));
     }
   };
-  const onClickOrdeArray = ({ target }) => {
+  const onClickOrdeArray = typeFilter => {
     const { handleChange } = props;
 
-    handleChange();
+    handleChange(typeFilter);
   };
   return (
     <div className="table-solicitudes">
       <div className="wrapper">
         <div className="row row-header">
           <div className="col">
-            <span>N. de solicitud</span>
+            <span onClick={event => onClickOrdeArray("quoteId")}>
+              N. de solicitud<i className="tagTable">&#8597;</i>
+            </span>
           </div>
           <div className="col">
-            <span onClick={event => onClickOrdeArray(event)}>
+            <span onClick={event => onClickOrdeArray("date")}>
               Fecha
               <i className="tagTable">&#8597;</i>
             </span>
