@@ -54,9 +54,9 @@ class Api {
         })
     };
 
-    static async post(url, data, overrideBase, formData, headers) {
+    static async post(url, data, overrideBase, formData, headers, format) {
         return await Api.HttpRequest('POST', url, data, overrideBase, formData, headers).then(function (response) {
-            return JSON.parse(response);
+            return typeof format === "undefined"?JSON.parse(response):response;
         });
     };
 

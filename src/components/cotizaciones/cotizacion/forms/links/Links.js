@@ -20,7 +20,7 @@ class Links extends Component {
     getPdf = () => {
         Loading.toggle(true);
         Links.pdf(this);
-        Loading.toggle(true);
+        Loading.toggle(false);
     };
 
     static async pdf(it, download = true) {
@@ -32,13 +32,12 @@ class Links extends Component {
 
         try {
             let pdf = await PrevPdfPolizaPrima.get(plan, quote);
-            if (typeof pdf.pdfQuotationFile !== "undefined" && download === true) {
+            if (typeof pdf !== "undefined" && download === true) {
                 const a = document.createElement("a");
                 a.style.display = "none";
                 document.body.appendChild(a);
-                a.href = pdf.pdfQuotationFile;
-                a.setAttribute("target", "_blank");
-                a.setAttribute("download", pdf.pdfQuotationFile);
+                a.href = "data:application/pdf;base64,"+pdf;
+                a.setAttribute("download", 'PdfPolizaPrima.pdf');
                 a.click();
                 document.body.removeChild(a);
             }
