@@ -33,7 +33,6 @@ class BtnContinue extends Component {
         //Validations
         if (state.celulares === true) {
             for (let i = 0; i < state.contents.length; i++) {
-                console.log(state.contents[i]);
                 if (state.contents[i].uploaded !== true && typeof state.contents[i].doc === "undefined") {
                     status = false;
                 }

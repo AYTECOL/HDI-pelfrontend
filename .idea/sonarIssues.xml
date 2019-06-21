@@ -538,6 +538,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/PolizaAnexoHogar.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/PrevPdfPolizaPrima.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/Quote.js">
           <value>
             <set />
