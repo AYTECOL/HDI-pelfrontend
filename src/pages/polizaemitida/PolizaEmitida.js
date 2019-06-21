@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import "./PolizaEmitida.scss";
 import SendMail from "../../components/cotizaciones/cotizacion/popups/sendmail/SendMail";
 import Loading from "../../components/globals/loading/Loading";
@@ -8,159 +8,165 @@ import PolizaAnexoHogar from "../../services/PolizaAnexoHogar";
 import PdfEndosoHogar from "../../services/PdfEndosoHogar";
 
 class PolizaEmitida extends Component {
-    // constructor(props) {
-    //   super(props);
-    //   this.state = {
-    //     quote: this.props.match.params.id,
-    //     data: {}
-    //   };
-    // }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     quote: this.props.match.params.id,
+  //     data: {}
+  //   };
+  // }
 
-    state = {
-        quote: this.props.match.params.polizaId,
-        data: {}
-    };
+  state = {
+    quote: this.props.match.params.polizaId,
+    data: {},
+    emitedPolicy: 0
+  };
 
-    async getData() {
-        Loading.toggle(true);
-        let data = await QuoteIussedById.get(this.state.quote);
-        let endoso = undefined;
+  async getData() {
+    Loading.toggle(true);
+    let data = await QuoteIussedById.get(this.state.quote);
 
-        if (typeof data.quote_iussed_info !== "undefined") {
-            if (
-                typeof data.quote_iussed_info.Item !== "undefined" &&
-                typeof data.quote_iussed_info.Item.onerous !== "undefined"
-            ) {
-                if (data.quote_iussed_info.Item.onerous.length > 0) {
-                    endoso = true;
-                }
-            }
+    let { location } = this.props;
+    let { state } = location;
+    let { emitedPolicy } = state;
+    let endoso = undefined;
+
+    if (typeof data.quote_iussed_info !== "undefined") {
+      if (
+        typeof data.quote_iussed_info.Item !== "undefined" &&
+        typeof data.quote_iussed_info.Item.onerous !== "undefined"
+      ) {
+        if (data.quote_iussed_info.Item.onerous.length > 0) {
+          endoso = true;
         }
-        this.setState(
-            state =>
-                console.log("from poliza emitida", state) || {
-                    ...state,
-                    data,
-                    endoso
-                }
-        );
-        console.log(this.state);
-        Loading.toggle(false);
+      }
     }
-
-    componentDidMount() {
-        console.log(this.props.match.params.polizaId);
-        // this.setState(
-        //   state =>
-        //     console.log("from poliza emitida", state) || {
-        //       ...state,
-        //       quote: this.props.match.params.polizaId
-        //     }
-        // );
-        this.getData();
-    }
-
-    openModal = () => {
-        SendMail.toggle(true);
-    };
-
-    getPdfEndoso = async () => {
-        let pdfEndoso = await PdfEndosoHogar.get(this.state.quote);
-
-        let a = document.createElement("a");
-        a.style.display = "none";
-        document.body.appendChild(a);
-        a.href = pdfEndoso.processEndrosementHomePDF;
-        a.setAttribute("target", "_blank");
-        a.setAttribute("download", pdfEndoso.processEndrosementHomePDF);
-        a.click();
-        document.body.removeChild(a);
-    };
-
-    getPdf = async () => {
-        Loading.toggle(true);
-        try {
-            console.log("from getPdf=>", this.props.match);
-            let pdfAnexo = await PolizaAnexoHogar.get(this.state.quote);
-            let a = document.createElement("a");
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.href = pdfAnexo.processPolicyHomeAnnex;
-            a.setAttribute("target", "_blank");
-            a.setAttribute("download", pdfAnexo.processPolicyHomeAnnex);
-            a.click();
-            document.body.removeChild(a);
-
-            let pdf = await PrevPdfPolizaPrima.get(this.state.quote);
-            a = document.createElement("a");
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.href = pdf.pdfQuotationFile;
-            a.setAttribute("target", "_blank");
-            a.setAttribute("download", pdf.pdfQuotationFile);
-            a.click();
-            document.body.removeChild(a);
-
-            Loading.toggle(false);
-        } catch (e) {
-            Loading.toggle(true);
+    this.setState(
+      state =>
+        console.log("from poliza emitida", state) || {
+          ...state,
+          data,
+          endoso,
+          emitedPolicy
         }
-    };
+    );
+    console.log(this.state);
+    Loading.toggle(false);
+  }
 
-    render() {
-        return (
-            <div className="cotizacion exito">
-                <div className="index-form">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col col-sm-12 col-md-12 col-lg-12 title">
-                                <h2>¡Póliza emitida!</h2>
-                                <h3>
-                                    En los próximos minutos, se enviará un mail con la información
-                                    de la poliza e información de utilidad
-                                </h3>
-                                <p>
-                                    Póliza <span>{this.state.quote}</span>
-                                </p>
-                                <div className="image">&nbsp;</div>
-                            </div>
-                        </div>
+  componentDidMount() {
+    console.log(this.props.match.params.polizaId);
+    // this.setState(
+    //   state =>
+    //     console.log("from poliza emitida", state) || {
+    //       ...state,
+    //       quote: this.props.match.params.polizaId
+    //     }
+    // );
+    this.getData();
+  }
 
-                        <div className={"row text-center links-row"}>
-                            <div className="col col-sm-12 col-md-12 col-lg-12">
-                                <div className="generatepdf link-item">
-                                    <p onClick={this.getPdf}>
-                                        <i>&nbsp;</i> Descargar Anexo PDF
-                                    </p>
-                                    <br/>
-                                    {typeof this.state.endoso !== "undefined" && (
-                                        <p onClick={this.getPdfEndoso}>
-                                            <i>&nbsp;</i> Generar cotización en PDF endoso
-                                        </p>
-                                    )}
-                                </div>
-                                {/*<div className="sendpdf link-item" onClick={this.openModal}>*/}
-                                {/*<p><i>&nbsp;</i> Enviar por correo</p>*/}
-                                {/*</div>*/}
-                            </div>
-                        </div>
+  openModal = () => {
+    SendMail.toggle(true);
+  };
 
-                        <div className={"row text-center"}>
-                            <div className="col col-sm-12 col-md-12 col-lg-12">
-                                <button type="button" className={"btn btn-default"}>
-                                    Nueva cotización
-                                </button>
-                                <a href={"/"} type="button" className={"btn btn-primary"}>
-                                    Ir a mis negocios
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <SendMail/>
+  getPdfEndoso = async () => {
+    let pdfEndoso = await PdfEndosoHogar.get(this.state.quote);
+
+    let a = document.createElement("a");
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.href = pdfEndoso.processEndrosementHomePDF;
+    a.setAttribute("target", "_blank");
+    a.setAttribute("download", pdfEndoso.processEndrosementHomePDF);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  getPdf = async () => {
+    Loading.toggle(true);
+    try {
+      console.log("from getPdf=>", this.props.match);
+      let pdfAnexo = await PolizaAnexoHogar.get(this.state.quote);
+      let a = document.createElement("a");
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.href = pdfAnexo.processPolicyHomeAnnex;
+      a.setAttribute("target", "_blank");
+      a.setAttribute("download", pdfAnexo.processPolicyHomeAnnex);
+      a.click();
+      document.body.removeChild(a);
+
+      let pdf = await PrevPdfPolizaPrima.get(this.state.quote);
+      a = document.createElement("a");
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.href = pdf.pdfQuotationFile;
+      a.setAttribute("target", "_blank");
+      a.setAttribute("download", pdf.pdfQuotationFile);
+      a.click();
+      document.body.removeChild(a);
+
+      Loading.toggle(false);
+    } catch (e) {
+      Loading.toggle(true);
+    }
+  };
+
+  render() {
+    return (
+      <div className="cotizacion exito">
+        <div className="index-form">
+          <div className="container">
+            <div className="row">
+              <div className="col col-sm-12 col-md-12 col-lg-12 title">
+                <h2>¡Póliza emitida!</h2>
+                <h3>
+                  En los próximos minutos, se enviará un mail con la información
+                  de la poliza e información de utilidad
+                </h3>
+                <p>
+                  Póliza <span>{this.state.emitedPolicy}</span>
+                </p>
+                <div className="image">&nbsp;</div>
+              </div>
             </div>
-        );
-    }
+
+            <div className={"row text-center links-row"}>
+              <div className="col col-sm-12 col-md-12 col-lg-12">
+                <div className="generatepdf link-item">
+                  <p onClick={this.getPdf}>
+                    <i>&nbsp;</i> Descargar Anexo PDF
+                  </p>
+                  <br />
+                  {typeof this.state.endoso !== "undefined" && (
+                    <p onClick={this.getPdfEndoso}>
+                      <i>&nbsp;</i> Generar cotización en PDF endoso
+                    </p>
+                  )}
+                </div>
+                {/*<div className="sendpdf link-item" onClick={this.openModal}>*/}
+                {/*<p><i>&nbsp;</i> Enviar por correo</p>*/}
+                {/*</div>*/}
+              </div>
+            </div>
+
+            <div className={"row text-center"}>
+              <div className="col col-sm-12 col-md-12 col-lg-12">
+                <button type="button" className={"btn btn-default"}>
+                  Nueva cotización
+                </button>
+                <a href={"/"} type="button" className={"btn btn-primary"}>
+                  Ir a mis negocios
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <SendMail />
+      </div>
+    );
+  }
 }
 
 export default PolizaEmitida;
