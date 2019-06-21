@@ -5,6 +5,9 @@ import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import PolicyService from "../../../../../services/Policy";
 import Loading from "../../../../globals/loading/Loading";
+import store from "../../../../../store";
+import {NextStep} from "../../../../../actions";
+import SaveIdentifications from "../../../../../services/Quote";
 
 class BtnContinue extends Component {
     constructor(props) {
@@ -40,6 +43,10 @@ class BtnContinue extends Component {
         try {
             let result = await PolicyService.emit(id);
             let emitedPolicyNumber = this.getPolicyEmitedNumber(result);
+
+            store.dispatch(NextStep(7));
+            await SaveIdentifications.save();
+
             history.push(`${UrlSite}/exito/${id}/${emitedPolicyNumber}`);
             Loading.toggle(false);
         } catch (e) {
