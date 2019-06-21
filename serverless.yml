@@ -44,14 +44,15 @@ resources:
           Ref: WebAppS3Bucket
         PolicyDocument:
           Statement:
-            #- Sid: PublicReadGetObject
-            - Sid: AllowPublicRead
+            - Sid: PublicReadGetObject
+            #- Sid: AllowPublicRead
               Effect: Allow
               Principal:
                 CanonicalUser:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
-              - s3:*
+              - "s3:GetObject"
+              - "s3:PutObject"
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     PdfS3Bucket:
       Type: AWS::S3::Bucket
@@ -65,14 +66,15 @@ resources:
           Ref: PdfS3Bucket
         PolicyDocument:
           Statement:
-            #- Sid: PublicReadGetObject
-            - Sid: AllowPublicReadWrite
+            - Sid: PublicReadGetObject
+            #- Sid: AllowPublicReadWrite
               Effect: Allow
               Principal:
                 CanonicalUser:
                   {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
-              - s3:*
+              - "s3:GetObject"
+              - "s3:PutObject"
               Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
