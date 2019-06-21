@@ -3,7 +3,7 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: uat 
+  stage: nonprod 
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
