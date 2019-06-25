@@ -14,7 +14,10 @@ class Adress extends Component {
             city: ""
         };
         this.textInput = React.createRef();
-        store.subscribe(async () => {
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
             let city = storeState.cotizacion.identification.city;
@@ -31,9 +34,13 @@ class Adress extends Component {
                     disabled: disabled,
                     error: error
                 });
-                // if (changeCity) this.textInput.current.focus();
+                if (changeCity) this.textInput.current.focus();
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = e => {
