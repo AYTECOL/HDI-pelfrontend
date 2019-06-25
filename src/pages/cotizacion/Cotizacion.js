@@ -8,11 +8,14 @@ import CotizacionForm from '../../components/cotizaciones/cotizacion/index/Index
 import Validaridentificacion
     from '../../components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
 import Helpers from "../../common/helpers/helpers/Helpers";
+import store from "../../store";
+import {saveCotizacionNumber} from "../../actions";
 
 class Cotizacion extends Component {
     render() {
         let params = this.props.match.params;
         params.step = parseInt(params.step);
+        store.dispatch(saveCotizacionNumber(params.id));
         Helpers.getRowById(params.id, params.step, this.props.history);
         return (
             <div className="cotizacion">

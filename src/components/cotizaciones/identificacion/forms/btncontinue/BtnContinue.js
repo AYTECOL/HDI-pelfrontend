@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 
 import store from '../../../../../store';
-import {NextStep, nextStepIndentification, saveIdentificationValue} from '../../../../../actions';
+import {NextStep, nextStepIndentification, saveCotizacionNumber, saveIdentificationValue} from '../../../../../actions';
 import Loading from "../../../../../components/globals/loading/Loading";
 import SaveIdentifications from '../../../../../services/Quote';
 // Components
@@ -77,7 +77,7 @@ class BtnContinue extends Component {
             Loading.toggle(true);
             store.dispatch(NextStep(2));
             await SaveIdentifications.save();
-            this.props.history.push(UrlSite + '/cotizacion/2/' + storeState.cotizacion.number);
+            this.props.history.push(UrlSite + '/cotizacion/2/' + this.props.match.params.id);
         } else {
             Loading.toggle(true);
             this.setState({

@@ -31,7 +31,7 @@ class Adress extends Component {
                     disabled: disabled,
                     error: error
                 });
-                if (changeCity) this.textInput.current.focus();
+                // if (changeCity) this.textInput.current.focus();
             }
         });
     }
