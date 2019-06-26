@@ -19,7 +19,7 @@ const Table = props => {
 
   useEffect(() => {
     initialData(props.quotesData);
-  }, [props.quotesData]);
+  });
 
   const onChangePage = pageOfItems => {
     usePageOfItems(pageOfItems);
@@ -107,7 +107,7 @@ const Table = props => {
               <p>{item.validity} días</p>
             </div>
             <div className="col">
-              <p>Proceso de inspección</p>
+              <p>{item.stateQuote}</p>
             </div>
             <div className="col">
               <button
