@@ -15,7 +15,7 @@ node('linux'){
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
                 //sh "sls deploy -v --stage dev"
                 //sh 'aws cloudformation update-stack --stack-name poliza-express-hogar-dev'
-				// sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+				  sh "sls deploy -v --force "
                 // dir('dist/poliza-express-hogar-dev'){
                     
                 // 	sh 'pwd'
@@ -23,7 +23,7 @@ node('linux'){
                 //    //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
                 // }
                 //sh 'aws s3api list-buckets'
-                sh 'aws cloudformation describe-stacks --stack-name poliza-express-hogar-dev'
+                //sh 'aws cloudformation describe-stacks --stack-name poliza-express-hogar-dev'
             }
         }
     }
