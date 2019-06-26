@@ -47,6 +47,14 @@ class CreateOrUpdateValoration {
 
             "inspection_policies": typeof risks.inspection_policies === "undefined" ? 0 : risks.inspection_policies,
 
+
+            "prospect" : store.prospect.prospect,
+            "total_premium_policy" : store.prospect.total_premium_policy,
+            "expedition_expenses" : store.prospect.expedition_expenses,
+            "total_tax_policy" : store.prospect.total_tax_policy,
+            "iva_expedition_expenses" : store.prospect.iva_expedition_expenses,
+
+
             "distribution_of_insured_securities_split": {
                 "runtimeContext": {
                     "currentDate": momentJs().toISOString(),

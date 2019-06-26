@@ -49,6 +49,7 @@ class BtnContinue extends Component {
         let newPersons = [];
         for (let i in personsMerge) newPersons.push(personsMerge[i]);
         persons = newPersons;
+
         for (let i = 0; i < persons.length; i++) {
             let location = persons[i]['ciudad'];
             let extraLocation = typeof location !== "undefined" ? location.split(", ") : [];

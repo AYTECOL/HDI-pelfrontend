@@ -34,6 +34,7 @@ const initialState = {
     stateFormIdentificacion: 0,
     typeDocument: 1,
     showMap: false,
+    prospect: {},
 
     // Segundo formulario Inmueble
     typeInmueble: 0,
@@ -213,6 +214,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             pdf_info: action.data
+        }
+    } else if(action.type === "SAVE_PROSPECT"){
+        return {
+            ...state,
+            prospect: action.data
         }
     }
     return state;
