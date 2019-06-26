@@ -15,7 +15,7 @@ node('linux'){
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
                 //sh "sls deploy -v --stage dev"
                 //sh 'aws cloudformation update-stack --stack-name poliza-express-hogar-dev'
-				  sh "sls deploy -v --force "
+				sh "sls deploy -v --force "
                 dir('dist/poliza-express-hogar-dev'){
                     sh 'pwd'
                     sh 'ls'
@@ -40,10 +40,9 @@ node('linux'){
             
             sh 'aws s3 sync build s3://poliza-express-hogar-dev --delete'
             sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-dev --delete'
-            //sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-pdf-dev --delete'
+            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-pdf-dev --delete'
             //sh 'aws s3 cp build s3://poliza-express-hogar-dev  --recursive --metadata-directive REPLACE --acl public-read'
             //sh 'aws s3 cp build s3://poliza-express-hogar-dev -metadata-directive REPLACE --recursive --cache-control max-age=0 --acl public-read'    
-            //sh 'aws cloudfront create-invalidation --distribution-id E2X1BCQJ2RJ615 --paths "/*" '    
         }
 		
     }
