@@ -55,6 +55,9 @@ const saveInmuebleValue = (element) => {
 const saveInmuebleValueSeguridad = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: {[element.name]: element.value}};
 };
+const saveProspect = (data) => {
+    return {type: "SAVE_PROSPECT", data: data}
+};
 
 // Tercer formulario
 const indexPlanSelected = (index) => {
@@ -71,6 +74,7 @@ const saveAllInsurableLimits = (data) => {
 const AllPlans = (data) => {
     return {type: "SAVE_ALL_PLANS", data: data}
 };
+
 
 //General
 const savePdfInfo = (data) => {
@@ -97,4 +101,5 @@ export {
     AllPlans,
     indexPlanSelected,
     savePdfInfo,
+    saveProspect
 };

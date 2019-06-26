@@ -8,7 +8,7 @@ import store from "../../../../../store";
 import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
 import Loading from "../../../../globals/loading/Loading";
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {NextStep} from "../../../../../actions";
+import {NextStep, saveProspect} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Links from "../links/Links";
 
@@ -50,6 +50,8 @@ class BtnContinue extends Component {
         plan['assists'][0]['selected_id'] = index;
 
         plan = BtnContinue.toNumberCoverrange(plan);
+
+        store.dispatch(saveProspect(plan['prima']));
 
         await Links.pdf(this, false);
 

@@ -262,13 +262,13 @@ class Index extends Component {
                                                 {this.state.inmueble.inmueble_asegudado_obras === 1 &&
                                                 <div className="col col-12 col-12 gray-box">
                                                     <p><b>Obras de arte</b></p>
-                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? (this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
+                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
                                                 </div>
                                                 }
                                                 {this.state.inmueble.inmueble_asegudado_joyas === 1 &&
                                                 <div className="col col-12 col-12 gray-box">
                                                     <p><b>Joyas</b></p>
-                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? (this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
+                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
                                                 </div>
                                                 }
                                             </div>

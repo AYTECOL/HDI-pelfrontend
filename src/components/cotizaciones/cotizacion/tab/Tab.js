@@ -85,6 +85,7 @@ class Tab extends Component {
             currentPlan = BtnContinue.toNumberCoverrange(plans[i]);
             let prospect = await DeterminePolizaPrima.get(currentPlan, quotateId);
             plans[i].value = prospect.prospect;
+            plans[i].prima = prospect;
         }
 
         if (typeof plan.plan_selected_info.Item !== "undefined") {
@@ -108,8 +109,7 @@ class Tab extends Component {
     }
 
     render() {
-        if (typeof this.state.plans[this.state.index] === "undefined")
-            return <div className="hide">&nbsp;</div>;
+        if (typeof this.state.plans[this.state.index] === "undefined") return <div className="hide">&nbsp;</div>;
         return (
             <Fragment>
                 <div className="first-content">
