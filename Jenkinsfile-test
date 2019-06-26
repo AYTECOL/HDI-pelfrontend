@@ -22,7 +22,8 @@ node('linux'){
                 //     sh 'ls'
                 //    //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
                 // }
-                sh 'aws s3api list-buckets'
+                //sh 'aws s3api list-buckets'
+                sh 'aws cloudformation describe-stacks --stack name poliza-express-hogar-dev'
             }
         }
     }
