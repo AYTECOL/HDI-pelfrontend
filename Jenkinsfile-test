@@ -16,6 +16,7 @@ node('linux'){
                 //sh "sls deploy -v --stage dev"
 				sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-dev'){
+                    sh 'aws cloudformation update-stack --stack-name poliza-express-hogar-dev'
                 	sh 'pwd'
                     sh 'ls'
                    //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
@@ -40,7 +41,7 @@ node('linux'){
             //sh 'aws s3 cp build s3://poliza-express-hogar-dev  --recursive --metadata-directive REPLACE --acl public-read'
             //sh 'aws s3 cp build s3://poliza-express-hogar-dev -metadata-directive REPLACE --recursive --cache-control max-age=0 --acl public-read'    
             //sh 'aws cloudfront create-invalidation --distribution-id E2X1BCQJ2RJ615 --paths "/*" '
-              sh 'aws cloudformation update-stack --stack-name poliza-express-hogar-dev'
+              
         }
 		
     }
