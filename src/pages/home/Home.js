@@ -7,6 +7,11 @@ import "./Home.scss";
 import Search from "../../components/home/search/search";
 import Identifications from "../../services/GetQuote";
 import MomentJs from "moment";
+import {
+  STEP_EMITTED,
+  STEP_ISSUE,
+  STEP_QUOTATION
+} from "../../common/constants/quotesStates";
 
 class Home extends PureComponent {
   state = {
@@ -14,7 +19,8 @@ class Home extends PureComponent {
     originalQuoteData: [],
     quotesData: [],
     parameterDays: 30,
-    orderParameter: "ASC"
+    orderParameter: "ASC",
+    statesQuotes: []
   };
   componentDidMount = () => {
     Loading.toggle(true);
@@ -60,6 +66,26 @@ class Home extends PureComponent {
       parseInt(this.state.parameterDays) - parseInt(duration["_data"]["days"])
     );
   };
+  formatStatesQuotes = step => {
+    let stringState = "";
+    switch (step) {
+      case 1:
+      case 2:
+      case 3:
+        stringState = "Cotización";
+        break;
+      case 4:
+      case 5:
+      case 6:
+        stringState = "Proceso de emisión";
+        break;
+      case 7:
+        stringState = "Póliza emitida";
+        break;
+    }
+
+    return stringState;
+  };
   formatData = dataArray => {
     var dataFormat = [];
     for (let i = 0; i < dataArray.length; i++) {
@@ -71,9 +97,33 @@ class Home extends PureComponent {
         address: dataArray[i].address,
         document_number: dataArray[i].document_number,
         validity: this.formatDate(dataArray[i].create_at),
-        create_data: dataArray[i].create_at
+        create_data: dataArray[i].create_at,
+        stateQuote: this.formatStatesQuotes(dataArray[i].step),
+        step: dataArray[i].step
       };
     }
+    this.setState(prevState => ({
+      statesQuotes: {
+        ...prevState.statesQuotes,
+        quotation: dataArray.filter(
+          data => data.step === 1 || data.step === 2 || data.step === 3
+        ).length
+      }
+    }));
+    this.setState(prevState => ({
+      statesQuotes: {
+        ...prevState.statesQuotes,
+        issue: dataArray.filter(
+          data => data.step === 4 || data.step === 5 || data.step === 6
+        ).length
+      }
+    }));
+    this.setState(prevState => ({
+      statesQuotes: {
+        ...prevState.statesQuotes,
+        emitted: dataArray.filter(data => data.step === 7).length
+      }
+    }));
     return dataFormat;
   };
 
@@ -81,7 +131,14 @@ class Home extends PureComponent {
     const dataElements = this.state.originalQuoteData;
     this.transformData(dataElements, event);
   };
+  onClickStateQuote = stateQuote => {
+    let dataArrayState = this.state.originalQuoteData;
+    let dataFortmated = dataArrayState.filter(data =>
+      stateQuote.includes(data.step)
+    );
 
+    this.setState({ quotesData: [...dataFortmated] });
+  };
   transformData = (quotes = null, search = "") => {
     // const { orderBy, order: orderAsc } = this.state;
     const quotesTable = quotes ? quotes : this.state.quotesData;
@@ -156,14 +213,17 @@ class Home extends PureComponent {
           </div>
           <div className="top-bar">
             <ul className="menus">
-              <li>
-                <p>Cotizaciones</p> <span>12</span>
+              <li onClick={event => this.onClickStateQuote(STEP_QUOTATION)}>
+                <p>Cotizaciones</p>{" "}
+                <span>{this.state.statesQuotes.quotation}</span>
               </li>
-              <li className="active">
-                <p>Proceso de emisión</p> <span>43</span>
+              <li onClick={event => this.onClickStateQuote(STEP_ISSUE)}>
+                <p>Proceso de emisión</p>{" "}
+                <span>{this.state.statesQuotes.issue}</span>
               </li>
-              <li>
-                <p>Pólizas emitidas</p> <span>12</span>
+              <li onClick={event => this.onClickStateQuote(STEP_EMITTED)}>
+                <p>Pólizas emitidas</p>{" "}
+                <span>{this.state.statesQuotes.emitted}</span>
               </li>
             </ul>
             <Search
