@@ -13,7 +13,6 @@ import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
-import store from "../../../../../store";
 
 export default class Persona extends Component {
 
@@ -109,14 +108,14 @@ export default class Persona extends Component {
 
     static extractDataFromIaxis(persona, code, person) {
         if (parseInt(code) === 37) {
-            if( typeof persona['consultarPersonaRs'] !== "undefined" ){
-                if( typeof persona['consultarPersonaRs']['persona'] !== "undefined" ){
-                    if( typeof persona['consultarPersonaRs']['persona']['personaJuridica'] !== "undefined" ){
-                        if( typeof persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'] !== "undefined" ){
+            if (typeof persona['consultarPersonaRs'] !== "undefined") {
+                if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
+                    if (typeof persona['consultarPersonaRs']['persona']['personaJuridica'] !== "undefined") {
+                        if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'] !== "undefined") {
                             person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
                             person.businessnameDisabled = true;
                         }
-                        if( typeof persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'] !== "undefined" ){
+                        if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'] !== "undefined") {
                             person.fechadecontitucion = persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'].split("T")[0];
                             person.fechadecontitucionDisabled = true;
                         }
@@ -149,9 +148,9 @@ export default class Persona extends Component {
             }
         }
         if (typeof persona['consultarPersonaRs'] !== "undefined") {
-            if( typeof persona['consultarPersonaRs']['persona'] !== "undefined" ){
+            if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
                 let contactos = persona['consultarPersonaRs']['persona']['contacto'];
-                if( typeof contactos !== "undefined" ){
+                if (typeof contactos !== "undefined") {
                     person.contacto = contactos;
                     person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
                     for (let i = 0; i < contactos.length; i++) {
@@ -194,10 +193,10 @@ export default class Persona extends Component {
         setTimeout(() => {
             if (this._isMounted) {
                 this.validateAll(null, false, false);
-                let personObject = store.getState().cotizacion.identification.object;
-                if (typeof personObject !== "undefined" && this.props.item !== -1) {
+                let personObject = this.state.person;
+                if (typeof personObject.person !== "undefined" && this.props.item !== -1) {
                     this.validateDoc({
-                        person: personObject
+                        person: personObject.person
                     });
                 }
             }
@@ -303,9 +302,9 @@ export default class Persona extends Component {
                     userRestricted: false,
                     personExists: true
                 });
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.validateAll(null, false, false);
-                },100);
+                }, 100);
 
                 Loading.toggle(false);
             }
@@ -367,7 +366,7 @@ export default class Persona extends Component {
                     if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                 }
             }
-            if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "") {
+            if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
                 errors.splice(errors.indexOf('sarlfalt'), 1);
                 Helpers.removeClass('.sarlaft.error', 'error');
             }
@@ -807,7 +806,7 @@ export default class Persona extends Component {
                                         </div>
                                     </div>
                                     }
-                                    {(this.state.typePerson === 1 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
+                                    {(this.state.typePerson !== 5 && this.state.typePerson !== 6 && this.state.typePerson !== 7 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
                                     <div
                                         className={"row sarlaft"}>
                                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
