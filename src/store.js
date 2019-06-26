@@ -215,7 +215,7 @@ const reducer = (state = initialState, action) => {
             ...state,
             pdf_info: action.data
         }
-    } else if(action.type === "SAVE_PROSPECT"){
+    } else if (action.type === "SAVE_PROSPECT") {
         return {
             ...state,
             prospect: action.data

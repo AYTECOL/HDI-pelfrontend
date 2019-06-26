@@ -39,6 +39,16 @@ class Index extends Component {
         };
     }
 
+    static getName(path) {
+        let name = path.split("/");
+        if (name.length > 0) {
+            name = name[name.length - 1];
+        } else {
+            name = path;
+        }
+        return decodeURIComponent(name.replace(/\+/g, "%20"));
+    }
+
     componentDidMount() {
         this.getData();
     }
@@ -343,9 +353,7 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <a className="btn btn-download" target="_blank"
-                                                           rel="noopener noreferrer"
-                                                           href={item.textFile}>Documento.pdf</a>
+                                                        <button type="button" className="btn btn-download">{Index.getName(item.textFile)}</button>
                                                     </div>
                                                 </div>
                                             )}
