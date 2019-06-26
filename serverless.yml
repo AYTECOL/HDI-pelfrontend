@@ -105,6 +105,7 @@ resources:
             AllowedMethods:
               - GET
               - HEAD
+            MinTTL: 0  
             TargetOriginId: WebApp
             ForwardedValues:
               QueryString: 'false'
