@@ -258,6 +258,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/map/MapBase.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion.js">
           <value>
             <set />
@@ -513,6 +518,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/Crearpolizaiaxis.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/CreateOrUpdateMoreInfo.js">
           <value>
             <set />
@@ -644,6 +654,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend_2/package.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/routes.js">
           <value>
             <set />
           </value>
