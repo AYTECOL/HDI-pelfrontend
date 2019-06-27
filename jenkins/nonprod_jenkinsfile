@@ -13,7 +13,7 @@ node('linux'){
     stage('cloudfront') {
     	deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-                sh "sls deploy -v --force --stage nonprod"
+                sh "sls deploy -v --force"
 				//sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-nonprod'){
                 	sh 'pwd'
@@ -33,11 +33,11 @@ node('linux'){
                 npm run build
                 ls -ltr
             """
-            //sh 'aws s3 sync build s3://poliza-express-hogar-uat --delete'
-            //sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --acl public-read'
+            sh 'aws s3 sync build s3://poliza-express-hogar-uat --delete'
+            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-uat --delete'
+            sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --acl public-read'
             //sh 'aws s3 cp build s3://poliza-express-hogar-uat -metadata-directive REPLACE --recursive --cache-control max-age=0 --acl public-read'    
             //sh 'aws cloudfront create-invalidation --distribution-id E29UJTXEFLRNQZ --paths "/*" '
-            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-uat --delete'
         }
 		
     }
