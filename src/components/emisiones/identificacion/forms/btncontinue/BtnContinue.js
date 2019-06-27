@@ -52,7 +52,6 @@ class BtnContinue extends Component {
 
         for (let i = 0; i < persons.length; i++) {
             let location = persons[i]['ciudad'];
-            let extraLocation = typeof location !== "undefined" ? location.split(", ") : [];
             let dataUser = {
                 person: persons[i].person,
                 first_name: persons[i]['name'],
@@ -75,11 +74,11 @@ class BtnContinue extends Component {
                 fechadecontitucion: persons[i]['fechadecontitucion'],
                 city_code: persons[i]['city_code'],
                 department_code: persons[i]['department_code'],
-                ciudad: typeof extraLocation[0] !== "undefined" ? extraLocation[0] : ' ',
-                departamento: typeof extraLocation[extraLocation.length - 1] !== "undefined" ? extraLocation[extraLocation.length - 1] : ' ',
+                ciudad: persons[i]['city'],
+                departamento: persons[i]['department'],
             };
             if (typeof persons[i].person !== "undefined" && persons[i].person !== "") {
-                Persona.extractDataFromIaxis(persons[i].person, persons[i]['code'], dataUser);
+                dataUser = Persona.extractDataFromIaxis(persons[i].person, persons[i]['code'], dataUser);
             }
 
             if (typeof persons[i]['sarlaft'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];

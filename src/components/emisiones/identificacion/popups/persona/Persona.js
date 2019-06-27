@@ -113,11 +113,13 @@ export default class Persona extends Component {
                     if (typeof persona['consultarPersonaRs']['persona']['personaJuridica'] !== "undefined") {
                         if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'] !== "undefined") {
                             person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
-                            person.businessnameDisabled = true;
+                            person.businessnameDisabled = person.businessname !== '' && person.businessname !== null;
                         }
                         if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'] !== "undefined") {
-                            person.fechadecontitucion = persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'].split("T")[0];
-                            person.fechadecontitucionDisabled = true;
+                            person.fechadecontitucion = persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'];
+                            person.fechadecontitucion = person.fechadecontitucion !== null ? person.fechadecontitucion.split("T") : '';
+                            person.fechadecontitucion = typeof person.fechadecontitucion[0] !== "undefined" ? person.fechadecontitucion[0] : '';
+                            person.fechadecontitucionDisabled = person.fechadecontitucion !== '';
                         }
 
                     }
@@ -128,20 +130,25 @@ export default class Persona extends Component {
                 if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
                     if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
                         person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
-                        person.generoDisabled = true;
+                        person.generoDisabled = person.genero !== '' && person.genero !== null;
+
                         person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
-                        person.nameDisabled = true;
+                        person.nameDisabled = person.name !== '' && person.name !== null;
 
                         person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
-                        person.secondname = person.secondname === null ? '' : person.secondname;
-                        person.secondnameDisabled = person.secondname !== '';
+                        person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
 
                         person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
-                        person.lastnameDisabled = true;
+                        person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
+
                         person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
-                        person.secondlastnameDisabled = true;
-                        person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'].split("T")[0];
-                        person.fechadenacimientoDisabled = true;
+                        person.lastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+
+                        person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
+                        person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
+                        person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
+                        person.fechadenacimientoDisabled = person.fechadenacimiento !== '' && person.fechadenacimiento !== null;
+
                         person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
                     }
                 }
@@ -151,7 +158,7 @@ export default class Persona extends Component {
             if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
                 let contactos = persona['consultarPersonaRs']['persona']['contacto'];
                 if (typeof contactos !== "undefined") {
-                    person.contacto = contactos;
+                    person.contacto = [];
                     person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
                     for (let i = 0; i < contactos.length; i++) {
                         let contacto = contactos[i];
@@ -160,6 +167,14 @@ export default class Persona extends Component {
                         } else if (contacto['idContacto'] === 2) {
                             person.email = contacto['textoContacto'];
                         }
+
+
+                        person.contacto.push({
+                            "tipoContacto": {
+                                "codigo": typeof contactos[i]['tipoContacto'] !== "undefined" ? contactos[i]['tipoContacto']['codigo'] : []
+                            },
+                            "textoContacto": typeof contactos[i]['textoContacto'] !== "undefined" ? contactos[i]['textoContacto']: []
+                        });
                     }
                     if (typeof contactos[0] !== "undefined") {
                         person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
@@ -184,7 +199,6 @@ export default class Persona extends Component {
                 person.sarlfaltActiveDisabled = true;
             }
         }
-
         return person;
     };
 

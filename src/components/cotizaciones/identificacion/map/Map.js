@@ -12,7 +12,10 @@ class Map extends Component {
             show: false,
             error: false
         };
-        store.subscribe(async () => {
+    }
+    
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             if (storeState.errorMap !== this.state.error || storeState.showMap !== this.state.show) {
                 this.setState({
@@ -21,6 +24,10 @@ class Map extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     render() {

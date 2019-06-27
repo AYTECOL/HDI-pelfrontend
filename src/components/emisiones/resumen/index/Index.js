@@ -40,13 +40,17 @@ class Index extends Component {
     }
 
     static getName(path) {
-        let name = path.split("/");
-        if (name.length > 0) {
-            name = name[name.length - 1];
-        } else {
-            name = path;
+        if( typeof path !== "undefined" ){
+            let name = path.split("/");
+            if (name.length > 0) {
+                name = name[name.length - 1];
+            } else {
+                name = path;
+            }
+            return decodeURIComponent(name.replace(/\+/g, "%20"));
+        }else{
+            return "";
         }
-        return decodeURIComponent(name.replace(/\+/g, "%20"));
     }
 
     componentDidMount() {

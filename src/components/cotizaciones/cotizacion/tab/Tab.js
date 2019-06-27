@@ -64,16 +64,16 @@ class Tab extends Component {
         ) {
             type = 1;
         }
-        if (typeof inmueble.inmuebleasegudado !== "undefined") {
-            setTimeout(() => {
-                this.getPlants();
-            }, 4);
-        }
         this.setState({
             ...this.state,
             Inmueble: inmueble,
             typePlans: type
         });
+        if (typeof inmueble.inmuebleasegudado !== "undefined") {
+            setTimeout(()=>{
+                this.getPlants();
+            },500);
+        }
     }
 
     async getPlants() {

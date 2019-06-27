@@ -25,7 +25,10 @@ class MapBase extends Component {
         };
         this.state.markerPosition = {lat: this.state.latitude, lng: this.state.longitude};
         window.stime = null;
-        store.subscribe(() => {
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let address = storeState.cotizacion.identification.address;
             let city = storeState.cotizacion.identification.city;
@@ -70,6 +73,10 @@ class MapBase extends Component {
                 Helpers.addClass(this.state.el, 'error');
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     static async reqAddress(address) {
