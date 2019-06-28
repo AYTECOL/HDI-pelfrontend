@@ -108,12 +108,15 @@ const Table = props => {
                             <p>{item.stateQuote}</p>
                         </div>
                         <div className="col">
+                            {item.step === 7 &&
                             <button
                                 onClick={getRowById(item.quoteId)}
                                 className="btn btn-default"
                             >
+                                {" "}
                                 Retomar
                             </button>
+                            }
                         </div>
                     </div>
                 ))}
