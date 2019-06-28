@@ -20,6 +20,7 @@ class GetQuote {
             if (typeof items.quote !== "undefined") {
                 items = items.quote;
                 for (let i in items) if (items[i] === '""') items[i] = "";
+                items.policy = typeof items.policy === "undefined" ? {} : items.policy;
                 return {
                     number: items.quoteId,
                     typeDocument: parseInt(items.document_type) === 37 ? 2 : 1,
@@ -34,7 +35,9 @@ class GetQuote {
                         department: items.department,
                         address: items.address,
                         addressadditional: items.address_additional,
-                        object: items.person
+                        object: items.person,
+                        emissionId: items.policy.emissionId,
+                        emitedDate: items.policy.emitedDate,
                     },
                     mapsOptions: {
                         longitude: items.longitude,

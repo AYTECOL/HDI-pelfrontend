@@ -64,16 +64,16 @@ class Tab extends Component {
         ) {
             type = 1;
         }
-        if (typeof inmueble.inmuebleasegudado !== "undefined") {
-            setTimeout(() => {
-                this.getPlants();
-            }, 4);
-        }
         this.setState({
             ...this.state,
             Inmueble: inmueble,
             typePlans: type
         });
+        if (typeof inmueble.inmuebleasegudado !== "undefined") {
+            setTimeout(()=>{
+                this.getPlants();
+            },500);
+        }
     }
 
     async getPlants() {
@@ -83,8 +83,12 @@ class Tab extends Component {
         for (let i = 0; i < plans.length; i++) {
             let currentPlan = Coberturas.calcValue(plans, i);
             currentPlan = BtnContinue.toNumberCoverrange(plans[i]);
+/*
+            console.log(currentPlan.coverages[5]);
+            console.log(currentPlan.coverages[6]);*/
             let prospect = await DeterminePolizaPrima.get(currentPlan, quotateId);
             plans[i].value = prospect.prospect;
+            plans[i].prima = prospect;
         }
 
         if (typeof plan.plan_selected_info.Item !== "undefined") {
@@ -108,8 +112,7 @@ class Tab extends Component {
     }
 
     render() {
-        if (typeof this.state.plans[this.state.index] === "undefined")
-            return <div className="hide">&nbsp;</div>;
+        if (typeof this.state.plans[this.state.index] === "undefined") return <div className="hide">&nbsp;</div>;
         return (
             <Fragment>
                 <div className="first-content">

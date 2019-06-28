@@ -21,6 +21,7 @@ class Cotizacion extends Component {
             <div className="cotizacion">
                 <Submenu step={params.step}
                          number={params.id}
+                         name="Cotización"
                          options={[
                              "Identificación",
                              "Descripción del inmueble",

@@ -43,9 +43,13 @@ class Index extends Component {
             let cotizacion = storeState.cotizacion;
             if (this.state.cotizacion !== cotizacion && this.state.showPopUpPersona === false) {
                 let persons = [];
-                let tomador = cotizacion.identification;
-                tomador['role'] = [1];
-                persons.push(tomador);
+                if (this.state.persons.length > 0) {
+                    persons = this.state.persons;
+                } else {
+                    let tomador = cotizacion.identification;
+                    tomador['role'] = [1];
+                    persons.push(tomador);
+                }
                 this.setState({
                     ...this.state,
                     cotizacion: cotizacion,

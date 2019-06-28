@@ -19,6 +19,7 @@ class Emision extends Component {
             <div className="cotizacion">
                 <Submenu step={params.step}
                          number={params.id}
+                         name="Emisión"
                          options={[
                              "Información personal",
                              "Información adicional",

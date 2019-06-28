@@ -113,6 +113,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/common/helpers/Pagination/Pagination.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/common/helpers/base64/Base64.js">
           <value>
             <set />
@@ -249,6 +254,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/map/Map.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/identificacion/map/MapBase.js">
           <value>
             <set />
           </value>
@@ -503,7 +513,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/AttachPolicyDocuments.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/ConsultaPersonas.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/Crearpolizaiaxis.js">
           <value>
             <set />
           </value>
@@ -529,6 +549,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/services/InspectionPolicy.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/IssuedCounter.js">
           <value>
             <set />
           </value>
@@ -634,6 +659,36 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend/package.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/package.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/routes.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/services/converData.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/v1/emission_and_policy/services.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/v1/quote_iussed/controller.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/v1/quote_iussed/services.js">
           <value>
             <set />
           </value>

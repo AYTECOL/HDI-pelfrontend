@@ -50,19 +50,31 @@ class Api {
 
     static async get(url, overrideBase, headers, format) {
         return await Api.HttpRequest('GET', url, null, overrideBase, undefined, headers).then(function (response) {
-            return typeof format === "undefined" ? JSON.parse(response) : response;
+            try {
+                return typeof format === "undefined" ? JSON.parse(response) : response;
+            }catch (e) {
+                return [];
+            }
         })
     };
 
     static async post(url, data, overrideBase, formData, headers, format) {
         return await Api.HttpRequest('POST', url, data, overrideBase, formData, headers).then(function (response) {
-            return typeof format === "undefined" ? JSON.parse(response) : response;
+            try {
+                return typeof format === "undefined" ? JSON.parse(response) : response;
+            }catch (e) {
+                return [];
+            }
         });
     };
 
     static async put(url, overrideBase) {
         return await Api.HttpRequest('PUT', url, null, overrideBase).then(function (response) {
-            return JSON.parse(response);
+            try {
+                return JSON.parse(response);
+            }catch (e) {
+                return [];
+            }
         })
     };
 
@@ -70,7 +82,11 @@ class Api {
         let formData = new FormData();
         formData.append(name, file);
         return await Api.HttpRequest('POST', url, formData, overrideBase, true).then(function (response) {
-            return JSON.parse(response);
+            try {
+                return JSON.parse(response);
+            }catch (e) {
+                return [];
+            }
         })
     }
 }

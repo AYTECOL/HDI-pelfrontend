@@ -102,6 +102,7 @@ class AutocompleteCities extends Component {
         let code = option.code_city;
         let value = option.description;
         let description = option.department;
+        let city = option.desc_ciudad;
         let codeDepartment = option.code_department;
         setTimeout(() => {
             Helpers.updatePdfInfo({
@@ -141,6 +142,18 @@ class AutocompleteCities extends Component {
                     target: {
                         value: parseInt(codeDepartment),
                         name: "department_code"
+                    }
+                });
+                this.props.onChange({
+                    target: {
+                        value: city,
+                        name: "city"
+                    }
+                });
+                this.props.onChange({
+                    target: {
+                        value: description,
+                        name: "department"
                     }
                 });
             }

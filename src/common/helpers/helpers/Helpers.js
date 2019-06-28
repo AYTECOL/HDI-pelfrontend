@@ -1,7 +1,7 @@
 import {UrlSite} from "../../../config";
 import Identifications from "../../../services/GetQuote";
 import store from "../../../store";
-import {restoreCotizacion, restoreCotizacionRisk, savePdfInfo} from "../../../actions";
+import {restoreCotizacion, restoreCotizacionRisk, savePdfInfo, saveProspect} from "../../../actions";
 import ValorationById from "../../../services/ValorationById";
 import Base64 from "../base64/Base64";
 import AccessToken from "../../../services/AccessToken";
@@ -151,6 +151,13 @@ class Helpers {
             if (cotizacion.state >= 2 && parseInt(step) >= 2) {
                 let riskData = await ValorationById.get(id);
                 if (riskData !== null) {
+                    store.dispatch(saveProspect({
+                        "prospect": riskData.prospect,
+                        "total_premium_policy": riskData.total_premium_policy,
+                        "expedition_expenses": riskData.expedition_expenses,
+                        "total_tax_policy": riskData.total_tax_policy,
+                        "iva_expedition_expenses": riskData.iva_expedition_expenses,
+                    }));
                     store.dispatch(restoreCotizacionRisk(riskData));
                 }
             }

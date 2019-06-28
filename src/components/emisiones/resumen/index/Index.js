@@ -39,6 +39,20 @@ class Index extends Component {
         };
     }
 
+    static getName(path) {
+        if( typeof path !== "undefined" ){
+            let name = path.split("/");
+            if (name.length > 0) {
+                name = name[name.length - 1];
+            } else {
+                name = path;
+            }
+            return decodeURIComponent(name.replace(/\+/g, "%20"));
+        }else{
+            return "";
+        }
+    }
+
     componentDidMount() {
         this.getData();
     }
@@ -262,13 +276,13 @@ class Index extends Component {
                                                 {this.state.inmueble.inmueble_asegudado_obras === 1 &&
                                                 <div className="col col-12 col-12 gray-box">
                                                     <p><b>Obras de arte</b></p>
-                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? (this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
+                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
                                                 </div>
                                                 }
                                                 {this.state.inmueble.inmueble_asegudado_joyas === 1 &&
                                                 <div className="col col-12 col-12 gray-box">
                                                     <p><b>Joyas</b></p>
-                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? (this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
+                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
                                                 </div>
                                                 }
                                             </div>
@@ -343,9 +357,7 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <a className="btn btn-download" target="_blank"
-                                                           rel="noopener noreferrer"
-                                                           href={item.textFile}>Documento.pdf</a>
+                                                        <button type="button" className="btn btn-download">{Index.getName(item.textFile)}</button>
                                                     </div>
                                                 </div>
                                             )}

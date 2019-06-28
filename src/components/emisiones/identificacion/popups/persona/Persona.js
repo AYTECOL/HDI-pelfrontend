@@ -13,7 +13,6 @@ import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
-import store from "../../../../../store";
 
 export default class Persona extends Component {
 
@@ -109,58 +108,97 @@ export default class Persona extends Component {
 
     static extractDataFromIaxis(persona, code, person) {
         if (parseInt(code) === 37) {
-            person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
-            person.businessnameDisabled = true;
+            if (typeof persona['consultarPersonaRs'] !== "undefined") {
+                if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
+                    if (typeof persona['consultarPersonaRs']['persona']['personaJuridica'] !== "undefined") {
+                        if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'] !== "undefined") {
+                            person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
+                            person.businessnameDisabled = person.businessname !== '' && person.businessname !== null;
+                        }
+                        if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'] !== "undefined") {
+                            person.fechadecontitucion = persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'];
+                            person.fechadecontitucion = person.fechadecontitucion !== null ? person.fechadecontitucion.split("T") : '';
+                            person.fechadecontitucion = typeof person.fechadecontitucion[0] !== "undefined" ? person.fechadecontitucion[0] : '';
+                            person.fechadecontitucionDisabled = person.fechadecontitucion !== '';
+                        }
+
+                    }
+                }
+            }
         } else {
-            if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
-                person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
-                person.generoDisabled = true;
-                person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
-                person.nameDisabled = true;
-                person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
-                person.secondname = person.secondname === null ? '' : person.secondname;
-                person.secondnameDisabled = person.secondname !== '';
-                person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
-                person.lastnameDisabled = true;
-                person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
-                person.secondlastnameDisabled = true;
-                person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'].split("T")[0];
-                person.fechadenacimientoDisabled = true;
-                person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
-            }
-        }
-        let contactos = persona['consultarPersonaRs']['persona']['contacto'];
-        person.contacto = contactos;
-        person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
-        for (let i = 0; i < contactos.length; i++) {
-            let contacto = contactos[i];
-            if (contacto['idContacto'] === 1) {
-                person.telefono = contacto['textoContacto'];
-            } else if (contacto['idContacto'] === 2) {
-                person.email = contacto['textoContacto'];
-            }
-        }
-        if (typeof contactos[0] !== "undefined") {
-            person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
-        }
+            if (typeof persona['consultarPersonaRs'] !== "undefined") {
+                if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
+                    if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
+                        person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
+                        person.generoDisabled = person.genero !== '' && person.genero !== null;
 
-        if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
-            person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
-            if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
-                person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+                        person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
+                        person.nameDisabled = person.name !== '' && person.name !== null;
 
-                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
-                    person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
-                }
-                if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
-                    person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                        person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
+                        person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
+
+                        person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
+                        person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
+
+                        person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
+                        person.lastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+
+                        person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
+                        person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
+                        person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
+                        person.fechadenacimientoDisabled = person.fechadenacimiento !== '' && person.fechadenacimiento !== null;
+
+                        person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
+                    }
                 }
             }
         }
+        if (typeof persona['consultarPersonaRs'] !== "undefined") {
+            if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
+                let contactos = persona['consultarPersonaRs']['persona']['contacto'];
+                if (typeof contactos !== "undefined") {
+                    person.contacto = [];
+                    person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
+                    for (let i = 0; i < contactos.length; i++) {
+                        let contacto = contactos[i];
+                        if (contacto['idContacto'] === 1) {
+                            person.telefono = contacto['textoContacto'];
+                        } else if (contacto['idContacto'] === 2) {
+                            person.email = contacto['textoContacto'];
+                        }
 
-        person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
-        person.sarlfaltActiveDisabled = true;
 
+                        person.contacto.push({
+                            "tipoContacto": {
+                                "codigo": typeof contactos[i]['tipoContacto'] !== "undefined" ? contactos[i]['tipoContacto']['codigo'] : []
+                            },
+                            "textoContacto": typeof contactos[i]['textoContacto'] !== "undefined" ? contactos[i]['textoContacto']: []
+                        });
+                    }
+                    if (typeof contactos[0] !== "undefined") {
+                        person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+                    }
+                }
+
+                if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
+                    person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
+                    if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
+                        person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+
+                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
+                            person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                        }
+                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
+                            person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                        }
+                    }
+                }
+
+                person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
+                person.sarlfaltActiveDisabled = true;
+            }
+        }
         return person;
     };
 
@@ -169,10 +207,10 @@ export default class Persona extends Component {
         setTimeout(() => {
             if (this._isMounted) {
                 this.validateAll(null, false, false);
-                let personObject = store.getState().cotizacion.identification.object;
-                if (typeof personObject !== "undefined" && this.props.item !== -1) {
+                let personObject = this.state.person;
+                if (typeof personObject.person !== "undefined" && this.props.item !== -1) {
                     this.validateDoc({
-                        person: personObject
+                        person: personObject.person
                     });
                 }
             }
@@ -270,14 +308,17 @@ export default class Persona extends Component {
                 });
             } else {
                 let person = this.state.person;
+                person = Persona.extractDataFromIaxis(persona, code, person);
                 person.person = persona;
-                Persona.extractDataFromIaxis(persona, code, person);
                 this.setState({
                     ...this.state,
                     person: person,
                     userRestricted: false,
                     personExists: true
                 });
+                setTimeout(() => {
+                    this.validateAll(null, false, false);
+                }, 100);
 
                 Loading.toggle(false);
             }
@@ -311,13 +352,15 @@ export default class Persona extends Component {
     };
 
     saveFile = async () => {
-        if (this.state.typePerson === 1 && typeof this.state.person.sarlfalt_url === "undefined") {
+        if (this.state.typePerson <= 3 && typeof this.state.person.sarlfalt_url === "undefined") {
             let person = this.state.person;
             let file = await UploadFile.upload("Sarlaft", person.sarlaft);
+            console.log(file);
             if (typeof file['location'] !== "undefined") {
                 person.sarlaft = file['location'];
                 person.sarlaft_document_url = file['location'];
                 person.sarlfalt_url = file['location'];
+                console.log(person);
                 this.setState({
                     ...this.state,
                     person: person
@@ -339,7 +382,7 @@ export default class Persona extends Component {
                     if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                 }
             }
-            if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "") {
+            if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
                 errors.splice(errors.indexOf('sarlfalt'), 1);
                 Helpers.removeClass('.sarlaft.error', 'error');
             }
@@ -706,6 +749,8 @@ export default class Persona extends Component {
                                                             value={this.state.person.fechadecontitucion}
                                                             selected={this.state.fechadecontitucion}
                                                             onChange={this.changeDates}
+                                                            showMonthDropdown
+                                                            showYearDropdown
                                                             disabled={this.state.person.fechadecontitucionDisabled}
                                                             className={"form-control " + (this.state.person.fechadecontitucionDisabled ? 'disabled' : '')}/>
                                                 <small className="form-text only-errors">Falta información requerida
@@ -777,7 +822,7 @@ export default class Persona extends Component {
                                         </div>
                                     </div>
                                     }
-                                    {(this.state.typePerson === 1 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
+                                    {(this.state.typePerson !== 5 && this.state.typePerson !== 6 && this.state.typePerson !== 7 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
                                     <div
                                         className={"row sarlaft"}>
                                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
