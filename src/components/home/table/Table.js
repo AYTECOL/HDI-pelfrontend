@@ -29,15 +29,13 @@ const Table = props => {
         const {history} = props;
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== "undefined") {
-            if (cotizacion.state > 3) {
-                // window.location.href =
-                //   UrlSite + "/emision/" + (cotizacion.state - 3) + "/" + id;
+            console.log(cotizacion.state);
+            if (cotizacion.state <= 3) {
                 history.push(`${UrlSite}/emision/${cotizacion.state - 3}/${id}`);
-            } else {
-                // window.location.href =
-                //   UrlSite + "/cotizacion/" + cotizacion.state + "/" + id;
-
+            } else if(cotizacion.state < 7 && cotizacion.state > 3){
                 history.push(`${UrlSite}/cotizacion/${cotizacion.state}/${id}`);
+            } else {
+                history.push(`${UrlSite}/exito/${id}/${cotizacion.identification.emissionId}`);
             }
             store.dispatch(restoreCotizacion(cotizacion));
         }
