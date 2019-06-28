@@ -113,11 +113,6 @@ class Pagination extends React.Component {
 
     return (
       <div className="row footer ">
-        <div className={"form-group input-select"}>
-          <select name="code" id="doc-type" className={"form-control"}>
-            <option value="">Seleciona</option>
-          </select>
-        </div>
         <ul className="pagination">
           <a
             className="pager prev"
