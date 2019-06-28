@@ -26,16 +26,16 @@ class Crearpolizaiaxis {
             }
 
             if (typeof d.tipoPersona === "undefined") {
-                if( typeof d.document_type === "undefined" || d.document_type === null ){
+                if (typeof d.document_type === "undefined" || d.document_type === null) {
                     d.tipoPersona = {
                         "codigo": 1
                     }
-                }else{
-                    if( d.document_type.toString() === "36" ){
+                } else {
+                    if (d.document_type.toString() === "36") {
                         d.tipoPersona = {
                             "codigo": 1
                         }
-                    }else if( d.document_type.toString() === "37" ){
+                    } else if (d.document_type.toString() === "37") {
                         d.tipoPersona = {
                             "codigo": 2
                         }
@@ -112,10 +112,58 @@ class Crearpolizaiaxis {
     }
 
     static async get(data) {
-        let asegurado = Crearpolizaiaxis.formatPerson(data.quote_iussed_info.Item.insured);
-        let beneficiario = Crearpolizaiaxis.formatPerson(data.quote_iussed_info.Item.benefist);
+
+        let aseguradoArr = [];
+        let beneficiarioArr = [];
+        let tomadorArr = [];
+
+        let taker = data.quote_iussed_info.Item.taker;
+        if (typeof taker.role !== "undefined") {
+            for (let i = 0; i < taker.role.length; i++) {
+                if (taker.role[i] === 1) {
+                    tomadorArr.push(taker);
+                } else if (taker.role[i] === 2) {
+                    aseguradoArr.push(taker);
+                } else if (taker.role[i] === 3) {
+                    beneficiarioArr.push(taker);
+                }
+            }
+        }
+
+        let benefist = data.quote_iussed_info.Item.benefist;
+        for (let i = 0; i < benefist.length; i++) {
+            if (typeof benefist[i].role !== "undefined") {
+                for (let ii = 0; ii < benefist[i].role.length; ii++) {
+                    if (benefist[i].role[ii] === 1) {
+                        tomadorArr.push(benefist[ii]);
+                    } else if (benefist[i].role[ii] === 2) {
+                        aseguradoArr.push(benefist[ii]);
+                    } else if (benefist[i].role[ii] === 3) {
+                        beneficiarioArr.push(benefist[ii]);
+                    }
+                }
+            }
+        }
+
+        let insured = data.quote_iussed_info.Item.insured;
+        for (let i = 0; i < insured.length; i++) {
+            if (typeof insured[i].role !== "undefined") {
+                for (let ii = 0; ii < insured[i].role.length; ii++) {
+                    if (insured[i].role[ii] === 1) {
+                        tomadorArr.push(insured[ii]);
+                    } else if (insured[i].role[ii] === 2) {
+                        aseguradoArr.push(insured[ii]);
+                    } else if (insured[i].role[ii] === 3) {
+                        beneficiarioArr.push(insured[ii]);
+                    }
+                }
+            }
+        }
+
+        let asegurado = Crearpolizaiaxis.formatPerson(aseguradoArr);
+        let beneficiario = Crearpolizaiaxis.formatPerson(beneficiarioArr);
         let onerosos = Crearpolizaiaxis.formatPerson(data.quote_iussed_info.Item.onerous);
-        let tomador = Crearpolizaiaxis.formatPerson([data.quote_iussed_info.Item.taker])[0];
+        let tomador = Crearpolizaiaxis.formatPerson(tomadorArr)[0];
 
         for (let i = 0; i < beneficiario.length; i++) {
             beneficiario[i] = {
@@ -140,6 +188,7 @@ class Crearpolizaiaxis {
                 }
             });
         }
+
         return {
             "asegurado": asegurado,
             "tomador": tomador,
@@ -147,7 +196,7 @@ class Crearpolizaiaxis {
         };
     };
 
-    static async save(data){
+    static async save(data) {
         let user = await Helpers.getUser();
         let response = await Api.post(BaseUrl, data, Url, undefined, {
             Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
