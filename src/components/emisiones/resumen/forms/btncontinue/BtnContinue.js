@@ -6,10 +6,12 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import PolicyService from "../../../../../services/Policy";
 import Loading from "../../../../globals/loading/Loading";
 import store from "../../../../../store";
-import {NextStep} from "../../../../../actions";
+import {NextStep, saveIdentificationValue} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Crearpolizaiaxis from "../../../../../services/Crearpolizaiaxis";
 import QuoteIussedById from "../../../../../services/QuoteIussedById";
+import IssuedCounter from "../../../../../services/IssuedCounter";
+import AttachPolicyDocuments from "../../../../../services/AttachPolicyDocuments";
 
 class BtnContinue extends Component {
     constructor(props) {
@@ -44,16 +46,31 @@ class BtnContinue extends Component {
         const {id} = params;
         try {
             let data = await QuoteIussedById.get(this.props.match.params.id);
-            let result = await Crearpolizaiaxis.get(data);
-            console.log(result);
 
-            // let result = await PolicyService.emit(id);
-            // let emitedPolicyNumber = this.getPolicyEmitedNumber(result);
+            let numeroPoliza = await IssuedCounter.get();
+            let dataSend = await Crearpolizaiaxis.get(data);
 
-/*            store.dispatch(NextStep(7));
+            dataSend['id'] = id;
+            let result = await PolicyService.emit(id, dataSend);
+
+            result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroPoliza = numeroPoliza.currentValue.toString();
+            result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo = numeroPoliza.currentValue.toString();
+
+            let send = await Crearpolizaiaxis.save(result);
+            // let attach = await AttachPolicyDocuments.get(id, send.crearPolizaIAXISRs.emisionPoliza.resultadoPolizaHome.codigoProcesoCargue);
+
+            store.dispatch(saveIdentificationValue({
+                name: 'emissionId',
+                value: numeroPoliza.currentValue
+            }));
+            store.dispatch(saveIdentificationValue({
+                name: 'emitedDate',
+                value: new Date()
+            }));
+            store.dispatch(NextStep(7));
             await SaveIdentifications.save();
+            history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);
 
-            history.push(`${UrlSite}/exito/${id}/${emitedPolicyNumber}`);*/
             Loading.toggle(false);
         } catch (e) {
             Loading.toggle(false);

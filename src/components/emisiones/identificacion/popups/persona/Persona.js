@@ -352,13 +352,15 @@ export default class Persona extends Component {
     };
 
     saveFile = async () => {
-        if (this.state.typePerson === 1 && typeof this.state.person.sarlfalt_url === "undefined") {
+        if (this.state.typePerson <= 3 && typeof this.state.person.sarlfalt_url === "undefined") {
             let person = this.state.person;
             let file = await UploadFile.upload("Sarlaft", person.sarlaft);
+            console.log(file);
             if (typeof file['location'] !== "undefined") {
                 person.sarlaft = file['location'];
                 person.sarlaft_document_url = file['location'];
                 person.sarlfalt_url = file['location'];
+                console.log(person);
                 this.setState({
                     ...this.state,
                     person: person

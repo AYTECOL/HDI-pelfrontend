@@ -83,6 +83,9 @@ class Tab extends Component {
         for (let i = 0; i < plans.length; i++) {
             let currentPlan = Coberturas.calcValue(plans, i);
             currentPlan = BtnContinue.toNumberCoverrange(plans[i]);
+/*
+            console.log(currentPlan.coverages[5]);
+            console.log(currentPlan.coverages[6]);*/
             let prospect = await DeterminePolizaPrima.get(currentPlan, quotateId);
             plans[i].value = prospect.prospect;
             plans[i].prima = prospect;
