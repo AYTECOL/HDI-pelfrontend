@@ -202,4 +202,8 @@
     font-size: 25px;
     cursor: pointer;
   }
+  .disablePage {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
 }

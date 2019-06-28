@@ -132,7 +132,11 @@ class Pagination extends React.Component {
             </li>
           ))}
           <a
-            className="pager next"
+            className={
+              pager.currentPage === pager.totalPages
+                ? "pager next disablePage"
+                : "pager next"
+            }
             onClick={() => this.setPage(pager.currentPage + 1)}
           >
             &gt;
