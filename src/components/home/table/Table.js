@@ -31,9 +31,9 @@ const Table = props => {
         if (typeof cotizacion.identification !== "undefined") {
             console.log(cotizacion.state);
             if (cotizacion.state <= 3) {
-                history.push(`${UrlSite}/emision/${cotizacion.state - 3}/${id}`);
-            } else if(cotizacion.state < 7 && cotizacion.state > 3){
                 history.push(`${UrlSite}/cotizacion/${cotizacion.state}/${id}`);
+            } else if(cotizacion.state < 7 && cotizacion.state > 3){
+                history.push(`${UrlSite}/emision/${cotizacion.state - 3}/${id}`);
             } else {
                 history.push(`${UrlSite}/exito/${id}/${cotizacion.identification.emissionId}`);
             }
