@@ -57,7 +57,9 @@ class BtnContinue extends Component {
             result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo = numeroPoliza.currentValue.toString();
 
             let send = await Crearpolizaiaxis.save(result);
-            // let attach = await AttachPolicyDocuments.get(id, send.crearPolizaIAXISRs.emisionPoliza.resultadoPolizaHome.codigoProcesoCargue);
+            let attach = await AttachPolicyDocuments.get(id, send.crearPolizaIAXISRs.emisionPoliza.resultadoPolizaHome.codigoProcesoCargue);
+
+            let attachSend = await  AttachPolicyDocuments.save(attach);
 
             store.dispatch(saveIdentificationValue({
                 name: 'emissionId',
