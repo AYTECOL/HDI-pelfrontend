@@ -124,7 +124,7 @@ class PolizaEmitida extends Component {
                             <div className="col col-sm-12 col-md-12 col-lg-12">
                                 <div className="generatepdf link-item">
                                     <p onClick={this.getPdf}>
-                                        <i>&nbsp;</i> Descargar Anexo PDF
+                                        <i>&nbsp;</i> Descargar PDFS
                                     </p>
                                     <br/>
                                     {typeof this.state.endoso !== "undefined" && (
