@@ -68,6 +68,11 @@ class BtnContinue extends Component {
         state.area = state.area === "" ? 0 : state.area;
         state.utilizado = state.utilizado === "" ? 0 : state.utilizado;
 
+        let inmueble = store.getState().Inmueble;
+        if( parseInt(inmueble.contenidoasegudado) === 0 ){
+            state.contents = [];
+        }
+
         await CreateOrUpdateMoreInfo.get({
             "quote_id": this.props.match.params.id,
             "start_policy_date": state.initdate,

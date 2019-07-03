@@ -8,7 +8,7 @@ class PdfEndosoHogar {
         let user = await Helpers.getUser();
         return await Api.get(BaseUrl + id, undefined, {
             pelhauthorization: user !== null ? user['accessToken'] : ''
-        });
+        }, true);
     };
 }
 

@@ -56,12 +56,17 @@ class Crearpolizaiaxis {
                     d.fechadenacimiento = '1948-03-06';
                 } else {
                     d.fechadenacimiento = d.birthdate;
+                    if( d.fechadenacimiento === "" || d.fechadenacimiento === null || d.fechadenacimiento === " " ){
+                        d.fechadenacimiento = '1948-03-06';
+                    }
                 }
+
+                d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
             }
 
             arrayToMerge.push({
                 "tipoDocumento": {
-                    "codigo": typeof d.document_type === "undefined" || d.document_type === null ? ' ' : d.document_type.toString(),
+                    "codigo": typeof d.document_type === "undefined" || d.document_type === null ? '37' : d.document_type.toString(),
                 },
                 "numeroDocumento": typeof d.document === "undefined" || d.document === null ? ' ' : d.document.toString(),
                 "tipoPersona": {
@@ -73,9 +78,9 @@ class Crearpolizaiaxis {
                     "segundoApellido": typeof d.secondlastname === "undefined" || d.secondlastname === null ? ' ' : d.secondlastname,
                     "segundoNombre": typeof d.secondname === "undefined" || d.secondname === null ? ' ' : d.secondname,
                     "genero": {
-                        "codigo": typeof d.secondname === "undefined" || d.genero === null ? '1' : d.genero.toString(),
+                        "codigo": typeof d.secondname === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
                     },
-                    "fechaNacimiento": momentJs.utc(d.fechadenacimiento) === null ? '' : momentJs.utc(d.fechadenacimiento),
+                    "fechaNacimiento": d.fechadenacimiento,
                     "estadoCivil": {
                         "codigo": typeof d.personaNatural.estadoCivil.codigo === "undefined" || d.personaNatural.estadoCivil.codigo === null ? '1' : d.personaNatural.estadoCivil.codigo.toString(),
                     },
@@ -88,26 +93,27 @@ class Crearpolizaiaxis {
                         "codigo": "170"
                     },
                     "departamento": {
-                        "codigo": typeof d.department_code === "undefined" || d.department_code === null ? '1' : d.department_code.toString(),
+                        "codigo": typeof d.department_code === "undefined" || d.department_code === null || d.department_code === ' ' ? '1' : d.department_code.toString(),
                     },
                     "ciudad": {
-                        "codigo": typeof d.city_code === "undefined" || d.city_code === null ? '1' : d.city_code.toString(),
+                        "codigo": typeof d.city_code === "undefined" || d.city_code === null || d.city_code === ' ' ? '1' : d.city_code.toString(),
                     },
                     "tipoDireccion": {
-                        "codigo": typeof d.adresstype === "undefined" || d.adresstype === null ? '1' : d.adresstype.toString(),
+                        "codigo": typeof d.adresstype === "undefined" || d.adresstype === null || d.adresstype === ' ' ? '1' : d.adresstype.toString(),
                     },
                     "textoDireccion": typeof d.address === "undefined" || d.address === null ? '' : d.address.toString(),
                 },
                 "contacto": [
                     {
                         "tipoContacto": {
-                            "codigo": typeof d.phone_type === "undefined" || d.phone_type === null ? '1' : d.phone_type.toString(),
+                            "codigo": typeof d.phone_type === "undefined" || d.phone_type === null || d.phone_type === ' ' ? '1' : d.phone_type.toString(),
                         },
                         "textoContacto": typeof d.telefono === "undefined" || d.telefono === null ? ' ' : d.telefono.toString(),
                     },
                 ]
             })
         }
+        console.log(arrayToMerge);
         return arrayToMerge;
     }
 

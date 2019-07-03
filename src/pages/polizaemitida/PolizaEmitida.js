@@ -70,19 +70,13 @@ class PolizaEmitida extends Component {
         a.setAttribute("download", 'PdfEndosoHogar.pdf');
         a.click();
         document.body.removeChild(a);
+        Loading.toggle(false);
     };
 
     getPdf = async () => {
         Loading.toggle(true);
         try {
-            let pdfAnexo = await PolizaAnexoHogar.get(this.state.quote);
             let a = document.createElement("a");
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.href = "data:application/pdf;base64," + pdfAnexo;
-            a.setAttribute("download", 'PolizaAnexoHogar.pdf');
-            a.click();
-            document.body.removeChild(a);
 
             let pdf = await PdfPolizaHogar.get(this.state.quote);
             a = document.createElement("a");
@@ -90,6 +84,14 @@ class PolizaEmitida extends Component {
             document.body.appendChild(a);
             a.href = "data:application/pdf;base64," + pdf;
             a.setAttribute("download", 'PdfPolizaPrima.pdf');
+            a.click();
+            document.body.removeChild(a);
+
+            let pdfAnexo = await PolizaAnexoHogar.get(this.state.quote);
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.href = "data:application/pdf;base64," + pdfAnexo;
+            a.setAttribute("download", 'PolizaAnexoHogar.pdf');
             a.click();
             document.body.removeChild(a);
 
