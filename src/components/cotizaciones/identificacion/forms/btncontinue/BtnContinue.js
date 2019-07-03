@@ -87,7 +87,7 @@ class BtnContinue extends Component {
             let code = storeState.cotizacion.identification.code;
             let value = storeState.cotizacion.identification.value;
             if (code === "37") value = value.replace("-", "", value);
-            Helpers.disabled("doc-type-value");
+            NumeroIdentificacion.toggleDisable(true);
             try {
                 let persona = await ConsultaPersonas.get(code, value);
                 if (persona.consultarPersonaRs.personaRestringida === true) {
@@ -130,6 +130,10 @@ class BtnContinue extends Component {
                 }
             } catch (e) {
                 NumeroIdentificacion.toggleDisable(false);
+                this.setState({
+                    ...this.state,
+                    continueButtonDisable: false,
+                });
             }
             Loading.toggle(false);
         }
