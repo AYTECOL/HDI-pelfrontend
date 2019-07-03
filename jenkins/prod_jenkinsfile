@@ -6,8 +6,20 @@ def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
 node('linux'){
 
-stage('Preparation') {
+stage('cloudfront') {
+    withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+		sh "npm run build -- --configuration=prod"
+        //sh 'dir'
+        //sh 'ls'
+		sh "sls deploy -v --force"
+        dir('dist/poliza-express-hogar'){
+            sh 'pwd'
+            sh 'ls'
+        }
+    }
+}
 
+    /*stage('Build') {
          git credentialsId: 'intl_gituser', url: ' https://intl_gituser@bitbucket-latam.aws.lmig.com/scm/rt/pelhfrontend.git', branch: 'master'
          sh 'npm --version'
          sh 'aws --version'
@@ -17,21 +29,6 @@ stage('Preparation') {
          sh 'pwd'
          sh 'ls'
          sh 'dir'
-      }
-
-    stage('Build') {
-    	//deployToNonProd{
-        	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-				sh "npm run build -- --configuration=prod"
-                sh 'dir'
-                sh 'ls'
-				sh "sls deploy -v --stage prod"
-                dir('dist/poliza-express-hogar'){
-                	sh 'pwd'
-                    sh 'ls'
-                }
-            }
-        //}
     }
     
     stage('prod Deploy') {
@@ -52,5 +49,5 @@ stage('Preparation') {
 		withSonarQubeEnv('sonarqube') {
         	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 	}
-	}	
+	}*/
  }
