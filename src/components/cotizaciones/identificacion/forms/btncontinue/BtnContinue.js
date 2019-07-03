@@ -102,30 +102,33 @@ class BtnContinue extends Component {
                     if (persona.consultarPersonaRs.personaEncontradaIAXIS === true) {
                         let personaData = persona.consultarPersonaRs.persona;
                         let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;
-                        NumeroIdentificacion.toggleDisable(true);
 
-                        personaData = personaData[(personaType === 2 ? 'personaJuridica' : 'personaNatural')];
-                        if (typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '') {
-                            store.dispatch(saveIdentificationValue({
-                                name: 'name',
-                                value: personaData.primerNombre
-                            }));
-                            Name.toggleDisable(true);
+                        if( (code === 36 && personaType === 1) || (code === 37 && personaType === 2) ) {
+                            NumeroIdentificacion.toggleDisable(true);
+                            personaData = personaData[(personaType === 2 ? 'personaJuridica' : 'personaNatural')];
+                            if (typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '' && personaData.primerNombre !== null) {
+                                store.dispatch(saveIdentificationValue({
+                                    name: 'name',
+                                    value: personaData.primerNombre
+                                }));
+                                Name.toggleDisable(true);
+                            }
+                            if (typeof personaData.primerApellido !== 'undefined' && personaData.primerApellido !== '' && personaData.primerApellido !== null) {
+                                store.dispatch(saveIdentificationValue({
+                                    name: 'lastname',
+                                    value: personaData.primerApellido
+                                }));
+                                LastName.toggleDisable(true);
+                            }
+                            if (typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '' && personaData.razonSocial !== null) {
+                                store.dispatch(saveIdentificationValue({
+                                    name: 'businessname',
+                                    value: personaData.razonSocial
+                                }));
+                                RazonSocial.toggleDisable(true);
+                            }
                         }
-                        if (typeof personaData.primerApellido !== 'undefined' && personaData.primerApellido !== '') {
-                            store.dispatch(saveIdentificationValue({
-                                name: 'lastname',
-                                value: personaData.primerApellido
-                            }));
-                            LastName.toggleDisable(true);
-                        }
-                        if (typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '') {
-                            store.dispatch(saveIdentificationValue({
-                                name: 'businessname',
-                                value: personaData.razonSocial
-                            }));
-                            RazonSocial.toggleDisable(true);
-                        }
+
                     }
                 }
             } catch (e) {

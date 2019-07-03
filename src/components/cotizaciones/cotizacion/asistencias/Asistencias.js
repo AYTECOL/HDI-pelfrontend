@@ -77,8 +77,8 @@ class Asistencias extends Component {
         let plans = this.state.plans;
         await CreateOrUpdateValoration.save();
         let total = await DeterminePolizaPrima.get(plans[this.state.index], this.props.match.params.id);
-        if (typeof total.total_pay_prospect !== "undefined") {
-            plans[this.state.index].value = total.total_pay_prospect;
+        if (typeof total.prospect !== "undefined") {
+            plans[this.state.index].value = total.prospect;
             store.dispatch(AllPlansCreator(plans));
         }
         Loading.toggle(false);

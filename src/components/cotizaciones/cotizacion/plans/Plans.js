@@ -24,6 +24,11 @@ class Index extends Component {
             let storeState = store.getState();
             let plans = storeState.AllPlans;
             let index = storeState.indexPlan;
+
+            console.log(plans[index]);
+            if( typeof plans[index] !== "undefined" ){
+                console.log(plans[index].value);
+            }
             this.setState({
                 ...this.state,
                 plans: plans,
