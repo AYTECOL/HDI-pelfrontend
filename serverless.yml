@@ -106,8 +106,8 @@ resources:
             AllowedMethods:
               - GET
               - HEAD
-            #MinTTL: 0
-            TTL: 3600
+            MinTTL: 3600
+            #TTL: 3600
             TargetOriginId: WebApp
             ForwardedValues:
               QueryString: 'false'
