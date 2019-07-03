@@ -20,6 +20,7 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
+        this.current = React.createRef()
         let formatDate = "dddd, MMMM Do YYYY";
         this.state = {
             step: parseInt(this.props.match.params.step),
@@ -212,6 +213,21 @@ class Index extends Component {
 
     updateContent = key => e => {
         let contents = this.state.contents;
+        let inmubles = this.state.inmueble;
+        let textTotal = document.querySelectorAll('.total-value');
+        if (e.target.value === '0') {
+            textTotal[key].innerText = `Menor o igual al total:$ ${Masknumbermoney.formatToMask(inmubles.contenido_asegudado_valor)} `
+        }
+        if (e.target.value === '1') {
+            textTotal[key].innerText = `Menor o igual al total:$ ${Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_obrasvalor)} `
+        }
+        if (e.target.value === '2') {
+            textTotal[key].innerText = `Menor o igual al total:$ ${Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_joyasvalor)} `
+        }
+        if (e.target.value === '3') {
+            textTotal[key].innerText = `Valor total igual:$ ${Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_telefonosvalor)} `
+        }
+
         contents[key][e.target.name] = e.target.value;
         this.setState({
             ...this.state,
@@ -467,7 +483,7 @@ class Index extends Component {
                                                             htmlFor="name">Valor</label>
                                                         <input type="text" className="form-control" name="value"
                                                                value={item.value} onChange={this.validateContent(key)}/>
-                                                        <small className="form-text d-block text-left">$ 20.000.000
+                                                        <small className="form-text d-block text-left total-value">$ 0
                                                         </small>
                                                         <small
                                                             className={"form-text only-errors " + (item.error1 === true ? 'show' : 'hide')}>Valor
