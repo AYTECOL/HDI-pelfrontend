@@ -14,10 +14,11 @@ class Anoconstruccion extends Component {
             value: "",
             years: []
         };
+    }
 
+    componentDidMount() {
         this.getYears();
-
-        store.subscribe(async () => {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.anoconstruido;
             if (this.state.value !== value) {
@@ -27,6 +28,10 @@ class Anoconstruccion extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getYears() {

@@ -13,9 +13,11 @@ class Ubicadopiso extends Component {
             error: false,
             floors: []
         };
+    }
 
+    componentDidMount() {
         this.getFloors();
-        store.subscribe(async () => {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.pisonumero;
             if (this.state.value !== value) {
@@ -25,6 +27,10 @@ class Ubicadopiso extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getFloors() {

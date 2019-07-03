@@ -14,9 +14,11 @@ class Numerodepiso extends Component {
             value: "",
             floors: []
         };
+    }
 
+    componentDidMount() {
         this.getFloors();
-        store.subscribe(async () => {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.numerodepisos;
             if (this.state.value !== value) {
@@ -26,6 +28,10 @@ class Numerodepiso extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getFloors() {

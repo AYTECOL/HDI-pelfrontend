@@ -15,10 +15,11 @@ class Zona extends Component {
             active: 0,
             zonas: []
         };
+    }
 
+    componentDidMount() {
         this.getZones();
-
-        store.subscribe(async () => {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.zona;
             if (this.state.active !== value) {
@@ -28,6 +29,10 @@ class Zona extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getZones() {

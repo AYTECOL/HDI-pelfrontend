@@ -273,6 +273,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/anoconstruccion/Anoconstruccion.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/asegurarcontenidos/Asegurarcontenidos.js">
           <value>
             <set />
@@ -318,7 +323,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/numerodepiso/Numerodepiso.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/refuerzoestructural/Refuerzoestructural.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/segurarinmueble/Segurarinmueble.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/ubicadopiso/Ubicadopiso.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/zona/Zona.js">
           <value>
             <set />
           </value>
@@ -559,6 +584,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/services/NewPlanSelected.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/services/PdfPolizaHogar.js">
           <value>
             <set />
           </value>

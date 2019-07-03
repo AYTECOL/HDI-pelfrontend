@@ -17,10 +17,11 @@ class Refuerzoestructural extends Component {
             valueOther: "",
             years: []
         };
+    }
 
+    componentDidMount() {
         this.getYears();
-
-        store.subscribe(async () => {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let anoconstruido = storeState.Inmueble.anoconstruido;
             let value = storeState.Inmueble.refuerzo;
@@ -46,6 +47,10 @@ class Refuerzoestructural extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getYears() {

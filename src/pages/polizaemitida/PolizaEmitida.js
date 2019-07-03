@@ -6,6 +6,7 @@ import QuoteIussedById from "../../services/QuoteIussedById";
 import PrevPdfPolizaPrima from "../../services/PrevPdfPolizaPrima";
 import PolizaAnexoHogar from "../../services/PolizaAnexoHogar";
 import PdfEndosoHogar from "../../services/PdfEndosoHogar";
+import PdfPolizaHogar from "../../services/PdfPolizaHogar";
 
 class PolizaEmitida extends Component {
     // constructor(props) {
@@ -83,10 +84,7 @@ class PolizaEmitida extends Component {
             a.click();
             document.body.removeChild(a);
 
-            let plan = await QuoteIussedById.get(this.state.quote);
-            plan = plan.plan_selected_info.Item;
-
-            let pdf = await PrevPdfPolizaPrima.get(plan, this.state.quote);
+            let pdf = await PdfPolizaHogar.get(this.state.quote);
             a = document.createElement("a");
             a.style.display = "none";
             document.body.appendChild(a);

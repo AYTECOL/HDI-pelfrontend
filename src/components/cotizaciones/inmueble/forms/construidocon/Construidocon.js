@@ -17,10 +17,11 @@ class Construidocon extends Component {
             active: 0,
             materials: []
         };
+    }
 
+    componentDidMount() {
         this.getMaterials();
-
-        store.subscribe(async () => {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.construidocon;
             if (this.state.active !== value) {
@@ -30,6 +31,10 @@ class Construidocon extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     async getMaterials() {

@@ -103,7 +103,8 @@ class BtnContinue extends Component {
                         let personaData = persona.consultarPersonaRs.persona;
                         let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;
 
-                        if( (code === 36 && personaType === 1) || (code === 37 && personaType === 2) ) {
+
+                        if( (parseInt(code) === 36 && personaType === 1) || (parseInt(code) === 37 && personaType === 2) ) {
                             NumeroIdentificacion.toggleDisable(true);
                             personaData = personaData[(personaType === 2 ? 'personaJuridica' : 'personaNatural')];
                             if (typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '' && personaData.primerNombre !== null) {
