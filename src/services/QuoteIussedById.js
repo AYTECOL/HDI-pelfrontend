@@ -17,7 +17,6 @@ class QuoteIussedById {
             item[it] = [];
             return this;
         });
-
         for(let i in users ){
             let status = false;
             for (let j = 0; j < users[i].role.length; j++) {
@@ -29,18 +28,16 @@ class QuoteIussedById {
                         status = true;
                     }else if( role === 2 ){
                         // Asegurado
-                        item['insured'] = users[i];
+                        item['insured'].push(users[i]);
                         status = true;
                     }else if( role === 3 ){
                         // Beneficiario
-                        item['benefist'] = users[i];
+                        item['benefist'].push(users[i]);
                         status = true;
                     }
                 }
             }
         }
-        console.log(users);
-        console.log(item);
         return item;
     }
 
