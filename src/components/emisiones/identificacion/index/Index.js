@@ -47,8 +47,10 @@ class Index extends Component {
                     persons = this.state.persons;
                 } else {
                     let tomador = cotizacion.identification;
-                    tomador['role'] = [1];
-                    persons.push(tomador);
+                    if( tomador.name !== "" ){
+                        tomador['role'] = [1];
+                        persons.push(tomador);
+                    }
                 }
                 this.setState({
                     ...this.state,

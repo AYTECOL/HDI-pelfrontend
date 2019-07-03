@@ -71,6 +71,8 @@ export default class Persona extends Component {
                 }
                 this.state.person[key + "Disabled"] = false;
                 this.state.person[key + "Error"] = false;
+            }else if( this.state.person[key] === null ){
+                this.state.person[key] = "";
             }
         }
         for (let i = 0; i < this.props.persons.length; i++) {
@@ -104,6 +106,7 @@ export default class Persona extends Component {
         if (typeof this.state.person.sarlfalt_url !== 'string') {
             this.state.person.sarlfalt_url = "";
         }
+
     }
 
     static extractDataFromIaxis(persona, code, person) {
@@ -113,6 +116,7 @@ export default class Persona extends Component {
                     if (typeof persona['consultarPersonaRs']['persona']['personaJuridica'] !== "undefined") {
                         if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'] !== "undefined") {
                             person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
+                            person.businessname = person.businessname == null ? '' : person.businessname;
                             person.businessnameDisabled = person.businessname !== '' && person.businessname !== null;
                         }
                         if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'] !== "undefined") {
@@ -130,18 +134,23 @@ export default class Persona extends Component {
                 if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
                     if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
                         person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
+                        person.genero = person.genero === null ? '' : person.genero;
                         person.generoDisabled = person.genero !== '' && person.genero !== null;
 
                         person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
+                        person.name = person.name === null ? '' : person.name;
                         person.nameDisabled = person.name !== '' && person.name !== null;
 
                         person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
+                        person.secondname = person.secondname === null ? '' : person.secondname;
                         person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
 
                         person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
+                        person.lastname = person.lastname === null ? '' : person.lastname;
                         person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
 
                         person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
+                        person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
                         person.lastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
 
                         person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
@@ -208,13 +217,22 @@ export default class Persona extends Component {
             if (this._isMounted) {
                 this.validateAll(null, false, false);
                 let personObject = this.state.person;
-                if (typeof personObject.person !== "undefined" && this.props.item !== -1) {
+                if (typeof personObject.object !== "undefined" && this.props.item !== -1) {
                     this.validateDoc({
                         person: personObject.person
                     });
+                    let person = this.state.person;
+                    person.codeDisabled = true;
+                    person.valueDisabled = true;
+                    setTimeout(()=>{
+                        this.setState({
+                            ...this.state,
+                            person: person
+                        });
+                    },10);
                 }
             }
-        }, 600);
+        }, 400);
     }
 
     componentWillUnmount() {
@@ -426,6 +444,13 @@ export default class Persona extends Component {
                     total = 16;
                 }
             }
+
+            let indexSecondName = errors.indexOf("secondname");
+            if( indexSecondName !== -1 ){
+                total--;
+                errors.splice(indexSecondName, 1);
+            }
+
             let ok = total - errors.length;
             if (errors.length === 0) msj4 = false;
             if (errors.length === 0 && saveData) {

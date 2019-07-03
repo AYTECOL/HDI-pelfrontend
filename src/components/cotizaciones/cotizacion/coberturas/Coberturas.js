@@ -55,7 +55,7 @@ class Coberturas extends Component {
             let d = plans[index].coverages[i].values;
             if (typeof d !== "undefined") {
                 for (let j = 0; j < d.length; j++) {
-                    if (typeof d[j].value !== "undefined") {
+                    if (typeof d[j].values === "undefined") {
                         plans[index].coverages[i].values[j].value_show = Coberturas.getValueFields(d[j]);
                     } else {
                         for (let limit = 0; limit < d[j].values.length; limit++) {
@@ -289,10 +289,10 @@ class Coberturas extends Component {
                                         <Fragment>
                                             {option.values.map((opt, k) =>
                                                 <div
-                                                    className={"form-group " + (typeof opt.value !== 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '')}
+                                                    className={"form-group " + (typeof opt.values === 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '')}
                                                     key={k}>
                                                     <label htmlFor={"item" + k + "_" + key}>{opt.name}</label>
-                                                    {typeof opt.value !== 'undefined' ? (
+                                                    {typeof opt.values === 'undefined' ? (
                                                         <input name={"item" + k + "_" + key}
                                                                id={"item" + k + "_" + key}
                                                                placeholder={opt.value_show}

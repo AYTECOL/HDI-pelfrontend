@@ -35,7 +35,6 @@ class BtnContinue extends Component {
         let benefists = [];
         let onerous = [];
         let additional = [];
-        let exits = {};
         let personsMerge = {};
         for (let i = 0; i < persons.length; i++) {
             let person = persons[i];
@@ -86,23 +85,21 @@ class BtnContinue extends Component {
             if (typeof persons[i]['sarlfalt_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlfalt_url'];
             for (let i in dataUser) if (dataUser[i] === '""') dataUser[i] = ' ';
             for (let i in dataUser) if (dataUser[i] === "") dataUser[i] = ' ';
+
             for (let j = 0; j < persons[i]['role'].length; j++) {
-                if (typeof exits[dataUser['document']] === "undefined") {
-                    if (persons[i]['role'][j] === 1) {
-                        dataUser['code_sarlaft'] = 120;
-                        takers = dataUser;
-                    } else if (persons[i]['role'][j] === 2) {
-                        dataUser['code_sarlaft'] = 120;
-                        insured.push(dataUser);
-                    } else if (persons[i]['role'][j] === 3) {
-                        dataUser['code_sarlaft'] = 120;
-                        benefists.push(dataUser);
-                    } else if (persons[i]['role'][j] === 4) {
-                        onerous.push(dataUser);
-                    } else if (persons[i]['role'][j] >= 5) {
-                        additional.push(dataUser);
-                    }
-                    exits[dataUser['document']] = dataUser;
+                if (persons[i]['role'][j] === 1) {
+                    dataUser['code_sarlaft'] = 120;
+                    takers = dataUser;
+                } else if (persons[i]['role'][j] === 2) {
+                    dataUser['code_sarlaft'] = 120;
+                    insured.push(dataUser);
+                } else if (persons[i]['role'][j] === 3) {
+                    dataUser['code_sarlaft'] = 120;
+                    benefists.push(dataUser);
+                } else if (persons[i]['role'][j] === 4) {
+                    onerous.push(dataUser);
+                } else if (persons[i]['role'][j] >= 5) {
+                    additional.push(dataUser);
                 }
             }
         }

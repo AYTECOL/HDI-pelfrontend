@@ -46,6 +46,14 @@ class TipoDocumento extends Component {
         this.unsubscribe();
     }
 
+    static toggleDisable(status) {
+        if (status === true) {
+            Helpers.disabled('#doc-type');
+        } else {
+            Helpers.enabled('#doc-type');
+        }
+    }
+
     async getOptions() {
         this.setState({
             ...this.state,
