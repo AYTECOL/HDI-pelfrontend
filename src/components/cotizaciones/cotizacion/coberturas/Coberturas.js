@@ -334,7 +334,6 @@ class Coberturas extends Component {
                                                         className="form-control"
                                                         disabled={(option.optional === false || option.checked === false)}
                                                         defaultValue={Coberturas.getSelectByItems(option.deductible)}>
-                                                    <option value="">Sin Deducible</option>
                                                     {option.deductible.map((opt, k) =>
                                                         <option key={k} value={opt.id}>{opt.name}</option>
                                                     )}

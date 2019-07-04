@@ -52,17 +52,14 @@ class Crearpolizaiaxis {
             }
 
             if (typeof d.fechadenacimiento === "undefined") {
-                if (typeof d.birthdate === "undefined") {
-                    d.fechadenacimiento = '1948-03-06';
-                } else {
+                if (typeof d.birthdate !== "undefined") {
                     d.fechadenacimiento = d.birthdate;
-                    if( d.fechadenacimiento === "" || d.fechadenacimiento === null || d.fechadenacimiento === " " ){
-                        d.fechadenacimiento = '1948-03-06';
-                    }
+                }else{
+                    d.fechadenacimiento = '1948-03-06';
                 }
-
-                d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
             }
+            if( d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
+            d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
 
             arrayToMerge.push({
                 "tipoDocumento": {

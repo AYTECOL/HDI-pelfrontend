@@ -8,6 +8,11 @@ import AccessToken from "../../../services/AccessToken";
 import Loading from "../../../components/globals/loading/Loading";
 
 class Helpers {
+
+    static validations(){
+
+    }
+
     static toCapitalize(str) {
         var splitStr = str.toLowerCase().split(" ");
         for (let i = 0; i < splitStr.length; i++) {
