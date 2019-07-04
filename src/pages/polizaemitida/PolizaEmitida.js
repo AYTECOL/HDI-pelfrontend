@@ -3,19 +3,11 @@ import "./PolizaEmitida.scss";
 import SendMail from "../../components/cotizaciones/cotizacion/popups/sendmail/SendMail";
 import Loading from "../../components/globals/loading/Loading";
 import QuoteIussedById from "../../services/QuoteIussedById";
-import PrevPdfPolizaPrima from "../../services/PrevPdfPolizaPrima";
 import PolizaAnexoHogar from "../../services/PolizaAnexoHogar";
 import PdfEndosoHogar from "../../services/PdfEndosoHogar";
 import PdfPolizaHogar from "../../services/PdfPolizaHogar";
 
 class PolizaEmitida extends Component {
-    // constructor(props) {
-    //   super(props);
-    //   this.state = {
-    //     quote: this.props.match.params.id,
-    //     data: {}
-    //   };
-    // }
 
     state = {
         quote: this.props.match.params.polizaId,
@@ -77,6 +69,7 @@ class PolizaEmitida extends Component {
         Loading.toggle(true);
         try {
             let a = document.createElement("a");
+
 
             let pdf = await PdfPolizaHogar.get(this.state.quote);
             a = document.createElement("a");

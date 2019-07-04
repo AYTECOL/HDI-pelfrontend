@@ -77,41 +77,51 @@ class Coberturas extends Component {
         }
         try {
             let inmueble = store.getState().Inmueble;
-            // Inmueble
-            if (item.id === 1) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) * parseInt(item.value) / 100);
-                //Contenidos
-            } else if (item.id === 2) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * parseInt(item.value) / 100);
-                //Obras
-            } else if (item.id === 3) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobrasvalor) * parseInt(item.value) / 100);
-                //Telefonos moviles
-            } else if (item.id === 4) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
-                //Hurto siempre basado en hurto calificado
-            } else if (item.id === 5) {
-                let dataHurto = [];
-                let hurto = Coberturas.getCoverangeById(3);
-                for (let i = 0; i < hurto.values.length; i++) dataHurto.push(Coberturas.getValueFields(hurto.values[i]));
-                return Masknumbermoney.formatToMask(
-                    (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
-                //Joyas
-            } else if (item.id === 6) {
-                return Masknumbermoney.formatToMask(
-                    Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
-                //Contenido mobile
-            } else if (item.id === 7) {
-                let joyas = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * 100 / 100;
-                let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * 10 / 100;
-                let telefonos = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * 100 / 100;
-                return Masknumbermoney.formatToMask(
-                    (joyas + contenido + telefonos) * parseInt(item.value) / 100);
+            if( typeof item.values !== "undefined"){
+                for (let i = 0; i < item.values.length; i++) {
+                    if( item.values[i].default === true ){
+                        return Masknumbermoney.formatToMas(item.values[i].limit);
+                    }
+                }
+            }else{
+                // Inmueble
+                if (item.id === 1) {
+                    return Masknumbermoney.formatToMask(
+                        Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) * parseInt(item.value) / 100);
+                    //Contenidos
+                } else if (item.id === 2) {
+                    return Masknumbermoney.formatToMask(
+                        Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * parseInt(item.value) / 100);
+                    //Obras
+                } else if (item.id === 3) {
+                    return Masknumbermoney.formatToMask(
+                        Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobrasvalor) * parseInt(item.value) / 100);
+                    //Telefonos moviles
+                } else if (item.id === 4) {
+                    return Masknumbermoney.formatToMask(
+                        Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
+                    //Hurto siempre basado en hurto calificado
+                } else if (item.id === 5) {
+                    let dataHurto = [];
+                    let hurto = Coberturas.getCoverangeById(3);
+                    for (let i = 0; i < hurto.values.length; i++) dataHurto.push(Coberturas.getValueFields(hurto.values[i]));
+                    return Masknumbermoney.formatToMask(
+                        (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
+                    //Joyas
+                } else if (item.id === 6) {
+                    return Masknumbermoney.formatToMask(
+                        Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
+                    //Contenido mobile
+                } else if (item.id === 7) {
+                    let joyas = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * 100 / 100;
+                    let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * 10 / 100;
+                    let telefonos = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * 100 / 100;
+                    return Masknumbermoney.formatToMask(
+                        (joyas + contenido + telefonos) * parseInt(item.value) / 100);
+                }
             }
+
+
             return 'N/A';
         } catch (e) {
             return 'N/A';
