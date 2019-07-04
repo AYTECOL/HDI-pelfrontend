@@ -159,6 +159,7 @@ class Coberturas extends Component {
         let total = await DeterminePolizaPrima.get(plans[this.state.index], this.props.match.params.id);
         if (typeof total.prospect !== "undefined") {
             plans[this.state.index].value = total.prospect;
+            plans[this.state.index].prima = total;
             store.dispatch(AllPlansCreator(plans));
         }
         Loading.toggle(false);

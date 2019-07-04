@@ -11,7 +11,7 @@ class PdfPolizaHogar {
         try{
             return await Api.get(BaseUrl + id, undefined, {
                 pelhauthorization: user !== null ? user['accessToken'] : ''
-            }, true);
+            }, true);;
         }catch(e){
             if( _index < 3 ){
                 _index++;

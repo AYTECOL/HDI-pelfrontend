@@ -8,10 +8,9 @@ class PdfEndosoHogar {
     static async get(id) {
         let user = await Helpers.getUser();
         try{
-            console.log(2);
             return await Api.get(BaseUrl + id, undefined, {
                 pelhauthorization: user !== null ? user['accessToken'] : ''
-            }, true);
+            }, true);;
         }catch (e) {
             if( _index < 3 ){
                 _index++;
