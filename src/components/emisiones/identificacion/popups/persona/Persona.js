@@ -213,6 +213,7 @@ export default class Persona extends Component {
 
     componentDidMount() {
         this._isMounted = true;
+        Helpers.fieldNumeric();
         setTimeout(() => {
             if (this._isMounted) {
                 this.validateAll(null, false, false);
@@ -373,12 +374,10 @@ export default class Persona extends Component {
         if (this.state.typePerson <= 3 && typeof this.state.person.sarlfalt_url === "undefined") {
             let person = this.state.person;
             let file = await UploadFile.upload("Sarlaft", person.sarlaft);
-            console.log(file);
             if (typeof file['location'] !== "undefined") {
                 person.sarlaft = file['location'];
                 person.sarlaft_document_url = file['location'];
                 person.sarlfalt_url = file['location'];
-                console.log(person);
                 this.setState({
                     ...this.state,
                     person: person
@@ -400,6 +399,12 @@ export default class Persona extends Component {
                     if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                 }
             }
+
+            if( Helpers.validationEmail(this.state.person.email) === false ){
+                errors.push('email');
+                if (printErrors || 'email' === name) document.querySelector(".email").className += " error";
+            }
+
             if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
                 errors.splice(errors.indexOf('sarlfalt'), 1);
                 Helpers.removeClass('.sarlaft.error', 'error');
@@ -705,6 +710,9 @@ export default class Persona extends Component {
                                                             onChange={this.changeDates}
                                                             showMonthDropdown
                                                             showYearDropdown
+                                                            scrollableYearDropdown
+                                                            yearDropdownItemNumber={60}
+                                                            maxDate={new Date()}
                                                             disabled={this.state.person.fechadenacimientoDisabled}
                                                             className={"form-control " + (this.state.person.fechadenacimientoDisabled ? 'disabled' : '')}/>
                                                 <small className="form-text only-errors">Falta información requerida
@@ -736,7 +744,7 @@ export default class Persona extends Component {
                                                 <div className="pisonumero form-group "><label
                                                     htmlFor="telefono">Teléfono</label>
                                                     <input type="text"
-                                                           className={"form-control " + (this.state.person.telefonoDisabled ? 'disabled' : '')}
+                                                           className={"number form-control " + (this.state.person.telefonoDisabled ? 'disabled' : '')}
                                                            disabled={this.state.person.telefonoDisabled} name="telefono"
                                                            value={this.state.person.telefono}
                                                            onChange={this.changeValue}/>
@@ -790,7 +798,7 @@ export default class Persona extends Component {
                                     {(this.state.typePerson !== 6 && this.state.typePerson !== 7) &&
                                     <div className="row fields-row">
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                            <div className="pisonumero form-group "><label
+                                            <div className="email form-group "><label
                                                 htmlFor="email">Correo electrónico</label>
                                                 <input type="text"
                                                        className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}

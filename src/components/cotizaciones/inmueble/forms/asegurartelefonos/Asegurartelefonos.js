@@ -172,7 +172,7 @@ class Asegurartelefonos extends Component {
                             {/*<p>Al momento de emitir la póliza ten a la mano el número IMEI de tu celular</p>*/}
                             {/*</div>*/}
                             <div className="tool-tip info">
-                                <p>El valor máximo por cada teléfono móvil es de $ 3.000.000</p>
+                                <p>El valor máximo por cada teléfono móvil es de $ 4.000.000</p>
                             </div>
                         </div>
                     </div>

@@ -56,7 +56,7 @@ class Construidocon extends Component {
         this.setState({
             ...this.state,
             error: error,
-            active: e.data
+            active: e.value
         });
     };
 
@@ -68,7 +68,7 @@ class Construidocon extends Component {
                     {this.state.materials.map((option, key) =>
                         <div key={key} className="col col-6 col-sm-12 col-md-4 col-lg-4">
                             <div
-                                className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.order)) ? 'active' : '')}
+                                className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
                                 onClick={this.validateEmpty({
                                     data: option.order,
                                     value: option.buildMaterialCode,

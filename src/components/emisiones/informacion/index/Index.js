@@ -431,7 +431,7 @@ class Index extends Component {
                                     </div>
                                     <div className="col col-sm-12 col-md-6 col-lg-6">
                                         <p><b>Obras de Arte:</b> $ 3.000.000</p>
-                                        <p><b>Contenidos Móviles:</b> $ 3.000.000</p>
+                                        <p><b>Contenidos Móviles:</b> $ 4.000.000</p>
                                     </div>
                                     {this.state.celulares === true &&
                                     <div className="col col-sm-12 col-md-12 col-lg-12">

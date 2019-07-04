@@ -29,7 +29,6 @@ const Table = props => {
         const {history} = props;
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== "undefined") {
-            console.log(cotizacion.state);
             if (cotizacion.state <= 3) {
                 history.push(`${UrlSite}/cotizacion/${cotizacion.state}/${id}`);
             } else if(cotizacion.state < 7 && cotizacion.state > 3){

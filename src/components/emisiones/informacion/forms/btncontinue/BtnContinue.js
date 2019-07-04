@@ -30,10 +30,21 @@ class BtnContinue extends Component {
         let state = this.props.state;
         let status = true;
 
+        for (let i = 0; i < state.contents.length; i++) {
+            for (let j in state.contents[i]) if (state.contents[i][j] === "") state.contents[i][j] = '""';
+            if (state.contents[i].uploaded === false) {
+                let url = await UploadFile.upload('Docs', state.contents[i].doc);
+                state.contents[i].textFile = url.location;
+                state.contents[i].uploaded = true;
+            }
+            state.contents[i].nameType = this.props.items[state.contents[i].type];
+            state.contents[i].typeCode = 90161;
+        }
+
         //Validations
         if (state.celulares === true) {
             for (let i = 0; i < state.contents.length; i++) {
-                if (state.contents[i].uploaded !== true && typeof state.contents[i].doc === "undefined") {
+                if (typeof state.contents[i].textFile === "undefined" || state.contents[i].textFile.trim() === "") {
                     status = false;
                 }
                 if (status === false && state.contents[i].type === 4) this.props.toggleErrorPhone(true);
@@ -45,17 +56,6 @@ class BtnContinue extends Component {
             }
         }
 
-        for (let i = 0; i < state.contents.length; i++) {
-            for (let j in state.contents[i]) if (state.contents[i][j] === "") state.contents[i][j] = '""';
-            if (state.contents[i].uploaded === false) {
-                let url = await UploadFile.upload('Docs', state.contents[i].doc);
-                state.contents[i].textFile = url.location;
-                state.contents[i].uploaded = true;
-                status = false;
-            }
-            state.contents[i].nameType = this.props.items[state.contents[i].type];
-            state.contents[i].typeCode = 90161;
-        }
         let name = "-";
         let phone = "-";
         if (typeof state.contactperson !== "undefined" && state.contactperson !== null) {

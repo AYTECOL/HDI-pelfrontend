@@ -110,7 +110,6 @@ class Crearpolizaiaxis {
                 ]
             })
         }
-        console.log(arrayToMerge);
         return arrayToMerge;
     }
 
@@ -204,7 +203,6 @@ class Crearpolizaiaxis {
         let response = await Api.post(BaseUrl, data, Url, undefined, {
             Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
         });
-        console.log(response);
         return response;
     }
 
