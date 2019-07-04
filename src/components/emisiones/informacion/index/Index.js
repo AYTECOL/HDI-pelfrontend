@@ -43,22 +43,7 @@ class Index extends Component {
                 "Celulares",
             ],
             limits: [
-                {
-                    "min": 1,
-                    "max": 50000000
-                },
-                {
-                    "min": 1,
-                    "max": 20000000
-                },
-                {
-                    "min": 900000,
-                    "max": 20000000
-                },
-                {
-                    "min": 900000,
-                    "max": 10000000
-                }
+
             ]
         };
         this.updatePerson = this.updatePerson.bind(this);
@@ -118,6 +103,24 @@ class Index extends Component {
                 if (inmueble.inmueble_asegudado_telefonos === 1) celulares = true;
             }
         }
+        const validateMinMax =  [   
+        {
+            "min": 1,
+            "max": inmueble.contenido_asegudado_valor
+        },
+        {
+            "min": 1,
+            "max": inmueble.inmueble_asegudado_obrasvalor
+        },
+        {
+            "min": 1,
+            "max": inmueble.inmueble_asegudado_joyasvalor
+        },
+        {
+            "min": inmueble.inmueble_asegudado_telefonosvalor,
+            "max": inmueble.inmueble_asegudado_telefonosvalor
+        }];
+        this.setState({limits: validateMinMax});
         this.setState({
             ...this.state,
             ...data,
@@ -282,13 +285,13 @@ class Index extends Component {
         let disableBtn = this.state.disableBtn;
         let limits = this.state.limits[contents[key].type];
         let v = Masknumbermoney.formatToNumber(e.target.value);
-        if (v > limits.min && v < limits.max) {
+        if (v >= limits.min && v <= limits.max) {
             contents[key]['error1'] = false;
             contents[key]['error2'] = false;
             disableBtn = false;
         } else {
-            if (v < limits.min) contents[key]['error1'] = true;
-            if (v > limits.max) contents[key]['error2'] = true;
+            if (v <= limits.min) contents[key]['error1'] = true;
+            if (v >= limits.max) contents[key]['error2'] = true;
             disableBtn = true;
         }
         contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
