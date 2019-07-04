@@ -588,6 +588,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/services/PdfEndosoHogar.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/services/PdfPolizaHogar.js">
           <value>
             <set />

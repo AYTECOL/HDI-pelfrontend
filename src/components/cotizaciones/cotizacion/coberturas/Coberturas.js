@@ -72,6 +72,9 @@ class Coberturas extends Component {
     }
 
     static getValueFields(item) {
+        if( item.code === 9691 ){
+            item.id = 5;
+        }
         try {
             let inmueble = store.getState().Inmueble;
             // Inmueble
@@ -93,7 +96,7 @@ class Coberturas extends Component {
                 //Hurto siempre basado en hurto calificado
             } else if (item.id === 5) {
                 let dataHurto = [];
-                let hurto = this.getCoverangeById(3);
+                let hurto = Coberturas.getCoverangeById(3);
                 for (let i = 0; i < hurto.values.length; i++) dataHurto.push(Coberturas.getValueFields(hurto.values[i]));
                 return Masknumbermoney.formatToMask(
                     (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
@@ -180,8 +183,9 @@ class Coberturas extends Component {
         }, 500);
     };
 
-    getCoverangeById(id) {
-        let plans = this.state.plans[this.state.index].coverages;
+    static getCoverangeById(id) {
+        let index = store.getState().indexPlan;
+        let plans = store.getState().AllPlans[index].coverages;
         for (let i = 0; i < plans.length; i++) {
             if (plans[i].id === id) {
                 return plans[i];
