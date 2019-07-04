@@ -11,6 +11,7 @@ import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Maskn
 import {NextStep, saveProspect} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Links from "../links/Links";
+import Coberturas from "../../coberturas/Coberturas";
 
 class BtnContinue extends Component {
 
@@ -27,7 +28,9 @@ class BtnContinue extends Component {
         for (let i = 0; i < plan.coverages.length; i++) {
             if (typeof plan.coverages[i].values !== "undefined") {
                 for (let j = 0; j < plan.coverages[i].values.length; j++) {
+                    plan.coverages[i].values[j].value_show = Coberturas.getValueFields(plan.coverages[i].values[j]);
                     let v = plan.coverages[i].values[j].value_show;
+                    if( v === 'N/A' ) v = plan.coverages[i].values[j].value;
                     if (typeof v !== "undefined") {
                         plan.coverages[i].values[j].value_to_quotate = Masknumbermoney.formatToNumber(v);
                     } else {

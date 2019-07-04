@@ -7,6 +7,7 @@ import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValorat
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import {AllPlans as AllPlansCreator} from "../../../../actions";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
+import BtnContinue from "../forms/btncontinue/BtnContinue";
 
 class Coberturas extends Component {
 
@@ -72,9 +73,6 @@ class Coberturas extends Component {
     }
 
     static getValueFields(item) {
-        if( item.code === 9691 ){
-            item.id = 5;
-        }
         try {
             let inmueble = store.getState().Inmueble;
             if( typeof item.values !== "undefined"){
@@ -120,8 +118,6 @@ class Coberturas extends Component {
                         (joyas + contenido + telefonos) * parseInt(item.value) / 100);
                 }
             }
-
-
             return 'N/A';
         } catch (e) {
             return 'N/A';
@@ -156,7 +152,9 @@ class Coberturas extends Component {
         Loading.toggle(true);
         let plans = this.state.plans;
         await CreateOrUpdateValoration.save();
-        let total = await DeterminePolizaPrima.get(plans[this.state.index], this.props.match.params.id);
+        let plan = plans[this.state.index];
+        plan = BtnContinue.toNumberCoverrange(plan);
+        let total = await DeterminePolizaPrima.get(plan, this.props.match.params.id);
         if (typeof total.prospect !== "undefined") {
             plans[this.state.index].value = total.prospect;
             plans[this.state.index].prima = total;
@@ -262,7 +260,11 @@ class Coberturas extends Component {
         this.setState({
             ...this.state,
             plans: plan
-        })
+        });
+    };
+
+    blur = () => {
+        this.sendAndValidate();
     };
 
     render() {
@@ -311,6 +313,7 @@ class Coberturas extends Component {
                                                         <input name={"item" + k + "_" + key}
                                                                id={"item" + k + "_" + key}
                                                                placeholder={opt.value_show}
+                                                               onBlur={this.blur}
                                                                value={typeof opt.value_show === "undefined" ? '$0' : opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
                                                                disabled={(option.optional === false || option.checked === false)}
@@ -318,6 +321,7 @@ class Coberturas extends Component {
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}
                                                                 id={"item" + k + "_" + key}
+                                                                onBlur={this.blur}
                                                                 disabled={(option.optional === false || option.checked === false)}
                                                                 value={Coberturas.getSelectFields(opt.values)}
                                                                 onChange={this.inputChange(k, key, 2)}>

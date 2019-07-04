@@ -6,6 +6,7 @@ import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValorat
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import {AllPlans as AllPlansCreator} from "../../../../actions";
 import Loading from "../../../globals/loading/Loading";
+import BtnContinue from "../forms/btncontinue/BtnContinue";
 
 class Asistencias extends Component {
 
@@ -76,7 +77,9 @@ class Asistencias extends Component {
         Loading.toggle(true);
         let plans = this.state.plans;
         await CreateOrUpdateValoration.save();
-        let total = await DeterminePolizaPrima.get(plans[this.state.index], this.props.match.params.id);
+        let plan = plans[this.state.index];
+        plan = BtnContinue.toNumberCoverrange(plan);
+        let total = await DeterminePolizaPrima.get(plan, this.props.match.params.id);
         if (typeof total.prospect !== "undefined") {
             plans[this.state.index].value = total.prospect;
             plans[this.state.index].prima = total;
