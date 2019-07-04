@@ -37,7 +37,7 @@ node('linux'){
             sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-uat --delete'
             sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --acl public-read'
             sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --recursive --cache-control max-age=0,no-cache,no-store,must-revalidate --acl public-read'
-            sh 'aws cloudfront create-invalidation --distribution-id E2C3ZC7CFLAPGU --paths "/*"'
+            sh 'aws cloudfront create-invalidation --distribution-id E29UJTXEFLRNQZ --paths "/*"'
         }
 		
     }
