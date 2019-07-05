@@ -109,6 +109,36 @@ export default class Persona extends Component {
 
     }
 
+    componentDidMount() {
+        this._isMounted = true;
+        Helpers.fieldNumeric();
+        setTimeout(() => {
+            if (this._isMounted) {
+                this.validateAll(null, false, false);
+                let personObject = this.state.person;
+                if( typeof personObject.person !== "undefined" ) personObject.object = personObject.person;
+                if (typeof personObject.object !== "undefined" && this.props.item !== -1) {
+                    this.validateDoc({
+                        person: personObject.person
+                    });
+                    let person = this.state.person;
+                    person.codeDisabled = true;
+                    person.valueDisabled = true;
+                    setTimeout(()=>{
+                        this.setState({
+                            ...this.state,
+                            person: person
+                        });
+                    },10);
+                }
+            }
+        }, 400);
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     static extractDataFromIaxis(persona, code, person) {
         if (parseInt(code) === 37) {
             if (typeof persona['consultarPersonaRs'] !== "undefined") {
@@ -125,7 +155,6 @@ export default class Persona extends Component {
                             person.fechadecontitucion = typeof person.fechadecontitucion[0] !== "undefined" ? person.fechadecontitucion[0] : '';
                             person.fechadecontitucionDisabled = person.fechadecontitucion !== '';
                         }
-
                     }
                 }
             }
@@ -151,7 +180,10 @@ export default class Persona extends Component {
 
                         person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
                         person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
-                        person.lastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+                        person.secondlastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+
+                        person.valueDisabled = true;
+                        person.codeDisabled = true;
 
                         person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
                         person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
@@ -176,7 +208,6 @@ export default class Persona extends Component {
                         } else if (contacto['idContacto'] === 2) {
                             person.email = contacto['textoContacto'];
                         }
-
 
                         person.contacto.push({
                             "tipoContacto": {
@@ -210,35 +241,6 @@ export default class Persona extends Component {
         }
         return person;
     };
-
-    componentDidMount() {
-        this._isMounted = true;
-        Helpers.fieldNumeric();
-        setTimeout(() => {
-            if (this._isMounted) {
-                this.validateAll(null, false, false);
-                let personObject = this.state.person;
-                if (typeof personObject.object !== "undefined" && this.props.item !== -1) {
-                    this.validateDoc({
-                        person: personObject.person
-                    });
-                    let person = this.state.person;
-                    person.codeDisabled = true;
-                    person.valueDisabled = true;
-                    setTimeout(()=>{
-                        this.setState({
-                            ...this.state,
-                            person: person
-                        });
-                    },10);
-                }
-            }
-        }, 400);
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
 
     changeTextFile = e => {
         let name = "";
@@ -306,7 +308,6 @@ export default class Persona extends Component {
     };
 
     validateDoc = async e => {
-
         if (this.state.person.value === "") return;
         if (this.state.typePerson === 2) return;
         let code = this.state.person.code;

@@ -210,7 +210,6 @@ class Index extends Component {
     };
 
     render() {
-        console.log(this.state.plans);
         return (
             <form autoComplete="off" className="index-form emision">
                 <div className="container">
@@ -314,7 +313,7 @@ class Index extends Component {
                             <React.Fragment>
                                 <div className="row">
                                     <div className="col col-12 col-sm-12 col-md-4">
-                                        <h6 className="valuep"></h6>
+                                        <h6 className="valuep">&nbsp;</h6>
                                     </div>
                                     <div className="col col-12 col-sm-12 col-md-4">
 

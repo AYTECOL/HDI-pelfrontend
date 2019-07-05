@@ -31,13 +31,13 @@ class Crearpolizaiaxis {
                         "codigo": 1
                     }
                 } else {
-                    if (d.document_type.toString() === "36") {
-                        d.tipoPersona = {
-                            "codigo": 1
-                        }
-                    } else if (d.document_type.toString() === "37") {
+                    if (d.document_type.toString() === "37") {
                         d.tipoPersona = {
                             "codigo": 2
+                        }
+                    }else{
+                        d.tipoPersona = {
+                            "codigo": 1
                         }
                     }
                 }
@@ -114,7 +114,6 @@ class Crearpolizaiaxis {
     }
 
     static async get(data) {
-
         let aseguradoArr = [];
         let beneficiarioArr = [];
         let tomadorArr = [];

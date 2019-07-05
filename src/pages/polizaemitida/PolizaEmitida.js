@@ -6,6 +6,7 @@ import QuoteIussedById from "../../services/QuoteIussedById";
 import PolizaAnexoHogar from "../../services/PolizaAnexoHogar";
 import PdfEndosoHogar from "../../services/PdfEndosoHogar";
 import PdfPolizaHogar from "../../services/PdfPolizaHogar";
+import Counter from "../../services/Counter";
 
 class PolizaEmitida extends Component {
 
@@ -94,6 +95,17 @@ class PolizaEmitida extends Component {
         }
     };
 
+    getNumber = async () => {
+        const { history } = this.props;
+        Loading.toggle(true);
+        let number = await Counter.get();
+        if (typeof number.currentValue !== "undefined") {
+            number = number.currentValue.toString();
+            history.push(`/cotizacion/1/${number}`);
+        }
+        setTimeout(Loading.toggle(false), 500);
+    };
+
     render() {
         return (
             <div className="cotizacion exito">
@@ -134,7 +146,7 @@ class PolizaEmitida extends Component {
 
                         <div className={"row text-center"}>
                             <div className="col col-sm-12 col-md-12 col-lg-12">
-                                <button type="button" className={"btn btn-default"}>
+                                <button onClick={this.getNumber} type="button" className={"btn btn-default"}>
                                     Nueva cotización
                                 </button>
                                 <a href={"/"} type="button" className={"btn btn-primary"}>

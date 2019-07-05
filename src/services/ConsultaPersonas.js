@@ -4,7 +4,7 @@ import Helpers from "../common/helpers/helpers/Helpers";
 const UrlServicePerson = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev/";
 const Baseurl = "consultarpersona";
 
-const Default = {
+/*const Default = {
     "consultarPersonaRs": {
         "infoResponse": {
             "estado": {
@@ -121,7 +121,7 @@ const Default = {
             "vigente": false
         }
     }
-};
+};*/
 
 class Consultapersonas {
     static async get(type, value) {

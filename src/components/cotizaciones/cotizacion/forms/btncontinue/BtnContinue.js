@@ -11,7 +11,6 @@ import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Maskn
 import {NextStep, saveProspect} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Links from "../links/Links";
-import Coberturas from "../../coberturas/Coberturas";
 
 class BtnContinue extends Component {
 
