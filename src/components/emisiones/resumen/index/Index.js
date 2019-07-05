@@ -20,7 +20,7 @@ import AllBuildMaterial from "../../../../services/AllBuildMaterial";
 import AllBuildYears from "../../../../services/AllBuildYears";
 import AllSecurity from "../../../../services/AllSecurity";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-
+import Summary from "../../../cotizaciones/cotizacion/summary/summary"
 class Index extends Component {
 
     constructor(props) {
@@ -60,6 +60,7 @@ class Index extends Component {
     async getData() {
         Loading.toggle(true);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
+        console.log(plan)
         let plansLoader = [];
 
         let selected = plan.plan_selected_info.Item;
@@ -311,18 +312,7 @@ class Index extends Component {
 
                             {typeof this.state.plans !== "undefined" &&
                             <React.Fragment>
-                                <div className="row">
-                                    <div className="col col-12 col-sm-12 col-md-4">
-                                        <h6 className="valuep">&nbsp;</h6>
-                                    </div>
-                                    <div className="col col-12 col-sm-12 col-md-4">
-
-                                    </div>
-                                    <div className="col col-12 col-sm-12 col-md-4">
-
-                                    </div>
-                                </div>
-
+                                <Summary />
                                 <Coberturas toggleSlide={Helpers.toggleSlide}/>
                                 <Asistencias toggleSlide={Helpers.toggleSlide}/>
                             </React.Fragment>
