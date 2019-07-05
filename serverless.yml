@@ -3,10 +3,7 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  ##### DEV ####
   stage: dev
-  ##### NONPROD ####
-  #stage: nonprod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   #iamRoleStatements:
@@ -16,12 +13,8 @@ provider:
   #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
           
 custom:
-  ##### DEV #####
   s3Bucket: poliza-express-hogar-dev
   s3BucketPDF: poliza-express-hogar-pdf-dev
-  ###### NONPROD #####
-  #s3Bucket: poliza-express-hogar-dev
-  #s3BucketPDF: poliza-express-hogar-pdf-dev  
   
 package:
   include:
@@ -52,6 +45,7 @@ resources:
         PolicyDocument:
           Statement:
             - Sid: PublicReadGetObject
+            #- Sid: AllowPublicRead
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -73,6 +67,7 @@ resources:
         PolicyDocument:
           Statement:
             - Sid: PublicReadGetObject
+            #- Sid: AllowPublicReadWrite
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -97,25 +92,22 @@ resources:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-            #### DEV ####
            - hogar-dev.libertyseguros.co
-           #### NONPROD ####
-           #- hogar-uat.libertyseguros.co
+          #TTL: 3600
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: /index.html
-              ErrorCachingMinTTL: 100
-            - ErrorCode: 403
-              ResponseCode: 200
-              ResponsePagePath: /index.html
-            #  ErrorCachingMinTTL: 1
+            #- ErrorCode: 403
+              #ResponseCode: 200
+              #ResponsePagePath: /index.html
           DefaultCacheBehavior:
             AllowedMethods:
               - GET
               - HEAD
-            MinTTL: 1
+            MinTTL: 3600
+            #TTL: 3600
             TargetOriginId: WebApp
             ForwardedValues:
               QueryString: 'false'
@@ -123,10 +115,8 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            ##### DEV ####
-            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
-            #### NONPROD ####
             #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
