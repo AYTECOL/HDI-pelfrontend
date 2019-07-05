@@ -312,10 +312,10 @@ class Coberturas extends Component {
                                                         <input name={"item" + k + "_" + key}
                                                                id={"item" + k + "_" + key}
                                                                placeholder={opt.value_show}
-                                                               onBlur={(option.optional === false || option.checked === false || (typeof opt.disabled !== "undefined" && opt.disabled === true))?this.blur:null}
+                                                               onBlur={(option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true))?this.blur:null}
                                                                value={typeof opt.value_show === "undefined" ? '$0' : opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
-                                                               disabled={(option.optional === false || option.checked === false || (typeof opt.disabled !== "undefined" && opt.disabled === true))}
+                                                               disabled={(option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true))}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}
