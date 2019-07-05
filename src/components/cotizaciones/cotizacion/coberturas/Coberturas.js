@@ -2,12 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {withRouter} from "react-router-dom";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
-import Loading from "../../../globals/loading/Loading";
-import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
-import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
-import {AllPlans as AllPlansCreator} from "../../../../actions";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
-import BtnContinue from "../forms/btncontinue/BtnContinue";
 import Plans from "../plans/Plans";
 
 class Coberturas extends Component {
@@ -150,6 +145,7 @@ class Coberturas extends Component {
     }
 
     sendAndValidate() {
+        console.log(2);
         Plans.sendAndValidate(this.state.plans,this.state.index,this.props.match.params.id);
     }
 
@@ -266,6 +262,36 @@ class Coberturas extends Component {
         this.sendAndValidate();
     };
 
+    showItem(opt){
+        let inmueble = this.state.Inmueble;
+        // Inmueble
+        if (opt.id === 1) {
+            return inmueble.inmuebleasegudado === 1;
+            //Contenidos
+        } else if (opt.id === 2) {
+            return inmueble.contenidoasegudado === 1;
+            //Obras
+        } else if (opt.id === 3) {
+            return inmueble.inmuebleasegudadoobras === 1;
+            //Telefonos moviles
+        } else if (opt.id === 4) {
+            return inmueble.contenidoasegudado === 1;
+            //Hurto siempre basado en hurto calificado
+        } else if (opt.id === 5) {
+            return true;
+            //Joyas
+        } else if (opt.id === 6) {
+            return inmueble.inmuebleasegudadojoyas === 1;
+            //Contenido mobile
+        } else if (opt.id === 7) {
+            return true;
+        }
+    }
+
+    static isDisabled(option, opt){
+        return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
+    };
+
     render() {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
@@ -303,7 +329,7 @@ class Coberturas extends Component {
                                         className={"col col-12 col-sm-12 col-md-3 col-lg-3 middle " + (option.checked === false ? ' disabled-item' : '')}>
                                         {typeof option.values !== "undefined" &&
                                         <Fragment>
-                                            {option.values.map((opt, k) =>
+                                            {option.values.map((opt, k) => this.showItem(opt) &&
                                                 <div
                                                     className={"form-group " + (typeof opt.values === 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '')}
                                                     key={k}>
@@ -312,10 +338,10 @@ class Coberturas extends Component {
                                                         <input name={"item" + k + "_" + key}
                                                                id={"item" + k + "_" + key}
                                                                placeholder={opt.value_show}
-                                                               onBlur={(option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true))?this.blur:null}
+                                                               onBlur={Coberturas.isDisabled(option,opt)?null:this.blur}
                                                                value={typeof opt.value_show === "undefined" ? '$0' : opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
-                                                               disabled={(option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true))}
+                                                               disabled={Coberturas.isDisabled(option,opt)}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}

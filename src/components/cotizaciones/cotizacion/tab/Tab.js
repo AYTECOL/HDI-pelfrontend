@@ -22,6 +22,7 @@ class Tab extends Component {
             typePlans: 3,
             index: "",
         };
+        this.updateType(this.state.Inmueble);
     }
 
     componentDidMount() {
@@ -69,7 +70,6 @@ class Tab extends Component {
             typePlans: type
         });
         if (typeof inmueble.inmuebleasegudado !== "undefined") {
-            console.log(2222);
             this.getPlants();
         }
     }
