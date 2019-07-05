@@ -9,11 +9,11 @@ provider:
   #stage: nonprod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
-  iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - s3:*
-          Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+  #iamRoleStatements:
+  #      - Effect: "Allow"
+  #        Action:
+  #          - s3:*
+  #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
           
 custom:
   ##### DEV #####
@@ -106,10 +106,10 @@ resources:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: /index.html
-              #ErrorCachingMinTTL: 1
-            #- ErrorCode: 403
-            #  ResponseCode: 200
-            #  ResponsePagePath: /index.html
+              ErrorCachingMinTTL: 1
+            - ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: /index.html
             #  ErrorCachingMinTTL: 1
           DefaultCacheBehavior:
             AllowedMethods:
