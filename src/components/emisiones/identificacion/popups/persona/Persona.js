@@ -82,7 +82,7 @@ export default class Persona extends Component {
         }
 
         if (this.state.typePerson === 1 || this.state.typePerson === 3 || this.state.typePerson === 2) {
-            this.state.total = 16;
+            this.state.total = 15;
         } else if (this.state.typePerson === 7) {
             this.state.total = 3;
         } else if (this.state.typePerson === 4) {
@@ -107,6 +107,12 @@ export default class Persona extends Component {
             this.state.person.sarlfalt_url = "";
         }
 
+        if( typeof this.state.person.object !== "undefined" || typeof this.state.person.person !== "undefined" ){
+            this.state.hideLoader = true;
+        }else{
+            this.state.hideLoader = undefined;
+        }
+
     }
 
     componentDidMount() {
@@ -114,7 +120,6 @@ export default class Persona extends Component {
         Helpers.fieldNumeric();
         setTimeout(() => {
             if (this._isMounted) {
-                this.validateAll(null, false, false);
                 let personObject = this.state.person;
                 if( typeof personObject.person !== "undefined" ) personObject.object = personObject.person;
                 if (typeof personObject.object !== "undefined" && this.props.item !== -1) {
@@ -130,6 +135,8 @@ export default class Persona extends Component {
                             person: person
                         });
                     },10);
+                }else{
+                    this.validateAll(null, false, false);
                 }
             }
         }, 400);
@@ -203,9 +210,9 @@ export default class Persona extends Component {
                     person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
                     for (let i = 0; i < contactos.length; i++) {
                         let contacto = contactos[i];
-                        if (contacto['idContacto'] === 1) {
+                        if (contacto['idContacto'] === 1 || contacto['idContacto'] === 2) {
                             person.telefono = contacto['textoContacto'];
-                        } else if (contacto['idContacto'] === 2) {
+                        } else if (contacto['idContacto'] === 3) {
                             person.email = contacto['textoContacto'];
                         }
 
@@ -395,7 +402,7 @@ export default class Persona extends Component {
             let fields = document.querySelectorAll(".modal-content input, .modal-content select");
             for (let i = 0; i < fields.length; i++) {
                 fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
-                if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox') {
+                if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname' ) {
                     errors.push(fields[i].name);
                     if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                 }
@@ -447,14 +454,18 @@ export default class Persona extends Component {
                 if (this.state.nit === true) {
                     total = 11;
                 } else {
-                    total = 16;
+                    total = 15;
                 }
             }
 
             let indexSecondName = errors.indexOf("secondname");
-            if( indexSecondName !== -1 ){
-                total--;
-                errors.splice(indexSecondName, 1);
+            if( indexSecondName !== -1 ) errors.splice(indexSecondName, 1);
+
+            let sarlaft = errors.indexOf("sarlaft");
+            if( sarlaft !== -1 && typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlfalt_url !== null ) {
+                if( this.state.person.sarlfalt_url.trim() !== "" ){
+                    errors.splice(sarlaft, 1);
+                }
             }
 
             let ok = total - errors.length;
@@ -514,7 +525,7 @@ export default class Persona extends Component {
                                     <div className="row fields-row">
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                             <TypeDocuments
-                                                disabled={this.state.person.codeDisabled || this.state.typePerson === 4}
+                                                disabled={this.state.person.codeDisabled || this.state.typePerson === 4} hideLoader={this.state.hideLoader}
                                                 value={this.state.person.code} onChange={this.changeValue}/>
                                         </div>
 

@@ -50,11 +50,19 @@ class AutocompleteCities extends Component {
     componentDidMount() {
         this._isMounted = true;
         this.getOptions();
-        if( typeof this.props.value !== "undefined" ){
-            if( this.props.value.trim() !== "" ){
+        this.updateValue(this.props);
+    }
+
+    componentWillReceiveProps(nextProps, nextContext) {
+        this.updateValue(nextProps);
+    }
+
+    updateValue(props){
+        if( typeof props.value !== "undefined" ){
+            if( props.value.trim() !== "" ){
                 this.setState({
                     ...this.state,
-                    value: this.props.value
+                    value: props.value
                 });
             }
         }
