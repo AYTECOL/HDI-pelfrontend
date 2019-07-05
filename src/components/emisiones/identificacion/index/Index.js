@@ -103,6 +103,7 @@ class Index extends Component {
                 person[i]['telefono'] = person[i]['phone'];
                 person[i]['ciudad'] = person[i]['location'];
                 person[i]['adresstype'] = person[i]['address_type'];
+                person[i]['sarlaft'] = person[i]['sarlaft_document_url'];
                 person[i]['sarlfalt_url'] = person[i]['sarlaft_document_url'];
             }
         }

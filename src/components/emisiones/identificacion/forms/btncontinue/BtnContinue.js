@@ -67,7 +67,7 @@ class BtnContinue extends Component {
                 location: location,
                 address_type: persons[i]['adresstype'],
                 address: persons[i]['address'],
-                sarlaft_document_url: '-',
+                sarlaft_document_url: persons[i]['sarlaft_document_url'],
                 role: persons[i]['role'],
                 businessname: persons[i]['businessname'],
                 fechadecontitucion: persons[i]['fechadecontitucion'],

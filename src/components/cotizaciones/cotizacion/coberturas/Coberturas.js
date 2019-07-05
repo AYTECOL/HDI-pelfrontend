@@ -256,11 +256,20 @@ class Coberturas extends Component {
         } else if (type === 2) {
             for (let i = 0; i < item.values[k].values.length; i++) item.values[k].values[i].default = false;
             item.values[k].values[e.target.value].default = true;
+            item.values[k].value = item.values[k].values[e.target.value].limit;
+            item.values[k].value_to_quotate = item.values[k].values[e.target.value].limit;
+            item.values[k].value_show = Masknumbermoney.formatToMask(item.values[k].values[e.target.value].limit);
         }
         this.setState({
             ...this.state,
             plans: plan
         });
+
+        if( e.target.tagName === "SELECT" ){
+            setTimeout(()=>{
+                this.sendAndValidate();
+            },100);
+        }
     };
 
     blur = () => {
@@ -321,7 +330,6 @@ class Coberturas extends Component {
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}
                                                                 id={"item" + k + "_" + key}
-                                                                onBlur={this.blur}
                                                                 disabled={(option.optional === false || option.checked === false)}
                                                                 value={Coberturas.getSelectFields(opt.values)}
                                                                 onChange={this.inputChange(k, key, 2)}>
