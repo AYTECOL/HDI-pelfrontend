@@ -9,9 +9,14 @@ import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
 import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
 import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {saveInmuebleValue} from "../../../../actions";
+import {AllPlans as AllPlansCreator, saveInmuebleValue} from "../../../../actions";
 import InspectionPolicy from "../../../../services/InspectionPolicy";
 import AllBuildYears from "../../../../services/AllBuildYears";
+import Plans from "../plans/Plans";
+import Loading from "../../../globals/loading/Loading";
+import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
+import BtnContinue from "../forms/btncontinue/BtnContinue";
+import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 
 class Cards extends Component {
 
@@ -217,7 +222,27 @@ class Cards extends Component {
             items: newItems
         });
         this.validateToggle();
+        console.log(error);
+        setTimeout(()=>{
+            //this.sendAndValidate();
+        },500);
     };
+
+    async sendAndValidate() {
+        let storeState = store.getState();
+        Loading.toggle(true);
+        let plans = storeState.AllPlans;
+        await CreateOrUpdateValoration.save();
+        let plan = plans[storeState.indexPlan];
+        plan = BtnContinue.toNumberCoverrange(plan);
+        let total = await DeterminePolizaPrima.get(plan, this.props.match.params.id);
+        if (typeof total.prospect !== "undefined") {
+            plans[storeState.indexPlan].value = total.prospect;
+            plans[storeState.indexPlan].prima = total;
+            store.dispatch(AllPlansCreator(plans));
+        }
+        Loading.toggle(false);
+    }
 
     render() {
         return (

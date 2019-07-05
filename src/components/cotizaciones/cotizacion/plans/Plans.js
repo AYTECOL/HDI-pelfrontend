@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 //Component
 import store from "../../../../store";
-import {indexPlanSelected} from "../../../../actions";
+import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
 import Sticky from "../../../../common/helpers/sticky/Sticky";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import Loading from "../../../globals/loading/Loading";
+import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
+import BtnContinue from "../forms/btncontinue/BtnContinue";
+import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 
 class Index extends Component {
 
@@ -39,6 +43,20 @@ class Index extends Component {
     changeIndexPlan = index => e => {
         store.dispatch(indexPlanSelected(index));
     };
+
+    static async sendAndValidate(plans, index, id) {
+        Loading.toggle(true);
+        await CreateOrUpdateValoration.save();
+        let plan = plans[index];
+        plan = BtnContinue.toNumberCoverrange(plan);
+        let total = await DeterminePolizaPrima.get(plan, id);
+        if (typeof total.prospect !== "undefined") {
+            plans[index].value = total.prospect;
+            plans[index].prima = total;
+            store.dispatch(AllPlansCreator(plans));
+        }
+        Loading.toggle(false);
+    }
 
     render() {
         return (
