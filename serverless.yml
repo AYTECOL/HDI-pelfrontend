@@ -3,18 +3,25 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: dev
+  ##### DEV ####
+  #stage: dev
+  ##### NONPROD ####
+  stage: nonprod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
-  #iamRoleStatements:
-  #      - Effect: "Allow"
-  #        Action:
-  #          - s3:*
-  #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+  iamRoleStatements:
+        - Effect: "Allow"
+          Action:
+            - s3:*
+          Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
           
 custom:
+  ##### DEV #####
+  #s3Bucket: poliza-express-hogar-dev
+  #s3BucketPDF: poliza-express-hogar-pdf-dev
+  ###### NONPROD #####
   s3Bucket: poliza-express-hogar-dev
-  s3BucketPDF: poliza-express-hogar-pdf-dev
+  s3BucketPDF: poliza-express-hogar-pdf-dev  
   
 package:
   include:
@@ -45,7 +52,6 @@ resources:
         PolicyDocument:
           Statement:
             - Sid: PublicReadGetObject
-            #- Sid: AllowPublicRead
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -67,7 +73,6 @@ resources:
         PolicyDocument:
           Statement:
             - Sid: PublicReadGetObject
-            #- Sid: AllowPublicReadWrite
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -92,13 +97,16 @@ resources:
                  OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-           - hogar-dev.libertyseguros.co
+            #### DEV ####
+           #- hogar-dev.libertyseguros.co
+           #### NONPROD ####
+           - hogar-uat.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
               ResponseCode: 200
               ResponsePagePath: /index.html
-              ErrorCachingMinTTL: 1
+              #ErrorCachingMinTTL: 1
             #- ErrorCode: 403
             #  ResponseCode: 200
             #  ResponsePagePath: /index.html
@@ -115,8 +123,10 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
-            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            ##### DEV ####
+            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #### NONPROD ####
+            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
