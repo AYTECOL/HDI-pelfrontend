@@ -4,9 +4,9 @@ provider:
   name: aws
   runtime: nodejs8.10
   ##### DEV ####
-  #stage: dev
+  stage: dev
   ##### NONPROD ####
-  stage: nonprod
+  #stage: nonprod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
@@ -17,11 +17,11 @@ provider:
           
 custom:
   ##### DEV #####
-  #s3Bucket: poliza-express-hogar-dev
-  #s3BucketPDF: poliza-express-hogar-pdf-dev
-  ###### NONPROD #####
   s3Bucket: poliza-express-hogar-dev
-  s3BucketPDF: poliza-express-hogar-pdf-dev  
+  s3BucketPDF: poliza-express-hogar-pdf-dev
+  ###### NONPROD #####
+  #s3Bucket: poliza-express-hogar-dev
+  #s3BucketPDF: poliza-express-hogar-pdf-dev  
   
 package:
   include:
@@ -98,9 +98,9 @@ resources:
           Enabled: 'true'
           Aliases:
             #### DEV ####
-           #- hogar-dev.libertyseguros.co
+           - hogar-dev.libertyseguros.co
            #### NONPROD ####
-           - hogar-uat.libertyseguros.co
+           #- hogar-uat.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -124,9 +124,9 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
             ##### DEV ####
-            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             #### NONPROD ####
-            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
