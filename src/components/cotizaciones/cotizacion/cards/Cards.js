@@ -9,14 +9,10 @@ import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
 import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
 import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {AllPlans as AllPlansCreator, saveInmuebleValue} from "../../../../actions";
+import {saveInmuebleValue} from "../../../../actions";
 import InspectionPolicy from "../../../../services/InspectionPolicy";
 import AllBuildYears from "../../../../services/AllBuildYears";
 import Plans from "../plans/Plans";
-import Loading from "../../../globals/loading/Loading";
-import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
-import BtnContinue from "../forms/btncontinue/BtnContinue";
-import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 
 class Cards extends Component {
 
