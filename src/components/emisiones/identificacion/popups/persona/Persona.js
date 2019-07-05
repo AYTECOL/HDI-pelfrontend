@@ -867,7 +867,7 @@ export default class Persona extends Component {
                                         </div>
                                     </div>
                                     }
-                                    {(this.state.typePerson !== 5 && this.state.typePerson !== 6 && this.state.typePerson !== 7 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
+                                    {(this.state.typePerson <= 3 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
                                     <div
                                         className={"row sarlaft"}>
                                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
