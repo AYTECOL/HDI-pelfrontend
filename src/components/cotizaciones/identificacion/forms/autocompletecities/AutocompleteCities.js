@@ -50,6 +50,14 @@ class AutocompleteCities extends Component {
     componentDidMount() {
         this._isMounted = true;
         this.getOptions();
+        if( typeof this.props.value !== "undefined" ){
+            if( this.props.value.trim() !== "" ){
+                this.setState({
+                    ...this.state,
+                    value: this.props.value
+                });
+            }
+        }
     }
 
     async getOptions() {
@@ -240,7 +248,7 @@ class AutocompleteCities extends Component {
                 <input name={typeof this.props.name === "undefined" ? 'city' : this.props.name} id="city" type="text"
                        className={"form-control " + (typeof this.props.disabled === 'undefined' ? '' : (this.props.disabled === true ? 'disabled' : ''))}
                        placeholder="Ingresa ciudad o municipio del h..."
-                       value={typeof this.props.value === "undefined" ? this.state.value : (this.props.value !== "" ? this.props.value : this.state.value)}
+                       value={this.state.value}
                        disabled={typeof this.props.disabled === 'undefined' ? false : this.props.disabled}
                        autoComplete="city"
                        autoCorrect="off"
