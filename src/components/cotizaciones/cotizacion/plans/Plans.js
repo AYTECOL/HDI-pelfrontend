@@ -47,6 +47,8 @@ class Index extends Component {
     static async sendAndValidate(plans, index, id) {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
+        console.log(plans);
+        console.log(index);
         let plan = plans[index];
         plan = BtnContinue.toNumberCoverrange(plan);
         let total = await DeterminePolizaPrima.get(plan, id);

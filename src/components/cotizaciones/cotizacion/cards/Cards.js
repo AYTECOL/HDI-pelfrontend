@@ -222,26 +222,16 @@ class Cards extends Component {
             items: newItems
         });
         this.validateToggle();
-        console.log(error);
-        setTimeout(()=>{
-            //this.sendAndValidate();
-        },500);
+        if( e.type === "blur" && parseInt(error) === 0 ){
+            setTimeout(()=>{
+                this.sendAndValidate();
+            },500);
+        }
     };
 
-    async sendAndValidate() {
+    sendAndValidate() {
         let storeState = store.getState();
-        Loading.toggle(true);
-        let plans = storeState.AllPlans;
-        await CreateOrUpdateValoration.save();
-        let plan = plans[storeState.indexPlan];
-        plan = BtnContinue.toNumberCoverrange(plan);
-        let total = await DeterminePolizaPrima.get(plan, this.props.match.params.id);
-        if (typeof total.prospect !== "undefined") {
-            plans[storeState.indexPlan].value = total.prospect;
-            plans[storeState.indexPlan].prima = total;
-            store.dispatch(AllPlansCreator(plans));
-        }
-        Loading.toggle(false);
+        Plans.sendAndValidate(storeState.AllPlans,storeState.indexPlan,this.props.match.params.id);
     }
 
     render() {

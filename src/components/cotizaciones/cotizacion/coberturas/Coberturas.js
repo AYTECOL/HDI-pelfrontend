@@ -8,6 +8,7 @@ import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import {AllPlans as AllPlansCreator} from "../../../../actions";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
 import BtnContinue from "../forms/btncontinue/BtnContinue";
+import Plans from "../plans/Plans";
 
 class Coberturas extends Component {
 
@@ -148,19 +149,8 @@ class Coberturas extends Component {
         this.unsubscribe();
     }
 
-    async sendAndValidate() {
-        Loading.toggle(true);
-        let plans = this.state.plans;
-        await CreateOrUpdateValoration.save();
-        let plan = plans[this.state.index];
-        plan = BtnContinue.toNumberCoverrange(plan);
-        let total = await DeterminePolizaPrima.get(plan, this.props.match.params.id);
-        if (typeof total.prospect !== "undefined") {
-            plans[this.state.index].value = total.prospect;
-            plans[this.state.index].prima = total;
-            store.dispatch(AllPlansCreator(plans));
-        }
-        Loading.toggle(false);
+    sendAndValidate() {
+        Plans.sendAndValidate(this.state.plans,this.state.index,this.props.match.params.id);
     }
 
     countCoverturas() {
