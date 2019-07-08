@@ -218,7 +218,7 @@ class Cards extends Component {
             items: newItems
         });
         this.validateToggle();
-        if( e.type === "blur" && parseInt(error) === 0 ){
+        if( e.type === "blur" && parseInt(error) === 0 && e.target.value.trim() !== '' ){
             setTimeout(()=>{
                 this.sendAndValidate();
             },500);

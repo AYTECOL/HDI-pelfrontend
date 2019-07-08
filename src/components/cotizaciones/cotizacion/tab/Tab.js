@@ -52,15 +52,9 @@ class Tab extends Component {
         let type = this.state.typePlans;
         if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
             type = 3;
-        } else if (
-            inmueble.inmuebleasegudado === 0 &&
-            inmueble.contenidoasegudado === 1
-        ) {
+        } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
             type = 2;
-        } else if (
-            inmueble.inmuebleasegudado === 1 &&
-            inmueble.contenidoasegudado === 0
-        ) {
+        } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
             type = 1;
         }
         this.setState({

@@ -123,7 +123,6 @@ class Coberturas extends Component {
             if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
                 let plans = Coberturas.calcValue(storeState.AllPlans, storeState.indexPlan);
                 if (typeof plans !== "undefined") {
-                    console.log(plans);
                     this.setState({
                         ...this.state,
                         plans: plans,
