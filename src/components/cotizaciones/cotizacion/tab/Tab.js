@@ -64,19 +64,20 @@ class Tab extends Component {
         ) {
             type = 1;
         }
+        console.log(type);
         this.setState({
             ...this.state,
             Inmueble: inmueble,
             typePlans: type
         });
         if (typeof inmueble.inmuebleasegudado !== "undefined") {
-            this.getPlants();
+            this.getPlants(type);
         }
     }
 
-    async getPlants() {
+    async getPlants(type) {
         const quotateId = this.props.match.params.id;
-        let plans = await AllPlans.get(this.state.typePlans);
+        let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
         for (let i = 0; i < plans.length; i++) {
             let currentPlan = Coberturas.calcValue(plans, i);
