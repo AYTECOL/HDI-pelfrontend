@@ -723,6 +723,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/static/db/plan-contents.json">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend_2/package.json">
           <value>
             <set />
@@ -733,7 +738,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/serverless.yml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend_2/services/converData.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/static/db/plan-contents.json">
           <value>
             <set />
           </value>

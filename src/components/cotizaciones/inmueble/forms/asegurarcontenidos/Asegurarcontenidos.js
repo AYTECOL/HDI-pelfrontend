@@ -83,10 +83,39 @@ class Asegurarcontenidos extends Component {
         this.unsubscribe();
     }
 
-    validateEmpty = e => event => {
+    validateEmpty = e => () => {
         store.dispatch(saveInmuebleValue(e));
         Helpers.removeClass(".contenidoasegudado", "error");
         Helpers.removeClass(".inmuebleasegudado", "error");
+        if( e.value === 0 ){
+            store.dispatch(saveInmuebleValue({
+                name: "inmuebleasegudadojoyas",
+                value: 0,
+            }));
+            store.dispatch(saveInmuebleValue({
+                name: "inmuebleasegudadojoyasvalor",
+                value: 0,
+            }));
+
+
+            store.dispatch(saveInmuebleValue({
+                name: "inmuebleasegudadoobras",
+                value: 0,
+            }));
+            store.dispatch(saveInmuebleValue({
+                name: "inmuebleasegudadoobrasvalor",
+                value: 0,
+            }));
+
+            store.dispatch(saveInmuebleValue({
+                name: "inmuebleasegudadotelefonos",
+                value: 0,
+            }));
+            store.dispatch(saveInmuebleValue({
+                name: "inmuebleasegudadotelefonosvalor",
+                value: 0,
+            }));
+        }
     };
 
     validateValue = (e) => {

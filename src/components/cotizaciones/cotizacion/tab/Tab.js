@@ -17,11 +17,16 @@ class Tab extends Component {
         super(props);
         this.state = {
             plans: [],
-            Inmueble: store.getState().Inmueble,
+            Inmueble: {
+                inmuebleasegudado: 0,
+                contenidoasegudado: 0,
+                inmuebleasegudadoobras: 0,
+                inmuebleasegudadojoyas: 0,
+                inmuebleasegudadotelefonos: 0,
+            },
             typePlans: 3,
             index: "",
         };
-        this.updateType(this.state.Inmueble);
     }
 
     componentDidMount() {
@@ -29,10 +34,7 @@ class Tab extends Component {
             let storeState = store.getState();
             let inmueble = storeState.Inmueble;
             let indexPlan = storeState.indexPlan;
-            if (
-                inmueble.inmuebleasegudado !== this.state.Inmueble.inmuebleasegudado ||
-                inmueble.contenidoasegudado !== this.state.Inmueble.contenidoasegudado
-            ) {
+            if (inmueble !== this.state.Inmueble) {
                 this.updateType(inmueble);
             }
             if (this.state.index !== indexPlan) {
@@ -50,6 +52,7 @@ class Tab extends Component {
 
     updateType(inmueble) {
         let type = this.state.typePlans;
+        let Inmueble = this.state.Inmueble;
         if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
             type = 3;
         } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
@@ -57,14 +60,76 @@ class Tab extends Component {
         } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
             type = 1;
         }
+
+        let status = false;
+        if( inmueble.contenidoasegudadovalor.trim() !== "" && inmueble.contenidoasegudadovalor !== "$0" ){
+            if( (Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) || (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor) ){
+                status = true;
+            }
+        }
+        if( inmueble.inmuebleasegudadovalor.trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0" ){
+            if( (Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) || (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor) ){
+                status = true;
+            }
+        }
+        if( inmueble.inmuebleasegudadojoyasvalor.trim() !== "" && inmueble.inmuebleasegudadojoyasvalor !== "$0" ){
+            if( (Inmueble.inmuebleasegudadojoyas !== inmueble.inmuebleasegudadojoyas) || (Inmueble.inmuebleasegudadojoyasvalor !== inmueble.inmuebleasegudadojoyasvalor) ){
+                status = true;
+            }
+        }
+        if( inmueble.inmuebleasegudadoobrasvalor.trim() !== "" && inmueble.inmuebleasegudadoobrasvalor !== "$0" ){
+            if( (Inmueble.inmuebleasegudadoobras !== inmueble.inmuebleasegudadoobras) || (Inmueble.inmuebleasegudadoobrasvalor !== inmueble.inmuebleasegudadoobrasvalor) ){
+                status = true;
+            }
+        }
+        if( inmueble.inmuebleasegudadotelefonosvalor.trim() !== "" && inmueble.inmuebleasegudadotelefonosvalor !== "$0" ){
+            if( (Inmueble.inmuebleasegudadotelefonos !== inmueble.inmuebleasegudadotelefonos) || (Inmueble.inmuebleasegudadotelefonosvalor !== inmueble.inmuebleasegudadotelefonosvalor) ){
+                status = true;
+            }
+        }
+
+
+        if (status === true) {
+            this.getPlants(type);
+        }
         this.setState({
             ...this.state,
             Inmueble: inmueble,
             typePlans: type
         });
-        if (typeof inmueble.inmuebleasegudado !== "undefined") {
-            this.getPlants(type);
+    }
+
+    static assignValuesSaved(selected, normal){
+        for (let j = 0; j < normal.coverages.length; j++) {
+            normal.coverages[j].optional = selected.coverages[j].optional;
+            if( typeof normal.coverages[j].values !== "undefined" ){
+                for (let i = 0; i < normal.coverages[j].values.length; i++) {
+                    if( typeof normal.coverages[j].values[i].values !== "undefined" && typeof selected.coverages[j].values[i].values !== "undefined" ){
+                        for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
+                            if( typeof selected.coverages[j].values[i].values[k] !== "undefined" ){
+                                normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+                            }
+                        }
+                    }else{
+                        if( typeof selected.coverages[j] === "undefined" ){
+                            normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
+                            normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
+                            normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
+                        }
+                    }
+                }
+            }
         }
+        for (let j = 0; j < normal.assists.length; j++) {
+            normal.assists[j].optional = selected.assists[j].optional;
+            for (let k = 0; k < normal.assists[j].values.length; k++) {
+                normal.assists[j].values[k].optional = selected.assists[j].values[k].optional;
+                for (let l = 0; l < normal.assists[j].values[k].assists.length; l++) {
+                    normal.assists[j].values[k].assists[l].optional = selected.assists[j].values[k].assists[l].optional;
+                }
+            }
+        }
+        return normal;
     }
 
     async getPlants(type) {
@@ -83,7 +148,7 @@ class Tab extends Component {
         if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             let indexSelected = selected["assists"][0]["selected_id"];
-            plans[indexSelected] = selected;
+            plans[indexSelected] = Tab.assignValuesSaved(selected, plans[indexSelected]);
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
             if (this.state.index === "")

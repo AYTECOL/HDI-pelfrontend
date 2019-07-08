@@ -148,12 +148,9 @@ class Cards extends Component {
             ...this.state,
             items: newItems
         });
-        setTimeout(() => {
-            this.getInspectionPolicy();
-        }, 300);
     }
 
-    updateStoreItem(index) {
+    updateStoreItem(index, clear = false) {
         // Actualiza el valor de prendido o apagado en el store
         let newItems = this.state.items;
         store.dispatch(saveInmuebleValue({
@@ -208,7 +205,9 @@ class Cards extends Component {
         e.target.value = Masknumbermoney.formatToMask(target.value);
         let parent = this.state.items[index].parent;
         let component = new parent();
-        component.validateValue(e);
+        if( e.type === "blur" ){
+            component.validateValue(e);
+        }
         let error = parent.validateField(target.value);
         let newItems = this.state.items;
         newItems[index].value = target.value;

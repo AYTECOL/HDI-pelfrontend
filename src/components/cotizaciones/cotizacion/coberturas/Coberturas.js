@@ -208,30 +208,32 @@ class Coberturas extends Component {
             item.values[k].errors = [];
             if (parseInt(item.values[k].code) === 9692 || parseInt(item.values[k].code) === 3017 || parseInt(item.values[k].code) === 3008) {
                 let coverange = this.getCoverangeByCode(9667);
-                for (let i = 0; i < coverange.values.length; i++) {
-                    if (coverange.values[i].id === item.values[k].id) {
-                        if (Masknumbermoney.formatToNumber(coverange.values[i].value_show) < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
-                            let n = coverange.values[i].name.toUpperCase().replace('VALOR ', '');
-                            if (parseInt(item.values[k].code) === 3008) {
-                                item.values[k].errors.push('Valor asegurado del amparo ' + item.name + ', es mayor al reportado en “' + n + '” del amparo de INCENDIO ');
-                            } else {
-                                item.values[k].errors.push('Valor asegurado de ' + n + ' es mayor al reportado en INCENDIO');
+                if( typeof coverange.values !== "undefined" ){
+                    for (let i = 0; i < coverange.values.length; i++) {
+                        if (coverange.values[i].id === item.values[k].id) {
+                            if (Masknumbermoney.formatToNumber(coverange.values[i].value_show) < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
+                                let n = coverange.values[i].name.toUpperCase().replace('VALOR ', '');
+                                if (parseInt(item.values[k].code) === 3008) {
+                                    item.values[k].errors.push('Valor asegurado del amparo ' + item.name + ', es mayor al reportado en “' + n + '” del amparo de INCENDIO ');
+                                } else {
+                                    item.values[k].errors.push('Valor asegurado de ' + n + ' es mayor al reportado en INCENDIO');
+                                }
                             }
                         }
                     }
-                }
-                if (parseInt(item.values[k].code) === 3008) {
-                    if (500000000 < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
-                        item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es superior al permitido.');
+                    if (parseInt(item.values[k].code) === 3008) {
+                        if (500000000 < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
+                            item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es superior al permitido.');
+                        }
+                        if (0 >= Masknumbermoney.formatToNumber(item.values[k].value_show)) {
+                            item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es inferior al permitido.');
+                        }
                     }
-                    if (0 >= Masknumbermoney.formatToNumber(item.values[k].value_show)) {
-                        item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es inferior al permitido.');
+                    if (item.values[k].errors.length > 0) {
+                        Helpers.disabled('.next-step');
+                    } else {
+                        Helpers.enabled('.next-step');
                     }
-                }
-                if (item.values[k].errors.length > 0) {
-                    Helpers.disabled('.next-step');
-                } else {
-                    Helpers.enabled('.next-step');
                 }
             }
             //Select
@@ -271,10 +273,10 @@ class Coberturas extends Component {
             return inmueble.inmuebleasegudadoobras === 1;
             //Telefonos moviles
         } else if (opt.id === 4) {
-            return inmueble.contenidoasegudado === 1;
+            return inmueble.inmuebleasegudadotelefonos === 1;
             //Hurto siempre basado en hurto calificado
         } else if (opt.id === 5) {
-            return true;
+            return inmueble.contenidoasegudado === 1;
             //Joyas
         } else if (opt.id === 6) {
             return inmueble.inmuebleasegudadojoyas === 1;
