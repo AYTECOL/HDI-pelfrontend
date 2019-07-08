@@ -71,6 +71,7 @@ class Tab extends Component {
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
+
         for (let i = 0; i < plans.length; i++) {
             let currentPlan = Coberturas.calcValue(plans, i);
             currentPlan = BtnContinue.toNumberCoverrange(plans[i]);
@@ -82,6 +83,7 @@ class Tab extends Component {
         if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             let indexSelected = selected["assists"][0]["selected_id"];
+            plans[indexSelected] = selected;
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
             if (this.state.index === "")
