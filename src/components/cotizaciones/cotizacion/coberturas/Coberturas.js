@@ -283,7 +283,7 @@ class Coberturas extends Component {
         } else if (opt.id === 6) {
             return inmueble.inmuebleasegudadojoyas === 1;
             //Contenido mobile
-        } else if (opt.id === 7) {
+        } else if (opt.id >= 7 || opt.id === 0) {
             return true;
         }
     }
