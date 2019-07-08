@@ -39,6 +39,9 @@ class BtnContinue extends Component {
         for (let i = 0; i < persons.length; i++) {
             let person = persons[i];
             if (typeof personsMerge[person['value']] === "undefined") {
+                if (typeof persons[i].object !== "undefined" && persons[i].object !== "") {
+                    person = Persona.extractDataFromIaxis(persons[i].object, persons[i]['code'], person);
+                }
                 personsMerge[person['value']] = person;
             } else {
                 person['role'] = person['role'].concat(personsMerge[person['value']]['role']);
@@ -52,7 +55,7 @@ class BtnContinue extends Component {
         for (let i = 0; i < persons.length; i++) {
             let location = persons[i]['ciudad'];
             let dataUser = {
-                person: persons[i].person,
+                person: typeof persons[i].person === "undefined"?persons[i].object:persons[i].person,
                 first_name: persons[i]['name'],
                 second_name: persons[i]['secondname'],
                 first_last_name: persons[i]['lastname'],
@@ -76,10 +79,6 @@ class BtnContinue extends Component {
                 ciudad: persons[i]['city'],
                 departamento: persons[i]['department'],
             };
-            if (typeof persons[i].person !== "undefined" && persons[i].person !== "") {
-                dataUser = Persona.extractDataFromIaxis(persons[i].person, persons[i]['code'], dataUser);
-            }
-
             if (typeof persons[i]['sarlaft'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];
             if (typeof persons[i]['sarlaft_document_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft_document_url'];
             if (typeof persons[i]['sarlfalt_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlfalt_url'];
@@ -103,6 +102,7 @@ class BtnContinue extends Component {
                 }
             }
         }
+
         let quouteId = this.props.match.params.id;
         await QuoteIussed.get({
             id: quouteId,

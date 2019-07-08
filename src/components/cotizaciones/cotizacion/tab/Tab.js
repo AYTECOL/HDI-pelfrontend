@@ -2,7 +2,6 @@ import React, {Component, Fragment} from "react";
 import "./Tab.scss";
 import {withRouter} from "react-router-dom";
 import AllPlans from "../../../../services/AllPlans";
-import Helpers from "../../../../common/helpers/helpers/Helpers";
 import store from "../../../../store";
 import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
 //Components
@@ -64,7 +63,6 @@ class Tab extends Component {
         ) {
             type = 1;
         }
-        console.log(type);
         this.setState({
             ...this.state,
             Inmueble: inmueble,
@@ -125,8 +123,8 @@ class Tab extends Component {
                     </div>
                 </div>
                 <div className="wrapper-items">
-                    <Coberturas toggleSlide={Helpers.toggleSlide}/>
-                    <Asistencias toggleSlide={Helpers.toggleSlide}/>
+                    <Coberturas/>
+                    <Asistencias/>
                 </div>
             </Fragment>
         );

@@ -105,6 +105,8 @@ class Index extends Component {
                 person[i]['adresstype'] = person[i]['address_type'];
                 person[i]['sarlaft'] = person[i]['sarlaft_document_url'];
                 person[i]['sarlfalt_url'] = person[i]['sarlaft_document_url'];
+                person[i]['department'] = person[i]['departamento'];
+                person[i]['city'] = person[i]['ciudad'];
             }
         }
 
@@ -191,7 +193,9 @@ class Index extends Component {
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3) {
-                    status.push(i);
+                    if( typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "" ){
+                        status.push(i);
+                    }
                 }
             }
         }
@@ -203,12 +207,33 @@ class Index extends Component {
         });
     }
 
+    exitsPerson(person){
+        let persons = this.state.persons;
+        let status = false;
+        for (let i = 0; i < persons.length; i++) {
+            if( parseInt(persons[i].code) === parseInt(person.code) && parseInt(persons[i].value) === parseInt(person.value) ){
+                person['role'] = [ ...person['role'], ...persons[i]['role'] ];
+                person['role'] = [...new Set(person['role'])].sort(Helpers.orderArrayNumeric);
+                status = {
+                    person,
+                    index: i
+                };
+            }
+        }
+        return status;
+    }
+
     updatePerson(person) {
         let persons = this.state.persons;
-        if (this.state.itemSelected === -1) {
-            persons.push(person);
-        } else {
-            persons[this.state.itemSelected] = person;
+        let exits = this.exitsPerson(person);
+        if( exits !== false ){
+            persons[exits.index] = exits.person;
+        }else{
+            if (this.state.itemSelected === -1) {
+                persons.push(person);
+            } else {
+                persons[this.state.itemSelected] = person;
+            }
         }
 
         setTimeout(() => {

@@ -314,7 +314,7 @@ class Index extends Component {
                             <React.Fragment>
                                 <Summary />
                                 <Coberturas toggleSlide={Helpers.toggleSlide}/>
-                                <Asistencias toggleSlide={Helpers.toggleSlide}/>
+                                <Asistencias toggleSlide={Helpers.toggleSlide} summary={true}/>
                             </React.Fragment>
                             }
                         </div>

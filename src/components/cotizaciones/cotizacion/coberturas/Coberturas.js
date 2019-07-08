@@ -92,8 +92,6 @@ class Coberturas extends Component {
                         Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobrasvalor) * parseInt(item.value) / 100);
                     //Telefonos moviles
                 } else if (item.id === 4) {
-                    console.log(inmueble.inmuebleasegudadotelefonosvalor);
-                    console.log(item.value);
                     return Masknumbermoney.formatToMask(
                         Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
                     //Hurto siempre basado en hurto calificado
@@ -109,11 +107,8 @@ class Coberturas extends Component {
                         Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
                     //Contenido mobile
                 } else if (item.id === 7) {
-                    let joyas = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * 100 / 100;
-                    let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * 10 / 100;
-                    let telefonos = Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * 100 / 100;
-                    return Masknumbermoney.formatToMask(
-                        (joyas + contenido + telefonos) * parseInt(item.value) / 100);
+                    let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor);
+                    return Masknumbermoney.formatToMask(contenido * parseInt(item.value) / 100);
                 }
             }
             return 'N/A';
@@ -128,6 +123,7 @@ class Coberturas extends Component {
             if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
                 let plans = Coberturas.calcValue(storeState.AllPlans, storeState.indexPlan);
                 if (typeof plans !== "undefined") {
+                    console.log(plans);
                     this.setState({
                         ...this.state,
                         plans: plans,
@@ -147,7 +143,6 @@ class Coberturas extends Component {
     }
 
     sendAndValidate() {
-        console.log(2);
         Plans.sendAndValidate(this.state.plans,this.state.index,this.props.match.params.id);
     }
 
@@ -298,7 +293,7 @@ class Coberturas extends Component {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                    <div className="row" onClick={this.props.toggleSlide(0)}>
+                    <div className="row" onClick={Helpers.toggleSlide(0)}>
                         <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
                             <h4>
                                 <span>{this.state.coverturasTotal}</span>Coberturas

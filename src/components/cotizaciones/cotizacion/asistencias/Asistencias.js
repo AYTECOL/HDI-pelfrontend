@@ -3,6 +3,7 @@ import {withRouter} from "react-router-dom";
 import store from "../../../../store";
 import "./Asistencias.scss";
 import Plans from "../plans/Plans";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class Asistencias extends Component {
 
@@ -149,11 +150,11 @@ class Asistencias extends Component {
 
     render() {
         return (
-            <div className="asistencias-group">
+            <div className={"asistencias-group "+(typeof this.props.summary === "undefined"?'':'summary')}>
                 {typeof this.state.plans[this.state.index].assists !== "undefined" && this.state.plans[this.state.index].assists.map((option, key) =>
                     <div className={"row row-max tabs-cotizaciones row_tab_1 " + (key + 1)} key={key}>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                            <div className="row" onClick={this.props.toggleSlide(key + 1)}>
+                            <div className="row" onClick={Helpers.toggleSlide(key + 1)}>
                                 <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
                                     <h4>
                                         <span>{this.state.assistsTotal}</span>{option.name}

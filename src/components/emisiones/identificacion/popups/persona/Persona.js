@@ -169,31 +169,31 @@ export default class Persona extends Component {
             if (typeof persona['consultarPersonaRs'] !== "undefined") {
                 if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
                     if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
-                        if( person.genero === "" ) {
+                        if( typeof person.genero === "undefined" || person.genero === "" ) {
                             person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
                             person.genero = person.genero === null ? '' : person.genero;
                             person.generoDisabled = person.genero !== '' && person.genero !== null;
                         }
 
-                        if( person.name === "" ) {
+                        if( typeof person.name === "undefined" || person.name === "" ) {
                             person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
                             person.name = person.name === null ? '' : person.name;
                             person.nameDisabled = person.name !== '' && person.name !== null;
                         }
 
-                        if( person.secondname === "" ) {
+                        if( typeof person.secondname === "undefined" || person.secondname === "" ) {
                             person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
                             person.secondname = person.secondname === null ? '' : person.secondname;
                             person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
                         }
 
-                        if( person.lastname === "" ) {
+                        if( typeof person.lastname === "undefined" || person.lastname === "" ) {
                             person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
                             person.lastname = person.lastname === null ? '' : person.lastname;
                             person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
                         }
 
-                        if( person.secondlastname === "" ) {
+                        if( typeof person.secondlastname === "undefined" || person.secondlastname === "" ) {
                             person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
                             person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
                             person.secondlastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
@@ -202,7 +202,7 @@ export default class Persona extends Component {
                         person.valueDisabled = true;
                         person.codeDisabled = true;
 
-                        if( person.fechadenacimiento === "" ) {
+                        if( typeof person.fechadenacimiento === "undefined" || person.fechadenacimiento === "" ) {
                             person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
                             person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
                             person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
@@ -223,9 +223,13 @@ export default class Persona extends Component {
                     for (let i = 0; i < contactos.length; i++) {
                         let contacto = contactos[i];
                         if (contacto['idContacto'] === 1 || contacto['idContacto'] === 2) {
-                            person.telefono = contacto['textoContacto'];
+                            if( typeof person.telefono === "undefined" || person.telefono === "" ){
+                                person.telefono = contacto['textoContacto'];
+                            }
                         } else if (contacto['idContacto'] === 3) {
-                            person.email = contacto['textoContacto'];
+                            if( typeof person.email === "undefined" || person.email === "" ){
+                                person.email = contacto['textoContacto'];
+                            }
                         }
 
                         person.contacto.push({
@@ -236,24 +240,37 @@ export default class Persona extends Component {
                         });
                     }
                     if (typeof contactos[0] !== "undefined") {
-                        person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+                        if( typeof person.tipodetelefono === "undefined" || person.tipodetelefono === "" ) {
+                            person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+                        }
                     }
                 }
 
                 if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
                     person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
                     if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
-                        if( person.address === "" ) {
+                        if( typeof person.ciudad === "undefined" || person.address === "" ) {
                             person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
                         }
 
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
-                            if( person.ciudad === "" ) {
+                            if( typeof person.ciudad === "undefined" || person.ciudad === "" ) {
                                 person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                            }
+                            if( typeof person.city_code === "undefined" || person.city_code === "" ) {
+                                person.city_code = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['codigo'];
+                            }
+                        }
+                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['departamento'] !== "undefined") {
+                            if( typeof person.departamento === "undefined" || person.departamento === "" ) {
+                                person.departamento = persona['consultarPersonaRs']['persona']['direccion'][0]['departamento']['nombre'];
+                            }
+                            if( typeof person.department_code === "undefined" || person.department_code === "" ) {
+                                person.department_code = persona['consultarPersonaRs']['persona']['direccion'][0]['departamento']['codigo'];
                             }
                         }
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
-                            if( person.adresstype === "" ) {
+                            if( typeof person.adresstype === "undefined" || person.adresstype === "" ) {
                                 person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
                             }
                         }
@@ -493,6 +510,7 @@ export default class Persona extends Component {
                 let state = this.state;
                 if (typeof state.person.code === "undefined") state.person.code = state.typePerson !== 4 ? '36' : '37';
                 if (state.typePerson === 4) state.person.role.push(4);
+
                 this.props.updatePerson(state.person);
             } else {
                 this.setState({
