@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import store from "../../../../store";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import './summary.scss';
 
 const summary = props => {
   const [CountCoverages, useCountCoverages] = useState(0);
@@ -46,10 +47,12 @@ const summary = props => {
   return (
     <div className="row style-div">
       <div className="col-md-4" align="center">
-        <p>
-          <b className="text-prima">Valor de prima</b>
-        </p>
-        <p className="number-text">{TotalPrima}</p>
+        <div className="content-wrapper">
+          <p>
+            <b className="text-prima">Valor de prima</b>
+          </p>
+          <p className="number-text">{TotalPrima}</p>
+        </div>
       </div>
       <div className="col-md-4" align="center">
         <p>
