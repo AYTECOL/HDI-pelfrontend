@@ -169,33 +169,45 @@ export default class Persona extends Component {
             if (typeof persona['consultarPersonaRs'] !== "undefined") {
                 if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
                     if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
-                        person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
-                        person.genero = person.genero === null ? '' : person.genero;
-                        person.generoDisabled = person.genero !== '' && person.genero !== null;
+                        if( person.genero === "" ) {
+                            person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
+                            person.genero = person.genero === null ? '' : person.genero;
+                            person.generoDisabled = person.genero !== '' && person.genero !== null;
+                        }
 
-                        person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
-                        person.name = person.name === null ? '' : person.name;
-                        person.nameDisabled = person.name !== '' && person.name !== null;
+                        if( person.name === "" ) {
+                            person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
+                            person.name = person.name === null ? '' : person.name;
+                            person.nameDisabled = person.name !== '' && person.name !== null;
+                        }
 
-                        person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
-                        person.secondname = person.secondname === null ? '' : person.secondname;
-                        person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
+                        if( person.secondname === "" ) {
+                            person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
+                            person.secondname = person.secondname === null ? '' : person.secondname;
+                            person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
+                        }
 
-                        person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
-                        person.lastname = person.lastname === null ? '' : person.lastname;
-                        person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
+                        if( person.lastname === "" ) {
+                            person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
+                            person.lastname = person.lastname === null ? '' : person.lastname;
+                            person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
+                        }
 
-                        person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
-                        person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
-                        person.secondlastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+                        if( person.secondlastname === "" ) {
+                            person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
+                            person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
+                            person.secondlastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+                        }
 
                         person.valueDisabled = true;
                         person.codeDisabled = true;
 
-                        person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
-                        person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
-                        person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
-                        person.fechadenacimientoDisabled = person.fechadenacimiento !== '' && person.fechadenacimiento !== null;
+                        if( person.fechadenacimiento === "" ) {
+                            person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
+                            person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
+                            person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
+                            person.fechadenacimientoDisabled = person.fechadenacimiento !== '' && person.fechadenacimiento !== null;
+                        }
 
                         person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
                     }
@@ -231,13 +243,19 @@ export default class Persona extends Component {
                 if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
                     person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
                     if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
-                        person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+                        if( person.address === "" ) {
+                            person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+                        }
 
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
-                            person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                            if( person.ciudad === "" ) {
+                                person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                            }
                         }
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
-                            person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                            if( person.adresstype === "" ) {
+                                person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                            }
                         }
                     }
                 }
@@ -415,7 +433,7 @@ export default class Persona extends Component {
 
             if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
                 errors.splice(errors.indexOf('sarlfalt'), 1);
-                Helpers.removeClass('.sarlaft.error', 'error');
+                Helpers.removeClass('.sarlaft', 'error');
             }
             if (this.state.typePerson === 1 && this.state.nit === false) {
                 if (this.state.person.genero === "") {

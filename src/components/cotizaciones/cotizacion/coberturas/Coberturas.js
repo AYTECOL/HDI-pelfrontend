@@ -92,6 +92,8 @@ class Coberturas extends Component {
                         Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobrasvalor) * parseInt(item.value) / 100);
                     //Telefonos moviles
                 } else if (item.id === 4) {
+                    console.log(inmueble.inmuebleasegudadotelefonosvalor);
+                    console.log(item.value);
                     return Masknumbermoney.formatToMask(
                         Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
                     //Hurto siempre basado en hurto calificado
