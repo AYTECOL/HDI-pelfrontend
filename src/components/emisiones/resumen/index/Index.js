@@ -10,8 +10,8 @@ import PopUpPersona from '../../identificacion/popups/persona/Persona';
 import Validaridentificacion
     from "../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
-import Coberturas from '../../../cotizaciones/cotizacion/coberturas/Coberturas';
-import Asistencias from '../../../cotizaciones/cotizacion/asistencias/Asistencias';
+import CoberturasSummary from '../coberturas/Coberturas'
+import AsistenciasSummary from '../asistencias/Asistencias';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
@@ -313,8 +313,8 @@ class Index extends Component {
                             {typeof this.state.plans !== "undefined" &&
                             <React.Fragment>
                                 <Summary />
-                                <Coberturas toggleSlide={Helpers.toggleSlide}/>
-                                <Asistencias toggleSlide={Helpers.toggleSlide} summary={true}/>
+                                <CoberturasSummary toggleSlide={Helpers.toggleSlide}/>
+                                <AsistenciasSummary toggleSlide={Helpers.toggleSlide}/>
                             </React.Fragment>
                             }
                         </div>
