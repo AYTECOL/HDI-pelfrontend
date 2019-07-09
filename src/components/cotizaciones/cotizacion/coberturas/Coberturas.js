@@ -74,7 +74,7 @@ class Coberturas extends Component {
             if( typeof item.values !== "undefined"){
                 for (let i = 0; i < item.values.length; i++) {
                     if( item.values[i].default === true ){
-                        return Masknumbermoney.formatToMas(item.values[i].limit);
+                        return Masknumbermoney.formatToMask(item.values[i].limit);
                     }
                 }
             }else{
