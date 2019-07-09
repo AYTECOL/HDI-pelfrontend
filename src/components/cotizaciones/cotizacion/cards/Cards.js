@@ -74,6 +74,10 @@ class Cards extends Component {
                 value: inspect[1],
                 name: 'inspection_policies'
             }));
+            store.dispatch(saveInmuebleValue({
+                value: true,
+                name: 'max_values_dedu'
+            }));
             this.setState({
                 ...this.state,
                 inspection_detail: inspect[0],

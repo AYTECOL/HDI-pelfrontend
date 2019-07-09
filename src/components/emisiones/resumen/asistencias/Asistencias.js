@@ -210,7 +210,7 @@ class Asistencias extends Component {
                       }
                       key={k}
                     >
-                      {opt.checked == true ? (
+                      {opt.checked === true ? (
                         <div className="asistencia">
                           <div className="form-group">
                             <div className="row">

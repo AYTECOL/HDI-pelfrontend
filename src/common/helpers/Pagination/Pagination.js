@@ -114,30 +114,28 @@ class Pagination extends React.Component {
     return (
       <div className="row footer ">
         <ul className="pagination">
-          <a
+          <a href="/#"
             className="pager prev"
-            onClick={() => this.setPage(pager.currentPage - 1)}
+            onClick={(e) => {e.preventDefault(); this.setPage(pager.currentPage - 1);}}
           >
             &lt;
           </a>
 
           {pager.pages.map((page, index) => (
             <li key={index}>
-              <a
+              <a href="/#"
                 className={pager.currentPage === page ? "active" : ""}
-                onClick={() => this.setPage(page)}
-              >
-                {page}
-              </a>
+                onClick={(e) => {e.preventDefault(); this.setPage(page)}}
+              >{page}</a>
             </li>
           ))}
-          <a
+          <a href="/#"
             className={
               pager.currentPage === pager.totalPages
                 ? "pager next disablePage"
                 : "pager next"
             }
-            onClick={() => this.setPage(pager.currentPage + 1)}
+            onClick={(e) => {e.preventDefault(); this.setPage(pager.currentPage + 1)}}
           >
             &gt;
           </a>

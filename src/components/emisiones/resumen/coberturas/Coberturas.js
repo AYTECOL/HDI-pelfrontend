@@ -1,8 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import store from "../../../../store";
-import Helpers from "../../../../common/helpers/helpers/Helpers";
 import Plans from "../../../cotizaciones/cotizacion/plans/Plans";
 import "./Coberturas.scss";
 import check from "../../../../common/images/check-img.png";
@@ -251,7 +250,7 @@ class Coberturas extends Component {
   };
 
   static calcValueCoverages(valuesCoverage) {
-    if (valuesCoverage != undefined) {
+    if (typeof valuesCoverage !== 'undefined') {
       let sumTotal = 0;
       if (valuesCoverage.values) {
         for (let i = 0; valuesCoverage["values"].length > i; i++) {

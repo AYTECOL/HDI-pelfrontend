@@ -103,7 +103,6 @@ class Tab extends Component {
             }
         }
 
-
         if (status === true) {
             this.getPlants(type);
         }
@@ -147,10 +146,15 @@ class Tab extends Component {
         return normal;
     }
 
+    setMaxDedutibles(plans){
+        console.log(plans);
+    }
+
     async getPlants(type) {
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
+        let inmuble = store.getState().Inmueble;
 
         for (let i = 0; i < plans.length; i++) {
             let currentPlan = Coberturas.calcValue(plans, i);
@@ -166,13 +170,22 @@ class Tab extends Component {
             plans[indexSelected] = Tab.assignValuesSaved(selected, plans[indexSelected]);
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
-            if (this.state.index === "")
+            if (this.state.index === ""){
                 for (let i in plans) {
                     if (plans[i].isdefault === true) {
                         store.dispatch(indexPlanSelected(i));
                     }
                 }
+            }
         }
+
+
+        console.log(inmuble);
+
+        if( typeof inmuble.max_values_dedu !== "undefined" ){
+            plans = this.setMaxDedutibles(plans);
+        }
+
         this.setState({
             ...this.state,
             plans: plans

@@ -453,7 +453,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/asistencias/Asistencias.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/asistencias/Asistencias.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/coberturas/Coberturas.js">
           <value>
             <set />
           </value>
@@ -734,6 +744,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend/static/db/plan-contents.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/static/db/plan-realestateandcontents.json">
           <value>
             <set />
           </value>
