@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import store from "../../../../store";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import './summary.scss';
+import "./summary.scss";
 
 const summary = props => {
   const [CountCoverages, useCountCoverages] = useState(0);
   const [CountAssists, useCountAssits] = useState(0);
   const [TotalPrima, useTotalPrima] = useState("");
+
   useEffect(() => {
     getData();
   });
@@ -45,17 +46,17 @@ const summary = props => {
     return t;
   };
   return (
-    <div className="row style-div">
+    <div className="div-space row style-div">
       <div className="col-md-4" align="center">
         <div className="content-wrapper">
-          <p>
+          <p className="text-fix">
             <b className="text-prima">Valor de prima</b>
           </p>
           <p className="number-text">{TotalPrima}</p>
         </div>
       </div>
       <div className="col-md-4" align="center">
-        <p>
+        <p className="text-fix">
           <b className="text-include2">Incluye</b>
         </p>
         <p className="second-text">
