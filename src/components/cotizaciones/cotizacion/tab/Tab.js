@@ -23,6 +23,11 @@ class Tab extends Component {
                 inmuebleasegudadoobras: 0,
                 inmuebleasegudadojoyas: 0,
                 inmuebleasegudadotelefonos: 0,
+                contenidoasegudadovalor: 0,
+                inmuebleasegudadovalor: 0,
+                inmuebleasegudadojoyasvalor: 0,
+                inmuebleasegudadoobrasvalor: 0,
+                inmuebleasegudadotelefonosvalor: 0,
             },
             typePlans: 3,
             index: "",
@@ -62,29 +67,39 @@ class Tab extends Component {
         }
 
         let status = false;
-        if( inmueble.contenidoasegudadovalor.trim() !== "" && inmueble.contenidoasegudadovalor !== "$0" ){
-            if( (Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) || (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor) ){
-                status = true;
+        if( typeof inmueble.contenidoasegudadovalor !== "undefined" ) {
+            if (inmueble.contenidoasegudadovalor.trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
+                if ((Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) || (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor)) {
+                    status = true;
+                }
             }
         }
-        if( inmueble.inmuebleasegudadovalor.trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0" ){
-            if( (Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) || (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor) ){
-                status = true;
+        if( typeof inmueble.inmuebleasegudadovalor !== "undefined" ) {
+            if (inmueble.inmuebleasegudadovalor.trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
+                if ((Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) || (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor)) {
+                    status = true;
+                }
             }
         }
-        if( inmueble.inmuebleasegudadojoyasvalor.trim() !== "" && inmueble.inmuebleasegudadojoyasvalor !== "$0" ){
-            if( (Inmueble.inmuebleasegudadojoyas !== inmueble.inmuebleasegudadojoyas) || (Inmueble.inmuebleasegudadojoyasvalor !== inmueble.inmuebleasegudadojoyasvalor) ){
-                status = true;
+        if( typeof inmueble.inmuebleasegudadojoyasvalor !== "undefined" ) {
+            if (inmueble.inmuebleasegudadojoyasvalor.trim() !== "" && inmueble.inmuebleasegudadojoyasvalor !== "$0") {
+                if ((Inmueble.inmuebleasegudadojoyas !== inmueble.inmuebleasegudadojoyas) || (Inmueble.inmuebleasegudadojoyasvalor !== inmueble.inmuebleasegudadojoyasvalor)) {
+                    status = true;
+                }
             }
         }
-        if( inmueble.inmuebleasegudadoobrasvalor.trim() !== "" && inmueble.inmuebleasegudadoobrasvalor !== "$0" ){
-            if( (Inmueble.inmuebleasegudadoobras !== inmueble.inmuebleasegudadoobras) || (Inmueble.inmuebleasegudadoobrasvalor !== inmueble.inmuebleasegudadoobrasvalor) ){
-                status = true;
+        if( typeof inmueble.inmuebleasegudadoobrasvalor !== "undefined" ) {
+            if (inmueble.inmuebleasegudadoobrasvalor.trim() !== "" && inmueble.inmuebleasegudadoobrasvalor !== "$0") {
+                if ((Inmueble.inmuebleasegudadoobras !== inmueble.inmuebleasegudadoobras) || (Inmueble.inmuebleasegudadoobrasvalor !== inmueble.inmuebleasegudadoobrasvalor)) {
+                    status = true;
+                }
             }
         }
-        if( inmueble.inmuebleasegudadotelefonosvalor.trim() !== "" && inmueble.inmuebleasegudadotelefonosvalor !== "$0" ){
-            if( (Inmueble.inmuebleasegudadotelefonos !== inmueble.inmuebleasegudadotelefonos) || (Inmueble.inmuebleasegudadotelefonosvalor !== inmueble.inmuebleasegudadotelefonosvalor) ){
-                status = true;
+        if( typeof inmueble.inmuebleasegudadotelefonosvalor !== "undefined" ) {
+            if (inmueble.inmuebleasegudadotelefonosvalor.trim() !== "" && inmueble.inmuebleasegudadotelefonosvalor !== "$0") {
+                if ((Inmueble.inmuebleasegudadotelefonos !== inmueble.inmuebleasegudadotelefonos) || (Inmueble.inmuebleasegudadotelefonosvalor !== inmueble.inmuebleasegudadotelefonosvalor)) {
+                    status = true;
+                }
             }
         }
 

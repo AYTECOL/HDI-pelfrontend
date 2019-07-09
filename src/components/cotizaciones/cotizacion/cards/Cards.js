@@ -219,6 +219,7 @@ class Cards extends Component {
         this.validateToggle();
         if( e.type === "blur" && parseInt(error) === 0 && e.target.value.trim() !== '' ){
             setTimeout(()=>{
+                this.getInspectionPolicy();
                 this.sendAndValidate();
             },500);
         }
