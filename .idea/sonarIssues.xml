@@ -453,6 +453,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/asistencias/Asistencias.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/coberturas/Coberturas.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/forms/btncontinue/BtnContinue.js">
           <value>
             <set />

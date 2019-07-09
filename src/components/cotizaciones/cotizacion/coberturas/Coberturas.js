@@ -163,15 +163,32 @@ class Coberturas extends Component {
     checkCoverturas = (index, key) => e => {
         let check = this.state.plans[index].coverages[key].checked;
         let newPlans = this.state.plans;
+        let state = true;
         newPlans[index].coverages[key].checked = !check;
-        this.setState({
-            ...this.state,
-            plans: newPlans
-        });
-        this.countCoverturas();
-        setTimeout(() => {
-            this.sendAndValidate();
-        }, 500);
+
+        let code = newPlans[index].coverages[key].code;
+        if( parseInt(code) === 9692 && !check === false){
+            let find = Coberturas.getCoverangeByCode(9691);
+            newPlans[index].coverages[find.index].checked = false;
+        }
+        if( parseInt(code) === 9691 && !check === true){
+            let find = Coberturas.getCoverangeByCode(9692);
+            if( find.coverange.checked === false ){
+                newPlans[index].coverages[key].checked = false;
+                state = false;
+            }
+        }
+
+        if( state === true ){
+            this.setState({
+                ...this.state,
+                plans: newPlans
+            });
+            this.countCoverturas();
+            setTimeout(() => {
+                this.sendAndValidate();
+            }, 500);
+        }
     };
 
     static getCoverangeById(id) {
@@ -180,6 +197,19 @@ class Coberturas extends Component {
         for (let i = 0; i < plans.length; i++) {
             if (plans[i].id === id) {
                 return plans[i];
+            }
+        }
+    }
+
+    static getCoverangeByCode(code) {
+        let index = store.getState().indexPlan;
+        let plans = store.getState().AllPlans[index].coverages;
+        for (let i = 0; i < plans.length; i++) {
+            if (plans[i].code === code) {
+                return {
+                    index: i,
+                    coverange: plans[i]
+                };
             }
         }
     }
