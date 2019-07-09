@@ -78,7 +78,7 @@ class NumeroIdentificacion extends Component {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
             //NIT
         } else if (this.state.typeIdentification === "37") {
-            if (v.length < 9 || isNaN(v)) error = true;
+            if (v.length <= 9 || isNaN(v)) error = true;
             // if( v.length === 10 && v.substr(-1) === "-" ){
             //     let sub = parseInt(v.toString().substr(0,9));
             //     v = sub + "-" + Helpers.calcularDigitoVerificacion(v);

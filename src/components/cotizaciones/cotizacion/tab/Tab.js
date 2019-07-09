@@ -123,17 +123,16 @@ class Tab extends Component {
             normal.coverages[j].optional = selected.coverages[j].optional;
             if( typeof normal.coverages[j].values !== "undefined" ){
                 for (let i = 0; i < normal.coverages[j].values.length; i++) {
+                    if( typeof selected.coverages[j] !== "undefined" ){
+                        normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
+                        normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
+                        normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
+                    }
                     if( typeof normal.coverages[j].values[i].values !== "undefined" && typeof selected.coverages[j].values[i].values !== "undefined" ){
                         for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
                             if( typeof selected.coverages[j].values[i].values[k] !== "undefined" ){
                                 normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
                             }
-                        }
-                    }else{
-                        if( typeof selected.coverages[j] === "undefined" ){
-                            normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
-                            normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
-                            normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
                         }
                     }
                 }
