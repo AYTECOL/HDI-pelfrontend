@@ -87,6 +87,8 @@ export default class Persona extends Component {
             this.state.total = 3;
         } else if (this.state.typePerson === 4) {
             this.state.total = 8;
+        } else if (this.state.typePerson === 5 || this.state.typePerson === 6) {
+            this.state.total = 13;
         }
 
         if (typeof this.props.disabledAll !== "undefined") {
@@ -351,7 +353,7 @@ export default class Persona extends Component {
 
     validateDoc = async e => {
         if (this.state.person.value === "") return;
-        if (this.state.typePerson === 2) return;
+        if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
         let code = this.state.person.code;
         try {
             Loading.toggle(true);
@@ -530,7 +532,7 @@ export default class Persona extends Component {
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div
-                                className={"modal-header " + (this.state.typePerson === 1 || this.state.typePerson === 3 ? '' : 'hide')}>
+                                className={"modal-header " + (this.state.typePerson <= 4  ? '' : 'hide')}>
                                 <h5 className="modal-title">Información adicional</h5>
                                 <p className="modal-subtitle">Ingresa la información faltante, conocerla es importante
                                     para
@@ -539,7 +541,7 @@ export default class Persona extends Component {
                                         onClick={this.props.toggle(0)}>&nbsp;</button>
                             </div>
                             <div
-                                className={"modal-header " + (this.state.typePerson === 2 || this.state.typePerson === 4 ? '' : 'hide')}>
+                                className={"modal-header " + (this.state.typePerson === 5 || this.state.typePerson === 6 ? '' : 'hide')}>
                                 <h5 className="modal-title">Personas adicionales</h5>
                                 <p className="modal-subtitle">Ingresa la información de las persona, selecciona los
                                     amparos que deseas para ella</p>
@@ -631,7 +633,6 @@ export default class Persona extends Component {
                                     </div>
                                     }
 
-                                    {(this.state.typePerson === 1 || this.state.typePerson === 2 || this.state.typePerson === 3 || this.state.typePerson === 4) &&
                                     <div className={"row fields-row"}>
                                         {this.state.nit === true ? (
                                             <React.Fragment>
@@ -804,7 +805,6 @@ export default class Persona extends Component {
                                         </React.Fragment>
                                         }
                                     </div>
-                                    }
 
                                     {this.state.typePerson === 4 &&
                                     <div className={"row fields-row"}>
