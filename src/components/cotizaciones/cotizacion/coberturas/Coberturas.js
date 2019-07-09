@@ -329,7 +329,7 @@ class Coberturas extends Component {
                                         <Fragment>
                                             {option.values.map((opt, k) => this.showItem(opt) &&
                                                 <div
-                                                    className={"form-group " + (typeof opt.values === 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '')}
+                                                    className={"form-group " + (typeof opt.values === 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '')+(Coberturas.isDisabled(option,opt)?' disabled-item':'')}
                                                     key={k}>
                                                     <label htmlFor={"item" + k + "_" + key}>{opt.name}</label>
                                                     {typeof opt.values === 'undefined' ? (

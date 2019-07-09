@@ -237,7 +237,8 @@
         }
       }
 
-      &.disabled-item {
+      &.disabled-item ,
+      .disabled-item {
         label,
         select,
         input {
