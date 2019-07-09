@@ -120,20 +120,26 @@ class Tab extends Component {
 
     static assignValuesSaved(selected, normal){
         for (let j = 0; j < normal.coverages.length; j++) {
-            normal.coverages[j].optional = selected.coverages[j].optional;
-            normal.coverages[j].checked = selected.coverages[j].checked;
-            if( typeof normal.coverages[j].values !== "undefined" ){
-                for (let i = 0; i < normal.coverages[j].values.length; i++) {
-                    if( typeof normal.coverages[j].values[i] !== "undefined" ){
-                        if( typeof normal.coverages[j].values[i].values === "undefined" ){
-                            normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
-                            normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
-                            normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
-                        }else{
-                            if( typeof selected.coverages[j].values[i].values !== "undefined" ){
-                                for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
-                                    if( typeof selected.coverages[j].values[i].values[k] !== "undefined" ){
-                                        normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+            if( typeof selected.coverages[j] !== "undefined" ){
+                normal.coverages[j].optional = selected.coverages[j].optional;
+                normal.coverages[j].checked = selected.coverages[j].checked;
+                if( typeof normal.coverages[j].values !== "undefined" ){
+                    for (let i = 0; i < normal.coverages[j].values.length; i++) {
+                        if( typeof normal.coverages[j].values[i] !== "undefined" ){
+                            if( typeof normal.coverages[j].values[i].values === "undefined" ){
+                                if( typeof selected.coverages[j].values !== "undefined" ){
+                                    if( typeof selected.coverages[j].values[i] !== "undefined" ){
+                                        normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
+                                        normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
+                                        normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
+                                    }
+                                }
+                            }else{
+                                if( typeof selected.coverages[j].values[i].values !== "undefined" ){
+                                    for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
+                                        if( typeof selected.coverages[j].values[i].values[k] !== "undefined" ){
+                                            normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+                                        }
                                     }
                                 }
                             }
