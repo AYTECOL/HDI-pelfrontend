@@ -46,6 +46,7 @@ class Coberturas extends Component {
     }
 
     static calcValue(plans, index) {
+        if (typeof plans === "undefined") return;
         if (typeof plans[index] === "undefined") return;
         if (typeof plans[index].coverages === "undefined") return;
         for (let i = 0; i < plans[index].coverages.length; i++) {
@@ -435,7 +436,7 @@ class Coberturas extends Component {
                                                         className="form-control"
                                                         disabled={(option.optional === false || option.checked === false)}
                                                         onChange={this.selectChangeDeducible(key)}
-                                                        defaultValue={Coberturas.getSelectByItems(option.deductible)}>
+                                                        value={Coberturas.getSelectByItems(option.deductible)}>
                                                     {option.deductible.map((opt, k) =>
                                                         <option key={k} value={opt.id}>{opt.name}</option>
                                                     )}

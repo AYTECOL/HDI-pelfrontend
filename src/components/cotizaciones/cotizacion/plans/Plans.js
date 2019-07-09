@@ -62,7 +62,7 @@ class Index extends Component {
         return (
             <div className="wrapper-tabs">
                 <div className="row tabs text-center">
-                    {this.state.plans.map((option, key) =>
+                    {typeof this.state.plans !== "undefined" && this.state.plans.map((option, key) =>
                         <div className="col col-12 col-sm-12 col-md-4 col-lg-4 no-padding" key={key}>
                             <div className={"item-tab " + (parseInt(this.state.index) === key ? 'active' : '')}
                                  onClick={this.changeIndexPlan(key)}>

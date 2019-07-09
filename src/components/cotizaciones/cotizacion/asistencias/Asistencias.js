@@ -53,6 +53,7 @@ class Asistencias extends Component {
     }
 
     countAsistencias() {
+        if (typeof this.state.plans === "undefined") return;
         if (typeof this.state.plans[this.state.index] === "undefined") return;
         let t = 0;
         let item = this.state.plans[this.state.index].assists[0].values;
@@ -151,7 +152,7 @@ class Asistencias extends Component {
     render() {
         return (
             <div className={"asistencias-group "+(typeof this.props.summary === "undefined"?'':'summary')}>
-                {typeof this.state.plans[this.state.index].assists !== "undefined" && this.state.plans[this.state.index].assists.map((option, key) =>
+                {(typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index].assists !== "undefined") && this.state.plans[this.state.index].assists.map((option, key) =>
                     <div className={"row row-max tabs-cotizaciones row_tab_1 " + (key + 1)} key={key}>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
                             <div className="row" onClick={Helpers.toggleSlide(key + 1)}>

@@ -102,6 +102,11 @@ class Tab extends Component {
                 }
             }
         }
+        if( typeof inmueble.max_values_dedu !== "undefined" ) {
+            if ( Inmueble.max_values_dedu !== inmueble.max_values_dedu ) {
+                status = true;
+            }
+        }
 
         if (status === true) {
             this.getPlants(type);
@@ -146,8 +151,18 @@ class Tab extends Component {
         return normal;
     }
 
-    setMaxDedutibles(plans){
-        console.log(plans);
+    static setMaxDedutibles(plans){
+        for (let i = 0; i < plans.length; i++) {
+            for (let j = 0; j < plans[i].coverages.length; j++) {
+                if( typeof plans[i].coverages[j].deductible !== "undefined" ){
+                    let t = plans[i].coverages[j].deductible.length;
+                    for (let k = 0; k < t; k++) {
+                        plans[i].coverages[j].deductible[k].default = (k + 1) === t;
+                    }
+                }
+            }
+        }
+        return plans;
     }
 
     async getPlants(type) {
@@ -179,11 +194,8 @@ class Tab extends Component {
             }
         }
 
-
-        console.log(inmuble);
-
         if( typeof inmuble.max_values_dedu !== "undefined" ){
-            plans = this.setMaxDedutibles(plans);
+            plans = Tab.setMaxDedutibles(plans);
         }
 
         this.setState({
@@ -195,7 +207,7 @@ class Tab extends Component {
     }
 
     render() {
-        if (typeof this.state.plans[this.state.index] === "undefined") return <div className="hide">&nbsp;</div>;
+        if ( typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index] === "undefined") return <div className="hide">&nbsp;</div>;
         return (
             <Fragment>
                 <div className="first-content">

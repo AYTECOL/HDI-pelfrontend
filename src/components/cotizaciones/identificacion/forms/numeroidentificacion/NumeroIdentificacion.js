@@ -83,8 +83,8 @@ class NumeroIdentificacion extends Component {
             //     let sub = parseInt(v.toString().substr(0,9));
             //     v = sub + "-" + Helpers.calcularDigitoVerificacion(v);
             // }
-            // let sub = parseInt(v.toString().substr(0,9));
-            // if( sub < 80000000 || sub > 999999999 ) error = true;
+            let sub = parseInt(v.toString().substr(0,9));
+            if( sub < 80000000 || sub > 999999999 ) error = true
         }
 
         if (error === false) store.dispatch(saveIdentificationValue(e));
