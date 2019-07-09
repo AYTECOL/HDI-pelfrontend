@@ -124,7 +124,7 @@ class Tab extends Component {
             if( typeof normal.coverages[j].values !== "undefined" ){
                 for (let i = 0; i < normal.coverages[j].values.length; i++) {
                     if( typeof selected.coverages[j] !== "undefined" ){
-                        normal.coverages[j].values[i].checked = selected.coverages[j].values[i].checked;
+                        normal.coverages[j].checked = selected.coverages[j].checked;
                         normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
                         normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
                         normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
