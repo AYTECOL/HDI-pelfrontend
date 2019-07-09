@@ -167,11 +167,23 @@ class Coberturas extends Component {
         newPlans[index].coverages[key].checked = !check;
 
         let code = newPlans[index].coverages[key].code;
+        console.log(code);
         if( parseInt(code) === 9692 && !check === false){
             let find = Coberturas.getCoverangeByCode(9691);
             newPlans[index].coverages[find.index].checked = false;
+
+            find = Coberturas.getCoverangeByCode(9693);
+            newPlans[index].coverages[find.index].checked = false;
         }
         if( parseInt(code) === 9691 && !check === true){
+            let find = Coberturas.getCoverangeByCode(9692);
+            if( find.coverange.checked === false ){
+                newPlans[index].coverages[key].checked = false;
+                state = false;
+            }
+        }
+
+        if( parseInt(code) === 9693 && !check === true){
             let find = Coberturas.getCoverangeByCode(9692);
             if( find.coverange.checked === false ){
                 newPlans[index].coverages[key].checked = false;
@@ -316,6 +328,28 @@ class Coberturas extends Component {
         }
     }
 
+    selectChangeDeducible = key => e => {
+        let v = e.target.value;
+        let plan = this.state.plans;
+        let items = plan[this.state.index].coverages[key].deductible;
+        for (let i = 0; i < items.length; i++) {
+            console.log(parseInt(items[i]['id']));
+            console.log(parseInt(v));
+            if( parseInt(items[i]['id']) === parseInt(v) ){
+                plan[this.state.index].coverages[key].deductible[i].default = true;
+            }else{
+                plan[this.state.index].coverages[key].deductible[i].default = false;
+            }
+        }
+        this.setState({
+            ...this.state,
+            plans: plan
+        });
+        setTimeout(()=>{
+            this.sendAndValidate();
+        },100);
+    };
+
     static isDisabled(option, opt){
         return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
     };
@@ -400,6 +434,7 @@ class Coberturas extends Component {
                                                 <select name={"itemdeducible" + key} id={"itemdeducible" + key}
                                                         className="form-control"
                                                         disabled={(option.optional === false || option.checked === false)}
+                                                        onChange={this.selectChangeDeducible(key)}
                                                         defaultValue={Coberturas.getSelectByItems(option.deductible)}>
                                                     {option.deductible.map((opt, k) =>
                                                         <option key={k} value={opt.id}>{opt.name}</option>
