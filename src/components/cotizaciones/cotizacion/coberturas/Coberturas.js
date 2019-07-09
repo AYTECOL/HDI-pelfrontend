@@ -122,7 +122,7 @@ class Coberturas extends Component {
         this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             if (this.state.plans !== storeState.AllPlans || storeState.Inmueble !== this.state.Inmueble || this.state.index !== storeState.indexPlan) {
-                let plans = Coberturas.calcValue(storeState.AllPlans, storeState.indexPlan);
+                let plans = storeState.AllPlans;
                 if (typeof plans !== "undefined") {
                     this.setState({
                         ...this.state,

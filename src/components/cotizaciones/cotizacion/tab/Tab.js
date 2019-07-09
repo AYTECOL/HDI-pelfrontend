@@ -68,35 +68,35 @@ class Tab extends Component {
 
         let status = false;
         if( typeof inmueble.contenidoasegudadovalor !== "undefined" ) {
-            if (inmueble.contenidoasegudadovalor.trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
+            if (inmueble.contenidoasegudadovalor.toString().trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
                 if ((Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) || (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor)) {
                     status = true;
                 }
             }
         }
         if( typeof inmueble.inmuebleasegudadovalor !== "undefined" ) {
-            if (inmueble.inmuebleasegudadovalor.trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
+            if (inmueble.inmuebleasegudadovalor.toString().trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
                 if ((Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) || (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor)) {
                     status = true;
                 }
             }
         }
         if( typeof inmueble.inmuebleasegudadojoyasvalor !== "undefined" ) {
-            if (inmueble.inmuebleasegudadojoyasvalor.trim() !== "" && inmueble.inmuebleasegudadojoyasvalor !== "$0") {
+            if (inmueble.inmuebleasegudadojoyasvalor.toString().trim() !== "" && inmueble.inmuebleasegudadojoyasvalor !== "$0") {
                 if ((Inmueble.inmuebleasegudadojoyas !== inmueble.inmuebleasegudadojoyas) || (Inmueble.inmuebleasegudadojoyasvalor !== inmueble.inmuebleasegudadojoyasvalor)) {
                     status = true;
                 }
             }
         }
         if( typeof inmueble.inmuebleasegudadoobrasvalor !== "undefined" ) {
-            if (inmueble.inmuebleasegudadoobrasvalor.trim() !== "" && inmueble.inmuebleasegudadoobrasvalor !== "$0") {
+            if (inmueble.inmuebleasegudadoobrasvalor.toString().trim() !== "" && inmueble.inmuebleasegudadoobrasvalor !== "$0") {
                 if ((Inmueble.inmuebleasegudadoobras !== inmueble.inmuebleasegudadoobras) || (Inmueble.inmuebleasegudadoobrasvalor !== inmueble.inmuebleasegudadoobrasvalor)) {
                     status = true;
                 }
             }
         }
         if( typeof inmueble.inmuebleasegudadotelefonosvalor !== "undefined" ) {
-            if (inmueble.inmuebleasegudadotelefonosvalor.trim() !== "" && inmueble.inmuebleasegudadotelefonosvalor !== "$0") {
+            if (inmueble.inmuebleasegudadotelefonosvalor.toString().trim() !== "" && inmueble.inmuebleasegudadotelefonosvalor !== "$0") {
                 if ((Inmueble.inmuebleasegudadotelefonos !== inmueble.inmuebleasegudadotelefonos) || (Inmueble.inmuebleasegudadotelefonosvalor !== inmueble.inmuebleasegudadotelefonosvalor)) {
                     status = true;
                 }
@@ -121,18 +121,21 @@ class Tab extends Component {
     static assignValuesSaved(selected, normal){
         for (let j = 0; j < normal.coverages.length; j++) {
             normal.coverages[j].optional = selected.coverages[j].optional;
+            normal.coverages[j].checked = selected.coverages[j].checked;
             if( typeof normal.coverages[j].values !== "undefined" ){
                 for (let i = 0; i < normal.coverages[j].values.length; i++) {
-                    if( typeof selected.coverages[j] !== "undefined" ){
-                        normal.coverages[j].checked = selected.coverages[j].checked;
-                        normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
-                        normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
-                        normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
-                    }
-                    if( typeof normal.coverages[j].values[i].values !== "undefined" && typeof selected.coverages[j].values[i].values !== "undefined" ){
-                        for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
-                            if( typeof selected.coverages[j].values[i].values[k] !== "undefined" ){
-                                normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+                    if( typeof normal.coverages[j].values[i] !== "undefined" ){
+                        if( typeof normal.coverages[j].values[i].values === "undefined" ){
+                            normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
+                            normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
+                            normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
+                        }else{
+                            if( typeof selected.coverages[j].values[i].values !== "undefined" ){
+                                for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
+                                    if( typeof selected.coverages[j].values[i].values[k] !== "undefined" ){
+                                        normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+                                    }
+                                }
                             }
                         }
                     }
@@ -171,18 +174,11 @@ class Tab extends Component {
         let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
         let inmuble = store.getState().Inmueble;
-
-        for (let i = 0; i < plans.length; i++) {
-            let currentPlan = Coberturas.calcValue(plans, i);
-            currentPlan = BtnContinue.toNumberCoverrange(plans[i]);
-            let prospect = await DeterminePolizaPrima.get(currentPlan, quotateId);
-            plans[i].value = prospect.prospect;
-            plans[i].prima = prospect;
-        }
+        let indexSelected = null;
 
         if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
-            let indexSelected = selected["assists"][0]["selected_id"];
+            indexSelected = parseInt(selected["assists"][0]["selected_id"]);
             plans[indexSelected] = Tab.assignValuesSaved(selected, plans[indexSelected]);
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
@@ -193,6 +189,20 @@ class Tab extends Component {
                     }
                 }
             }
+        }
+
+
+        for (let i = 0; i < plans.length; i++) {
+            let prospect = 0;
+            if( indexSelected !== null && i === indexSelected ){
+                prospect = await DeterminePolizaPrima.get(plans[indexSelected], quotateId);
+            }else{
+                Coberturas.calcValue(plans, i);
+                plans[i] = BtnContinue.toNumberCoverrange(plans[i]);
+                prospect = await DeterminePolizaPrima.get(plans[i], quotateId);
+            }
+            plans[i].value = prospect.prospect;
+            plans[i].prima = prospect;
         }
 
         if( typeof inmuble.max_values_dedu !== "undefined" ){
