@@ -124,6 +124,7 @@ class Tab extends Component {
             if( typeof normal.coverages[j].values !== "undefined" ){
                 for (let i = 0; i < normal.coverages[j].values.length; i++) {
                     if( typeof selected.coverages[j] !== "undefined" ){
+                        normal.coverages[j].values[i].checked = selected.coverages[j].values[i].checked;
                         normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
                         normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
                         normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
@@ -143,6 +144,7 @@ class Tab extends Component {
             for (let k = 0; k < normal.assists[j].values.length; k++) {
                 normal.assists[j].values[k].optional = selected.assists[j].values[k].optional;
                 for (let l = 0; l < normal.assists[j].values[k].assists.length; l++) {
+                    normal.assists[j].values[k].assists[l].checked = selected.assists[j].values[k].assists[l].checked;
                     normal.assists[j].values[k].assists[l].optional = selected.assists[j].values[k].assists[l].optional;
                 }
             }
