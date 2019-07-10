@@ -328,9 +328,9 @@ class Coberturas extends Component {
         let items = plan.coverages[key].deductible;
         for (let i = 0; i < items.length; i++) {
             if( parseInt(items[i]['id']) === parseInt(v) ){
-                plan[this.state.index].coverages[key].deductible[i].default = true;
+                plan.coverages[key].deductible[i].default = true;
             }else{
-                plan[this.state.index].coverages[key].deductible[i].default = false;
+                plan.coverages[key].deductible[i].default = false;
             }
         }
         this.setState({
