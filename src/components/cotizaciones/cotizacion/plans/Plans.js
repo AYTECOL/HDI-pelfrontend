@@ -48,6 +48,10 @@ class Index extends Component {
     static async sendAndValidate(plans, index, id) {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
+        console.log(plans);
+        console.log(plans);
+        console.log(plans);
+        console.log(plans);
         let plan = plans[index];
         plan = Coberturas.calcValue(plan);
         plan = BtnContinue.toNumberCoverrange(plan);

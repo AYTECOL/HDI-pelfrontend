@@ -135,7 +135,11 @@ class Coberturas extends Component {
     }
 
     sendAndValidate(plan) {
-        Plans.sendAndValidate(plan,this.state.index,this.props.match.params.id);
+        let storeState = store.getState();
+        let index = storeState.indexPlan;
+        let plans = storeState.AllPlans;
+        plans[index] = plan;
+        Plans.sendAndValidate(plans,index,this.props.match.params.id);
     }
 
     countCoverturas(plan) {
@@ -234,8 +238,8 @@ class Coberturas extends Component {
     }
 
     inputChange = (k, key, type) => e => {
-        let plan = this.state.plans;
-        let item = plan[this.state.index].coverages[key];
+        let plan = this.state.plan;
+        let item = plan.coverages[key];
         //Input
         if (type === 1) {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
