@@ -17,18 +17,7 @@ class Tab extends Component {
         super(props);
         this.state = {
             plans: [],
-            Inmueble: {
-                inmuebleasegudado: 0,
-                contenidoasegudado: 0,
-                inmuebleasegudadoobras: 0,
-                inmuebleasegudadojoyas: 0,
-                inmuebleasegudadotelefonos: 0,
-                contenidoasegudadovalor: 0,
-                inmuebleasegudadovalor: 0,
-                inmuebleasegudadojoyasvalor: 0,
-                inmuebleasegudadoobrasvalor: 0,
-                inmuebleasegudadotelefonosvalor: 0,
-            },
+            Inmueble: {},
             typePlans: 3,
             index: "",
         };
@@ -69,42 +58,16 @@ class Tab extends Component {
         let status = false;
         if( typeof inmueble.contenidoasegudadovalor !== "undefined" ) {
             if (inmueble.contenidoasegudadovalor.toString().trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
-                if ((Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) || (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor)) {
+                if ((Inmueble.contenidoasegudado !== inmueble.contenidoasegudado)) {
                     status = true;
                 }
             }
         }
         if( typeof inmueble.inmuebleasegudadovalor !== "undefined" ) {
             if (inmueble.inmuebleasegudadovalor.toString().trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
-                if ((Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) || (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor)) {
+                if ((Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado)) {
                     status = true;
                 }
-            }
-        }
-        if( typeof inmueble.inmuebleasegudadojoyasvalor !== "undefined" ) {
-            if (inmueble.inmuebleasegudadojoyasvalor.toString().trim() !== "" && inmueble.inmuebleasegudadojoyasvalor !== "$0") {
-                if ((Inmueble.inmuebleasegudadojoyas !== inmueble.inmuebleasegudadojoyas) || (Inmueble.inmuebleasegudadojoyasvalor !== inmueble.inmuebleasegudadojoyasvalor)) {
-                    status = true;
-                }
-            }
-        }
-        if( typeof inmueble.inmuebleasegudadoobrasvalor !== "undefined" ) {
-            if (inmueble.inmuebleasegudadoobrasvalor.toString().trim() !== "" && inmueble.inmuebleasegudadoobrasvalor !== "$0") {
-                if ((Inmueble.inmuebleasegudadoobras !== inmueble.inmuebleasegudadoobras) || (Inmueble.inmuebleasegudadoobrasvalor !== inmueble.inmuebleasegudadoobrasvalor)) {
-                    status = true;
-                }
-            }
-        }
-        if( typeof inmueble.inmuebleasegudadotelefonosvalor !== "undefined" ) {
-            if (inmueble.inmuebleasegudadotelefonosvalor.toString().trim() !== "" && inmueble.inmuebleasegudadotelefonosvalor !== "$0") {
-                if ((Inmueble.inmuebleasegudadotelefonos !== inmueble.inmuebleasegudadotelefonos) || (Inmueble.inmuebleasegudadotelefonosvalor !== inmueble.inmuebleasegudadotelefonosvalor)) {
-                    status = true;
-                }
-            }
-        }
-        if( typeof inmueble.max_values_dedu !== "undefined" ) {
-            if ( Inmueble.max_values_dedu !== inmueble.max_values_dedu ) {
-                status = true;
             }
         }
 
@@ -203,7 +166,7 @@ class Tab extends Component {
             if( indexSelected !== null && i === indexSelected ){
                 prospect = await DeterminePolizaPrima.get(plans[indexSelected], quotateId);
             }else{
-                Coberturas.calcValue(plans, i);
+                plans[i] = Coberturas.calcValue(plans[i]);
                 plans[i] = BtnContinue.toNumberCoverrange(plans[i]);
                 prospect = await DeterminePolizaPrima.get(plans[i], quotateId);
             }

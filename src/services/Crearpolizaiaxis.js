@@ -122,6 +122,28 @@ class Crearpolizaiaxis {
                 }
             }
 
+            if( typeof d.department_code !== "undefined" && d.department_code != null && d.department_code !== ' ') {
+                if (d.department_code === 0) {
+                    d.department_code = '11';
+                }
+            }else{
+                d.department_code = '1';
+            }
+            if( typeof d.city_code !== "undefined" && d.city_code != null && d.city_code !== ' ') {
+                if (d.city_code === 0) {
+                    d.city_code = '1';
+                }
+            }else{
+                d.city_code = '1';
+            }
+            if( typeof d.adresstype !== "undefined" && d.adresstype != null && d.adresstype !== ' ') {
+                if (d.adresstype === 0) {
+                    d.adresstype = '1';
+                }
+            }else{
+                d.adresstype = '1';
+            }
+
             arrayToMerge.push({
                 "tipoDocumento": {
                     "codigo": typeof d.document_type === "undefined" || d.document_type === null ? '37' : d.document_type.toString(),
@@ -136,13 +158,13 @@ class Crearpolizaiaxis {
                         "codigo": "170"
                     },
                     "departamento": {
-                        "codigo": typeof d.department_code === "undefined" || d.department_code === null || d.department_code === ' ' ? '1' : d.department_code.toString(),
+                        "codigo": d.department_code,
                     },
                     "ciudad": {
-                        "codigo": typeof d.city_code === "undefined" || d.city_code === null || d.city_code === ' ' ? '1' : d.city_code.toString(),
+                        "codigo": d.city_code,
                     },
                     "tipoDireccion": {
-                        "codigo": typeof d.adresstype === "undefined" || d.adresstype === null || d.adresstype === ' ' ? '1' : d.adresstype.toString(),
+                        "codigo": d.adresstype,
                     },
                     "textoDireccion": typeof d.address === "undefined" || d.address === null ? '' : d.address.toString(),
                 },
