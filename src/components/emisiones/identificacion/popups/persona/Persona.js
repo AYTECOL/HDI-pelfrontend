@@ -13,6 +13,8 @@ import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import NumeroIdentificacion
+    from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
 
 export default class Persona extends Component {
 
@@ -148,6 +150,13 @@ export default class Persona extends Component {
         this._isMounted = false;
     }
 
+    /**
+     * Merge person data between services iaxis and form data.
+     * @param persona
+     * @param code
+     * @param person
+     * @returns {*}
+     */
     static extractDataFromIaxis(persona, code, person) {
         if (parseInt(code) === 37) {
             if (typeof persona['consultarPersonaRs'] !== "undefined") {
@@ -352,10 +361,12 @@ export default class Persona extends Component {
     };
 
     validateDoc = async e => {
+        console.log();
         if (this.state.person.value === "") return;
         if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
         let code = this.state.person.code;
         try {
+            if( e.target.parentNode.className.indexOf('error') !== -1 ) return;
             Loading.toggle(true);
             let persona = null;
             if (typeof e.person === "undefined") {
@@ -495,6 +506,18 @@ export default class Persona extends Component {
                 }
             }
 
+            let v = document.querySelector('#documentfield').value;
+            if( v !== "" ){
+                let type = document.querySelector('#doc-type').value;
+                let errorStatus = NumeroIdentificacion.validate(v, type);
+                if( errorStatus === true ){
+                    errors.push('value');
+                    document.querySelector('#documentfield').parentNode.className += " error";
+                }else{
+                    document.querySelector('#documentfield').parentNode.className = document.querySelector('#documentfield').parentNode.className.replace(' error', '');
+                }
+            }
+
             let indexSecondName = errors.indexOf("secondname");
             if( indexSecondName !== -1 ) errors.splice(indexSecondName, 1);
 
@@ -571,6 +594,7 @@ export default class Persona extends Component {
                                             <div className="value form-group "><label
                                                 htmlFor="value">Identificación</label>
                                                 <input type="text"
+                                                       id="documentfield"
                                                        className={"form-control " + ((this.state.person.valueDisabled) ? 'disabled' : '')}
                                                        disabled={this.state.person.valueDisabled} name="value"
                                                        value={this.state.person.value} onBlur={this.validateDoc}

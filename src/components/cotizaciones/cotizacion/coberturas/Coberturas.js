@@ -43,6 +43,12 @@ class Coberturas extends Component {
         return "";
     }
 
+    /**
+     * Cal value for each coverage
+     * @param plan selected plan
+     * @param type if you want cal a single type coverage
+     * @returns {*}
+     */
     static calcValue(plan, type = null) {
         if (typeof plan === "undefined") return;
         if (typeof plan.coverages === "undefined") return;
@@ -66,6 +72,13 @@ class Coberturas extends Component {
         return plan;
     }
 
+    /**
+     *
+     * @param item the current coverage in the iteration
+     * @param type if you want cal a single type coverage
+     * @param plan current plan selected by user.
+     * @returns {*}
+     */
     static getValueFields(item, type = null, plan = null) {
         try {
             let inmueble = store.getState().Inmueble;
@@ -165,6 +178,10 @@ class Coberturas extends Component {
         this.unsubscribe();
     }
 
+    /**
+     * Save and send current plan to service ´prima´
+     * @param plan selected plan by user.
+     */
     sendAndValidate(plan) {
         let storeState = store.getState();
         let index = storeState.indexPlan;
@@ -177,6 +194,10 @@ class Coberturas extends Component {
         },500);
     }
 
+    /**
+     * Count coverage by plan
+     * @param plan selected plan by user.
+     */
     countCoverturas(plan) {
         if (typeof plan === "undefined") return;
         let t = 0;
@@ -199,6 +220,7 @@ class Coberturas extends Component {
         newPlans.coverages[key].checked = !check;
 
         let code = newPlans.coverages[key].code;
+        //Validations for dependence's coverages
         if( parseInt(code) === 9692 && !check === false){
             let find = Coberturas.getCoverangeByCode(9691);
             newPlans.coverages[find.index].checked = false;
@@ -213,7 +235,6 @@ class Coberturas extends Component {
                 state = false;
             }
         }
-
         if( parseInt(code) === 9693 && !check === true){
             let find = Coberturas.getCoverangeByCode(9692);
             if( find.coverange.checked === false ){
@@ -221,7 +242,6 @@ class Coberturas extends Component {
                 state = false;
             }
         }
-
         if( state === true ){
             this.setState({
                 ...this.state,
@@ -232,6 +252,12 @@ class Coberturas extends Component {
         }
     };
 
+    /**
+     *
+     * @param id Of coverage that you want find
+     * @param plan Current plan selected by user
+     * @returns {*}
+     */
     static getCoverangeById(id, plan = null) {
         let index = store.getState().indexPlan;
         let plans = store.getState().AllPlans[index];
@@ -249,6 +275,11 @@ class Coberturas extends Component {
         }
     }
 
+    /**
+     *
+     * @param code Of coverage that you want find
+     * @returns {{coverange: ({values, name}|*), index: number}}
+     */
     static getCoverangeByCode(code) {
         let index = store.getState().indexPlan;
         let plans = store.getState().AllPlans[index].coverages;
@@ -262,6 +293,10 @@ class Coberturas extends Component {
         }
     }
 
+    /**
+     * todo Merge method with static method are equals
+     * @param code code Of coverage that you want find
+     */
     getCoverangeByCode(code) {
         let index = store.getState().indexPlan;
         let plans = store.getState().AllPlans[index].coverages;
@@ -278,6 +313,13 @@ class Coberturas extends Component {
         return coverange;
     }
 
+    /**
+     * Event change of coverage field
+     * @param k Of value of the specific coverage
+     * @param key Of coverage in the iterator
+     * @param type 1 or 2, input or select
+     * @returns {Function}
+     */
     inputChange = (k, key, type) => e => {
         let plan = this.state.plan;
         let item = plan.coverages[key];
@@ -285,6 +327,7 @@ class Coberturas extends Component {
         if (type === 1) {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
             item.values[k].errors = [];
+            //Validations of max and min
             if (parseInt(item.values[k].code) === 9692 || parseInt(item.values[k].code) === 3017 || parseInt(item.values[k].code) === 3008) {
                 let coverange = this.getCoverangeByCode(9667);
                 if( typeof coverange.values !== "undefined" ){
@@ -337,6 +380,11 @@ class Coberturas extends Component {
         this.sendAndValidate(this.state.plan);
     };
 
+    /**
+     * Validate if each coverage field it show or not.
+     * @param opt Coverage field
+     * @returns {boolean}
+     */
     static showItem(opt){
         let inmueble = store.getState().Inmueble;
         // Inmueble
@@ -363,6 +411,11 @@ class Coberturas extends Component {
         }
     }
 
+    /**
+     * Event of select dedutible
+     * @param key Of coverage in the iterate
+     * @returns {Function}
+     */
     selectChangeDeducible = key => e => {
         let v = e.target.value;
         let plan = this.state.plan;
@@ -381,6 +434,12 @@ class Coberturas extends Component {
         this.sendAndValidate(plan);
     };
 
+    /**
+     * Valida if coverage field is disable
+     * @param option coverage
+     * @param opt coverage field
+     * @returns {boolean}
+     */
     static isDisabled(option, opt){
         return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
     };

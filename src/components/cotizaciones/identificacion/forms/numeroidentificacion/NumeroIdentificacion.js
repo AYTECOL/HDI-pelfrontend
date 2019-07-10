@@ -47,37 +47,33 @@ class NumeroIdentificacion extends Component {
         this.unsubscribe();
     }
 
-    validateEmpty = event => {
-        if (event === 'notempty') return;
-        let v = event.target.value;
-        let e = event.target;
-
+    static validate(v, type){
         let error = false;
-
+        type = type.toString();
         if (v.length < 1) error = true;
         // CC
-        if (this.state.typeIdentification === "36") {
+        if (type === "36") {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
             //CC extranjería
-        } else if (this.state.typeIdentification === "33") {
+        } else if (type === "33") {
             if (v.length < 1 || v.length > 18 || isNaN(v)) error = true;
             //Pasaporte
-        } else if (this.state.typeIdentification === "40") {
+        } else if (type === "40") {
             if (v.length < 3 || v.length > 10) error = true;
             //NUIP
-        } else if (this.state.typeIdentification === "38") {
+        } else if (type === "38") {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
             //Registro civil
-        } else if (this.state.typeIdentification === "35") {
+        } else if (type === "35") {
             if (v.length < 3 || v.length > 20 || isNaN(v)) error = true;
             //Diplomático
-        } else if (this.state.typeIdentification === "44") {
+        } else if (type === "44") {
             if (v.length < 3 || v.length > 10) error = true;
             //Identidad
-        } else if (this.state.typeIdentification === "34") {
+        } else if (type === "34") {
             if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
             //NIT
-        } else if (this.state.typeIdentification === "37") {
+        } else if (type === "37") {
             if (v.length <= 9 || isNaN(v)) error = true;
             // if( v.length === 10 && v.substr(-1) === "-" ){
             //     let sub = parseInt(v.toString().substr(0,9));
@@ -86,10 +82,16 @@ class NumeroIdentificacion extends Component {
             let sub = parseInt(v.toString().substr(0,9));
             if( sub < 80000000 || sub > 999999999 ) error = true
         }
+        return error;
+    }
 
+    validateEmpty = event => {
+        if (event === 'notempty') return;
+        let v = event.target.value;
+        let e = event.target;
+        let error = NumeroIdentificacion.validate(v, this.state.typeIdentification);
         if (error === false) store.dispatch(saveIdentificationValue(e));
         store.dispatch(continueButtonDisable(error));
-
         this.setState({
             ...this.state,
             error: error,

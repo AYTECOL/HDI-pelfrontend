@@ -56,10 +56,12 @@ class Tab extends Component {
         }
 
         let status = false;
+        //Detect if this.state is not equal to store and validate id empty values.
         if( typeof inmueble.contenidoasegudadovalor !== "undefined" ) {
             if (inmueble.contenidoasegudadovalor.toString().trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
                 if (Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) {
                     status = true;
+                    //Check when the value is empty on this.state and it is not empty in store
                 }else if( Inmueble.contenidoasegudadovalor.toString().trim() === "" ){
                     if( Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor ){
                         status = true;
@@ -67,10 +69,13 @@ class Tab extends Component {
                 }
             }
         }
+
+        //Detect if this.state is not equal to store and validate id empty values.
         if( typeof inmueble.inmuebleasegudadovalor !== "undefined" ) {
             if (inmueble.inmuebleasegudadovalor.toString().trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
                 if (Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) {
                     status = true;
+                    //Check when the value is empty on this.state and it is not empty in store
                 }else if( Inmueble.inmuebleasegudadovalor.toString().trim() === "" ){
                     if( Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor ){
                         status = true;
@@ -89,6 +94,7 @@ class Tab extends Component {
         });
     }
 
+    //Make merge between default plan and seleted plan
     static assignValuesSaved(selected, normal){
         for (let j = 0; j < normal.coverages.length; j++) {
             if( typeof selected.coverages[j] !== "undefined" ){
@@ -157,6 +163,7 @@ class Tab extends Component {
             let selected = plan.plan_selected_info.Item;
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
             plans[indexSelected] = Tab.assignValuesSaved(selected, plans[indexSelected]);
+            //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
             if (this.state.index === ""){
@@ -170,10 +177,13 @@ class Tab extends Component {
 
         for (let i = 0; i < plans.length; i++) {
             let prospect = 0;
+            //Validate if selected plan
             if( indexSelected !== null && i === indexSelected ){
                 prospect = await DeterminePolizaPrima.get(plans[indexSelected], quotateId);
             }else{
+                //Calc values to show
                 plans[i] = Coberturas.calcValue(plans[i]);
+                //Add 'value_to_quotate' to each coverange
                 plans[i] = BtnContinue.toNumberCoverrange(plans[i]);
                 prospect = await DeterminePolizaPrima.get(plans[i], quotateId);
             }
@@ -182,6 +192,7 @@ class Tab extends Component {
         }
 
         if( typeof inmuble.max_values_dedu !== "undefined" ){
+            //Is IC alter dedutibles of plan.
             plans = Tab.setMaxDedutibles(plans);
         }
 
