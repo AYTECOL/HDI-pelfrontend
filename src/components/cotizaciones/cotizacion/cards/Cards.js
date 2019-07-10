@@ -231,7 +231,11 @@ class Cards extends Component {
 
     sendAndValidate() {
         let storeState = store.getState();
-        Plans.sendAndValidate(storeState.AllPlans,storeState.indexPlan,this.props.match.params.id);
+        console.log(storeState.AllPlans[storeState.indexPlan].coverages[0].values);
+        if( typeof storeState.AllPlans[storeState.indexPlan].coverages[0].values[0] !== "undefined" ){
+            console.log(storeState.AllPlans[storeState.indexPlan].coverages[0].values[0].value_show);
+        }
+        ///Plans.sendAndValidate(storeState.AllPlans,storeState.indexPlan,this.props.match.params.id);
     }
 
     render() {

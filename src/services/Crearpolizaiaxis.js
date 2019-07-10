@@ -61,6 +61,30 @@ class Crearpolizaiaxis {
             if( d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
             d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
 
+            if( typeof d.secondlastname === "undefined" || d.secondlastname === null ){
+                if( typeof d.second_last_name === "undefined" || d.second_last_name === null ){
+                    d.secondlastname = " ";
+                }else{
+                    d.secondlastname = d.second_last_name;
+                }
+            }
+
+            if( typeof d.secondname === "undefined" || d.secondname === null ){
+                if( typeof d.second_name === "undefined" || d.second_name === null ){
+                    d.secondname = " ";
+                }else{
+                    d.secondname = d.second_last_name;
+                }
+            }
+
+            if( typeof d.lastname === "undefined" || d.lastname === null ){
+                if( typeof d.first_last_name === "undefined" || d.first_last_name === null ){
+                    d.lastname = " ";
+                }else{
+                    d.lastname = d.first_last_name;
+                }
+            }
+
             arrayToMerge.push({
                 "tipoDocumento": {
                     "codigo": typeof d.document_type === "undefined" || d.document_type === null ? '37' : d.document_type.toString(),
@@ -70,12 +94,12 @@ class Crearpolizaiaxis {
                     "codigo": d.tipoPersona.codigo.toString(),
                 },
                 "personaNatural": {
-                    "primerApellido": typeof d.lastname === "undefined" || d.lastname === null ? ' ' : d.lastname,
+                    "primerApellido": d.lastname,
                     "primerNombre": typeof d.first_name === "undefined" || d.first_name === null ? ' ' : d.first_name,
-                    "segundoApellido": typeof d.secondlastname === "undefined" || d.secondlastname === null ? ' ' : d.secondlastname,
-                    "segundoNombre": typeof d.secondname === "undefined" || d.secondname === null ? ' ' : d.secondname,
+                    "segundoApellido": d.secondlastname,
+                    "segundoNombre": d.secondname,
                     "genero": {
-                        "codigo": typeof d.secondname === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
+                        "codigo": typeof d.genero === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
                     },
                     "fechaNacimiento": d.fechadenacimiento,
                     "estadoCivil": {

@@ -334,8 +334,6 @@ class Coberturas extends Component {
         let plan = this.state.plans;
         let items = plan[this.state.index].coverages[key].deductible;
         for (let i = 0; i < items.length; i++) {
-            console.log(parseInt(items[i]['id']));
-            console.log(parseInt(v));
             if( parseInt(items[i]['id']) === parseInt(v) ){
                 plan[this.state.index].coverages[key].deductible[i].default = true;
             }else{
@@ -356,6 +354,9 @@ class Coberturas extends Component {
     };
 
     render() {
+        if( typeof this.state.plans[this.state.index].coverages[0].values[0] !== "undefined" ){
+            console.log(this.state.plans[this.state.index].coverages[0].values[0].value_show);
+        }
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">

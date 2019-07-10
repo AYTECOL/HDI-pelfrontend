@@ -9,6 +9,7 @@ import Loading from "../../../globals/loading/Loading";
 import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
 import BtnContinue from "../forms/btncontinue/BtnContinue";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
+import Coberturas from "../coberturas/Coberturas";
 
 class Index extends Component {
 
@@ -47,6 +48,7 @@ class Index extends Component {
     static async sendAndValidate(plans, index, id) {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
+        plans = Coberturas.calcValue(plans, index);
         let plan = plans[index];
         plan = BtnContinue.toNumberCoverrange(plan);
         let total = await DeterminePolizaPrima.get(plan, id);
