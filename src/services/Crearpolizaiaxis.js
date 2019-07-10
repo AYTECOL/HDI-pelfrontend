@@ -85,14 +85,7 @@ class Crearpolizaiaxis {
                 }
             }
 
-            arrayToMerge.push({
-                "tipoDocumento": {
-                    "codigo": typeof d.document_type === "undefined" || d.document_type === null ? '37' : d.document_type.toString(),
-                },
-                "numeroDocumento": typeof d.document === "undefined" || d.document === null ? ' ' : d.document.toString(),
-                "tipoPersona": {
-                    "codigo": d.tipoPersona.codigo.toString(),
-                },
+            let personAdd = {
                 "personaNatural": {
                     "primerApellido": d.lastname,
                     "primerNombre": typeof d.first_name === "undefined" || d.first_name === null ? ' ' : d.first_name,
@@ -108,7 +101,36 @@ class Crearpolizaiaxis {
                     "ocupacion": {
                         "codigo": typeof d.personaNatural.ocupacion.codigo === "undefined" || d.personaNatural.ocupacion.codigo === null ? '1' : d.personaNatural.ocupacion.codigo.toString(),
                     }
+                }
+            };
+            if( d.tipoPersona.codigo.toString() === "2" ){
+                if( typeof d.businessname === "undefined" ){
+                    d.businessname = " ";
+                }
+
+                if( typeof d.fechadecontitucion === "undefined" ){
+                    d.fechadecontitucion = momentJs('1948-03-06').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+                }else{
+                    d.fechadecontitucion = momentJs(d.fechadecontitucion).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+                }
+
+                personAdd = {
+                    "personaJuridica": {
+                        "fechaConstitucion": d.fechadecontitucion,
+                        "razonSocial": d.businessname
+                    },
+                }
+            }
+
+            arrayToMerge.push({
+                "tipoDocumento": {
+                    "codigo": typeof d.document_type === "undefined" || d.document_type === null ? '37' : d.document_type.toString(),
                 },
+                "numeroDocumento": typeof d.document === "undefined" || d.document === null ? ' ' : d.document.toString(),
+                "tipoPersona": {
+                    "codigo": d.tipoPersona.codigo.toString(),
+                },
+                ...personAdd,
                 "direccion": {
                     "pais": {
                         "codigo": "170"

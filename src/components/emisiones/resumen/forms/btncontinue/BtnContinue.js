@@ -50,7 +50,9 @@ class BtnContinue extends Component {
             let numeroPoliza = await IssuedCounter.get();
             let dataSend = await Crearpolizaiaxis.get(data);
 
-            dataSend['id'] = id;
+            console.log(dataSend);
+
+            /*dataSend['id'] = id;
             let result = await PolicyService.emit(id, dataSend);
 
             result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroPoliza = numeroPoliza.currentValue.toString();
@@ -71,7 +73,7 @@ class BtnContinue extends Component {
             }));
             store.dispatch(NextStep(7));
             await SaveIdentifications.save();
-            history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);
+            history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);*/
 
             Loading.toggle(false);
         } catch (e) {

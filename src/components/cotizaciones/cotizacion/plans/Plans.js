@@ -51,12 +51,16 @@ class Index extends Component {
         plans = Coberturas.calcValue(plans, index);
         let plan = plans[index];
         plan = BtnContinue.toNumberCoverrange(plan);
-        let total = await DeterminePolizaPrima.get(plan, id);
+
+        if( typeof plans[index].coverages[0].values[0] !== "undefined" ){
+            console.log(plans[index].coverages[0].values[0].value_show);
+        }
+/*        let total = await DeterminePolizaPrima.get(plan, id);
         if (typeof total.prospect !== "undefined") {
             plans[index].value = total.prospect;
             plans[index].prima = total;
             store.dispatch(AllPlansCreator(plans));
-        }
+        }*/
         Loading.toggle(false);
     }
 
