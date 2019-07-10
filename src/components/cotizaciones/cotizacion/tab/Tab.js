@@ -168,7 +168,6 @@ class Tab extends Component {
             }
         }
 
-
         for (let i = 0; i < plans.length; i++) {
             let prospect = 0;
             if( indexSelected !== null && i === indexSelected ){

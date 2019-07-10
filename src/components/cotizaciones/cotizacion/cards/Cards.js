@@ -13,6 +13,7 @@ import {saveInmuebleValue} from "../../../../actions";
 import InspectionPolicy from "../../../../services/InspectionPolicy";
 import AllBuildYears from "../../../../services/AllBuildYears";
 import Plans from "../plans/Plans";
+import Coberturas from "../coberturas/Coberturas";
 
 class Cards extends Component {
 
@@ -223,15 +224,32 @@ class Cards extends Component {
         this.validateToggle();
         if( e.type === "blur" && parseInt(error) === 0 && e.target.value.trim() !== '' ){
             setTimeout(()=>{
-                //this.getInspectionPolicy();
-                this.sendAndValidate();
+                this.getInspectionPolicy();
+                this.sendAndValidate(parent);
             },500);
         }
     };
 
-    sendAndValidate() {
+    sendAndValidate(component) {
         let storeState = store.getState();
-        Plans.sendAndValidate(storeState.AllPlans,storeState.indexPlan,this.props.match.params.id);
+        let plans = storeState.AllPlans;
+        let index = storeState.indexPlan;
+        let name = component.nameModel;
+
+        let type = null;
+        if( name === "inmuebleasegudadoobras" ){
+            type = 3;
+        }else if( name === "inmuebleasegudadotelefonos" ){
+            type = 4;
+        }else if( name === "inmuebleasegudadojoyas" ){
+            type = 6;
+        }else if( name === "contenidoasegudado" ){
+            type = 2;
+        }else if( name === "inmuebleasegudado" ){
+            type = 1;
+        }
+        plans[index] = Coberturas.calcValue(plans[index],type);
+        Plans.sendAndValidate(plans,index,this.props.match.params.id);
     }
 
     render() {

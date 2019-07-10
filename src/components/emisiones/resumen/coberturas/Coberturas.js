@@ -198,7 +198,6 @@ class Coberturas extends Component {
   }
 
   sendAndValidate() {
-    console.log(2);
     Plans.sendAndValidate(
       this.state.plans,
       this.state.index,
