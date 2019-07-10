@@ -118,19 +118,14 @@ class Coberturas extends Component {
         this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let plan = storeState.AllPlans[storeState.indexPlan];
-            console.log(plan);
-            console.log(this.state.plan);
-            if (this.state.plan !== plan || this.state.index !== storeState.indexPlan) {
-                console.log(2312312312312313123);
-                let plans = storeState.AllPlans;
-                if (typeof plans !== "undefined") {
-                    this.setState({
-                        ...this.state,
-                        plan: plan,
-                        index: storeState.indexPlan,
-                    });
-                    this.countCoverturas(plan);
-                }
+            let plans = storeState.AllPlans;
+            if (typeof plans !== "undefined") {
+                this.setState({
+                    ...this.state,
+                    plan: plan,
+                    index: storeState.indexPlan,
+                });
+                this.countCoverturas(plan);
             }
         });
     }
@@ -346,11 +341,6 @@ class Coberturas extends Component {
     };
 
     render() {
-        if( typeof this.state.plan !== "undefined" ){
-            if( typeof this.state.plan.coverages[0].values[0] !== "undefined" ){
-                console.log(this.state.plan.coverages[0].values[0].value_show);
-            }
-        }
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
