@@ -173,6 +173,8 @@ export default class Persona extends Component {
                             person.fechadecontitucion = typeof person.fechadecontitucion[0] !== "undefined" ? person.fechadecontitucion[0] : '';
                             person.fechadecontitucionDisabled = person.fechadecontitucion !== '';
                         }
+                        person.valueDisabled = true;
+                        person.codeDisabled = true;
                     }
                 }
             }
