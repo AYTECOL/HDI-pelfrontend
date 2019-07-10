@@ -324,8 +324,8 @@ class Coberturas extends Component {
 
     selectChangeDeducible = key => e => {
         let v = e.target.value;
-        let plan = this.state.plans;
-        let items = plan[this.state.index].coverages[key].deductible;
+        let plan = this.state.plan;
+        let items = plan.coverages[key].deductible;
         for (let i = 0; i < items.length; i++) {
             if( parseInt(items[i]['id']) === parseInt(v) ){
                 plan[this.state.index].coverages[key].deductible[i].default = true;
