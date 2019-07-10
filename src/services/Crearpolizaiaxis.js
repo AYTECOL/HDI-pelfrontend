@@ -127,7 +127,7 @@ class Crearpolizaiaxis {
                     d.department_code = '11';
                 }
             }else{
-                d.department_code = '1';
+                d.department_code = '11';
             }
             if( typeof d.city_code !== "undefined" && d.city_code != null && d.city_code !== ' ') {
                 if (d.city_code === 0) {
