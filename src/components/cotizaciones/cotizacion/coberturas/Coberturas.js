@@ -51,12 +51,12 @@ class Coberturas extends Component {
             if (typeof d !== "undefined") {
                 for (let j = 0; j < d.length; j++) {
                     if (typeof d[j].values === "undefined") {
-                        plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j],type);
+                        plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j],type, plan);
                     } else {
                         for (let limit = 0; limit < d[j].values.length; limit++) {
                             if (d[j].values[limit].default === true) {
                                 plan.coverages[i].values[j].value = d[j].values[limit].limit;
-                                plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j],type);
+                                plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j],type, plan);
                             }
                         }
                     }
@@ -66,7 +66,7 @@ class Coberturas extends Component {
         return plan;
     }
 
-    static getValueFields(item, type = null) {
+    static getValueFields(item, type = null, plan = null) {
         try {
             let inmueble = store.getState().Inmueble;
             if( typeof item.values !== "undefined"){
@@ -111,10 +111,14 @@ class Coberturas extends Component {
                     //Hurto siempre basado en hurto calificado
                 } else if (item.id === 5) {
                     let dataHurto = [];
-                    let hurto = Coberturas.getCoverangeById(3);
-                    for (let i = 0; i < hurto.values.length; i++) dataHurto.push(hurto.values[i].value_show);
-                    return Masknumbermoney.formatToMask(
-                        (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
+                    let hurto = Coberturas.getCoverangeById(3, plan);
+                    if( hurto !== null ){
+                        for (let i = 0; i < hurto.values.length; i++) dataHurto.push(hurto.values[i].value_show);
+                        return Masknumbermoney.formatToMask(
+                            (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
+                    }else{
+                        return item.value_show;
+                    }
                     //Joyas
                 } else if (item.id === 6) {
                     if( type === item.id || type === null ){
@@ -144,14 +148,15 @@ class Coberturas extends Component {
         this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let plan = storeState.AllPlans[storeState.indexPlan];
-            let plans = storeState.AllPlans;
-            if (typeof plans !== "undefined") {
+            if (typeof plan !== "undefined") {
                 this.setState({
                     ...this.state,
                     plan: plan,
                     index: storeState.indexPlan,
                 });
-                this.countCoverturas(plan);
+                setTimeout(()=>{
+                    this.countCoverturas(plan);
+                },250)
             }
         });
     }
@@ -227,13 +232,20 @@ class Coberturas extends Component {
         }
     };
 
-    static getCoverangeById(id) {
+    static getCoverangeById(id, plan = null) {
         let index = store.getState().indexPlan;
-        let plans = store.getState().AllPlans[index].coverages;
-        for (let i = 0; i < plans.length; i++) {
-            if (plans[i].id === id) {
-                return plans[i];
+        let plans = store.getState().AllPlans[index];
+        if( plan !== null ){
+            plans = plan;
+        }
+        if( typeof plans.coverages !== "undefined" ){
+            for (let i = 0; i < plans.coverages.length; i++) {
+                if (plans.coverages[i].id === id) {
+                    return plans.coverages[i];
+                }
             }
+        }else {
+            return  null;
         }
     }
 
