@@ -8,7 +8,7 @@ import store from "../../../../../store";
 import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
 import Loading from "../../../../globals/loading/Loading";
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {NextStep, saveProspect} from "../../../../../actions";
+import {NextStep, resetStore, saveProspect} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Links from "../links/Links";
 
@@ -73,6 +73,7 @@ class BtnContinue extends Component {
     goBack = async () => {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
+        store.dispatch(resetStore());
         this.props.history.push(UrlSite + "/cotizacion/2/" + this.props.match.params.id);
     };
 
