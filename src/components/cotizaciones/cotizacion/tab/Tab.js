@@ -58,15 +58,23 @@ class Tab extends Component {
         let status = false;
         if( typeof inmueble.contenidoasegudadovalor !== "undefined" ) {
             if (inmueble.contenidoasegudadovalor.toString().trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
-                if ((Inmueble.contenidoasegudado !== inmueble.contenidoasegudado)) {
+                if (Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) {
                     status = true;
+                }else if( Inmueble.contenidoasegudadovalor.toString().trim() === "" ){
+                    if( Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor ){
+                        status = true;
+                    }
                 }
             }
         }
         if( typeof inmueble.inmuebleasegudadovalor !== "undefined" ) {
             if (inmueble.inmuebleasegudadovalor.toString().trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
-                if ((Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado)) {
+                if (Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) {
                     status = true;
+                }else if( Inmueble.inmuebleasegudadovalor.toString().trim() === "" ){
+                    if( Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor ){
+                        status = true;
+                    }
                 }
             }
         }
