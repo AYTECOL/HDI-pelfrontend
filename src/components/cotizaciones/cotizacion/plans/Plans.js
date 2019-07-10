@@ -48,17 +48,8 @@ class Index extends Component {
     static async sendAndValidate(plans, index, id) {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
-        console.log(plans);
-        console.log(plans);
-        console.log(plans);
-        console.log(plans);
         let plan = plans[index];
-        plan = Coberturas.calcValue(plan);
         plan = BtnContinue.toNumberCoverrange(plan);
-
-        if( typeof plans[index].coverages[0].values[0] !== "undefined" ){
-            console.log(plans[index].coverages[0].values[0].value_show);
-        }
         let total = await DeterminePolizaPrima.get(plan, id);
         if (typeof total.prospect !== "undefined") {
             plans[index].value = total.prospect;
