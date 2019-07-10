@@ -3,18 +3,18 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: dev
+  stage: nonprod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
-    #iamRoleStatements:
-    #      - Effect: "Allow"
-    #        Action:
-    #          - s3:*
-    #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - s3:*
+      Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
-  s3Bucket: poliza-express-hogar-dev
-  s3BucketPDF: poliza-express-hogar-pdf-dev
+  s3Bucket: poliza-express-hogar-uat
+  s3BucketPDF: poliza-express-hogar-pdf-uat
 
 package:
   include:
@@ -91,7 +91,7 @@ resources:
                 OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-            - hogar-dev.libertyseguros.co
+            - hogar-uat.libertyseguros.co
           #TTL: 3600
           DefaultRootObject: index.html
           CustomErrorResponses:
@@ -115,8 +115,8 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
-            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
