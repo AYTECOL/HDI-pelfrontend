@@ -190,7 +190,10 @@ class Tab extends Component {
             plans: plans
         });
         store.dispatch(AllPlansCreator(plans));
-        Loading.toggle(false);
+        setTimeout(()=>{
+            plans[indexSelected] = Coberturas.calcValue(plans[indexSelected],5);
+            Loading.toggle(false);
+        });
     }
 
     render() {

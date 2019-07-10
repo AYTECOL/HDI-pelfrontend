@@ -194,7 +194,6 @@ class Coberturas extends Component {
         newPlans.coverages[key].checked = !check;
 
         let code = newPlans.coverages[key].code;
-        console.log(code);
         if( parseInt(code) === 9692 && !check === false){
             let find = Coberturas.getCoverangeByCode(9691);
             newPlans.coverages[find.index].checked = false;
