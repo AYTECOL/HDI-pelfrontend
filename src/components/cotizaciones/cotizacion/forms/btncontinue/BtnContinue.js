@@ -44,26 +44,32 @@ class BtnContinue extends Component {
 
     nextStep = async () => {
         Loading.toggle(true);
-        let storeState = store.getState();
-        let plans = storeState.AllPlans;
-        let index = storeState.indexPlan;
-        let plan = plans[index];
-        plan['prospect'] = 2;
-        plan['quote_id'] = this.props.match.params.id;
-        plan['assists'][0]['selected_id'] = index;
+        try {
+            let storeState = store.getState();
+            let plans = storeState.AllPlans;
+            let index = storeState.indexPlan;
 
-        plan = BtnContinue.toNumberCoverrange(plan);
+            let plan = plans[index];
+            plan['premium_after_all_the_rules'] = plan.prima.premium_after_all_the_rules;
+            plan['prospect'] = plan.value;
+            plan['quote_id'] = this.props.match.params.id;
+            plan['assists'][0]['selected_id'] = index;
 
-        store.dispatch(saveProspect(plan['prima']));
+            plan = BtnContinue.toNumberCoverrange(plan);
 
-        await Links.pdf(this, false);
+            store.dispatch(saveProspect(plan['prima']));
 
-        store.dispatch(NextStep(4));
-        await SaveIdentifications.save();
-        await CreateOrUpdateValoration.save();
-        await NewPlanSelected.get(plan);
-        this.props.history.push(UrlSite + "/emision/1/" + this.props.match.params.id);
-        Loading.toggle(false);
+            await Links.pdf(this, false);
+
+            store.dispatch(NextStep(4));
+            await SaveIdentifications.save();
+            await CreateOrUpdateValoration.save();
+            await NewPlanSelected.get(plan);
+            this.props.history.push(UrlSite + "/emision/1/" + this.props.match.params.id);
+            Loading.toggle(false);
+        }catch (e) {
+            Loading.toggle(false);
+        }
     };
 
     saveAndExit = () => {
