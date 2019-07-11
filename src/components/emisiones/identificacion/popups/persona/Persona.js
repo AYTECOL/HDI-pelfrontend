@@ -363,12 +363,13 @@ export default class Persona extends Component {
     };
 
     validateDoc = async e => {
-        console.log();
         if (this.state.person.value === "") return;
         if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
         let code = this.state.person.code;
         try {
-            if( e.target.parentNode.className.indexOf('error') !== -1 ) return;
+            if( typeof e.target !== "undefined" && e.target.parentNode.className.indexOf('error') !== -1 ) {
+                return;
+            }
             Loading.toggle(true);
             let persona = null;
             if (typeof e.person === "undefined") {
