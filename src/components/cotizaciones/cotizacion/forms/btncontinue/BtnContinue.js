@@ -42,23 +42,26 @@ class BtnContinue extends Component {
         return plan;
     }
 
+    planToSave(){
+        let storeState = store.getState();
+        let plans = storeState.AllPlans;
+        let index = storeState.indexPlan;
+        let plan = plans[index];
+        plan['premium_after_all_the_rules'] = plan.prima.premium_after_all_the_rules;
+        plan['calculation_of_pure_extra_shelter_premium'] = plan.prima.calculation_of_pure_extra_shelter_premium;
+        plan['prospect'] = plan.value;
+        plan['quote_id'] = this.props.match.params.id;
+        plan['assists'][0]['selected_id'] = index;
+
+        plan = BtnContinue.toNumberCoverrange(plan);
+        store.dispatch(saveProspect(plan['prima']));
+        return plan;
+    }
+
     nextStep = async () => {
         Loading.toggle(true);
         try {
-            let storeState = store.getState();
-            let plans = storeState.AllPlans;
-            let index = storeState.indexPlan;
-
-            let plan = plans[index];
-            plan['premium_after_all_the_rules'] = plan.prima.premium_after_all_the_rules;
-            plan['calculation_of_pure_extra_shelter_premium'] = plan.prima.calculation_of_pure_extra_shelter_premium;
-            plan['prospect'] = plan.value;
-            plan['quote_id'] = this.props.match.params.id;
-            plan['assists'][0]['selected_id'] = index;
-
-            plan = BtnContinue.toNumberCoverrange(plan);
-
-            store.dispatch(saveProspect(plan['prima']));
+            let plan = this.planToSave();
 
             await Links.pdf(this, false);
 
@@ -73,7 +76,14 @@ class BtnContinue extends Component {
         }
     };
 
-    saveAndExit = () => {
+    saveAndExit = async () => {
+        Loading.toggle(true);
+        try {
+            let plan = this.planToSave();
+            await NewPlanSelected.get(plan);
+        }catch (e) {
+            Loading.toggle(false);
+        }
         Helpers.goToHome(this.props.history);
     };
 
