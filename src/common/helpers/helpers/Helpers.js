@@ -151,19 +151,23 @@ class Helpers {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== "undefined") {
             store.dispatch(restoreCotizacion(cotizacion));
-            if (cotizacion.state >= 2 && parseInt(step) >= 2) {
-                let riskData = await ValorationById.get(id);
-                if (riskData !== null) {
-                    store.dispatch(
-                        saveProspect({
-                            prospect: riskData.prospect,
-                            total_premium_policy: riskData.total_premium_policy,
-                            expedition_expenses: riskData.expedition_expenses,
-                            total_tax_policy: riskData.total_tax_policy,
-                            iva_expedition_expenses: riskData.iva_expedition_expenses
-                        })
-                    );
-                    store.dispatch(restoreCotizacionRisk(riskData));
+            if( cotizacion.state === 7 ){
+                Helpers.goToNotFound(history);
+            }else{
+                if (cotizacion.state >= 2 && parseInt(step) >= 2) {
+                    let riskData = await ValorationById.get(id);
+                    if (riskData !== null) {
+                        store.dispatch(
+                            saveProspect({
+                                prospect: riskData.prospect,
+                                total_premium_policy: riskData.total_premium_policy,
+                                expedition_expenses: riskData.expedition_expenses,
+                                total_tax_policy: riskData.total_tax_policy,
+                                iva_expedition_expenses: riskData.iva_expedition_expenses
+                            })
+                        );
+                        store.dispatch(restoreCotizacionRisk(riskData));
+                    }
                 }
             }
         } else if (

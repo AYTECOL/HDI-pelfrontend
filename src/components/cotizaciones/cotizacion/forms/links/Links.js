@@ -5,6 +5,7 @@ import PrevPdfPolizaPrima from "../../../../../services/PrevPdfPolizaPrima";
 import {withRouter} from "react-router-dom";
 import store from "../../../../../store";
 import Loading from "../../../../globals/loading/Loading";
+import BtnContinue from "../btncontinue/BtnContinue";
 
 class Links extends Component {
 
@@ -23,6 +24,7 @@ class Links extends Component {
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
         let plan = plans[index];
+        plan = BtnContinue.toNumberCoverrange(plan);
         try {
             let pdf = await PrevPdfPolizaPrima.get(plan, quote);
             if (typeof pdf !== "undefined" && download === true) {
