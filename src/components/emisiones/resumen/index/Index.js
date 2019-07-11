@@ -21,6 +21,7 @@ import AllBuildYears from "../../../../services/AllBuildYears";
 import AllSecurity from "../../../../services/AllSecurity";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import Summary from "../../../cotizaciones/cotizacion/summary/summary"
+
 class Index extends Component {
 
     constructor(props) {
@@ -40,7 +41,7 @@ class Index extends Component {
     }
 
     static getName(path) {
-        if( typeof path !== "undefined" ){
+        if (typeof path !== "undefined") {
             let name = path.split("/");
             if (name.length > 0) {
                 name = name[name.length - 1];
@@ -48,7 +49,7 @@ class Index extends Component {
                 name = path;
             }
             return decodeURIComponent(name.replace(/\+/g, "%20"));
-        }else{
+        } else {
             return "";
         }
     }
@@ -60,7 +61,7 @@ class Index extends Component {
     async getData() {
         Loading.toggle(true);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
-        console.log(plan)
+        console.log(plan);
         let plansLoader = [];
 
         let selected = plan.plan_selected_info.Item;
@@ -85,43 +86,45 @@ class Index extends Component {
         let persons = plan;
         let items = persons.quote_iussed_info.Item;
         let person = [];
-        person.push(items.taker);
-        for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
+        if (typeof items !== "undefined") {
+            person.push(items.taker);
+            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
-        if (typeof items.benefist !== "undefined") {
-            for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [2];
-        }
+            if (typeof items.benefist !== "undefined") {
+                for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [2];
+            }
 
-        if (typeof items.benefist !== "undefined") {
-            for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [3];
-        }
+            if (typeof items.benefist !== "undefined") {
+                for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [3];
+            }
 
-        if (typeof items.onerous !== "undefined") {
-            for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [4];
-        }
+            if (typeof items.onerous !== "undefined") {
+                for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [4];
+            }
 
-        if (typeof items.persons_aditionals !== "undefined") {
-            for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [5];
-        }
+            if (typeof items.persons_aditionals !== "undefined") {
+                for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [5];
+            }
 
-        for (let i = 0; i < person.length; i++) {
-            person[i]['name'] = person[i]['first_name'];
-            person[i]['secondname'] = person[i]['second_name'];
-            person[i]['lastname'] = person[i]['first_last_name'];
-            person[i]['secondlastname'] = person[i]['second_last_name'];
-            person[i]['code'] = person[i]['document_type'];
-            person[i]['value'] = person[i]['document'];
-            person[i]['genero'] = person[i]['gender'];
-            person[i]['fechadenacimiento'] = person[i]['birthdate'];
-            person[i]['tipodetelefono'] = person[i]['phone_type'];
-            person[i]['telefono'] = person[i]['phone'];
-            person[i]['ciudad'] = person[i]['location'];
-            person[i]['adresstype'] = person[i]['address_type'];
-            person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
+            for (let i = 0; i < person.length; i++) {
+                person[i]['name'] = person[i]['first_name'];
+                person[i]['secondname'] = person[i]['second_name'];
+                person[i]['lastname'] = person[i]['first_last_name'];
+                person[i]['secondlastname'] = person[i]['second_last_name'];
+                person[i]['code'] = person[i]['document_type'];
+                person[i]['value'] = person[i]['document'];
+                person[i]['genero'] = person[i]['gender'];
+                person[i]['fechadenacimiento'] = person[i]['birthdate'];
+                person[i]['tipodetelefono'] = person[i]['phone_type'];
+                person[i]['telefono'] = person[i]['phone'];
+                person[i]['ciudad'] = person[i]['location'];
+                person[i]['adresstype'] = person[i]['address_type'];
+                person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
+            }
         }
 
         let data = plan.more_info.Item;
@@ -312,7 +315,7 @@ class Index extends Component {
 
                             {typeof this.state.plans !== "undefined" &&
                             <React.Fragment>
-                                <Summary />
+                                <Summary/>
                                 <CoberturasSummary toggleSlide={Helpers.toggleSlide}/>
                                 <AsistenciasSummary toggleSlide={Helpers.toggleSlide}/>
                             </React.Fragment>
@@ -359,7 +362,8 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <button type="button" className="btn btn-download">{Index.getName(item.textFile)}</button>
+                                                        <button type="button"
+                                                                className="btn btn-download">{Index.getName(item.textFile)}</button>
                                                     </div>
                                                 </div>
                                             )}

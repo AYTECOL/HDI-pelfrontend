@@ -114,7 +114,7 @@ class Asegurartelefonos extends Component {
         return (
             <div className="row">
                 <div className="col col-12 col-md-6">
-                    <div className={Asegurartelefonos.nameModel+" form-group " + this.state.error}>
+                    <div className={Asegurartelefonos.nameModel + " form-group " + this.state.error}>
                         <label htmlFor={Asegurartelefonos.nameModel}>¿Adicionalmente deseas
                             asegurar {Asegurartelefonos.name()}? </label>
                         <ul className="select-item" id={Asegurartelefonos.nameModel}>
@@ -138,8 +138,9 @@ class Asegurartelefonos extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12 col-md-6">
                         <div
-                            className={Asegurartelefonos.nameModelValue+" form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor={Asegurartelefonos.nameModelValue}>Valor de {Asegurartelefonos.name()}</label>
+                            className={Asegurartelefonos.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor={Asegurartelefonos.nameModelValue}>Valor
+                                de {Asegurartelefonos.name()}</label>
                             <input name={Asegurartelefonos.nameModelValue} id="inmuebleasegudadotelefonosvalor"
                                    type="text"
                                    value={this.state.value}

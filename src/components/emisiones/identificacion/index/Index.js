@@ -47,7 +47,7 @@ class Index extends Component {
                     persons = this.state.persons;
                 } else {
                     let tomador = cotizacion.identification;
-                    if( tomador.name !== "" ){
+                    if (tomador.name !== "") {
                         tomador['role'] = [1];
                         persons.push(tomador);
                     }
@@ -78,11 +78,11 @@ class Index extends Component {
             for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
             [
-                {name:'insured',role:2},
-                {name:'benefist',role:3},
-                {name:'onerous',role:4},
-                {name:'persons_aditionals',role:5},
-            ].map((item,key)=>{
+                {name: 'insured', role: 2},
+                {name: 'benefist', role: 3},
+                {name: 'onerous', role: 4},
+                {name: 'persons_aditionals', role: 5},
+            ].map((item, key) => {
                 if (typeof items[item.name] !== "undefined") {
                     for (let i = 0; i < items[item.name].length; i++) person.push(items[item.name][i]);
                     for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [item.role];
@@ -132,12 +132,12 @@ class Index extends Component {
 
             let persons = [];
             for (let i = 0; i < person.length; i++) {
-                if( typeof persons[person[i].value] === "undefined" ){
+                if (typeof persons[person[i].value] === "undefined") {
                     persons[person[i].value] = person[i];
                 }
             }
             let newPerson = [];
-            for(let i in persons) newPerson.push(persons[i]);
+            for (let i in persons) newPerson.push(persons[i]);
 
             this.setState({
                 ...this.state,
@@ -204,7 +204,7 @@ class Index extends Component {
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3) {
-                    if( typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "" ){
+                    if (typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") {
                         status.push(i);
                     }
                 }
@@ -218,13 +218,13 @@ class Index extends Component {
         });
     }
 
-    exitsPerson(person, state = null){
+    exitsPerson(person, state = null) {
         let persons = this.state.persons;
-        if( state !== null ) persons = state;
+        if (state !== null) persons = state;
         let status = false;
         for (let i = 0; i < persons.length; i++) {
-            if( parseInt(persons[i].code) === parseInt(person.code) && parseInt(persons[i].value) === parseInt(person.value) ){
-                person['role'] = [ ...person['role'], ...persons[i]['role'] ];
+            if (parseInt(persons[i].code) === parseInt(person.code) && parseInt(persons[i].value) === parseInt(person.value)) {
+                person['role'] = [...person['role'], ...persons[i]['role']];
                 person['role'] = [...new Set(person['role'])].sort(Helpers.orderArrayNumeric);
                 status = {
                     person,
@@ -238,9 +238,9 @@ class Index extends Component {
     updatePerson(person) {
         let persons = this.state.persons;
         let exits = this.exitsPerson(person);
-        if( exits !== false ){
+        if (exits !== false) {
             persons[exits.index] = exits.person;
-        }else{
+        } else {
             if (this.state.itemSelected === -1) {
                 persons.push(person);
             } else {

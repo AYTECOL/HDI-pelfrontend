@@ -57,9 +57,9 @@ class AutocompleteCities extends Component {
         this.updateValue(nextProps);
     }
 
-    updateValue(props){
-        if( typeof props.value !== "undefined" ){
-            if( props.value.trim() !== "" ){
+    updateValue(props) {
+        if (typeof props.value !== "undefined") {
+            if (props.value.trim() !== "") {
                 this.setState({
                     ...this.state,
                     value: props.value

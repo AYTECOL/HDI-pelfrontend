@@ -52,7 +52,7 @@ class Api {
         return await Api.HttpRequest('GET', url, null, overrideBase, undefined, headers).then(function (response) {
             try {
                 return typeof format === "undefined" ? JSON.parse(response) : response;
-            }catch (e) {
+            } catch (e) {
                 return [];
             }
         })
@@ -62,7 +62,7 @@ class Api {
         return await Api.HttpRequest('POST', url, data, overrideBase, formData, headers).then(function (response) {
             try {
                 return typeof format === "undefined" ? JSON.parse(response) : response;
-            }catch (e) {
+            } catch (e) {
                 return [];
             }
         });
@@ -72,7 +72,7 @@ class Api {
         return await Api.HttpRequest('PUT', url, null, overrideBase).then(function (response) {
             try {
                 return JSON.parse(response);
-            }catch (e) {
+            } catch (e) {
                 return [];
             }
         })
@@ -84,7 +84,7 @@ class Api {
         return await Api.HttpRequest('POST', url, formData, overrideBase, true).then(function (response) {
             try {
                 return JSON.parse(response);
-            }catch (e) {
+            } catch (e) {
                 return [];
             }
         })

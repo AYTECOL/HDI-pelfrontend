@@ -87,7 +87,7 @@ class Asegurarcontenidos extends Component {
         store.dispatch(saveInmuebleValue(e));
         Helpers.removeClass(".contenidoasegudado", "error");
         Helpers.removeClass(".inmuebleasegudado", "error");
-        if( e.value === 0 ){
+        if (e.value === 0) {
             store.dispatch(saveInmuebleValue({
                 name: "inmuebleasegudadojoyas",
                 value: 0,
@@ -140,8 +140,9 @@ class Asegurarcontenidos extends Component {
         return (
             <div className="row">
                 <div className="col col-12  col-md-6">
-                    <div className={Asegurarcontenidos.nameModel+" no-icon form-group " + this.state.error}>
-                        <label htmlFor={Asegurarcontenidos.nameModel}>¿Deseas asegurar {Asegurarcontenidos.name()}? </label>
+                    <div className={Asegurarcontenidos.nameModel + " no-icon form-group " + this.state.error}>
+                        <label htmlFor={Asegurarcontenidos.nameModel}>¿Deseas
+                            asegurar {Asegurarcontenidos.name()}? </label>
                         <ul className="select-item" id={Asegurarcontenidos.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={this.validateEmpty({

@@ -24,12 +24,12 @@ class BtnContinue extends Component {
     }
 
     static toNumberCoverrange(plan) {
-        if( typeof plan !== "undefined" ){
+        if (typeof plan !== "undefined") {
             for (let i = 0; i < plan.coverages.length; i++) {
                 if (typeof plan.coverages[i].values !== "undefined") {
                     for (let j = 0; j < plan.coverages[i].values.length; j++) {
                         let v = plan.coverages[i].values[j].value_show;
-                        if( v === 'N/A' ) v = plan.coverages[i].values[j].value;
+                        if (v === 'N/A') v = plan.coverages[i].values[j].value;
                         if (typeof v !== "undefined") {
                             plan.coverages[i].values[j].value_to_quotate = Masknumbermoney.formatToNumber(v);
                         } else {
@@ -68,7 +68,7 @@ class BtnContinue extends Component {
             await NewPlanSelected.get(plan);
             this.props.history.push(UrlSite + "/emision/1/" + this.props.match.params.id);
             Loading.toggle(false);
-        }catch (e) {
+        } catch (e) {
             Loading.toggle(false);
         }
     };

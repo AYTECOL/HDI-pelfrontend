@@ -57,12 +57,12 @@ class Coberturas extends Component {
             if (typeof d !== "undefined") {
                 for (let j = 0; j < d.length; j++) {
                     if (typeof d[j].values === "undefined") {
-                        plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j],type, plan);
+                        plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j], type, plan);
                     } else {
                         for (let limit = 0; limit < d[j].values.length; limit++) {
                             if (d[j].values[limit].default === true) {
                                 plan.coverages[i].values[j].value = d[j].values[limit].limit;
-                                plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j],type, plan);
+                                plan.coverages[i].values[j].value_show = Coberturas.getValueFields(d[j], type, plan);
                             }
                         }
                     }
@@ -82,70 +82,70 @@ class Coberturas extends Component {
     static getValueFields(item, type = null, plan = null) {
         try {
             let inmueble = store.getState().Inmueble;
-            if( typeof item.values !== "undefined"){
+            if (typeof item.values !== "undefined") {
                 for (let i = 0; i < item.values.length; i++) {
-                    if( item.values[i].default === true ){
+                    if (item.values[i].default === true) {
                         return Masknumbermoney.formatToMask(item.values[i].limit);
                     }
                 }
-            }else{
+            } else {
                 // Inmueble
                 if (item.id === 1) {
-                    if( type === item.id || type === null ){
+                    if (type === item.id || type === null) {
                         return Masknumbermoney.formatToMask(
                             Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) * parseInt(item.value) / 100);
-                    }else{
+                    } else {
                         return item.value_show;
                     }
                     //Contenidos
                 } else if (item.id === 2) {
-                    if( type === item.id || type === null ){
+                    if (type === item.id || type === null) {
                         return Masknumbermoney.formatToMask(
                             Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) * parseInt(item.value) / 100);
-                    }else{
+                    } else {
                         return item.value_show;
                     }
                     //Obras
                 } else if (item.id === 3) {
-                    if( type === item.id || type === null ){
+                    if (type === item.id || type === null) {
                         return Masknumbermoney.formatToMask(
                             Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadoobrasvalor) * parseInt(item.value) / 100);
-                    }else{
+                    } else {
                         return item.value_show;
                     }
                     //Telefonos moviles
                 } else if (item.id === 4) {
-                    if( type === item.id || type === null ){
+                    if (type === item.id || type === null) {
                         return Masknumbermoney.formatToMask(
                             Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadotelefonosvalor) * parseInt(item.value) / 100);
-                    }else{
+                    } else {
                         return item.value_show;
                     }
                     //Hurto siempre basado en hurto calificado
                 } else if (item.id === 5) {
                     let dataHurto = [];
                     let hurto = Coberturas.getCoverangeById(3, plan);
-                    if( hurto !== null ){
+                    if (hurto !== null) {
                         for (let i = 0; i < hurto.values.length; i++) dataHurto.push(hurto.values[i].value_show);
                         return Masknumbermoney.formatToMask(
                             (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
-                    }else{
+                    } else {
                         return item.value_show;
                     }
                     //Joyas
                 } else if (item.id === 6) {
-                    if( type === item.id || type === null ){
+                    if (type === item.id || type === null) {
                         return Masknumbermoney.formatToMask(
                             Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadojoyasvalor) * parseInt(item.value) / 100);
-                    }else{
+                    } else {
                         return item.value_show;
                     }
                     //Contenido mobile
                 } else if (item.id === 7) {
-                    if( type === item.id || type === null ){
+                    if (type === item.id || type === null) {
                         let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor);
                         return Masknumbermoney.formatToMask(contenido * parseInt(item.value) / 100);
-                    }else{
+                    } else {
                         return item.value_show;
                     }
 
@@ -157,6 +157,88 @@ class Coberturas extends Component {
         }
     }
 
+    /**
+     *
+     * @param id Of coverage that you want find
+     * @param plan Current plan selected by user
+     * @returns {*}
+     */
+    static getCoverangeById(id, plan = null) {
+        let index = store.getState().indexPlan;
+        let plans = store.getState().AllPlans[index];
+        if (plan !== null) {
+            plans = plan;
+        }
+        if (typeof plans.coverages !== "undefined") {
+            for (let i = 0; i < plans.coverages.length; i++) {
+                if (plans.coverages[i].id === id) {
+                    return plans.coverages[i];
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param code Of coverage that you want find
+     * @returns {{coverange: ({values, name}|*), index: number}}
+     */
+    static getCoverangeByCode(code) {
+        let index = store.getState().indexPlan;
+        let plans = store.getState().AllPlans[index].coverages;
+        for (let i = 0; i < plans.length; i++) {
+            if (plans[i].code === code) {
+                return {
+                    index: i,
+                    coverange: plans[i]
+                };
+            }
+        }
+    }
+
+    /**
+     * Validate if each coverage field it show or not.
+     * @param opt Coverage field
+     * @returns {boolean}
+     */
+    static showItem(opt) {
+        let inmueble = store.getState().Inmueble;
+        // Inmueble
+        if (opt.id === 1) {
+            return inmueble.inmuebleasegudado === 1;
+            //Contenidos
+        } else if (opt.id === 2) {
+            return inmueble.contenidoasegudado === 1;
+            //Obras
+        } else if (opt.id === 3) {
+            return inmueble.inmuebleasegudadoobras === 1;
+            //Telefonos moviles
+        } else if (opt.id === 4) {
+            return inmueble.inmuebleasegudadotelefonos === 1;
+            //Hurto siempre basado en hurto calificado
+        } else if (opt.id === 5) {
+            return inmueble.contenidoasegudado === 1;
+            //Joyas
+        } else if (opt.id === 6) {
+            return inmueble.inmuebleasegudadojoyas === 1;
+            //Contenido mobile
+        } else if (opt.id >= 7 || opt.id === 0) {
+            return true;
+        }
+    }
+
+    /**
+     * Valida if coverage field is disable
+     * @param option coverage
+     * @param opt coverage field
+     * @returns {boolean}
+     */
+    static isDisabled(option, opt) {
+        return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
+    };
+
     componentDidMount() {
         this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
@@ -167,9 +249,9 @@ class Coberturas extends Component {
                     plan: plan,
                     index: storeState.indexPlan,
                 });
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.countCoverturas(plan);
-                },250)
+                }, 250)
             }
         });
     }
@@ -187,11 +269,11 @@ class Coberturas extends Component {
         let index = storeState.indexPlan;
         let plans = storeState.AllPlans;
         store.dispatch(AllPlansCreator(plans));
-        setTimeout(()=>{
-            plan = Coberturas.calcValue(plan,5);
+        setTimeout(() => {
+            plan = Coberturas.calcValue(plan, 5);
             plans[index] = plan;
-            Plans.sendAndValidate(plans,index,this.props.match.params.id);
-        },500);
+            Plans.sendAndValidate(plans, index, this.props.match.params.id);
+        }, 500);
     }
 
     /**
@@ -221,28 +303,28 @@ class Coberturas extends Component {
 
         let code = newPlans.coverages[key].code;
         //Validations for dependence's coverages
-        if( parseInt(code) === 9692 && !check === false){
+        if (parseInt(code) === 9692 && !check === false) {
             let find = Coberturas.getCoverangeByCode(9691);
             newPlans.coverages[find.index].checked = false;
 
             find = Coberturas.getCoverangeByCode(9693);
             newPlans.coverages[find.index].checked = false;
         }
-        if( parseInt(code) === 9691 && !check === true){
+        if (parseInt(code) === 9691 && !check === true) {
             let find = Coberturas.getCoverangeByCode(9692);
-            if( find.coverange.checked === false ){
+            if (find.coverange.checked === false) {
                 newPlans.coverages[key].checked = false;
                 state = false;
             }
         }
-        if( parseInt(code) === 9693 && !check === true){
+        if (parseInt(code) === 9693 && !check === true) {
             let find = Coberturas.getCoverangeByCode(9692);
-            if( find.coverange.checked === false ){
+            if (find.coverange.checked === false) {
                 newPlans.coverages[key].checked = false;
                 state = false;
             }
         }
-        if( state === true ){
+        if (state === true) {
             this.setState({
                 ...this.state,
                 plans: newPlans
@@ -251,47 +333,6 @@ class Coberturas extends Component {
             this.sendAndValidate(newPlans);
         }
     };
-
-    /**
-     *
-     * @param id Of coverage that you want find
-     * @param plan Current plan selected by user
-     * @returns {*}
-     */
-    static getCoverangeById(id, plan = null) {
-        let index = store.getState().indexPlan;
-        let plans = store.getState().AllPlans[index];
-        if( plan !== null ){
-            plans = plan;
-        }
-        if( typeof plans.coverages !== "undefined" ){
-            for (let i = 0; i < plans.coverages.length; i++) {
-                if (plans.coverages[i].id === id) {
-                    return plans.coverages[i];
-                }
-            }
-        }else {
-            return  null;
-        }
-    }
-
-    /**
-     *
-     * @param code Of coverage that you want find
-     * @returns {{coverange: ({values, name}|*), index: number}}
-     */
-    static getCoverangeByCode(code) {
-        let index = store.getState().indexPlan;
-        let plans = store.getState().AllPlans[index].coverages;
-        for (let i = 0; i < plans.length; i++) {
-            if (plans[i].code === code) {
-                return {
-                    index: i,
-                    coverange: plans[i]
-                };
-            }
-        }
-    }
 
     /**
      * todo Merge method with static method are equals
@@ -330,7 +371,7 @@ class Coberturas extends Component {
             //Validations of max and min
             if (parseInt(item.values[k].code) === 9692 || parseInt(item.values[k].code) === 3017 || parseInt(item.values[k].code) === 3008) {
                 let coverange = this.getCoverangeByCode(9667);
-                if( typeof coverange.values !== "undefined" ){
+                if (typeof coverange.values !== "undefined") {
                     for (let i = 0; i < coverange.values.length; i++) {
                         if (coverange.values[i].id === item.values[k].id) {
                             if (Masknumbermoney.formatToNumber(coverange.values[i].value_show) < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
@@ -371,7 +412,7 @@ class Coberturas extends Component {
             plans: plan
         });
 
-        if( e.target.tagName === "SELECT" ){
+        if (e.target.tagName === "SELECT") {
             this.sendAndValidate(plan);
         }
     };
@@ -379,37 +420,6 @@ class Coberturas extends Component {
     blur = () => {
         this.sendAndValidate(this.state.plan);
     };
-
-    /**
-     * Validate if each coverage field it show or not.
-     * @param opt Coverage field
-     * @returns {boolean}
-     */
-    static showItem(opt){
-        let inmueble = store.getState().Inmueble;
-        // Inmueble
-        if (opt.id === 1) {
-            return inmueble.inmuebleasegudado === 1;
-            //Contenidos
-        } else if (opt.id === 2) {
-            return inmueble.contenidoasegudado === 1;
-            //Obras
-        } else if (opt.id === 3) {
-            return inmueble.inmuebleasegudadoobras === 1;
-            //Telefonos moviles
-        } else if (opt.id === 4) {
-            return inmueble.inmuebleasegudadotelefonos === 1;
-            //Hurto siempre basado en hurto calificado
-        } else if (opt.id === 5) {
-            return inmueble.contenidoasegudado === 1;
-            //Joyas
-        } else if (opt.id === 6) {
-            return inmueble.inmuebleasegudadojoyas === 1;
-            //Contenido mobile
-        } else if (opt.id >= 7 || opt.id === 0) {
-            return true;
-        }
-    }
 
     /**
      * Event of select dedutible
@@ -421,9 +431,9 @@ class Coberturas extends Component {
         let plan = this.state.plan;
         let items = plan.coverages[key].deductible;
         for (let i = 0; i < items.length; i++) {
-            if( parseInt(items[i]['id']) === parseInt(v) ){
+            if (parseInt(items[i]['id']) === parseInt(v)) {
                 plan.coverages[key].deductible[i].default = true;
-            }else{
+            } else {
                 plan.coverages[key].deductible[i].default = false;
             }
         }
@@ -432,16 +442,6 @@ class Coberturas extends Component {
             plans: plan
         });
         this.sendAndValidate(plan);
-    };
-
-    /**
-     * Valida if coverage field is disable
-     * @param option coverage
-     * @param opt coverage field
-     * @returns {boolean}
-     */
-    static isDisabled(option, opt){
-        return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
     };
 
     render() {
@@ -483,17 +483,17 @@ class Coberturas extends Component {
                                         <Fragment>
                                             {option.values.map((opt, k) => Coberturas.showItem(opt) &&
                                                 <div
-                                                    className={"form-group " + (typeof opt.values === 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '')+(Coberturas.isDisabled(option,opt)?' disabled-item':'')}
+                                                    className={"form-group " + (typeof opt.values === 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '') + (Coberturas.isDisabled(option, opt) ? ' disabled-item' : '')}
                                                     key={k}>
                                                     <label htmlFor={"item" + k + "_" + key}>{opt.name}</label>
                                                     {typeof opt.values === 'undefined' ? (
                                                         <input name={"item" + k + "_" + key}
                                                                id={"item" + k + "_" + key}
                                                                placeholder={opt.value_show}
-                                                               onBlur={Coberturas.isDisabled(option,opt)?null:this.blur}
+                                                               onBlur={Coberturas.isDisabled(option, opt) ? null : this.blur}
                                                                value={typeof opt.value_show === "undefined" ? '$0' : opt.value_show}
                                                                onChange={this.inputChange(k, key, 1)}
-                                                               disabled={Coberturas.isDisabled(option,opt)}
+                                                               disabled={Coberturas.isDisabled(option, opt)}
                                                                type="text" className={"form-control"}/>
                                                     ) : (
                                                         <select className={"form-control"} name={"item" + k + "_" + key}

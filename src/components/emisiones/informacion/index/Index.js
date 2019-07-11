@@ -20,7 +20,7 @@ class Index extends Component {
 
     constructor(props) {
         super(props);
-        this.current = React.createRef()
+        this.current = React.createRef();
         let formatDate = "dddd, MMMM Do YYYY";
         this.state = {
             step: parseInt(this.props.match.params.step),
@@ -42,9 +42,7 @@ class Index extends Component {
                 "Joyas",
                 "Celulares",
             ],
-            limits: [
-
-            ]
+            limits: []
         };
         this.updatePerson = this.updatePerson.bind(this);
         this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
@@ -103,23 +101,23 @@ class Index extends Component {
                 if (inmueble.inmueble_asegudado_telefonos === 1) celulares = true;
             }
         }
-        const validateMinMax =  [   
-        {
-            "min": 1,
-            "max": inmueble.contenido_asegudado_valor
-        },
-        {
-            "min": 1,
-            "max": inmueble.inmueble_asegudado_obrasvalor
-        },
-        {
-            "min": 1,
-            "max": inmueble.inmueble_asegudado_joyasvalor
-        },
-        {
-            "min": inmueble.inmueble_asegudado_telefonosvalor,
-            "max": inmueble.inmueble_asegudado_telefonosvalor
-        }];
+        const validateMinMax = [
+            {
+                "min": 1,
+                "max": inmueble.contenido_asegudado_valor
+            },
+            {
+                "min": 1,
+                "max": inmueble.inmueble_asegudado_obrasvalor
+            },
+            {
+                "min": 1,
+                "max": inmueble.inmueble_asegudado_joyasvalor
+            },
+            {
+                "min": inmueble.inmueble_asegudado_telefonosvalor,
+                "max": inmueble.inmueble_asegudado_telefonosvalor
+            }];
         this.setState({limits: validateMinMax});
         this.setState({
             ...this.state,

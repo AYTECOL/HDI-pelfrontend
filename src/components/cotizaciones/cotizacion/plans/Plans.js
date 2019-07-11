@@ -9,7 +9,6 @@ import Loading from "../../../globals/loading/Loading";
 import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
 import BtnContinue from "../forms/btncontinue/BtnContinue";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
-import Coberturas from "../coberturas/Coberturas";
 
 class Index extends Component {
 
@@ -21,6 +20,20 @@ class Index extends Component {
             index: 1,
         };
         for (let i = 0; i < 3; i++) this.state.plans[i] = {name: "------"};
+    }
+
+    static async sendAndValidate(plans, index, id) {
+        Loading.toggle(true);
+        await CreateOrUpdateValoration.save();
+        let plan = plans[index];
+        plan = BtnContinue.toNumberCoverrange(plan);
+        let total = await DeterminePolizaPrima.get(plan, id);
+        if (typeof total.prospect !== "undefined") {
+            plans[index].value = total.prospect;
+            plans[index].prima = total;
+            store.dispatch(AllPlansCreator(plans));
+        }
+        Loading.toggle(false);
     }
 
     componentDidMount() {
@@ -44,20 +57,6 @@ class Index extends Component {
     changeIndexPlan = index => e => {
         store.dispatch(indexPlanSelected(index));
     };
-
-    static async sendAndValidate(plans, index, id) {
-        Loading.toggle(true);
-        await CreateOrUpdateValoration.save();
-        let plan = plans[index];
-        plan = BtnContinue.toNumberCoverrange(plan);
-        let total = await DeterminePolizaPrima.get(plan, id);
-        if (typeof total.prospect !== "undefined") {
-            plans[index].value = total.prospect;
-            plans[index].prima = total;
-            store.dispatch(AllPlansCreator(plans));
-        }
-        Loading.toggle(false);
-    }
 
     render() {
         return (
