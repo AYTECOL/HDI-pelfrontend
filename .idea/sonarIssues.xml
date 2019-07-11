@@ -323,12 +323,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/conjuntocerrado/Conjuntocerrado.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/construidocon/Construidocon.js">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/construidocon/Construidocon.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/counter/Counter.js">
           <value>
             <set />
           </value>

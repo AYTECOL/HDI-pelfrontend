@@ -85,43 +85,45 @@ class Index extends Component {
         let persons = plan;
         let items = persons.quote_iussed_info.Item;
         let person = [];
-        person.push(items.taker);
-        for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
+        if( typeof items !== "undefined" ){
+            person.push(items.taker);
+            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
-        if (typeof items.benefist !== "undefined") {
-            for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [2];
-        }
+            if (typeof items.benefist !== "undefined") {
+                for (let i = 0; i < items.insured.length; i++) person.push(items.insured[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [2];
+            }
 
-        if (typeof items.benefist !== "undefined") {
-            for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [3];
-        }
+            if (typeof items.benefist !== "undefined") {
+                for (let i = 0; i < items.benefist.length; i++) person.push(items.benefist[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [3];
+            }
 
-        if (typeof items.onerous !== "undefined") {
-            for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [4];
-        }
+            if (typeof items.onerous !== "undefined") {
+                for (let i = 0; i < items.onerous.length; i++) person.push(items.onerous[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [4];
+            }
 
-        if (typeof items.persons_aditionals !== "undefined") {
-            for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [5];
-        }
+            if (typeof items.persons_aditionals !== "undefined") {
+                for (let i = 0; i < items.persons_aditionals.length; i++) person.push(items.persons_aditionals[i]);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [5];
+            }
 
-        for (let i = 0; i < person.length; i++) {
-            person[i]['name'] = person[i]['first_name'];
-            person[i]['secondname'] = person[i]['second_name'];
-            person[i]['lastname'] = person[i]['first_last_name'];
-            person[i]['secondlastname'] = person[i]['second_last_name'];
-            person[i]['code'] = person[i]['document_type'];
-            person[i]['value'] = person[i]['document'];
-            person[i]['genero'] = person[i]['gender'];
-            person[i]['fechadenacimiento'] = person[i]['birthdate'];
-            person[i]['tipodetelefono'] = person[i]['phone_type'];
-            person[i]['telefono'] = person[i]['phone'];
-            person[i]['ciudad'] = person[i]['location'];
-            person[i]['adresstype'] = person[i]['address_type'];
-            person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
+            for (let i = 0; i < person.length; i++) {
+                person[i]['name'] = person[i]['first_name'];
+                person[i]['secondname'] = person[i]['second_name'];
+                person[i]['lastname'] = person[i]['first_last_name'];
+                person[i]['secondlastname'] = person[i]['second_last_name'];
+                person[i]['code'] = person[i]['document_type'];
+                person[i]['value'] = person[i]['document'];
+                person[i]['genero'] = person[i]['gender'];
+                person[i]['fechadenacimiento'] = person[i]['birthdate'];
+                person[i]['tipodetelefono'] = person[i]['phone_type'];
+                person[i]['telefono'] = person[i]['phone'];
+                person[i]['ciudad'] = person[i]['location'];
+                person[i]['adresstype'] = person[i]['address_type'];
+                person[i]['sarlfaltActive'] = person[i]['sarlaft_document_url'];
+            }
         }
 
         let data = plan.more_info.Item;
