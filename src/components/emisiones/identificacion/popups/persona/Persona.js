@@ -350,6 +350,10 @@ export default class Persona extends Component {
         let n = e.target.name;
         let nit = this.state.nit;
         let newPerson = this.state.person;
+
+        console.log(v);
+        console.log(n);
+
         newPerson[n] = v;
         if (n === 'code') nit = parseInt(v) === 37;
         this.setState({
@@ -859,6 +863,8 @@ export default class Persona extends Component {
                                                             onChange={this.changeDates}
                                                             showMonthDropdown
                                                             showYearDropdown
+                                                            scrollableYearDropdown
+                                                            yearDropdownItemNumber={60}
                                                             disabled={this.state.person.fechadecontitucionDisabled}
                                                             className={"form-control " + (this.state.person.fechadecontitucionDisabled ? 'disabled' : '')}/>
                                                 <small className="form-text only-errors">Falta información requerida

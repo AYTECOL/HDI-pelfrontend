@@ -118,7 +118,7 @@ class AutocompleteCities extends Component {
         let code = option.code_city;
         let value = option.description;
         let description = option.department;
-        let city = option.desc_ciudad;
+        let city = option.city;
         let codeDepartment = option.code_department;
         setTimeout(() => {
             Helpers.updatePdfInfo({

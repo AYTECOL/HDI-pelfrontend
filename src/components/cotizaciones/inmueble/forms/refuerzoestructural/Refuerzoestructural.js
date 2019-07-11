@@ -125,6 +125,7 @@ class Refuerzoestructural extends Component {
                             className={"anorefuerzo input-select form-group " + (this.state.errorselect ? 'error' : '')}>
                             <label htmlFor="anorefuerzo">En qué año se hizo el refuerzo estructural</label>
                             <select className="anorefuerzo form-control"
+                                    id="anorefuerzo"
                                     name="anorefuerzo"
                                     value={this.state.valueOther}
                                     onChange={this.saveValue({

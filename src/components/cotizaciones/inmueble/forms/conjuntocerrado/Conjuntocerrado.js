@@ -47,8 +47,8 @@ class Conjuntocerrado extends Component {
     render() {
         return (
             <div className={"cojuntocerrado no-icon form-group " + this.state.error}>
-                <label htmlFor="doc-type-value">Está ubicado en conjunto cerrado</label>
-                <ul className="select-item">
+                <label htmlFor="conjuntocerras">Está ubicado en conjunto cerrado</label>
+                <ul className="select-item" id="conjuntocerras">
                     <li data="1"
                         className={((this.state.active === 1) ? 'active' : '')}
                         onClick={this.validateEmpty({
