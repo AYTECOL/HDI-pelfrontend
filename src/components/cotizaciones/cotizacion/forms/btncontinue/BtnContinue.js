@@ -51,6 +51,7 @@ class BtnContinue extends Component {
 
             let plan = plans[index];
             plan['premium_after_all_the_rules'] = plan.prima.premium_after_all_the_rules;
+            plan['calculation_of_pure_extra_shelter_premium'] = plan.prima.calculation_of_pure_extra_shelter_premium;
             plan['prospect'] = plan.value;
             plan['quote_id'] = this.props.match.params.id;
             plan['assists'][0]['selected_id'] = index;
