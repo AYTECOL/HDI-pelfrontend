@@ -140,9 +140,9 @@ class Asegurarcontenidos extends Component {
         return (
             <div className="row">
                 <div className="col col-12  col-md-6">
-                    <div className={"contenidoasegudado no-icon form-group " + this.state.error}>
-                        <label htmlFor="doc-type-value">¿Deseas asegurar {Asegurarcontenidos.name()}? </label>
-                        <ul className="select-item">
+                    <div className={Asegurarcontenidos.nameModel+" no-icon form-group " + this.state.error}>
+                        <label htmlFor={Asegurarcontenidos.nameModel}>¿Deseas asegurar {Asegurarcontenidos.name()}? </label>
+                        <ul className="select-item" id={Asegurarcontenidos.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={this.validateEmpty({
                                     value: 1,

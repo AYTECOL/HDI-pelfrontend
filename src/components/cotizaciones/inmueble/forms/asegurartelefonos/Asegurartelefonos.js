@@ -114,10 +114,10 @@ class Asegurartelefonos extends Component {
         return (
             <div className="row">
                 <div className="col col-12 col-md-6">
-                    <div className={"inmuebleasegudadotelefonos form-group " + this.state.error}>
-                        <label htmlFor="doc-type-value">¿Adicionalmente deseas
+                    <div className={Asegurartelefonos.nameModel+" form-group " + this.state.error}>
+                        <label htmlFor={Asegurartelefonos.nameModel}>¿Adicionalmente deseas
                             asegurar {Asegurartelefonos.name()}? </label>
-                        <ul className="select-item">
+                        <ul className="select-item" id={Asegurartelefonos.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={this.validateEmpty({
                                     value: 1,
@@ -138,9 +138,9 @@ class Asegurartelefonos extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12 col-md-6">
                         <div
-                            className={"inmuebleasegudadotelefonosvalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="inmuebleasegudadotelefonosvalor">Valor de {Asegurartelefonos.name()}</label>
-                            <input name="inmuebleasegudadotelefonosvalor" id="inmuebleasegudadotelefonosvalor"
+                            className={Asegurartelefonos.nameModelValue+" form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor={Asegurartelefonos.nameModelValue}>Valor de {Asegurartelefonos.name()}</label>
+                            <input name={Asegurartelefonos.nameModelValue} id="inmuebleasegudadotelefonosvalor"
                                    type="text"
                                    value={this.state.value}
                                    className={"form-control"}
