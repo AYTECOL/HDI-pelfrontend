@@ -55,7 +55,7 @@ class BtnContinue extends Component {
         for (let i = 0; i < persons.length; i++) {
             let location = persons[i]['ciudad'];
             let dataUser = {
-                person: typeof persons[i].person === "undefined"?persons[i].object:persons[i].person,
+                person: typeof persons[i].person === "undefined" ? persons[i].object : persons[i].person,
                 first_name: persons[i]['name'],
                 second_name: persons[i]['secondname'],
                 first_last_name: persons[i]['lastname'],

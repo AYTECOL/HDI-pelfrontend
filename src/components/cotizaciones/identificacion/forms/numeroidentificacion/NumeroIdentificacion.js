@@ -28,26 +28,7 @@ class NumeroIdentificacion extends Component {
         }
     }
 
-    componentDidMount() {
-        this.unsubscribe = store.subscribe(() => {
-            let storeState = store.getState();
-            let value = this.state.value;
-            let newState = storeState.stateFormIdentificacion;
-            if (newState !== 0) value = storeState.cotizacion.identification.value;
-            if (storeState.cotizacion.identification.code !== this.state.typeIdentification && newState === 0) value = '';
-            this.setState({
-                ...this.state,
-                typeIdentification: storeState.cotizacion.identification.code,
-                value: value
-            });
-        });
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
-    static validate(v, type){
+    static validate(v, type) {
         let error = false;
         type = type.toString();
         if (v.length < 1) error = true;
@@ -79,10 +60,29 @@ class NumeroIdentificacion extends Component {
             //     let sub = parseInt(v.toString().substr(0,9));
             //     v = sub + "-" + Helpers.calcularDigitoVerificacion(v);
             // }
-            let sub = parseInt(v.toString().substr(0,9));
-            if( sub < 80000000 || sub > 999999999 ) error = true
+            let sub = parseInt(v.toString().substr(0, 9));
+            if (sub < 80000000 || sub > 999999999) error = true
         }
         return error;
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
+            let storeState = store.getState();
+            let value = this.state.value;
+            let newState = storeState.stateFormIdentificacion;
+            if (newState !== 0) value = storeState.cotizacion.identification.value;
+            if (storeState.cotizacion.identification.code !== this.state.typeIdentification && newState === 0) value = '';
+            this.setState({
+                ...this.state,
+                typeIdentification: storeState.cotizacion.identification.code,
+                value: value
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = event => {

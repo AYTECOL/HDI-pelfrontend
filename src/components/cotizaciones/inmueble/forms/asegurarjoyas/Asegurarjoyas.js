@@ -116,7 +116,7 @@ class Asegurarjoyas extends Component {
         return (
             <div className="row">
                 <div className="col col-12  col-md-6">
-                    <div className={Asegurarjoyas.nameModel+" no-icon form-group " + this.state.error}>
+                    <div className={Asegurarjoyas.nameModel + " no-icon form-group " + this.state.error}>
                         <label htmlFor={Asegurarjoyas.nameModel}>¿Adicionalmente deseas {Asegurarjoyas.name()}? </label>
                         <ul className="select-item" id={Asegurarjoyas.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
@@ -139,7 +139,7 @@ class Asegurarjoyas extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12  col-md-6">
                         <div
-                            className={Asegurarjoyas.nameModelValue+" form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            className={Asegurarjoyas.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
                             <label htmlFor={Asegurarjoyas.nameModelValue}>Valor de {Asegurarjoyas.name()}</label>
                             <input name="inmuebleasegudadojoyasvalor" id={Asegurarjoyas.nameModelValue}
                                    type="text"

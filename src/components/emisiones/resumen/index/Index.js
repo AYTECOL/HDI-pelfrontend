@@ -21,6 +21,7 @@ import AllBuildYears from "../../../../services/AllBuildYears";
 import AllSecurity from "../../../../services/AllSecurity";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import Summary from "../../../cotizaciones/cotizacion/summary/summary"
+
 class Index extends Component {
 
     constructor(props) {
@@ -40,7 +41,7 @@ class Index extends Component {
     }
 
     static getName(path) {
-        if( typeof path !== "undefined" ){
+        if (typeof path !== "undefined") {
             let name = path.split("/");
             if (name.length > 0) {
                 name = name[name.length - 1];
@@ -48,7 +49,7 @@ class Index extends Component {
                 name = path;
             }
             return decodeURIComponent(name.replace(/\+/g, "%20"));
-        }else{
+        } else {
             return "";
         }
     }
@@ -60,7 +61,7 @@ class Index extends Component {
     async getData() {
         Loading.toggle(true);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
-        console.log(plan)
+        console.log(plan);
         let plansLoader = [];
 
         let selected = plan.plan_selected_info.Item;
@@ -85,7 +86,7 @@ class Index extends Component {
         let persons = plan;
         let items = persons.quote_iussed_info.Item;
         let person = [];
-        if( typeof items !== "undefined" ){
+        if (typeof items !== "undefined") {
             person.push(items.taker);
             for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
@@ -314,7 +315,7 @@ class Index extends Component {
 
                             {typeof this.state.plans !== "undefined" &&
                             <React.Fragment>
-                                <Summary />
+                                <Summary/>
                                 <CoberturasSummary toggleSlide={Helpers.toggleSlide}/>
                                 <AsistenciasSummary toggleSlide={Helpers.toggleSlide}/>
                             </React.Fragment>
@@ -361,7 +362,8 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        <button type="button" className="btn btn-download">{Index.getName(item.textFile)}</button>
+                                                        <button type="button"
+                                                                className="btn btn-download">{Index.getName(item.textFile)}</button>
                                                     </div>
                                                 </div>
                                             )}

@@ -13,7 +13,7 @@ class Map extends Component {
             error: false
         };
     }
-    
+
     componentDidMount() {
         this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();

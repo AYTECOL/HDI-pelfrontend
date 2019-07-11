@@ -72,7 +72,7 @@ class Asistencias extends Component {
     }
 
     sendAndValidate() {
-        Plans.sendAndValidate(this.state.plans,this.state.index,this.props.match.params.id);
+        Plans.sendAndValidate(this.state.plans, this.state.index, this.props.match.params.id);
     }
 
     isCheckedAssistsByCode(code) {
@@ -151,7 +151,7 @@ class Asistencias extends Component {
 
     render() {
         return (
-            <div className={"asistencias-group "+(typeof this.props.summary === "undefined"?'':'summary')}>
+            <div className={"asistencias-group " + (typeof this.props.summary === "undefined" ? '' : 'summary')}>
                 {(typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index].assists !== "undefined") && this.state.plans[this.state.index].assists.map((option, key) =>
                     <div className={"row row-max tabs-cotizaciones row_tab_1 " + (key + 1)} key={key}>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">

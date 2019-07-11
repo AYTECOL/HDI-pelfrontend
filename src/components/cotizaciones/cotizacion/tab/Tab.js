@@ -23,6 +23,64 @@ class Tab extends Component {
         };
     }
 
+    //Make merge between default plan and seleted plan
+    static assignValuesSaved(selected, normal) {
+        for (let j = 0; j < normal.coverages.length; j++) {
+            if (typeof selected.coverages[j] !== "undefined") {
+                normal.coverages[j].optional = selected.coverages[j].optional;
+                normal.coverages[j].checked = selected.coverages[j].checked;
+                if (typeof normal.coverages[j].values !== "undefined") {
+                    for (let i = 0; i < normal.coverages[j].values.length; i++) {
+                        if (typeof normal.coverages[j].values[i] !== "undefined") {
+                            if (typeof normal.coverages[j].values[i].values === "undefined") {
+                                if (typeof selected.coverages[j].values !== "undefined") {
+                                    if (typeof selected.coverages[j].values[i] !== "undefined") {
+                                        normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
+                                        normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
+                                        normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
+                                    }
+                                }
+                            } else {
+                                if (typeof selected.coverages[j].values[i].values !== "undefined") {
+                                    for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
+                                        if (typeof selected.coverages[j].values[i].values[k] !== "undefined") {
+                                            normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (let j = 0; j < normal.assists.length; j++) {
+            normal.assists[j].optional = selected.assists[j].optional;
+            for (let k = 0; k < normal.assists[j].values.length; k++) {
+                normal.assists[j].values[k].optional = selected.assists[j].values[k].optional;
+                for (let l = 0; l < normal.assists[j].values[k].assists.length; l++) {
+                    normal.assists[j].values[k].assists[l].checked = selected.assists[j].values[k].assists[l].checked;
+                    normal.assists[j].values[k].assists[l].optional = selected.assists[j].values[k].assists[l].optional;
+                }
+            }
+        }
+        return normal;
+    }
+
+    static setMaxDedutibles(plans) {
+        for (let i = 0; i < plans.length; i++) {
+            for (let j = 0; j < plans[i].coverages.length; j++) {
+                if (typeof plans[i].coverages[j].deductible !== "undefined") {
+                    let t = plans[i].coverages[j].deductible.length;
+                    for (let k = 0; k < t; k++) {
+                        plans[i].coverages[j].deductible[k].default = (k + 1) === t;
+                    }
+                }
+            }
+        }
+        return plans;
+    }
+
     componentDidMount() {
         this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
@@ -57,13 +115,13 @@ class Tab extends Component {
 
         let status = false;
         //Detect if this.state is not equal to store and validate id empty values.
-        if( typeof inmueble.contenidoasegudadovalor !== "undefined" ) {
+        if (typeof inmueble.contenidoasegudadovalor !== "undefined") {
             if (inmueble.contenidoasegudadovalor.toString().trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
                 if (Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) {
                     status = true;
                     //Check when the value is empty on this.state and it is not empty in store
-                }else if( Inmueble.contenidoasegudadovalor.toString().trim() === "" ){
-                    if( Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor ){
+                } else if (Inmueble.contenidoasegudadovalor.toString().trim() === "") {
+                    if (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor) {
                         status = true;
                     }
                 }
@@ -71,13 +129,13 @@ class Tab extends Component {
         }
 
         //Detect if this.state is not equal to store and validate id empty values.
-        if( typeof inmueble.inmuebleasegudadovalor !== "undefined" ) {
+        if (typeof inmueble.inmuebleasegudadovalor !== "undefined") {
             if (inmueble.inmuebleasegudadovalor.toString().trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
                 if (Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) {
                     status = true;
                     //Check when the value is empty on this.state and it is not empty in store
-                }else if( Inmueble.inmuebleasegudadovalor.toString().trim() === "" ){
-                    if( Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor ){
+                } else if (Inmueble.inmuebleasegudadovalor.toString().trim() === "") {
+                    if (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor) {
                         status = true;
                     }
                 }
@@ -94,64 +152,6 @@ class Tab extends Component {
         });
     }
 
-    //Make merge between default plan and seleted plan
-    static assignValuesSaved(selected, normal){
-        for (let j = 0; j < normal.coverages.length; j++) {
-            if( typeof selected.coverages[j] !== "undefined" ){
-                normal.coverages[j].optional = selected.coverages[j].optional;
-                normal.coverages[j].checked = selected.coverages[j].checked;
-                if( typeof normal.coverages[j].values !== "undefined" ){
-                    for (let i = 0; i < normal.coverages[j].values.length; i++) {
-                        if( typeof normal.coverages[j].values[i] !== "undefined" ){
-                            if( typeof normal.coverages[j].values[i].values === "undefined" ){
-                                if( typeof selected.coverages[j].values !== "undefined" ){
-                                    if( typeof selected.coverages[j].values[i] !== "undefined" ){
-                                        normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
-                                        normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
-                                        normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
-                                    }
-                                }
-                            }else{
-                                if( typeof selected.coverages[j].values[i].values !== "undefined" ){
-                                    for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
-                                        if( typeof selected.coverages[j].values[i].values[k] !== "undefined" ){
-                                            normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        for (let j = 0; j < normal.assists.length; j++) {
-            normal.assists[j].optional = selected.assists[j].optional;
-            for (let k = 0; k < normal.assists[j].values.length; k++) {
-                normal.assists[j].values[k].optional = selected.assists[j].values[k].optional;
-                for (let l = 0; l < normal.assists[j].values[k].assists.length; l++) {
-                    normal.assists[j].values[k].assists[l].checked = selected.assists[j].values[k].assists[l].checked;
-                    normal.assists[j].values[k].assists[l].optional = selected.assists[j].values[k].assists[l].optional;
-                }
-            }
-        }
-        return normal;
-    }
-
-    static setMaxDedutibles(plans){
-        for (let i = 0; i < plans.length; i++) {
-            for (let j = 0; j < plans[i].coverages.length; j++) {
-                if( typeof plans[i].coverages[j].deductible !== "undefined" ){
-                    let t = plans[i].coverages[j].deductible.length;
-                    for (let k = 0; k < t; k++) {
-                        plans[i].coverages[j].deductible[k].default = (k + 1) === t;
-                    }
-                }
-            }
-        }
-        return plans;
-    }
-
     async getPlants(type) {
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
@@ -166,7 +166,7 @@ class Tab extends Component {
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
-            if (this.state.index === ""){
+            if (this.state.index === "") {
                 for (let i in plans) {
                     if (plans[i].isdefault === true) {
                         store.dispatch(indexPlanSelected(i));
@@ -178,9 +178,9 @@ class Tab extends Component {
         for (let i = 0; i < plans.length; i++) {
             let prospect = 0;
             //Validate if selected plan
-            if( indexSelected !== null && i === indexSelected ){
+            if (indexSelected !== null && i === indexSelected) {
                 prospect = await DeterminePolizaPrima.get(plans[indexSelected], quotateId);
-            }else{
+            } else {
                 //Calc values to show
                 plans[i] = Coberturas.calcValue(plans[i]);
                 //Add 'value_to_quotate' to each coverange
@@ -191,7 +191,7 @@ class Tab extends Component {
             plans[i].prima = prospect;
         }
 
-        if( typeof inmuble.max_values_dedu !== "undefined" ){
+        if (typeof inmuble.max_values_dedu !== "undefined") {
             //Is IC alter dedutibles of plan.
             plans = Tab.setMaxDedutibles(plans);
         }
@@ -205,7 +205,8 @@ class Tab extends Component {
     }
 
     render() {
-        if ( typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index] === "undefined") return <div className="hide">&nbsp;</div>;
+        if (typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index] === "undefined") return <div
+            className="hide">&nbsp;</div>;
         return (
             <Fragment>
                 <div className="first-content">

@@ -35,7 +35,7 @@ class Crearpolizaiaxis {
                         d.tipoPersona = {
                             "codigo": 2
                         }
-                    }else{
+                    } else {
                         d.tipoPersona = {
                             "codigo": 1
                         }
@@ -54,33 +54,33 @@ class Crearpolizaiaxis {
             if (typeof d.fechadenacimiento === "undefined") {
                 if (typeof d.birthdate !== "undefined") {
                     d.fechadenacimiento = d.birthdate;
-                }else{
+                } else {
                     d.fechadenacimiento = '1948-03-06';
                 }
             }
-            if( d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
+            if (d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
             d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
 
-            if( typeof d.secondlastname === "undefined" || d.secondlastname === null ){
-                if( typeof d.second_last_name === "undefined" || d.second_last_name === null ){
+            if (typeof d.secondlastname === "undefined" || d.secondlastname === null) {
+                if (typeof d.second_last_name === "undefined" || d.second_last_name === null) {
                     d.secondlastname = " ";
-                }else{
+                } else {
                     d.secondlastname = d.second_last_name;
                 }
             }
 
-            if( typeof d.secondname === "undefined" || d.secondname === null ){
-                if( typeof d.second_name === "undefined" || d.second_name === null ){
+            if (typeof d.secondname === "undefined" || d.secondname === null) {
+                if (typeof d.second_name === "undefined" || d.second_name === null) {
                     d.secondname = " ";
-                }else{
+                } else {
                     d.secondname = d.second_last_name;
                 }
             }
 
-            if( typeof d.lastname === "undefined" || d.lastname === null ){
-                if( typeof d.first_last_name === "undefined" || d.first_last_name === null ){
+            if (typeof d.lastname === "undefined" || d.lastname === null) {
+                if (typeof d.first_last_name === "undefined" || d.first_last_name === null) {
                     d.lastname = " ";
-                }else{
+                } else {
                     d.lastname = d.first_last_name;
                 }
             }
@@ -103,14 +103,14 @@ class Crearpolizaiaxis {
                     }
                 }
             };
-            if( d.tipoPersona.codigo.toString() === "2" ){
-                if( typeof d.businessname === "undefined" ){
+            if (d.tipoPersona.codigo.toString() === "2") {
+                if (typeof d.businessname === "undefined") {
                     d.businessname = " ";
                 }
 
-                if( typeof d.fechadecontitucion === "undefined" ){
+                if (typeof d.fechadecontitucion === "undefined") {
                     d.fechadecontitucion = momentJs('1948-03-06').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-                }else{
+                } else {
                     d.fechadecontitucion = momentJs(d.fechadecontitucion).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
                 }
 
@@ -122,25 +122,25 @@ class Crearpolizaiaxis {
                 }
             }
 
-            if( typeof d.department_code !== "undefined" && d.department_code != null && d.department_code !== ' ') {
+            if (typeof d.department_code !== "undefined" && d.department_code != null && d.department_code !== ' ') {
                 if (d.department_code === 0) {
                     d.department_code = '11';
                 }
-            }else{
+            } else {
                 d.department_code = '11';
             }
-            if( typeof d.city_code !== "undefined" && d.city_code != null && d.city_code !== ' ') {
+            if (typeof d.city_code !== "undefined" && d.city_code != null && d.city_code !== ' ') {
                 if (d.city_code === 0) {
                     d.city_code = '1';
                 }
-            }else{
+            } else {
                 d.city_code = '1';
             }
-            if( typeof d.adresstype !== "undefined" && d.adresstype != null && d.adresstype !== ' ') {
+            if (typeof d.adresstype !== "undefined" && d.adresstype != null && d.adresstype !== ' ') {
                 if (d.adresstype === 0) {
                     d.adresstype = '1';
                 }
-            }else{
+            } else {
                 d.adresstype = '1';
             }
 

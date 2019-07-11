@@ -210,7 +210,7 @@ class Cards extends Component {
         e.target.value = Masknumbermoney.formatToMask(target.value);
         let parent = this.state.items[index].parent;
         let component = new parent();
-        if( e.type === "blur" ){
+        if (e.type === "blur") {
             component.validateValue(e);
         }
         let error = parent.validateField(target.value);
@@ -222,11 +222,11 @@ class Cards extends Component {
             items: newItems
         });
         this.validateToggle();
-        if( e.type === "blur" && parseInt(error) === 0 && e.target.value.trim() !== '' ){
-            setTimeout(()=>{
+        if (e.type === "blur" && parseInt(error) === 0 && e.target.value.trim() !== '') {
+            setTimeout(() => {
                 this.getInspectionPolicy();
                 this.sendAndValidate(parent);
-            },500);
+            }, 500);
         }
     };
 
@@ -237,19 +237,19 @@ class Cards extends Component {
         let name = component.nameModel;
 
         let type = null;
-        if( name === "inmuebleasegudadoobras" ){
+        if (name === "inmuebleasegudadoobras") {
             type = 3;
-        }else if( name === "inmuebleasegudadotelefonos" ){
+        } else if (name === "inmuebleasegudadotelefonos") {
             type = 4;
-        }else if( name === "inmuebleasegudadojoyas" ){
+        } else if (name === "inmuebleasegudadojoyas") {
             type = 6;
-        }else if( name === "contenidoasegudado" ){
+        } else if (name === "contenidoasegudado") {
             type = 2;
-        }else if( name === "inmuebleasegudado" ){
+        } else if (name === "inmuebleasegudado") {
             type = 1;
         }
-        plans[index] = Coberturas.calcValue(plans[index],type);
-        Plans.sendAndValidate(plans,index,this.props.match.params.id);
+        plans[index] = Coberturas.calcValue(plans[index], type);
+        Plans.sendAndValidate(plans, index, this.props.match.params.id);
     }
 
     render() {
