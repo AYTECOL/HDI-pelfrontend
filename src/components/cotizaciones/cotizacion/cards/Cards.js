@@ -68,7 +68,7 @@ class Cards extends Component {
         });
     }
 
-    async getInspectionPolicy() {
+    static async getDataFromInspectionPolicy(){
         let inspect = await InspectionPolicy.get();
         if (typeof inspect[1] !== "undefined" && inspect[1] !== "NA") {
             store.dispatch(saveInmuebleValue({
@@ -79,6 +79,16 @@ class Cards extends Component {
                 value: true,
                 name: 'max_values_dedu'
             }));
+            return inspect;
+        }else{
+            return false;
+        }
+
+    }
+
+    async getInspectionPolicy() {
+        let inspect = await Cards.getDataFromInspectionPolicy();
+        if (inspect !== false) {
             this.setState({
                 ...this.state,
                 inspection_detail: inspect[0],
@@ -125,9 +135,9 @@ class Cards extends Component {
                     Inmueble: inmueble,
                     InmuebleOk: true
                 });
+                this.getInspectionPolicy();
                 setTimeout(() => {
                     this.validateToggle();
-                    this.getInspectionPolicy();
                 }, 500);
             }
         });
