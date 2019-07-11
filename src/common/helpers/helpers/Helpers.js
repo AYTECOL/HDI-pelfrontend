@@ -151,7 +151,6 @@ class Helpers {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== "undefined") {
             store.dispatch(restoreCotizacion(cotizacion));
-            console.log(cotizacion.state);
             if( cotizacion.state === 7 ){
                 Helpers.goToNotFound(history);
             }else{
