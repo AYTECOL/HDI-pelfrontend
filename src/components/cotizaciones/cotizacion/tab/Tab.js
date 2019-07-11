@@ -11,6 +11,7 @@ import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import BtnContinue from "../forms/btncontinue/BtnContinue";
+import Cards from "../cards/Cards";
 
 class Tab extends Component {
     constructor(props) {
@@ -191,9 +192,12 @@ class Tab extends Component {
             plans[i].prima = prospect;
         }
 
-        if (typeof inmuble.max_values_dedu !== "undefined") {
-            //Is IC alter dedutibles of plan.
-            plans = Tab.setMaxDedutibles(plans);
+        let inspect = await Cards.getDataFromInspectionPolicy();
+        if( inspect !== false ){
+            if( inspect[1] === 'IC' ){
+                //Is IC alter dedutibles of plan.
+                plans = Tab.setMaxDedutibles(plans);
+            }
         }
 
         this.setState({
