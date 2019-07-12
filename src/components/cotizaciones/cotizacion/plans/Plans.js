@@ -9,6 +9,7 @@ import Loading from "../../../globals/loading/Loading";
 import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
 import BtnContinue from "../forms/btncontinue/BtnContinue";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
+import Coberturas from "../coberturas/Coberturas";
 
 class Index extends Component {
 
@@ -56,6 +57,10 @@ class Index extends Component {
 
     changeIndexPlan = index => e => {
         store.dispatch(indexPlanSelected(index));
+        let storeState = store.getState();
+        let plans = storeState.AllPlans;
+        plans[index] = Coberturas.calcValue(plans[index]);
+        store.dispatch(AllPlansCreator(plans));
     };
 
     render() {
