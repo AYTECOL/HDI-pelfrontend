@@ -85,6 +85,14 @@ class Crearpolizaiaxis {
                 }
             }
 
+            if (typeof d.tipodetelefono === "undefined" || d.tipodetelefono === null) {
+                if (typeof d.phone_type === "undefined" || d.phone_type === null) {
+                    d.tipodetelefono = " ";
+                } else {
+                    d.tipodetelefono = d.phone_type;
+                }
+            }
+
             let personAdd = {
                 "personaNatural": {
                     "primerApellido": d.lastname,
@@ -229,10 +237,20 @@ class Crearpolizaiaxis {
             }
         }
 
+        let additional = [];
+        let persons_aditionals = data.quote_iussed_info.Item.persons_aditionals;
+        if( typeof persons_aditionals !== "undefined" ) additional = persons_aditionals;
+
         let asegurado = Crearpolizaiaxis.formatPerson(aseguradoArr);
         let beneficiario = Crearpolizaiaxis.formatPerson(beneficiarioArr);
+        let additionals = Crearpolizaiaxis.formatPerson(additional);
         let onerosos = Crearpolizaiaxis.formatPerson(data.quote_iussed_info.Item.onerous);
         let tomador = Crearpolizaiaxis.formatPerson(tomadorArr)[0];
+
+        for (let i = 0; i < additionals.length; i++) {
+            let add = additionals[i];
+            beneficiario.push(add);
+        }
 
         for (let i = 0; i < beneficiario.length; i++) {
             beneficiario[i] = {

@@ -157,7 +157,7 @@ class Tab extends Component {
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
-        let inmuble = store.getState().Inmueble;
+        //let inmuble = store.getState().Inmueble;
         let indexSelected = null;
 
         if (typeof plan.plan_selected_info.Item !== "undefined") {

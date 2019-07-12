@@ -182,7 +182,6 @@ class Coberturas extends Component {
                 for (let i = 0; valuesCoverage["values"].length > i; i++) {
                     sumTotal = sumTotal + valuesCoverage["values"][i]["value_to_quotate"];
                 }
-                console.log(sumTotal);
                 return Masknumbermoney.formatToMask(sumTotal);
             } else {
                 return "";
@@ -204,7 +203,6 @@ class Coberturas extends Component {
                     storeState.AllPlans,
                     storeState.indexPlan
                 );
-                console.log(plans);
                 if (typeof plans !== "undefined") {
                     this.setState({
                         ...this.state,
