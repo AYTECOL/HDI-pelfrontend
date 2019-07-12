@@ -2,11 +2,6 @@ import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
 import store from "../../../../store";
 import "./Asistencias.scss";
-import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValoration";
-import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
-import {AllPlans as AllPlansCreator} from "../../../../actions";
-import Loading from "../../../globals/loading/Loading";
-import BtnContinue from "../forms/btncontinue/BtnContinue";
 import Plans from "../plans/Plans";
 
 class Asistencias extends Component {

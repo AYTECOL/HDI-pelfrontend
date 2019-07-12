@@ -18,10 +18,11 @@ class Tab extends Component {
         super(props);
         this.state = {
             plans: [],
-            Inmueble: {},
+            Inmueble: store.getState().Inmueble,
             typePlans: 3,
             index: "",
         };
+        this.updateType(this.state.Inmueble);
     }
 
     componentDidMount() {
@@ -33,7 +34,7 @@ class Tab extends Component {
                 inmueble.inmuebleasegudado !== this.state.Inmueble.inmuebleasegudado ||
                 inmueble.contenidoasegudado !== this.state.Inmueble.contenidoasegudado
             ) {
-                this.updateType();
+                this.updateType(inmueble);
             }
             if (this.state.index !== indexPlan) {
                 this.setState({
@@ -48,8 +49,7 @@ class Tab extends Component {
         this.unsubscribe();
     }
 
-    updateType() {
-        let inmueble = store.getState().Inmueble;
+    updateType(inmueble) {
         let type = this.state.typePlans;
         if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
             type = 3;
@@ -70,9 +70,7 @@ class Tab extends Component {
             typePlans: type
         });
         if (typeof inmueble.inmuebleasegudado !== "undefined") {
-            setTimeout(()=>{
-                this.getPlants();
-            },500);
+            this.getPlants();
         }
     }
 
