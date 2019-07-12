@@ -3,18 +3,18 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: dev
+  stage: prod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
-    #iamRoleStatements:
-    #      - Effect: "Allow"
-    #        Action:
-    #          - s3:*
-    #        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+  iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - s3:PutItem
+        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
-  s3Bucket: poliza-express-hogar-dev
-  s3BucketPDF: poliza-express-hogar-pdf-dev
+  s3Bucket: poliza-express-hogar
+  s3BucketPDF: poliza-express-hogar-pdf
 
 package:
   include:
@@ -45,7 +45,6 @@ resources:
         PolicyDocument:
           Statement:
             - Sid: PublicReadGetObject
-              #- Sid: AllowPublicRead
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -67,7 +66,6 @@ resources:
         PolicyDocument:
           Statement:
             - Sid: PublicReadGetObject
-              #- Sid: AllowPublicReadWrite
               Effect: Allow
               Principal:
                 CanonicalUser:
@@ -91,8 +89,7 @@ resources:
                 OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-            - hogar-dev.libertyseguros.co
-          #TTL: 3600
+            - hogar.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -107,7 +104,6 @@ resources:
               - GET
               - HEAD
             MinTTL: 3600
-            #TTL: 3600
             TargetOriginId: WebApp
             ForwardedValues:
               QueryString: 'false'
@@ -115,8 +111,10 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
-            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #Certificado DEV: AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #Certificado UAT: AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            #Certificado PROD:
+            AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:

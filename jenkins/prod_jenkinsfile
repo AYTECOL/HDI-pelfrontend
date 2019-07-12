@@ -12,9 +12,6 @@ node('linux'){
 
     stage('cloudfront') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            //sh "npm run build -- --configuration=prod"
-            //sh 'dir'
-            //sh 'ls'
             sh "sls deploy -v --force"
             dir('dist/poliza-express-hogar'){
                 sh 'pwd'
@@ -23,7 +20,7 @@ node('linux'){
         }
     }
 
-    /*stage('Build') {
+    stage('Build') {
          git credentialsId: 'intl_gituser', url: ' https://intl_gituser@bitbucket-latam.aws.lmig.com/scm/rt/pelhfrontend.git', branch: 'master'
          sh 'npm --version'
          sh 'aws --version'
@@ -43,9 +40,12 @@ node('linux'){
                 npm install
                 npm run-script build
                 ls -ltr
-
-                aws s3 cp build s3://$BUCKET_NAME  --recursive --acl public-read
             """
+            sh 'aws s3 sync build s3://poliza-express-hogar-uat --delete'
+            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-uat --delete'
+            sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --acl public-read'
+            sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --recursive --cache-control max-age=0,no-cache,no-store,must-revalidate --acl public-read'
+            
         }
     }
 
@@ -53,5 +53,5 @@ node('linux'){
 		withSonarQubeEnv('sonarqube') {
         	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
 	 	}
-	}*/
+	}
  }
