@@ -6,18 +6,22 @@ def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
 node('linux'){
 
-stage('cloudfront') {
-    withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-		sh "npm run build -- --configuration=prod"
-        //sh 'dir'
-        //sh 'ls'
-		sh "sls deploy -v --force"
-        dir('dist/poliza-express-hogar'){
-            sh 'pwd'
-            sh 'ls'
+	stage('Git Checkout'){
+		checkout scm develop
+	}    
+
+    stage('cloudfront') {
+        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+            //sh "npm run build -- --configuration=prod"
+            //sh 'dir'
+            //sh 'ls'
+            sh "sls deploy -v --force"
+            dir('dist/poliza-express-hogar'){
+                sh 'pwd'
+                sh 'ls'
+            }
         }
     }
-}
 
     /*stage('Build') {
          git credentialsId: 'intl_gituser', url: ' https://intl_gituser@bitbucket-latam.aws.lmig.com/scm/rt/pelhfrontend.git', branch: 'master'
