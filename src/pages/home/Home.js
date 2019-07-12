@@ -64,20 +64,12 @@ class Home extends PureComponent {
     };
     formatStatesQuotes = step => {
         let stringState = "";
-        switch (step) {
-            case 1:
-            case 2:
-            case 3:
-                stringState = "Cotización";
-                break;
-            case 4:
-            case 5:
-            case 6:
-                stringState = "Proceso de emisión";
-                break;
-            case 7:
-                stringState = "Póliza emitida";
-                break;
+        if (step === 1 || step === 2 || step === 3) {
+            stringState = "Cotización";
+        } else if (step === 4 || step === 5 || step === 6) {
+            stringState = "Proceso de emisión";
+        } else if (step === 7) {
+            stringState = "Póliza emitida";
         }
 
         return stringState;

@@ -61,7 +61,6 @@ class Index extends Component {
     async getData() {
         Loading.toggle(true);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
-        console.log(plan);
         let plansLoader = [];
 
         let selected = plan.plan_selected_info.Item;

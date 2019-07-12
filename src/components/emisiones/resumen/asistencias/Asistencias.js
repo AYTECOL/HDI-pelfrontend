@@ -39,7 +39,6 @@ class Asistencias extends Component {
                         index: index,
                         plans: plans
                     });
-                    console.log(plans);
                     setTimeout(() => {
                         this.countAsistencias();
                     }, 100);

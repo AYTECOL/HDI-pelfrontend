@@ -90,7 +90,7 @@ export default class Persona extends Component {
         } else if (this.state.typePerson === 4) {
             this.state.total = 8;
         } else if (this.state.typePerson === 5 || this.state.typePerson === 6) {
-            this.state.total = 13;
+            this.state.total = 11;
         }
 
         if (typeof this.props.disabledAll !== "undefined") {
@@ -803,7 +803,7 @@ export default class Persona extends Component {
                                         </div>
                                         }
 
-                                        {(this.state.typePerson !== 4) &&
+                                        {(this.state.typePerson !== 4 && this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
                                         <React.Fragment>
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                 <div className="pisonumero form-group input-select"><label
