@@ -60,7 +60,7 @@ export default class Checkboxes extends Component {
                         <label htmlFor="beneficiario">Beneficiario</label>
                     </div>
                     }
-                    {(this.props.typePerson === 2 || this.props.person['role'].indexOf(5) !== -1) &&
+                    {(this.props.typePerson === 5 || this.props.person['role'].indexOf(5) !== -1) &&
                     <React.Fragment>
                         {this.props.hasExequias === true &&
                         <div className={"col col-sm-12 col-md-6 col-lg-6 no-padding "}>
@@ -75,7 +75,7 @@ export default class Checkboxes extends Component {
                         }
                     </React.Fragment>
                     }
-                    {(this.props.typePerson === 2 || this.props.person['role'].indexOf(6) !== -1) &&
+                    {(this.props.typePerson === 6 || this.props.person['role'].indexOf(6) !== -1) &&
                     <React.Fragment>
                         {this.props.hasAccident === true &&
                         <div className={"col col-sm-12 col-md-6 col-lg-6 no-padding "}>

@@ -237,7 +237,8 @@
         }
       }
 
-      &.disabled-item {
+      &.disabled-item,
+      .disabled-item {
         label,
         select,
         input {
@@ -352,6 +353,10 @@
       .asistencia {
         background: #F0FBFC;
         padding: 28px;
+
+        &.summary {
+          background-color: transparent;
+        }
 
         @media (max-width: 769px) {
           padding: 14px;

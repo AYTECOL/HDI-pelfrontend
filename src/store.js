@@ -77,7 +77,10 @@ const initialState = {
     Allfloors: [],
     allInsurableLimits: [],
     AllPlans: [],
+    originalStore: {}
 };
+
+initialState.originalStore = initialState;
 
 const reducer = (state = initialState, action) => {
     if (action.type === "SET_ADDRES_MAP") {
@@ -219,6 +222,10 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             prospect: action.data
+        }
+    } else if (action.type === "RESET_STORE") {
+        return {
+            ...state.originalStore,
         }
     }
     return state;

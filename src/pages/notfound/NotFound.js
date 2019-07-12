@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './NotFound.scss';
+import Loading from "../../components/globals/loading/Loading";
 
 class NotFound extends Component {
 
@@ -8,6 +9,7 @@ class NotFound extends Component {
         this.state = {};
         document.querySelector("body").className += " notfound";
         document.querySelector("html").className += " notfoundhtml";
+        Loading.toggle(false);
     }
 
     render() {

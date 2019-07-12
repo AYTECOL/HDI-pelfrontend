@@ -47,7 +47,7 @@ class Index extends Component {
                     persons = this.state.persons;
                 } else {
                     let tomador = cotizacion.identification;
-                    if( tomador.name !== "" ){
+                    if (tomador.name !== "") {
                         tomador['role'] = [1];
                         persons.push(tomador);
                     }
@@ -78,14 +78,14 @@ class Index extends Component {
             for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
 
             [
-                'insured',
-                'benefist',
-                'onerous',
-                'persons_aditionals',
-            ].map((item,key)=>{
-                if (typeof items.insured !== "undefined") {
-                    for (let i = 0; i < items[item].length; i++) person.push(items[item][i]);
-                    for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [(key+1)];
+                {name: 'insured', role: 2},
+                {name: 'benefist', role: 3},
+                {name: 'onerous', role: 4},
+                {name: 'persons_aditionals', role: 5},
+            ].map((item, key) => {
+                if (typeof items[item.name] !== "undefined") {
+                    for (let i = 0; i < items[item.name].length; i++) person.push(items[item.name][i]);
+                    for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [item.role];
                 }
                 return true;
             });
@@ -105,6 +105,8 @@ class Index extends Component {
                 person[i]['adresstype'] = person[i]['address_type'];
                 person[i]['sarlaft'] = person[i]['sarlaft_document_url'];
                 person[i]['sarlfalt_url'] = person[i]['sarlaft_document_url'];
+                person[i]['department'] = person[i]['departamento'];
+                person[i]['city'] = person[i]['ciudad'];
             }
         }
 
@@ -127,9 +129,19 @@ class Index extends Component {
                 hasExequias: hasExequias
             });
         } else {
+
+            let persons = [];
+            for (let i = 0; i < person.length; i++) {
+                if (typeof persons[person[i].value] === "undefined") {
+                    persons[person[i].value] = person[i];
+                }
+            }
+            let newPerson = [];
+            for (let i in persons) newPerson.push(persons[i]);
+
             this.setState({
                 ...this.state,
-                persons: person,
+                persons: newPerson,
                 hasAccident: hasAccident,
                 hasExequias: hasExequias
             });
@@ -160,7 +172,8 @@ class Index extends Component {
     togglePopUpPersona = (index, type) => () => {
         if (index !== -1 && index !== -2 && typeof type === "undefined") {
             let roles = this.state.persons[index]['role'];
-            if (roles.indexOf(5) !== -1 || roles.indexOf(6) !== -1) type = 2;
+            if (roles.indexOf(5) !== -1) type = 5;
+            if (roles.indexOf(6) !== -1) type = 6;
             if (roles.indexOf(3) !== -1) type = 3;
             if (roles.indexOf(4) !== -1) type = 4;
             if (roles.indexOf(1) !== -1 || roles.indexOf(2) !== -1) type = 1;
@@ -191,7 +204,9 @@ class Index extends Component {
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3) {
-                    status.push(i);
+                    if (typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") {
+                        status.push(i);
+                    }
                 }
             }
         }
@@ -203,12 +218,34 @@ class Index extends Component {
         });
     }
 
+    exitsPerson(person, state = null) {
+        let persons = this.state.persons;
+        if (state !== null) persons = state;
+        let status = false;
+        for (let i = 0; i < persons.length; i++) {
+            if (parseInt(persons[i].code) === parseInt(person.code) && parseInt(persons[i].value) === parseInt(person.value)) {
+                person['role'] = [...person['role'], ...persons[i]['role']];
+                person['role'] = [...new Set(person['role'])].sort(Helpers.orderArrayNumeric);
+                status = {
+                    person,
+                    index: i
+                };
+            }
+        }
+        return status;
+    }
+
     updatePerson(person) {
         let persons = this.state.persons;
-        if (this.state.itemSelected === -1) {
-            persons.push(person);
+        let exits = this.exitsPerson(person);
+        if (exits !== false) {
+            persons[exits.index] = exits.person;
         } else {
-            persons[this.state.itemSelected] = person;
+            if (this.state.itemSelected === -1) {
+                persons.push(person);
+            } else {
+                persons[this.state.itemSelected] = person;
+            }
         }
 
         setTimeout(() => {
@@ -265,7 +302,7 @@ class Index extends Component {
                         <div className="col col-md-8 col-lg-8 last-items-emision">
                             <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
                                 asegurar a personas adicionales. ¿Deseas hacerlo?</p>
-                            <div className="more-items" onClick={this.togglePopUpPersona(-1, 2)}>
+                            <div className="more-items" onClick={this.togglePopUpPersona(-1, 5)}>
                                 <button type="button" className="more-btn">+</button>
                                 <p>Si, agregar persona</p>
                             </div>

@@ -96,7 +96,7 @@ class PolizaEmitida extends Component {
     };
 
     getNumber = async () => {
-        const { history } = this.props;
+        const {history} = this.props;
         Loading.toggle(true);
         let number = await Counter.get();
         if (typeof number.currentValue !== "undefined") {

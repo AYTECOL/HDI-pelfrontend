@@ -114,9 +114,10 @@ class Asegurarobras extends Component {
         return (
             <div className="row">
                 <div className="col col-12 col-md-6">
-                    <div className={"inmuebleasegudadoobras no-icon form-group " + this.state.error}>
-                        <label htmlFor="doc-type-value">¿Adicionalmente deseas asegurar {Asegurarobras.name()}? </label>
-                        <ul className="select-item">
+                    <div className={Asegurarobras.nameModel + " no-icon form-group " + this.state.error}>
+                        <label htmlFor={Asegurarobras.nameModel}>¿Adicionalmente deseas
+                            asegurar {Asegurarobras.name()}? </label>
+                        <ul className="select-item" id={Asegurarobras.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={this.validateEmpty({
                                     value: 1,
@@ -137,8 +138,8 @@ class Asegurarobras extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12 col-md-6">
                         <div
-                            className={"inmuebleasegudadoobrasvalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="inmuebleasegudadoobrasvalor">Valor de las {Asegurarobras.name()}</label>
+                            className={Asegurarobras.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor={Asegurarobras.nameModelValue}>Valor de las {Asegurarobras.name()}</label>
                             <input name={Asegurarobras.nameModelValue} id={Asegurarobras.nameModelValue}
                                    type="text"
                                    value={this.state.value}

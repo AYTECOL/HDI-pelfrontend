@@ -69,7 +69,7 @@ class BtnContinue extends Component {
         state.utilizado = state.utilizado === "" ? 0 : state.utilizado;
 
         let inmueble = store.getState().Inmueble;
-        if( parseInt(inmueble.contenidoasegudado) === 0 ){
+        if (parseInt(inmueble.contenidoasegudado) === 0) {
             state.contents = [];
         }
 

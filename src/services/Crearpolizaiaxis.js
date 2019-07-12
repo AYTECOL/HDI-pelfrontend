@@ -35,7 +35,7 @@ class Crearpolizaiaxis {
                         d.tipoPersona = {
                             "codigo": 2
                         }
-                    }else{
+                    } else {
                         d.tipoPersona = {
                             "codigo": 1
                         }
@@ -54,12 +54,95 @@ class Crearpolizaiaxis {
             if (typeof d.fechadenacimiento === "undefined") {
                 if (typeof d.birthdate !== "undefined") {
                     d.fechadenacimiento = d.birthdate;
-                }else{
+                } else {
                     d.fechadenacimiento = '1948-03-06';
                 }
             }
-            if( d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
+            if (d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
             d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+
+            if (typeof d.secondlastname === "undefined" || d.secondlastname === null) {
+                if (typeof d.second_last_name === "undefined" || d.second_last_name === null) {
+                    d.secondlastname = " ";
+                } else {
+                    d.secondlastname = d.second_last_name;
+                }
+            }
+
+            if (typeof d.secondname === "undefined" || d.secondname === null) {
+                if (typeof d.second_name === "undefined" || d.second_name === null) {
+                    d.secondname = " ";
+                } else {
+                    d.secondname = d.second_last_name;
+                }
+            }
+
+            if (typeof d.lastname === "undefined" || d.lastname === null) {
+                if (typeof d.first_last_name === "undefined" || d.first_last_name === null) {
+                    d.lastname = " ";
+                } else {
+                    d.lastname = d.first_last_name;
+                }
+            }
+
+            let personAdd = {
+                "personaNatural": {
+                    "primerApellido": d.lastname,
+                    "primerNombre": typeof d.first_name === "undefined" || d.first_name === null ? ' ' : d.first_name,
+                    "segundoApellido": d.secondlastname,
+                    "segundoNombre": d.secondname,
+                    "genero": {
+                        "codigo": typeof d.genero === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
+                    },
+                    "fechaNacimiento": d.fechadenacimiento,
+                    "estadoCivil": {
+                        "codigo": typeof d.personaNatural.estadoCivil.codigo === "undefined" || d.personaNatural.estadoCivil.codigo === null ? '1' : d.personaNatural.estadoCivil.codigo.toString(),
+                    },
+                    "ocupacion": {
+                        "codigo": typeof d.personaNatural.ocupacion.codigo === "undefined" || d.personaNatural.ocupacion.codigo === null ? '1' : d.personaNatural.ocupacion.codigo.toString(),
+                    }
+                }
+            };
+            if (d.tipoPersona.codigo.toString() === "2") {
+                if (typeof d.businessname === "undefined") {
+                    d.businessname = " ";
+                }
+
+                if (typeof d.fechadecontitucion === "undefined") {
+                    d.fechadecontitucion = momentJs('1948-03-06').format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+                } else {
+                    d.fechadecontitucion = momentJs(d.fechadecontitucion).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+                }
+
+                personAdd = {
+                    "personaJuridica": {
+                        "fechaConstitucion": d.fechadecontitucion,
+                        "razonSocial": d.businessname
+                    },
+                }
+            }
+
+            if (typeof d.department_code !== "undefined" && d.department_code != null && d.department_code !== ' ') {
+                if (d.department_code === 0) {
+                    d.department_code = '11';
+                }
+            } else {
+                d.department_code = '11';
+            }
+            if (typeof d.city_code !== "undefined" && d.city_code != null && d.city_code !== ' ') {
+                if (d.city_code === 0) {
+                    d.city_code = '1';
+                }
+            } else {
+                d.city_code = '1';
+            }
+            if (typeof d.adresstype !== "undefined" && d.adresstype != null && d.adresstype !== ' ') {
+                if (d.adresstype === 0) {
+                    d.adresstype = '1';
+                }
+            } else {
+                d.adresstype = '1';
+            }
 
             arrayToMerge.push({
                 "tipoDocumento": {
@@ -69,34 +152,19 @@ class Crearpolizaiaxis {
                 "tipoPersona": {
                     "codigo": d.tipoPersona.codigo.toString(),
                 },
-                "personaNatural": {
-                    "primerApellido": typeof d.lastname === "undefined" || d.lastname === null ? ' ' : d.lastname,
-                    "primerNombre": typeof d.first_name === "undefined" || d.first_name === null ? ' ' : d.first_name,
-                    "segundoApellido": typeof d.secondlastname === "undefined" || d.secondlastname === null ? ' ' : d.secondlastname,
-                    "segundoNombre": typeof d.secondname === "undefined" || d.secondname === null ? ' ' : d.secondname,
-                    "genero": {
-                        "codigo": typeof d.secondname === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
-                    },
-                    "fechaNacimiento": d.fechadenacimiento,
-                    "estadoCivil": {
-                        "codigo": typeof d.personaNatural.estadoCivil.codigo === "undefined" || d.personaNatural.estadoCivil.codigo === null ? '1' : d.personaNatural.estadoCivil.codigo.toString(),
-                    },
-                    "ocupacion": {
-                        "codigo": typeof d.personaNatural.ocupacion.codigo === "undefined" || d.personaNatural.ocupacion.codigo === null ? '1' : d.personaNatural.ocupacion.codigo.toString(),
-                    }
-                },
+                ...personAdd,
                 "direccion": {
                     "pais": {
                         "codigo": "170"
                     },
                     "departamento": {
-                        "codigo": typeof d.department_code === "undefined" || d.department_code === null || d.department_code === ' ' ? '1' : d.department_code.toString(),
+                        "codigo": d.department_code,
                     },
                     "ciudad": {
-                        "codigo": typeof d.city_code === "undefined" || d.city_code === null || d.city_code === ' ' ? '1' : d.city_code.toString(),
+                        "codigo": d.city_code,
                     },
                     "tipoDireccion": {
-                        "codigo": typeof d.adresstype === "undefined" || d.adresstype === null || d.adresstype === ' ' ? '1' : d.adresstype.toString(),
+                        "codigo": d.adresstype,
                     },
                     "textoDireccion": typeof d.address === "undefined" || d.address === null ? '' : d.address.toString(),
                 },

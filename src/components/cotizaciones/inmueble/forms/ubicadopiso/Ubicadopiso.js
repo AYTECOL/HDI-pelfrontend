@@ -58,7 +58,7 @@ class Ubicadopiso extends Component {
         return (
             <div className={"pisonumero input-select form-group " + ((this.state.error) ? 'error' : '')}>
                 <label htmlFor="pisonumero">Piso donde se encuentra ubicado</label>
-                <select name="pisonumero" className="form-control" value={this.state.value}
+                <select name="pisonumero" id="pisonumero" className="form-control" value={this.state.value}
                         onBlur={this.validateEmpty}
                         onChange={this.validateEmpty}>
                     <option value="">Seleccione</option>

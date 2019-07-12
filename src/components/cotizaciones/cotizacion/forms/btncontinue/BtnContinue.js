@@ -8,7 +8,7 @@ import store from "../../../../../store";
 import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
 import Loading from "../../../../globals/loading/Loading";
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import {NextStep, saveProspect} from "../../../../../actions";
+import {NextStep, resetStore, saveProspect} from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Links from "../links/Links";
 
@@ -24,15 +24,28 @@ class BtnContinue extends Component {
     }
 
     static toNumberCoverrange(plan) {
-        for (let i = 0; i < plan.coverages.length; i++) {
-            if (typeof plan.coverages[i].values !== "undefined") {
-                for (let j = 0; j < plan.coverages[i].values.length; j++) {
-                    let v = plan.coverages[i].values[j].value_show;
-                    if( v === 'N/A' ) v = plan.coverages[i].values[j].value;
-                    if (typeof v !== "undefined") {
-                        plan.coverages[i].values[j].value_to_quotate = Masknumbermoney.formatToNumber(v);
-                    } else {
-                        plan.coverages[i].values[j].value_to_quotate = 0;
+        if (typeof plan !== "undefined") {
+            for (let i = 0; i < plan.coverages.length; i++) {
+                if (typeof plan.coverages[i].values !== "undefined") {
+                    for (let j = 0; j < plan.coverages[i].values.length; j++) {
+                        let v = plan.coverages[i].values[j].value_show;
+                        if (v === 'N/A') v = plan.coverages[i].values[j].value;
+                        if( typeof plan.coverages[i].values[j].values !== "undefined" ){
+                            let value = 0;
+                            let values = plan.coverages[i].values[j].values;
+                            for (let k = 0; k < values.length; k++) {
+                                if( values[k].default === true ){
+                                    value = Masknumbermoney.formatToNumber(values[k].limit);
+                                }
+                            }
+                            plan.coverages[i].values[j].value_to_quotate = value;
+                        }else{
+                            if (typeof v !== "undefined") {
+                                plan.coverages[i].values[j].value_to_quotate = Masknumbermoney.formatToNumber(v);
+                            } else {
+                                plan.coverages[i].values[j].value_to_quotate = 0;
+                            }
+                        }
                     }
                 }
             }
@@ -40,37 +53,55 @@ class BtnContinue extends Component {
         return plan;
     }
 
-    nextStep = async () => {
-        Loading.toggle(true);
+    planToSave(){
         let storeState = store.getState();
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
         let plan = plans[index];
-        plan['prospect'] = 2;
+        plan['premium_after_all_the_rules'] = plan.prima.premium_after_all_the_rules;
+        plan['calculation_of_pure_extra_shelter_premium'] = plan.prima.calculation_of_pure_extra_shelter_premium;
+        plan['prospect'] = plan.value;
         plan['quote_id'] = this.props.match.params.id;
         plan['assists'][0]['selected_id'] = index;
 
         plan = BtnContinue.toNumberCoverrange(plan);
-
         store.dispatch(saveProspect(plan['prima']));
+        return plan;
+    }
 
-        await Links.pdf(this, false);
+    nextStep = async () => {
+        Loading.toggle(true);
+        try {
+            let plan = this.planToSave();
 
-        store.dispatch(NextStep(4));
-        await SaveIdentifications.save();
-        await CreateOrUpdateValoration.save();
-        await NewPlanSelected.get(plan);
-        this.props.history.push(UrlSite + "/emision/1/" + this.props.match.params.id);
-        Loading.toggle(false);
+            await Links.pdf(this, false);
+
+            store.dispatch(NextStep(4));
+            await SaveIdentifications.save();
+            await CreateOrUpdateValoration.save();
+            await NewPlanSelected.get(plan);
+            this.props.history.push(UrlSite + "/emision/1/" + this.props.match.params.id);
+            Loading.toggle(false);
+        } catch (e) {
+            Loading.toggle(false);
+        }
     };
 
-    saveAndExit = () => {
+    saveAndExit = async () => {
+        Loading.toggle(true);
+        try {
+            let plan = this.planToSave();
+            await NewPlanSelected.get(plan);
+        }catch (e) {
+            Loading.toggle(false);
+        }
         Helpers.goToHome(this.props.history);
     };
 
     goBack = async () => {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
+        store.dispatch(resetStore());
         this.props.history.push(UrlSite + "/cotizacion/2/" + this.props.match.params.id);
     };
 

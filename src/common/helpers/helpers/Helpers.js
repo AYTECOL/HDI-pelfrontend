@@ -8,9 +8,7 @@ import AccessToken from "../../../services/AccessToken";
 import Loading from "../../../components/globals/loading/Loading";
 
 class Helpers {
-
-    static validations(){
-
+    static validations() {
     }
 
     static toCapitalize(str) {
@@ -153,17 +151,23 @@ class Helpers {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== "undefined") {
             store.dispatch(restoreCotizacion(cotizacion));
-            if (cotizacion.state >= 2 && parseInt(step) >= 2) {
-                let riskData = await ValorationById.get(id);
-                if (riskData !== null) {
-                    store.dispatch(saveProspect({
-                        "prospect": riskData.prospect,
-                        "total_premium_policy": riskData.total_premium_policy,
-                        "expedition_expenses": riskData.expedition_expenses,
-                        "total_tax_policy": riskData.total_tax_policy,
-                        "iva_expedition_expenses": riskData.iva_expedition_expenses,
-                    }));
-                    store.dispatch(restoreCotizacionRisk(riskData));
+            if( cotizacion.state === 7 ){
+                Helpers.goToNotFound(history);
+            }else{
+                if (cotizacion.state >= 2 && parseInt(step) >= 2) {
+                    let riskData = await ValorationById.get(id);
+                    if (riskData !== null) {
+                        store.dispatch(
+                            saveProspect({
+                                prospect: riskData.prospect,
+                                total_premium_policy: riskData.total_premium_policy,
+                                expedition_expenses: riskData.expedition_expenses,
+                                total_tax_policy: riskData.total_tax_policy,
+                                iva_expedition_expenses: riskData.iva_expedition_expenses
+                            })
+                        );
+                        store.dispatch(restoreCotizacionRisk(riskData));
+                    }
                 }
             }
         } else if (
@@ -183,7 +187,9 @@ class Helpers {
         if (Helpers.hasClass(".row_tab_" + index, className)) {
             Helpers.removeClass(".row_tab_" + index, className);
         } else {
-            let el = document.querySelector(".row_tab_" + index + " .wrapper-box");
+            let el = document.querySelector(".row_tab_" + index + " .wrapper-box ");
+            if (el == null)
+                el = document.querySelector(".row_tab_" + index + " .wrapper-box-info");
             el.style.height = el.offsetHeight + "px";
             Helpers.addClass(".row_tab_" + index, className);
         }
@@ -374,6 +380,50 @@ class Helpers {
         };
         store.dispatch(savePdfInfo(pdfinfo));
     }
+
+    static clone(obj) {
+        if (null == obj || "object" != typeof obj) return obj;
+        var copy = obj.constructor();
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+        }
+        return copy;
+    }
+
+    static cloneObject(obj) {
+        var copy;
+
+        // Handle the 3 simple types, and null or undefined
+        if (null == obj || "object" != typeof obj) return obj;
+
+        // Handle Date
+        if (obj instanceof Date) {
+            copy = new Date();
+            copy.setTime(obj.getTime());
+            return copy;
+        }
+
+        // Handle Array
+        if (obj instanceof Array) {
+            copy = [];
+            for (var i = 0, len = obj.length; i < len; i++) {
+                copy[i] = Helpers.clone(obj[i]);
+            }
+            return copy;
+        }
+
+        // Handle Object
+        if (obj instanceof Object) {
+            copy = {};
+            for (var attr in obj) {
+                if (obj.hasOwnProperty(attr)) copy[attr] = Helpers.clone(obj[attr]);
+            }
+            return copy;
+        }
+
+        throw new Error("Unable to copy obj! Its type isn't supported.");
+    }
+
 }
 
 export default Helpers;

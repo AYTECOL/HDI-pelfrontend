@@ -153,6 +153,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/asistencias/Asistencias.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/cards/Cards.js">
           <value>
             <set />
@@ -189,6 +194,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/popups/sendmail/SendMail.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/summary/summary.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/summary/summary.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/summary/summary.scss">
           <value>
             <set />
           </value>
@@ -303,12 +323,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/conjuntocerrado/Conjuntocerrado.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/construidocon/Construidocon.js">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/construidocon/Construidocon.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/inmueble/forms/counter/Counter.js">
           <value>
             <set />
           </value>
@@ -433,6 +463,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/asistencias/Asistencias.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/asistencias/Asistencias.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/coberturas/Coberturas.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/coberturas/Coberturas.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/emisiones/resumen/forms/btncontinue/BtnContinue.js">
           <value>
             <set />
@@ -509,6 +559,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/pages/home/Home.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/pages/notfound/NotFound.js">
           <value>
             <set />
           </value>
@@ -698,7 +753,42 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/.gitignore">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/Jenkins-amaris-file">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/Jenkinsfile-test">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend/package.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/serverless.yml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/services/converData.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/static/db/plan-contents.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/static/db/plan-realestateandcontents.json">
           <value>
             <set />
           </value>
@@ -713,7 +803,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/serverless.yml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend_2/services/converData.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend_2/static/db/plan-contents.json">
           <value>
             <set />
           </value>

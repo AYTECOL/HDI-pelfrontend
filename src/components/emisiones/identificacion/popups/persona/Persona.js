@@ -13,6 +13,8 @@ import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import NumeroIdentificacion
+    from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
 
 export default class Persona extends Component {
 
@@ -71,7 +73,7 @@ export default class Persona extends Component {
                 }
                 this.state.person[key + "Disabled"] = false;
                 this.state.person[key + "Error"] = false;
-            }else if( this.state.person[key] === null ){
+            } else if (this.state.person[key] === null) {
                 this.state.person[key] = "";
             }
         }
@@ -87,6 +89,8 @@ export default class Persona extends Component {
             this.state.total = 3;
         } else if (this.state.typePerson === 4) {
             this.state.total = 8;
+        } else if (this.state.typePerson === 5 || this.state.typePerson === 6) {
+            this.state.total = 13;
         }
 
         if (typeof this.props.disabledAll !== "undefined") {
@@ -107,45 +111,21 @@ export default class Persona extends Component {
             this.state.person.sarlfalt_url = "";
         }
 
-        if( typeof this.state.person.object !== "undefined" || typeof this.state.person.person !== "undefined" ){
+        if (typeof this.state.person.object !== "undefined" || typeof this.state.person.person !== "undefined") {
             this.state.hideLoader = true;
-        }else{
+        } else {
             this.state.hideLoader = undefined;
         }
 
     }
 
-    componentDidMount() {
-        this._isMounted = true;
-        Helpers.fieldNumeric();
-        setTimeout(() => {
-            if (this._isMounted) {
-                let personObject = this.state.person;
-                if( typeof personObject.person !== "undefined" ) personObject.object = personObject.person;
-                if (typeof personObject.object !== "undefined" && this.props.item !== -1) {
-                    this.validateDoc({
-                        person: personObject.person
-                    });
-                    let person = this.state.person;
-                    person.codeDisabled = true;
-                    person.valueDisabled = true;
-                    setTimeout(()=>{
-                        this.setState({
-                            ...this.state,
-                            person: person
-                        });
-                    },10);
-                }else{
-                    this.validateAll(null, false, false);
-                }
-            }
-        }, 400);
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
+    /**
+     * Merge person data between services iaxis and form data.
+     * @param persona
+     * @param code
+     * @param person
+     * @returns {*}
+     */
     static extractDataFromIaxis(persona, code, person) {
         if (parseInt(code) === 37) {
             if (typeof persona['consultarPersonaRs'] !== "undefined") {
@@ -162,6 +142,8 @@ export default class Persona extends Component {
                             person.fechadecontitucion = typeof person.fechadecontitucion[0] !== "undefined" ? person.fechadecontitucion[0] : '';
                             person.fechadecontitucionDisabled = person.fechadecontitucion !== '';
                         }
+                        person.valueDisabled = true;
+                        person.codeDisabled = true;
                     }
                 }
             }
@@ -169,33 +151,45 @@ export default class Persona extends Component {
             if (typeof persona['consultarPersonaRs'] !== "undefined") {
                 if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
                     if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
-                        person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
-                        person.genero = person.genero === null ? '' : person.genero;
-                        person.generoDisabled = person.genero !== '' && person.genero !== null;
+                        if (typeof person.genero === "undefined" || person.genero === "") {
+                            person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
+                            person.genero = person.genero === null ? '' : person.genero;
+                            person.generoDisabled = person.genero !== '' && person.genero !== null;
+                        }
 
-                        person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
-                        person.name = person.name === null ? '' : person.name;
-                        person.nameDisabled = person.name !== '' && person.name !== null;
+                        if (typeof person.name === "undefined" || person.name === "") {
+                            person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
+                            person.name = person.name === null ? '' : person.name;
+                            person.nameDisabled = person.name !== '' && person.name !== null;
+                        }
 
-                        person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
-                        person.secondname = person.secondname === null ? '' : person.secondname;
-                        person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
+                        if (typeof person.secondname === "undefined" || person.secondname === "") {
+                            person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
+                            person.secondname = person.secondname === null ? '' : person.secondname;
+                            person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
+                        }
 
-                        person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
-                        person.lastname = person.lastname === null ? '' : person.lastname;
-                        person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
+                        if (typeof person.lastname === "undefined" || person.lastname === "") {
+                            person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
+                            person.lastname = person.lastname === null ? '' : person.lastname;
+                            person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
+                        }
 
-                        person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
-                        person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
-                        person.secondlastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+                        if (typeof person.secondlastname === "undefined" || person.secondlastname === "") {
+                            person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
+                            person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
+                            person.secondlastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
+                        }
 
                         person.valueDisabled = true;
                         person.codeDisabled = true;
 
-                        person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
-                        person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
-                        person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
-                        person.fechadenacimientoDisabled = person.fechadenacimiento !== '' && person.fechadenacimiento !== null;
+                        if (typeof person.fechadenacimiento === "undefined" || person.fechadenacimiento === "") {
+                            person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
+                            person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
+                            person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
+                            person.fechadenacimientoDisabled = person.fechadenacimiento !== '' && person.fechadenacimiento !== null;
+                        }
 
                         person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
                     }
@@ -211,33 +205,56 @@ export default class Persona extends Component {
                     for (let i = 0; i < contactos.length; i++) {
                         let contacto = contactos[i];
                         if (contacto['idContacto'] === 1 || contacto['idContacto'] === 2) {
-                            person.telefono = contacto['textoContacto'];
+                            if (typeof person.telefono === "undefined" || person.telefono === "") {
+                                person.telefono = contacto['textoContacto'];
+                            }
                         } else if (contacto['idContacto'] === 3) {
-                            person.email = contacto['textoContacto'];
+                            if (typeof person.email === "undefined" || person.email === "") {
+                                person.email = contacto['textoContacto'];
+                            }
                         }
 
                         person.contacto.push({
                             "tipoContacto": {
                                 "codigo": typeof contactos[i]['tipoContacto'] !== "undefined" ? contactos[i]['tipoContacto']['codigo'] : []
                             },
-                            "textoContacto": typeof contactos[i]['textoContacto'] !== "undefined" ? contactos[i]['textoContacto']: []
+                            "textoContacto": typeof contactos[i]['textoContacto'] !== "undefined" ? contactos[i]['textoContacto'] : []
                         });
                     }
                     if (typeof contactos[0] !== "undefined") {
-                        person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+                        if (typeof person.tipodetelefono === "undefined" || person.tipodetelefono === "") {
+                            person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
+                        }
                     }
                 }
 
                 if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
                     person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
                     if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
-                        person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+                        if (typeof person.ciudad === "undefined" || person.address === "") {
+                            person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
+                        }
 
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
-                            person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                            if (typeof person.ciudad === "undefined" || person.ciudad === "") {
+                                person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
+                            }
+                            if (typeof person.city_code === "undefined" || person.city_code === "") {
+                                person.city_code = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['codigo'];
+                            }
+                        }
+                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['departamento'] !== "undefined") {
+                            if (typeof person.departamento === "undefined" || person.departamento === "") {
+                                person.departamento = persona['consultarPersonaRs']['persona']['direccion'][0]['departamento']['nombre'];
+                            }
+                            if (typeof person.department_code === "undefined" || person.department_code === "") {
+                                person.department_code = persona['consultarPersonaRs']['persona']['direccion'][0]['departamento']['codigo'];
+                            }
                         }
                         if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
-                            person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                            if (typeof person.adresstype === "undefined" || person.adresstype === "") {
+                                person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
+                            }
                         }
                     }
                 }
@@ -248,6 +265,37 @@ export default class Persona extends Component {
         }
         return person;
     };
+
+    componentDidMount() {
+        this._isMounted = true;
+        Helpers.fieldNumeric();
+        setTimeout(() => {
+            if (this._isMounted) {
+                let personObject = this.state.person;
+                if (typeof personObject.person !== "undefined") personObject.object = personObject.person;
+                if (typeof personObject.object !== "undefined" && this.props.item !== -1) {
+                    this.validateDoc({
+                        person: personObject.person
+                    });
+                    let person = this.state.person;
+                    person.codeDisabled = true;
+                    person.valueDisabled = true;
+                    setTimeout(() => {
+                        this.setState({
+                            ...this.state,
+                            person: person
+                        });
+                    }, 10);
+                } else {
+                    this.validateAll(null, false, false);
+                }
+            }
+        }, 400);
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     changeTextFile = e => {
         let name = "";
@@ -302,6 +350,10 @@ export default class Persona extends Component {
         let n = e.target.name;
         let nit = this.state.nit;
         let newPerson = this.state.person;
+
+        console.log(v);
+        console.log(n);
+
         newPerson[n] = v;
         if (n === 'code') nit = parseInt(v) === 37;
         this.setState({
@@ -316,9 +368,12 @@ export default class Persona extends Component {
 
     validateDoc = async e => {
         if (this.state.person.value === "") return;
-        if (this.state.typePerson === 2) return;
+        if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
         let code = this.state.person.code;
         try {
+            if (typeof e.target !== "undefined" && e.target.parentNode.className.indexOf('error') !== -1) {
+                return;
+            }
             Loading.toggle(true);
             let persona = null;
             if (typeof e.person === "undefined") {
@@ -402,20 +457,20 @@ export default class Persona extends Component {
             let fields = document.querySelectorAll(".modal-content input, .modal-content select");
             for (let i = 0; i < fields.length; i++) {
                 fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
-                if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname' ) {
+                if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname') {
                     errors.push(fields[i].name);
                     if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                 }
             }
 
-            if( Helpers.validationEmail(this.state.person.email) === false ){
+            if (Helpers.validationEmail(this.state.person.email) === false) {
                 errors.push('email');
                 if (printErrors || 'email' === name) document.querySelector(".email").className += " error";
             }
 
             if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
                 errors.splice(errors.indexOf('sarlfalt'), 1);
-                Helpers.removeClass('.sarlaft.error', 'error');
+                Helpers.removeClass('.sarlaft', 'error');
             }
             if (this.state.typePerson === 1 && this.state.nit === false) {
                 if (this.state.person.genero === "") {
@@ -458,12 +513,24 @@ export default class Persona extends Component {
                 }
             }
 
+            let v = document.querySelector('#documentfield').value;
+            if (v !== "") {
+                let type = document.querySelector('#doc-type').value;
+                let errorStatus = NumeroIdentificacion.validate(v, type);
+                if (errorStatus === true) {
+                    errors.push('value');
+                    document.querySelector('#documentfield').parentNode.className += " error";
+                } else {
+                    document.querySelector('#documentfield').parentNode.className = document.querySelector('#documentfield').parentNode.className.replace(' error', '');
+                }
+            }
+
             let indexSecondName = errors.indexOf("secondname");
-            if( indexSecondName !== -1 ) errors.splice(indexSecondName, 1);
+            if (indexSecondName !== -1) errors.splice(indexSecondName, 1);
 
             let sarlaft = errors.indexOf("sarlaft");
-            if( sarlaft !== -1 && typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlfalt_url !== null ) {
-                if( this.state.person.sarlfalt_url.trim() !== "" ){
+            if (sarlaft !== -1 && typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlfalt_url !== null) {
+                if (this.state.person.sarlfalt_url.trim() !== "") {
                     errors.splice(sarlaft, 1);
                 }
             }
@@ -475,6 +542,7 @@ export default class Persona extends Component {
                 let state = this.state;
                 if (typeof state.person.code === "undefined") state.person.code = state.typePerson !== 4 ? '36' : '37';
                 if (state.typePerson === 4) state.person.role.push(4);
+
                 this.props.updatePerson(state.person);
             } else {
                 this.setState({
@@ -494,7 +562,7 @@ export default class Persona extends Component {
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div
-                                className={"modal-header " + (this.state.typePerson === 1 || this.state.typePerson === 3 ? '' : 'hide')}>
+                                className={"modal-header " + (this.state.typePerson <= 4 ? '' : 'hide')}>
                                 <h5 className="modal-title">Información adicional</h5>
                                 <p className="modal-subtitle">Ingresa la información faltante, conocerla es importante
                                     para
@@ -503,7 +571,7 @@ export default class Persona extends Component {
                                         onClick={this.props.toggle(0)}>&nbsp;</button>
                             </div>
                             <div
-                                className={"modal-header " + (this.state.typePerson === 2 || this.state.typePerson === 4 ? '' : 'hide')}>
+                                className={"modal-header " + (this.state.typePerson === 5 || this.state.typePerson === 6 ? '' : 'hide')}>
                                 <h5 className="modal-title">Personas adicionales</h5>
                                 <p className="modal-subtitle">Ingresa la información de las persona, selecciona los
                                     amparos que deseas para ella</p>
@@ -525,7 +593,8 @@ export default class Persona extends Component {
                                     <div className="row fields-row">
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                             <TypeDocuments
-                                                disabled={this.state.person.codeDisabled || this.state.typePerson === 4} hideLoader={this.state.hideLoader}
+                                                disabled={this.state.person.codeDisabled || this.state.typePerson === 4}
+                                                hideLoader={this.state.hideLoader}
                                                 value={this.state.person.code} onChange={this.changeValue}/>
                                         </div>
 
@@ -533,6 +602,7 @@ export default class Persona extends Component {
                                             <div className="value form-group "><label
                                                 htmlFor="value">Identificación</label>
                                                 <input type="text"
+                                                       id="documentfield"
                                                        className={"form-control " + ((this.state.person.valueDisabled) ? 'disabled' : '')}
                                                        disabled={this.state.person.valueDisabled} name="value"
                                                        value={this.state.person.value} onBlur={this.validateDoc}
@@ -595,7 +665,6 @@ export default class Persona extends Component {
                                     </div>
                                     }
 
-                                    {(this.state.typePerson === 1 || this.state.typePerson === 2 || this.state.typePerson === 3 || this.state.typePerson === 4) &&
                                     <div className={"row fields-row"}>
                                         {this.state.nit === true ? (
                                             <React.Fragment>
@@ -768,7 +837,6 @@ export default class Persona extends Component {
                                         </React.Fragment>
                                         }
                                     </div>
-                                    }
 
                                     {this.state.typePerson === 4 &&
                                     <div className={"row fields-row"}>
@@ -796,6 +864,8 @@ export default class Persona extends Component {
                                                             onChange={this.changeDates}
                                                             showMonthDropdown
                                                             showYearDropdown
+                                                            scrollableYearDropdown
+                                                            yearDropdownItemNumber={60}
                                                             disabled={this.state.person.fechadecontitucionDisabled}
                                                             className={"form-control " + (this.state.person.fechadecontitucionDisabled ? 'disabled' : '')}/>
                                                 <small className="form-text only-errors">Falta información requerida

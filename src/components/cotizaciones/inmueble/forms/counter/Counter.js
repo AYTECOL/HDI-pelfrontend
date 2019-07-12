@@ -83,7 +83,7 @@ class Counter extends Component {
     render() {
         return (
             <div className={"msj-total"}>
-                <p className="error">Haz diligenciado {this.state.ok} de {this.state.total} campos</p>
+                <p className="error-label">Haz diligenciado {this.state.ok} de {this.state.total} campos</p>
             </div>
         );
     }
