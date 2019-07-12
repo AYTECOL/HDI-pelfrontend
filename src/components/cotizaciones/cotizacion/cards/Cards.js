@@ -13,6 +13,7 @@ import {saveInmuebleValue} from "../../../../actions";
 import InspectionPolicy from "../../../../services/InspectionPolicy";
 import AllBuildYears from "../../../../services/AllBuildYears";
 import Plans from "../plans/Plans";
+import Coberturas from "../coberturas/Coberturas";
 
 class Cards extends Component {
 
@@ -67,13 +68,27 @@ class Cards extends Component {
         });
     }
 
-    async getInspectionPolicy() {
+    static async getDataFromInspectionPolicy(){
         let inspect = await InspectionPolicy.get();
         if (typeof inspect[1] !== "undefined" && inspect[1] !== "NA") {
             store.dispatch(saveInmuebleValue({
                 value: inspect[1],
                 name: 'inspection_policies'
             }));
+            store.dispatch(saveInmuebleValue({
+                value: true,
+                name: 'max_values_dedu'
+            }));
+            return inspect;
+        }else{
+            return false;
+        }
+
+    }
+
+    async getInspectionPolicy() {
+        let inspect = await Cards.getDataFromInspectionPolicy();
+        if (inspect !== false) {
             this.setState({
                 ...this.state,
                 inspection_detail: inspect[0],
@@ -120,9 +135,9 @@ class Cards extends Component {
                     Inmueble: inmueble,
                     InmuebleOk: true
                 });
+                this.getInspectionPolicy();
                 setTimeout(() => {
                     this.validateToggle();
-                    this.getInspectionPolicy();
                 }, 500);
             }
         });
@@ -148,12 +163,9 @@ class Cards extends Component {
             ...this.state,
             items: newItems
         });
-        setTimeout(() => {
-            this.getInspectionPolicy();
-        }, 300);
     }
 
-    updateStoreItem(index) {
+    updateStoreItem(index, clear = false) {
         // Actualiza el valor de prendido o apagado en el store
         let newItems = this.state.items;
         store.dispatch(saveInmuebleValue({
@@ -208,7 +220,9 @@ class Cards extends Component {
         e.target.value = Masknumbermoney.formatToMask(target.value);
         let parent = this.state.items[index].parent;
         let component = new parent();
-        component.validateValue(e);
+        if (e.type === "blur") {
+            component.validateValue(e);
+        }
         let error = parent.validateField(target.value);
         let newItems = this.state.items;
         newItems[index].value = target.value;
@@ -218,16 +232,34 @@ class Cards extends Component {
             items: newItems
         });
         this.validateToggle();
-        if( e.type === "blur" && parseInt(error) === 0 ){
-            setTimeout(()=>{
-                this.sendAndValidate();
-            },500);
+        if (e.type === "blur" && parseInt(error) === 0 && e.target.value.trim() !== '') {
+            setTimeout(() => {
+                this.getInspectionPolicy();
+                this.sendAndValidate(parent);
+            }, 500);
         }
     };
 
-    sendAndValidate() {
+    sendAndValidate(component) {
         let storeState = store.getState();
-        Plans.sendAndValidate(storeState.AllPlans,storeState.indexPlan,this.props.match.params.id);
+        let plans = storeState.AllPlans;
+        let index = storeState.indexPlan;
+        let name = component.nameModel;
+
+        let type = null;
+        if (name === "inmuebleasegudadoobras") {
+            type = 3;
+        } else if (name === "inmuebleasegudadotelefonos") {
+            type = 4;
+        } else if (name === "inmuebleasegudadojoyas") {
+            type = 6;
+        } else if (name === "contenidoasegudado") {
+            type = 2;
+        } else if (name === "inmuebleasegudado") {
+            type = 1;
+        }
+        plans[index] = Coberturas.calcValue(plans[index], type);
+        Plans.sendAndValidate(plans, index, this.props.match.params.id);
     }
 
     render() {

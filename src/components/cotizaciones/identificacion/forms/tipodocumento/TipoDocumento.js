@@ -22,6 +22,14 @@ class TipoDocumento extends Component {
         };
     }
 
+    static toggleDisable(status) {
+        if (status === true) {
+            Helpers.disabled('#doc-type');
+        } else {
+            Helpers.enabled('#doc-type');
+        }
+    }
+
     componentDidMount() {
         this._isMounted = true;
         Loading.toggle(true);
@@ -46,20 +54,12 @@ class TipoDocumento extends Component {
         this.unsubscribe();
     }
 
-    static toggleDisable(status) {
-        if (status === true) {
-            Helpers.disabled('#doc-type');
-        } else {
-            Helpers.enabled('#doc-type');
-        }
-    }
-
     async getOptions() {
         this.setState({
             ...this.state,
             options: await Identifications.get()
         });
-        if( typeof this.props.hideLoader === "undefined" ){
+        if (typeof this.props.hideLoader === "undefined") {
             Loading.toggle(false);
         }
     }

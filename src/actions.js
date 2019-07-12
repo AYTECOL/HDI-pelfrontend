@@ -81,6 +81,10 @@ const savePdfInfo = (data) => {
     return {type: "PDF_INFO", data: data}
 };
 
+const resetStore = () => {
+    return {type: "RESET_STORE"}
+};
+
 export {
     nextStepIndentification,
     saveIdentificationValue,
@@ -101,5 +105,6 @@ export {
     AllPlans,
     indexPlanSelected,
     savePdfInfo,
-    saveProspect
+    saveProspect,
+    resetStore
 };

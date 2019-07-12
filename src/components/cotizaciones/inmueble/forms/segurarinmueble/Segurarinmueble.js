@@ -114,9 +114,9 @@ class Segurarinmueble extends Component {
         return (
             <div className="row">
                 <div className="col col-12 col-md-6">
-                    <div className={"inmuebleasegudado no-icon form-group " + this.state.error}>
-                        <label htmlFor="doc-type-value">¿Deseas asegurar {Segurarinmueble.name()}? </label>
-                        <ul className="select-item">
+                    <div className={Segurarinmueble.nameModel + " no-icon form-group " + this.state.error}>
+                        <label htmlFor={Segurarinmueble.nameModel}>¿Deseas asegurar {Segurarinmueble.name()}? </label>
+                        <ul className="select-item" id={Segurarinmueble.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={this.validateEmpty({
                                     value: 1,
@@ -138,8 +138,8 @@ class Segurarinmueble extends Component {
                     <div className="col col-12 col-md-6">
                         <div
                             className={Segurarinmueble.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="doc-type-value">Valor del inmueble</label>
-                            <input name="value" id="doc-type-value"
+                            <label htmlFor={Segurarinmueble.nameModelValue}>Valor del inmueble</label>
+                            <input name="value" id={Segurarinmueble.nameModelValue}
                                    type="text"
                                    className={"form-control"}
                                    placeholder=""

@@ -22,6 +22,20 @@ class Index extends Component {
         for (let i = 0; i < 3; i++) this.state.plans[i] = {name: "------"};
     }
 
+    static async sendAndValidate(plans, index, id) {
+        Loading.toggle(true);
+        await CreateOrUpdateValoration.save();
+        let plan = plans[index];
+        plan = BtnContinue.toNumberCoverrange(plan);
+        let total = await DeterminePolizaPrima.get(plan, id);
+        if (typeof total.prospect !== "undefined") {
+            plans[index].value = total.prospect;
+            plans[index].prima = total;
+            store.dispatch(AllPlansCreator(plans));
+        }
+        Loading.toggle(false);
+    }
+
     componentDidMount() {
         new Sticky("wrapper-tabs");
         this.unsubscribe = store.subscribe(() => {
@@ -44,27 +58,11 @@ class Index extends Component {
         store.dispatch(indexPlanSelected(index));
     };
 
-    static async sendAndValidate(plans, index, id) {
-        Loading.toggle(true);
-        await CreateOrUpdateValoration.save();
-        console.log(plans);
-        console.log(index);
-        let plan = plans[index];
-        plan = BtnContinue.toNumberCoverrange(plan);
-        let total = await DeterminePolizaPrima.get(plan, id);
-        if (typeof total.prospect !== "undefined") {
-            plans[index].value = total.prospect;
-            plans[index].prima = total;
-            store.dispatch(AllPlansCreator(plans));
-        }
-        Loading.toggle(false);
-    }
-
     render() {
         return (
             <div className="wrapper-tabs">
                 <div className="row tabs text-center">
-                    {this.state.plans.map((option, key) =>
+                    {typeof this.state.plans !== "undefined" && this.state.plans.map((option, key) =>
                         <div className="col col-12 col-sm-12 col-md-4 col-lg-4 no-padding" key={key}>
                             <div className={"item-tab " + (parseInt(this.state.index) === key ? 'active' : '')}
                                  onClick={this.changeIndexPlan(key)}>

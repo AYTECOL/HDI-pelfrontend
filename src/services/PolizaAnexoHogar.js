@@ -8,15 +8,15 @@ let _index = 0;
 class PolizaAnexoHogar {
     static async get(id) {
         let user = await Helpers.getUser();
-        try{
+        try {
             return await Api.get(BaseUrl + id, undefined, {
                 pelhauthorization: user !== null ? user['accessToken'] : ''
             }, true);
-        }catch(e){
-            if( _index < 3 ){
+        } catch (e) {
+            if (_index < 3) {
                 _index++;
                 return await PolizaAnexoHogar.get(id);
-            }else{
+            } else {
                 _index = 0;
             }
         }

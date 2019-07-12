@@ -61,7 +61,7 @@ class Numerodepiso extends Component {
     render() {
         return (
             <div className={"numerodepisos input-select form-group " + ((this.state.error) ? 'error' : '')}>
-                <label htmlFor="numerodepisose">Número de pisos del inmueble</label>
+                <label htmlFor="numerodepisos">Número de pisos del inmueble</label>
                 <select name="numerodepisos" id="numerodepisos" className={"form-control "} value={this.state.value}
                         onBlur={this.validateEmpty}
                         onChange={this.validateEmpty}>

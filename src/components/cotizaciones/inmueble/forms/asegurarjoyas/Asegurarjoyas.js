@@ -116,9 +116,9 @@ class Asegurarjoyas extends Component {
         return (
             <div className="row">
                 <div className="col col-12  col-md-6">
-                    <div className={"inmuebleasegudadojoyas no-icon form-group " + this.state.error}>
-                        <label htmlFor="doc-type-value">¿Adicionalmente deseas {Asegurarjoyas.name()}? </label>
-                        <ul className="select-item">
+                    <div className={Asegurarjoyas.nameModel + " no-icon form-group " + this.state.error}>
+                        <label htmlFor={Asegurarjoyas.nameModel}>¿Adicionalmente deseas {Asegurarjoyas.name()}? </label>
+                        <ul className="select-item" id={Asegurarjoyas.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={this.validateEmpty({
                                     value: 1,
@@ -139,9 +139,9 @@ class Asegurarjoyas extends Component {
                 {(this.state.active === 1) ? (
                     <div className="col col-12  col-md-6">
                         <div
-                            className={"inmuebleasegudadojoyasvalor form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor="inmuebleasegudadojoyasvalor">Valor de {Asegurarjoyas.name()}</label>
-                            <input name="inmuebleasegudadojoyasvalor" id="inmuebleasegudadojoyasvalor"
+                            className={Asegurarjoyas.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
+                            <label htmlFor={Asegurarjoyas.nameModelValue}>Valor de {Asegurarjoyas.name()}</label>
+                            <input name="inmuebleasegudadojoyasvalor" id={Asegurarjoyas.nameModelValue}
                                    type="text"
                                    value={this.state.value}
                                    className={"form-control"}

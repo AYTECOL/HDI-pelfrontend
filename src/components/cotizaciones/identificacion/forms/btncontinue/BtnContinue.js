@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 
 import store from '../../../../../store';
-import {NextStep, nextStepIndentification, saveIdentificationValue} from '../../../../../actions';
+import {NextStep, nextStepIndentification, resetStore, saveIdentificationValue} from '../../../../../actions';
 import Loading from "../../../../../components/globals/loading/Loading";
 import SaveIdentifications from '../../../../../services/Quote';
 // Components
@@ -13,6 +13,7 @@ import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
 import {UrlSite} from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import NumeroIdentificacion from "../numeroidentificacion/NumeroIdentificacion";
+import TipoDocumento from "../tipodocumento/TipoDocumento";
 import Validaridentificacion from "../../popups/validaridentificacion/Validaridentificacion";
 import {withRouter} from "react-router-dom";
 
@@ -103,8 +104,7 @@ class BtnContinue extends Component {
                         let personaData = persona.consultarPersonaRs.persona;
                         let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;
 
-
-                        if( (parseInt(code) === 36 && personaType === 1) || (parseInt(code) === 37 && personaType === 2) ) {
+                        if ((parseInt(code) === 36 && personaType === 1) || (parseInt(code) === 37 && personaType === 2)) {
                             NumeroIdentificacion.toggleDisable(true);
                             personaData = personaData[(personaType === 2 ? 'personaJuridica' : 'personaNatural')];
                             if (typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '' && personaData.primerNombre !== null) {
@@ -130,10 +130,14 @@ class BtnContinue extends Component {
                             }
                         }
 
+                    } else {
+                        NumeroIdentificacion.toggleDisable(false);
+                        TipoDocumento.toggleDisable(false);
                     }
                 }
             } catch (e) {
                 NumeroIdentificacion.toggleDisable(false);
+                TipoDocumento.toggleDisable(false);
                 this.setState({
                     ...this.state,
                     continueButtonDisable: false,
@@ -146,6 +150,7 @@ class BtnContinue extends Component {
     saveAndExit = async () => {
         Loading.toggle(true);
         await SaveIdentifications.save();
+        store.dispatch(resetStore());
         Helpers.goToHome(this.props.history);
     };
 

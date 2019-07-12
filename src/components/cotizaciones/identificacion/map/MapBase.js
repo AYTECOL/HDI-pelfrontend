@@ -27,6 +27,13 @@ class MapBase extends Component {
         window.stime = null;
     }
 
+    static async reqAddress(address) {
+        return await GetAddresInfo.get(address)
+            .then(response => {
+                return response;
+            });
+    }
+
     componentDidMount() {
         this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
@@ -77,13 +84,6 @@ class MapBase extends Component {
 
     componentWillUnmount() {
         this.unsubscribe();
-    }
-
-    static async reqAddress(address) {
-        return await GetAddresInfo.get(address)
-            .then(response => {
-                return response;
-            });
     }
 
     async onMapClick(e) {
