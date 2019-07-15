@@ -50,7 +50,7 @@ class BtnContinue extends Component {
             let numeroPoliza = await IssuedCounter.get();
             let dataSend = await Crearpolizaiaxis.get(data);
 
-/*            dataSend['id'] = id;
+            dataSend['id'] = id;
             let result = await PolicyService.emit(id, dataSend);
             result = result.policyReq;
 
@@ -74,7 +74,7 @@ class BtnContinue extends Component {
             await SaveIdentifications.save();
             history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);
 
-            Loading.toggle(false);*/
+            Loading.toggle(false);
         } catch (e) {
             Loading.toggle(false);
         }
