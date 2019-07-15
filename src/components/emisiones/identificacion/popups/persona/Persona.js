@@ -501,7 +501,9 @@ export default class Persona extends Component {
                     errors.push('role');
                     if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
                 } else {
-                    document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
+                    if( document.querySelector(".items-checkboxes") !== null ){
+                        document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
+                    }
                 }
             }
             let total = this.state.total;
