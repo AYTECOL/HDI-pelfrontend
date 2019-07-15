@@ -15,6 +15,7 @@ class Construidocon extends Component {
             error: false,
             show: false,
             active: 0,
+            order: 0,
             materials: []
         };
     }
@@ -24,10 +25,12 @@ class Construidocon extends Component {
         this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.Inmueble.construidocon;
+            let index = storeState.Inmueble.construidoconindex;
             if (this.state.active !== value) {
                 this.setState({
                     ...this.state,
                     active: value,
+                    order: index,
                 });
             }
         });
@@ -50,13 +53,18 @@ class Construidocon extends Component {
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".construidocon", "error");
         store.dispatch(saveInmuebleValue(e));
+        store.dispatch(saveInmuebleValue({
+            name: 'indexBuild',
+            value: e.data
+        }));
         Helpers.updatePdfInfo({
             [e.name]: e.text
         });
         this.setState({
             ...this.state,
             error: error,
-            active: e.value
+            active: e.value,
+            order: e.data
         });
     };
 
@@ -68,7 +76,7 @@ class Construidocon extends Component {
                     {this.state.materials.map((option, key) =>
                         <div key={key} className="col col-6 col-sm-12 col-md-4 col-lg-4">
                             <div
-                                className={"select-item row " + ((parseInt(this.state.active) === parseInt(option.buildMaterialCode)) ? 'active' : '')}
+                                className={"select-item row " + ((this.state.active+"_"+this.state.order === option.buildMaterialCode+"_"+option.order) ? 'active' : '')}
                                 onClick={this.validateEmpty({
                                     data: option.order,
                                     value: option.buildMaterialCode,

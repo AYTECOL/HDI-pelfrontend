@@ -200,33 +200,45 @@ class Coberturas extends Component {
 
     /**
      * Validate if each coverage field it show or not.
-     * @param opt Coverage field
+     * @param plan Plan selected by user
      * @returns {boolean}
      */
-    static showItem(opt) {
-        let inmueble = store.getState().Inmueble;
-        // Inmueble
-        if (opt.id === 1) {
-            return inmueble.inmuebleasegudado === 1;
-            //Contenidos
-        } else if (opt.id === 2) {
-            return inmueble.contenidoasegudado === 1;
-            //Obras
-        } else if (opt.id === 3) {
-            return inmueble.inmuebleasegudadoobras === 1;
-            //Telefonos moviles
-        } else if (opt.id === 4) {
-            return inmueble.inmuebleasegudadotelefonos === 1;
-            //Hurto siempre basado en hurto calificado
-        } else if (opt.id === 5) {
-            return inmueble.contenidoasegudado === 1;
-            //Joyas
-        } else if (opt.id === 6) {
-            return inmueble.inmuebleasegudadojoyas === 1;
-            //Contenido mobile
-        } else if (opt.id >= 7 || opt.id === 0) {
-            return true;
+    showItem(plan) {
+        for (let key = 0; key < plan.coverages.length; key++) {
+            let option = plan.coverages[key].values;
+            if( typeof option !== "undefined" ){
+                for (let k = 0; k < option.length; k++) {
+                    let opt = option[k];
+                    let inmueble = store.getState().Inmueble;
+                    // Inmueble
+                    if (opt.id === 1) {
+                        plan.coverages[key].values[k].hired = inmueble.inmuebleasegudado === 1;
+                        //Contenidos
+                    } else if (opt.id === 2) {
+                        plan.coverages[key].values[k].hired = inmueble.contenidoasegudado === 1;
+                        //Obras
+                    } else if (opt.id === 3) {
+                        plan.coverages[key].values[k].hired = inmueble.inmuebleasegudadoobras === 1;
+                        //Telefonos moviles
+                    } else if (opt.id === 4) {
+                        plan.coverages[key].values[k].hired = inmueble.inmuebleasegudadotelefonos === 1;
+                        //Hurto siempre basado en hurto calificado
+                    } else if (opt.id === 5) {
+                        plan.coverages[key].values[k].hired = inmueble.contenidoasegudado === 1;
+                        //Joyas
+                    } else if (opt.id === 6) {
+                        plan.coverages[key].values[k].hired = inmueble.inmuebleasegudadojoyas === 1;
+                        //Contenido mobile
+                    } else if (opt.id >= 7 || opt.id === 0) {
+                        plan.coverages[key].values[k].hired = true;
+                    }
+                }
+            }
         }
+        this.setState({
+            ...this.state,
+            plan
+        });
     }
 
     /**
@@ -250,6 +262,7 @@ class Coberturas extends Component {
                     index: storeState.indexPlan,
                 });
                 setTimeout(() => {
+                    this.showItem(plan);
                     this.countCoverturas(plan);
                 }, 250)
             }
@@ -481,7 +494,7 @@ class Coberturas extends Component {
                                         className={"col col-12 col-sm-12 col-md-3 col-lg-3 middle " + (option.checked === false ? ' disabled-item' : '')}>
                                         {typeof option.values !== "undefined" &&
                                         <Fragment>
-                                            {option.values.map((opt, k) => Coberturas.showItem(opt) &&
+                                            {option.values.map((opt, k) => (typeof opt.hired !== 'undefined' && opt.hired === true) &&
                                                 <div
                                                     className={"form-group " + (typeof opt.values === 'undefined' ? '' : 'input-select') + (typeof opt.errors !== "undefined" && opt.errors.length > 0 ? ' error' : '') + (Coberturas.isDisabled(option, opt) ? ' disabled-item' : '')}
                                                     key={k}>

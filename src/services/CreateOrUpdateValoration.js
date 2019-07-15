@@ -20,6 +20,8 @@ class CreateOrUpdateValoration {
             "structure_reinforcement": risks.refuerzo,
             "reinforcement_year": risks.anorefuerzo,
             "build_material": risks.construidocon,
+            "build_material_index": risks.indexBuild,
+
             "cojunto_cerrado": risks.cojuntocerrado,
 
             "alarma": risks.seguridad.alarma === "" ? 0 : risks.seguridad.alarma,
