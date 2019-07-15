@@ -103,7 +103,7 @@ class PolizaEmitida extends Component {
             number = number.currentValue.toString();
             history.push(`/cotizacion/1/${number}`);
         }
-        setTimeout(Loading.toggle(false), 500);
+        setTimeout(Loading.toggle(false), 1000);
     };
 
     render() {

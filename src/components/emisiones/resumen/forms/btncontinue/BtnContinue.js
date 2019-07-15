@@ -52,6 +52,7 @@ class BtnContinue extends Component {
 
             dataSend['id'] = id;
             let result = await PolicyService.emit(id, dataSend);
+            result = result.policyReq;
 
             result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroPoliza = numeroPoliza.currentValue.toString();
             result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo = numeroPoliza.currentValue.toString();

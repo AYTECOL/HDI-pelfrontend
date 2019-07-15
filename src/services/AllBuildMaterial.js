@@ -24,13 +24,13 @@ const Default = {
             "create_at": "2019-05-15 21:52:13",
             "answer": "Adobe"
         }, {
-            "buildMaterialCode": "6",
+            "buildMaterialCode": "4",
             "order": 5,
             "description": "Estructuras construidas con columnas y vigas y/o muros en Madera.",
             "create_at": "2019-05-15 21:51:41",
             "answer": "Madera"
         }, {
-            "buildMaterialCode": "5",
+            "buildMaterialCode": "4",
             "order": 4,
             "description": "Estructuras construidas con muros compuestos de cañas o palos entretejidos y unidos con una mezcla de tierra húmeda y paja.",
             "create_at": "2019-05-15 21:51:11",

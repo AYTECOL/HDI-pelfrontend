@@ -20,6 +20,7 @@ class ValorationById {
                 refuerzo: item.structure_reinforcement,
                 anorefuerzo: item.reinforcement_year,
                 construidocon: item.build_material,
+                construidoconindex: item.build_material_index,
                 cojuntocerrado: item.cojunto_cerrado,
                 seguridad: {
                     alarma: item.seguridad.alarma,

@@ -83,6 +83,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jenkins/prod_jenkinsfile">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/package.json">
           <value>
             <set />
@@ -773,6 +778,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/routes.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend/serverless.yml">
           <value>
             <set />
@@ -789,6 +799,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend/static/db/plan-realestateandcontents.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/v1/risks/services.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/v1/shalters/model.js">
           <value>
             <set />
           </value>
