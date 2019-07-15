@@ -252,17 +252,36 @@ class Crearpolizaiaxis {
             beneficiario.push(add);
         }
 
+        let exitsExcequias = false;
         for (let i = 0; i < beneficiario.length; i++) {
+            let code = "0";
+            for (let j = 0; j < additional.length; j++) {
+                if( parseInt(additional[j].document) === parseInt(beneficiario[i].numeroDocumento) &&
+                    parseInt(additional[j].document_type) === parseInt(beneficiario[i]['tipoDocumento']['codigo'])
+                ){
+                    if( exitsExcequias === false ){
+                        exitsExcequias = true;
+                        code = 774;
+                        break;
+                    }else{
+                        code = 716;
+                        exitsExcequias = false;
+                        break;
+                    }
+                }
+            }
+            
             beneficiario[i] = {
                 "persona": beneficiario[i],
                 "tipoBeneficiario": {
                     "codigoTexto": "G"
                 },
                 "garantiaBeneficiario": {
-                    "codigo": "0"
+                    "codigo": code
                 }
             }
         }
+        console.log(beneficiario);
 
         for (let i = 0; i < onerosos.length; i++) {
             beneficiario.push({

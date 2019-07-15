@@ -58,7 +58,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../green-react-native/common/Helpers.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../green-react-native/components/globals/Header.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../green-react-native/pages/LoginPage.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../green-react-native/pages/OfertasPage.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../green-react-native/services/User.js">
           <value>
             <set />
           </value>
@@ -799,6 +819,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../pelhbackend/static/db/plan-realestateandcontents.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/v1/config.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../pelhbackend/v1/quote_iussed/services.js">
           <value>
             <set />
           </value>
