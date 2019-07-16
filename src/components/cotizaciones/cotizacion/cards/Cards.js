@@ -61,16 +61,9 @@ class Cards extends Component {
         this.getAllBuildYears();
     }
 
-    async getAllBuildYears() {
-        this.setState({
-            ...this.state,
-            anoconstruidos: await AllBuildYears.get()
-        });
-    }
-
-    static async getDataFromInspectionPolicy(){
+    static async getDataFromInspectionPolicy() {
         let inspect = await InspectionPolicy.get();
-        if( inspect !== null && typeof inspect !== "undefined" ){
+        if (inspect !== null && typeof inspect !== "undefined") {
             if (typeof inspect[1] !== "undefined" && inspect[1] !== "NA") {
                 store.dispatch(saveInmuebleValue({
                     value: inspect[1],
@@ -81,12 +74,19 @@ class Cards extends Component {
                     name: 'max_values_dedu'
                 }));
                 return inspect;
-            }else{
+            } else {
                 return false;
             }
-        }else{
+        } else {
             return false;
         }
+    }
+
+    async getAllBuildYears() {
+        this.setState({
+            ...this.state,
+            anoconstruidos: await AllBuildYears.get()
+        });
     }
 
     async getInspectionPolicy() {

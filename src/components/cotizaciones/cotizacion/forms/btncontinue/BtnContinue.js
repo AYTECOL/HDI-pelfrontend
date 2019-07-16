@@ -30,16 +30,16 @@ class BtnContinue extends Component {
                     for (let j = 0; j < plan.coverages[i].values.length; j++) {
                         let v = plan.coverages[i].values[j].value_show;
                         if (v === 'N/A') v = plan.coverages[i].values[j].value;
-                        if( typeof plan.coverages[i].values[j].values !== "undefined" ){
+                        if (typeof plan.coverages[i].values[j].values !== "undefined") {
                             let value = 0;
                             let values = plan.coverages[i].values[j].values;
                             for (let k = 0; k < values.length; k++) {
-                                if( values[k].default === true ){
+                                if (values[k].default === true) {
                                     value = Masknumbermoney.formatToNumber(values[k].limit);
                                 }
                             }
                             plan.coverages[i].values[j].value_to_quotate = value;
-                        }else{
+                        } else {
                             if (typeof v !== "undefined") {
                                 plan.coverages[i].values[j].value_to_quotate = Masknumbermoney.formatToNumber(v);
                             } else {
@@ -53,7 +53,7 @@ class BtnContinue extends Component {
         return plan;
     }
 
-    planToSave(){
+    planToSave() {
         let storeState = store.getState();
         let plans = storeState.AllPlans;
         let index = storeState.indexPlan;
@@ -92,7 +92,7 @@ class BtnContinue extends Component {
         try {
             let plan = this.planToSave();
             await NewPlanSelected.get(plan);
-        }catch (e) {
+        } catch (e) {
             Loading.toggle(false);
         }
         Helpers.goToHome(this.props.history);

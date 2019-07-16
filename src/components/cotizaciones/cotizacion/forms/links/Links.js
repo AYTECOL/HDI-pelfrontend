@@ -43,7 +43,7 @@ class Links extends Component {
     }
 
     getPdf = async () => {
-        if( Helpers.hasClass('.generatepdf','disabled') === false ){
+        if (Helpers.hasClass('.generatepdf', 'disabled') === false) {
             Loading.toggle(true);
             await Links.pdf(this);
             Loading.toggle(false);

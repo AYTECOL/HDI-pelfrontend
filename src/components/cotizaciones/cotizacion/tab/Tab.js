@@ -194,8 +194,8 @@ class Tab extends Component {
         }
 
         let inspect = await Cards.getDataFromInspectionPolicy();
-        if( inspect !== false ){
-            if( inspect[1] === 'IC' ){
+        if (inspect !== false) {
+            if (inspect[1] === 'IC') {
                 //Is IC alter dedutibles of plan.
                 plans = Tab.setMaxDedutibles(plans);
             }
