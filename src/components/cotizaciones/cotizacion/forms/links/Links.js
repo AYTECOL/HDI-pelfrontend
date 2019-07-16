@@ -41,10 +41,12 @@ class Links extends Component {
         }
     }
 
-    getPdf = async () => {
-        Loading.toggle(true);
-        await Links.pdf(this);
-        Loading.toggle(false);
+    getPdf = async e => {
+        if( e.target.className.indexOf('disabled') === -1 ){
+            Loading.toggle(true);
+            await Links.pdf(this);
+            Loading.toggle(false);
+        }
     };
 
     render() {

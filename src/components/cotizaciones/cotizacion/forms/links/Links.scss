@@ -5,6 +5,10 @@
   cursor: pointer;
   margin: 25px 0 15px;
 
+  &.disabled{
+    cursor: not-allowed;
+  }
+
   p {
     font-style: normal;
     font-weight: bold;

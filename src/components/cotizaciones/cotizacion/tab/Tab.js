@@ -164,6 +164,7 @@ class Tab extends Component {
             let selected = plan.plan_selected_info.Item;
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
             plans[indexSelected] = Tab.assignValuesSaved(selected, plans[indexSelected]);
+            plans[indexSelected] = BtnContinue.toNumberCoverrange(plans[indexSelected]);
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
         } else {

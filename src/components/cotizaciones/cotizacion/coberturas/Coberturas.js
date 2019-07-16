@@ -144,6 +144,9 @@ class Coberturas extends Component {
                 } else if (item.id === 7) {
                     if (type === item.id || type === null) {
                         let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor);
+                        if( item.code === 3044 ){
+                            console.log(Masknumbermoney.formatToMask(contenido * parseInt(item.value) / 100));
+                        }
                         return Masknumbermoney.formatToMask(contenido * parseInt(item.value) / 100);
                     } else {
                         return item.value_show;
@@ -387,12 +390,14 @@ class Coberturas extends Component {
                 if (typeof coverange.values !== "undefined") {
                     for (let i = 0; i < coverange.values.length; i++) {
                         if (coverange.values[i].id === item.values[k].id) {
-                            if (Masknumbermoney.formatToNumber(coverange.values[i].value_show) < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
-                                let n = coverange.values[i].name.toUpperCase().replace('VALOR ', '');
-                                if (parseInt(item.values[k].code) === 3008) {
-                                    item.values[k].errors.push('Valor asegurado del amparo ' + item.name + ', es mayor al reportado en “' + n + '” del amparo de INCENDIO ');
-                                } else {
-                                    item.values[k].errors.push('Valor asegurado de ' + n + ' es mayor al reportado en INCENDIO');
+                            if( typeof coverange.values[i].value_show !== "undefined" && typeof item.values[k].value_show !== "undefined" ){
+                                if (Masknumbermoney.formatToNumber(coverange.values[i].value_show) < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
+                                    let n = coverange.values[i].name.toUpperCase().replace('VALOR ', '');
+                                    if (parseInt(item.values[k].code) === 3008) {
+                                        item.values[k].errors.push('Valor asegurado del amparo ' + item.name + ', es mayor al reportado en “' + n + '” del amparo de INCENDIO ');
+                                    } else {
+                                        item.values[k].errors.push('Valor asegurado de ' + n + ' es mayor al reportado en INCENDIO');
+                                    }
                                 }
                             }
                         }
@@ -406,8 +411,10 @@ class Coberturas extends Component {
                         }
                     }
                     if (item.values[k].errors.length > 0) {
+                        Helpers.disabled('.generatepdf ');
                         Helpers.disabled('.next-step');
                     } else {
+                        Helpers.enabled('.generatepdf ');
                         Helpers.enabled('.next-step');
                     }
                 }
@@ -430,8 +437,10 @@ class Coberturas extends Component {
         }
     };
 
-    blur = () => {
-        this.sendAndValidate(this.state.plan);
+    blur = e => {
+        if( e.target.parentNode.className.indexOf('error') === -1 ){
+            this.sendAndValidate(this.state.plan);
+        }
     };
 
     /**
@@ -475,11 +484,11 @@ class Coberturas extends Component {
 
                     <div className="wrapper-box">
                         {typeof this.state.plan.coverages !== "undefined" && this.state.plan.coverages.map((option, key) =>
-                            <div className={"rowor " + (option.optional === true ? '' : 'disabled-item')}
+                            <div className={"rowor"}
                                  key={key}>
-                                <div className="row">
+                                <div className={"row"}>
                                     <div
-                                        className="col first items-checkboxes">
+                                        className={"col first items-checkboxes "+(option.optional === true ? '' : ' disabled-item')}>
                                         <div className="form-group">
                                             <input type="checkbox"
                                                    checked={(option.checked === true ? 'checked' : false)}
@@ -491,7 +500,7 @@ class Coberturas extends Component {
                                         </div>
                                     </div>
                                     <div
-                                        className={"col col-12 col-sm-12 col-md-3 col-lg-3 middle " + (option.checked === false ? ' disabled-item' : '')}>
+                                        className={"col col-12 col-sm-12 col-md-3 col-lg-3 middle " + (option.checked === false ? ' disabled-item' : '') + (option.optional === true ? '' : ' disabled-item')}>
                                         {typeof option.values !== "undefined" &&
                                         <Fragment>
                                             {option.values.map((opt, k) => (typeof opt.hired !== 'undefined' && opt.hired === true) &&
@@ -536,7 +545,7 @@ class Coberturas extends Component {
                                                 <label htmlFor={"itemdeducible" + key}>Deducible</label>
                                                 <select name={"itemdeducible" + key} id={"itemdeducible" + key}
                                                         className="form-control"
-                                                        disabled={(option.optional === false || option.checked === false)}
+                                                        disabled={false}
                                                         onChange={this.selectChangeDeducible(key)}
                                                         value={Coberturas.getSelectByItems(option.deductible)}>
                                                     {option.deductible.map((opt, k) =>
