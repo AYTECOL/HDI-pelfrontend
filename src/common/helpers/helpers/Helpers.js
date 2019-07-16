@@ -151,9 +151,9 @@ class Helpers {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== "undefined") {
             store.dispatch(restoreCotizacion(cotizacion));
-            if( cotizacion.state === 77 ){
+            if (cotizacion.state === 77) {
                 Helpers.goToNotFound(history);
-            }else{
+            } else {
                 if (cotizacion.state >= 2 && parseInt(step) >= 2) {
                     let riskData = await ValorationById.get(id);
                     if (riskData !== null) {
@@ -333,7 +333,7 @@ class Helpers {
             }
 
             let dataRquestVerify = await AccessToken.get(data["refer"]);
-            if (dataRquestVerify !== null) {
+            if (dataRquestVerify !== null && typeof dataRquestVerify !== "undefined" && typeof data["refer"] !== "undefined") {
                 dataRquestVerify["refer"] = data["refer"];
                 sessionStorage.clear();
                 sessionStorage.setItem(

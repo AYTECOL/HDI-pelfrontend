@@ -1,9 +1,9 @@
 import Api from './Api';
 import Helpers from "../common/helpers/helpers/Helpers";
+import {UrlAttachPolicyDocuments} from "../config";
 
 const Url = "/attach-policy-documents";
-const UrlLiberty = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev/";
-
+const UrlLiberty = UrlAttachPolicyDocuments;
 
 class AttachPolicyDocuments {
     static async get(poliza, emision) {
@@ -15,7 +15,7 @@ class AttachPolicyDocuments {
 
     static async save(data) {
         let user = await Helpers.getUser();
-        return await Api.post('adjuntardocumentospoliza', data, UrlLiberty, undefined, {
+        return await Api.post('/adjuntardocumentospoliza', data, UrlLiberty, undefined, {
             Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
         });
     }

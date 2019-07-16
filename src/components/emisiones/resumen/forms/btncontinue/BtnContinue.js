@@ -44,6 +44,7 @@ class BtnContinue extends Component {
         const {match, history} = this.props;
         const {params} = match;
         const {id} = params;
+        Loading.toggle(true);
         try {
             let data = await QuoteIussedById.get(this.props.match.params.id);
 
