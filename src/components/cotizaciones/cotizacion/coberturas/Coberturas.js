@@ -199,6 +199,16 @@ class Coberturas extends Component {
     }
 
     /**
+     * Valida if coverage field is disable
+     * @param option coverage
+     * @param opt coverage field
+     * @returns {boolean}
+     */
+    static isDisabled(option, opt) {
+        return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
+    };
+
+    /**
      * Validate if each coverage field it show or not.
      * @param plan Plan selected by user
      * @returns {boolean}
@@ -206,7 +216,7 @@ class Coberturas extends Component {
     showItem(plan) {
         for (let key = 0; key < plan.coverages.length; key++) {
             let option = plan.coverages[key].values;
-            if( typeof option !== "undefined" ){
+            if (typeof option !== "undefined") {
                 for (let k = 0; k < option.length; k++) {
                     let opt = option[k];
                     let inmueble = store.getState().Inmueble;
@@ -240,16 +250,6 @@ class Coberturas extends Component {
             plan
         });
     }
-
-    /**
-     * Valida if coverage field is disable
-     * @param option coverage
-     * @param opt coverage field
-     * @returns {boolean}
-     */
-    static isDisabled(option, opt) {
-        return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
-    };
 
     componentDidMount() {
         this.unsubscribe = store.subscribe(() => {
@@ -387,7 +387,7 @@ class Coberturas extends Component {
                 if (typeof coverange.values !== "undefined") {
                     for (let i = 0; i < coverange.values.length; i++) {
                         if (coverange.values[i].id === item.values[k].id) {
-                            if( typeof coverange.values[i].value_show !== "undefined" && typeof item.values[k].value_show !== "undefined" ){
+                            if (typeof coverange.values[i].value_show !== "undefined" && typeof item.values[k].value_show !== "undefined") {
                                 if (Masknumbermoney.formatToNumber(coverange.values[i].value_show) < Masknumbermoney.formatToNumber(item.values[k].value_show)) {
                                     let n = coverange.values[i].name.toUpperCase().replace('VALOR ', '');
                                     if (parseInt(item.values[k].code) === 3008) {
@@ -435,7 +435,7 @@ class Coberturas extends Component {
     };
 
     blur = e => {
-        if( e.target.parentNode.className.indexOf('error') === -1 ){
+        if (e.target.parentNode.className.indexOf('error') === -1) {
             this.sendAndValidate(this.state.plan);
         }
     };
@@ -485,7 +485,7 @@ class Coberturas extends Component {
                                  key={key}>
                                 <div className={"row"}>
                                     <div
-                                        className={"col first items-checkboxes "+(option.optional === true ? '' : ' disabled-item')}>
+                                        className={"col first items-checkboxes " + (option.optional === true ? '' : ' disabled-item')}>
                                         <div className="form-group">
                                             <input type="checkbox"
                                                    checked={(option.checked === true ? 'checked' : false)}

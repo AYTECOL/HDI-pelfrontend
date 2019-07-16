@@ -7,6 +7,9 @@ import PolizaAnexoHogar from "../../services/PolizaAnexoHogar";
 import PdfEndosoHogar from "../../services/PdfEndosoHogar";
 import PdfPolizaHogar from "../../services/PdfPolizaHogar";
 import Counter from "../../services/Counter";
+import store from "../../store";
+import {resetStore} from "../../actions";
+import Helpers from "../../common/helpers/helpers/Helpers";
 
 class PolizaEmitida extends Component {
 
@@ -98,12 +101,18 @@ class PolizaEmitida extends Component {
     getNumber = async () => {
         const {history} = this.props;
         Loading.toggle(true);
-        let number = await Counter.get();
-        if (typeof number.currentValue !== "undefined") {
-            number = number.currentValue.toString();
-            history.push(`/cotizacion/1/${number}`);
+        store.dispatch(resetStore());
+        try {
+            let number = await Counter.get();
+            if (typeof number.currentValue !== "undefined") {
+                number = number.currentValue.toString();
+                history.push(`/cotizacion/1/${number}`);
+            }
+            setTimeout(Loading.toggle(false), 1000);
+        } catch (e) {
+            Helpers.goToHome(history);
+            setTimeout(Loading.toggle(false), 1000);
         }
-        setTimeout(Loading.toggle(false), 1000);
     };
 
     render() {

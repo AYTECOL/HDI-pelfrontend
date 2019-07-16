@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {UrlPdfSarlaft} from "../../../../config";
 import './Index.scss';
 //Component
 /*import SendMail from "../popups/sendmail/SendMail";*/
@@ -53,7 +54,7 @@ class Index extends Component {
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                             <p><i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes descarga el
                                 formato <a
-                                    href="https://www.libertycolombia.com.co/Personas/prodyserv/Bliblioteca-de-Documentos/Formulario_de_Conocimiento_del_Cliente_2017_Natural.PDF"
+                                    href={UrlPdfSarlaft}
                                     rel="noopener noreferrer" target="_blank">aquí</a></p>
                         </div>
                     </div>

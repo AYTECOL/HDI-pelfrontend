@@ -1,9 +1,10 @@
 import Api from './Api';
+import {UrlCrearpolizaiaxis} from "../config";
 import momentJs from 'moment';
 import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/crearpolizaiaxis";
-const Url = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev";
+const Url = UrlCrearpolizaiaxis;
 
 class Crearpolizaiaxis {
 
@@ -239,7 +240,7 @@ class Crearpolizaiaxis {
 
         let additional = [];
         let persons_aditionals = data.quote_iussed_info.Item.persons_aditionals;
-        if( typeof persons_aditionals !== "undefined" ) additional = persons_aditionals;
+        if (typeof persons_aditionals !== "undefined") additional = persons_aditionals;
 
         let asegurado = Crearpolizaiaxis.formatPerson(aseguradoArr);
         let beneficiario = Crearpolizaiaxis.formatPerson(beneficiarioArr);
@@ -256,21 +257,21 @@ class Crearpolizaiaxis {
         for (let i = 0; i < beneficiario.length; i++) {
             let code = "0";
             for (let j = 0; j < additional.length; j++) {
-                if( parseInt(additional[j].document) === parseInt(beneficiario[i].numeroDocumento) &&
+                if (parseInt(additional[j].document) === parseInt(beneficiario[i].numeroDocumento) &&
                     parseInt(additional[j].document_type) === parseInt(beneficiario[i]['tipoDocumento']['codigo'])
-                ){
-                    if( exitsExcequias === false ){
+                ) {
+                    if (exitsExcequias === false) {
                         exitsExcequias = true;
                         code = 774;
                         break;
-                    }else{
+                    } else {
                         code = 716;
                         exitsExcequias = false;
                         break;
                     }
                 }
             }
-            
+
             beneficiario[i] = {
                 "persona": beneficiario[i],
                 "tipoBeneficiario": {
@@ -281,7 +282,6 @@ class Crearpolizaiaxis {
                 }
             }
         }
-        console.log(beneficiario);
 
         for (let i = 0; i < onerosos.length; i++) {
             beneficiario.push({

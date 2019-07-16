@@ -1,7 +1,8 @@
 import Api from "./Api";
+import {UrlAccessToken} from "../config";
 
 const Url = "/access-token";
-const BaseUrl = "https://a86t6v1qyj.execute-api.us-east-1.amazonaws.com/dev";
+const BaseUrl = UrlAccessToken;
 
 class AccessToken {
     static async get(refer) {
