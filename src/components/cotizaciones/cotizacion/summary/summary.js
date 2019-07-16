@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
-import store from "../../../../store";
-import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import "./summary.scss";
+import {withRouter} from "react-router-dom";
 
 const summary = props => {
     const [CountCoverages, useCountCoverages] = useState(0);
@@ -12,22 +11,21 @@ const summary = props => {
     useEffect(() => {
         getData();
     });
-    const getData = () => {
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let plan = await QuoteIussedById.get(storeState["AllPlans"][0].id);
-            let total = 0;
-            if (plan["risk_valoration_info"]["Item"].prospect > 1) {
-                total = plan["risk_valoration_info"]["Item"].prospect;
-            }
+
+    const getData = async () => {
+        try {
+            let plan = props.plan[0];
+            let total = plan.prospect;
             useCountCoverages(
-                storeState["AllPlans"][0]["coverages"].filter(validateCheck).length
+                plan["coverages"].filter(validateCheck).length
             );
             useCountAssits(
-                constValidateAssists(storeState["AllPlans"][0]["assists"][0]["values"])
+                constValidateAssists(plan["assists"][0]["values"])
             );
             useTotalPrima(Masknumbermoney.formatToMask(total));
-        });
+        } catch (e) {
+
+        }
     };
     const validateCheck = array => {
         return array.checked === true;
@@ -73,4 +71,4 @@ const summary = props => {
     );
 };
 
-export default summary;
+export default withRouter(summary);

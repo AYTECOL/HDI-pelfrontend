@@ -12,16 +12,6 @@ class Razonsocial extends Component {
             error: false,
             value: ""
         };
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let value = Helpers.toCapitalize(storeState.cotizacion.identification.businessname);
-            if (Helpers.toCapitalize(this.state.value) !== value) {
-                this.setState({
-                    ...this.state,
-                    value: value
-                });
-            }
-        });
     }
 
     static toggleDisable(status) {
@@ -34,6 +24,23 @@ class Razonsocial extends Component {
 
     static limit() {
         return 61;
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = Helpers.toCapitalize(storeState.cotizacion.identification.businessname);
+            if (Helpers.toCapitalize(this.state.value) !== value) {
+                this.setState({
+                    ...this.state,
+                    value: value
+                });
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = e => {
