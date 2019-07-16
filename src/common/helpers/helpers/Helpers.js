@@ -333,7 +333,7 @@ class Helpers {
             }
 
             let dataRquestVerify = await AccessToken.get(data["refer"]);
-            if (dataRquestVerify !== null) {
+            if (dataRquestVerify !== null && typeof dataRquestVerify !== "undefined" && typeof data["refer"] !== "undefined") {
                 dataRquestVerify["refer"] = data["refer"];
                 sessionStorage.clear();
                 sessionStorage.setItem(

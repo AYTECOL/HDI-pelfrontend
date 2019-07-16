@@ -1,8 +1,9 @@
 import Service from './Api';
 import Helpers from "../common/helpers/helpers/Helpers";
+import {UrlPerson} from "../config";
 
-const UrlServicePerson = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev/";
-const Baseurl = "consultarpersona";
+const UrlServicePerson = UrlPerson;
+const Baseurl = "/consultarpersona";
 
 /*const Default = {
     "consultarPersonaRs": {

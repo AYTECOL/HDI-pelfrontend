@@ -1,9 +1,10 @@
 import Api from './Api';
+import {UrlCrearpolizaiaxis} from "../config";
 import momentJs from 'moment';
 import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/crearpolizaiaxis";
-const Url = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev";
+const Url = UrlCrearpolizaiaxis;
 
 class Crearpolizaiaxis {
 

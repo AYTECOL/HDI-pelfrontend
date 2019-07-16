@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './NotFound.scss';
 import Loading from "../../components/globals/loading/Loading";
+import {UrlOficina} from "../../config";
 
 class NotFound extends Component {
 
@@ -20,7 +21,7 @@ class NotFound extends Component {
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
                             <h1>¡Ups!</h1>
                             <h2>No hemos localizado la página que buscas</h2>
-                            <a href="https://oficinaenlineauat.libertycolombia.com"
+                            <a href={UrlOficina}
                                className={"btn btn-primary btn-block"}>Ir a oficina en línea</a>
 
                             <h3>Error 404</h3>
