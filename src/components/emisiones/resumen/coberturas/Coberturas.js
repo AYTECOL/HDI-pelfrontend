@@ -5,6 +5,7 @@ import store from "../../../../store";
 import Plans from "../../../cotizaciones/cotizacion/plans/Plans";
 import "./Coberturas.scss";
 import check from "../../../../common/images/check-img.png";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class Coberturas extends Component {
     constructor(props) {
@@ -267,7 +268,7 @@ class Coberturas extends Component {
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0 ">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                    <div className="row" onClick={this.props.toggleSlide(0)}>
+                    <div className="row" onClick={Helpers.toggleSlide(0)}>
                         <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
                             <h4>
                                 <span>{this.state.coverturasTotal}</span>Coberturas

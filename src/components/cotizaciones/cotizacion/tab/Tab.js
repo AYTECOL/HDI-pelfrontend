@@ -27,7 +27,7 @@ class Tab extends Component {
     //Make merge between default plan and seleted plan
     static assignValuesSaved(selected, normal) {
         for (let j = 0; j < normal.coverages.length; j++) {
-            if (typeof selected.coverages[j] !== "undefined") {
+            if (typeof selected.coverages[j] !== "undefined" && normal.coverages[j].name === selected.coverages[j].name) {
                 normal.coverages[j].optional = selected.coverages[j].optional;
                 normal.coverages[j].checked = selected.coverages[j].checked;
                 if (typeof normal.coverages[j].values !== "undefined") {
@@ -50,6 +50,15 @@ class Tab extends Component {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            } else {
+                //If no is equal the coverage so calc value for this.
+                if (typeof normal.coverages[j].values !== "undefined") {
+                    for (let i = 0; i < normal.coverages[j].values.length; i++) {
+                        if (typeof normal.coverages[j].values[i] !== "undefined") {
+                            normal = Coberturas.calcValue(normal, normal.coverages[j].values[i].id);
                         }
                     }
                 }

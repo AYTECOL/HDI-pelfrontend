@@ -4,6 +4,7 @@ import store from "../../../../store";
 import "./Asistencias.scss";
 import Plans from "../../../cotizaciones/cotizacion/plans/Plans";
 import check from "../../../../common/images/check-img.png";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 
 class Asistencias extends Component {
     constructor(props) {
@@ -182,7 +183,7 @@ class Asistencias extends Component {
                         key={key}
                     >
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                            <div className="row" onClick={this.props.toggleSlide(key + 1)}>
+                            <div className="row" onClick={Helpers.toggleSlide(key + 1)}>
                                 <div className="col-md-4 text-left">
                                     <h4>
                                         <span>{this.state.assistsTotal}</span>

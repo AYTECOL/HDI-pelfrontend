@@ -27,7 +27,18 @@ class AutocompleteCities extends Component {
             valueLoadedDepartment: 0,
         };
         this.state.value = typeof this.props.value === "undefined" ? '' : this.props.value.toString();
-        store.subscribe(() => {
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+        this.unsubscribe();
+    }
+
+    componentDidMount() {
+        this._isMounted = true;
+        this.getOptions();
+        this.updateValue(this.props);
+        this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let city = storeState.cotizacion.identification.city;
             let department = storeState.cotizacion.identification.department;
@@ -41,16 +52,6 @@ class AutocompleteCities extends Component {
                 }
             }
         });
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
-    componentDidMount() {
-        this._isMounted = true;
-        this.getOptions();
-        this.updateValue(this.props);
     }
 
     componentWillReceiveProps(nextProps, nextContext) {

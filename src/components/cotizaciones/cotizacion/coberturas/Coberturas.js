@@ -8,6 +8,8 @@ import {AllPlans as AllPlansCreator} from "../../../../actions";
 
 class Coberturas extends Component {
 
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -245,17 +247,20 @@ class Coberturas extends Component {
                 }
             }
         }
-        this.setState({
-            ...this.state,
-            plan
-        });
+        if (this._isMounted === true) {
+            this.setState({
+                ...this.state,
+                plan
+            });
+        }
     }
 
     componentDidMount() {
+        this._isMounted = true;
         this.unsubscribe = store.subscribe(() => {
             let storeState = store.getState();
             let plan = storeState.AllPlans[storeState.indexPlan];
-            if (typeof plan !== "undefined") {
+            if (typeof plan !== "undefined" && this._isMounted === true) {
                 this.setState({
                     ...this.state,
                     plan: plan,
@@ -271,6 +276,7 @@ class Coberturas extends Component {
 
     componentWillUnmount() {
         this.unsubscribe();
+        this._isMounted = false;
     }
 
     /**
@@ -302,10 +308,12 @@ class Coberturas extends Component {
                 t++;
             }
         }
-        this.setState({
-            ...this.state,
-            coverturasTotal: t
-        });
+        if (this._isMounted === true) {
+            this.setState({
+                ...this.state,
+                coverturasTotal: t
+            });
+        }
     }
 
     checkCoverturas = (index, key) => e => {
