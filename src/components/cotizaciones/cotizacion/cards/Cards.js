@@ -70,20 +70,23 @@ class Cards extends Component {
 
     static async getDataFromInspectionPolicy(){
         let inspect = await InspectionPolicy.get();
-        if (typeof inspect[1] !== "undefined" && inspect[1] !== "NA") {
-            store.dispatch(saveInmuebleValue({
-                value: inspect[1],
-                name: 'inspection_policies'
-            }));
-            store.dispatch(saveInmuebleValue({
-                value: true,
-                name: 'max_values_dedu'
-            }));
-            return inspect;
+        if( inspect !== null && typeof inspect !== "undefined" ){
+            if (typeof inspect[1] !== "undefined" && inspect[1] !== "NA") {
+                store.dispatch(saveInmuebleValue({
+                    value: inspect[1],
+                    name: 'inspection_policies'
+                }));
+                store.dispatch(saveInmuebleValue({
+                    value: true,
+                    name: 'max_values_dedu'
+                }));
+                return inspect;
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
-
     }
 
     async getInspectionPolicy() {
