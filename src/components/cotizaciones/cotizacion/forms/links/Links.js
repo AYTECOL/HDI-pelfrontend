@@ -6,6 +6,7 @@ import {withRouter} from "react-router-dom";
 import store from "../../../../../store";
 import Loading from "../../../../globals/loading/Loading";
 import BtnContinue from "../btncontinue/BtnContinue";
+import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
 class Links extends Component {
 
@@ -41,8 +42,8 @@ class Links extends Component {
         }
     }
 
-    getPdf = async e => {
-        if( e.target.className.indexOf('disabled') === -1 ){
+    getPdf = async () => {
+        if( Helpers.hasClass('.generatepdf','disabled') === false ){
             Loading.toggle(true);
             await Links.pdf(this);
             Loading.toggle(false);

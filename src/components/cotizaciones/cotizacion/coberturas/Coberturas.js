@@ -144,9 +144,6 @@ class Coberturas extends Component {
                 } else if (item.id === 7) {
                     if (type === item.id || type === null) {
                         let contenido = Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor);
-                        if( item.code === 3044 ){
-                            console.log(Masknumbermoney.formatToMask(contenido * parseInt(item.value) / 100));
-                        }
                         return Masknumbermoney.formatToMask(contenido * parseInt(item.value) / 100);
                     } else {
                         return item.value_show;
