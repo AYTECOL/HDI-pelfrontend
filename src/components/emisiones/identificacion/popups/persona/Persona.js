@@ -350,10 +350,6 @@ export default class Persona extends Component {
         let n = e.target.name;
         let nit = this.state.nit;
         let newPerson = this.state.person;
-
-        console.log(v);
-        console.log(n);
-
         newPerson[n] = v;
         if (n === 'code') nit = parseInt(v) === 37;
         this.setState({

@@ -203,6 +203,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/forms/links/Links.scss">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/components/cotizaciones/cotizacion/index/Index.js">
           <value>
             <set />
