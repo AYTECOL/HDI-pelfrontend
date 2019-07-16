@@ -11,7 +11,10 @@ class Addressadditional extends Component {
             error: false,
             value: "",
         };
-        store.subscribe(async () => {
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
             let storeState = store.getState();
             let value = storeState.cotizacion.identification.addressadditional;
             if (this.state.value !== value) {
@@ -21,6 +24,10 @@ class Addressadditional extends Component {
                 });
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = e => {

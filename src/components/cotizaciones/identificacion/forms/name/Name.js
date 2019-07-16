@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 import store from '../../../../../store';
 import {saveIdentificationValue} from '../../../../../actions';
 
@@ -13,16 +12,6 @@ class Name extends Component {
             error: false,
             value: "",
         };
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let value = Helpers.toCapitalize(storeState.cotizacion.identification.name);
-            if (this.state.value !== value) {
-                this.setState({
-                    ...this.state,
-                    value: value,
-                });
-            }
-        });
     }
 
     static toggleDisable(status) {
@@ -35,6 +24,23 @@ class Name extends Component {
 
     static limit() {
         return 51;
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
+            let storeState = store.getState();
+            let value = Helpers.toCapitalize(storeState.cotizacion.identification.name);
+            if (this.state.value !== value) {
+                this.setState({
+                    ...this.state,
+                    value: value,
+                });
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = e => {

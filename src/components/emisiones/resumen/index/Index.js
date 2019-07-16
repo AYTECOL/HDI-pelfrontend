@@ -314,9 +314,9 @@ class Index extends Component {
 
                             {typeof this.state.plans !== "undefined" &&
                             <React.Fragment>
-                                <Summary/>
-                                <CoberturasSummary toggleSlide={Helpers.toggleSlide}/>
-                                <AsistenciasSummary toggleSlide={Helpers.toggleSlide}/>
+                                <Summary plan={this.state.plans}/>
+                                <CoberturasSummary/>
+                                <AsistenciasSummary/>
                             </React.Fragment>
                             }
                         </div>

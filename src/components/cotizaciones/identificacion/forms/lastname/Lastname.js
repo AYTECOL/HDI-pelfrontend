@@ -12,16 +12,6 @@ class Lastname extends Component {
             error: false,
             value: ""
         };
-        store.subscribe(async () => {
-            let storeState = store.getState();
-            let lastname = Helpers.toCapitalize(storeState.cotizacion.identification.lastname);
-            if (this.state.value !== lastname) {
-                this.setState({
-                    ...this.state,
-                    value: lastname
-                });
-            }
-        });
     }
 
     static toggleDisable(status) {
@@ -34,6 +24,23 @@ class Lastname extends Component {
 
     static limit() {
         return 51;
+    }
+
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(async () => {
+            let storeState = store.getState();
+            let lastname = Helpers.toCapitalize(storeState.cotizacion.identification.lastname);
+            if (this.state.value !== lastname) {
+                this.setState({
+                    ...this.state,
+                    value: lastname
+                });
+            }
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     validateEmpty = e => {
