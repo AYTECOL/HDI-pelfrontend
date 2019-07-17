@@ -153,6 +153,20 @@ class Crearpolizaiaxis {
                 d.adresstype = '1';
             }
 
+            let contactPerson = {
+                "contacto": [
+                    {
+                        "tipoContacto": {
+                            "codigo": typeof d.phone_type === "undefined" || d.phone_type === null || d.phone_type === ' ' ? '1' : d.phone_type.toString(),
+                        },
+                        "textoContacto": typeof d.telefono === "undefined" || d.telefono === null ? ' ' : d.telefono.toString(),
+                    },
+                ]
+            };
+            if( d.role.indexOf(5) !== -1 || d.role.indexOf(6) !== -1){
+                contactPerson = {}
+            }
+
             arrayToMerge.push({
                 "tipoDocumento": {
                     "codigo": typeof d.document_type === "undefined" || d.document_type === null ? '37' : d.document_type.toString(),
@@ -177,14 +191,7 @@ class Crearpolizaiaxis {
                     },
                     "textoDireccion": typeof d.address === "undefined" || d.address === null ? '' : d.address.toString(),
                 },
-                "contacto": [
-                    {
-                        "tipoContacto": {
-                            "codigo": typeof d.phone_type === "undefined" || d.phone_type === null || d.phone_type === ' ' ? '1' : d.phone_type.toString(),
-                        },
-                        "textoContacto": typeof d.telefono === "undefined" || d.telefono === null ? ' ' : d.telefono.toString(),
-                    },
-                ]
+                ...contactPerson
             })
         }
         return arrayToMerge;
@@ -213,11 +220,11 @@ class Crearpolizaiaxis {
             if (typeof benefist[i].role !== "undefined") {
                 for (let ii = 0; ii < benefist[i].role.length; ii++) {
                     if (benefist[i].role[ii] === 1) {
-                        tomadorArr.push(benefist[ii]);
+                        tomadorArr.push(benefist[i]);
                     } else if (benefist[i].role[ii] === 2) {
-                        aseguradoArr.push(benefist[ii]);
+                        aseguradoArr.push(benefist[i]);
                     } else if (benefist[i].role[ii] === 3) {
-                        beneficiarioArr.push(benefist[ii]);
+                        beneficiarioArr.push(benefist[i]);
                     }
                 }
             }
@@ -228,11 +235,11 @@ class Crearpolizaiaxis {
             if (typeof insured[i].role !== "undefined") {
                 for (let ii = 0; ii < insured[i].role.length; ii++) {
                     if (insured[i].role[ii] === 1) {
-                        tomadorArr.push(insured[ii]);
+                        tomadorArr.push(insured[i]);
                     } else if (insured[i].role[ii] === 2) {
-                        aseguradoArr.push(insured[ii]);
+                        aseguradoArr.push(insured[i]);
                     } else if (insured[i].role[ii] === 3) {
-                        beneficiarioArr.push(insured[ii]);
+                        beneficiarioArr.push(insured[i]);
                     }
                 }
             }
@@ -242,10 +249,14 @@ class Crearpolizaiaxis {
         let persons_aditionals = data.quote_iussed_info.Item.persons_aditionals;
         if (typeof persons_aditionals !== "undefined") additional = persons_aditionals;
 
+        let onerous = [];
+        let onerous_people = data.quote_iussed_info.Item.onerous;
+        if( typeof onerous_people !== "undefined" ) onerous = onerous_people;
+
         let asegurado = Crearpolizaiaxis.formatPerson(aseguradoArr);
         let beneficiario = Crearpolizaiaxis.formatPerson(beneficiarioArr);
         let additionals = Crearpolizaiaxis.formatPerson(additional);
-        let onerosos = Crearpolizaiaxis.formatPerson(data.quote_iussed_info.Item.onerous);
+        let onerosos = Crearpolizaiaxis.formatPerson(onerous);
         let tomador = Crearpolizaiaxis.formatPerson(tomadorArr)[0];
 
         for (let i = 0; i < additionals.length; i++) {

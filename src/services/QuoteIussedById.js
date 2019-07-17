@@ -18,9 +18,10 @@ class QuoteIussedById {
                             users[key] = u;
                         }
                     }
-                    item[it] = [];
+                    data.quote_iussed_info.Item[it] = [];
                     return this;
                 });
+
                 for (let i in users) {
                     let status = false;
                     for (let j = 0; j < users[i].role.length; j++) {

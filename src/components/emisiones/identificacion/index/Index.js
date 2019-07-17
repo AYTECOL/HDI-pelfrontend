@@ -74,8 +74,11 @@ class Index extends Component {
         let hasAccident = false;
         if (typeof persons.quote_iussed_info.Item !== "undefined") {
             let items = persons.quote_iussed_info.Item;
-            person.push(items.taker);
-            for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
+
+            if( items.taker.length !== 0 ){
+                person.push(items.taker);
+                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
+            }
 
             [
                 {name: 'insured', role: 2},
