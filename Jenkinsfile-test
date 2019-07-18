@@ -9,9 +9,7 @@ node('linux'){
 	stage('Git Checkout'){
 		checkout scm develop
 	}
-    stage('Prepare enviroment variables'){
-        sh './env-creator.sh -a '${env.REACT_APP_DOMAIN}' -b '${env.REACT_APP_KEY}' -c '${env.REACT_APP_OFICINA}' -d '${env.REACT_APP_PDF_SARLAFT}' -e '${env.REACT_APP_PERSON}' -f '${env.REACT_APP_ACCESS_TOKEN}' -g '${env.REACT_APP_ATTACH_POLICY_DOCUMENTS}' -h '${env.REACT_APP_CREARPOLIZAIAXIS}''
-    }
+ 
     stage('cloudfront') {
     	deployToDev{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
