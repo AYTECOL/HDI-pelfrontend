@@ -75,7 +75,7 @@ class Index extends Component {
         if (typeof persons.quote_iussed_info.Item !== "undefined") {
             let items = persons.quote_iussed_info.Item;
 
-            if( items.taker.length !== 0 ){
+            if (items.taker.length !== 0) {
                 person.push(items.taker);
                 for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
             }
@@ -118,12 +118,26 @@ class Index extends Component {
             for (let i = 0; i < coverange.length; i++) {
                 if (coverange[i]['name'].toLowerCase() === 'accidentes personales' && coverange[i]['checked'] === true) hasAccident = true;
                 if (coverange[i]['name'].toLowerCase() === 'exequial' && coverange[i]['checked'] === true) hasExequias = true;
+                if (coverange[i]['name'].toLowerCase() === 'exequias' && coverange[i]['checked'] === true) hasExequias = true;
+                if (typeof coverange[i]['code_content'] !== "undefined") {
+                    if (coverange[i]['checked'] === true) {
+                        if (coverange[i]['code_content'] === 716) hasAccident = true;
+                        if (coverange[i]['code_content'] === 774) hasExequias = true;
+                    }
+                }
             }
         }
 
-        setTimeout(() => {
-            this.validateRoles();
-        }, 500);
+        setTimeout(
+            () => {
+                this
+                    .validateRoles();
+            }
+
+            ,
+            500
+        )
+        ;
 
         if (person.length === 0) {
             this.setState({

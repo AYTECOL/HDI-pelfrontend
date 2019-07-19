@@ -8,8 +8,6 @@ import AccessToken from "../../../services/AccessToken";
 import Loading from "../../../components/globals/loading/Loading";
 
 class Helpers {
-    static validations() {
-    }
 
     static toCapitalize(str) {
         var splitStr = str.toLowerCase().split(" ");
@@ -151,7 +149,7 @@ class Helpers {
         let cotizacion = await Identifications.getById(id);
         if (typeof cotizacion.identification !== "undefined") {
             store.dispatch(restoreCotizacion(cotizacion));
-            if (cotizacion.state === 77) {
+            if (cotizacion.state === 7) {
                 Helpers.goToNotFound(history);
             } else {
                 if (cotizacion.state >= 2 && parseInt(step) >= 2) {

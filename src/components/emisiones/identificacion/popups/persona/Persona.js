@@ -19,6 +19,7 @@ import NumeroIdentificacion
 export default class Persona extends Component {
 
     _isMounted = false;
+    validateAllTime = null;
 
     constructor(props) {
         super(props);
@@ -357,9 +358,11 @@ export default class Persona extends Component {
             person: newPerson,
             nit: nit
         });
-        setTimeout(() => {
+
+        if( this.validateAllTime !== null ) clearTimeout(this.validateAllTime);
+        this.validateAllTime = setTimeout(()=>{
             this.validateAll(n);
-        }, 500);
+        },250);
     };
 
     validateDoc = async e => {
@@ -446,110 +449,114 @@ export default class Persona extends Component {
     };
 
     async validateAll(name, printErrors, saveData) {
-        if (typeof this.props.updatePerson !== "undefined") {
-            if (typeof printErrors === "undefined") printErrors = false;
-            let msj4 = true;
-            let errors = [];
-            let fields = document.querySelectorAll(".modal-content input, .modal-content select");
-            for (let i = 0; i < fields.length; i++) {
-                fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
-                if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname') {
-                    errors.push(fields[i].name);
-                    if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
-                }
-            }
-
-            if (Helpers.validationEmail(this.state.person.email) === false) {
-                errors.push('email');
-                if (printErrors || 'email' === name) document.querySelector(".email").className += " error";
-            }
-
-            if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
-                errors.splice(errors.indexOf('sarlfalt'), 1);
-                Helpers.removeClass('.sarlaft', 'error');
-            }
-            if (this.state.typePerson === 1 && this.state.nit === false) {
-                if (this.state.person.genero === "") {
-                    errors.push('genero');
-                    if (printErrors || 'genero' === name) document.querySelector(".generofield").className += " error";
-                } else {
-                    document.querySelector(".generofield").className = document.querySelector(".generofield").className.replace(' error', '');
-                }
-            }
-            if ((this.state.typePerson === 1 || this.state.typePerson === 2) && this.state.nit === false) {
-                if (this.state.person.fechadenacimiento === "") {
-                    errors.push('fechadenacimiento');
-                    if (printErrors || 'fechadenacimiento' === name) document.querySelector(".fechadenacimiento").className += " error";
-                } else {
-                    document.querySelector(".fechadenacimiento").className = document.querySelector(".fechadenacimiento").className.replace(' error', '');
-                }
-            }
-            if (this.state.typePerson === 4) {
-                if (this.state.person.fechadecontitucion === "") {
-                    errors.push('fechadecontitucion');
-                    if (printErrors || 'fechadecontitucion' === name) document.querySelector(".fechadecontitucion").className += " error";
-                } else {
-                    document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
-                }
-            }
-            if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
-                if (this.state.person.role.length === 0) {
-                    errors.push('role');
-                    if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
-                } else {
-                    if (document.querySelector(".items-checkboxes") !== null) {
-                        document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
+        try {
+            if (typeof this.props.updatePerson !== "undefined") {
+                if (typeof printErrors === "undefined") printErrors = false;
+                let msj4 = true;
+                let errors = [];
+                let fields = document.querySelectorAll(".modal-content input, .modal-content select");
+                for (let i = 0; i < fields.length; i++) {
+                    fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
+                    if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname') {
+                        errors.push(fields[i].name);
+                        if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                     }
                 }
-            }
-            let total = this.state.total;
-            if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
-                if (this.state.nit === true) {
-                    total = 11;
+
+                if (Helpers.validationEmail(this.state.person.email) === false) {
+                    errors.push('email');
+                    if (printErrors || 'email' === name) document.querySelector(".email").className += " error";
+                }
+
+                if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
+                    errors.splice(errors.indexOf('sarlfalt'), 1);
+                    Helpers.removeClass('.sarlaft', 'error');
+                }
+                if (this.state.typePerson === 1 && this.state.nit === false) {
+                    if (this.state.person.genero === "") {
+                        errors.push('genero');
+                        if (printErrors || 'genero' === name) document.querySelector(".generofield").className += " error";
+                    } else {
+                        document.querySelector(".generofield").className = document.querySelector(".generofield").className.replace(' error', '');
+                    }
+                }
+                if ((this.state.typePerson === 1 || this.state.typePerson === 2) && this.state.nit === false) {
+                    if (this.state.person.fechadenacimiento === "") {
+                        errors.push('fechadenacimiento');
+                        if (printErrors || 'fechadenacimiento' === name) document.querySelector(".fechadenacimiento").className += " error";
+                    } else {
+                        document.querySelector(".fechadenacimiento").className = document.querySelector(".fechadenacimiento").className.replace(' error', '');
+                    }
+                }
+                if (this.state.typePerson === 4) {
+                    if (this.state.person.fechadecontitucion === "") {
+                        errors.push('fechadecontitucion');
+                        if (printErrors || 'fechadecontitucion' === name) document.querySelector(".fechadecontitucion").className += " error";
+                    } else {
+                        document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
+                    }
+                }
+                if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
+                    if (this.state.person.role.length === 0) {
+                        errors.push('role');
+                        if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
+                    } else {
+                        if (document.querySelector(".items-checkboxes") !== null) {
+                            document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
+                        }
+                    }
+                }
+                let total = this.state.total;
+                if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
+                    if (this.state.nit === true) {
+                        total = 11;
+                    } else {
+                        total = 15;
+                    }
+                }
+
+                let v = document.querySelector('#documentfield').value;
+                if (v !== "") {
+                    let type = document.querySelector('#doc-type').value;
+                    let errorStatus = NumeroIdentificacion.validate(v, type);
+                    if (errorStatus === true) {
+                        errors.push('value');
+                        document.querySelector('#documentfield').parentNode.className += " error";
+                    } else {
+                        document.querySelector('#documentfield').parentNode.className = document.querySelector('#documentfield').parentNode.className.replace(' error', '');
+                    }
+                }
+
+                let indexSecondName = errors.indexOf("secondname");
+                if (indexSecondName !== -1) errors.splice(indexSecondName, 1);
+
+                let sarlaft = errors.indexOf("sarlaft");
+                if (sarlaft !== -1 && typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlfalt_url !== null) {
+                    if (this.state.person.sarlfalt_url.trim() !== "") {
+                        errors.splice(sarlaft, 1);
+                    }
+                }
+
+                let ok = total - errors.length;
+                if (errors.length === 0) msj4 = false;
+                if (errors.length === 0 && saveData) {
+                    await this.saveFile();
+                    let state = this.state;
+                    if (typeof state.person.code === "undefined") state.person.code = state.typePerson !== 4 ? '36' : '37';
+                    if (state.typePerson === 4) state.person.role.push(4);
+
+                    this.props.updatePerson(state.person);
                 } else {
-                    total = 15;
+                    this.setState({
+                        ...this.state,
+                        ok: ok,
+                        msj4: msj4,
+                        total: total
+                    })
                 }
             }
-
-            let v = document.querySelector('#documentfield').value;
-            if (v !== "") {
-                let type = document.querySelector('#doc-type').value;
-                let errorStatus = NumeroIdentificacion.validate(v, type);
-                if (errorStatus === true) {
-                    errors.push('value');
-                    document.querySelector('#documentfield').parentNode.className += " error";
-                } else {
-                    document.querySelector('#documentfield').parentNode.className = document.querySelector('#documentfield').parentNode.className.replace(' error', '');
-                }
-            }
-
-            let indexSecondName = errors.indexOf("secondname");
-            if (indexSecondName !== -1) errors.splice(indexSecondName, 1);
-
-            let sarlaft = errors.indexOf("sarlaft");
-            if (sarlaft !== -1 && typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlfalt_url !== null) {
-                if (this.state.person.sarlfalt_url.trim() !== "") {
-                    errors.splice(sarlaft, 1);
-                }
-            }
-
-            let ok = total - errors.length;
-            if (errors.length === 0) msj4 = false;
-            if (errors.length === 0 && saveData) {
-                await this.saveFile();
-                let state = this.state;
-                if (typeof state.person.code === "undefined") state.person.code = state.typePerson !== 4 ? '36' : '37';
-                if (state.typePerson === 4) state.person.role.push(4);
-
-                this.props.updatePerson(state.person);
-            } else {
-                this.setState({
-                    ...this.state,
-                    ok: ok,
-                    msj4: msj4,
-                    total: total
-                })
-            }
+        }catch (e) {
+            console.log(e);
         }
     };
 
@@ -875,7 +882,7 @@ export default class Persona extends Component {
                                     </div>
                                     }
 
-                                    {(this.state.typePerson !== 6 && this.state.typePerson !== 7) &&
+                                    {this.state.typePerson !== 7 &&
                                     <div className="row fields-row">
                                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                             <div className="email form-group "><label
