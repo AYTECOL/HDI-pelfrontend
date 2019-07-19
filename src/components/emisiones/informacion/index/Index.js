@@ -375,7 +375,7 @@ class Index extends Component {
 
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                             <div
-                                                className={"select-item row " + (this.state.utilizado === 0 ? 'active' : '')}
+                                                className={"select-item row " + (this.state.utilizado === 1 ? 'active' : '')}
                                                 onClick={this.selectItems('utilizado', 1)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="home-icon">&nbsp;</i>
@@ -387,7 +387,7 @@ class Index extends Component {
                                         </div>
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                             <div
-                                                className={"select-item row " + (this.state.utilizado === 1 ? 'active' : '')}
+                                                className={"select-item row " + (this.state.utilizado === 2 ? 'active' : '')}
                                                 onClick={this.selectItems('utilizado', 2)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="summer">&nbsp;</i>
@@ -399,7 +399,7 @@ class Index extends Component {
                                         </div>
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                             <div
-                                                className={"select-item row " + (this.state.utilizado === 2 ? 'active' : '')}
+                                                className={"select-item row " + (this.state.utilizado === 3 ? 'active' : '')}
                                                 onClick={this.selectItems('utilizado', 3)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="home-pay">&nbsp;</i>
