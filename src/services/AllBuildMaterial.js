@@ -1,7 +1,7 @@
 // import Api from './Api';
 import Helpers from "../common/helpers/helpers/Helpers";
 
-// const BaseUrl = "/all-build-material";
+const BaseUrl = "/all-build-material";
 
 const Default = {
     build_materials: [
@@ -47,16 +47,15 @@ const Default = {
 
 class AllBuildMaterial {
     static async get() {
-        // let data = {};
-        // try {
-        //     data = await Api.get(BaseUrl);
-        // } catch (e) {
-        //     data = Default;
-        // }
-        // if (typeof data.build_materials === "undefined" || data.build_materials.length === 0) {
-        //     data = Default;
-        // }
-        let data = Default;
+        let data = {};
+        try {
+            data = await Api.get(BaseUrl);
+        } catch (e) {
+            data = Default;
+        }
+        if (typeof data.build_materials === "undefined" || data.build_materials.length === 0) {
+            data = Default;
+        }
         return Helpers.orderArray(data.build_materials, "order");
     };
 }
