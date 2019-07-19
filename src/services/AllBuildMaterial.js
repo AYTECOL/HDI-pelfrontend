@@ -1,4 +1,4 @@
-// import Api from './Api';
+import Api from './Api';
 import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/all-build-material";
