@@ -33,10 +33,10 @@ node('linux'){
                 npm run build
                 ls -ltr
             """
-            sh 'aws s3 sync build s3://poliza-express-hogar-uat --delete'
-            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-uat --delete'
-            sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --acl public-read'
-            sh 'aws s3 cp build s3://poliza-express-hogar-uat  --recursive --metadata-directive REPLACE --recursive --cache-control max-age=0,no-cache,no-store,must-revalidate --acl public-read'
+            sh 'aws s3 sync build s3://poliza-express-hogar-nonprod --delete'
+            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-nonprod --delete'
+            sh 'aws s3 cp build s3://poliza-express-hogar-nonprod  --recursive --metadata-directive REPLACE --acl public-read'
+            sh 'aws s3 cp build s3://poliza-express-hogar-nonprod  --recursive --metadata-directive REPLACE --recursive --cache-control max-age=0,no-cache,no-store,must-revalidate --acl public-read'
             sh 'aws cloudfront create-invalidation --distribution-id E29UJTXEFLRNQZ --paths "/*"'
         }
 		
