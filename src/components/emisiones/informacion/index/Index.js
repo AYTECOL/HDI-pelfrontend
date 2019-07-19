@@ -376,7 +376,7 @@ class Index extends Component {
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                             <div
                                                 className={"select-item row " + (this.state.utilizado === 0 ? 'active' : '')}
-                                                onClick={this.selectItems('utilizado', 0)}>
+                                                onClick={this.selectItems('utilizado', 1)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="home-icon">&nbsp;</i>
                                                 </div>
@@ -388,7 +388,7 @@ class Index extends Component {
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                             <div
                                                 className={"select-item row " + (this.state.utilizado === 1 ? 'active' : '')}
-                                                onClick={this.selectItems('utilizado', 1)}>
+                                                onClick={this.selectItems('utilizado', 2)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="summer">&nbsp;</i>
                                                 </div>
@@ -400,7 +400,7 @@ class Index extends Component {
                                         <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                                             <div
                                                 className={"select-item row " + (this.state.utilizado === 2 ? 'active' : '')}
-                                                onClick={this.selectItems('utilizado', 2)}>
+                                                onClick={this.selectItems('utilizado', 3)}>
                                                 <div className="col col-12 no-padding">
                                                     <i className="home-pay">&nbsp;</i>
                                                 </div>
