@@ -9,7 +9,7 @@ node('linux'){
 	stage('Git Checkout'){
 		checkout scm develop
 	}
-
+ 
     stage('cloudfront') {
     	deployToDev{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
