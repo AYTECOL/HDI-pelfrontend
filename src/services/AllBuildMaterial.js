@@ -10,13 +10,13 @@ const Default = {
             "order": 2,
             "description": "Estructuras construidas con muros conformados por la unión de bloques o ladrillos de arcilla o ladrillos de concreto con mortero.",
             "create_at": "2019-05-15 21:48:48",
-            "answer": "Mampostería (ladrillo)"
+            "answer": "Mampostería"
         }, {
             "buildMaterialCode": "1",
             "order": 1,
             "description": "Estructuras construidas con columnas y vigas y/o muros en concreto reforzado.",
             "create_at": "2019-05-15 21:47:41",
-            "answer": "Muros en concreto"
+            "answer": "Concreto Reforzado"
         }, {
             "buildMaterialCode": "4",
             "order": 6,
@@ -40,7 +40,7 @@ const Default = {
             "order": 3,
             "description": "Estructuras construidas con columnas y vigas y/o muros en Acero.",
             "create_at": "2019-05-15 21:49:46",
-            "answer": "Acero reforzado"
+            "answer": "Acero"
         }
     ]
 };
