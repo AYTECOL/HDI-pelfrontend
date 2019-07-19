@@ -229,9 +229,9 @@ class Tab extends Component {
                             <p className="textdescript">Ver asistencias</p>
                         </div>
                         <div className="col col-12 col-md-6 col-lg-6">
-                            <p className="centerdescription">
-                                <span>Financiación</span> $30.000 / 10 cuotas
-                            </p>
+                            {/*<p className="centerdescription">*/}
+                                {/*<span>Financiación</span> $30.000 / 10 cuotas*/}
+                            {/*</p>*/}
                         </div>
                         <div className="col col-12 col-md-3 col-lg-3"/>
                     </div>

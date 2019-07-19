@@ -30,6 +30,16 @@ class App extends Component {
 
     componentWillUnmount() {
         this._isMounted = false;
+        this.unlisten();
+    }
+
+    componentWillMount() {
+        this.unlisten = this.props.history.listen((location, action) => {
+            window.scroll({
+                top: 0,
+                left: 0,
+            });
+        });
     }
 
     async getUser() {
