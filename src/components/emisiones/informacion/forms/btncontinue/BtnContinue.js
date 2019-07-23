@@ -45,7 +45,7 @@ class BtnContinue extends Component {
         if (state.celulares === true) {
             for (let i = 0; i < state.contents.length; i++) {
                 if (typeof state.contents[i].textFile === "undefined" || state.contents[i].textFile.trim() === "") {
-                    status = false;
+                    //status = false;
                 }
                 if (status === false && state.contents[i].type === 4) this.props.toggleErrorPhone(true);
             }
