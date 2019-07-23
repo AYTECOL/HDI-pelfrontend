@@ -14,7 +14,7 @@ provider:
 
 custom:
   s3Bucket: poliza-express-hogar
-  s3BucketPDF: poliza-express-hogar-pdf
+  s3BucketPDF: poliza-express-hogar-pdf-prod
 
 package:
   include:
