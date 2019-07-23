@@ -179,7 +179,9 @@ class Index extends Component {
         });
         store.dispatch(indexPlanSelected(0));
         store.dispatch(AllPlansCreator(plansLoader));
-        Loading.toggle(false);
+        setTimeout(()=>{
+            Loading.toggle(false);
+        },1000);
     }
 
     showAnyPopup(name, index, type) {
