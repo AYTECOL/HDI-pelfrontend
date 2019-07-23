@@ -773,8 +773,8 @@ export default class Persona extends Component {
                                                         onClick={this.generoChange(1)}
                                                     >Masculino
                                                     </li>
-                                                    <li className={((this.state.person.genero === 0) ? 'active' : '')}
-                                                        onClick={this.generoChange(0)}
+                                                    <li className={((this.state.person.genero === 2) ? 'active' : '')}
+                                                        onClick={this.generoChange(2)}
                                                     >Femenino
                                                     </li>
                                                 </ul>
