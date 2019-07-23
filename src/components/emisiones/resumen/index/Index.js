@@ -359,8 +359,10 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
+                                                        {(typeof item.textFile !== "undefined" && item.textFile!== "") &&
                                                         <button type="button"
                                                                 className="btn btn-download">{Index.getName(item.textFile)}</button>
+                                                        }
                                                     </div>
                                                 </div>
                                             )}

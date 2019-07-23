@@ -23,7 +23,7 @@ class BtnContinue extends Component {
         };
     }
 
-    goBack = () => {
+    goBack = async () => {
         this.props.history.push(UrlSite + "/cotizacion/3/" + this.props.match.params.id);
     };
 
