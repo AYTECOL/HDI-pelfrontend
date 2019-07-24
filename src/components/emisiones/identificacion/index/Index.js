@@ -203,7 +203,7 @@ class Index extends Component {
         let persons = this.state.persons;
         let newPerson = [];
         for (let i = 0; i < persons.length; i++) if (i !== this.state.itemSelected) newPerson.push(persons[i]);
-        let inactiveBtn = newPerson.length <= 0;
+        let inactiveBtn = this.isDisabled();
         this.setState({
             ...this.state,
             persons: newPerson,
@@ -214,23 +214,27 @@ class Index extends Component {
         }, 100);
     };
 
-    validateRoles() {
+    isDisabled(){
         let persons = this.state.persons;
         let inactiveBtn = this.state.inactiveBtn;
         let status = [];
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
-                if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3) {
-                    if (typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") {
+                if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 || persons[i].role[j] === 4) {
+                    if ((typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") || persons[i].role[j] === 4) {
                         status.push(i);
                     }
                 }
             }
         }
         inactiveBtn = status.length < 3;
+        return inactiveBtn;
+    }
+
+    validateRoles() {
+        let inactiveBtn = this.isDisabled();
         this.setState({
             ...this.state,
-            person: persons,
             inactiveBtn: inactiveBtn
         });
     }
