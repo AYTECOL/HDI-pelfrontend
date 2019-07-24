@@ -221,7 +221,7 @@ class Index extends Component {
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 || persons[i].role[j] === 4) {
-                    if (typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") {
+                    if ((typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") || persons[i].role[j] === 4) {
                         status.push(i);
                     }
                 }
