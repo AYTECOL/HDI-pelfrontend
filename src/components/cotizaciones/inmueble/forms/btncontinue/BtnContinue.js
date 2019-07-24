@@ -27,12 +27,14 @@ class BtnContinue extends Component {
 
     saveService = async () => {
         Loading.toggle(true);
+        await SaveIdentifications.save();
         await CreateOrUpdateValoration.save();
         Helpers.goToHome(this.props.history);
     };
 
     goBack = async () => {
         Loading.toggle(true);
+        await SaveIdentifications.save();
         await CreateOrUpdateValoration.save();
         this.props.history.push(UrlSite + "/cotizacion/1/" + this.props.match.params.id);
     };

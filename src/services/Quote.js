@@ -10,6 +10,7 @@ class IdentificationsCities {
         let user = await Helpers.getUser();
         let newUser = {};
         if (user !== null) for (let i in user) if (i !== 'accessToken' && i !== 'refer') newUser[i] = user[i];
+        console.log(storeState.pdf_info);
         let data = {
             quoteId: storeState.cotizacion.number,
             document_type: parseInt(storeState.cotizacion.identification.code),
