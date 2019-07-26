@@ -77,7 +77,7 @@ class BtnContinue extends Component {
                 city_code: persons[i]['city_code'],
                 department_code: persons[i]['department_code'],
                 ciudad: persons[i]['city'],
-                departamento: persons[i]['department'],
+                departamento: persons[i]['departamento'],
             };
             if (typeof persons[i]['sarlaft'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];
             if (typeof persons[i]['sarlaft_document_url'] !== "undefined") dataUser['sarlaft_document_url'] = persons[i]['sarlaft_document_url'];
