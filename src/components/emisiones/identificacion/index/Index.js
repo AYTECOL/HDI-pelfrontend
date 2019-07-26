@@ -218,16 +218,20 @@ class Index extends Component {
         let persons = this.state.persons;
         let inactiveBtn = this.state.inactiveBtn;
         let status = [];
+        let asegurado = false;
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 || persons[i].role[j] === 4) {
                     if ((typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") || persons[i].role[j] === 4) {
                         status.push(i);
+                        if( persons[i].role[j] === 2 ){
+                            asegurado = true;
+                        }
                     }
                 }
             }
         }
-        inactiveBtn = status.length < 3;
+        inactiveBtn = status.length < 3 || asegurado === false;
         return inactiveBtn;
     }
 
