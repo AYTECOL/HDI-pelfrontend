@@ -12,15 +12,16 @@ import Crearpolizaiaxis from "../../../../../services/Crearpolizaiaxis";
 import QuoteIussedById from "../../../../../services/QuoteIussedById";
 import IssuedCounter from "../../../../../services/IssuedCounter";
 import AttachPolicyDocuments from "../../../../../services/AttachPolicyDocuments";
+import Identifications from "../../../../../services/GetQuote";
 
 class BtnContinue extends Component {
     constructor(props) {
         super(props);
         this.state = {
             step: parseInt(this.props.match.params.step),
-            continueButtonDisable: true,
+            continueButtonDisable: false,
             stateFormIdentificacion: 0,
-            cotizacionExclude: []
+            cotizacionExclude: [],
         };
     }
 
@@ -46,37 +47,58 @@ class BtnContinue extends Component {
         const {id} = params;
         Loading.toggle(true);
         try {
+            this.setState({
+                ...this.state,
+                continueButtonDisable: true
+            });
             let data = await QuoteIussedById.get(this.props.match.params.id);
+            let cotizacion = await Identifications.getById(this.props.match.params.id);
+            cotizacion = cotizacion.identification;
 
-            let numeroPoliza = await IssuedCounter.get();
-            let dataSend = await Crearpolizaiaxis.get(data);
+            let numeroPoliza = {
+                currentValue: 0
+            };
 
-            dataSend['id'] = id;
-            let result = await PolicyService.emit(id, dataSend);
-            result = result.policyReq;
+            if (!(typeof cotizacion.emissionId !== "undefined" && cotizacion.emissionI !== null && cotizacion.emissionI !== "")) {
+                let date = new Date();
 
-            result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroPoliza = numeroPoliza.currentValue.toString();
-            result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo = numeroPoliza.currentValue.toString();
+                numeroPoliza = await IssuedCounter.get();
+                let dataSend = await Crearpolizaiaxis.get(data);
 
-            let send = await Crearpolizaiaxis.save(result);
-            let attach = await AttachPolicyDocuments.get(id, send.crearPolizaIAXISRs.emisionPoliza.resultadoPolizaHome.codigoProcesoCargue);
+                dataSend['id'] = id;
+                let result = await PolicyService.emit(id, dataSend);
+                result = result.policyReq;
 
-            await AttachPolicyDocuments.save(attach);
+                result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroPoliza = numeroPoliza.currentValue.toString();
+                result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo = numeroPoliza.currentValue.toString();
 
-            store.dispatch(saveIdentificationValue({
-                name: 'emissionId',
-                value: numeroPoliza.currentValue
-            }));
-            store.dispatch(saveIdentificationValue({
-                name: 'emitedDate',
-                value: new Date()
-            }));
+                let send = await Crearpolizaiaxis.save(result);
+                let attach = await AttachPolicyDocuments.get(id, send.crearPolizaIAXISRs.emisionPoliza.resultadoPolizaHome.codigoProcesoCargue);
+
+                await AttachPolicyDocuments.save(attach);
+
+                store.dispatch(saveIdentificationValue({
+                    name: 'emissionId',
+                    value: numeroPoliza.currentValue
+                }));
+                store.dispatch(saveIdentificationValue({
+                    name: 'emitedDate',
+                    value: date
+                }));
+            }else{
+                numeroPoliza.currentValue = cotizacion.emissionId;
+            }
+
             store.dispatch(NextStep(7));
             await SaveIdentifications.save();
             history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);
 
             Loading.toggle(false);
         } catch (e) {
+            this.setState({
+                ...this.state,
+                continueButtonDisable: false
+            });
             Loading.toggle(false);
         }
     };
@@ -99,6 +121,7 @@ class BtnContinue extends Component {
                 <button
                     type="button"
                     className={"btn btn-primary"}
+                    disabled={this.state.continueButtonDisable}
                     onClick={this.nextStep}
                 >
                     Emitir

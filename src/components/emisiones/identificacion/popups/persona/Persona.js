@@ -264,7 +264,6 @@ export default class Persona extends Component {
                 person.sarlfaltActiveDisabled = true;
             }
         }
-        console.log(person);
         return person;
     };
 
