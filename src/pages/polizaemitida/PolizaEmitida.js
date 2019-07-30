@@ -74,7 +74,6 @@ class PolizaEmitida extends Component {
         try {
             let a = document.createElement("a");
 
-
             let pdf = await PdfPolizaHogar.get(this.state.quote);
             a = document.createElement("a");
             a.style.display = "none";

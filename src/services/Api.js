@@ -55,7 +55,9 @@ class Api {
             } catch (e) {
                 return [];
             }
-        })
+        }).catch(function (e) {
+           return false;
+        });
     };
 
     static async post(url, data, overrideBase, formData, headers, format) {

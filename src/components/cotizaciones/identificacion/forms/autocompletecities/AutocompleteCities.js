@@ -170,7 +170,7 @@ class AutocompleteCities extends Component {
                 this.props.onChange({
                     target: {
                         value: description,
-                        name: "department"
+                        name: "departamento"
                     }
                 });
             }

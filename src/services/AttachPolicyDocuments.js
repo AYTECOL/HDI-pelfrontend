@@ -15,9 +15,13 @@ class AttachPolicyDocuments {
 
     static async save(data) {
         let user = await Helpers.getUser();
-        return await Api.post('/adjuntardocumentospoliza', data, UrlLiberty, undefined, {
-            Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
-        });
+        try {
+            return await Api.post('/adjuntardocumentospoliza', data, UrlLiberty, undefined, {
+                Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
+            });
+        }catch (e) {
+            return null;
+        }
     }
 }
 
