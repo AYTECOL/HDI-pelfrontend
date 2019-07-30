@@ -28,7 +28,7 @@ class InspectionPolicy {
                 "departamento": 0 /*quemados*/,
                 "tipoVivienda": parseInt(Inmueble.type_risk),
                 "zonaVivienda": parseInt(Inmueble.zona),
-                "conjuntoCerrado": Inmueble.cojuntocerrado === 1 ? 1 : 0,
+                "conjuntoCerrado": parseInt(Inmueble.cojuntocerrado),
                 "inmuebleUtilizado": 1 /*quemados*/,
                 "anoConstruccionVivienda": typeof Inmueble.anoconstruido !== "undefined" ? parseInt(Inmueble.anoconstruido) : 0,
                 "normasSismoresistentes": typeof Inmueble.refuerzo !== "undefined" ? parseInt(Inmueble.refuerzo) : 0,
