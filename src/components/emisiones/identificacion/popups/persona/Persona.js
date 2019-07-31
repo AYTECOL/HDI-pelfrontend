@@ -457,7 +457,7 @@ export default class Persona extends Component {
                 let fields = document.querySelectorAll(".modal-content input, .modal-content select");
                 for (let i = 0; i < fields.length; i++) {
                     fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
-                    if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname') {
+                    if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname' && fields[i].name !== 'secondlastname') {
                         errors.push(fields[i].name);
                         if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                     }
