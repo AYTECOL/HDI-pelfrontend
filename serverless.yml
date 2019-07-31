@@ -3,11 +3,7 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs8.10
-<<<<<<< HEAD
   stage: prod
-=======
-  stage: nonprod
->>>>>>> 52cc1040ece9660d1c0b39dd5f446ac3ded88b0b
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
@@ -17,13 +13,8 @@ provider:
         Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
-<<<<<<< HEAD
   s3Bucket: poliza-express-hogar
   s3BucketPDF: poliza-express-hogar-pdf-prod
-=======
-  s3Bucket: poliza-express-hogar-nonprod
-  s3BucketPDF: poliza-express-hogar-pdf-nonprod
->>>>>>> 52cc1040ece9660d1c0b39dd5f446ac3ded88b0b
 
 package:
   include:
@@ -98,11 +89,7 @@ resources:
                 OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-<<<<<<< HEAD
             - hogar.libertyseguros.co
-=======
-            - hogar-uat.libertyseguros.co
->>>>>>> 52cc1040ece9660d1c0b39dd5f446ac3ded88b0b
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -125,15 +112,9 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
             #Certificado DEV:AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
-<<<<<<< HEAD
             #Certificado UAT: AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
             #Certificado PROD:
             AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
-=======
-            #Certificado NONPROD: 
-            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
-            #Certificado PROD:AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
->>>>>>> 52cc1040ece9660d1c0b39dd5f446ac3ded88b0b
             SslSupportMethod: sni-only
   Outputs:
     WebAppCloudFrontDistributionOutput:
