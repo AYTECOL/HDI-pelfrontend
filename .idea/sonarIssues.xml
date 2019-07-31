@@ -58,12 +58,37 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../PagaYA2.0-backend/handler.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../PagaYA2.0-backend/package.json">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../PagaYA2.0-backend/routes.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../PagaYA2.0-backend/serverless.yml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../green-react-native/app.json">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../green-react-native/common/Helpers.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../green-react-native/components/globals/FormBase.js">
           <value>
             <set />
           </value>
@@ -79,6 +104,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../green-react-native/pages/OfertasPage.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../green-react-native/services/Api.js">
           <value>
             <set />
           </value>
