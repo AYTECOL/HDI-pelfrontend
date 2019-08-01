@@ -387,12 +387,12 @@ class Coberturas extends Component {
     switch (item.values[k].code) {
         case 3044:
             if (formatValue >= 50000001 || formatValue <= 999999) {
-                item.values[k].errors.push( `Valor Asegurado de Contenidos Móviles es ${(formatValue>50000001 ? 'superior':'inferior')} al permitido. `);
+                item.values[k].errors.push( `Valor Asegurado de Contenidos Móviles es ${(formatValue=>50000001 ? 'superior':'inferior')} al permitido. `);
                 return 1;
             }
         case 9652:
                 if (formatValue >= 10000001 || formatValue <= 850000) {
-                    item.values[k].errors.push( `Valor Asegurado de Teléfonos Móviles es ${(formatValue>10000001 ? 'superior':'inferior')} al permitido. `);
+                    item.values[k].errors.push( `Valor Asegurado de Teléfonos Móviles es ${(formatValue=>10000001 ? 'superior':'inferior')} al permitido. `);
                     return 1;
                 }            
 
