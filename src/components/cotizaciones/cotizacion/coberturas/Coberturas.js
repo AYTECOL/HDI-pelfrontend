@@ -382,6 +382,22 @@ class Coberturas extends Component {
      * @param type 1 or 2, input or select
      * @returns {Function}
      */
+    validateChange = (item,k) => {
+    let formatValue = Masknumbermoney.formatToNumber(item.values[k].value_show)
+    switch (item.values[k].code) {
+        case 3044:
+            if (formatValue > 50000001 || formatValue < 999999) {
+                item.values[k].errors.push( `Valor Asegurado de Contenidos Móviles es ${(formatValue>50000001 ? 'superior':'inferior')} al permitido. `);
+                return 1;
+            }
+        case 9652:
+                if (formatValue > 10000001 || formatValue < 850000) {
+                    item.values[k].errors.push( `Valor Asegurado de Teléfonos Móviles es ${(formatValue>10000001 ? 'superior':'inferior')} al permitido. `);
+                    return 1;
+                }            
+
+    }
+    }
     inputChange = (k, key, type) => e => {
         let plan = this.state.plan;
         let item = plan.coverages[key];
@@ -389,6 +405,9 @@ class Coberturas extends Component {
         if (type === 1) {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
             item.values[k].errors = [];
+            //Validations extra
+            
+            //--------
             //Validations of max and min
             if (parseInt(item.values[k].code) === 9692 || parseInt(item.values[k].code) === 3017 || parseInt(item.values[k].code) === 3008) {
                 let coverange = this.getCoverangeByCode(9667);
@@ -439,6 +458,11 @@ class Coberturas extends Component {
 
         if (e.target.tagName === "SELECT") {
             this.sendAndValidate(plan);
+        }
+        let codeError = this.validateChange(item,k)
+        if (codeError === 1) {
+            Helpers.disabled('.generatepdf');
+            Helpers.disabled('.next-step');
         }
     };
 
