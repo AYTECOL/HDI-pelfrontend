@@ -86,7 +86,7 @@ class BtnContinue extends Component {
             msgErrorInspect:
               "Cotización sujeta a registro fotográfico, contacte a su gestor"
           });
-          this.setState({ buttonState: true });
+          this.setState({ buttonState: false });
           Loading.toggle(false);
           return;
         case "IC":
@@ -94,7 +94,7 @@ class BtnContinue extends Component {
             msgErrorInspect:
               "Cotización sujeta a inspección, contacte a su gestor"
           });
-          this.setState({ buttonState: true });
+          this.setState({ buttonState: false });
           Loading.toggle(false);
           return;
       }
