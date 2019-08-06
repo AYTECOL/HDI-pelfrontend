@@ -118,11 +118,8 @@ class PolizaEmitida extends Component {
           <div className="container">
             <div className="row">
               <div className="col col-sm-12 col-md-12 col-lg-12 title">
-                <h2>Ahora podrás descargar la información de tu póliza</h2>
-                <h3>
-                  En los próximos minutos, se enviará un mail con la información
-                  de la poliza e información de utilidad
-                </h3>
+                <h2>¡Póliza emitida!</h2>
+                <h3>Ahora podrás descargar la información de tu póliza</h3>
                 <p>
                   Póliza <span>{this.state.emitedPolicy}</span>
                 </p>
