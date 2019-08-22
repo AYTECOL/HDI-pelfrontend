@@ -119,7 +119,7 @@ class Index extends Component {
         max: inmueble.inmueble_asegudado_joyasvalor
       },
       {
-        min: inmueble.inmueble_asegudado_telefonosvalor,
+        min: 899999,
         max: inmueble.inmueble_asegudado_telefonosvalor
       }
     ];
@@ -240,13 +240,6 @@ class Index extends Component {
         key
       ].innerText = `Menor o igual al total:$ ${Masknumbermoney.formatToMask(
         inmubles.inmueble_asegudado_joyasvalor
-      )} `;
-    }
-    if (e.target.value === "3") {
-      textTotal[
-        key
-      ].innerText = `Valor total igual:$ ${Masknumbermoney.formatToMask(
-        inmubles.inmueble_asegudado_telefonosvalor
       )} `;
     }
 
