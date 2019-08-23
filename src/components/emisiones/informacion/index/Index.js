@@ -382,7 +382,7 @@ class Index extends Component {
         } else {
           contents[key]["error1"] = false;
         }
-        if (v >= 10000001) {
+        if (v >= 4000001) {
           contents[key]["error2"] = true;
           disableBtn = true;
         } else {
