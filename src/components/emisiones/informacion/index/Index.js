@@ -222,27 +222,25 @@ class Index extends Component {
     let inmubles = this.state.inmueble;
     let textTotal = document.querySelectorAll(".total-value");
     if (e.target.value === "0") {
-      textTotal[
-        key
-      ].innerText = `Menor o igual al total:$ ${Masknumbermoney.formatToMask(
+      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
         inmubles.contenido_asegudado_valor
       )} `;
     }
     if (e.target.value === "1") {
-      textTotal[
-        key
-      ].innerText = `Menor o igual al total:$ ${Masknumbermoney.formatToMask(
+      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
         inmubles.inmueble_asegudado_obrasvalor
       )} `;
     }
     if (e.target.value === "2") {
-      textTotal[
-        key
-      ].innerText = `Menor o igual al total:$ ${Masknumbermoney.formatToMask(
+      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
         inmubles.inmueble_asegudado_joyasvalor
       )} `;
     }
-
+    if (e.target.value === "3") {
+      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
+        inmubles.inmueble_asegudado_telefonosvalor
+      )} `;
+    }
     contents[key][e.target.name] = e.target.value;
     this.setState({
       ...this.state,
@@ -323,65 +321,73 @@ class Index extends Component {
       contents[key]["error2"] = false;
       disableBtn = false;
     } else {
-      if (v <= limits.min) contents[key]["error1"] = true;
-      if (v >= limits.max) contents[key]["error2"] = true;
+      contents[key]["error1"] = false;
+      if (v <= limits.min) {
+        contents[key]["error1"] = true;
+      }
+      contents[key]["error1"] = false;
+      if (v >= limits.max) {
+        contents[key]["error2"] = true;
+      }
 
       disableBtn = true;
     }
-    if (contents[key].type === "0") {
-      if (v <= 0) {
-        contents[key]["error1"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error1"] = false;
+    if (disableBtn != true) {
+      if (contents[key].type === "0") {
+        if (v <= 0) {
+          contents[key]["error1"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error1"] = false;
+        }
+        if (v >= 50000001) {
+          contents[key]["error2"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error2"] = false;
+        }
       }
-      if (v >= 50000001) {
-        contents[key]["error2"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error2"] = false;
+      if (contents[key].type === "1") {
+        if (v <= 0) {
+          contents[key]["error1"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error1"] = false;
+        }
+        if (v >= 20000001) {
+          contents[key]["error2"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error2"] = false;
+        }
       }
-    }
-    if (contents[key].type === "1") {
-      if (v <= 0) {
-        contents[key]["error1"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error1"] = false;
+      if (contents[key].type === "2") {
+        if (v <= 899999) {
+          contents[key]["error1"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error1"] = false;
+        }
+        if (v >= 20000001) {
+          contents[key]["error2"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error2"] = false;
+        }
       }
-      if (v >= 20000001) {
-        contents[key]["error2"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error2"] = false;
-      }
-    }
-    if (contents[key].type === "2") {
-      if (v <= 899999) {
-        contents[key]["error1"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error1"] = false;
-      }
-      if (v >= 20000001) {
-        contents[key]["error2"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error2"] = false;
-      }
-    }
-    if (contents[key].type === "3") {
-      if (v <= 899999) {
-        contents[key]["error1"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error1"] = false;
-      }
-      if (v >= 10000001) {
-        contents[key]["error2"] = true;
-        disableBtn = true;
-      } else {
-        contents[key]["error2"] = false;
+      if (contents[key].type === "3") {
+        if (v <= 899999) {
+          contents[key]["error1"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error1"] = false;
+        }
+        if (v >= 10000001) {
+          contents[key]["error2"] = true;
+          disableBtn = true;
+        } else {
+          contents[key]["error2"] = false;
+        }
       }
     }
     contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
