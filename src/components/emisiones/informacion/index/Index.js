@@ -216,7 +216,7 @@ class Index extends Component {
       showPopUpPersona: showPopUpPersona
     });
   };
-
+  // validate text total
   updateContent = key => e => {
     let contents = this.state.contents;
     let inmubles = this.state.inmueble;
