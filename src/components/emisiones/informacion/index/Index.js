@@ -222,24 +222,34 @@ class Index extends Component {
     let inmubles = this.state.inmueble;
     let textTotal = document.querySelectorAll(".total-value");
     if (e.target.value === "0") {
-      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
-        inmubles.contenido_asegudado_valor
-      )} `;
+      textTotal[key].innerText = `Total:$ ${
+        inmubles.contenido_asegudado_valor > 50000000
+          ? "50.000.000"
+          : Masknumbermoney.formatToMask(inmubles.contenido_asegudado_valor)
+      } `;
     }
     if (e.target.value === "1") {
-      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
-        inmubles.inmueble_asegudado_obrasvalor
-      )} `;
+      textTotal[key].innerText = `Total:$ ${
+        inmubles.inmueble_asegudado_obrasvalor > 20000000
+          ? "20.000.000"
+          : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_obrasvalor)
+      } `;
     }
     if (e.target.value === "2") {
-      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
-        inmubles.inmueble_asegudado_joyasvalor
-      )} `;
+      textTotal[key].innerText = `Total:$ ${
+        inmubles.inmueble_asegudado_joyasvalor > 20000000
+          ? "20.000.000"
+          : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_joyasvalor)
+      } `;
     }
     if (e.target.value === "3") {
-      textTotal[key].innerText = `Total:$ ${Masknumbermoney.formatToMask(
-        inmubles.inmueble_asegudado_telefonosvalor
-      )} `;
+      textTotal[key].innerText = `Total:$ ${
+        inmubles.inmueble_asegudado_telefonosvalor > 4000000
+          ? "4.000.000"
+          : Masknumbermoney.formatToMask(
+              inmubles.inmueble_asegudado_telefonosvalor
+            )
+      } `;
     }
     contents[key][e.target.name] = e.target.value;
     this.setState({
