@@ -298,9 +298,7 @@ class Helpers {
     Loading.toggle(true);
     let data = null;
     let queryString = window.location.search.replace("?", "").split("&");
-    if (localStorage.getItem("JaccessToken")) {
-      return;
-    }
+
     let parameters = {};
     window.history.pushState({}, document.title, window.location.pathname);
     for (let i = 0; i < queryString.length; i++) {
