@@ -566,19 +566,21 @@ class Index extends Component {
                         <b>Contenidos</b>: $ 12.000.000
                       </p>
                       <p>
-                        <b>Joyas</b>: $ 3.000.000
-                      </p>
-                      <p>
-                        <b>Teléfonos Móviles:</b> Requiere relación detallada
-                        para todos
+                        <b>Joyas</b>: $ 2.000.000
                       </p>
                     </div>
                     <div className="col col-sm-12 col-md-6 col-lg-6">
                       <p>
-                        <b>Obras de Arte:</b> $ 3.000.000
+                        <b>Obras de Arte:</b> $ 2.000.000
                       </p>
                       <p>
-                        <b>Contenidos Móviles:</b> $ 4.000.000
+                        <b>Contenidos Móviles:</b> $ 2.000.000
+                      </p>
+                    </div>
+                    <div className="col">
+                      <p>
+                        <b>Teléfonos Móviles:</b> Requiere relación detallada
+                        para todos
                       </p>
                     </div>
                     {this.state.celulares === true && (
@@ -590,16 +592,15 @@ class Index extends Component {
                         </p>
                       </div>
                     )}
-                    <div className="col col-sm-12 col-md-12 col-lg-12">
-                      <p className="text-center">
-                        Es importante conocer este tipo de artículos, esto nos
-                        permite al momento del siniestro <br />
-                        responder de forma efectiva de acuerdo a la necesidad.{" "}
-                      </p>
-                    </div>
                   </div>
                 </div>
-
+                <div className="col col-sm-12 col-md-12 col-lg-12">
+                  <p className="text-center">
+                    Es importante conocer este tipo de artículos, esto nos
+                    permite al momento del siniestro responder de forma efectiva
+                    de acuerdo a la necesidad.{" "}
+                  </p>
+                </div>
                 <div className="wrapper-more-items">
                   <div
                     className={
