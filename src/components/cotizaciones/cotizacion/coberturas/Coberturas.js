@@ -390,11 +390,13 @@ class Coberturas extends Component {
                 item.values[k].errors.push( `Valor Asegurado de Contenidos Móviles es ${(formatValue>=50000001 ? 'superior':'inferior')} al permitido. `);
                 return 1;
             }
+            break;
         case 9652:
                 if (formatValue >= 10000001 || formatValue <= 850000) {
                     item.values[k].errors.push( `Valor Asegurado de Teléfonos Móviles es ${(formatValue>=10000001 ? 'superior':'inferior')} al permitido. `);
                     return 1;
-                }            
+                }
+            break;           
 
     }
     }
