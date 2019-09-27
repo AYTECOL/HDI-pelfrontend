@@ -5,12 +5,12 @@ provider:
   runtime: nodejs8.10
   stage: dev
   region: us-east-1
-  account: {Ref: "AWS::AccountId"}
+  account: { Ref: "AWS::AccountId" }
   iamRoleStatements:
-      - Effect: "Allow"
-        Action:
-          - s3:PutItem
-        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    - Effect: "Allow"
+      Action:
+        - s3:PutItem
+      Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
 custom:
   s3Bucket: poliza-express-hogar-dev
@@ -48,7 +48,10 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+                  {
+                    "Fn::GetAtt":
+                      [WebsiteOriginAccessIdentity, S3CanonicalUserId],
+                  }
               Action:
                 - "s3:GetObject"
                 - "s3:PutObject"
@@ -69,7 +72,10 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+                  {
+                    "Fn::GetAtt":
+                      [WebsiteOriginAccessIdentity, S3CanonicalUserId],
+                  }
               Action:
                 - "s3:*"
               Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
@@ -86,8 +92,18 @@ resources:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
               Id: WebApp
               S3OriginConfig:
-                OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
-          Enabled: 'true'
+                OriginAccessIdentity:
+                  {
+                    "Fn::Join":
+                      [
+                        "",
+                        [
+                          "origin-access-identity/cloudfront/",
+                          { Ref: WebsiteOriginAccessIdentity },
+                        ],
+                      ],
+                  }
+          Enabled: "true"
           Aliases:
             - hogar-dev.libertyseguros.co
           DefaultRootObject: index.html
@@ -106,17 +122,18 @@ resources:
             MinTTL: 3600
             TargetOriginId: WebApp
             ForwardedValues:
-              QueryString: 'false'
+              QueryString: "false"
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
-          ViewerCertificate:
-            #Certificado DEV: 
+            ViewerCertificate:
+            MinimumProtocolVersion: TLSv1.2_2018
+            SslSupportMethod: sni-only
             AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
             #Certificado UAT: AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
             #Certificado PROD:AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
-            SslSupportMethod: sni-only
+
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:
-        'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+        "Fn::GetAtt": [WebAppCloudFrontDistribution, DomainName]
