@@ -151,11 +151,11 @@ class Index extends Component {
     });
   };
 
-  removeContent = () => {
+  removeContent = key => e => {
     let total = this.state.totalContent - 1;
     if (total < 0) total = 0;
     let contents = this.state.contents;
-    contents.pop();
+    contents.splice(e.target.id, 1);
     this.setState({
       ...this.state,
       totalContent: total,
@@ -730,8 +730,9 @@ class Index extends Component {
                           </div>
                           <div className="col col-1 text-center no-padding-left">
                             <span
+                              id={key}
                               className="trash"
-                              onClick={this.removeContent}
+                              onClick={this.removeContent(key)}
                             >
                               &nbsp;
                             </span>
