@@ -702,7 +702,7 @@ class Index extends Component {
                                 onChange={this.validateContent(key)}
                               />
                               <small className="form-text d-block text-left total-value">
-                                $ 0
+                                {item.value}
                               </small>
                               <small
                                 className={
