@@ -35,7 +35,13 @@ class Index extends Component {
       itemSelected: null,
       showPopUpPersona: false,
       errorPhone: false,
-      items: ["Contenidos", "Obras de Arte", "Joyas", "Celulares"],
+      items: [
+        "Contenido Fijo",
+        "Obras de Arte",
+        "Joyas",
+        "Celulares",
+        "Contenido Movil"
+      ],
       limits: []
     };
     this.updatePerson = this.updatePerson.bind(this);
@@ -97,12 +103,19 @@ class Index extends Component {
     let obras = false;
     let joyas = false;
     let celulares = false;
+    let contenidoMovil = false;
     if (typeof inmueble !== "undefined") {
       if (inmueble.contenido_asegudado === 1) {
         contenidos = true;
         if (inmueble.inmueble_asegudado_obras === 1) obras = true;
         if (inmueble.inmueble_asegudado_joyas === 1) joyas = true;
         if (inmueble.inmueble_asegudado_telefonos === 1) celulares = true;
+      }
+      if (
+        inmueble.distribution_of_insured_securities_split.valorAmparo
+          .valorAsegurado3044
+      ) {
+        contenidoMovil = true;
       }
     }
     const validateMinMax = [
@@ -121,6 +134,12 @@ class Index extends Component {
       {
         min: 899999,
         max: inmueble.inmueble_asegudado_telefonosvalor
+      },
+      {
+        min: 1,
+        max:
+          inmueble.distribution_of_insured_securities_split.valorAmparo
+            .valorAsegurado3044
       }
     ];
     this.setState({ limits: validateMinMax });
@@ -132,7 +151,8 @@ class Index extends Component {
       contenidos: contenidos,
       obras: obras,
       joyas: joyas,
-      celulares: celulares
+      celulares: celulares,
+      contenidomovil: contenidoMovil
     });
     Loading.toggle(false);
   }
@@ -151,11 +171,11 @@ class Index extends Component {
     });
   };
 
-  removeContent = () => {
+  removeContent = key => e => {
     let total = this.state.totalContent - 1;
     if (total < 0) total = 0;
     let contents = this.state.contents;
-    contents.pop();
+    contents.splice(e.target.id, 1);
     this.setState({
       ...this.state,
       totalContent: total,
@@ -222,32 +242,44 @@ class Index extends Component {
     let inmubles = this.state.inmueble;
     let textTotal = document.querySelectorAll(".total-value");
     if (e.target.value === "0") {
-      textTotal[key].innerText = `Maximo:$ ${
+      textTotal[key].innerText = `Maximo: ${
         inmubles.contenido_asegudado_valor > 50000000
           ? "50.000.000"
           : Masknumbermoney.formatToMask(inmubles.contenido_asegudado_valor)
       } `;
     }
     if (e.target.value === "1") {
-      textTotal[key].innerText = `Maximo:$ ${
+      textTotal[key].innerText = `Maximo: ${
         inmubles.inmueble_asegudado_obrasvalor > 20000000
           ? "20.000.000"
           : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_obrasvalor)
       } `;
     }
     if (e.target.value === "2") {
-      textTotal[key].innerText = `Maximo:$ ${
+      textTotal[key].innerText = `Maximo: ${
         inmubles.inmueble_asegudado_joyasvalor > 20000000
           ? "20.000.000"
           : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_joyasvalor)
       } `;
     }
     if (e.target.value === "3") {
-      textTotal[key].innerText = `Maximo:$ ${
+      textTotal[key].innerText = `Maximo: ${
         inmubles.inmueble_asegudado_telefonosvalor > 4000000
           ? "4.000.000"
           : Masknumbermoney.formatToMask(
               inmubles.inmueble_asegudado_telefonosvalor
+            )
+      } `;
+    }
+
+    if (e.target.value === "4") {
+      textTotal[key].innerText = `Maximo: ${
+        inmubles.distribution_of_insured_securities_split.valorAmparo
+          .valorAsegurado3044 > 20000000
+          ? "20.000.000"
+          : Masknumbermoney.formatToMask(
+              inmubles.distribution_of_insured_securities_split.valorAmparo
+                .valorAsegurado3044
             )
       } `;
     }
@@ -566,19 +598,21 @@ class Index extends Component {
                         <b>Contenidos</b>: $ 12.000.000
                       </p>
                       <p>
-                        <b>Joyas</b>: $ 3.000.000
-                      </p>
-                      <p>
-                        <b>Teléfonos Móviles:</b> Requiere relación detallada
-                        para todos
+                        <b>Joyas</b>: $ 2.000.000
                       </p>
                     </div>
                     <div className="col col-sm-12 col-md-6 col-lg-6">
                       <p>
-                        <b>Obras de Arte:</b> $ 3.000.000
+                        <b>Obras de Arte:</b> $ 2.000.000
                       </p>
                       <p>
-                        <b>Contenidos Móviles:</b> $ 4.000.000
+                        <b>Contenidos Móviles:</b> $ 2.000.000
+                      </p>
+                    </div>
+                    <div className="col">
+                      <p>
+                        <b>Teléfonos Móviles:</b> Requiere relación detallada
+                        para todos
                       </p>
                     </div>
                     {this.state.celulares === true && (
@@ -590,16 +624,15 @@ class Index extends Component {
                         </p>
                       </div>
                     )}
-                    <div className="col col-sm-12 col-md-12 col-lg-12">
-                      <p className="text-center">
-                        Es importante conocer este tipo de artículos, esto nos
-                        permite al momento del siniestro <br />
-                        responder de forma efectiva de acuerdo a la necesidad.{" "}
-                      </p>
-                    </div>
                   </div>
                 </div>
-
+                <div className="col col-sm-12 col-md-12 col-lg-12">
+                  <p className="text-center">
+                    Es importante conocer este tipo de artículos, esto nos
+                    permite al momento del siniestro responder de forma efectiva
+                    de acuerdo a la necesidad.{" "}
+                  </p>
+                </div>
                 <div className="wrapper-more-items">
                   <div
                     className={
@@ -627,6 +660,8 @@ class Index extends Component {
                                       k === 0) ||
                                       (this.state.obras === true && k === 1) ||
                                       (this.state.joyas === true && k === 2) ||
+                                      (this.state.contenidomovil === true &&
+                                        k === 4) ||
                                       (this.state.celulares === true &&
                                         k === 3)) && (
                                       <option value={k}>{i}</option>
@@ -667,7 +702,7 @@ class Index extends Component {
                                 onChange={this.validateContent(key)}
                               />
                               <small className="form-text d-block text-left total-value">
-                                $ 0
+                                {item.value}
                               </small>
                               <small
                                 className={
@@ -729,8 +764,9 @@ class Index extends Component {
                           </div>
                           <div className="col col-1 text-center no-padding-left">
                             <span
+                              id={key}
                               className="trash"
-                              onClick={this.removeContent}
+                              onClick={this.removeContent(key)}
                             >
                               &nbsp;
                             </span>
