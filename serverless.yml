@@ -1,7 +1,7 @@
 service: poliza-express-hogar
 
 custom:
-  default_stage: nonprod
+  default_stage: dev
   s3Bucket: poliza-express-hogar
   s3BucketPDF: poliza-express-hogar-pdf-nonprod
 
