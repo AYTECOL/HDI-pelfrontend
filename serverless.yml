@@ -58,10 +58,7 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
-                  {
-                    "Fn::GetAtt":
-                      [WebsiteOriginAccessIdentity, S3CanonicalUserId],
-                  }
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
                 - "s3:GetObject"
                 - "s3:PutObject"
@@ -82,10 +79,7 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
-                  {
-                    "Fn::GetAtt":
-                      [WebsiteOriginAccessIdentity, S3CanonicalUserId],
-                  }
+                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
               Action:
                 - "s3:*"
               Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
@@ -124,18 +118,8 @@ resources:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
               Id: WebApp
               S3OriginConfig:
-                OriginAccessIdentity:
-                  {
-                    "Fn::Join":
-                      [
-                        "",
-                        [
-                          "origin-access-identity/cloudfront/",
-                          { Ref: WebsiteOriginAccessIdentity },
-                        ],
-                      ],
-                  }
-          Enabled: "true"
+                OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
+          Enabled: 'true'
           Aliases:
             - hogar-uat.libertyseguros.co
           DefaultRootObject: index.html
@@ -154,7 +138,7 @@ resources:
             MinTTL: 3600
             TargetOriginId: WebApp
             ForwardedValues:
-              QueryString: "false"
+              QueryString: 'false'
               Cookies:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
@@ -168,4 +152,5 @@ resources:
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:
-        "Fn::GetAtt": [WebAppCloudFrontDistribution, DomainName]
+        'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+
