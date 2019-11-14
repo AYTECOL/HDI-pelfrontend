@@ -1,20 +1,30 @@
 service: poliza-express-hogar
 
+custom:
+  default_stage: dev
+  s3Bucket: poliza-express-hogar
+  s3BucketPDF: poliza-express-hogar-pdf-dev
+
 provider:
   name: aws
   runtime: nodejs8.10
   stage: nonprod
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
+  Tags:
+  # Set Tags for Resource
+  stackTags:
+    lm_troux_uid: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
+    lm_app: "CO_HOME_AWS"
+    lm_app_env: ${self:custom.stage}
+    lm_sbu: INTL
+    intl_country: co
+    intl_region: latam
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - s3:PutItem
       Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
-
-custom:
-  s3Bucket: poliza-express-hogar-nonprod
-  s3BucketPDF: poliza-express-hogar-pdf-nonprod
 
 package:
   include:
@@ -87,6 +97,28 @@ resources:
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
+        Tags:
+            -
+              Key: Name
+              Value: CloudFrontLibertyBucket
+            -
+              Key: lm_troux_uid
+              Value: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
+            -
+              Key: lm_app
+              Value: 'CO_HOME_AWS'
+            -
+              Key: lm_app_env
+              Value: dev
+            -
+              Key: lm_sbu
+              Value: INTL
+            -
+              Key: intl_country
+              Value: co
+            -
+              Key: intl_region
+              Value: latam  
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
