@@ -8,7 +8,7 @@ custom:
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: nonprod
+  stage: prod
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
   Tags:
@@ -26,6 +26,13 @@ provider:
           - s3:PutItem
         Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
 
+<<<<<<< HEAD
+=======
+custom:
+  s3Bucket: poliza-express-hogar
+  s3BucketPDF: poliza-express-hogar-pdf-prod
+
+>>>>>>> b637c8bbc78d95f8ba28f5ad83da5f4deb6df899
 package:
   include:
   # - .git/**
@@ -121,7 +128,7 @@ resources:
                 OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-            - hogar-uat.libertyseguros.co
+            - hogar.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
