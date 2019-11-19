@@ -142,8 +142,7 @@ class Index extends Component {
       },
       {
         min: 1,
-        max:
-          value_to_quotate
+        max: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
       }
     ];
     this.setState({ limits: validateMinMax });
