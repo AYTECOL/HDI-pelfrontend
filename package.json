@@ -53,6 +53,7 @@
   },
   "browserslist": [],
   "devDependencies": {
+    "@types/googlemaps": "^3.38.0",
     "enzyme": "^3.10.0",
     "jest-sonar-reporter": "^2.0.0",
     "react-test-renderer": "^16.8.6"
