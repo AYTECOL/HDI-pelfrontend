@@ -28,6 +28,7 @@ class Index extends Component {
       formatDate: formatDate,
       persons: [],
       contents: [],
+      quote_contenidomovil: 0,
       inmueble: {},
       area: "",
       disableBtn: false,
@@ -63,6 +64,17 @@ class Index extends Component {
     let data = await QuoteIussedById.get(this.props.match.params.id);
     let inmueble = data.risk_valoration_info.Item;
     let persons = this.state.persons;
+
+    const { values } = data.plan_selected_info.Item.coverages.find(
+      ({ code }) => code == 9693
+    ) || { values: undefined };
+
+    const coverageValue = values && values.find(({ code }) => code == 3044);
+
+    const value_to_quotate =
+      (coverageValue && coverageValue.value_to_quotate) || 0;
+
+    this.setState({ quote_contenidomovil: value_to_quotate });
     if (typeof data.quote_iussed_info.Item !== "undefined") {
       let items = data.quote_iussed_info.Item;
       persons.push(items.taker);
@@ -137,9 +149,7 @@ class Index extends Component {
       },
       {
         min: 1,
-        max:
-          inmueble.distribution_of_insured_securities_split.valorAmparo
-            .valorAsegurado3044
+        max: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
       }
     ];
     this.setState({ limits: validateMinMax });
@@ -238,6 +248,7 @@ class Index extends Component {
   };
   // validate text total
   updateContent = key => e => {
+    const value_to_quotate = this.state.quote_contenidomovil;
     let contents = this.state.contents;
     let inmubles = this.state.inmueble;
     let textTotal = document.querySelectorAll(".total-value");
@@ -274,13 +285,9 @@ class Index extends Component {
 
     if (e.target.value === "4") {
       textTotal[key].innerText = `Maximo: ${
-        inmubles.distribution_of_insured_securities_split.valorAmparo
-          .valorAsegurado3044 > 20000000
+        value_to_quotate > 20000000
           ? "20.000.000"
-          : Masknumbermoney.formatToMask(
-              inmubles.distribution_of_insured_securities_split.valorAmparo
-                .valorAsegurado3044
-            )
+          : Masknumbermoney.formatToMask(value_to_quotate)
       } `;
     }
     contents[key][e.target.name] = e.target.value;
@@ -701,9 +708,7 @@ class Index extends Component {
                                 value={item.value}
                                 onChange={this.validateContent(key)}
                               />
-                              <small className="form-text d-block text-left total-value">
-                                {item.value}
-                              </small>
+                              <small className="form-text d-block text-left total-value"></small>
                               <small
                                 className={
                                   "form-text only-errors " +
