@@ -67,11 +67,11 @@ node('linux'){
     echo "Working in env: ${countryParams.countryEnv}"
     
     stage('zipping Files'){
-        sh 'zip -r infra.zip infra'
-		sh 'zip -r prod_params.zip prod_params'
+        sh 'zip -r public.zip public'
+		sh 'zip -r src.zip src'
     }
     stage('Upload to Artifactory'){
-        def artifacts = ['infra.zip','prod_params.zip','prod_Jenkinsfile']
+        def artifacts = ['public.zip','src.zip','package.json']
         artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
     }
     stage('Upload to Artifactory Prod'){
