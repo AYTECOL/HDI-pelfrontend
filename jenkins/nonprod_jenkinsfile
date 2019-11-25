@@ -75,7 +75,7 @@ node('linux'){
         artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
     }
     stage('Upload to Artifactory Prod'){
-       promoteToProd(email:'andres.gallardo@libertycolombia.com', version:ARTIFACT_VERSION){}
+       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION){}
 }
     
  }
