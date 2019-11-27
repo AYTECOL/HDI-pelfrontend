@@ -73,7 +73,7 @@ node('linux'){
     stage('Upload to Artifactory'){
     echo "aqui estoy 0"
         def artifacts = ['public.zip','src.zip','package.json']
-        echo "aqui estoy 1"
+        echo ARTIFACT_VERSION
         artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
         echo "aqui estoy 2"
     }
