@@ -15,7 +15,7 @@ node('linux') {
     stage('zipping Files'){
         //sh 'zip -r public.zip public'
 		//sh 'zip -r src.zip src'
-       zip dir: 'pelhfrontend', glob: '', zipFile: 'intl-co-ehome-pelhfrontend.zip'
+       zip dir: '', glob: '', zipFile: 'intl-co-ehome-pelhfrontend.zip'
     }
     stage('Upload to Artifactory'){
         def artifacts = ['intl-co-ehome-pelhfrontend.zip']
