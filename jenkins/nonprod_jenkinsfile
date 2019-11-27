@@ -1,7 +1,7 @@
-library ('utils@master') _
+@Library('utils@master') _
 import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
-def MAJOR_VERSION = "1"
-def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
+def MAJOR_VERSION = "1";
+def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}";
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
 node('linux'){
