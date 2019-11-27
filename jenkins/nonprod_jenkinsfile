@@ -71,8 +71,11 @@ node('linux'){
 		sh 'zip -r src.zip src'
     }
     stage('Upload to Artifactory'){
+    echo "aqui estoy 0"
         def artifacts = ['public.zip','src.zip','package.json']
+        echo "aqui estoy 1"
         artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
+        echo "aqui estoy 2"
     }
     stage('Upload to Artifactory Prod'){
        promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION){}
