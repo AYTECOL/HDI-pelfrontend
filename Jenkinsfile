@@ -18,7 +18,7 @@ node('linux') {
        zip dir: 'pelhfrontend', glob: '', zipFile: 'intl-co-ehome-pelhfrontend.zip'
     }
     stage('Upload to Artifactory'){
-        def artifacts = ['public.zip','src.zip','package.json']
+        def artifacts = ['intl-co-ehome-pelhfrontend.zip']
        //artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
        artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION,packageType:'npm',appName:'intl-co-ehome-pelhfrontend'
     }
