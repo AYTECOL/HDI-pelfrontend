@@ -1,0 +1,18 @@
+@Library('utils@master') _
+import com.lmig.intl.cloud.jenkins.exception.BuildException
+import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
+
+node('linux'){
+
+	stage('Unziping Files'){
+			  sh 'unzip -l infra.zip'
+			  
+
+    stage('Proceed to Prod'){
+      input message: 'Proceed with Deploy to prod?', ok: 'Yes'
+    }
+
+    //deployToProd{
+        
+    //}
+  }
