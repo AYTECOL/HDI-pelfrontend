@@ -27,10 +27,10 @@ node('linux') {
        artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION,packageType:'npm',appName:'intl-co-ehome-pelhfrontend'
     }
 
-    
+
     stage('Upload to Artifactory Prod'){
        //promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', version:ARTIFACT_VERSION){}
-       promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', files:["intl-co-ehome-pelhfrontend.zip"], location:'.', appName:'intl-co-ehome-pelhfrontend', version:ARTIFACT_VERSION){}
+       promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', location:'.', appName:'intl-co-ehome-pelhfrontend', version:ARTIFACT_VERSION, files:["intl-co-ehome-pelhfrontend.zip"]){}
     } 
   
 }
