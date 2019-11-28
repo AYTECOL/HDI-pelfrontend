@@ -24,5 +24,5 @@ node('linux') {
     }
 }
 stage('Upload to Artifactory Prod'){
-       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION){}
+       promoteToProd(email:'CesarA.Mejia@Libertycolombia.com', version:ARTIFACT_VERSION){}
 }
