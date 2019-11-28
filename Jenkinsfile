@@ -24,5 +24,6 @@ node('linux') {
     }
 }
 stage('Upload to Artifactory Prod'){
-       promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', version:ARTIFACT_VERSION){}
+       //promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', version:ARTIFACT_VERSION){}
+       promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', files:["intl-co-ehome-pelhfrontend.zip"], location:'.', appName:'intl-co-ehome-pelhfrontend', version:APP_VERSION){}
 }
