@@ -3,13 +3,6 @@ import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
 def MAJOR_VERSION = "1";
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}";
 
-properties([
-	parameters([
-		string(defaultValue: '', description: 'The build version to be deployed', name: 'APP_VERSION'),
-    choice(choices: 'dev\nonprod\nprod', description: 'The environment to be deployed', name: 'ENVIRONMENT'),
-    choice(choices: "Claire Montgomery\nMichael O'Reilly\nMark McKim\nMichael Wallace\nChristopher Mowbray", description: 'The name of the approver (only required for prod)', name: 'APPROVER')
-	])
-])
 
 node('linux') {
     stage('SCM') {
@@ -32,7 +25,7 @@ node('linux') {
     }
 }
 script {
-  if(ENVIRONMENT == 'prod') {
+  if( ${countryParams.countryEnv} == 'prod') {
 stage('Upload to Artifactory Prod'){
        //promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', version:ARTIFACT_VERSION){}
        promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', files:["intl-co-ehome-pelhfrontend.zip"], location:'.', appName:'intl-co-ehome-pelhfrontend', version:ARTIFACT_VERSION){}
