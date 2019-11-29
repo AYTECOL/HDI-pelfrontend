@@ -30,7 +30,14 @@ node('linux') {
 
     stage('Upload to Artifactory Prod'){
        //promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', version:ARTIFACT_VERSION){}
-       promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', location:'.', appName:'intl-co-ehome-pelhfrontend', version:ARTIFACT_VERSION, files:["intl-co-ehome-pelhfrontend.zip"]){}
+      // promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', location:'.', appName:'intl-co-ehome-pelhfrontend', version:ARTIFACT_VERSION, files:["intl-co-ehome-pelhfrontend.zip"]){}
+     promoteToProd(
+           email:'Andres.Gallardo@Libertycolombia.com',
+           promoteArtifact: true,
+           appName:'intl-co-ehome-pelhfrontend',
+           packageType:'npm',
+           version: ARTIFACT_VERSION
+        ){}
     } 
   
 }
