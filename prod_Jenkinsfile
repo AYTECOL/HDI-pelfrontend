@@ -5,7 +5,7 @@ import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
 node('linux'){
 
 	stage('Unziping Files'){
-			  sh 'unzip -l infra.zip'
+			  sh 'unzip -l intl-co-ehome-pelhfrontend.zip.zip'
 			  
 
     stage('Proceed to Prod'){
