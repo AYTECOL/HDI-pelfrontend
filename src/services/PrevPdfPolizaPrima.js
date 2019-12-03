@@ -1,5 +1,5 @@
 import Api from "./Api";
-import Helpers from "../common/helpers/helpers/Helpers";
+import ConsultaPersonas from "./ConsultaPersonas";
 
 const BaseUrl = "/prev-pdf-poliza-prima/";
 
@@ -7,7 +7,7 @@ let _index = 0;
 
 class PrevPdfPolizaPrima {
     static async get(plan, quoteId) {
-        let user = await Helpers.getUser();
+        let user = await ConsultaPersonas.getUser();
         try {
             return await Api.post(BaseUrl + quoteId, plan, undefined, undefined, {
                 pelhauthorization: user !== null ? user["accessToken"] : ""

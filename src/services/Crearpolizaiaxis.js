@@ -1,7 +1,7 @@
 import Api from './Api';
 import {UrlCrearpolizaiaxis} from "../config";
 import momentJs from 'moment';
-import Helpers from "../common/helpers/helpers/Helpers";
+import ConsultaPersonas from './ConsultaPersonas';
 
 const BaseUrl = "/crearpolizaiaxis";
 const Url = UrlCrearpolizaiaxis;
@@ -314,7 +314,7 @@ class Crearpolizaiaxis {
     };
 
     static async save(data) {
-        let user = await Helpers.getUser();
+        let user = await ConsultaPersonas.getUser();
         let response = await Api.post(BaseUrl, data, Url, undefined, {
             Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
         });

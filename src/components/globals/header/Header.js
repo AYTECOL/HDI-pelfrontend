@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './Header.scss';
 import logo from '../../../common/images/logo.png';
 import {withRouter} from "react-router-dom";
+import ConsultaPersonas from '../../../services/ConsultaPersonas';
 
 class Header extends Component {
 
@@ -45,7 +46,14 @@ class Header extends Component {
                                 </li>
                                 <li className="item-user"><a href="/#"><i className="icon2">&nbsp;</i>{this.state.name}
                                 </a></li>
-                                <li className="logout"><a href="/#"><i className="icon3">&nbsp;</i>Salir</a></li>
+                                <li className="logout">
+                                    <a 
+                                     href="/#"    
+                                     onClick={e => {
+                                        e.preventDefault();
+                                        ConsultaPersonas.logout();
+                                     }}
+                                    ><i className="icon3">&nbsp;</i>Salir</a></li>
                             </ul>
                         </div>
                     </div>

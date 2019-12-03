@@ -294,68 +294,6 @@ class Helpers {
     return y > 1 ? 11 - y : y;
   }
 
-  static async getUser() {
-    Loading.toggle(true);
-    let data = null;
-    let queryString = window.location.search.replace("?", "").split("&");
-
-    let parameters = {};
-    window.history.pushState({}, document.title, window.location.pathname);
-    for (let i = 0; i < queryString.length; i++) {
-      let d = queryString[i].split("=");
-      if (typeof d[1] !== "undefined") parameters[d[0]] = d[1];
-    }
-    if (typeof parameters["refer"] !== "undefined") {
-      let dataRquest = await AccessToken.get(parameters["refer"]);
-      if (dataRquest !== null) {
-        dataRquest["refer"] = parameters["refer"];
-        sessionStorage.clear();
-        sessionStorage.setItem(
-          "request",
-          Base64.encode(
-            Base64.encode(Base64.encode(JSON.stringify(dataRquest)))
-          )
-        );
-        data = dataRquest;
-      } else {
-        Helpers.goToError();
-      }
-    } else {
-      let dataRquest = sessionStorage.getItem("request");
-      if (typeof dataRquest === "undefined" || dataRquest === null) {
-        Helpers.goToError();
-        return data;
-      }
-
-      data = JSON.parse(
-        Base64.decode(Base64.decode(Base64.decode(dataRquest)))
-      );
-      if (typeof data["refer"] === "undefined") {
-        Helpers.goToError();
-        return data;
-      }
-
-      let dataRquestVerify = await AccessToken.get(data["refer"]);
-      if (
-        dataRquestVerify !== null &&
-        typeof dataRquestVerify !== "undefined" &&
-        typeof data["refer"] !== "undefined"
-      ) {
-        dataRquestVerify["refer"] = data["refer"];
-        sessionStorage.clear();
-        sessionStorage.setItem(
-          "request",
-          Base64.encode(
-            Base64.encode(Base64.encode(JSON.stringify(dataRquestVerify)))
-          )
-        );
-      } else {
-        Helpers.goToError();
-      }
-    }
-    return data;
-  }
-
   static getFormData() {
     let data = {};
     let els = document

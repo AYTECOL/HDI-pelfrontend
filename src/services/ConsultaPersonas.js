@@ -1,155 +1,113 @@
-import Service from './Api';
+import Service from "./Api";
+import { UrlPerson } from "../config";
+import Base64 from "../common/helpers/base64/Base64";
+import AccessToken from "./AccessToken";
 import Helpers from "../common/helpers/helpers/Helpers";
-import {UrlPerson} from "../config";
+import Loading from "../components/globals/loading/Loading";
 
 const UrlServicePerson = UrlPerson;
 const Baseurl = "/consultarpersona";
 
-/*const Default = {
-    "consultarPersonaRs": {
-        "infoResponse": {
-            "estado": {
-                "codigoEstado": 0,
-                "codigoEstadoServidor": 0,
-                "descripcionEstado": "OK",
-                "severidad": "INFO"
-            },
-            "requestID": 456234
-        },
-        "personaEncontradaIAXIS": true,
-        "personaRestringida": false,
-        "scoreEncontradoIAXIS": false,
-        "persona": {
-            "codigoPersona": 456252,
-            "tipoDocumento": {
-                "codigo": 36,
-                "nombre": "Cédula Ciudadanía"
-            },
-            "numeroDocumento": 7211726,
-            "tipoPersona": {
-                "codigo": 1,
-                "nombre": "Natural"
-            },
-            "personaNatural": {
-                "primerApellido": "BECERRA",
-                "primerNombre": "ORLANDO",
-                "segundoApellido": "BARRERA",
-                "segundoNombre": null,
-                "genero": {
-                    "codigo": 1,
-                    "nombre": "Hombre"
-                },
-                "fechaNacimiento": "1953-04-06T00:00:00.000-05:00",
-                "estadoCivil": {
-                    "codigo": null,
-                    "nombre": null
-                },
-                "ocupacion": {
-                    "codigo": 920,
-                    "nombre": "Comerciante Tiendas de Servicio"
-                }
-            },
-            "direccion": [
-                {
-                    "idDireccion": 1,
-                    "pais": {
-                        "codigo": 170,
-                        "nombre": "COLOMBIA"
-                    },
-                    "departamento": {
-                        "codigo": 15,
-                        "nombre": "Boyacá"
-                    },
-                    "ciudad": {
-                        "codigo": 238,
-                        "nombre": "DUITAMA"
-                    },
-                    "tipoDireccion": {
-                        "codigo": 9,
-                        "nombre": "Residencia"
-                    },
-                    "textoDireccion": "CR 18 N 20 - 10 "
-                },
-                {
-                    "idDireccion": 2,
-                    "pais": {
-                        "codigo": 170,
-                        "nombre": "COLOMBIA"
-                    },
-                    "departamento": {
-                        "codigo": 15,
-                        "nombre": "Boyacá"
-                    },
-                    "ciudad": {
-                        "codigo": 238,
-                        "nombre": "DUITAMA"
-                    },
-                    "tipoDireccion": {
-                        "codigo": 9,
-                        "nombre": "Residencia"
-                    },
-                    "textoDireccion": "KR/ 18  20 10"
-                }
-            ],
-            "contacto": [
-                {
-                    "tipoContacto": {
-                        "codigo": 1,
-                        "nombre": "Teléfono"
-                    },
-                    "idContacto": 1,
-                    "textoContacto": 7602511
-                },
-                {
-                    "tipoContacto": {
-                        "codigo": 3,
-                        "nombre": "E-mail"
-                    },
-                    "idContacto": 3,
-                    "textoContacto": "456252ESTACIONDELAVADO@HOTMAIL.COM"
-                },
-                {
-                    "tipoContacto": {
-                        "codigo": 6,
-                        "nombre": "Tfno. móvil"
-                    },
-                    "idContacto": 2,
-                    "textoContacto": 3112312350
-                }
-            ]
-        },
-        "informacionSARLAFT": {
-            "vigente": false
-        }
+class ConsultaPersonas {
+  static key = "request";
+  static async getUser() {
+    Loading.toggle(true);
+    /**
+     * @type {string|null}
+     */
+    let data = null;
+    let queryString = window.location.search.replace("?", "").split("&");
+
+    let parameters = {};
+    window.history.pushState({}, document.title, window.location.pathname);
+    for (let i = 0; i < queryString.length; i++) {
+      let d = queryString[i].split("=");
+      if (typeof d[1] !== "undefined") parameters[d[0]] = d[1];
     }
-};*/
+    if (typeof parameters["refer"] !== "undefined") {
+      let dataRquest = await AccessToken.get(parameters["refer"]);
+      if (dataRquest !== null) {
+        dataRquest["refer"] = parameters["refer"];
+        sessionStorage.clear();
+        sessionStorage.setItem(
+          ConsultaPersonas.key,
+          Base64.encode(
+            Base64.encode(Base64.encode(JSON.stringify(dataRquest)))
+          )
+        );
+        data = dataRquest;
+      } else {
+        Helpers.goToError();
+      }
+    } else {
+      let dataRquest = sessionStorage.getItem(ConsultaPersonas.key);
+      if (typeof dataRquest === "undefined" || dataRquest === null) {
+        Helpers.goToError();
+        return data;
+      }
 
-class Consultapersonas {
-    static async get(type, value) {
-        let data = {
-            "consultarPersonaRq": {
-                "infoRequest": {
-                    "requestID": "456234",
-                    "fecha": "2017-02-17T00:00:00.000-05:00",
-                    "aplicacionCliente": "fefa",
-                    "terminal": "1",
-                    "ip": "1.1.1.1"
-                },
-                "tipoDocumento": {"codigo": type},
-                "numeroDocumento": value,
-                "consultarCreditScore": true,
-                "consultarAniosExperiencia": false
-            }
-        };
+      data = JSON.parse(
+        Base64.decode(Base64.decode(Base64.decode(dataRquest)))
+      );
+      if (typeof data["refer"] === "undefined") {
+        Helpers.goToError();
+        return data;
+      }
 
-        //return Default;
+      let dataRquestVerify = await AccessToken.get(data["refer"]);
+      if (
+        dataRquestVerify !== null &&
+        typeof dataRquestVerify !== "undefined" &&
+        typeof data["refer"] !== "undefined"
+      ) {
+        dataRquestVerify["refer"] = data["refer"];
+        sessionStorage.clear();
+        sessionStorage.setItem(
+          ConsultaPersonas.key,
+          Base64.encode(
+            Base64.encode(Base64.encode(JSON.stringify(dataRquestVerify)))
+          )
+        );
+      } else {
+        Helpers.goToError();
+      }
+    }
+    return data;
+  }
 
-        let token = await Helpers.getUser();
-        token = token === null ? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudGUiOiI0MDkwODMzIiwiYXBwIjoiQ09UV0VCIiwibm9tYnJlVXN1YXJpbyI6IiwgQVNFU09SSUFTIEVOIFNFR1VST1MgVVJJQkUgTE9QRVogWSBDSUEuIExUREEuIChDb2xvbWJpYSkiLCJwZXJmaWwiOiJURF9DT1RXRUIiLCJzdGljayI6IjIwMTkuMDUuMzEgMTEuNTMuMjcuNjE2IiwidXN1YXJpbyI6ImNjMTIzNDU1MDAiLCJjbGllbnRfaWQiOiJvSTVWa1Z6anpFUzQ3ODZYd0VoVkRBZHlOM0FwaWFUTSIsImNsaWVudF9zZWNyZXQiOiJNTmhySkdQNmNHNDE5Nkd0IiwiaWF0IjoxNTU5MzIxNjU1LCJleHAiOjE1NTk0MDgwNTV9.jUkQ0Hj3QlLBPzB0AIY03G1CUwjqEsTK46VzHsPU1qk' : token.accessToken;
-        return await Service.post(Baseurl, data, UrlServicePerson, undefined, {
-            "Authorization": "Bearer " + token
-        });
+  static async get(type, value) {
+    let data = {
+      consultarPersonaRq: {
+        infoRequest: {
+          requestID: "456234",
+          fecha: "2017-02-17T00:00:00.000-05:00",
+          aplicacionCliente: "fefa",
+          terminal: "1",
+          ip: "1.1.1.1"
+        },
+        tipoDocumento: { codigo: type },
+        numeroDocumento: value,
+        consultarCreditScore: true,
+        consultarAniosExperiencia: false
+      }
     };
+
+    //return Default;
+
+    let token = await ConsultaPersonas.getUser();
+    token =
+      token === null
+        ? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudGUiOiI0MDkwODMzIiwiYXBwIjoiQ09UV0VCIiwibm9tYnJlVXN1YXJpbyI6IiwgQVNFU09SSUFTIEVOIFNFR1VST1MgVVJJQkUgTE9QRVogWSBDSUEuIExUREEuIChDb2xvbWJpYSkiLCJwZXJmaWwiOiJURF9DT1RXRUIiLCJzdGljayI6IjIwMTkuMDUuMzEgMTEuNTMuMjcuNjE2IiwidXN1YXJpbyI6ImNjMTIzNDU1MDAiLCJjbGllbnRfaWQiOiJvSTVWa1Z6anpFUzQ3ODZYd0VoVkRBZHlOM0FwaWFUTSIsImNsaWVudF9zZWNyZXQiOiJNTmhySkdQNmNHNDE5Nkd0IiwiaWF0IjoxNTU5MzIxNjU1LCJleHAiOjE1NTk0MDgwNTV9.jUkQ0Hj3QlLBPzB0AIY03G1CUwjqEsTK46VzHsPU1qk"
+        : token.accessToken;
+    return await Service.post(Baseurl, data, UrlServicePerson, undefined, {
+      Authorization: "Bearer " + token
+    });
+  }
+
+  static logout() {
+    sessionStorage.removeItem(ConsultaPersonas.key);
+    document.location.replace("https://oficinaenlinea.libertyseguros.co");
+  }
 }
 
-export default Consultapersonas;
+export default ConsultaPersonas;

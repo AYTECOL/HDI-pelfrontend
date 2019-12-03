@@ -11,7 +11,7 @@ import PolizaEmitida from "./pages/polizaemitida/PolizaEmitida";
 import Emision from "./pages/emision/Emision";
 import NotFound from "./pages/notfound/NotFound";
 import ErrorNetwork from "./pages/errornetwork/ErrorNetwork";
-import Helpers from "./common/helpers/helpers/Helpers";
+import ConsultaPersonas from "./services/ConsultaPersonas";
 
 class App extends Component {
     _isMounted = false;
@@ -53,7 +53,7 @@ class App extends Component {
             ) {
                 this.setState({
                     ...this.state,
-                    data: await Helpers.getUser()
+                    data: await ConsultaPersonas.getUser()
                 });
             }
         }
