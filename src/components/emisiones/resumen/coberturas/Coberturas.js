@@ -265,13 +265,14 @@ class Coberturas extends Component {
     };
 
     render() {
+        const { coverturasTotal, plans, index }= this.state
         return (
             <div className="row row-max tabs-cotizaciones row_tab_0 ">
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
                     <div className="row" onClick={Helpers.toggleSlide(0)}>
                         <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
                             <h4>
-                                <span>{this.state.coverturasTotal}</span>Coberturas
+                                <span>{coverturasTotal}</span>Coberturas
                             </h4>
                         </div>
                         <div className="col-md-2">
@@ -291,9 +292,9 @@ class Coberturas extends Component {
                     </div>
 
                     <div className="wrapper-box-info">
-                        {typeof this.state.plans[this.state.index].coverages !==
+                        {typeof plans[index].coverages !==
                         "undefined" &&
-                        this.state.plans[this.state.index].coverages.map(
+                        plans[index].coverages.map(
                             (option, key) => (
                                 <div
                                     className={

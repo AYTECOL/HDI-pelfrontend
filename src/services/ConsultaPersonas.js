@@ -106,6 +106,7 @@ class ConsultaPersonas {
 
   static logout() {
     sessionStorage.removeItem(ConsultaPersonas.key);
+    document.location.replace("/");
     document.location.replace("https://oficinaenlinea.libertyseguros.co");
   }
 }
