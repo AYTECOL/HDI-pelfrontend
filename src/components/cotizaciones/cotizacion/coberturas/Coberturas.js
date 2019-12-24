@@ -403,8 +403,11 @@ class Coberturas extends Component {
     inputChange = (k, key, type) => e => {
         let plan = this.state.plan;
         let item = plan.coverages[key];
-        let hurtoCalificado = plan.coverages.filter((element) => { return element.code == 9692 })
-        let valueHurto = hurtoCalificado[0].values[0].value_to_quotate
+        const hurtoCalificado = plan.coverages.find((element) => element.code == 9692)
+        const valueHurto =
+          hurtoCalificado &&
+          hurtoCalificado.values &&
+          hurtoCalificado.values[0].value_to_quotate;
         //Input
         if (type === 1) {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
