@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import MomentJs from "moment";
+import DatePicker from "react-datepicker";
+import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
+
 import './Persona.scss';
 import Loading from "../../../../../components/globals/loading/Loading";
 import ConsultaPersonas from "../../../../../services/ConsultaPersonas";
@@ -6,10 +10,6 @@ import TypeDocuments from "../../../../cotizaciones/identificacion/forms/tipodoc
 import Validaridentificacion
     from "../../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
 import AutocompleteCities from "../../../../cotizaciones/identificacion/forms/autocompletecities/AutocompleteCities";
-import MomentJs from "moment";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 import UploadFile from "../../../../../services/UploadFile";
 import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
@@ -801,7 +801,7 @@ export default class Persona extends Component {
                                                         showMonthDropdown
                                                         showYearDropdown
                                                         scrollableYearDropdown
-                                                        yearDropdownItemNumber={60}
+                                                        yearDropdownItemNumber={100}
                                                         maxDate={new Date()}
                                                         disabled={this.state.person.fechadenacimientoDisabled}
                                                         className={"form-control " + (this.state.person.fechadenacimientoDisabled ? 'disabled' : '')} />
