@@ -21,7 +21,7 @@ class AutocompleteCities extends Component {
       originalOptions: {
         cities: []
       },
-      value: "",
+      value: this.props.value || "",
       empty: false,
       idElement: "",
       toggle: false,
@@ -29,10 +29,6 @@ class AutocompleteCities extends Component {
       valueLoadedCity: 0,
       valueLoadedDepartment: 0
     };
-    this.state.value =
-      typeof this.props.value === "undefined"
-        ? ""
-        : this.props.value.toString();
   }
 
   componentWillUnmount() {
@@ -42,22 +38,26 @@ class AutocompleteCities extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    this.getOptions();
     this.updateValue(this.props);
     this.unsubscribe = store.subscribe(() => {
-      let storeState = store.getState();
-      let city = storeState.cotizacion.identification.city;
-      let department = storeState.cotizacion.identification.department;
+      const storeState = store.getState();
+      const city = storeState.cotizacion.identification.city;
+      const department = storeState.cotizacion.identification.department;
       if (
         city !== this.state.valueLoadedCity ||
         department !== this.state.valueLoadedDepartment
       ) {
         if (this._isMounted) {
-          this.setState({
-            ...this.state,
-            valueLoadedCity: city,
-            valueLoadedDepartment: department
-          });
+          this.setState(
+            {
+              ...this.state,
+              valueLoadedCity: city,
+              valueLoadedDepartment: department
+            },
+            () => {
+              this.getOptions();
+            }
+          );
         }
       }
     });
@@ -81,29 +81,41 @@ class AutocompleteCities extends Component {
   async getOptions() {
     let data = await Cities.get();
     if (this._isMounted) {
-      this.setState({
-        ...this.state,
-        options: data,
-        originalOptions: data
-      });
-      setTimeout(() => {
-        this.getTextById();
-      }, 500);
+      this.setState(
+        {
+          ...this.state,
+          options: data,
+          originalOptions: data
+        },
+        () => {
+          this.getTextById();
+        }
+      );
     }
   }
 
   getTextById() {
-    let value = "";
-    for (let i = 0; i < this.state.options.cities.length; i++) {
-      let d = this.state.options.cities[i];
-      if (
-        this.state.valueLoadedCity === parseInt(d.code_city) &&
-        this.state.valueLoadedDepartment === parseInt(d.code_department)
-      ) {
-        value = d.department;
-        break;
-      }
-    }
+    /**
+     * @typedef City
+     * @type {object}
+     * @property {string} code_city
+     * @property {string} code_department
+     * @property {string} city
+     * @property {string} department
+     * @property {string} description
+     */
+
+    /**
+     *  @const  {City[]} cities
+     */
+    const { options, valueLoadedCity, valueLoadedDepartment } = this.state;
+    const { cities } = options;
+    const city = cities.find(
+      ({ code_city, code_department }) =>
+        valueLoadedCity === parseInt(code_city) &&
+        valueLoadedDepartment === parseInt(code_department)
+    );
+    const value = (city && city.description) || "";
     if (value !== "" && this._isMounted) {
       this.setState({
         ...this.state,
@@ -202,22 +214,26 @@ class AutocompleteCities extends Component {
     }, 200);
   };
 
-  searchData = value => {
-    value = value.target.value;
-    let optionsFilters = { cities: [] };
-    this.state.originalOptions.cities.map((option, key) => {
-      let item = option.city;
-      let search = item.toLowerCase().search(value.toLowerCase());
+  removeAccents(text) {
+    // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  searchData = ({ target: { value } }) => {
+    const { cities } = this.state.originalOptions;
+    const options = { cities: [] };
+    cities.forEach((option, key) => {
+      const city = this.removeAccents(option.city || "").toLowerCase();
+      const search = city.search(this.removeAccents(value.toLowerCase()));
       if (search !== -1 && search === 0) {
-        optionsFilters.cities[key] = option;
+        options.cities.push(option);
       }
-      return true;
     });
     this.setState({
       ...this.state,
       value: value,
       toggle: true,
-      options: optionsFilters,
+      options,
       empty: value === ""
     });
   };
