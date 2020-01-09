@@ -12,6 +12,10 @@ import { withRouter } from 'react-router-dom';
 class AutocompleteCities extends Component {
   _isMounted = false;
 
+  get nameInput() {
+    return typeof this.props.name === 'undefined' ? 'city' : this.props.name;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +29,6 @@ class AutocompleteCities extends Component {
       empty: false,
       idElement: '',
       toggle: false,
-      onChange: null,
       valueLoadedCity: 0,
       valueLoadedDepartment: 0
     };
@@ -98,6 +101,25 @@ class AutocompleteCities extends Component {
     }
   }
 
+  resetAddress() {
+    store.dispatch(
+      saveIdentificationValue({
+        name: 'address',
+        value: ''
+      })
+    );
+  }
+
+  resetCity() {
+    store.dispatch(
+      saveIdentificationValue({
+        name: this.nameInput,
+        value: ''
+      })
+    );
+    this.resetAddress();
+  }
+
   getTextById() {
     /**
      * @typedef City
@@ -143,6 +165,17 @@ class AutocompleteCities extends Component {
     }
   };
 
+  /**
+   * @param {({ name:string, value:any })[]} targets
+   */
+  changeTargets = targets => {
+    for (const { name, value } of targets) {
+      this.props.onChange({
+        target: { name, value }
+      });
+    }
+  };
+
   saveOption = option => e => {
     let code = option.code_city;
     let value = option.description;
@@ -177,43 +210,36 @@ class AutocompleteCities extends Component {
           value: codeDepartment
         })
       );
+      this.resetAddress();
       store.dispatch(saveDescriptionCity(description));
       this.setState({
         ...this.state,
-        value: value,
+        value,
         empty: false
       });
       if (typeof this.props.onChange !== 'undefined') {
-        this.props.onChange({
-          target: {
+        this.changeTargets([
+          {
             value: value,
             name: this.props.name
-          }
-        });
-        this.props.onChange({
-          target: {
+          },
+          {
             value: parseInt(code),
             name: 'city_code'
-          }
-        });
-        this.props.onChange({
-          target: {
+          },
+          {
             value: parseInt(codeDepartment),
             name: 'department_code'
-          }
-        });
-        this.props.onChange({
-          target: {
+          },
+          {
             value: city,
             name: 'city'
-          }
-        });
-        this.props.onChange({
-          target: {
+          },
+          {
             value: description,
             name: 'departamento'
           }
-        });
+        ]);
       }
     }, 200);
   };
@@ -223,7 +249,7 @@ class AutocompleteCities extends Component {
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
-  searchData = ({ target: { value } }) => {
+  searchData = ({ target: { value, name } }) => {
     const { cities } = this.state.originalOptions;
     const options = { cities: [] };
     cities.forEach((option, key) => {
@@ -233,13 +259,19 @@ class AutocompleteCities extends Component {
         options.cities.push(option);
       }
     });
-    this.setState({
-      ...this.state,
-      value: value,
-      toggle: true,
-      options,
-      empty: value === ''
-    });
+
+    this.setState(
+      {
+        ...this.state,
+        value: value,
+        toggle: true,
+        options,
+        empty: !value
+      },
+      () => {
+        this.state.empty && this.resetCity();
+      }
+    );
   };
 
   selectActive = (options, reverse) => {
@@ -302,46 +334,21 @@ class AutocompleteCities extends Component {
   };
 
   render() {
+    const { hideTitle, label, disabled } = this.props;
+    const { empty, value, toggle, options } = this.state;
     return (
-      <div
-        className={
-          'form-group autocomplete ' + (this.state.empty ? 'error' : '')
-        }
-      >
-        <label
-          className={
-            typeof this.props.hideTitle !== 'undefined' &&
-            this.props.hideTitle === true
-              ? 'hide'
-              : ''
-          }
-          htmlFor="city"
-        >
-          {typeof this.props.label === 'undefined'
-            ? 'Ciudad o municipio del hogar'
-            : this.props.label}
+      <div className={'form-group autocomplete ' + (empty ? 'error' : '')}>
+        <label className={hideTitle ? 'hide' : ''} htmlFor="city">
+          {!label ? 'Ciudad o municipio del hogar' : label}
         </label>
         <input
-          name={
-            typeof this.props.name === 'undefined' ? 'city' : this.props.name
-          }
+          name={this.nameInput}
           id="city"
           type="text"
-          className={
-            'form-control ' +
-            (typeof this.props.disabled === 'undefined'
-              ? ''
-              : this.props.disabled === true
-              ? 'disabled'
-              : '')
-          }
+          className={'form-control ' + (!!disabled ? 'disabled' : '')}
           placeholder="Ingresa ciudad o municipio del h..."
-          value={this.state.value}
-          disabled={
-            typeof this.props.disabled === 'undefined'
-              ? false
-              : this.props.disabled
-          }
+          value={value}
+          disabled={!!disabled}
           autoComplete="city"
           autoCorrect="off"
           autoCapitalize="none"
@@ -351,13 +358,10 @@ class AutocompleteCities extends Component {
         />
         <small className="form-text only-errors">
           Por favor ingrese la{' '}
-          {typeof this.props.label === 'undefined'
-            ? 'Ciudad o municipio del hogar'
-            : this.props.label}
-          .
+          {(!label && 'Ciudad o municipio del hogar') || label}.
         </small>
-        <ul className={(this.state.toggle ? 'show' : 'hide') + ' list-items'}>
-          {this.state.options.cities.map((option, key) => (
+        <ul className={(toggle ? 'show' : 'hide') + ' list-items'}>
+          {options.cities.map((option, key) => (
             <li
               key={key}
               value={option.code_city}
