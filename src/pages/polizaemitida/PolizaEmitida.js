@@ -136,8 +136,7 @@ class PolizaEmitida extends Component {
                   <br />
                   {typeof this.state.endoso !== "undefined" && (
                     <p onClick={this.getPdfEndoso}>
-                      <i>&nbsp;</i> Generar cotización en PDF del Anexo del
-                      Beneficiario Oneroso
+                      <i>&nbsp;</i> PDF Anexo Beneficiario Oneroso
                     </p>
                   )}
                 </div>
