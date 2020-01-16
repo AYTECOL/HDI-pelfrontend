@@ -1,13 +1,13 @@
 import Api from './Api';
 import Store from '../store';
-import Helpers from "../common/helpers/helpers/Helpers";
+import ConsultaPersonas from './ConsultaPersonas';
 
 const Url = "/quote";
 
 class IdentificationsCities {
     static async save() {
         let storeState = Store.getState();
-        let user = await Helpers.getUser();
+        let user = await ConsultaPersonas.getUser();
         let newUser = {};
         if (user !== null) for (let i in user) if (i !== 'accessToken' && i !== 'refer') newUser[i] = user[i];
         let data = {

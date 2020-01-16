@@ -294,7 +294,7 @@ class Index extends Component {
                                             <div className="row">
                                                 <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Conjunto cerrado</b></p>
-                                                    <p>Si</p>
+                                                    <p>{this.state.inmueble.cojunto_cerrado === 1 ? 'Si' : 'No'}</p>
                                                 </div>
                                                 <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Seguridad</b></p>

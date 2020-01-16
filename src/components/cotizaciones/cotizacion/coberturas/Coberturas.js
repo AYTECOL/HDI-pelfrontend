@@ -386,7 +386,11 @@ class Coberturas extends Component {
         let formatValue = Masknumbermoney.formatToNumber(item.values[k].value_show)
         switch (item.values[k].code) {
             case 3044:
-                if (formatValue >= valueHurto || formatValue <= 999999) {
+                if (formatValue > 50000000) {
+                    item.values[k].errors.push(`Valor Asegurado de Contenidos Móviles es ${(formatValue > 50000000 ? 'superior' : 'inferior')} al permitido. `);
+                    return 1;
+                }
+                if (formatValue >= valueHurto) {
                     item.values[k].errors.push(`Valor Asegurado de Contenidos Móviles es ${(formatValue >= valueHurto ? 'superior' : 'inferior')} al permitido. `);
                     return 1;
                 }
@@ -403,8 +407,11 @@ class Coberturas extends Component {
     inputChange = (k, key, type) => e => {
         let plan = this.state.plan;
         let item = plan.coverages[key];
-        let hurtoCalificado = plan.coverages.filter((element) => { return element.code == 9692 })
-        let valueHurto = hurtoCalificado[0].values[0].value_to_quotate
+        const hurtoCalificado = plan.coverages.find((element) => element.code == 9692)
+        const valueHurto =
+            hurtoCalificado &&
+            hurtoCalificado.values &&
+            hurtoCalificado.values[0].value_to_quotate;
         //Input
         if (type === 1) {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
