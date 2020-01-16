@@ -3,7 +3,6 @@ import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
 def MAJOR_VERSION = "1";
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}";
 
-
 node('linux') {
     stage('SCM') {
         checkout scm
@@ -12,32 +11,16 @@ node('linux') {
     def envUtil = new EnvConfigUtil()
     countryParams = envUtil.getCountryEnvDetails(env.JOB_NAME)
     echo "Working in env: ${countryParams.countryEnv}"
-
     
     stage('zipping Files'){
-        //sh 'zip -r public.zip public'
-		//sh 'zip -r src.zip src'
-       zip dir: '', glob: '', zipFile: 'intl-co-ehome-pelhfrontend.zip'
+        sh 'zip -r public.zip public'
+		sh 'zip -r src.zip src'
     }
-
-
     stage('Upload to Artifactory'){
-        def artifacts = ['intl-co-ehome-pelhfrontend.zip']
-       //artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
-       artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION,packageType:'npm',appName:'intl-co-ehome-pelhfrontend'
+        def artifacts = ['public.zip','src.zip','package.json']
+        artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
     }
-
-
-    stage('Upload to Artifactory Prod'){
-       //promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', version:ARTIFACT_VERSION){}
-      // promoteToProd(email:'Andres.Gallardo@Libertycolombia.com', location:'.', appName:'intl-co-ehome-pelhfrontend', version:ARTIFACT_VERSION, files:["intl-co-ehome-pelhfrontend.zip"]){}
-     promoteToProd(
-           email:'Andres.Gallardo@Libertycolombia.com',
-           promoteArtifact: true,
-           appName:'intl-co-ehome-pelhfrontend',
-           packageType:'npm',
-           version: ARTIFACT_VERSION
-        ){}
-    } 
-  
+}
+stage('Upload to Artifactory Prod'){
+       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION){}
 }

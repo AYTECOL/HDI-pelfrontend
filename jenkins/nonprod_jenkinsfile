@@ -1,7 +1,7 @@
-@Library('utils@master') _
-import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
-def MAJOR_VERSION = "1";
-def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}";
+library ('utils@master') _
+
+def MAJOR_VERSION = "1"
+def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
 node('linux'){
@@ -60,9 +60,9 @@ node('linux'){
 		sh 'curl -X POST  http://cunate:38a9806ece2c583ef858ffde13ae9498@10.142.137.77:8080/job/sahi-test/build?token=08b214cb68e0ed63132813dca24a7233'
 		echo 'Ver resultados test funcional en: 9 http://10.142.137.77:9999/_s_/dyn/pro/DBReports'
     
-	}
+	}*/
     
-    def envUtil = new EnvConfigUtil()
+     def envUtil = new EnvConfigUtil()
     countryParams = envUtil.getCountryEnvDetails(env.JOB_NAME)
     echo "Working in env: ${countryParams.countryEnv}"
     
@@ -71,13 +71,11 @@ node('linux'){
 		sh 'zip -r src.zip src'
     }
     stage('Upload to Artifactory'){
-    echo "aqui estoy 0"
         def artifacts = ['public.zip','src.zip','package.json']
-        echo ARTIFACT_VERSION
         artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
-        echo "aqui estoy 2"
     }
     stage('Upload to Artifactory Prod'){
-       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION){}
-    }*/
- }
+       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION)
+       }
+  }
+}
