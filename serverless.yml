@@ -1,30 +1,20 @@
 service: poliza-express-hogar
 
-custom:
-  default_stage: dev
-  s3Bucket: poliza-express-hogar-nonprod
-  s3BucketPDF: poliza-express-hogar-pdf-nonprod
-
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: nonprod
+  stage: prod
   region: us-east-1
-  account: { Ref: "AWS::AccountId" }
-  Tags:
-  # Set Tags for Resource
-  stackTags:
-    lm_troux_uid: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
-    lm_app: "CO_HOME_AWS"
-    lm_app_env: ${self:custom.stage}
-    lm_sbu: INTL
-    intl_country: co
-    intl_region: latam
+  account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - s3:PutItem
-      Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+      - Effect: "Allow"
+        Action:
+          - s3:PutItem
+        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+
+custom:
+  s3Bucket: poliza-express-hogar
+  s3BucketPDF: poliza-express-hogar-pdf-prod
 
 package:
   include:
@@ -91,28 +81,6 @@ resources:
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
-        Tags:
-            -
-              Key: Name
-              Value: CloudFrontLibertyBucket
-            -
-              Key: lm_troux_uid
-              Value: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
-            -
-              Key: lm_app
-              Value: 'CO_HOME_AWS'
-            -
-              Key: lm_app_env
-              Value: nonprod
-            -
-              Key: lm_sbu
-              Value: INTL
-            -
-              Key: intl_country
-              Value: co
-            -
-              Key: intl_region
-              Value: latam  
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
@@ -121,7 +89,7 @@ resources:
                 OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-            - hogar-uat.libertyseguros.co
+            - hogar.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -143,10 +111,10 @@ resources:
                 Forward: none
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
-            #Certificado DEV:
-            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
-            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
-            #Certificado PROD:AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
+            #Certificado DEV:AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #Certificado NONPROD: 
+            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
   Outputs:
