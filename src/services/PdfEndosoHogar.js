@@ -1,12 +1,12 @@
 import Api from './Api';
-import Helpers from "../common/helpers/helpers/Helpers";
+import ConsultaPersonas from './ConsultaPersonas';
 
 const BaseUrl = "/pdf-endoso-hogar/";
 let _index = 0;
 
 class PdfEndosoHogar {
     static async get(id) {
-        let user = await Helpers.getUser();
+        let user = await ConsultaPersonas.getUser();
         try {
             return await Api.get(BaseUrl + id, undefined, {
                 pelhauthorization: user !== null ? user['accessToken'] : ''

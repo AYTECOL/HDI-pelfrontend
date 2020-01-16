@@ -65,8 +65,15 @@ class Index extends Component {
     let inmueble = data.risk_valoration_info.Item;
     let persons = this.state.persons;
 
-    const { values } = data.plan_selected_info.Item.coverages.find((element) => { return element.code == 9693 });
-    const { value_to_quotate } = values && values.find((element) => { return element.code == 3044 }) || 0;
+    const { values } = data.plan_selected_info.Item.coverages.find(
+      ({ code }) => code == 9693
+    ) || { values: undefined };
+
+    const coverageValue = values && values.find(({ code }) => code == 3044);
+
+    const value_to_quotate =
+      (coverageValue && coverageValue.value_to_quotate) || 0;
+
     this.setState({ quote_contenidomovil: value_to_quotate });
     if (typeof data.quote_iussed_info.Item !== "undefined") {
       let items = data.quote_iussed_info.Item;
@@ -142,8 +149,7 @@ class Index extends Component {
       },
       {
         min: 1,
-        max:
-          value_to_quotate
+        max: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
       }
     ];
     this.setState({ limits: validateMinMax });
@@ -251,40 +257,38 @@ class Index extends Component {
         inmubles.contenido_asegudado_valor > 50000000
           ? "50.000.000"
           : Masknumbermoney.formatToMask(inmubles.contenido_asegudado_valor)
-        } `;
+      } `;
     }
     if (e.target.value === "1") {
       textTotal[key].innerText = `Maximo: ${
         inmubles.inmueble_asegudado_obrasvalor > 20000000
           ? "20.000.000"
           : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_obrasvalor)
-        } `;
+      } `;
     }
     if (e.target.value === "2") {
       textTotal[key].innerText = `Maximo: ${
         inmubles.inmueble_asegudado_joyasvalor > 20000000
           ? "20.000.000"
           : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_joyasvalor)
-        } `;
+      } `;
     }
     if (e.target.value === "3") {
       textTotal[key].innerText = `Maximo: ${
         inmubles.inmueble_asegudado_telefonosvalor > 4000000
           ? "4.000.000"
           : Masknumbermoney.formatToMask(
-            inmubles.inmueble_asegudado_telefonosvalor
-          )
-        } `;
+              inmubles.inmueble_asegudado_telefonosvalor
+            )
+      } `;
     }
 
     if (e.target.value === "4") {
       textTotal[key].innerText = `Maximo: ${
         value_to_quotate > 20000000
           ? "20.000.000"
-          : Masknumbermoney.formatToMask(
-            value_to_quotate
-          )
-        } `;
+          : Masknumbermoney.formatToMask(value_to_quotate)
+      } `;
     }
     contents[key][e.target.name] = e.target.value;
     this.setState({
@@ -510,7 +514,6 @@ class Index extends Component {
                       "Selecciona la fecha de inicio de vigencia"
                     }
                   />
-
                 </div>
               </div>
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -668,8 +671,8 @@ class Index extends Component {
                                         k === 4) ||
                                       (this.state.celulares === true &&
                                         k === 3)) && (
-                                        <option value={k}>{i}</option>
-                                      )}
+                                      <option value={k}>{i}</option>
+                                    )}
                                   </React.Fragment>
                                 ))}
                               </select>
@@ -705,9 +708,7 @@ class Index extends Component {
                                 value={item.value}
                                 onChange={this.validateContent(key)}
                               />
-                              <small className="form-text d-block text-left total-value">
-
-                              </small>
+                              <small className="form-text d-block text-left total-value"></small>
                               <small
                                 className={
                                   "form-text only-errors " +
@@ -746,8 +747,8 @@ class Index extends Component {
                                       <b>buscar</b>
                                     </p>
                                   ) : (
-                                      <p>{Index.showName(item.textFile)}</p>
-                                    )}
+                                    <p>{Index.showName(item.textFile)}</p>
+                                  )}
                                   <span>
                                     Formatos permitidos PDF, PNG, GIF, JPG
                                   </span>

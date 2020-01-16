@@ -60,7 +60,7 @@ class PolizaEmitida extends Component {
     a.style.display = "none";
     document.body.appendChild(a);
     a.href = "data:application/pdf;base64," + pdfEndoso;
-    a.setAttribute("download", "PdfEndosoHogar.pdf");
+    a.setAttribute("download", "BeneficiarioOnerosoHogar.pdf");
     a.click();
     document.body.removeChild(a);
     Loading.toggle(false);
@@ -136,7 +136,7 @@ class PolizaEmitida extends Component {
                   <br />
                   {typeof this.state.endoso !== "undefined" && (
                     <p onClick={this.getPdfEndoso}>
-                      <i>&nbsp;</i> Generar cotización en PDF endoso
+                      <i>&nbsp;</i> PDF Anexo Beneficiario Oneroso
                     </p>
                   )}
                 </div>

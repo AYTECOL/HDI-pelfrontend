@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 //Component
 import BtnContinue from '../forms/btncontinue/BtnContinue';
 
 import './Index.scss';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Card from "../../identificacion/card/Card";
 import store from "../../../../store";
 import PopUpPersona from '../../identificacion/popups/persona/Persona';
@@ -14,7 +14,7 @@ import CoberturasSummary from '../coberturas/Coberturas'
 import AsistenciasSummary from '../asistencias/Asistencias';
 import Loading from "../../../globals/loading/Loading";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
-import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
+import { AllPlans as AllPlansCreator, indexPlanSelected } from "../../../../actions";
 import AllPropertiesZones from "../../../../services/AllPropertiesZones";
 import AllBuildMaterial from "../../../../services/AllBuildMaterial";
 import AllBuildYears from "../../../../services/AllBuildYears";
@@ -36,7 +36,8 @@ class Index extends Component {
             inmueble: {
                 identificacion: {}
             },
-            typePerson: 1
+            typePerson: 1,
+            city: ""
         };
     }
 
@@ -87,16 +88,16 @@ class Index extends Component {
         let person = [];
         if (typeof items !== "undefined") {
 
-            if( items.taker.length !== 0 ){
+            if (items.taker.length !== 0) {
                 person.push(items.taker);
                 for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
             }
 
             [
-                {name: 'insured', role: 2},
-                {name: 'benefist', role: 3},
-                {name: 'onerous', role: 4},
-                {name: 'persons_aditionals', role: 5},
+                { name: 'insured', role: 2 },
+                { name: 'benefist', role: 3 },
+                { name: 'onerous', role: 4 },
+                { name: 'persons_aditionals', role: 5 },
             ].map((item, key) => {
                 if (typeof items[item.name] !== "undefined") {
                     for (let i = 0; i < items[item.name].length; i++) person.push(items[item.name][i]);
@@ -151,13 +152,13 @@ class Index extends Component {
             }
             let seguridad = await AllSecurity.get();
             let Map = {
-                "1": {name: "alarma"},
-                "2": {name: "caja_fuerte"},
-                "3": {name: "circuito_cerrado_tv"},
-                "5": {name: "puertas_control_domotico"},
-                "6": {name: "puertas_seguridad_blindada"},
-                "4": {name: "regulador_de_voltaje"},
-                "7": {name: "vigilancia_permanente"},
+                "1": { name: "alarma" },
+                "2": { name: "caja_fuerte" },
+                "3": { name: "circuito_cerrado_tv" },
+                "5": { name: "puertas_control_domotico" },
+                "6": { name: "puertas_seguridad_blindada" },
+                "4": { name: "regulador_de_voltaje" },
+                "7": { name: "vigilancia_permanente" },
             };
             for (let i = 0; i < seguridad.length; i++) {
                 if (typeof seguridad[i]['id'] !== "undefined" && typeof Map[seguridad[i]['id']] !== "undefined") {
@@ -175,13 +176,14 @@ class Index extends Component {
             persons: person,
             inmueble: inmueble,
             contents: data['contents'],
-            newSecurity: newSecurity
+            newSecurity: newSecurity,
+            city: person[0].location
         });
         store.dispatch(indexPlanSelected(0));
         store.dispatch(AllPlansCreator(plansLoader));
-        setTimeout(()=>{
+        setTimeout(() => {
             Loading.toggle(false);
-        },1500);
+        }, 1500);
     }
 
     showAnyPopup(name, index, type) {
@@ -222,9 +224,9 @@ class Index extends Component {
                     </div>
 
                     <Card persons={this.state.persons}
-                          showView={true}
-                          togglePopUpPersona={this.togglePopUpPersona}
-                          togglePopUpDelete={this.togglePopUpDelete}/>
+                        showView={true}
+                        togglePopUpPersona={this.togglePopUpPersona}
+                        togglePopUpDelete={this.togglePopUpDelete} />
 
                     <div className="wrapper-items">
                         <div className="col subwrapper">
@@ -233,13 +235,13 @@ class Index extends Component {
                                     {this.state.inmueble.risk_type === 2 ? (
                                         <div className="icon apartamento">&nbsp;</div>
                                     ) : (
-                                        <div className="icon home">&nbsp;</div>
-                                    )}
+                                            <div className="icon home">&nbsp;</div>
+                                        )}
                                     <div className="content-wrapper">
                                         <h4>{this.state.inmueble.identificacion.address}</h4>
                                         <p>
                                             {this.state.inmueble.risk_type === 2 ? ("Apartamento ") : ("Casa ")}
-                                            / Bogotá </p>
+                                            / {this.state.city} </p>
                                         <span>{Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudadovalor)}</span>
                                     </div>
                                 </div>
@@ -275,16 +277,16 @@ class Index extends Component {
                                         <div className="col col-5 col-sm-5 col-md-3 no-padding">
                                             <div className="row">
                                                 {this.state.inmueble.inmueble_asegudado_obras === 1 &&
-                                                <div className="col col-12 col-12 gray-box">
-                                                    <p><b>Obras de arte</b></p>
-                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
-                                                </div>
+                                                    <div className="col col-12 col-12 gray-box">
+                                                        <p><b>Obras de arte</b></p>
+                                                        <p className="big-number">{this.state.inmueble.inmueble_asegudado_obras === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_obrasvalor) : ("Ningúno")}</p>
+                                                    </div>
                                                 }
                                                 {this.state.inmueble.inmueble_asegudado_joyas === 1 &&
-                                                <div className="col col-12 col-12 gray-box">
-                                                    <p><b>Joyas</b></p>
-                                                    <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
-                                                </div>
+                                                    <div className="col col-12 col-12 gray-box">
+                                                        <p><b>Joyas</b></p>
+                                                        <p className="big-number">{this.state.inmueble.inmueble_asegudado_joyas === 1 ? Masknumbermoney.formatToMask(this.state.inmueble.inmueble_asegudado_joyasvalor) : ("Ningúno")}</p>
+                                                    </div>
                                                 }
                                             </div>
                                         </div>
@@ -292,7 +294,7 @@ class Index extends Component {
                                             <div className="row">
                                                 <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Conjunto cerrado</b></p>
-                                                    <p>Si</p>
+                                                    <p>{this.state.inmueble.cojunto_cerrado === 1 ? 'Si' : 'No'}</p>
                                                 </div>
                                                 <div className="col col-12 col-sm-12 col-md-4">
                                                     <p><b>Seguridad</b></p>
@@ -311,11 +313,11 @@ class Index extends Component {
                             </div>
 
                             {typeof this.state.plans !== "undefined" &&
-                            <React.Fragment>
-                                <Summary plan={this.state.plans}/>
-                                <CoberturasSummary/>
-                                <AsistenciasSummary/>
-                            </React.Fragment>
+                                <React.Fragment>
+                                    <Summary plan={this.state.plans} />
+                                    <CoberturasSummary />
+                                    <AsistenciasSummary />
+                                </React.Fragment>
                             }
                         </div>
                     </div>
@@ -359,8 +361,8 @@ class Index extends Component {
                                                         <p>{item.value}</p>
                                                     </div>
                                                     <div className="col col-sm-6 col-md-3">
-                                                        {(typeof item.textFile !== "undefined" && item.textFile!== "") &&
-                                                        <button type="button"
+                                                        {(typeof item.textFile !== "undefined" && item.textFile !== "") &&
+                                                            <button type="button"
                                                                 className="btn btn-download">{Index.getName(item.textFile)}</button>
                                                         }
                                                     </div>
@@ -376,7 +378,7 @@ class Index extends Component {
                     <div className="row">
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                            <BtnContinue/>
+                            <BtnContinue />
                         </div>
                     </div>
                 </div>
@@ -385,7 +387,7 @@ class Index extends Component {
                     persons={this.state.persons}
                     item={this.state.itemSelected}
                     disabledAll={true}
-                    typePerson={this.state.typePerson}/>}
+                    typePerson={this.state.typePerson} />}
             </form>
         )
     }
