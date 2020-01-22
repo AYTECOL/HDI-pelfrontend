@@ -62,7 +62,7 @@ node('linux'){
     
 	}*/
     
-     def envUtil = new EnvConfigUtil()
+    def envUtil = new EnvConfigUtil()
     countryParams = envUtil.getCountryEnvDetails(env.JOB_NAME)
     echo "Working in env: ${countryParams.countryEnv}"
     
@@ -75,6 +75,5 @@ node('linux'){
         artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
     }
     stage('Upload to Artifactory Prod'){
-       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION)
-       }
-  }
+       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION){}
+ }
