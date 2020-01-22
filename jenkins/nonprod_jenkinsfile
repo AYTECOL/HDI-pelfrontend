@@ -77,3 +77,4 @@ node('linux'){
     stage('Upload to Artifactory Prod'){
        promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION){}
  }
+}
