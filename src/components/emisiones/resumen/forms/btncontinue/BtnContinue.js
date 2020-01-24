@@ -104,6 +104,10 @@ class BtnContinue extends Component {
     };
 
     render() {
+        
+        const { props, state } = this;
+        const disabled =
+          props.continueButtonDisable || state.continueButtonDisable;
         return (
             <Fragment>
                 <div className={"return-button"}>
@@ -121,7 +125,7 @@ class BtnContinue extends Component {
                 <button
                     type="button"
                     className={"btn btn-primary"}
-                    disabled={this.state.continueButtonDisable}
+                    disabled={disabled}
                     onClick={this.nextStep}
                 >
                     Emitir

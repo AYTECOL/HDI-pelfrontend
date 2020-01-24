@@ -61,21 +61,4 @@ node('linux'){
 		echo 'Ver resultados test funcional en: 9 http://10.142.137.77:9999/_s_/dyn/pro/DBReports'
     
 	}*/
-    
-     def envUtil = new EnvConfigUtil()
-    countryParams = envUtil.getCountryEnvDetails(env.JOB_NAME)
-    echo "Working in env: ${countryParams.countryEnv}"
-    
-    stage('zipping Files'){
-        sh 'zip -r public.zip public'
-		sh 'zip -r src.zip src'
-    }
-    stage('Upload to Artifactory'){
-        def artifacts = ['public.zip','src.zip','package.json']
-        artifactoryUploadFiles files:artifacts,version:ARTIFACT_VERSION
-    }
-    stage('Upload to Artifactory Prod'){
-       promoteToProd(email:'carlos.unate@libertycolombia.com', version:ARTIFACT_VERSION)
-       }
-  }
-}
+ }
