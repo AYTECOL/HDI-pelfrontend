@@ -129,8 +129,7 @@ class Coberturas extends Component {
                     let hurto = Coberturas.getCoverangeById(3, plan);
                     if (hurto !== null) {
                         for (let i = 0; i < hurto.values.length; i++) dataHurto.push(hurto.values[i].value_show);
-                        return Masknumbermoney.formatToMask(
-                            (Masknumbermoney.formatToNumber(dataHurto[0]) + Masknumbermoney.formatToNumber(dataHurto[1])) * parseInt(item.value) / 100);
+                        return item.value_show
                     } else {
                         return item.value_show;
                     }
@@ -207,6 +206,9 @@ class Coberturas extends Component {
      * @returns {boolean}
      */
     static isDisabled(option, opt) {
+        if (option.code_content === 9691) {
+            return (option.checked === false);
+        }
         return (option.optional === false || option.checked === false || (typeof opt.disable !== "undefined" && opt.disable === true));
     };
 
@@ -398,6 +400,12 @@ class Coberturas extends Component {
             case 9652:
                 if (formatValue >= 10000001 || formatValue <= 850000) {
                     item.values[k].errors.push(`Valor Asegurado de Teléfonos Móviles es ${(formatValue >= 10000001 ? 'superior' : 'inferior')} al permitido. `);
+                    return 1;
+                }
+                break;
+            case 9691:
+                if (formatValue > valueHurto) {
+                    item.values[k].errors.push(`Valor Asegurado de Hurto simple ${(formatValue > valueHurto ? 'superior' : 'inferior')} al permitido. `);
                     return 1;
                 }
                 break;
