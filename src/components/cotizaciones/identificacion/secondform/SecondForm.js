@@ -57,10 +57,10 @@ class SecondForm extends Component {
                 </div>
 
                 <div className="row">
-                    <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                    <div className="col col-12 p-0">
                         <AutoCompleteCities/>
                     </div>
-                    <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                    <div className="col col-12 p-0">
                         <Adress/>
                     </div>
                 </div>

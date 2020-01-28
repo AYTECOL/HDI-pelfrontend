@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
+
 import Cities from '../../../../../services/Cities';
 
 import store from '../../../../../store';
@@ -336,17 +338,21 @@ class AutocompleteCities extends Component {
   render() {
     const { hideTitle, label, disabled } = this.props;
     const { empty, value, toggle, options } = this.state;
+    const defaultLabel = 'Ciudad o municipio del hogar a asegurar';
     return (
       <div className={'form-group autocomplete ' + (empty ? 'error' : '')}>
         <label className={hideTitle ? 'hide' : ''} htmlFor="city">
-          {!label ? 'Ciudad o municipio del hogar' : label}
+          {!label ? defaultLabel : label}
         </label>
         <input
           name={this.nameInput}
           id="city"
           type="text"
-          className={'form-control ' + (!!disabled ? 'disabled' : '')}
-          placeholder="Ingresa ciudad o municipio del h..."
+          className={classNames(
+            'form-control text-truncate',
+            !!disabled && 'disabled'
+          )}
+          placeholder={`Ingresa la ${defaultLabel.toLowerCase()}`}
           value={value}
           disabled={!!disabled}
           autoComplete="city"
@@ -357,8 +363,7 @@ class AutocompleteCities extends Component {
           onChange={this.searchData}
         />
         <small className="form-text only-errors">
-          Por favor ingrese la{' '}
-          {(!label && 'Ciudad o municipio del hogar') || label}.
+          Por favor ingrese la {(!label && defaultLabel) || label}.
         </small>
         <ul className={(toggle ? 'show' : 'hide') + ' list-items'}>
           {options.cities.map((option, key) => (
