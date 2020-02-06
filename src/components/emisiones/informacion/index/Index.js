@@ -38,7 +38,7 @@ class Index extends Component {
       errorPhone: false,
       items: [
         "Contenido Fijo",
-        "Obras de Arte",
+        "Objetos de valor y obras de Arte",
         "Joyas",
         "Celulares",
         "Contenido Movil"
@@ -592,14 +592,14 @@ class Index extends Component {
 
             {this.state.contenidos === true && (
               <div className="row row-full justify-content-center box-blue-full">
-                <div className="col col-sm-12 col-md-8 col-lg-8 text-center">
+                <div className="col col-12 col-sm-12 col-md-8 col-lg-8 text-center">
                   <h4>
                     Relaciona los bienes individuales que superen los siguientes
                     valores
                   </h4>
                 </div>
-                <div className="col col-sm-12 col-md-6 col-lg-6">
-                  <div className="row">
+                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
+                  <div className="row row-full">
                     <div className="col col-sm-12 col-md-6 col-lg-6">
                       <p>
                         <b>Contenidos</b>: $ 12.000.000
@@ -607,19 +607,17 @@ class Index extends Component {
                       <p>
                         <b>Joyas</b>: $ 2.000.000
                       </p>
-                    </div>
-                    <div className="col col-sm-12 col-md-6 col-lg-6">
-                      <p>
-                        <b>Obras de Arte:</b> $ 2.000.000
-                      </p>
-                      <p>
-                        <b>Contenidos Móviles:</b> $ 2.000.000
-                      </p>
-                    </div>
-                    <div className="col">
                       <p>
                         <b>Teléfonos Móviles:</b> Requiere relación detallada
                         para todos
+                      </p>
+                    </div>
+                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                      <p>
+                        <b>Objetos de valor y obras de Arte:</b> $ 2.000.000
+                      </p>
+                      <p>
+                        <b>Contenidos Móviles:</b> $ 2.000.000
                       </p>
                     </div>
                     {this.state.celulares === true && (
@@ -633,8 +631,8 @@ class Index extends Component {
                     )}
                   </div>
                 </div>
-                <div className="col col-sm-12 col-md-12 col-lg-12">
-                  <p className="text-center">
+                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
+                  <p className="text-center mt-3">
                     Es importante conocer este tipo de artículos, esto nos
                     permite al momento del siniestro responder de forma efectiva
                     de acuerdo a la necesidad.{" "}
@@ -782,7 +780,7 @@ class Index extends Component {
                   </div>
                 </div>
 
-                <div className="col col-sm-12 col-md-12 col-lg-12">
+                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                   <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
                       <div
@@ -801,7 +799,7 @@ class Index extends Component {
                   </div>
                 </div>
 
-                <div className="col col-sm-12 col-md-12 col-lg-12">
+                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                   <div className="msj-error text-center">
                     {this.state.errorPhone === true && (
                       <p className="form-text only-errors">
