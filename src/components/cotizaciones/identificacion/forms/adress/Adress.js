@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 
 import store from '../../../../../store';
 import { mapShow, saveIdentificationValue } from '../../../../../actions';
@@ -9,38 +10,25 @@ class Address extends Component {
     super(props);
     this.state = {
       error: false,
-      address: '',
-      disabled: true,
-      city: ''
+      disabled: true
     };
     this.textInput = React.createRef();
   }
 
-  componentDidMount() {
-    this.unsubscribe = store.subscribe(async () => {
-      let storeState = store.getState();
-      let address = storeState.cotizacion.identification.address;
-      let city = storeState.cotizacion.identification.city;
-      let disabled = true;
-      let error = false;
-      if (address.length < 1 || address.length > 200) error = true;
-      let changeCity = this.state.city !== city;
-      if (this.state.address !== address || changeCity) {
-        if (city !== '') disabled = false;
-        this.setState({
-          ...this.state,
-          address: address,
-          city: city,
-          disabled: disabled,
-          error: error
-        });
-        if (changeCity) this.textInput.current.focus();
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
+    const prevIdentification = this.props;
+    const { address, city, department } = nextProps;
+    let disabled = true;
+    let error = false;
+    if (address.length < 1 || address.length > 200) error = true;
+    if (city && department) disabled = false;
+    nextState.disabled = disabled;
+    nextState.error = !disabled && error;
+    if (
+      city !== prevIdentification.city ||
+      department !== prevIdentification.department
+    )
+      this.textInput.current.focus();
   }
 
   validateEmpty = e => {
@@ -51,13 +39,13 @@ class Address extends Component {
     if (store.getState().showMap !== true) store.dispatch(mapShow(true));
     this.setState({
       ...this.state,
-      error: error,
-      address: e.value
+      error: error
     });
   };
 
   render() {
-    const { error, address, disabled } = this.state;
+    const { address } = this.props;
+    const { error, disabled } = this.state;
     const defaultLabel = 'Dirección del hogar a asegurar';
     return (
       <div className={'form-group ' + (error ? 'error' : '')}>
@@ -91,4 +79,14 @@ class Address extends Component {
   }
 }
 
-export default Address;
+export default connect(
+  ({
+    cotizacion: {
+      identification: { address, city, department }
+    }
+  }) => ({
+    address,
+    city,
+    department
+  })
+)(Address);
