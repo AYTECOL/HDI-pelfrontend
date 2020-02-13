@@ -1,12 +1,15 @@
 import Api from './Api';
 import Store from '../store';
 import ConsultaPersonas from './ConsultaPersonas';
-
+import AccessTokenGeocoding from './AccessTokenProd';
+import SigService from './SigServices';
 const Url = '/quote';
 
 class IdentificationsCities {
   static async save() {
     let storeState = Store.getState();
+    let accessToken = await AccessTokenGeocoding.get();
+    let infoGeocoding = await SigService.LongitudeAndLatitude(accessToken.access_token, storeState.mapsOptions.latitude, storeState.mapsOptions.longitude)
     let user = await ConsultaPersonas.getUser();
     let newUser = {};
     if (user !== null)
