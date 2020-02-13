@@ -84,7 +84,9 @@ class MapBase extends Component {
       }
     } = newProps;
     const place = { address, city, department };
-    if (!isEqual(this.place, place)) {
+
+    if (!city || !department || !address) this.setError();
+    else if (!isEqual(this.place, place)) {
       this.place = place;
       Helpers.removeClass(this.elementError, "error");
       MapBase.reqAddress(
@@ -110,8 +112,6 @@ class MapBase extends Component {
           this.setError();
         }
       });
-    } else if (address === "") {
-      this.setError();
     }
   };
 
