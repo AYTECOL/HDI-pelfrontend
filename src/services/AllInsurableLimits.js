@@ -39,7 +39,7 @@ const Default = () => ({
     },
     {
       insurable_limit_id: '3',
-      description: 'Obras de Arte',
+      description: 'Objetos de valor y obras de Arte',
       min_value: 1,
       max_value: 600000000
     }
