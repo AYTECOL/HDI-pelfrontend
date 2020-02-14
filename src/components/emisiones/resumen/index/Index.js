@@ -333,7 +333,7 @@ class Index extends Component {
                         {this.state.inmueble.inmueble_asegudado_obras === 1 && (
                           <div className="col col-12 col-12 gray-box">
                             <p>
-                              <b>Obras de arte</b>
+                              <b>Objetos de valor y obras de Arte</b>
                             </p>
                             <p className="big-number">
                               {this.state.inmueble.inmueble_asegudado_obras ===
@@ -452,7 +452,7 @@ class Index extends Component {
                             </p>
                             <p>
                               {parseInt(item.type) === 0 && "Contenidos"}
-                              {parseInt(item.type) === 1 && "Obras de Arte"}
+                              {parseInt(item.type) === 1 && "Objetos de valor y obras de Arte"}
                               {parseInt(item.type) === 2 && "Joyas"}
                               {parseInt(item.type) === 3 && "Celulares"}
                             </p>
