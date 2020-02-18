@@ -21,7 +21,7 @@ export const ButtonsFooter = () => {
                 }}
               />
               <div class="col text-left">
-                <label for="itemcheck-condtions">
+                <label htmlFor="itemcheck-condtions">
                   En mi calidad de intermediario, manifiesto que he verificado
                   la documentación e información entregada por el asegurado y/o
                   el tomador, encontrando que la misma corresponde a la realidad
