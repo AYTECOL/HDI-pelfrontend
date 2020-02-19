@@ -143,6 +143,7 @@ class BtnContinue extends Component {
   };
 
   render() {
+    const { inactiveBtn } = this.props;
     return (
       <Fragment>
         <div className={"return-button"}>
@@ -159,10 +160,8 @@ class BtnContinue extends Component {
         </button>
         <button
           type="button"
-          className={
-            "btn btn-primary " + (this.props.inactiveBtn ? "disabled" : "")
-          }
-          disabled={this.props.inactiveBtn}
+          className={"btn btn-primary " + (inactiveBtn ? "disabled" : "")}
+          disabled={inactiveBtn}
           onClick={this.nextStep(true)}
         >
           Continuar
