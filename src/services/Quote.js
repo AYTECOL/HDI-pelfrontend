@@ -49,7 +49,8 @@ class IdentificationsCities {
       policy: {
         emissionId: emissionId,
         emitedDate: emitedDate
-      }
+      },
+      infoGeocodingSig: infoGeocoding.value
     };
     for (let i in data) if (data[i] === '') data[i] = '""';
     return await Api.post(Url, data);
