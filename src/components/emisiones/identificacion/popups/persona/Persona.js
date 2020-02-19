@@ -448,6 +448,57 @@ export default class Persona extends Component {
         }
     };
 
+    hasValidForm () {
+        const errors = [];
+        const { typePerson, nit, person } = this.state;
+        const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
+        let fields = document.querySelectorAll(".modal-content input, .modal-content select");
+        for (let i = 0; i < fields.length; i++) {
+          if (sarlfaltActive === true && fields[i].name === "sarlaft") continue;
+          if (fields[i].value === "" && fields[i].getAttribute("type") !== "checkbox" && fields[i].name !== "secondname" && fields[i].name !== "secondlastname") {
+            errors.push(fields[i].name);
+          }
+        }
+
+        if (Helpers.validationEmail(email) === false) {
+          errors.push("email");
+        }
+
+        if (typeof sarlfalt_url !== "undefined" && sarlaft === "" && sarlfalt_url !== "") {
+          errors.splice(errors.indexOf("sarlfalt"), 1);
+        }
+        if (typePerson === 1 && nit === false) {
+          if (genero === "") {
+            errors.push("genero");
+          }
+        }
+        if ((typePerson === 1 || typePerson === 2) && nit === false) {
+          if (fechadenacimiento === "") {
+            errors.push("fechadenacimiento");
+          }
+        }
+        if (typePerson === 4) {
+          if (fechadecontitucion === "") {
+            errors.push("fechadecontitucion");
+          }
+        }
+        if (typePerson !== 4 && typePerson !== 7) {
+          if (role.length === 0)  errors.push("role");
+        }
+
+        let indexSecondName = errors.indexOf("secondname");
+        if (indexSecondName !== -1) errors.splice(indexSecondName, 1);
+
+        let sarlaftError = errors.indexOf("sarlaft");
+        if (sarlaftError !== -1 && typeof sarlfalt_url !== "undefined" && sarlfalt_url !== null) {
+          if (sarlfalt_url.trim() !== "") {
+            errors.splice(sarlaftError, 1);
+          }
+        }
+
+        return !!errors.length;
+    }
+
     async validateAll(name, printErrors, saveData) {
         try {
             if (typeof this.props.updatePerson !== "undefined") {
@@ -996,7 +1047,7 @@ export default class Persona extends Component {
                                                 <p className="error">Falta información requerida para el Contacto. Por favor
                                             revise los detalles de los datos de Contacto</p>
                                             }
-                                            <button className="btn btn-primary" type="button" onClick={() => {
+                                            <button className="btn btn-primary" disabled={this.hasValidForm()} type="button" onClick={() => {
                                                 this.validateAll(null, true, true)
                                             }}>Continuar
                                         </button>
