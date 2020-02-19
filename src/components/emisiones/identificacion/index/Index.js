@@ -287,6 +287,16 @@ class Index extends Component {
     }
 
     render() {
+        const {
+            persons,
+            hasExequias,
+            hasAccident,
+            inactiveBtn,
+            showPopUpDelete,
+            showPopUpPersona,
+            itemSelected,
+            typePerson,
+        } = this.state
         return (
             <form autoComplete="off" className="index-form emision">
                 <div className="container">
@@ -298,7 +308,7 @@ class Index extends Component {
                         </div>
                     </div>
 
-                    <Card persons={this.state.persons}
+                    <Card persons={persons}
                           showEdit={true}
                           togglePopUpPersona={this.togglePopUpPersona}
                           togglePopUpDelete={this.togglePopUpDelete}/>
@@ -322,7 +332,7 @@ class Index extends Component {
                         </div>
                     </div>
 
-                    {(this.state.hasExequias === true || this.state.hasAccident === true) &&
+                    {(hasExequias === true || hasAccident === true) &&
                     <div className="row justify-content-center">
                         <div className="col col-md-8 col-lg-8 last-items-emision">
                             <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
@@ -338,19 +348,19 @@ class Index extends Component {
                     <div className="row">
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                            <BtnContinue persons={this.state.persons} inactiveBtn={this.state.inactiveBtn}/>
+                            <BtnContinue persons={persons} inactiveBtn={inactiveBtn}/>
                         </div>
                     </div>
                 </div>
-                {this.state.showPopUpDelete === true &&
+                {showPopUpDelete === true &&
                 <PopUpDelete toggle={this.togglePopUpDelete} removeItem={this.removeItem}/>}
-                {this.state.showPopUpPersona === true && <PopUpPersona
+                {showPopUpPersona === true && <PopUpPersona
                     toggle={this.togglePopUpPersona}
-                    persons={this.state.persons}
-                    item={this.state.itemSelected}
-                    hasExequias={this.state.hasExequias}
-                    hasAccident={this.state.hasAccident}
-                    typePerson={this.state.typePerson}
+                    persons={persons}
+                    item={itemSelected}
+                    hasExequias={hasExequias}
+                    hasAccident={hasAccident}
+                    typePerson={typePerson}
                     updatePerson={this.updatePerson}/>}
                 <Validaridentificacion/>
             </form>
