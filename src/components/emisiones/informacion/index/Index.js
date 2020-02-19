@@ -29,7 +29,7 @@ class Index extends Component {
       persons: [],
       contents: [],
       quote_contenidomovil: 0,
-      inmueble: {},
+      inmuebles: {},
       area: "",
       disableBtn: false,
       addNewPerson: true,
@@ -249,8 +249,7 @@ class Index extends Component {
   // validate text total
   updateContent = key => e => {
     const value_to_quotate = this.state.quote_contenidomovil;
-    let contents = this.state.contents;
-    let inmubles = this.state.inmueble;
+    const { contents, inmubles } = this.state;
     let textTotal = document.querySelectorAll(".total-value");
     if (e.target.value === "0") {
       textTotal[key].innerText = `Maximo: ${
@@ -299,7 +298,7 @@ class Index extends Component {
 
   validateTotalAsegurado(disableBtn) {
     let contents = this.state.contents;
-    let inmubles = this.state.inmueble;
+    let inmubles = this.state.inmuebles;
     let disabled = false;
 
     let total_contenido_asegudado = 0;
@@ -479,6 +478,22 @@ class Index extends Component {
   };
 
   render() {
+    const {
+      area,
+      utilizado,
+      contenidos,
+      celulares,
+      contents,
+      items,
+      errorPhone,
+      inmuebles,
+      persons,
+      contactperson,
+      addNewPerson,
+      disableBtn,
+      showPopUpPersona,
+      itemSelected
+    } = this.state;
     return (
       <React.Fragment>
         <form
@@ -525,7 +540,7 @@ class Index extends Component {
                     type="text"
                     className="form-control number"
                     name="area"
-                    value={this.state.area}
+                    value={area}
                     onChange={this.changeValue}
                     placeholder={"Ingresa el tamaño de la vivienda"}
                   />
@@ -540,8 +555,7 @@ class Index extends Component {
                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                       <div
                         className={
-                          "select-item row " +
-                          (this.state.utilizado === 1 ? "active" : "")
+                          "select-item row " + (utilizado === 1 ? "active" : "")
                         }
                         onClick={this.selectItems("utilizado", 1)}
                       >
@@ -556,8 +570,7 @@ class Index extends Component {
                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                       <div
                         className={
-                          "select-item row " +
-                          (this.state.utilizado === 2 ? "active" : "")
+                          "select-item row " + (utilizado === 2 ? "active" : "")
                         }
                         onClick={this.selectItems("utilizado", 2)}
                       >
@@ -572,8 +585,7 @@ class Index extends Component {
                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                       <div
                         className={
-                          "select-item row " +
-                          (this.state.utilizado === 3 ? "active" : "")
+                          "select-item row " + (utilizado === 3 ? "active" : "")
                         }
                         onClick={this.selectItems("utilizado", 3)}
                       >
@@ -590,7 +602,7 @@ class Index extends Component {
               </div>
             </div>
 
-            {this.state.contenidos === true && (
+            {contenidos === true && (
               <div className="row row-full justify-content-center box-blue-full">
                 <div className="col col-12 col-sm-12 col-md-8 col-lg-8 text-center">
                   <h4>
@@ -620,7 +632,7 @@ class Index extends Component {
                         <b>Contenidos Móviles:</b> $ 2.000.000
                       </p>
                     </div>
-                    {this.state.celulares === true && (
+                    {celulares === true && (
                       <div className="col col-sm-12 col-md-12 col-lg-12">
                         <p>
                           Recuerda que, para emitir la póliza, debes relacionar
@@ -641,11 +653,10 @@ class Index extends Component {
                 <div className="wrapper-more-items">
                   <div
                     className={
-                      "more-items " +
-                      (this.state.contents.length !== 0 ? "show" : "hide")
+                      "more-items " + (contents.length !== 0 ? "show" : "hide")
                     }
                   >
-                    {this.state.contents.map((item, key) => (
+                    {contents.map((item, key) => (
                       <div className="moreitems" key={key}>
                         <div className="row">
                           <div className="col no-padding-right">
@@ -659,20 +670,24 @@ class Index extends Component {
                                 onChange={this.updateContent(key)}
                               >
                                 <option value="" />
-                                {this.state.items.map((i, k) => (
-                                  <React.Fragment key={k}>
-                                    {((this.state.contenidos === true &&
-                                      k === 0) ||
-                                      (this.state.obras === true && k === 1) ||
-                                      (this.state.joyas === true && k === 2) ||
-                                      (this.state.contenidomovil === true &&
-                                        k === 4) ||
-                                      (this.state.celulares === true &&
-                                        k === 3)) && (
+                                {items.map((i, k) => {
+                                  const {
+                                    contenidos,
+                                    obras,
+                                    joyas,
+                                    contenidomovil,
+                                    celulares
+                                  } = this.state;
+                                  return (
+                                    ((contenidos === true && k === 0) ||
+                                      (obras === true && k === 1) ||
+                                      (joyas === true && k === 2) ||
+                                      (contenidomovil === true && k === 4) ||
+                                      (celulares === true && k === 3)) && (
                                       <option value={k}>{i}</option>
-                                    )}
-                                  </React.Fragment>
-                                ))}
+                                    )
+                                  );
+                                })}
                               </select>
                             </div>
                           </div>
@@ -713,9 +728,8 @@ class Index extends Component {
                                   (item.error1 === true ? "show" : "hide")
                                 }
                               >
-                                Valor Asegurado del ítem{" "}
-                                {this.state.items[item.type]} es inferior al
-                                permitido
+                                Valor Asegurado del ítem {items[item.type]} es
+                                inferior al permitido
                               </small>
                               <small
                                 className={
@@ -723,9 +737,8 @@ class Index extends Component {
                                   (item.error2 === true ? "show" : "hide")
                                 }
                               >
-                                Valor Asegurado del ítem{" "}
-                                {this.state.items[item.type]} es mayor al
-                                permitido
+                                Valor Asegurado del ítem {items[item.type]} es
+                                mayor al permitido
                               </small>
                             </div>
                           </div>
@@ -786,7 +799,7 @@ class Index extends Component {
                       <div
                         className={
                           "more-items " +
-                          (this.state.contents.length !== 0 ? "active" : "")
+                          (contents.length !== 0 ? "active" : "")
                         }
                         onClick={this.addContent}
                       >
@@ -801,7 +814,7 @@ class Index extends Component {
 
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                   <div className="msj-error text-center">
-                    {this.state.errorPhone === true && (
+                    {errorPhone === true && (
                       <p className="form-text only-errors">
                         Falta relacionar los Teléfonos Móviles y las
                         características de cada uno
@@ -810,7 +823,7 @@ class Index extends Component {
                   </div>
                 </div>
 
-                {this.state.contenidos === false && (
+                {contenidos === false && (
                   <div className="col col-sm-12 col-md-12 col-lg-12 msj-bottom text-center">
                     <p>
                       Es importante conocer este tipo de artículos, esto nos
@@ -822,8 +835,8 @@ class Index extends Component {
               </div>
             )}
 
-            {typeof this.state.inmueble.inspection_policies !== "undefined" &&
-              this.state.inmueble.inspection_policies === "IC" && (
+            {typeof inmuebles.inspection_policies !== "undefined" &&
+              inmuebles.inspection_policies === "IC" && (
                 <React.Fragment>
                   <div className="row row-full text-right">
                     <div className="col col-sm-12 col-md-12 col-lg-12">
@@ -845,7 +858,7 @@ class Index extends Component {
                     <div className="col col-12 col-sm-12 col-md-8 col-lg-8">
                       <div className={"no-icon gridgrid form-group"}>
                         <div className="row grid-select justify-content-center  ">
-                          {this.state.persons.map((item, key) => (
+                          {persons.map((item, key) => (
                             <div
                               className="col col-6 col-sm-12 col-md-4 col-lg-4"
                               key={key}
@@ -853,9 +866,7 @@ class Index extends Component {
                               <div
                                 className={
                                   "select-item row " +
-                                  (this.state.contactperson === key
-                                    ? "active"
-                                    : "")
+                                  (contactperson === key ? "active" : "")
                                 }
                                 onClick={this.selectItems("contactperson", key)}
                               >
@@ -876,7 +887,7 @@ class Index extends Component {
                       </div>
                     </div>
 
-                    {this.state.addNewPerson === true && (
+                    {addNewPerson === true && (
                       <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
                         <div
                           className="more-items"
@@ -896,20 +907,20 @@ class Index extends Component {
             <div className="row">
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                 <BtnContinue
-                  disable={this.state.disableBtn}
+                  disable={disableBtn}
                   state={this.state}
-                  items={this.state.items}
+                  items={items}
                   toggleErrorPhone={this.toggleErrorPhone}
                 />
               </div>
             </div>
           </div>
         </form>
-        {this.state.showPopUpPersona === true && (
+        {showPopUpPersona === true && (
           <PopUpPersona
             toggle={this.togglePerson}
-            persons={this.state.persons}
-            item={this.state.itemSelected}
+            persons={persons}
+            item={itemSelected}
             typePerson={7}
             contactPerson={true}
             updatePerson={this.updatePerson}
