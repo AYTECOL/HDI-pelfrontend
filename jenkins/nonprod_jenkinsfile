@@ -23,6 +23,7 @@ node('linux'){
     stage('cloudfront') {
     	deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+            	env-creator.sh
                 sh "sls deploy -v --force"
 				//sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-nonprod'){
