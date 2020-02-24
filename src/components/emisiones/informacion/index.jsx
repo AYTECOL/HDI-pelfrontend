@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 //Component
-import BtnContinue from "../forms/btncontinue/BtnContinue";
+import BtnContinue from "./forms/btncontinue/BtnContinue";
 
-import "./Index.scss";
+import "./styles.scss";
 import { withRouter } from "react-router-dom";
 import "moment/locale/es";
 import MomentJs from "moment";
@@ -10,22 +10,22 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import es from "react-datepicker/node_modules/date-fns/esm/locale/es/index";
 
-import PopUpPersona from "../../identificacion/popups/persona/Persona";
-import Loading from "../../../globals/loading/Loading";
-import QuoteIussedById from "../../../../services/QuoteIussedById";
-import Helpers from "../../../../common/helpers/helpers/Helpers";
-import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import PopUpPersona from "../identificacion/popups/persona/Persona";
+import Loading from "../../globals/loading/Loading";
+import QuoteIussedById from "../../../services/QuoteIussedById";
+import Helpers from "../../../common/helpers/helpers/Helpers";
+import Masknumbermoney from "../../../common/helpers/masknumbermoney/Masknumbermoney";
 
+// @ts-check
 class Index extends Component {
   constructor(props) {
     super(props);
     this.current = React.createRef();
-    let formatDate = "dddd, MMMM Do YYYY";
+    this.formatDate = "dddd, MMMM Do YYYY";
     this.state = {
       step: parseInt(this.props.match.params.step),
       totalContent: 0,
-      initdate: MomentJs().format(formatDate),
-      formatDate: formatDate,
+      initdate: MomentJs().format(this.formatDate),
       persons: [],
       contents: [],
       quote_contenidomovil: 0,
@@ -152,17 +152,17 @@ class Index extends Component {
         max: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
       }
     ];
-    this.setState({ limits: validateMinMax });
     this.setState({
       ...this.state,
       ...data,
-      inmueble: inmueble,
-      persons: persons,
-      contenidos: contenidos,
-      obras: obras,
-      joyas: joyas,
-      celulares: celulares,
-      contenidomovil: contenidoMovil
+      limits: validateMinMax,
+      inmueble,
+      persons,
+      contenidos,
+      obras,
+      joyas,
+      celulares,
+      contenidoMovil
     });
     Loading.toggle(false);
   }
@@ -214,7 +214,7 @@ class Index extends Component {
     this.changeValue({
       target: {
         name: "initdate",
-        value: MomentJs(e).format(this.state.formatDate)
+        value: MomentJs(e).format(this.formatDate)
       }
     });
   };
@@ -675,14 +675,14 @@ class Index extends Component {
                                     contenidos,
                                     obras,
                                     joyas,
-                                    contenidomovil,
+                                    contenidoMovil,
                                     celulares
                                   } = this.state;
                                   return (
                                     ((contenidos === true && k === 0) ||
                                       (obras === true && k === 1) ||
                                       (joyas === true && k === 2) ||
-                                      (contenidomovil === true && k === 4) ||
+                                      (contenidoMovil === true && k === 4) ||
                                       (celulares === true && k === 3)) && (
                                       <option value={k}>{i}</option>
                                     )
