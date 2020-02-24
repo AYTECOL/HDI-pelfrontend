@@ -2,7 +2,7 @@ library ('utils@master') _
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
-
+def BUCKET_NAME = "poliza-express-hogar-uat" 
 def REACT_APP_DOMAIN = "https://6ion89fdgb.execute-api.us-east-1.amazonaws.com/dev"
 def REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
 def REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
