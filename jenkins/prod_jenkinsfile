@@ -22,7 +22,7 @@ node('linux'){
 	}    
 
    stage('Unzip Files'){
-       sh 'unzip -o pelhfrontend.zip '
+       sh 'unzip -o pelhfrontend.zip'
    }
 
     stage('cloudfront') {
