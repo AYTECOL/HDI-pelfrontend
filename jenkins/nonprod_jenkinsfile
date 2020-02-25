@@ -21,6 +21,7 @@ node('linux'){
 			REACT_APP_CREARPOLIZAIAXIS="https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
         }
          sh 'printenv'
+         sh "echo Mi variable : ${env.REACT_APP_DOMAIN}"
 	}    
 
 	stage('Git Checkout'){
