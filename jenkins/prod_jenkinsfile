@@ -22,7 +22,7 @@ node('linux'){
 	}    
 
    stage('Unzip Files'){
-       sh 'unzip -l andino-flex-touch-front.zip'
+       sh 'unzip -o pelhfrontend.zip '
    }
 
     stage('cloudfront') {
