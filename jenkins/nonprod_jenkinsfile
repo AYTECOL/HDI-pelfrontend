@@ -18,7 +18,7 @@ node('linux'){
 
 	stage('Git Checkout'){
 		checkout scm develop
-        echo REACT_APP_DOMAIN
+        echo REACT_APP_DOMAIN > .env
 	}
 
     stage('cloudfront') {
