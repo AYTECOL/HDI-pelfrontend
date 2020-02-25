@@ -6,10 +6,9 @@ def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
 
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
-node('linux'){
 
-	stage("Env Variables") {
-    	environment {
+
+environment {
         	BUCKET_NAME="poliza-express-hogar-uat" 
 			REACT_APP_DOMAIN="https://6ion89fdgb.execute-api.us-east-1.amazonaws.com/dev"
 			REACT_APP_KEY="AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
@@ -20,6 +19,11 @@ node('linux'){
 			REACT_APP_ATTACH_POLICY_DOCUMENTS="https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
 			REACT_APP_CREARPOLIZAIAXIS="https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
         }
+        
+node('linux'){
+
+	stage("Env Variables") {
+    	
          sh 'printenv'
          sh "echo Mi variable : ${env.REACT_APP_DOMAIN}"
 	}    
