@@ -29,7 +29,7 @@ class BtnContinue extends Component {
         Loading.toggle(true);
         const {
             state,
-            getItem,
+            items,
             toggleErrorPhone,
             match,
             history
@@ -42,7 +42,7 @@ class BtnContinue extends Component {
                 state.contents[i].textFile = url.location;
                 state.contents[i].uploaded = true;
             }
-            state.contents[i].nameType = getItem(state.contents[i].type).label;
+            state.contents[i].nameType = items[state.contents[i].type];
             state.contents[i].typeCode = 90161;
         }
 
