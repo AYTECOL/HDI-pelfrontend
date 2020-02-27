@@ -356,8 +356,8 @@ class Index extends React.Component {
     const value = Masknumbermoney.formatToNumber(content.value);
     const contentType = content.type;
     const item = this.getItem(contentType);
-    const min = value <= item.min;
-    const max = value >= item.max;
+    const min = value < item.min;
+    const max = value > item.max;
     const empty = !value;
     if (min) errors = { ...errors, min };
     if (max) errors = { ...errors, max };
