@@ -48,6 +48,9 @@ class Index extends React.Component {
     super(props);
     this.current = React.createRef();
     this.formatDate = "dddd, MMMM Do YYYY";
+    /**
+     * @type {{ items: Item[] }>}
+     */
     this.state = {
       step: parseInt(this.props.match.params.step),
       totalContent: 0,
