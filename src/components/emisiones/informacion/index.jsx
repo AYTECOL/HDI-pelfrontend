@@ -89,7 +89,8 @@ class Index extends React.Component {
       )
     };
 
-    const coverageValue = values && values.find(({ code }) => code == 3044);
+    const coverageValue =
+      values && values.find(({ code }) => String(code) === String(3044));
     const value_to_quotate =
       (coverageValue && coverageValue.value_to_quotate) || 0;
 
