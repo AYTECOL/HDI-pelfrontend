@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 //Component
 import BtnContinue from "./forms/btncontinue/BtnContinue";
 
@@ -39,8 +39,11 @@ const typeItems = {
   mobileContent: { id: 4, label: "Contenido Movil" }
 };
 
+/**
+ * @typedef {{ label: string, id: string, min: number, max: number }} Item
+ */
 // @ts-check
-class Index extends Component {
+class Index extends React.Component {
   constructor(props) {
     super(props);
     this.current = React.createRef();
