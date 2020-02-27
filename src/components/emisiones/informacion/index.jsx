@@ -430,7 +430,7 @@ class Index extends React.Component {
       itemSelected,
       quote_contenidomovil
     } = this.state;
-    const valid = !this.hasErrors();
+    const valid = this.hasErrors();
     const {
       contenido_asegudado_valor,
       inmueble_asegudado_obrasvalor,
