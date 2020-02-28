@@ -130,7 +130,10 @@ const Content = pure(
                     ) : (
                       <p>{showName(content.textFile)}</p>
                     )}
-                    <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
+                    <span>
+                      Si no adjunta documentos, debe presentarlos el día del
+                      siniestro
+                    </span>
                     <br />
                     <span
                       className={
