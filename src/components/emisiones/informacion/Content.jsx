@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import { pure } from "recompose";
 
 import Masknumbermoney from "../../../common/helpers/masknumbermoney/Masknumbermoney";
@@ -82,7 +83,12 @@ const Content = pure(
               </small>
             </div>
           </div>
-          <div className="col no-padding-right">
+          <div
+            className={classNames(
+              "col no-padding-right",
+              !canAttachFile && "col-4"
+            )}
+          >
             <div className={"name form-group " + (errors ? "error" : "")}>
               <label htmlFor="name">Valor</label>
               <input
@@ -113,9 +119,9 @@ const Content = pure(
             </div>
           </div>
           {canAttachFile && (
-            <div className="col no-padding-right">
+            <div className="col-4 no-padding-right">
               <div className="row sarlaft no-gutters">
-                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
+                <div className="col-12">
                   <div className="sarlaft form-group">
                     <input
                       type="file"
