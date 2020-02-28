@@ -2,6 +2,7 @@ import React from "react";
 import { pure } from "recompose";
 
 import Masknumbermoney from "../../../common/helpers/masknumbermoney/Masknumbermoney";
+import { typeItems } from "./typeItems";
 
 /**
  * @typedef {{ label: string, id: string, min: number, max: number }} Item
@@ -33,6 +34,12 @@ const Content = pure(
       return s[s.length - 1];
     }
     const errors = !typeItem ? false : getErrors();
+    const isCellPhone = typeItems.cellPhones.id === item.id;
+    const canAttachFile = [
+      typeItems.valuablesAndWorksOfArt.id,
+      typeItems.jewelry.id,
+      typeItems.mobileContent.id
+    ].includes(item.id);
     return (
       <div className="moreitems">
         <div className="row">
@@ -71,7 +78,7 @@ const Content = pure(
                 disabled={!typeItem}
               />
               <small className="form-text d-block text-left">
-                Ej: Marca, referencia, Numero IMEI, color...
+                Ej: Marca, referencia, {isCellPhone && "Numero IMEI,"} color...
               </small>
             </div>
           </div>
@@ -105,37 +112,39 @@ const Content = pure(
               )}
             </div>
           </div>
-          <div className="col no-padding-right">
-            <div className="row sarlaft no-gutters">
-              <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                <div className="sarlaft form-group">
-                  <input
-                    type="file"
-                    className="form-control"
-                    name="doc"
-                    onChange={changeTextFile}
-                  />
-                  {content.showDefaultTextFile ? (
-                    <p>
-                      Arrastre archivos para adjuntar, o <b>buscar</b>
-                    </p>
-                  ) : (
-                    <p>{showName(content.textFile)}</p>
-                  )}
-                  <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
-                  <br />
-                  <span
-                    className={
-                      "error-file " +
-                      (content.errorFile === true ? "show" : "hide")
-                    }
-                  >
-                    Formato no permitido
-                  </span>
+          {canAttachFile && (
+            <div className="col no-padding-right">
+              <div className="row sarlaft no-gutters">
+                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
+                  <div className="sarlaft form-group">
+                    <input
+                      type="file"
+                      className="form-control"
+                      name="doc"
+                      onChange={changeTextFile}
+                    />
+                    {content.showDefaultTextFile ? (
+                      <p>
+                        Arrastre archivos para adjuntar, o <b>buscar</b>
+                      </p>
+                    ) : (
+                      <p>{showName(content.textFile)}</p>
+                    )}
+                    <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
+                    <br />
+                    <span
+                      className={
+                        "error-file " +
+                        (content.errorFile === true ? "show" : "hide")
+                      }
+                    >
+                      Formato no permitido
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="col col-1 text-center no-padding-left">
             <span className="trash" onClick={removeContent}>
               &nbsp;
