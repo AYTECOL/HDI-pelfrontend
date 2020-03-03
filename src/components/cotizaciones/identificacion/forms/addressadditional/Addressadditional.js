@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import ReactTooltip from 'react-tooltip';
 
 import store from '../../../../../store';
 import { saveIdentificationValue } from '../../../../../actions';
+import Help from '../../../../../common/icons/help';
 
 class Addressadditional extends Component {
   constructor(props) {
@@ -45,9 +47,22 @@ class Addressadditional extends Component {
     const { error, value } = this.state;
     return (
       <div className={'form-group text-truncate ' + (error ? 'error' : '')}>
-        <label htmlFor="addressadditional">
-          Información adicional de la dirección
-        </label>
+        <div className="d-flex position-relative">
+          <label htmlFor="addressadditional">
+            Información adicional de la dirección
+          </label>
+          <div data-tip data-for="help-addressAdditional" className={'ml-auto'}>
+            <Help className={'ml-auto icon-primary'} />
+          </div>
+          <ReactTooltip
+            id="help-addressAdditional"
+            className="tooltip-help"
+            multiline
+          >
+            Asegúrate de ingresar correcta la dirección del hogar, ésta se
+            tendrá en cuenta en caso de siniestro
+          </ReactTooltip>
+        </div>
         <input
           name="addressadditional"
           id="addressadditional"
