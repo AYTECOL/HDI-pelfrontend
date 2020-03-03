@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 
 import store from '../../../../../store';
 import { mapShow, saveIdentificationValue } from '../../../../../actions';
+import Help from '../../../../../common/icons/help';
 
 class Address extends Component {
   constructor(props) {
@@ -49,7 +51,16 @@ class Address extends Component {
     const defaultLabel = 'Dirección del hogar a asegurar';
     return (
       <div className={'form-group ' + (error ? 'error' : '')}>
-        <label htmlFor="address">{defaultLabel}</label>
+        <div className="d-flex position-relative">
+          <label htmlFor="address">{defaultLabel}</label>
+          <div data-tip data-for="help-address" className={'ml-auto'}>
+            <Help className={'ml-auto icon-primary'} />
+          </div>
+          <ReactTooltip id="help-address" className="tooltip-help" multiline>
+            Asegúrate de ingresar correcta la dirección del hogar, ésta se
+            tendrá en cuenta en caso de siniestro
+          </ReactTooltip>
+        </div>
         <input
           name="address"
           id="address"
