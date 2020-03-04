@@ -1,12 +1,12 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 
-import {withRouter} from "react-router-dom";
-import {UrlSite} from "../../../../../config";
+import { withRouter } from "react-router-dom";
+import { UrlSite } from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import CreateOrUpdateMoreInfo from "../../../../../services/CreateOrUpdateMoreInfo";
 import UploadFile from "../../../../../services/UploadFile";
 import store from "../../../../../store";
-import {NextStep} from "../../../../../actions";
+import { NextStep } from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Loading from "../../../../globals/loading/Loading";
 
@@ -28,16 +28,13 @@ class BtnContinue extends Component {
     nextStep = total => async () => {
         Loading.toggle(true);
         const {
-          state,
-          items,
-          toggleErrorPhone,
-          match,
-          history
+            state,
+            getItem,
+            toggleErrorPhone,
+            match,
+            history
         } = this.props;
         let status = true;
-        const getItem = id => {
-            return items.find(({ key }) => String(key) === String(id));
-        };
         for (let i = 0; i < state.contents.length; i++) {
             for (let j in state.contents[i]) if (state.contents[i][j] === "") state.contents[i][j] = '""';
             if (state.contents[i].uploaded === false) {
@@ -45,7 +42,7 @@ class BtnContinue extends Component {
                 state.contents[i].textFile = url.location;
                 state.contents[i].uploaded = true;
             }
-            state.contents[i].nameType = getItem(state.contents[i].type);
+            state.contents[i].nameType = getItem(state.contents[i].type).label;
             state.contents[i].typeCode = 90161;
         }
 
@@ -114,16 +111,16 @@ class BtnContinue extends Component {
             <Fragment>
                 <div className={"return-button"}>
                     <button type="button" className="btn btn-link"
-                            onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver
+                        onClick={this.goBack}><i className="back-icon">&nbsp;</i>Volver
                     </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={this.nextStep(undefined)}>Guardar y salir
+                    onClick={this.nextStep(undefined)}>Guardar y salir
                 </button>
                 <button type="button"
-                        disabled={this.props.disable}
-                        className={"btn btn-primary " + (this.props.disable === true ? 'disabled' : '')}
-                        onClick={this.nextStep(true)}>Continuar
+                    disabled={this.props.disable}
+                    className={"btn btn-primary " + (this.props.disable === true ? 'disabled' : '')}
+                    onClick={this.nextStep(true)}>Continuar
                 </button>
             </Fragment>
         );
