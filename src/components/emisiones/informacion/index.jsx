@@ -754,7 +754,7 @@ class Index extends React.Component {
                 <BtnContinue
                   disable={valid}
                   state={this.state}
-                  items={items}
+                  getItem={this.getItem}
                   toggleErrorPhone={this.toggleErrorPhone}
                 />
               </div>

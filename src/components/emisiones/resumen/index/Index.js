@@ -29,6 +29,7 @@ class Index extends Component {
     this.state = {
       step: parseInt(this.props.match.params.step),
       cotizacion: {},
+      adressHome: "",
       persons: [],
       contents: [],
       itemSelected: null,
@@ -205,7 +206,9 @@ class Index extends Component {
       inmueble: inmueble,
       contents: data["contents"],
       newSecurity: newSecurity,
-      city: person[0].location
+      city: person[0].location,
+      adressHome: store.getState().pdf_info.addressHome
+
     });
     store.dispatch(indexPlanSelected(0));
     store.dispatch(AllPlansCreator(plansLoader));
@@ -266,10 +269,10 @@ class Index extends Component {
                   {this.state.inmueble.risk_type === 2 ? (
                     <div className="icon apartamento">&nbsp;</div>
                   ) : (
-                    <div className="icon home">&nbsp;</div>
-                  )}
+                      <div className="icon home">&nbsp;</div>
+                    )}
                   <div className="content-wrapper">
-                    <h4>{this.state.inmueble.identificacion.address}</h4>
+                    <h4>{this.state.adressHome}</h4>
                     <p>
                       {this.state.inmueble.risk_type === 2
                         ? "Apartamento "
@@ -292,8 +295,8 @@ class Index extends Component {
                       <p className="big-number">
                         {this.state.inmueble.contenido_asegudado === 1
                           ? Masknumbermoney.formatToMask(
-                              this.state.inmueble.contenido_asegudado_valor
-                            )
+                            this.state.inmueble.contenido_asegudado_valor
+                          )
                           : "Ningúno"}
                       </p>
                     </div>
@@ -337,11 +340,11 @@ class Index extends Component {
                             </p>
                             <p className="big-number">
                               {this.state.inmueble.inmueble_asegudado_obras ===
-                              1
+                                1
                                 ? Masknumbermoney.formatToMask(
-                                    this.state.inmueble
-                                      .inmueble_asegudado_obrasvalor
-                                  )
+                                  this.state.inmueble
+                                    .inmueble_asegudado_obrasvalor
+                                )
                                 : "Ningúno"}
                             </p>
                           </div>
@@ -353,11 +356,11 @@ class Index extends Component {
                             </p>
                             <p className="big-number">
                               {this.state.inmueble.inmueble_asegudado_joyas ===
-                              1
+                                1
                                 ? Masknumbermoney.formatToMask(
-                                    this.state.inmueble
-                                      .inmueble_asegudado_joyasvalor
-                                  )
+                                  this.state.inmueble
+                                    .inmueble_asegudado_joyasvalor
+                                )
                                 : "Ningúno"}
                             </p>
                           </div>
@@ -390,7 +393,7 @@ class Index extends Component {
                           </p>
                           <p>
                             {typeof this.state.inmueble.build_material !==
-                            "undefined"
+                              "undefined"
                               ? this.state.inmueble.build_material
                               : ""}
                           </p>
