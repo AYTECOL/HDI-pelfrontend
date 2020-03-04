@@ -82,6 +82,10 @@ html, body {
 $error-fields: #DD133C;
 $color-btn-primary: #99E5EA;
 $color-font-btn-primary: #404040;
+$color-primary: #28A3AF;
+.icon-primary {
+  fill: $color-primary;
+}
 #root .react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected {
   background-color: #28A3AF;
 }
