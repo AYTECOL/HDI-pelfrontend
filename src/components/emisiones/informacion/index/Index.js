@@ -909,7 +909,7 @@ class Index extends Component {
                 <BtnContinue
                   disable={disableBtn}
                   state={this.state}
-                  items={items}
+                  getItem={this.getItem}
                   toggleErrorPhone={this.toggleErrorPhone}
                 />
               </div>
