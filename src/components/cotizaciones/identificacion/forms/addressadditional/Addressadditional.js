@@ -59,8 +59,8 @@ class Addressadditional extends Component {
             className="tooltip-help"
             multiline
           >
-            Asegúrate de ingresar correcta la dirección del hogar, ésta se
-            tendrá en cuenta en caso de siniestro
+            No olvides agregar la información adicional de la dirección. Por
+            ejemplo, el número de torre, nombre de conjunto ETC.
           </ReactTooltip>
         </div>
         <input
