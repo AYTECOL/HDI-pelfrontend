@@ -1,7 +1,7 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 
 import store from '../../../../../store';
-import {NextStep, nextStepIndentification, resetStore, saveIdentificationValue} from '../../../../../actions';
+import { NextStep, nextStepIndentification, resetStore, saveIdentificationValue } from '../../../../../actions';
 import Loading from "../../../../../components/globals/loading/Loading";
 import SaveIdentifications from '../../../../../services/Quote';
 // Components
@@ -10,12 +10,12 @@ import LastName from '../lastname/Lastname';
 import RazonSocial from '../razonsocial/Razonsocial';
 // Services
 import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
-import {UrlSite} from "../../../../../config";
+import { UrlSite } from "../../../../../config";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import NumeroIdentificacion from "../numeroidentificacion/NumeroIdentificacion";
 import TipoDocumento from "../tipodocumento/TipoDocumento";
 import Validaridentificacion from "../../popups/validaridentificacion/Validaridentificacion";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class BtnContinue extends Component {
 
@@ -74,6 +74,9 @@ class BtnContinue extends Component {
 
     nextStepIndex = async () => {
         let storeState = store.getState();
+        Helpers.updatePdfInfo({
+            addressHome: storeState.cotizacion.identification.address
+        })
         if (this.state.stateFormIdentificacion === 1) {
             Loading.toggle(true);
             store.dispatch(NextStep(2));
@@ -162,12 +165,12 @@ class BtnContinue extends Component {
                 </button>
             </div>
             <button type="button"
-                    className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}
-                    onClick={this.saveAndExit}>Guardar y salir
+                className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}
+                onClick={this.saveAndExit}>Guardar y salir
             </button>
             <button disabled={this.state.continueButtonDisable} onClick={this.nextStepIndex}
-                    type="button"
-                    className={(this.state.continueButtonDisable ? 'disabled ' : '') + "btn btn-primary"}>Continuar
+                type="button"
+                className={(this.state.continueButtonDisable ? 'disabled ' : '') + "btn btn-primary"}>Continuar
             </button>
         </Fragment>
     );
