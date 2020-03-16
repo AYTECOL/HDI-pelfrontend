@@ -19,7 +19,7 @@ import Content from "./Content";
 import { typeItems } from "./typeItems";
 
 /**
- * @typedef {{ label: string, id: string, min: number, max: number }} Item
+ * @typedef {{ min: number, maxTotal: number } & import('./typeItems').TypeItem} Item
  */
 // @ts-check
 class Index extends React.Component {
@@ -124,14 +124,14 @@ class Index extends React.Component {
         items.push({
           ...typeItems.fixedContent,
           min: 1,
-          max: inmuebles.contenido_asegudado_valor
+          maxTotal: inmuebles.contenido_asegudado_valor
         });
 
         if (inmuebles.inmueble_asegudado_obras === 1) {
           items.push({
             ...typeItems.valuablesAndWorksOfArt,
             min: 1,
-            max: inmuebles.inmueble_asegudado_obrasvalor
+            maxTotal: inmuebles.inmueble_asegudado_obrasvalor
           });
           obras = true;
         }
@@ -139,7 +139,7 @@ class Index extends React.Component {
           items.push({
             ...typeItems.jewelry,
             min: 1,
-            max: inmuebles.inmueble_asegudado_joyasvalor
+            maxTotal: inmuebles.inmueble_asegudado_joyasvalor
           });
           joyas = true;
         }
@@ -147,7 +147,7 @@ class Index extends React.Component {
           items.push({
             ...typeItems.cellPhones,
             min: 899999,
-            max: inmuebles.inmueble_asegudado_telefonosvalor
+            maxTotal: inmuebles.inmueble_asegudado_telefonosvalor
           });
           celulares = true;
         }
@@ -160,7 +160,7 @@ class Index extends React.Component {
         items.push({
           ...typeItems.mobileContent,
           min: 1,
-          max: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
+          maxTotal: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
         });
       }
     }
@@ -289,7 +289,7 @@ class Index extends React.Component {
     for (const content of contents) {
       const value = Masknumbermoney.formatToNumber(content.value);
       const contentType = content.type;
-      if (this.getErrors(content)) return true;
+      if (this.getErrors(content, total[contentType] + value)) return true;
       /**
        * @description The value is added to the total
        */
@@ -326,7 +326,7 @@ class Index extends React.Component {
     return false;
   }
 
-  getErrors(content) {
+  getErrors(content, maximum) {
     /**
      * @type {{min?:boolean, max?:boolean} | null}
      */
@@ -335,7 +335,7 @@ class Index extends React.Component {
     const contentType = content.type;
     const item = this.getItem(contentType);
     const min = value < item.min;
-    const max = value > item.max;
+    const max = value > (maximum > item.max ? item.max : maximum);
     const empty = !value;
     if (min) errors = { ...errors, min };
     if (max) errors = { ...errors, max };
@@ -350,7 +350,10 @@ class Index extends React.Component {
   getItem = id => {
     const { items } = this.state;
     const item = { ...items.find(item => String(item.id) === String(id)) };
-    return item;
+    return {
+      ...item,
+      max: item.maxTotal < item.max ? item.maxTotal : item.max
+    };
   };
 
   handleChange = key => e => {
@@ -631,7 +634,7 @@ class Index extends React.Component {
                           changeTextFile={this.changeTextFile(key)}
                           item={this.getItem(content.type)}
                           maximum={maximum}
-                          getErrors={() => this.getErrors(content)}
+                          getErrors={() => this.getErrors(content, maximum)}
                         />
                       );
                     })}
