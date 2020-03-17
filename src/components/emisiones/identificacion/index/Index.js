@@ -27,7 +27,6 @@ class Index extends Component {
             cotizacion: {},
             persons: [],
             itemSelected: null,
-            inactiveBtn: true,
             typePerson: 1,
             hasAccident: false,
             hasExequias: false
@@ -128,17 +127,6 @@ class Index extends Component {
             }
         }
 
-        setTimeout(
-            () => {
-                this
-                    .validateRoles();
-            }
-
-            ,
-            500
-        )
-        ;
-
         if (person.length === 0) {
             this.setState({
                 ...this.state,
@@ -203,11 +191,9 @@ class Index extends Component {
         let persons = this.state.persons;
         let newPerson = [];
         for (let i = 0; i < persons.length; i++) if (i !== this.state.itemSelected) newPerson.push(persons[i]);
-        let inactiveBtn = this.isDisabled();
         this.setState({
             ...this.state,
             persons: newPerson,
-            inactiveBtn: inactiveBtn
         });
         setTimeout(() => {
             this.showAnyPopup("showPopUpDelete");
@@ -216,13 +202,12 @@ class Index extends Component {
 
     isDisabled(){
         let persons = this.state.persons;
-        let inactiveBtn = this.state.inactiveBtn;
         let status = [];
         let asegurado = false;
         for (let i = 0; i < persons.length; i++) {
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 || persons[i].role[j] === 4) {
-                    if ((typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") || persons[i].role[j] === 4) {
+                    if ((typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") || persons[i].role[j] === 4 || persons[i].sarlfaltActive) {
                         status.push(i);
                         if( persons[i].role[j] === 2 ){
                             asegurado = true;
@@ -231,16 +216,7 @@ class Index extends Component {
                 }
             }
         }
-        inactiveBtn = status.length < 3 || asegurado === false;
-        return inactiveBtn;
-    }
-
-    validateRoles() {
-        let inactiveBtn = this.isDisabled();
-        this.setState({
-            ...this.state,
-            inactiveBtn: inactiveBtn
-        });
+        return status.length < 3 || asegurado === false;
     }
 
     exitsPerson(person, state = null) {
@@ -273,9 +249,6 @@ class Index extends Component {
             }
         }
 
-        setTimeout(() => {
-            this.validateRoles();
-        }, 500);
 
         this.setState({
             ...this.state,
@@ -291,7 +264,6 @@ class Index extends Component {
             persons,
             hasExequias,
             hasAccident,
-            inactiveBtn,
             showPopUpDelete,
             showPopUpPersona,
             itemSelected,
@@ -348,7 +320,7 @@ class Index extends Component {
                     <div className="row">
                         <div
                             className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                            <BtnContinue persons={persons} inactiveBtn={inactiveBtn}/>
+                            <BtnContinue persons={persons} inactiveBtn={this.isDisabled()}/>
                         </div>
                     </div>
                 </div>
