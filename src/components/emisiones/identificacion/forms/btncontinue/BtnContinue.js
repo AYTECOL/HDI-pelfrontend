@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { PureComponent, Fragment } from "react";
 
 import { withRouter } from "react-router-dom";
 import { UrlSite } from "../../../../../config";
@@ -11,7 +11,7 @@ import SaveIdentifications from "../../../../../services/Quote";
 import Loading from "../../../../globals/loading/Loading";
 import Persona from "../../popups/persona/Persona";
 
-class BtnContinue extends Component {
+class BtnContinue extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
