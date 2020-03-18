@@ -415,7 +415,7 @@ class Coberturas extends Component {
     inputChange = (k, key, type) => e => {
         let plan = this.state.plan;
         let item = plan.coverages[key];
-        const hurtoCalificado = plan.coverages.find((element) => element.code == 9692)
+        const hurtoCalificado = plan.coverages.find((element) => element.code_content === 9692)
         const valueHurto =
             hurtoCalificado &&
             hurtoCalificado.values &&
