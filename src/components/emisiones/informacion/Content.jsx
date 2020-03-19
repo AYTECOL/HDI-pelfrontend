@@ -95,7 +95,7 @@ const Content = pure(
                 type="text"
                 className="form-control"
                 name="value"
-                value={content.value}
+                value={Masknumbermoney.formatToMask(content.value)}
                 onChange={handleChange}
                 disabled={!typeItem}
               />

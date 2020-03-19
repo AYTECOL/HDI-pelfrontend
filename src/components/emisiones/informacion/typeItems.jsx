@@ -28,5 +28,5 @@ export const typeItems = {
   /**
    * @description "Contenido Movil"
    **/
-  mobileContent: { id: 4, label: 'Contenido Movil', max: 2000000 }
+  mobileContent: { id: 4, label: 'Contenido Movil', max: 20000000 }
 };
