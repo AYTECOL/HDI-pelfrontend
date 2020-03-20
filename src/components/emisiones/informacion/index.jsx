@@ -270,8 +270,8 @@ class Index extends React.Component {
     });
   };
 
-  hasErrors() {
-    const { contents, inmuebles, quote_contenidomovil } = this.state;
+  getTotal = () => {
+    const { contents } = this.state;
     const {
       fixedContent,
       valuablesAndWorksOfArt,
@@ -286,41 +286,56 @@ class Index extends React.Component {
       [cellPhones.id]: 0,
       [mobileContent.id]: 0
     };
+    let error = false;
     for (const content of contents) {
       const value = Masknumbermoney.formatToNumber(content.value);
       const contentType = content.type;
-      if (this.getErrors(content, total[contentType] + value)) return true;
+      if (!error && this.getErrors(content, total[contentType] + value))
+        error = true;
       /**
        * @description The value is added to the total
        */
       if (contentType in total) total[contentType] += value;
     }
+    return {
+      error,
+      total: {
+        fixedContent: total[fixedContent.id],
+        valuablesAndWorksOfArt: total[valuablesAndWorksOfArt.id],
+        jewelry: total[jewelry.id],
+        cellPhones: total[cellPhones.id],
+        mobileContent: total[mobileContent.id]
+      }
+    };
+  };
 
+  hasErrors() {
+    const { inmuebles, quote_contenidomovil } = this.state;
+    const { total, error } = this.getTotal();
+    if (error) return true;
     if (
       inmuebles.contenido_asegudado === 1 &&
-      total[fixedContent.id] !== 0 &&
-      inmuebles.contenido_asegudado_valor < total[fixedContent.id]
+      total.fixedContent !== 0 &&
+      inmuebles.contenido_asegudado_valor < total.fixedContent
     )
       return true;
 
     if (
       inmuebles.inmueble_asegudado_obras === 1 &&
-      total[valuablesAndWorksOfArt.id] !== 0 &&
-      inmuebles.inmueble_asegudado_obrasvalor < total[valuablesAndWorksOfArt.id]
+      total.valuablesAndWorksOfArt !== 0 &&
+      inmuebles.inmueble_asegudado_obrasvalor < total.valuablesAndWorksOfArt
     )
       return true;
     if (
       inmuebles.inmueble_asegudado_joyas === 1 &&
-      total[jewelry.id] !== 0 &&
-      inmuebles.inmueble_asegudado_joyasvalor < total[jewelry.id]
+      total.jewelry !== 0 &&
+      inmuebles.inmueble_asegudado_joyasvalor < total.jewelry
     )
       return true;
     if (inmuebles.inmueble_asegudado_telefonos === 1) {
-      return (
-        inmuebles.inmueble_asegudado_telefonosvalor !== total[cellPhones.id]
-      );
+      return inmuebles.inmueble_asegudado_telefonosvalor !== total.cellPhones;
     }
-    if (total[mobileContent.id] > quote_contenidomovil) {
+    if (total.mobileContent > quote_contenidomovil) {
       return true;
     }
     return false;
@@ -335,7 +350,7 @@ class Index extends React.Component {
     const contentType = content.type;
     const item = this.getItem(contentType);
     const min = value < item.min;
-    const max = value > (maximum > item.max ? item.max : maximum);
+    const max = value > (maximum >= item.max ? item.max : maximum);
     const empty = !value;
     if (min) errors = { ...errors, min };
     if (max) errors = { ...errors, max };
@@ -359,7 +374,7 @@ class Index extends React.Component {
   handleChange = key => e => {
     const { contents } = this.state;
     let content = contents[key];
-    content[e.target.name] = Masknumbermoney.formatToMask(e.target.value);
+    content[e.target.name] = e.target.value;
     this.setState({
       ...this.state,
       contents
@@ -412,6 +427,7 @@ class Index extends React.Component {
       quote_contenidomovil
     } = this.state;
     const valid = this.hasErrors();
+    const { total } = this.getTotal();
     const {
       contenido_asegudado_valor,
       inmueble_asegudado_obrasvalor,
@@ -559,24 +575,30 @@ class Index extends React.Component {
                     valores
                   </h4>
                 </div>
-                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
-                  <div className="row row-full">
-                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                <div className="col-12">
+                  <div className="row row-full justify-content-center">
+                    <div className="col-auto">
                       <p>
                         <b>Contenidos</b>: $ 12.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Joyas</b>: $ 2.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Teléfonos Móviles:</b> Requiere relación detallada
                         para todos
                       </p>
                     </div>
-                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                    <div className="col-auto">
                       <p>
                         <b>Objetos de valor y obras de Arte:</b> $ 2.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Contenidos Móviles:</b> $ 2.000.000
                       </p>
@@ -586,10 +608,68 @@ class Index extends React.Component {
                         <p>
                           Recuerda que, para emitir la póliza, debes relacionar
                           las características y el número IMEI de cada teléfono
-                          móvil.{" "}
+                          móvil.
                         </p>
                       </div>
                     )}
+                  </div>
+                </div>
+                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
+                  <table className="table table-sm mt-4">
+                    <thead>
+                      <tr>
+                        <th scope="col">Tipo de articulo</th>
+                        <th scope="col">Valor total máximo</th>
+                        <th scope="col">Valor total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        [
+                          typeItems.fixedContent,
+                          contenido_asegudado_valor,
+                          total.fixedContent
+                        ],
+                        [
+                          typeItems.jewelry,
+                          inmueble_asegudado_joyasvalor,
+                          total.jewelry
+                        ],
+                        [
+                          typeItems.cellPhones,
+                          inmueble_asegudado_telefonosvalor,
+                          total.cellPhones
+                        ],
+                        [
+                          typeItems.valuablesAndWorksOfArt,
+                          inmueble_asegudado_obrasvalor,
+                          total.valuablesAndWorksOfArt
+                        ],
+                        [
+                          typeItems.mobileContent,
+                          quote_contenidomovil,
+                          total.mobileContent
+                        ]
+                      ].map(
+                        ([{ label, id }, max, total]) =>
+                          items.find(item => item.id === id) && (
+                            <tr className="h6 font-weight-normal">
+                              <td className="h6 font-weight-normal font-italic">
+                                {label}
+                              </td>
+                              <td>{Masknumbermoney.formatToMask(max)}</td>
+                              <td>{Masknumbermoney.formatToMask(total)}</td>
+                            </tr>
+                          )
+                      )}
+                    </tbody>
+                  </table>
+                  <div className="row row-full">
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
                   </div>
                 </div>
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
