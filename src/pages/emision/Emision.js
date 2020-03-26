@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 // Components
 import Submenu from '../../components/globals/submenu/Submenu';
 import Identificacion from '../../components/emisiones/identificacion/index/Index';
-import Informacion from '../../components/emisiones/informacion/index/Index';
+import Informacion from '../../components/emisiones/informacion';
 import Resumen from '../../components/emisiones/resumen/index/Index';
 import {withRouter} from "react-router-dom";
 import Helpers from "../../common/helpers/helpers/Helpers";
