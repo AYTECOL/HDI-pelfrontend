@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 //Component
-import BtnContinue from "../forms/btncontinue/BtnContinue";
+import BtnContinue from "./forms/btncontinue/BtnContinue";
 
-import "./Index.scss";
+import "./styles.scss";
 import { withRouter } from "react-router-dom";
 import "moment/locale/es";
 import MomentJs from "moment";
@@ -10,48 +10,43 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import es from "react-datepicker/node_modules/date-fns/esm/locale/es/index";
 
-import PopUpPersona from "../../identificacion/popups/persona/Persona";
-import Loading from "../../../globals/loading/Loading";
-import QuoteIussedById from "../../../../services/QuoteIussedById";
-import Helpers from "../../../../common/helpers/helpers/Helpers";
-import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import PopUpPersona from "../identificacion/popups/persona/Persona";
+import Loading from "../../globals/loading/Loading";
+import QuoteIussedById from "../../../services/QuoteIussedById";
+import Helpers from "../../../common/helpers/helpers/Helpers";
+import Masknumbermoney from "../../../common/helpers/masknumbermoney/Masknumbermoney";
+import Content from "./Content";
+import { typeItems } from "./typeItems";
 
-class Index extends Component {
+/**
+ * @typedef {{ min: number, maxTotal: number } & import('./typeItems').TypeItem} Item
+ */
+// @ts-check
+class Index extends React.Component {
   constructor(props) {
     super(props);
     this.current = React.createRef();
-    let formatDate = "dddd, MMMM Do YYYY";
+    this.formatDate = "dddd, MMMM Do YYYY";
+    /**
+     * @type {{ items: Item[] }>}
+     */
     this.state = {
       step: parseInt(this.props.match.params.step),
       totalContent: 0,
-      initdate: MomentJs().format(formatDate),
-      formatDate: formatDate,
+      initdate: MomentJs().format(this.formatDate),
       persons: [],
       contents: [],
       quote_contenidomovil: 0,
       inmuebles: {},
       area: "",
-      disableBtn: false,
       addNewPerson: true,
       itemSelected: null,
       showPopUpPersona: false,
       errorPhone: false,
-      items: [
-        "Contenido Fijo",
-        "Objetos de valor y obras de Arte",
-        "Joyas",
-        "Celulares",
-        "Contenido Movil"
-      ],
-      limits: []
+      items: []
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
-  }
-
-  static showName(name) {
-    let s = name.split("/");
-    return s[s.length - 1];
   }
 
   componentDidMount() {
@@ -61,16 +56,19 @@ class Index extends Component {
 
   async getData() {
     Loading.toggle(true);
-    let data = await QuoteIussedById.get(this.props.match.params.id);
-    let inmueble = data.risk_valoration_info.Item;
+    const { params } = this.props.match;
+    let data = await QuoteIussedById.get(params.id);
+    let inmuebles = data.risk_valoration_info.Item;
     let persons = this.state.persons;
 
-    const { values } = data.plan_selected_info.Item.coverages.find(
-      ({ code }) => code == 9693
-    ) || { values: undefined };
+    const { values } = {
+      ...data.plan_selected_info.Item.coverages.find(
+        ({ code, code_content }) => code === 9693 || code_content === 9693
+      )
+    };
 
-    const coverageValue = values && values.find(({ code }) => code == 3044);
-
+    const coverageValue =
+      values && values.find(({ code }) => String(code) === String(3044));
     const value_to_quotate =
       (coverageValue && coverageValue.value_to_quotate) || 0;
 
@@ -116,53 +114,67 @@ class Index extends Component {
     let joyas = false;
     let celulares = false;
     let contenidoMovil = false;
-    if (typeof inmueble !== "undefined") {
-      if (inmueble.contenido_asegudado === 1) {
+    /**
+     * @type {Item[]}
+     */
+    const items = [];
+    if (typeof inmuebles !== "undefined") {
+      if (inmuebles.contenido_asegudado === 1) {
         contenidos = true;
-        if (inmueble.inmueble_asegudado_obras === 1) obras = true;
-        if (inmueble.inmueble_asegudado_joyas === 1) joyas = true;
-        if (inmueble.inmueble_asegudado_telefonos === 1) celulares = true;
+        items.push({
+          ...typeItems.fixedContent,
+          min: 1,
+          maxTotal: inmuebles.contenido_asegudado_valor
+        });
+
+        if (inmuebles.inmueble_asegudado_obras === 1) {
+          items.push({
+            ...typeItems.valuablesAndWorksOfArt,
+            min: 1,
+            maxTotal: inmuebles.inmueble_asegudado_obrasvalor
+          });
+          obras = true;
+        }
+        if (inmuebles.inmueble_asegudado_joyas === 1) {
+          items.push({
+            ...typeItems.jewelry,
+            min: 1,
+            maxTotal: inmuebles.inmueble_asegudado_joyasvalor
+          });
+          joyas = true;
+        }
+        if (inmuebles.inmueble_asegudado_telefonos === 1) {
+          items.push({
+            ...typeItems.cellPhones,
+            min: 899999,
+            maxTotal: inmuebles.inmueble_asegudado_telefonosvalor
+          });
+          celulares = true;
+        }
       }
       if (
-        inmueble.distribution_of_insured_securities_split.valorAmparo
+        inmuebles.distribution_of_insured_securities_split.valorAmparo
           .valorAsegurado3044
       ) {
         contenidoMovil = true;
+        items.push({
+          ...typeItems.mobileContent,
+          min: 1,
+          maxTotal: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
+        });
       }
     }
-    const validateMinMax = [
-      {
-        min: 1,
-        max: inmueble.contenido_asegudado_valor
-      },
-      {
-        min: 1,
-        max: inmueble.inmueble_asegudado_obrasvalor
-      },
-      {
-        min: 1,
-        max: inmueble.inmueble_asegudado_joyasvalor
-      },
-      {
-        min: 899999,
-        max: inmueble.inmueble_asegudado_telefonosvalor
-      },
-      {
-        min: 1,
-        max: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
-      }
-    ];
-    this.setState({ limits: validateMinMax });
     this.setState({
       ...this.state,
       ...data,
-      inmueble: inmueble,
-      persons: persons,
-      contenidos: contenidos,
-      obras: obras,
-      joyas: joyas,
-      celulares: celulares,
-      contenidomovil: contenidoMovil
+      inmuebles,
+      persons,
+      contenidos,
+      obras,
+      joyas,
+      celulares,
+      contenidoMovil,
+      items
     });
     Loading.toggle(false);
   }
@@ -181,32 +193,34 @@ class Index extends Component {
     });
   };
 
-  removeContent = key => e => {
+  removeContent = key => () => {
     let total = this.state.totalContent - 1;
     if (total < 0) total = 0;
-    let contents = this.state.contents;
-    contents.splice(e.target.id, 1);
+    const contents = this.state.contents;
+    contents.splice(key, 1);
     this.setState({
       ...this.state,
       totalContent: total,
-      contents: contents
+      contents
     });
   };
 
   addContent = () => {
     let total = this.state.totalContent + 1;
-    let contents = this.state.contents;
-    contents.push({
-      type: "",
-      caracte: "",
-      value: "",
-      urlfile: "",
-      showDefaultTextFile: true
-    });
+    const { contents } = this.state;
     this.setState({
       ...this.state,
       totalContent: total,
-      contents: contents
+      contents: [
+        ...contents,
+        {
+          type: "",
+          caracte: "",
+          value: "",
+          urlfile: "",
+          showDefaultTextFile: true
+        }
+      ]
     });
   };
 
@@ -214,7 +228,7 @@ class Index extends Component {
     this.changeValue({
       target: {
         name: "initdate",
-        value: MomentJs(e).format(this.state.formatDate)
+        value: MomentJs(e).format(this.formatDate)
       }
     });
   };
@@ -248,205 +262,123 @@ class Index extends Component {
   };
   // validate text total
   updateContent = key => e => {
-    const value_to_quotate = this.state.quote_contenidomovil;
-    const { contents, inmubles } = this.state;
-    let textTotal = document.querySelectorAll(".total-value");
-    if (e.target.value === "0") {
-      textTotal[key].innerText = `Maximo: ${
-        inmubles.contenido_asegudado_valor > 50000000
-          ? "50.000.000"
-          : Masknumbermoney.formatToMask(inmubles.contenido_asegudado_valor)
-      } `;
-    }
-    if (e.target.value === "1") {
-      textTotal[key].innerText = `Maximo: ${
-        inmubles.inmueble_asegudado_obrasvalor > 20000000
-          ? "20.000.000"
-          : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_obrasvalor)
-      } `;
-    }
-    if (e.target.value === "2") {
-      textTotal[key].innerText = `Maximo: ${
-        inmubles.inmueble_asegudado_joyasvalor > 20000000
-          ? "20.000.000"
-          : Masknumbermoney.formatToMask(inmubles.inmueble_asegudado_joyasvalor)
-      } `;
-    }
-    if (e.target.value === "3") {
-      textTotal[key].innerText = `Maximo: ${
-        inmubles.inmueble_asegudado_telefonosvalor > 4000000
-          ? "4.000.000"
-          : Masknumbermoney.formatToMask(
-              inmubles.inmueble_asegudado_telefonosvalor
-            )
-      } `;
-    }
-
-    if (e.target.value === "4") {
-      textTotal[key].innerText = `Maximo: ${
-        value_to_quotate > 20000000
-          ? "20.000.000"
-          : Masknumbermoney.formatToMask(value_to_quotate)
-      } `;
-    }
+    const { contents } = this.state;
     contents[key][e.target.name] = e.target.value;
     this.setState({
       ...this.state,
-      contents: contents
+      contents
     });
   };
 
-  validateTotalAsegurado(disableBtn) {
-    let contents = this.state.contents;
-    let inmubles = this.state.inmuebles;
-    let disabled = false;
+  getTotal = () => {
+    const { contents } = this.state;
+    const {
+      fixedContent,
+      valuablesAndWorksOfArt,
+      jewelry,
+      cellPhones,
+      mobileContent
+    } = typeItems;
+    const total = {
+      [fixedContent.id]: 0,
+      [valuablesAndWorksOfArt.id]: 0,
+      [jewelry.id]: 0,
+      [cellPhones.id]: 0,
+      [mobileContent.id]: 0
+    };
+    let error = false;
+    for (const content of contents) {
+      const value = Masknumbermoney.formatToNumber(content.value);
+      const contentType = content.type;
+      if (!error && this.getErrors(content, total[contentType] + value))
+        error = true;
+      /**
+       * @description The value is added to the total
+       */
+      if (contentType in total) total[contentType] += value;
+    }
+    return {
+      error,
+      total: {
+        fixedContent: total[fixedContent.id],
+        valuablesAndWorksOfArt: total[valuablesAndWorksOfArt.id],
+        jewelry: total[jewelry.id],
+        cellPhones: total[cellPhones.id],
+        mobileContent: total[mobileContent.id]
+      }
+    };
+  };
 
-    let total_contenido_asegudado = 0;
-    let total_inmueble_asegudado_obras = 0;
-    let total_inmueble_asegudado_joyas = 0;
-    let total_inmueble_asegudado_telefonos = 0;
+  hasErrors() {
+    const { inmuebles, quote_contenidomovil } = this.state;
+    const { total, error } = this.getTotal();
+    if (error) return true;
+    if (
+      inmuebles.contenido_asegudado === 1 &&
+      total.fixedContent !== 0 &&
+      inmuebles.contenido_asegudado_valor < total.fixedContent
+    )
+      return true;
 
-    for (let i = 0; i < contents.length; i++) {
-      let value = Masknumbermoney.formatToNumber(contents[i].value);
-      if (parseInt(contents[i].type) === 0) total_contenido_asegudado += value;
-      if (parseInt(contents[i].type) === 1)
-        total_inmueble_asegudado_obras += value;
-      if (parseInt(contents[i].type) === 2)
-        total_inmueble_asegudado_joyas += value;
-      if (parseInt(contents[i].type) === 3)
-        total_inmueble_asegudado_telefonos += value;
-    }
     if (
-      inmubles.contenido_asegudado === 1 &&
-      disabled === false &&
-      total_contenido_asegudado !== 0
-    ) {
-      if (inmubles.contenido_asegudado_valor < total_contenido_asegudado) {
-        disabled = true;
-      }
-    }
+      inmuebles.inmueble_asegudado_obras === 1 &&
+      total.valuablesAndWorksOfArt !== 0 &&
+      inmuebles.inmueble_asegudado_obrasvalor < total.valuablesAndWorksOfArt
+    )
+      return true;
     if (
-      inmubles.inmueble_asegudado_obras === 1 &&
-      disabled === false &&
-      total_inmueble_asegudado_obras !== 0
-    ) {
-      if (
-        inmubles.inmueble_asegudado_obrasvalor < total_inmueble_asegudado_obras
-      ) {
-        disabled = true;
-      }
+      inmuebles.inmueble_asegudado_joyas === 1 &&
+      total.jewelry !== 0 &&
+      inmuebles.inmueble_asegudado_joyasvalor < total.jewelry
+    )
+      return true;
+    if (inmuebles.inmueble_asegudado_telefonos === 1) {
+      return inmuebles.inmueble_asegudado_telefonosvalor !== total.cellPhones;
     }
-    if (
-      inmubles.inmueble_asegudado_joyas === 1 &&
-      disabled === false &&
-      total_inmueble_asegudado_joyas !== 0
-    ) {
-      if (
-        inmubles.inmueble_asegudado_joyasvalor < total_inmueble_asegudado_joyas
-      ) {
-        disabled = true;
-      }
+    if (total.mobileContent > quote_contenidomovil) {
+      return true;
     }
-    if (inmubles.inmueble_asegudado_telefonos === 1 && disabled === false) {
-      disabled =
-        inmubles.inmueble_asegudado_telefonosvalor !==
-        total_inmueble_asegudado_telefonos;
-    }
-    if (disableBtn === true) disabled = true;
-    this.setState({
-      ...this.state,
-      disableBtn: disabled
-    });
+    return false;
   }
 
-  validateContent = key => e => {
-    let contents = this.state.contents;
-    let disableBtn = this.state.disableBtn;
-    let limits = this.state.limits[contents[key].type];
-    let v = Masknumbermoney.formatToNumber(e.target.value);
-    if (v >= limits.min && v <= limits.max) {
-      contents[key]["error1"] = false;
-      contents[key]["error2"] = false;
-      disableBtn = false;
-    } else {
-      contents[key]["error1"] = false;
-      if (v <= limits.min) {
-        contents[key]["error1"] = true;
-      }
-      contents[key]["error1"] = false;
-      if (v >= limits.max) {
-        contents[key]["error2"] = true;
-      }
+  getErrors(content, maximum) {
+    /**
+     * @type {{min?:boolean, max?:boolean} | null}
+     */
+    let errors = null;
+    const value = Masknumbermoney.formatToNumber(content.value);
+    const contentType = content.type;
+    const item = this.getItem(contentType);
+    const min = value < item.min;
+    const max = value > (maximum >= item.max ? item.max : maximum);
+    const empty = !value;
+    if (min) errors = { ...errors, min };
+    if (max) errors = { ...errors, max };
+    if (empty) errors = { ...errors, empty };
+    return errors;
+  }
 
-      disableBtn = true;
-    }
-    if (disableBtn != true) {
-      if (contents[key].type === "0") {
-        if (v <= 0) {
-          contents[key]["error1"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error1"] = false;
-        }
-        if (v >= 50000001) {
-          contents[key]["error2"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error2"] = false;
-        }
-      }
-      if (contents[key].type === "1") {
-        if (v <= 0) {
-          contents[key]["error1"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error1"] = false;
-        }
-        if (v >= 20000001) {
-          contents[key]["error2"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error2"] = false;
-        }
-      }
-      if (contents[key].type === "2") {
-        if (v <= 899999) {
-          contents[key]["error1"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error1"] = false;
-        }
-        if (v >= 20000001) {
-          contents[key]["error2"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error2"] = false;
-        }
-      }
-      if (contents[key].type === "3") {
-        if (v <= 899999) {
-          contents[key]["error1"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error1"] = false;
-        }
-        if (v >= 4000001) {
-          contents[key]["error2"] = true;
-          disableBtn = true;
-        } else {
-          contents[key]["error2"] = false;
-        }
-      }
-    }
-    contents[key][e.target.name] = Masknumbermoney.formatToMask(e.target.value);
+  /**
+   * @param {string} id
+   * @return {Item}
+   */
+  getItem = id => {
+    const { items } = this.state;
+    const item = { ...items.find(item => String(item.id) === String(id)) };
+    return {
+      ...item,
+      max: item.maxTotal < item.max ? item.maxTotal : item.max
+    };
+  };
+
+  handleChange = key => e => {
+    const { contents } = this.state;
+    let content = contents[key];
+    content[e.target.name] = e.target.value;
     this.setState({
       ...this.state,
-      contents: contents,
-      disableBtn: disableBtn
+      contents
     });
-    setTimeout(() => {
-      this.validateTotalAsegurado(disableBtn);
-    }, 250);
   };
 
   changeTextFile = key => async e => {
@@ -473,7 +405,7 @@ class Index extends Component {
 
     this.setState({
       ...this.state,
-      contents: contents
+      contents
     });
   };
 
@@ -490,10 +422,43 @@ class Index extends Component {
       persons,
       contactperson,
       addNewPerson,
-      disableBtn,
       showPopUpPersona,
-      itemSelected
+      itemSelected,
+      quote_contenidomovil
     } = this.state;
+    const valid = this.hasErrors();
+    const { total } = this.getTotal();
+    const {
+      contenido_asegudado_valor,
+      inmueble_asegudado_obrasvalor,
+      inmueble_asegudado_joyasvalor,
+      inmueble_asegudado_telefonosvalor
+    } = inmuebles;
+    /**
+     * @type {Record<string, { lastKey: number | null, value: number, id: number }>}
+     */
+    const limitInmuebles = {
+      [typeItems.fixedContent.id]: {
+        lastKey: null,
+        value: contenido_asegudado_valor
+      },
+      [typeItems.valuablesAndWorksOfArt.id]: {
+        lastKey: null,
+        value: inmueble_asegudado_obrasvalor
+      },
+      [typeItems.jewelry.id]: {
+        lastKey: null,
+        value: inmueble_asegudado_joyasvalor
+      },
+      [typeItems.cellPhones.id]: {
+        lastKey: null,
+        value: inmueble_asegudado_telefonosvalor
+      },
+      [typeItems.mobileContent.id]: {
+        lastKey: null,
+        value: quote_contenidomovil
+      }
+    };
     return (
       <React.Fragment>
         <form
@@ -610,24 +575,30 @@ class Index extends Component {
                     valores
                   </h4>
                 </div>
-                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
-                  <div className="row row-full">
-                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                <div className="col-12">
+                  <div className="row row-full justify-content-center">
+                    <div className="col-auto">
                       <p>
                         <b>Contenidos</b>: $ 12.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Joyas</b>: $ 2.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Teléfonos Móviles:</b> Requiere relación detallada
                         para todos
                       </p>
                     </div>
-                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                    <div className="col-auto">
                       <p>
                         <b>Objetos de valor y obras de Arte:</b> $ 2.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Contenidos Móviles:</b> $ 2.000.000
                       </p>
@@ -637,10 +608,68 @@ class Index extends Component {
                         <p>
                           Recuerda que, para emitir la póliza, debes relacionar
                           las características y el número IMEI de cada teléfono
-                          móvil.{" "}
+                          móvil.
                         </p>
                       </div>
                     )}
+                  </div>
+                </div>
+                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
+                  <table className="table table-sm mt-4">
+                    <thead>
+                      <tr>
+                        <th scope="col">Tipo de articulo</th>
+                        <th scope="col">Valor total máximo</th>
+                        <th scope="col">Valor total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        [
+                          typeItems.fixedContent,
+                          contenido_asegudado_valor,
+                          total.fixedContent
+                        ],
+                        [
+                          typeItems.jewelry,
+                          inmueble_asegudado_joyasvalor,
+                          total.jewelry
+                        ],
+                        [
+                          typeItems.cellPhones,
+                          inmueble_asegudado_telefonosvalor,
+                          total.cellPhones
+                        ],
+                        [
+                          typeItems.valuablesAndWorksOfArt,
+                          inmueble_asegudado_obrasvalor,
+                          total.valuablesAndWorksOfArt
+                        ],
+                        [
+                          typeItems.mobileContent,
+                          quote_contenidomovil,
+                          total.mobileContent
+                        ]
+                      ].map(
+                        ([{ label, id }, max, total]) =>
+                          items.find(item => item.id === id) && (
+                            <tr className="h6 font-weight-normal">
+                              <td className="h6 font-weight-normal font-italic">
+                                {label}
+                              </td>
+                              <td>{Masknumbermoney.formatToMask(max)}</td>
+                              <td>{Masknumbermoney.formatToMask(total)}</td>
+                            </tr>
+                          )
+                      )}
+                    </tbody>
+                  </table>
+                  <div className="row row-full">
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
                   </div>
                 </div>
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -656,140 +685,39 @@ class Index extends Component {
                       "more-items " + (contents.length !== 0 ? "show" : "hide")
                     }
                   >
-                    {contents.map((item, key) => (
-                      <div className="moreitems" key={key}>
-                        <div className="row">
-                          <div className="col no-padding-right">
-                            <div className="name form-group input-select">
-                              <label htmlFor="name">Tipo de item</label>
-                              <select
-                                className="form-control"
-                                name="type"
-                                id="type"
-                                value={item.type}
-                                onChange={this.updateContent(key)}
-                              >
-                                <option value="" />
-                                {items.map((i, k) => {
-                                  const {
-                                    contenidos,
-                                    obras,
-                                    joyas,
-                                    contenidomovil,
-                                    celulares
-                                  } = this.state;
-                                  return (
-                                    ((contenidos === true && k === 0) ||
-                                      (obras === true && k === 1) ||
-                                      (joyas === true && k === 2) ||
-                                      (contenidomovil === true && k === 4) ||
-                                      (celulares === true && k === 3)) && (
-                                      <option value={k}>{i}</option>
-                                    )
-                                  );
-                                })}
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col no-padding-right">
-                            <div className="name form-group ">
-                              <label htmlFor="name">Características</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                name="caracte"
-                                value={item.caracte}
-                                onChange={this.updateContent(key)}
-                              />
-                              <small className="form-text d-block text-left">
-                                Ej: Marca, referencia, Numero IMEI, color...
-                              </small>
-                            </div>
-                          </div>
-                          <div className="col no-padding-right">
-                            <div
-                              className={
-                                "name form-group " +
-                                (item.error1 || item.error2 ? "error" : "")
-                              }
-                            >
-                              <label htmlFor="name">Valor</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                name="value"
-                                value={item.value}
-                                onChange={this.validateContent(key)}
-                              />
-                              <small className="form-text d-block text-left total-value"></small>
-                              <small
-                                className={
-                                  "form-text only-errors " +
-                                  (item.error1 === true ? "show" : "hide")
-                                }
-                              >
-                                Valor Asegurado del ítem {items[item.type]} es
-                                inferior al permitido
-                              </small>
-                              <small
-                                className={
-                                  "form-text only-errors " +
-                                  (item.error2 === true ? "show" : "hide")
-                                }
-                              >
-                                Valor Asegurado del ítem {items[item.type]} es
-                                mayor al permitido
-                              </small>
-                            </div>
-                          </div>
-                          <div className="col no-padding-right">
-                            <div className="row sarlaft no-gutters">
-                              <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                                <div className="sarlaft form-group">
-                                  <input
-                                    type="file"
-                                    className="form-control"
-                                    name="doc"
-                                    onChange={this.changeTextFile(key)}
-                                  />
-                                  {item.showDefaultTextFile ? (
-                                    <p>
-                                      Arrastre archivos para adjuntar, o{" "}
-                                      <b>buscar</b>
-                                    </p>
-                                  ) : (
-                                    <p>{Index.showName(item.textFile)}</p>
-                                  )}
-                                  <span>
-                                    Formatos permitidos PDF, PNG, GIF, JPG
-                                  </span>
-                                  <br />
-                                  <span
-                                    className={
-                                      "error-file " +
-                                      (item.errorFile === true
-                                        ? "show"
-                                        : "hide")
-                                    }
-                                  >
-                                    Formato no permitido
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col col-1 text-center no-padding-left">
-                            <span
-                              id={key}
-                              className="trash"
-                              onClick={this.removeContent(key)}
-                            >
-                              &nbsp;
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                    {contents.map((content, key) => {
+                      let maximum = 0;
+                      if (content.type in limitInmuebles) {
+                        const currentValue = limitInmuebles[content.type];
+                        const keyTemp = currentValue.lastKey;
+                        currentValue.lastKey = key;
+                        const valueTemp = Masknumbermoney.formatToNumber(
+                          currentValue.value
+                        );
+                        currentValue.value -=
+                          (contents[keyTemp] &&
+                            Masknumbermoney.formatToNumber(
+                              contents[keyTemp].value
+                            )) ||
+                          0;
+                        if (keyTemp !== null) maximum = currentValue.value;
+                        else maximum = valueTemp;
+                      }
+                      return (
+                        <Content
+                          key={key}
+                          content={content}
+                          items={items}
+                          handleChange={this.handleChange(key)}
+                          updateContent={this.updateContent(key)}
+                          removeContent={this.removeContent(key)}
+                          changeTextFile={this.changeTextFile(key)}
+                          item={this.getItem(content.type)}
+                          maximum={maximum}
+                          getErrors={() => this.getErrors(content, maximum)}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -907,7 +835,7 @@ class Index extends Component {
             <div className="row">
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                 <BtnContinue
-                  disable={disableBtn}
+                  disable={valid}
                   state={this.state}
                   items={items}
                   toggleErrorPhone={this.toggleErrorPhone}
