@@ -129,7 +129,7 @@ const Table = props => {
               </p>
             </div>
             <div className="col">
-              <p>{item.address}</p>
+              <p>{ 'addressHome' in item.pdf_info ? item.pdf_info.addressHome:item.address}</p>
             </div>
             <div className="col">
               <p>{item.validity} días</p>
