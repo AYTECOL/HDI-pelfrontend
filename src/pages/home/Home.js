@@ -87,7 +87,8 @@ class Home extends PureComponent {
                 validity: this.formatDate(dataArray[i].create_at),
                 create_data: dataArray[i].create_at,
                 stateQuote: this.formatStatesQuotes(dataArray[i].step),
-                step: dataArray[i].step
+                step: dataArray[i].step,
+                pdf_info: dataArray[i].pdf_info
             };
         }
         this.setState(prevState => ({
