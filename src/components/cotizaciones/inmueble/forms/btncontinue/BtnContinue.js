@@ -34,6 +34,7 @@ class BtnContinue extends Component {
 
     goBack = async () => {
         Loading.toggle(true);
+        store.dispatch(NextStep(1));
         await SaveIdentifications.save();
         await CreateOrUpdateValoration.save();
         this.props.history.push(UrlSite + "/cotizacion/1/" + this.props.match.params.id);
@@ -171,7 +172,7 @@ class BtnContinue extends Component {
                     </button>
                 </div>
                 <button type="button" className={"btn btn-default"}
-                        onClick={this.saveService}>Guardar y salir
+                    onClick={this.saveService}>Guardar y salir
                 </button>
                 <button type="button"
                         disabled={this.state.disabled}
