@@ -23,6 +23,8 @@ class BtnContinue extends PureComponent {
   }
 
   goBack = async () => {
+    store.dispatch(NextStep(3));
+    await SaveIdentifications.save();
     this.props.history.push(
       UrlSite + "/cotizacion/3/" + this.props.match.params.id
     );

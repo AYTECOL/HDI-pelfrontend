@@ -126,6 +126,8 @@ class BtnContinue extends Component {
 
   goBack = async () => {
     Loading.toggle(true);
+    store.dispatch(NextStep(2));
+    await SaveIdentifications.save();
     await CreateOrUpdateValoration.save();
     store.dispatch(resetStore());
     this.props.history.push(
