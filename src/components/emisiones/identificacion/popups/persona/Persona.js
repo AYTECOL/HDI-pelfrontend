@@ -1023,7 +1023,7 @@ export default class Persona extends Component {
                                                     <label htmlFor="address">Es necesario el sarlaft</label>
                                                     <span>Adjunta el Sarlaft diligenciado</span>
                                                     <input type="file" className="form-control" name="sarlaft"
-                                                        onChange={this.changeTextFile}  accept="image/*, application/pdf, .docx, .doc" />
+                                                        onChange={this.changeTextFile}  accept={Helpers.fileFormats.join(', ')+ ", .docx, .doc"} />
                                                     {this.state.showDefaultTextFile ? (
                                                         <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                                     ) : (
