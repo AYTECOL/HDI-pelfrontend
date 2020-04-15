@@ -16,6 +16,9 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import NumeroIdentificacion
     from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
 
+// 6.5MB
+const maxFileSize = 6500000;
+
 export default class Persona extends Component {
 
     _isMounted = false;
@@ -34,7 +37,7 @@ export default class Persona extends Component {
             userRestricted: false,
             ok: 0,
             total: 9,
-            errorFile: false,
+            errorFile: null,
             person: {},
             fields: [
                 "role",
@@ -301,22 +304,35 @@ export default class Persona extends Component {
     changeTextFile = e => {
         let name = "";
         let status = true;
-        let errorFile = false;
+        let errorFile = null;
         let person = this.state.person;
-        let validFile = Helpers.validateFile(e.target.files[0]);
-        if (validFile) {
-            name = e.target.files[0].name;
+        person.sarlaft = undefined;
+        person.sarlaft_document_url = undefined;
+        person.sarlfalt_url = undefined;
+        /**
+         * @type {File}
+         */
+        const file = e.target.files[0];
+        let validFile = Helpers.validateFile(file);
+        if (!file) {
+          errorFile = 'Este campo es requerido';
+        } else if (!validFile) {
+          errorFile = 'Formato no permitido';
+        } else if (file.size >= maxFileSize) {
+            errorFile = `El tamaño del archivo no debe exceder ${(
+                maxFileSize / 1000000
+            ).toFixed(1)}MB`;
+        } else {
+            name = file.name;
             status = false;
-            person.sarlaft = e.target.files[0];
+            person.sarlaft = file;
             person.sarlaft_document_url = person.sarlaft;
             person.sarlfalt_url = undefined;
-        } else {
-            errorFile = true;
         }
         this.setState({
             ...this.state,
             textFile: name,
-            errorFile: errorFile,
+            errorFile,
             showDefaultTextFile: status,
             person: person,
             sarlfalt_url: undefined
@@ -450,7 +466,7 @@ export default class Persona extends Component {
 
     hasValidForm () {
         const errors = [];
-        const { typePerson, nit, person } = this.state;
+        const { typePerson, nit, person, errorFile } = this.state;
         const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
         let fields = document.querySelectorAll(".modal-content input, .modal-content select");
         for (let i = 0; i < fields.length; i++) {
@@ -495,7 +511,9 @@ export default class Persona extends Component {
             errors.splice(sarlaftError, 1);
           }
         }
-
+        if (errorFile) {
+          errors.push('sarlfalt');
+        }
         return !!errors.length;
     }
 
@@ -1005,7 +1023,7 @@ export default class Persona extends Component {
                                                     <label htmlFor="address">Es necesario el sarlaft</label>
                                                     <span>Adjunta el Sarlaft diligenciado</span>
                                                     <input type="file" className="form-control" name="sarlaft"
-                                                        onChange={this.changeTextFile} />
+                                                        onChange={this.changeTextFile}  accept="image/*, application/pdf, .docx, .doc" />
                                                     {this.state.showDefaultTextFile ? (
                                                         <p>Arrastre archivos para adjuntar, o <b>buscar</b></p>
                                                     ) : (
@@ -1020,8 +1038,13 @@ export default class Persona extends Component {
                                                         </React.Fragment>
                                                     }
                                                     <br />
-                                                    <span
-                                                        className={"error-file " + (this.state.errorFile === true ? 'show' : 'hide')}>Formato no permitido</span>
+                                                    {this.state.errorFile && (
+                                                     <div className="animated shake">
+                                                        <span className="error-file">
+                                                        {this.state.errorFile}
+                                                        </span>
+                                                     </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>
