@@ -197,16 +197,16 @@ class Helpers {
     }
   };
 
+  static fileFormats = [
+    "image/*",
+    "application/pdf"
+  ];
+
   static validateFile(file) {
     if (typeof file !== "undefined") {
-      let formats = [
-        "image/png",
-        "image/jpeg",
-        "image/jpg",
-        "image/gif",
-        "application/pdf"
-      ];
-      return formats.indexOf(file.type) !== -1;
+      return Helpers.fileFormats.some(
+        (format) =>file.type.match(format)
+      );
     }
   }
 
