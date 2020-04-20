@@ -470,7 +470,7 @@ class Index extends Component {
                             <p>
                               <span>Valor</span>
                             </p>
-                            <p>{item.value}</p>
+                            <p>{Masknumbermoney.formatToMask(item.value)}</p>
                           </div>
                           <div className="col col-sm-6 col-md-3">
                             {typeof item.textFile !== "undefined" &&
