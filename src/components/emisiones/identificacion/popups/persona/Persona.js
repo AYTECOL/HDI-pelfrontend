@@ -632,7 +632,14 @@ export default class Persona extends Component {
             console.log(e);
         }
     };
-
+    validateChange = event => {
+        var regex = new RegExp("^[a-zA-Z0-9 -]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+          event.preventDefault();
+          return false;
+       }
+      }
     render() {
         return (
             <React.Fragment>
@@ -1007,7 +1014,7 @@ export default class Persona extends Component {
                                                     <input type="text"
                                                         className={"form-control " + (this.state.person.addressDisabled ? 'disabled' : '')}
                                                         disabled={this.state.person.addressDisabled} name="address"
-                                                        value={this.state.person.address} onChange={this.changeValue} />
+                                                        value={this.state.person.address} onChange={this.changeValue} onKeyPress={this.validateChange}/>
                                                     <small className="form-text only-errors">Falta información requerida
                                                         para el Tomador. Por favor revise el campo Dirección
                                                 </small>
