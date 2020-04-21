@@ -19,10 +19,12 @@ class Address extends Component {
   }
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
+    if (this.props.address !== nextProps.address)
+      nextState.error = this.hasErrors(nextProps.address);
     const prevIdentification = this.props;
     const { city, department } = nextProps;
-    let disabled = true;
-    if (city && department) disabled = false;
+    let disabled = false;
+    if (!city && !department) disabled = false;
     nextState.disabled = disabled;
     nextState.error = !disabled && nextState.error;
     if (
@@ -32,28 +34,28 @@ class Address extends Component {
       this.textInput.current.focus();
   }
 
-  validateEmpty = e => {
-    e = e.target;
+  hasErrors(value) {
     let error = false;
-    if (
-      e.value.length < 1 ||
-      e.value.length > 200 ||
-      !isValidDirection(e.value)
-    )
+    if (value.length < 1 || value.length > 200 || !isValidDirection(value))
       error = true;
+    return error;
+  }
+
+  validateEmpty = (e) => {
+    e = e.target;
     store.dispatch(saveIdentificationValue(e));
     if (store.getState().showMap !== true) store.dispatch(mapShow(true));
     this.setState({
       ...this.state,
-      error: error
+      error: this.hasErrors(e.value),
     });
   };
-  validateChar = event => {
+  validateChar = (event) => {
     if (!isValidDirection(event.key)) {
       event.preventDefault();
       return false;
     }
-  }
+  };
   render() {
     const { address } = this.props;
     const { error, disabled } = this.state;
@@ -103,11 +105,11 @@ class Address extends Component {
 export default connect(
   ({
     cotizacion: {
-      identification: { address, city, department }
-    }
+      identification: { address, city, department },
+    },
   }) => ({
     address,
     city,
-    department
+    department,
   })
 )(Address);
