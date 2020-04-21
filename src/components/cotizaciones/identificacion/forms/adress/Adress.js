@@ -93,7 +93,7 @@ class Address extends Component {
           Ingresa una dirección del hogar valida
         </small>
         <small className="form-text text-muted">
-          Ejemplo: Calle 143Bis # 23 a 34
+          Ejemplo: Calle 143Bis Carrera 23 a 34
         </small>
       </div>
     );
