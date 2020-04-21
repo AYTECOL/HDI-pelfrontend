@@ -44,7 +44,14 @@ class Address extends Component {
       error: error
     });
   };
-
+  validateChar = event => {
+    var regex = new RegExp("^[a-zA-Z0-9 -]+$");
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key)) {
+      event.preventDefault();
+      return false;
+   }
+  }
   render() {
     const { address } = this.props;
     const { error, disabled } = this.state;
@@ -78,6 +85,7 @@ class Address extends Component {
           onBlur={this.validateEmpty}
           ref={this.textInput}
           onChange={this.validateEmpty}
+          onKeyPress={this.validateChar}
         />
         <small className={'form-text only-errors ' + (error ? 'show' : 'hide')}>
           Por favor ingresa la {defaultLabel.toLowerCase()}.
