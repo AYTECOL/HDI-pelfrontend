@@ -16,6 +16,7 @@ import NumeroIdentificacion from "../numeroidentificacion/NumeroIdentificacion";
 import TipoDocumento from "../tipodocumento/TipoDocumento";
 import Validaridentificacion from "../../popups/validaridentificacion/Validaridentificacion";
 import { withRouter } from "react-router-dom";
+import { isValidDirection } from '../../../../../common/validations';
 
 class BtnContinue extends Component {
 
@@ -33,25 +34,34 @@ class BtnContinue extends Component {
             let storeState = store.getState();
             let stateForm = storeState.stateFormIdentificacion;
             let typeDoc = storeState.typeDocument;
+            const {
+              businessname,
+              name,
+              lastname,
+              address,
+              department,
+              city,
+            } = storeState.cotizacion.identification;
             if (stateForm === 1) {
                 let i = 0;
                 if (typeDoc === 2) {
-                    if (storeState.cotizacion.identification['businessname'].length > RazonSocial.limit() ||
-                        storeState.cotizacion.identification['businessname'] === ""
+                    if (businessname.length > RazonSocial.limit() ||
+                        businessname === ""
                     ) i++;
                 } else {
-                    if (storeState.cotizacion.identification['name'].length > Name.limit() ||
-                        storeState.cotizacion.identification['lastname'].length > LastName.limit() ||
-                        storeState.cotizacion.identification['name'] === "" ||
-                        storeState.cotizacion.identification['lastname'] === ""
+                    if (name.length > Name.limit() ||
+                        lastname.length > LastName.limit() ||
+                        name === "" ||
+                        lastname === ""
                     ) i++;
                 }
                 if (
-                    storeState.cotizacion.identification['address'] === "" ||
-                    storeState.cotizacion.identification['department'] === "" ||
-                    storeState.cotizacion.identification['city'] === ""
+                  address === '' ||
+                  department === '' ||
+                  city === '' ||
+                  !isValidDirection(address)
                 ) {
-                    i++;
+                  i++;
                 }
                 storeState.continueButtonDisable = i !== 0;
             }
