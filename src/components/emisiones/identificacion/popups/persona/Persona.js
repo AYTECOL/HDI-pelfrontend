@@ -15,6 +15,7 @@ import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import NumeroIdentificacion
     from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
+import { isValidDirection } from '../../../../../common/validations';
 
 // 6.5MB
 const maxFileSize = 6500000;
@@ -633,12 +634,10 @@ export default class Persona extends Component {
         }
     };
     validateChange = event => {
-        var regex = new RegExp("^[a-zA-Z0-9 -]+$");
-        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-        if (!regex.test(key)) {
+        if (!isValidDirection(event.key)) {
           event.preventDefault();
           return false;
-       }
+        }
       }
     render() {
         return (

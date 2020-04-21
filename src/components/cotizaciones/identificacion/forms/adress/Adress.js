@@ -6,6 +6,7 @@ import ReactTooltip from 'react-tooltip';
 import store from '../../../../../store';
 import { mapShow, saveIdentificationValue } from '../../../../../actions';
 import Help from '../../../../../common/icons/help';
+import { isValidDirection } from '../../../../../common/validations';
 
 class Address extends Component {
   constructor(props) {
@@ -19,13 +20,11 @@ class Address extends Component {
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     const prevIdentification = this.props;
-    const { address, city, department } = nextProps;
+    const { city, department } = nextProps;
     let disabled = true;
-    let error = false;
-    if (address.length < 1 || address.length > 200) error = true;
     if (city && department) disabled = false;
     nextState.disabled = disabled;
-    nextState.error = !disabled && error;
+    nextState.error = !disabled && nextState.error;
     if (
       city !== prevIdentification.city ||
       department !== prevIdentification.department
@@ -36,7 +35,12 @@ class Address extends Component {
   validateEmpty = e => {
     e = e.target;
     let error = false;
-    if (e.value.length < 1 || e.value.length > 200) error = true;
+    if (
+      e.value.length < 1 ||
+      e.value.length > 200 ||
+      !isValidDirection(e.value)
+    )
+      error = true;
     store.dispatch(saveIdentificationValue(e));
     if (store.getState().showMap !== true) store.dispatch(mapShow(true));
     this.setState({
@@ -45,12 +49,10 @@ class Address extends Component {
     });
   };
   validateChar = event => {
-    var regex = new RegExp("^[a-zA-Z0-9 -]+$");
-    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-    if (!regex.test(key)) {
+    if (!isValidDirection(event.key)) {
       event.preventDefault();
       return false;
-   }
+    }
   }
   render() {
     const { address } = this.props;
@@ -88,7 +90,7 @@ class Address extends Component {
           onKeyPress={this.validateChar}
         />
         <small className={'form-text only-errors ' + (error ? 'show' : 'hide')}>
-          Por favor ingresa la {defaultLabel.toLowerCase()}.
+          Ingresa una dirección del hogar valida
         </small>
         <small className="form-text text-muted">
           Ejemplo: Calle 143Bis # 23 a 34
