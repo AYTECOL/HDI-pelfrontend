@@ -465,10 +465,10 @@ export default class Persona extends Component {
         }
     };
 
-    hasValidForm () {
+    getErrors() {
         const errors = [];
         const { typePerson, nit, person, errorFile } = this.state;
-        const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
+        const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role, address } = person;
         let fields = document.querySelectorAll(".modal-content input, .modal-content select");
         for (let i = 0; i < fields.length; i++) {
           if (sarlfaltActive === true && fields[i].name === "sarlaft") continue;
@@ -515,7 +515,12 @@ export default class Persona extends Component {
         if (errorFile) {
           errors.push('sarlfalt');
         }
-        return !!errors.length;
+        if (!address || !isValidDirection(address)) errors.push('address');
+        return errors;
+    }
+
+    hasValidForm() {
+        return !this.getErrors().length;
     }
 
     async validateAll(name, printErrors, saveData) {
@@ -523,7 +528,6 @@ export default class Persona extends Component {
             if (typeof this.props.updatePerson !== "undefined") {
                 if (typeof printErrors === "undefined") printErrors = false;
                 let msj4 = true;
-                let errors = [];
                 let person = this.state.person.sarlfaltActive;
                 let fields = document.querySelectorAll(".modal-content input, .modal-content select");
                 for (let i = 0; i < fields.length; i++) {
@@ -532,23 +536,19 @@ export default class Persona extends Component {
                     }
                     fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
                     if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname' && fields[i].name !== 'secondlastname') {
-                        errors.push(fields[i].name);
                         if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
                     }
                 }
 
                 if (Helpers.validationEmail(this.state.person.email) === false) {
-                    errors.push('email');
                     if (printErrors || 'email' === name) document.querySelector(".email").className += " error";
                 }
 
                 if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
-                    errors.splice(errors.indexOf('sarlfalt'), 1);
                     Helpers.removeClass('.sarlaft', 'error');
                 }
                 if (this.state.typePerson === 1 && this.state.nit === false) {
                     if (this.state.person.genero === "") {
-                        errors.push('genero');
                         if (printErrors || 'genero' === name) document.querySelector(".generofield").className += " error";
                     } else {
                         document.querySelector(".generofield").className = document.querySelector(".generofield").className.replace(' error', '');
@@ -556,7 +556,6 @@ export default class Persona extends Component {
                 }
                 if ((this.state.typePerson === 1 || this.state.typePerson === 2) && this.state.nit === false) {
                     if (this.state.person.fechadenacimiento === "") {
-                        errors.push('fechadenacimiento');
                         if (printErrors || 'fechadenacimiento' === name) document.querySelector(".fechadenacimiento").className += " error";
                     } else {
                         document.querySelector(".fechadenacimiento").className = document.querySelector(".fechadenacimiento").className.replace(' error', '');
@@ -564,7 +563,6 @@ export default class Persona extends Component {
                 }
                 if (this.state.typePerson === 4) {
                     if (this.state.person.fechadecontitucion === "") {
-                        errors.push('fechadecontitucion');
                         if (printErrors || 'fechadecontitucion' === name) document.querySelector(".fechadecontitucion").className += " error";
                     } else {
                         document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
@@ -572,7 +570,6 @@ export default class Persona extends Component {
                 }
                 if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
                     if (this.state.person.role.length === 0) {
-                        errors.push('role');
                         if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
                     } else {
                         if (document.querySelector(".items-checkboxes") !== null) {
@@ -594,26 +591,17 @@ export default class Persona extends Component {
                     let type = document.querySelector('#doc-type').value;
                     let errorStatus = NumeroIdentificacion.validate(v, type);
                     if (errorStatus === true) {
-                        errors.push('value');
                         document.querySelector('#documentfield').parentNode.className += " error";
                     } else {
                         document.querySelector('#documentfield').parentNode.className = document.querySelector('#documentfield').parentNode.className.replace(' error', '');
                     }
                 }
 
-                let indexSecondName = errors.indexOf("secondname");
-                if (indexSecondName !== -1) errors.splice(indexSecondName, 1);
 
-                let sarlaft = errors.indexOf("sarlaft");
-                if (sarlaft !== -1 && typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlfalt_url !== null) {
-                    if (this.state.person.sarlfalt_url.trim() !== "") {
-                        errors.splice(sarlaft, 1);
-                    }
-                }
-
-                let ok = total - errors.length;
-                if (errors.length === 0) msj4 = false;
-                if (errors.length === 0 && saveData) {
+                const errors = this.getErrors();
+                const valid = !errors.length;
+                if (valid) msj4 = false;
+                if (valid && saveData) {
                     await this.saveFile();
                     let state = this.state;
                     if (typeof state.person.code === "undefined") state.person.code = state.typePerson !== 4 ? '36' : '37';
@@ -622,11 +610,11 @@ export default class Persona extends Component {
                     this.props.updatePerson(state.person);
                 } else {
                     this.setState({
-                        ...this.state,
-                        ok: ok,
-                        msj4: msj4,
-                        total: total
-                    })
+                      ...this.state,
+                      ok: total - errors.length,
+                      msj4: msj4,
+                      total: total,
+                    });
                 }
             }
         } catch (e) {
@@ -1076,7 +1064,7 @@ export default class Persona extends Component {
                                                 <p className="error">Falta información requerida para el Contacto. Por favor
                                             revise los detalles de los datos de Contacto</p>
                                             }
-                                            <button className="btn btn-primary" disabled={this.hasValidForm()} type="button" onClick={() => {
+                                            <button className="btn btn-primary" disabled={!this.hasValidForm()} type="button" onClick={() => {
                                                 this.validateAll(null, true, true)
                                             }}>Continuar
                                         </button>
