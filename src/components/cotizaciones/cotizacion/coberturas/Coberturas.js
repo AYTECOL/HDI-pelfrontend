@@ -412,10 +412,15 @@ class Coberturas extends Component {
         let plan = this.state.plan;
         let item = plan.coverages[key];
         const hurtoCalificado = plan.coverages.find((element) => element.code_content === 9692)
+        const otrosContenidos = plan.coverages.find((element) => element.code_content === 9670)
         const valueHurto =
             hurtoCalificado &&
             hurtoCalificado.values &&
             hurtoCalificado.values[0].value_to_quotate;
+        const valueContenido = 
+            otrosContenidos &&
+            otrosContenidos.values &&
+            otrosContenidos.values[0].value_to_quotate;
         //Input
         if (type === 1) {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
@@ -448,6 +453,18 @@ class Coberturas extends Component {
                         if (0 >= Masknumbermoney.formatToNumber(item.values[k].value_show)) {
                             item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es inferior al permitido.');
                         }
+                    }
+                    if (item.values[k].errors.length > 0) {
+                        Helpers.disabled('.generatepdf ');
+                        Helpers.disabled('.next-step');
+                    } else {
+                        Helpers.enabled('.generatepdf ');
+                        Helpers.enabled('.next-step');
+                    }
+                }else {
+                    let formatValue = Masknumbermoney.formatToNumber(item.values[k].value_show)
+                    if (formatValue > valueContenido) {
+                        item.values[k].errors.push('Valor asegurado es mayor al reportado en Contenidos');
                     }
                     if (item.values[k].errors.length > 0) {
                         Helpers.disabled('.generatepdf ');
