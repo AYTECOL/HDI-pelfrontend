@@ -1,3 +1,3 @@
 export function isValidDirection(value) {
-  return !/([\°|\||\¿|\?|#|!|¡])/g.exec(value);;
+  return !!/^[a-zA-Z0-9\s,'-]*$/g.exec(value);
 }
