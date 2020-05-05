@@ -390,7 +390,9 @@ class Index extends React.Component {
   handleChange = (key) => (e) => {
     const { contents } = this.state;
     let content = contents[key];
-    content[e.target.name] = e.target.value;
+    const value = Masknumbermoney.formatToNumber(e.target.value)
+    const valueToView = Masknumbermoney.formatToMask(value)
+    content[e.target.name] = valueToView;
     this.setState({
       ...this.state,
       contents,
