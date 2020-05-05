@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
 import MomentJs from "moment";
 import DatePicker from "react-datepicker";
 import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
@@ -291,8 +292,6 @@ export default class Persona extends Component {
                             person: person
                         });
                     }, 10);
-                } else {
-                    this.validateAll(null, false, false);
                 }
             }
         }, 400);
@@ -374,12 +373,9 @@ export default class Persona extends Component {
             ...this.state,
             person: newPerson,
             nit: nit
-        });
-
-        if (this.validateAllTime !== null) clearTimeout(this.validateAllTime);
-        this.validateAllTime = setTimeout(() => {
+        }, () => {
             this.validateAll(n);
-        }, 250);
+        });
     };
 
     validateDoc = async e => {
@@ -413,11 +409,9 @@ export default class Persona extends Component {
                     person: person,
                     userRestricted: false,
                     personExists: true
+                }, () => {
+                  this.validateAll(null, false, false);
                 });
-                setTimeout(() => {
-                    this.validateAll(null, false, false);
-                }, 100);
-
                 Loading.toggle(false);
             }
         } catch (e) {
@@ -528,55 +522,6 @@ export default class Persona extends Component {
             if (typeof this.props.updatePerson !== "undefined") {
                 if (typeof printErrors === "undefined") printErrors = false;
                 let msj4 = true;
-                let person = this.state.person.sarlfaltActive;
-                let fields = document.querySelectorAll(".modal-content input, .modal-content select");
-                for (let i = 0; i < fields.length; i++) {
-                    if (person === true && fields[i].name === 'sarlaft') {
-                        continue;
-                    }
-                    fields[i].parentElement.className = fields[i].parentElement.className.replace(' error', '');
-                    if (fields[i].value === "" && fields[i].getAttribute('type') !== 'checkbox' && fields[i].name !== 'secondname' && fields[i].name !== 'secondlastname') {
-                        if (printErrors || fields[i].name === name) fields[i].parentElement.className += " error";
-                    }
-                }
-
-                if (Helpers.validationEmail(this.state.person.email) === false) {
-                    if (printErrors || 'email' === name) document.querySelector(".email").className += " error";
-                }
-
-                if (typeof this.state.person.sarlfalt_url !== "undefined" && this.state.person.sarlaft === "" && this.state.person.sarlfalt_url !== "") {
-                    Helpers.removeClass('.sarlaft', 'error');
-                }
-                if (this.state.typePerson === 1 && this.state.nit === false) {
-                    if (this.state.person.genero === "") {
-                        if (printErrors || 'genero' === name) document.querySelector(".generofield").className += " error";
-                    } else {
-                        document.querySelector(".generofield").className = document.querySelector(".generofield").className.replace(' error', '');
-                    }
-                }
-                if ((this.state.typePerson === 1 || this.state.typePerson === 2) && this.state.nit === false) {
-                    if (this.state.person.fechadenacimiento === "") {
-                        if (printErrors || 'fechadenacimiento' === name) document.querySelector(".fechadenacimiento").className += " error";
-                    } else {
-                        document.querySelector(".fechadenacimiento").className = document.querySelector(".fechadenacimiento").className.replace(' error', '');
-                    }
-                }
-                if (this.state.typePerson === 4) {
-                    if (this.state.person.fechadecontitucion === "") {
-                        if (printErrors || 'fechadecontitucion' === name) document.querySelector(".fechadecontitucion").className += " error";
-                    } else {
-                        document.querySelector(".fechadecontitucion").className = document.querySelector(".fechadecontitucion").className.replace(' error', '');
-                    }
-                }
-                if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
-                    if (this.state.person.role.length === 0) {
-                        if (printErrors || 'role' === name) document.querySelector(".items-checkboxes").className += " error";
-                    } else {
-                        if (document.querySelector(".items-checkboxes") !== null) {
-                            document.querySelector(".items-checkboxes").className = document.querySelector(".items-checkboxes").className.replace(' error', '');
-                        }
-                    }
-                }
                 let total = this.state.total;
                 if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
                     if (this.state.nit === true) {
@@ -628,6 +573,8 @@ export default class Persona extends Component {
         }
       }
     render() {
+        const errors = this.getErrors()
+        const hasErrorAddClass = (field) => errors.find((error) => field === error) && "error ";
         return (
             <React.Fragment>
                 <div className={"modal validaridentificacion show person-popup"}>
@@ -671,7 +618,7 @@ export default class Persona extends Component {
                                             </div>
 
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                <div className="value form-group "><label
+                                                <div className={classNames( "value form-group ", hasErrorAddClass("documentfield"))}><label
                                                     htmlFor="value">Identificación</label>
                                                     <input type="text"
                                                         id="documentfield"
@@ -691,7 +638,7 @@ export default class Persona extends Component {
                                         <div className={"row fields-row"}>
                                             <div
                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className="name form-group "><label
+                                                <div className={classNames("name form-group ", hasErrorAddClass("name"))}><label
                                                     htmlFor="name">Nombre y Apellidos del Contacto</label>
                                                     <input type="text"
                                                         className={"form-control " + (this.state.person.nameDisabled ? 'disabled' : '')}
@@ -706,7 +653,7 @@ export default class Persona extends Component {
                                             </div>
                                             <div
                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className="name form-group "><label
+                                                <div className={classNames("name form-group ", hasErrorAddClass("telefono"))}><label
                                                     htmlFor="telefono">Número de teléfono del Contacto</label>
                                                     <input type="text"
                                                         className={"form-control " + (this.state.person.telefonoDisabled ? 'disabled' : '')}
@@ -721,7 +668,7 @@ export default class Persona extends Component {
                                             </div>
                                             <div
                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className="email form-group "><label
+                                                <div className={classNames("email form-group ", hasErrorAddClass("email"))}><label
                                                     htmlFor="email">Correo electrónico del Contacto</label>
                                                     <input type="text"
                                                         className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
@@ -741,7 +688,7 @@ export default class Persona extends Component {
                                         {this.state.nit === true ? (
                                             <React.Fragment>
                                                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <div className="name form-group "><label
+                                                    <div className={classNames("name form-group ", hasErrorAddClass("businessname"))}><label
                                                         htmlFor="name">Razón social</label>
                                                         <input type="text"
                                                             className={"form-control " + (this.state.person.businessnameDisabled ? 'disabled' : '')}
@@ -762,7 +709,7 @@ export default class Persona extends Component {
                                                         <React.Fragment>
                                                             <div
                                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                                <div className="name form-group "><label
+                                                                <div className={classNames("name form-group ", hasErrorAddClass('name'))}><label
                                                                     htmlFor="name">Primer nombre</label>
                                                                     <input type="text"
                                                                         className={"form-control " + (this.state.person.nameDisabled ? 'disabled' : '')}
@@ -777,7 +724,7 @@ export default class Persona extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                                <div className="pisonumero form-group "><label
+                                                                <div className={classNames("pisonumero form-group ", hasErrorAddClass('secondname'))}><label
                                                                     htmlFor="pisonumero">Segundo nombre</label>
                                                                     <input type="text"
                                                                         className={"form-control " + (this.state.person.secondnameDisabled ? 'disabled' : '')}
@@ -795,7 +742,7 @@ export default class Persona extends Component {
 
                                                             <div
                                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                                <div className="pisonumero form-group "><label
+                                                                <div className={classNames("pisonumero form-group ", hasErrorAddClass('lastname'))}><label
                                                                     htmlFor="pisonumero">Primer apellido</label>
                                                                     <input type="text"
                                                                         className={"form-control " + (this.state.person.lastnameDisabled ? 'disabled' : '')}
@@ -810,7 +757,7 @@ export default class Persona extends Component {
                                                                 </div>
                                                             </div>
                                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                                <div className="pisonumero form-group "><label
+                                                                <div className={classNames("pisonumero form-group ", hasErrorAddClass('secondlastname'))}><label
                                                                     htmlFor="pisonumero">Segundo apellido</label>
                                                                     <input type="text"
                                                                         className={"form-control " + (this.state.person.secondlastnameDisabled ? 'disabled' : '')}
@@ -833,7 +780,7 @@ export default class Persona extends Component {
                                         {(this.state.typePerson !== 4) &&
                                             <div
                                                 className={"col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right " + (this.state.nit ? 'hide' : '')}>
-                                                <div className={"generofield no-icon form-group"}>
+                                                <div className={classNames("generofield no-icon form-group", hasErrorAddClass('genero'))}>
                                                     <label htmlFor="doc-type-value">Genero</label>
                                                     <ul className="select-item">
                                                         <li className={((this.state.person.genero === 1) ? 'active' : '')}
@@ -855,7 +802,7 @@ export default class Persona extends Component {
                                         {(this.state.nit === false && this.state.typePerson !== 4) &&
                                             <div
                                                 className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
-                                                <div className="fechadenacimiento form-group "><label
+                                                <div className={classNames("fechadenacimiento form-group ", hasErrorAddClass('fechadenacimiento'))}><label
                                                     htmlFor="fechadenacimiento">Fecha de nacimiento</label>
                                                     <DatePicker locale={es}
                                                         name="fechadenacimiento"
@@ -878,7 +825,7 @@ export default class Persona extends Component {
                                         {(this.state.typePerson !== 4 && this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
                                             <React.Fragment>
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                    <div className="pisonumero form-group input-select"><label
+                                                    <div className={classNames("pisonumero form-group input-select", hasErrorAddClass('tipodetelefono'))}><label
                                                         htmlFor="tipodetelefono">Tipo de teléfono</label>
                                                         <select name="tipodetelefono" onChange={this.changeValue}
                                                             id="tipodetelefono" value={this.state.person.tipodetelefono}
@@ -894,7 +841,7 @@ export default class Persona extends Component {
                                                     </div>
                                                 </div>
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                    <div className="pisonumero form-group "><label
+                                                    <div className={classNames("pisonumero form-group ", hasErrorAddClass('telefono'))}><label
                                                         htmlFor="telefono">Teléfono</label>
                                                         <input type="text"
                                                             className={"number form-control " + (this.state.person.telefonoDisabled ? 'disabled' : '')}
@@ -914,7 +861,7 @@ export default class Persona extends Component {
                                         <div className={"row fields-row"}>
 
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className="businessname form-group "><label
+                                                <div className={classNames("businessname form-group ", hasErrorAddClass('businessname'))}><label
                                                     htmlFor="businessname">Razon social</label>
                                                     <input type="text"
                                                         className={"form-control " + (this.state.person.businessnameDisabled ? 'disabled' : '')}
@@ -928,7 +875,7 @@ export default class Persona extends Component {
                                             </div>
 
                                             <div className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
-                                                <div className="fechadecontitucion form-group ">
+                                                <div className={classNames("fechadecontitucion form-group ", hasErrorAddClass("fechadecontitucion"))}>
                                                     <label htmlFor="businessname">Fecha de constitución</label>
                                                     <DatePicker name="fechadecontitucion"
                                                         value={this.state.person.fechadecontitucion}
@@ -952,7 +899,7 @@ export default class Persona extends Component {
                                     {this.state.typePerson !== 7 &&
                                         <div className="row fields-row">
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className="email form-group "><label
+                                                <div className={classNames("email form-group ", hasErrorAddClass('email'))}><label
                                                     htmlFor="email">Correo electrónico</label>
                                                     <input type="text"
                                                         className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
@@ -966,7 +913,7 @@ export default class Persona extends Component {
 
 
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                <div className="pisonumero form-group">
+                                                <div className={classNames("pisonumero form-group", hasErrorAddClass('ciudad'))}>
                                                     <AutocompleteCities disabled={this.state.person.ciudadDisabled}
                                                         label={"Ciudad o municipio"} name="ciudad"
                                                         value={this.state.person.ciudad}
@@ -976,7 +923,7 @@ export default class Persona extends Component {
 
 
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className="pisonumero form-group input-select"><label
+                                                <div className={classNames("pisonumero form-group input-select", hasErrorAddClass('adresstype'))}><label
                                                     htmlFor="adresstype">Tipo de dirección</label>
                                                     <select value={this.state.person.adresstype} onChange={this.changeValue}
                                                         name="adresstype" id="adresstype"
@@ -996,15 +943,17 @@ export default class Persona extends Component {
                                                 </div>
                                             </div>
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                <div className="pisonumero form-group "><label
-                                                    htmlFor="address">Dirección</label>
-                                                    <input type="text"
-                                                        className={"form-control " + (this.state.person.addressDisabled ? 'disabled' : '')}
-                                                        disabled={this.state.person.addressDisabled} name="address"
-                                                        value={this.state.person.address} onChange={this.changeValue} onKeyPress={this.validateChange}/>
-                                                    <small className="form-text only-errors">Falta información requerida
-                                                        para el Tomador. Por favor revise el campo Dirección
-                                                </small>
+                                                <div className={classNames("pisonumero form-group", errors.find((error) => "address" === error) && "error")}>
+                                                    <label htmlFor="address">Dirección</label>
+                                                    <input
+                                                     type="text"
+                                                     className={"form-control " + (this.state.person.addressDisabled ? 'disabled' : '')}
+                                                     disabled={this.state.person.addressDisabled} name="address"
+                                                     value={this.state.person.address} onChange={this.changeValue} onKeyPress={this.validateChange}
+                                                    />
+                                                    <small className="form-text only-errors">
+                                                        Este campo tiene un formato inválido
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
@@ -1013,7 +962,7 @@ export default class Persona extends Component {
                                         <div
                                             className={"row sarlaft"}>
                                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                                                <div className="sarlaft form-group">
+                                                <div className={classNames("sarlaft form-group", hasErrorAddClass('sarlaft'))}>
                                                     <label htmlFor="address">Es necesario el sarlaft</label>
                                                     <span>Adjunta el Sarlaft diligenciado</span>
                                                     <input type="file" className="form-control" name="sarlaft"
@@ -1048,8 +997,9 @@ export default class Persona extends Component {
                                         <div className="row">
                                             <div className="col">
                                                 <div className={"msj-total"}>
-                                                    <p className="error no-margin">Haz
-                                                    diligenciado {this.state.ok} de {this.state.total} campos</p>
+                                                    <p className="error no-margin">
+                                                     Haz diligenciado correctamente {this.state.ok} de {this.state.total} campos
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1064,7 +1014,7 @@ export default class Persona extends Component {
                                                 <p className="error">Falta información requerida para el Contacto. Por favor
                                             revise los detalles de los datos de Contacto</p>
                                             }
-                                            <button className="btn btn-primary" disabled={!this.hasValidForm()} type="button" onClick={() => {
+                                            <button className="btn btn-primary" disabled={!!errors.length} type="button" onClick={() => {
                                                 this.validateAll(null, true, true)
                                             }}>Continuar
                                         </button>

@@ -24,7 +24,7 @@ const UrlLiberty = UrlAttachPolicyDocuments;
  *  archivos: Archivos;
  *  }} AdjuntarDocumentosPolizaRq
  *
- * @typedef {{ 
+ * @typedef {{
  *  adjuntarDocumentosPolizaRq: AdjuntarDocumentosPolizaRq
  * }} DataRequest
  */
@@ -69,7 +69,10 @@ class AttachPolicyDocuments {
           }
         );
       })
-    );
+    ).catch((e) => {
+      console.log(e);
+      return null;
+    });
   }
 }
 
