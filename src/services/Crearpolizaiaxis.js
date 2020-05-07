@@ -315,8 +315,25 @@ class Crearpolizaiaxis {
 
     static async save(data) {
         let user = await ConsultaPersonas.getUser();
-        let response = await Api.post(BaseUrl, data, Url, undefined, {
+        let response = Api.post(BaseUrl, data, Url, undefined, {
             Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
+        }).catch((e) => {
+            if (typeof e === 'object') {
+                try {
+                  const {
+                    codigoEstado,
+                    codigoEstadoServidor,
+                    severidad,
+                  } = e.response.crearPolizaIAXISRs.infoResponse.estado;
+                  if (
+                    codigoEstado === 2 &&
+                    codigoEstadoServidor === -45 &&
+                    severidad === 'ERROR'
+                  )
+                    return e.response;
+                } catch (error) {}
+            }
+            throw e;
         });
         return response;
     }
