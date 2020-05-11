@@ -41,13 +41,15 @@ class Address extends Component {
     return error;
   }
 
-  validateEmpty = (e) => {
+  validateEmpty = e => {
     e = e.target;
+    let error = false;
+    if (e.value.length < 1 || e.value.length > 200) error = true;
     store.dispatch(saveIdentificationValue(e));
     if (store.getState().showMap !== true) store.dispatch(mapShow(true));
     this.setState({
       ...this.state,
-      error: this.hasErrors(e.value),
+      error: error
     });
   };
   validateChar = (event) => {
@@ -76,7 +78,7 @@ class Address extends Component {
           name="address"
           id="address"
           type="text"
-          value={address}
+          {...(address === "" ? {} : {value: address})}
           className={classNames(
             'form-control text-truncate',
             disabled && 'disabled'
@@ -88,7 +90,6 @@ class Address extends Component {
           disabled={disabled === true}
           onBlur={this.validateEmpty}
           ref={this.textInput}
-          onChange={this.validateEmpty}
           onKeyPress={this.validateChar}
         />
         <small className={'form-text only-errors ' + (error ? 'show' : 'hide')}>
