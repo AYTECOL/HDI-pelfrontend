@@ -1,29 +1,28 @@
-import SimpleMaskMoney from "simple-mask-money";
+import SimpleMaskMoney from 'simple-mask-money';
 
 const Args = {
-    allowNegative: false,
-    negativeSignAfter: false,
-    prefix: '$',
-    suffix: '',
-    fixed: true,
-    fractionDigits: 0,
-    decimalSeparator: ',',
-    thousandsSeparator: '.',
-    cursor: 'end'
+  allowNegative: false,
+  negativeSignAfter: false,
+  prefix: '$',
+  suffix: '',
+  fixed: true,
+  fractionDigits: 0,
+  decimalSeparator: '.',
+  thousandsSeparator: ',',
+  cursor: 'end',
 };
+console.log(SimpleMaskMoney, Args);
 
 class Masknumbermoney {
+  static formatToMask(v) {
+    if (v === undefined) v = 0;
+    let format = SimpleMaskMoney.formatToMask(v, Args).split(',')[0];
+    return format === '$0.' ? '$0' : format;
+  }
 
-    static formatToMask(v) {
-        if (v === undefined) v = 0;
-        let format = SimpleMaskMoney.formatToMask(v, Args).split(",")[0];
-        return format === "$0." ? '$0' : format;
-    }
-
-    static formatToNumber(v) {
-        return SimpleMaskMoney.formatToNumber(v, Args);
-    }
-
+  static formatToNumber(v) {
+    return SimpleMaskMoney.formatToNumber(v, Args);
+  }
 }
 
 export default Masknumbermoney;
