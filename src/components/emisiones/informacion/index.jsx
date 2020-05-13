@@ -392,7 +392,7 @@ class Index extends React.Component {
     let content = contents[key];
     const value = Masknumbermoney.formatToNumber(e.target.value)
     const valueToView = Masknumbermoney.formatToMask(value)
-    content[e.target.name] = valueToView.replace('.',',');
+    content[e.target.name] = valueToView;
     this.setState({
       ...this.state,
       contents,
