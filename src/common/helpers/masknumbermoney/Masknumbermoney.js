@@ -1,5 +1,8 @@
 import SimpleMaskMoney from 'simple-mask-money';
 
+/**
+ * @typedef {typeof Args} SimpleMaskMoney
+ */
 const Args = {
   allowNegative: false,
   negativeSignAfter: false,
@@ -7,21 +10,33 @@ const Args = {
   suffix: '',
   fixed: true,
   fractionDigits: 0,
-  decimalSeparator: '.',
-  thousandsSeparator: ',',
+  decimalSeparator: ',',
+  thousandsSeparator: '.',
   cursor: 'end',
 };
-console.log(SimpleMaskMoney, Args);
 
 class Masknumbermoney {
-  static formatToMask(v) {
+  /**
+   *
+   * @param {number} v
+   * @param {typeof Args} args
+   */
+  static formatToMask(v, args) {
     if (v === undefined) v = 0;
-    let format = SimpleMaskMoney.formatToMask(v, Args).split(',')[0];
-    return format === '$0.' ? '$0' : format;
+    const options = { ...Args, ...args };
+    /**
+     * @type {string}
+     */
+    let format = SimpleMaskMoney.formatToMask(v, options);
+
+    if (!options.fractionDigits)
+      format =
+        !options.fractionDigits && format.replace(options.decimalSeparator, '');
+    return format;
   }
 
-  static formatToNumber(v) {
-    return SimpleMaskMoney.formatToNumber(v, Args);
+  static formatToNumber(v, arg) {
+    return SimpleMaskMoney.formatToNumber(v, { ...Args, ...arg });
   }
 }
 
