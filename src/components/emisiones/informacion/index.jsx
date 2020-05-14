@@ -17,25 +17,11 @@ import Helpers from '../../../common/helpers/helpers/Helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
 import { typeItems } from './typeItems';
+import { argsMaskCurrency } from './ArgsMasknumbermoney';
 
 // 6.5MB
 const maxFileSize = 6500000;
 
-/**
- * @typedef {{ min: number, maxTotal: number } & import('./typeItems').TypeItem} Item
- */
-/**
- *  @typedef {{
- *  nameType: string,
- *  caracte: string,
- *  urlfile: string,
- *  showDefaultTextFile: boolean,
- *  type: string,
- *  value: string,
- *  typeCode: number,
- *  errorFile?: string
- * }} ContentType
- */
 // @ts-check
 class Index extends React.Component {
   constructor(props) {
@@ -62,6 +48,14 @@ class Index extends React.Component {
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
+  }
+
+  formatToNumber(value) {
+    return Masknumbermoney.formatToNumber(value, argsMaskCurrency);
+  }
+
+  formatToMask(value) {
+    return Masknumbermoney.formatToMask(value, argsMaskCurrency);
   }
 
   componentDidMount() {
@@ -303,7 +297,7 @@ class Index extends React.Component {
     };
     let error = false;
     for (const content of contents) {
-      const value = Masknumbermoney.formatToNumber(content.value);
+      const value = this.formatToNumber(content.value);
       const contentType = content.type;
       if (!error && this.getErrors(content, total[contentType] + value))
         error = true;
@@ -362,7 +356,7 @@ class Index extends React.Component {
      * @type {{min?:boolean, max?:boolean} | null}
      */
     let errors = null;
-    const value = Masknumbermoney.formatToNumber(content.value);
+    const value = this.formatToNumber(content.value);
     const contentType = content.type;
     const item = this.getItem(contentType);
     const min = value < item.min;
@@ -390,8 +384,11 @@ class Index extends React.Component {
   handleChange = (key) => (e) => {
     const { contents } = this.state;
     let content = contents[key];
-    const value = Masknumbermoney.formatToNumber(e.target.value)
-    const valueToView = Masknumbermoney.formatToMask(value)
+    const value = this.formatToNumber(e.target.value);
+    const valueToView = this.formatToMask(value, {
+      thousandsSeparator: ',',
+      decimalSeparator: '.',
+    });
     content[e.target.name] = valueToView;
     this.setState({
       ...this.state,
@@ -683,8 +680,8 @@ class Index extends React.Component {
                               <td className="h6 font-weight-normal font-italic">
                                 {label}
                               </td>
-                              <td>{Masknumbermoney.formatToMask(max)}</td>
-                              <td>{Masknumbermoney.formatToMask(total)}</td>
+                              <td>{this.formatToMask(max)}</td>
+                              <td>{this.formatToMask(total)}</td>
                             </tr>
                           )
                       )}
@@ -717,14 +714,12 @@ class Index extends React.Component {
                         const currentValue = limitInmuebles[content.type];
                         const keyTemp = currentValue.lastKey;
                         currentValue.lastKey = key;
-                        const valueTemp = Masknumbermoney.formatToNumber(
+                        const valueTemp = this.formatToNumber(
                           currentValue.value
                         );
                         currentValue.value -=
                           (contents[keyTemp] &&
-                            Masknumbermoney.formatToNumber(
-                              contents[keyTemp].value
-                            )) ||
+                            this.formatToNumber(contents[keyTemp].value)) ||
                           0;
                         if (keyTemp !== null) maximum = currentValue.value;
                         else maximum = valueTemp;
