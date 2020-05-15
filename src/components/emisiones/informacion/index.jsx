@@ -17,7 +17,6 @@ import Helpers from '../../../common/helpers/helpers/Helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
 import { typeItems } from './typeItems';
-import { argsMaskCurrency } from './ArgsMasknumbermoney';
 
 // 6.5MB
 const maxFileSize = 6500000;
@@ -51,11 +50,11 @@ class Index extends React.Component {
   }
 
   formatToNumber(value) {
-    return Masknumbermoney.formatToNumber(value, argsMaskCurrency);
+    return Masknumbermoney.formatToNumber(value);
   }
 
   formatToMask(value) {
-    return Masknumbermoney.formatToMask(value, argsMaskCurrency);
+    return Masknumbermoney.formatToMask(value);
   }
 
   componentDidMount() {
@@ -384,12 +383,7 @@ class Index extends React.Component {
   handleChange = (key) => (e) => {
     const { contents } = this.state;
     let content = contents[key];
-    const value = this.formatToNumber(e.target.value);
-    const valueToView = this.formatToMask(value, {
-      thousandsSeparator: ',',
-      decimalSeparator: '.',
-    });
-    content[e.target.name] = valueToView;
+    content[e.target.name] = e.target.value;
     this.setState({
       ...this.state,
       contents,
