@@ -5,7 +5,6 @@ import { pure } from 'recompose';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import { typeItems } from './typeItems';
 import Helpers from '../../../common/helpers/helpers/Helpers';
-import { argsMaskCurrency } from './ArgsMasknumbermoney';
 
 /**
  * @typedef {{ label: string, id: string, min: number, max: number }} Item
@@ -97,18 +96,15 @@ const Content = pure(
                 type="text"
                 className="form-control"
                 name="value"
-                value={Masknumbermoney.formatToMask(
-                  content.value,
-                  argsMaskCurrency
-                )}
+                value={Masknumbermoney.formatToMask(content.value)}
                 onChange={handleChange}
                 disabled={!typeItem}
               />
               <small className="form-text d-block text-left total-value">
                 {`Maximo: ${
                   maximum > item.max
-                    ? Masknumbermoney.formatToMask(item.max, argsMaskCurrency)
-                    : Masknumbermoney.formatToMask(maximum, argsMaskCurrency)
+                    ? Masknumbermoney.formatToMask(item.max)
+                    : Masknumbermoney.formatToMask(maximum)
                 }`}
               </small>
               {errors && errors.min && (
