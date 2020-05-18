@@ -29,6 +29,7 @@ class IdentificationsCities {
       emissionId,
       emitedDate
     } = storeState.cotizacion.identification;
+    const { attachedFile } = storeState;
     let data = {
       quoteId: storeState.cotizacion.number,
       document_type: parseInt(code),
@@ -50,7 +51,8 @@ class IdentificationsCities {
         emissionId: emissionId,
         emitedDate: emitedDate
       },
-      infoGeocodingSig: infoGeocoding.value
+      infoGeocodingSig: infoGeocoding.value,
+      attachedFile,
     };
     for (let i in data) if (data[i] === '') data[i] = '""';
     return await Api.post(Url, data);

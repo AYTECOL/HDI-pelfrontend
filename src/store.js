@@ -77,7 +77,8 @@ const initialState = {
     Allfloors: [],
     allInsurableLimits: [],
     AllPlans: [],
-    originalStore: {}
+    originalStore: {},
+    attachedFile: false
 };
 
 initialState.originalStore = initialState;
@@ -222,6 +223,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             prospect: action.data
+        }
+    } else if (action.type === "ATTACHED_FILE") {
+        return {
+            ...state,
+            attachedFile: action.data
         }
     } else if (action.type === "RESET_STORE") {
         return {
