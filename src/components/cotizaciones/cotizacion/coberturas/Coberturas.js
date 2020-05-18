@@ -190,7 +190,7 @@ class Coberturas extends Component {
         let index = store.getState().indexPlan;
         let plans = store.getState().AllPlans[index].coverages;
         for (let i = 0; i < plans.length; i++) {
-            if (plans[i].code === code) {
+            if (plans[i].code_content === code) {
                 return {
                     index: i,
                     coverange: plans[i]
@@ -324,7 +324,7 @@ class Coberturas extends Component {
         let state = true;
         newPlans.coverages[key].checked = !check;
 
-        let code = newPlans.coverages[key].code;
+        let code = newPlans.coverages[key].code_content;
         //Validations for dependence's coverages
         if (parseInt(code) === 9692 && !check === false) {
             let find = Coberturas.getCoverangeByCode(9691);
@@ -392,10 +392,6 @@ class Coberturas extends Component {
                     item.values[k].errors.push(`Valor Asegurado de Contenidos Móviles es ${(formatValue > 50000000 ? 'superior' : 'inferior')} al permitido. `);
                     return 1;
                 }
-                if (formatValue >= valueHurto) {
-                    item.values[k].errors.push(`Valor Asegurado de Contenidos Móviles es ${(formatValue >= valueHurto ? 'superior' : 'inferior')} al permitido. `);
-                    return 1;
-                }
                 break;
             case 9652:
                 if (formatValue >= 10000001 || formatValue <= 850000) {
@@ -415,7 +411,7 @@ class Coberturas extends Component {
     inputChange = (k, key, type) => e => {
         let plan = this.state.plan;
         let item = plan.coverages[key];
-        const hurtoCalificado = plan.coverages.find((element) => element.code == 9692)
+        const hurtoCalificado = plan.coverages.find((element) => element.code_content === 9692)
         const valueHurto =
             hurtoCalificado &&
             hurtoCalificado.values &&
