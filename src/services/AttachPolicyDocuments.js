@@ -1,28 +1,79 @@
+// @ts-check
 import Api from './Api';
 import ConsultaPersonas from './ConsultaPersonas';
-import {UrlAttachPolicyDocuments} from "../config";
+import { UrlAttachPolicyDocuments } from '../config';
 
-const Url = "/attach-policy-documents";
+const Url = '/attach-policy-documents';
 const UrlLiberty = UrlAttachPolicyDocuments;
 
-class AttachPolicyDocuments {
-    static async get(poliza, emision) {
-        let user = await ConsultaPersonas.getUser();
-        return await Api.get(Url + "/" + poliza + "/" + emision, undefined, {
-            pelhauthorization: user !== null ? user["accessToken"] : ""
-        });
-    };
+/**
+ * @typedef {{ codigo: string;}} CodigoProducto
+ *
+ * @typedef {{
+ *  nombre: string;
+ *  codigo: number;
+ *  ficherobase64: string;
+ * }} Archivo
+ *
+ * @typedef {{ archivo: Archivo[]; }} Archivos
+ *
+ * @typedef {{
+ *  infoRequest: any;
+ *  codigoProducto: CodigoProducto;
+ *  numeroPoliza: string;
+ *  archivos: Archivos;
+ *  }} AdjuntarDocumentosPolizaRq
+ *
+ * @typedef {{
+ *  adjuntarDocumentosPolizaRq: AdjuntarDocumentosPolizaRq
+ * }} DataRequest
+ */
 
-    static async save(data) {
-        let user = await ConsultaPersonas.getUser();
-        try {
-            return await Api.post('/adjuntardocumentospoliza', data, UrlLiberty, undefined, {
-                Authorization: user !== null ? "Bearer " + user['accessToken'] : ''
-            });
-        }catch (e) {
-            return null;
-        }
-    }
+class AttachPolicyDocuments {
+  static async get(poliza, emision) {
+    let user = await ConsultaPersonas.getUser();
+    return await Api.get(Url + '/' + poliza + '/' + emision, undefined, {
+      pelhauthorization: user !== null ? user['accessToken'] : '',
+    });
+  }
+
+  /**
+   *
+   * @param {DataRequest} data
+   */
+  static async save(data) {
+    const {
+      archivos: { archivo: files },
+      ...commonData
+    } = data.adjuntarDocumentosPolizaRq;
+    const user = await ConsultaPersonas.getUser();
+    return Promise.all(
+      files.map((archivo) => {
+        /**
+         * @type {DataRequest}
+         */
+        const dataPost = {
+          adjuntarDocumentosPolizaRq: {
+            ...commonData,
+            archivos: { archivo: [archivo] },
+          },
+        };
+
+        return Api.post(
+          '/adjuntardocumentospoliza',
+          dataPost,
+          UrlLiberty,
+          undefined,
+          {
+            Authorization: user !== null ? 'Bearer ' + user['accessToken'] : '',
+          }
+        );
+      })
+    ).catch((e) => {
+      console.log(e);
+      return null;
+    });
+  }
 }
 
 export default AttachPolicyDocuments;
