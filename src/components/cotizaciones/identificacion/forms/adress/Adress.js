@@ -6,6 +6,7 @@ import ReactTooltip from 'react-tooltip';
 import store from '../../../../../store';
 import { mapShow, saveIdentificationValue } from '../../../../../actions';
 import Help from '../../../../../common/icons/help';
+import { isValidDirection } from '../../../../../common/validations';
 
 class Address extends Component {
   constructor(props) {
@@ -18,14 +19,14 @@ class Address extends Component {
   }
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
+    if (this.props.address !== nextProps.address)
+      nextState.error = this.hasErrors(nextProps.address);
     const prevIdentification = this.props;
-    const { address, city, department } = nextProps;
-    let disabled = true;
-    let error = false;
-    if (address.length < 1 || address.length > 200) error = true;
-    if (city && department) disabled = false;
+    const { city, department } = nextProps;
+    let disabled = false;
+    if (!city && !department) disabled = false;
     nextState.disabled = disabled;
-    nextState.error = !disabled && error;
+    nextState.error = !disabled && nextState.error;
     if (
       city !== prevIdentification.city ||
       department !== prevIdentification.department
@@ -33,18 +34,28 @@ class Address extends Component {
       this.textInput.current.focus();
   }
 
-  validateEmpty = e => {
-    e = e.target;
+  hasErrors(value) {
     let error = false;
-    if (e.value.length < 1 || e.value.length > 200) error = true;
+    if (value.length < 1 || value.length > 200 || !isValidDirection(value))
+      error = true;
+    return error;
+  }
+
+  validateEmpty = (e) => {
+    e = e.target;
     store.dispatch(saveIdentificationValue(e));
     if (store.getState().showMap !== true) store.dispatch(mapShow(true));
     this.setState({
       ...this.state,
-      error: error
+      error: this.hasErrors(e.value),
     });
   };
-
+  validateChar = (event) => {
+    if (!isValidDirection(event.key)) {
+      event.preventDefault();
+      return false;
+    }
+  };
   render() {
     const { address } = this.props;
     const { error, disabled } = this.state;
@@ -78,12 +89,13 @@ class Address extends Component {
           onBlur={this.validateEmpty}
           ref={this.textInput}
           onChange={this.validateEmpty}
+          onKeyPress={this.validateChar}
         />
         <small className={'form-text only-errors ' + (error ? 'show' : 'hide')}>
-          Por favor ingresa la {defaultLabel.toLowerCase()}.
+          Ingresa una dirección del hogar valida
         </small>
         <small className="form-text text-muted">
-          Ejemplo: Calle 143Bis # 23 a 34
+          Ejemplo: Calle 143Bis Carrera 23 a 34
         </small>
       </div>
     );
@@ -93,11 +105,11 @@ class Address extends Component {
 export default connect(
   ({
     cotizacion: {
-      identification: { address, city, department }
-    }
+      identification: { address, city, department },
+    },
   }) => ({
     address,
     city,
-    department
+    department,
   })
 )(Address);

@@ -14,6 +14,7 @@ import Validaridentificacion
     from "../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion";
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Loading from "../../../globals/loading/Loading";
+import { isValidDirection } from '../../../../common/validations';
 
 class Index extends Component {
 
@@ -205,6 +206,7 @@ class Index extends Component {
         let status = [];
         let asegurado = false;
         for (let i = 0; i < persons.length; i++) {
+            if (!isValidDirection(persons[i].address)) return true;
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 || persons[i].role[j] === 4) {
                     if ((typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") || persons[i].role[j] === 4 || persons[i].sarlfaltActive) {
