@@ -24,17 +24,25 @@ class Api {
                     resolve(xhr.response);
                 } else {
                     console.log(xhr.response);
+                    let response;
+                    try {
+                        response = JSON.parse(xhr.response);
+                    } catch (error) {
+                        response = xhr.response;
+                    }
                     reject({
-                        status: this.status,
-                        statusText: xhr.statusText
+                      status: this.status,
+                      statusText: xhr.statusText,
+                      response,
                     });
                 }
             };
             xhr.onerror = function () {
                 console.log(xhr.response);
                 reject({
-                    status: this.status,
-                    statusText: xhr.statusText
+                  status: this.status,
+                  statusText: xhr.statusText,
+                  response: xhr.response,
                 });
             };
             if (data === null) {
@@ -92,5 +100,6 @@ class Api {
         })
     }
 }
+console.log(Api);
 
 export default Api;

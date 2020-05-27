@@ -81,6 +81,14 @@ const savePdfInfo = (data) => {
     return {type: "PDF_INFO", data: data}
 };
 
+/**
+ * 
+ * @param {boolean} state 
+ */
+export const saveAttachedFile = (state) => {
+  return { type: 'ATTACHED_FILE', data: state };
+};
+
 const resetStore = () => {
     return {type: "RESET_STORE"}
 };
@@ -106,5 +114,6 @@ export {
     indexPlanSelected,
     savePdfInfo,
     saveProspect,
-    resetStore
+    resetStore,
+    saveAttachedFile as attachedFile
 };

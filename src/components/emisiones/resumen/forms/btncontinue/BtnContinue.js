@@ -6,7 +6,11 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import PolicyService from "../../../../../services/Policy";
 import Loading from "../../../../globals/loading/Loading";
 import store from "../../../../../store";
-import {NextStep, saveIdentificationValue} from "../../../../../actions";
+import {
+  NextStep,
+  saveIdentificationValue,
+  saveAttachedFile,
+} from '../../../../../actions';
 import SaveIdentifications from "../../../../../services/Quote";
 import Crearpolizaiaxis from "../../../../../services/Crearpolizaiaxis";
 import QuoteIussedById from "../../../../../services/QuoteIussedById";
@@ -73,10 +77,16 @@ class BtnContinue extends Component {
                 result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo = numeroPoliza.currentValue.toString();
 
                 let send = await Crearpolizaiaxis.save(result);
-                let attach = await AttachPolicyDocuments.get(id, send.crearPolizaIAXISRs.emisionPoliza.resultadoPolizaHome.codigoProcesoCargue);
-
-                await AttachPolicyDocuments.save(attach);
-
+                let attachedFile = false;
+                try {
+                    const attach = await AttachPolicyDocuments.get(id, send.crearPolizaIAXISRs.emisionPoliza.resultadoPolizaHome.codigoProcesoCargue);
+                    await AttachPolicyDocuments.save(attach);
+                    attachedFile = true;
+                } catch (error) {
+                    attachedFile = false;
+                }
+                
+                store.dispatch(saveAttachedFile(attachedFile));
                 store.dispatch(saveIdentificationValue({
                     name: 'emissionId',
                     value: numeroPoliza.currentValue
