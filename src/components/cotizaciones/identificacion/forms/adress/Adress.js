@@ -47,16 +47,6 @@ class Address extends Component {
     if (!isValidDirection(value)) errors.push(validationMessages.addressRegex);
     return errors;
   }
-
-  validateEmpty = (e) => {
-    e = e.target;
-    store.dispatch(saveIdentificationValue(e));
-    if (store.getState().showMap !== true) store.dispatch(mapShow(true));
-    this.setState({
-      ...this.state,
-      error: this.hasErrors(e.value),
-    });
-  };
   validateChar = (event) => {
     if (!isValidDirection(event.key)) {
       event.preventDefault();
@@ -93,7 +83,11 @@ class Address extends Component {
           autoCorrect="off"
           autoCapitalize="none"
           disabled={disabled === true}
-          onBlur={this.validateEmpty}
+          onChange={({ target }) => {
+            store.dispatch(saveIdentificationValue(target));
+            if (store.getState().showMap !== true)
+              store.dispatch(mapShow(true));
+          }}
           ref={this.textInput}
           onChange={this.validateEmpty}
           onKeyPress={this.validateChar}
