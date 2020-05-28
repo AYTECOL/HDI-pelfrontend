@@ -6,13 +6,19 @@ import ReactTooltip from 'react-tooltip';
 import store from '../../../../../store';
 import { mapShow, saveIdentificationValue } from '../../../../../actions';
 import Help from '../../../../../common/icons/help';
-import { isValidDirection } from '../../../../../common/validations';
+import {
+  isValidDirection,
+  validationMessages,
+} from '../../../../../common/validations';
 
+/**
+ * @type {{state:{errors:string[]}}}
+ */
 class Address extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false,
+      errors: [],
       disabled: true,
     };
     this.textInput = React.createRef();
@@ -20,13 +26,13 @@ class Address extends Component {
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     if (this.props.address !== nextProps.address)
-      nextState.error = this.hasErrors(nextProps.address);
+      nextState.errors = this.getErrors(nextProps.address);
     const prevIdentification = this.props;
     const { city, department } = nextProps;
     let disabled = false;
     if (!city && !department) disabled = false;
     nextState.disabled = disabled;
-    nextState.error = !disabled && nextState.error;
+    nextState.errors = disabled ? [] : nextState.errors;
     if (
       city !== prevIdentification.city ||
       department !== prevIdentification.department
@@ -34,11 +40,12 @@ class Address extends Component {
       this.textInput.current.focus();
   }
 
-  hasErrors(value) {
-    let error = false;
-    if (value.length < 1 || value.length > 200 || !isValidDirection(value))
-      error = true;
-    return error;
+  getErrors(value) {
+    let errors = [];
+    if (!value || value.length > 200)
+      errors.push('Ingresa una dirección del hogar valida');
+    if (!isValidDirection(value)) errors.push(validationMessages.addressRegex);
+    return errors;
   }
 
   validateChar = (event) => {
@@ -49,10 +56,10 @@ class Address extends Component {
   };
   render() {
     const { address } = this.props;
-    const { error, disabled } = this.state;
+    const { errors, disabled } = this.state;
     const defaultLabel = 'Dirección del hogar a asegurar';
     return (
-      <div className={'form-group ' + (error ? 'error' : '')}>
+      <div className={'form-group ' + (errors.length ? 'error' : '')}>
         <div className="d-flex position-relative">
           <label htmlFor="address">{defaultLabel}</label>
           <div data-tip data-for="help-address" className={'ml-auto'}>
@@ -85,9 +92,11 @@ class Address extends Component {
           ref={this.textInput}
           onKeyPress={this.validateChar}
         />
-        <small className={'form-text only-errors ' + (error ? 'show' : 'hide')}>
-          Ingresa una dirección del hogar valida
-        </small>
+        {errors.map((error, i) => (
+          <small key={i} className={'form-text only-errors'}>
+            {error}
+          </small>
+        ))}
         <small className="form-text text-muted">
           Ejemplo: Calle 143Bis Carrera 23 a 34
         </small>
