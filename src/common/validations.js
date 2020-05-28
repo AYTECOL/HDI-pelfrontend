@@ -1,3 +1,7 @@
 export function isValidDirection(value) {
-  return !!/^[a-zA-Z0-9\s,'-]*$/g.exec(value);
+  return !/[°?¿!¡|#]/g.exec(value);
 }
+export const validationMessages = {
+  addressRegex:
+    'El formato de este campo es inválido, no puede tener los símbolos # ° | ¿?',
+};
