@@ -13,7 +13,7 @@ class Address extends Component {
     super(props);
     this.state = {
       error: false,
-      disabled: true
+      disabled: true,
     };
     this.textInput = React.createRef();
   }
@@ -41,17 +41,6 @@ class Address extends Component {
     return error;
   }
 
-  validateEmpty = e => {
-    e = e.target;
-    let error = false;
-    if (e.value.length < 1 || e.value.length > 200) error = true;
-    store.dispatch(saveIdentificationValue(e));
-    if (store.getState().showMap !== true) store.dispatch(mapShow(true));
-    this.setState({
-      ...this.state,
-      error: error
-    });
-  };
   validateChar = (event) => {
     if (!isValidDirection(event.key)) {
       event.preventDefault();
@@ -78,7 +67,7 @@ class Address extends Component {
           name="address"
           id="address"
           type="text"
-          {...(address === "" ? {} : {value: address})}
+          value={address}
           className={classNames(
             'form-control text-truncate',
             disabled && 'disabled'
@@ -88,7 +77,11 @@ class Address extends Component {
           autoCorrect="off"
           autoCapitalize="none"
           disabled={disabled === true}
-          onBlur={this.validateEmpty}
+          onChange={({ target }) => {
+            store.dispatch(saveIdentificationValue(target));
+            if (store.getState().showMap !== true)
+              store.dispatch(mapShow(true));
+          }}
           ref={this.textInput}
           onKeyPress={this.validateChar}
         />
