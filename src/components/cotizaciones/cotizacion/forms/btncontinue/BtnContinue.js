@@ -97,6 +97,7 @@ class BtnContinue extends Component {
           this.setState({ buttonState: false });
           Loading.toggle(false);
           return;
+        default:
       }
       await Links.pdf(this, false);
 

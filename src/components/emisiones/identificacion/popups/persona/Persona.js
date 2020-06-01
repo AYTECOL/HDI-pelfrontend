@@ -16,7 +16,7 @@ import CheckBoxes from './Checkboxes';
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import NumeroIdentificacion
     from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
-import { isValidDirection } from '../../../../../common/validations';
+import { isValidDirection, validationMessages } from '../../../../../common/validations';
 
 // 6.5MB
 const maxFileSize = 6500000;
@@ -952,7 +952,7 @@ export default class Persona extends Component {
                                                      value={this.state.person.address} onChange={this.changeValue} onKeyPress={this.validateChange}
                                                     />
                                                     <small className="form-text only-errors">
-                                                        Este campo tiene un formato inválido
+                                                        {validationMessages.addressRegex}
                                                     </small>
                                                 </div>
                                             </div>
