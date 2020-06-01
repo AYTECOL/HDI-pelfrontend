@@ -405,7 +405,7 @@ class Coberturas extends Component {
                     return 1;
                 }
                 break;
-
+            default:
         }
     }
     inputChange = (k, key, type) => e => {
