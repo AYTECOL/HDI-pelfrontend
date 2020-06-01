@@ -100,6 +100,5 @@ class Api {
         })
     }
 }
-console.log(Api);
 
 export default Api;
