@@ -73,7 +73,7 @@ class Address extends Component {
           name="address"
           id="address"
           type="text"
-          value={address}
+          {...(address === "" ? {} : {value: address})}
           className={classNames(
             'form-control text-truncate',
             disabled && 'disabled'
@@ -89,7 +89,6 @@ class Address extends Component {
               store.dispatch(mapShow(true));
           }}
           ref={this.textInput}
-          onChange={this.validateEmpty}
           onKeyPress={this.validateChar}
         />
         {errors.map((error, i) => (
