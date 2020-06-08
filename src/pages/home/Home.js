@@ -5,7 +5,7 @@ import Loading from "../../components/globals/loading/Loading";
 import Table from "../../components/home/table/Table";
 import "./Home.scss";
 import Search from "../../components/home/search/search";
-import Identifications from "../../services/GetQuote";
+import Quotes from "../../services/GetQuote";
 import MomentJs from "moment";
 import {STEP_EMITTED, STEP_ISSUE, STEP_QUOTATION} from "../../common/constants/quotesStates";
 
@@ -74,23 +74,25 @@ class Home extends PureComponent {
 
         return stringState;
     };
-    formatData = dataArray => {
-        var dataFormat = [];
-        for (let i = 0; i < dataArray.length; i++) {
-            dataFormat[i] = {
-                quoteId: dataArray[i].quoteId,
-                create_at: MomentJs(dataArray[i].create_at).format("L"),
-                hour_at: MomentJs(dataArray[i].create_at).format("LT"),
-                name: `${dataArray[i].name} ${dataArray[i].last_name}`,
-                address: dataArray[i].address,
-                document_number: dataArray[i].document_number,
-                validity: this.formatDate(dataArray[i].create_at),
-                create_data: dataArray[i].create_at,
-                stateQuote: this.formatStatesQuotes(dataArray[i].step),
-                step: dataArray[i].step,
-                pdf_info: dataArray[i].pdf_info
-            };
-        }
+   
+  /**
+   * @param {import("../../services/GetQuote").PolicyRequest[]} dataArray
+   */
+  formatData = (dataArray) => {
+        const dataFormat = dataArray.map((item) => ({
+          quoteId: item.quoteId,
+          create_at: MomentJs(item.create_at).format('L'),
+          hour_at: MomentJs(item.create_at).format('LT'),
+          name: `${item.name} ${item.last_name}`,
+          address: item.address,
+          document_number: item.document_number,
+          document_type: item.document_type,
+          validity: this.formatDate(item.create_at),
+          create_data: item.create_at,
+          stateQuote: this.formatStatesQuotes(item.step),
+          step: item.step,
+          pdf_info: item.pdf_info,
+        }));
         this.setState(prevState => ({
             statesQuotes: {
                 ...prevState.statesQuotes,
@@ -175,7 +177,7 @@ class Home extends PureComponent {
     quotesDataApi = async () => {
         const currentState = this;
         let {quotesData} = currentState.state;
-        let arrayItems = await Identifications.get();
+        let arrayItems = await Quotes.get();
         arrayItems = this.formatData(arrayItems);
         quotesData = arrayItems;
 
