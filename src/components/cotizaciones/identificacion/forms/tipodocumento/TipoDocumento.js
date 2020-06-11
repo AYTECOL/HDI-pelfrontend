@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import classNames from 'classnames';
 
 import store from '../../../../../store';
@@ -104,7 +103,4 @@ class TipoDocumento extends Component {
   }
 }
 
-export default connect(({ cotizacion, stateFormIdentificacion }) => ({
-  value: cotizacion.identification.code,
-  disabled: stateFormIdentificacion !== 0,
-}))(TipoDocumento);
+export default TipoDocumento;

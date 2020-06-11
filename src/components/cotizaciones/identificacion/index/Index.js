@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 //Component
 import TipoDocumento from '../forms/tipodocumento/TipoDocumento';
 import NumeroIdentificacion from '../forms/numeroidentificacion/NumeroIdentificacion';
@@ -8,6 +9,13 @@ import SecondForm from '../secondform/SecondForm';
 
 import './Index.scss';
 import Loading from "../../../globals/loading/Loading";
+
+
+
+const TipoDocumentoHoc = connect(({ cotizacion, stateFormIdentificacion }) => ({
+  value: cotizacion.identification.code,
+  disabled: stateFormIdentificacion !== 0,
+}))(TipoDocumento);
 
 class Index extends Component {
     componentDidMount() {
@@ -27,7 +35,7 @@ class Index extends Component {
                     </div>
                     <div className="row">
                         <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
-                            <TipoDocumento/>
+                            <TipoDocumentoHoc />
                         </div>
                         <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
                             <NumeroIdentificacion/>
