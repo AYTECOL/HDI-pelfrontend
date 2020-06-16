@@ -18,6 +18,14 @@ class TipoDocumento extends Component {
     };
   }
 
+  static toggleDisable(status) {
+    if (status === true) {
+      Helpers.disabled('#doc-type');
+    } else {
+      Helpers.enabled('#doc-type');
+    }
+  }
+
   componentDidMount() {
     this._isMounted = true;
     Loading.toggle(true);
