@@ -177,12 +177,14 @@ class Index extends Component {
 
     togglePopUpPersona = (index, type) => () => {
         if (index !== -1 && index !== -2 && typeof type === "undefined") {
-            let roles = this.state.persons[index]['role'];
-            if (roles.indexOf(5) !== -1) type = 5;
-            if (roles.indexOf(6) !== -1) type = 6;
-            if (roles.indexOf(3) !== -1) type = 3;
-            if (roles.indexOf(4) !== -1) type = 4;
-            if (roles.indexOf(1) !== -1 || roles.indexOf(2) !== -1) type = 1;
+            const { role } = { ...this.state.persons[index] };
+            if (role){
+                if (role.indexOf(5) !== -1) type = 5;
+                if (role.indexOf(6) !== -1) type = 6;
+                if (role.indexOf(3) !== -1) type = 3;
+                if (role.indexOf(4) !== -1) type = 4;
+                if (role.indexOf(1) !== -1 || role.indexOf(2) !== -1) type = 1;
+            }
         }
         this.showAnyPopup("showPopUpPersona", index, type);
         Validaridentificacion.toggle(false);
