@@ -2,11 +2,13 @@ import Api from './Api';
 import momentJs from 'moment';
 import store from "../store";
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
+import ConsultaPersonas from "./ConsultaPersonas";
 
 const BaseUrl = "/determine-inspection-policies";
 
 class InspectionPolicy {
     static async get() {
+        let user = await ConsultaPersonas.getUser();
         let Inmueble = store.getState().Inmueble;
         let dataToSend = {
             "runtimeContext": {
@@ -50,7 +52,8 @@ class InspectionPolicy {
                 "reguladorVoltaje": Inmueble.seguridad.reguladordevoltaje === 1,
                 "puertasControl": Inmueble.seguridad.puertascontroldomotico === 1,
                 "respuestaInspeccion": ""
-            }
+            },
+            "token":user["accessToken"]
         };
         let response = await Api.post(BaseUrl, dataToSend);
         if (typeof response.results === "undefined") {
