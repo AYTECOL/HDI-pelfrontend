@@ -47,10 +47,6 @@ class Address extends Component {
     if (!isValidDirection(value)) errors.push(validationMessages.addressRegex);
     return errors;
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> 388bfb77ca66fb825782c4d6c12697797373f8df
   validateChar = (event) => {
     if (!isValidDirection(event.key)) {
       event.preventDefault();
