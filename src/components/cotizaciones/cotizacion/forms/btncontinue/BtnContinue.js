@@ -97,6 +97,7 @@ class BtnContinue extends Component {
           this.setState({ buttonState: false });
           Loading.toggle(false);
           return;
+        default:
       }
       await Links.pdf(this, false);
 
@@ -126,6 +127,8 @@ class BtnContinue extends Component {
 
   goBack = async () => {
     Loading.toggle(true);
+    store.dispatch(NextStep(2));
+    await SaveIdentifications.save();
     await CreateOrUpdateValoration.save();
     store.dispatch(resetStore());
     this.props.history.push(

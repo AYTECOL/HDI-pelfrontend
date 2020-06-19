@@ -8,9 +8,6 @@ import {
   saveProspect
 } from "../../../actions";
 import ValorationById from "../../../services/ValorationById";
-import Base64 from "../base64/Base64";
-import AccessToken from "../../../services/AccessToken";
-import Loading from "../../../components/globals/loading/Loading";
 
 class Helpers {
   static toCapitalize(str) {
@@ -197,21 +194,21 @@ class Helpers {
     }
   };
 
+  static fileFormats = [
+    "image/*",
+    "application/pdf"
+  ];
+
   static validateFile(file) {
     if (typeof file !== "undefined") {
-      let formats = [
-        "image/png",
-        "image/jpeg",
-        "image/jpg",
-        "image/gif",
-        "application/pdf"
-      ];
-      return formats.indexOf(file.type) !== -1;
+      return Helpers.fileFormats.some(
+        (format) =>file.type.match(format)
+      );
     }
   }
 
   static validationEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
 

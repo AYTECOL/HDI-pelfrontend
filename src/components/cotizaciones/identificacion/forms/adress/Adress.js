@@ -6,26 +6,33 @@ import ReactTooltip from 'react-tooltip';
 import store from '../../../../../store';
 import { mapShow, saveIdentificationValue } from '../../../../../actions';
 import Help from '../../../../../common/icons/help';
+import {
+  isValidDirection,
+  validationMessages,
+} from '../../../../../common/validations';
 
+/**
+ * @type {{state:{errors:string[]}}}
+ */
 class Address extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      error: false,
-      disabled: true
+      errors: [],
+      disabled: true,
     };
     this.textInput = React.createRef();
   }
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
+    if (this.props.address !== nextProps.address)
+      nextState.errors = this.getErrors(nextProps.address);
     const prevIdentification = this.props;
-    const { address, city, department } = nextProps;
-    let disabled = true;
-    let error = false;
-    if (address.length < 1 || address.length > 200) error = true;
-    if (city && department) disabled = false;
+    const { city, department } = nextProps;
+    let disabled = false;
+    if (!city && !department) disabled = false;
     nextState.disabled = disabled;
-    nextState.error = !disabled && error;
+    nextState.errors = disabled ? [] : nextState.errors;
     if (
       city !== prevIdentification.city ||
       department !== prevIdentification.department
@@ -33,24 +40,25 @@ class Address extends Component {
       this.textInput.current.focus();
   }
 
-  validateEmpty = e => {
-    e = e.target;
-    let error = false;
-    if (e.value.length < 1 || e.value.length > 200) error = true;
-    store.dispatch(saveIdentificationValue(e));
-    if (store.getState().showMap !== true) store.dispatch(mapShow(true));
-    this.setState({
-      ...this.state,
-      error: error
-    });
+  getErrors(value) {
+    let errors = [];
+    if (!value || value.length > 200)
+      errors.push('Ingresa una dirección del hogar valida');
+    if (!isValidDirection(value)) errors.push(validationMessages.addressRegex);
+    return errors;
+  }
+  validateChar = (event) => {
+    if (!isValidDirection(event.key)) {
+      event.preventDefault();
+      return false;
+    }
   };
-
   render() {
     const { address } = this.props;
-    const { error, disabled } = this.state;
+    const { errors, disabled } = this.state;
     const defaultLabel = 'Dirección del hogar a asegurar';
     return (
-      <div className={'form-group ' + (error ? 'error' : '')}>
+      <div className={'form-group ' + (errors.length ? 'error' : '')}>
         <div className="d-flex position-relative">
           <label htmlFor="address">{defaultLabel}</label>
           <div data-tip data-for="help-address" className={'ml-auto'}>
@@ -65,7 +73,7 @@ class Address extends Component {
           name="address"
           id="address"
           type="text"
-          value={address}
+          {...(address === "" ? {} : {value: address})}
           className={classNames(
             'form-control text-truncate',
             disabled && 'disabled'
@@ -75,15 +83,21 @@ class Address extends Component {
           autoCorrect="off"
           autoCapitalize="none"
           disabled={disabled === true}
-          onBlur={this.validateEmpty}
+          onChange={({ target }) => {
+            store.dispatch(saveIdentificationValue(target));
+            if (store.getState().showMap !== true)
+              store.dispatch(mapShow(true));
+          }}
           ref={this.textInput}
-          onChange={this.validateEmpty}
+          onKeyPress={this.validateChar}
         />
-        <small className={'form-text only-errors ' + (error ? 'show' : 'hide')}>
-          Por favor ingresa la {defaultLabel.toLowerCase()}.
-        </small>
+        {errors.map((error, i) => (
+          <small key={i} className={'form-text only-errors'}>
+            {error}
+          </small>
+        ))}
         <small className="form-text text-muted">
-          Ejemplo: Calle 143Bis # 23 a 34
+          Ejemplo: Calle 143Bis Carrera 23 a 34
         </small>
       </div>
     );
@@ -93,11 +107,11 @@ class Address extends Component {
 export default connect(
   ({
     cotizacion: {
-      identification: { address, city, department }
-    }
+      identification: { address, city, department },
+    },
   }) => ({
     address,
     city,
-    department
+    department,
   })
 )(Address);

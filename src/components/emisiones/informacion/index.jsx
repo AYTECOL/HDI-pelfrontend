@@ -1,34 +1,34 @@
-import React from "react";
+import React from 'react';
 //Component
-import BtnContinue from "./forms/btncontinue/BtnContinue";
+import BtnContinue from './forms/btncontinue/BtnContinue';
 
-import "./styles.scss";
-import { withRouter } from "react-router-dom";
-import "moment/locale/es";
-import MomentJs from "moment";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import es from "react-datepicker/node_modules/date-fns/esm/locale/es/index";
+import './styles.scss';
+import { withRouter } from 'react-router-dom';
+import 'moment/locale/es';
+import MomentJs from 'moment';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 
-import PopUpPersona from "../identificacion/popups/persona/Persona";
-import Loading from "../../globals/loading/Loading";
-import QuoteIussedById from "../../../services/QuoteIussedById";
-import Helpers from "../../../common/helpers/helpers/Helpers";
-import Masknumbermoney from "../../../common/helpers/masknumbermoney/Masknumbermoney";
-import Content from "./Content";
-import { typeItems } from "./typeItems";
+import PopUpPersona from '../identificacion/popups/persona/Persona';
+import Loading from '../../globals/loading/Loading';
+import QuoteIussedById from '../../../services/QuoteIussedById';
+import Helpers from '../../../common/helpers/helpers/Helpers';
+import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
+import Content from './Content';
+import { typeItems } from './typeItems';
 
-/**
- * @typedef {{ min: number, maxTotal: number } & import('./typeItems').TypeItem} Item
- */
+// 6.5MB
+const maxFileSize = 6500000;
+
 // @ts-check
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.current = React.createRef();
-    this.formatDate = "dddd, MMMM Do YYYY";
+    this.formatDate = 'dddd, MMMM Do YYYY';
     /**
-     * @type {{ items: Item[] }>}
+     * @type {{ items: Item[], contents: ContentType[] }>}
      */
     this.state = {
       step: parseInt(this.props.match.params.step),
@@ -38,15 +38,23 @@ class Index extends React.Component {
       contents: [],
       quote_contenidomovil: 0,
       inmuebles: {},
-      area: "",
+      area: '',
       addNewPerson: true,
       itemSelected: null,
       showPopUpPersona: false,
       errorPhone: false,
-      items: []
+      items: [],
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
+  }
+
+  formatToNumber(value) {
+    return Masknumbermoney.formatToNumber(value);
+  }
+
+  formatToMask(value) {
+    return Masknumbermoney.formatToMask(value);
   }
 
   componentDidMount() {
@@ -64,7 +72,7 @@ class Index extends React.Component {
     const { values } = {
       ...data.plan_selected_info.Item.coverages.find(
         ({ code, code_content }) => code === 9693 || code_content === 9693
-      )
+      ),
     };
 
     const coverageValue =
@@ -73,37 +81,37 @@ class Index extends React.Component {
       (coverageValue && coverageValue.value_to_quotate) || 0;
 
     this.setState({ quote_contenidomovil: value_to_quotate });
-    if (typeof data.quote_iussed_info.Item !== "undefined") {
+    if (typeof data.quote_iussed_info.Item !== 'undefined') {
       let items = data.quote_iussed_info.Item;
       persons.push(items.taker);
       persons = persons.concat(items.insured);
       persons = persons.concat(items.benefist);
     }
-    if (typeof data.more_info.Item !== "undefined") {
+    if (typeof data.more_info.Item !== 'undefined') {
       data = data.more_info.Item;
-      if (typeof data !== "undefined") {
-        if (typeof data.start_policy_date !== "undefined")
-          data["initdate"] = data.start_policy_date;
-        if (typeof data.risk_use !== "undefined")
-          data["utilizado"] = data.risk_use;
-        if (typeof data.goods_over_cost !== "undefined")
-          data["contents"] = data.goods_over_cost;
-        for (let i = 0; i < data["contents"].length; i++) {
+      if (typeof data !== 'undefined') {
+        if (typeof data.start_policy_date !== 'undefined')
+          data['initdate'] = data.start_policy_date;
+        if (typeof data.risk_use !== 'undefined')
+          data['utilizado'] = data.risk_use;
+        if (typeof data.goods_over_cost !== 'undefined')
+          data['contents'] = data.goods_over_cost;
+        for (let i = 0; i < data['contents'].length; i++) {
           for (let j in data.contents[i])
-            if (data.contents[i][j] === '""') data.contents[i][j] = "";
+            if (data.contents[i][j] === '""') data.contents[i][j] = '';
         }
         if (
-          typeof data.visit_person !== "undefined" &&
-          typeof data.visit_person.active !== "undefined"
+          typeof data.visit_person !== 'undefined' &&
+          typeof data.visit_person.active !== 'undefined'
         ) {
-          data["contactperson"] = data.visit_person.active;
+          data['contactperson'] = data.visit_person.active;
           if (
-            typeof data.visit_person.phone !== "undefined" &&
-            data.visit_person.phone !== ""
+            typeof data.visit_person.phone !== 'undefined' &&
+            data.visit_person.phone !== ''
           ) {
             persons.push({
               name: data.visit_person.name,
-              telefono: data.visit_person.phone
+              telefono: data.visit_person.phone,
             });
           }
         }
@@ -118,20 +126,20 @@ class Index extends React.Component {
      * @type {Item[]}
      */
     const items = [];
-    if (typeof inmuebles !== "undefined") {
+    if (typeof inmuebles !== 'undefined') {
       if (inmuebles.contenido_asegudado === 1) {
         contenidos = true;
         items.push({
           ...typeItems.fixedContent,
           min: 1,
-          maxTotal: inmuebles.contenido_asegudado_valor
+          maxTotal: inmuebles.contenido_asegudado_valor,
         });
 
         if (inmuebles.inmueble_asegudado_obras === 1) {
           items.push({
             ...typeItems.valuablesAndWorksOfArt,
             min: 1,
-            maxTotal: inmuebles.inmueble_asegudado_obrasvalor
+            maxTotal: inmuebles.inmueble_asegudado_obrasvalor,
           });
           obras = true;
         }
@@ -139,7 +147,7 @@ class Index extends React.Component {
           items.push({
             ...typeItems.jewelry,
             min: 1,
-            maxTotal: inmuebles.inmueble_asegudado_joyasvalor
+            maxTotal: inmuebles.inmueble_asegudado_joyasvalor,
           });
           joyas = true;
         }
@@ -147,7 +155,7 @@ class Index extends React.Component {
           items.push({
             ...typeItems.cellPhones,
             min: 899999,
-            maxTotal: inmuebles.inmueble_asegudado_telefonosvalor
+            maxTotal: inmuebles.inmueble_asegudado_telefonosvalor,
           });
           celulares = true;
         }
@@ -160,7 +168,7 @@ class Index extends React.Component {
         items.push({
           ...typeItems.mobileContent,
           min: 1,
-          maxTotal: value_to_quotate > 20000000 ? 20000000 : value_to_quotate
+          maxTotal: value_to_quotate > 20000000 ? 20000000 : value_to_quotate,
         });
       }
     }
@@ -174,7 +182,7 @@ class Index extends React.Component {
       joyas,
       celulares,
       contenidoMovil,
-      items
+      items,
     });
     Loading.toggle(false);
   }
@@ -182,18 +190,18 @@ class Index extends React.Component {
   toggleErrorPhone(status) {
     this.setState({
       ...this.state,
-      errorPhone: status
+      errorPhone: status,
     });
   }
 
   selectItems = (name, value) => () => {
     this.setState({
       ...this.state,
-      [name]: value
+      [name]: value,
     });
   };
 
-  removeContent = key => () => {
+  removeContent = (key) => () => {
     let total = this.state.totalContent - 1;
     if (total < 0) total = 0;
     const contents = this.state.contents;
@@ -201,7 +209,7 @@ class Index extends React.Component {
     this.setState({
       ...this.state,
       totalContent: total,
-      contents
+      contents,
     });
   };
 
@@ -214,31 +222,31 @@ class Index extends React.Component {
       contents: [
         ...contents,
         {
-          type: "",
-          caracte: "",
-          value: "",
-          urlfile: "",
-          showDefaultTextFile: true
-        }
-      ]
+          type: '',
+          caracte: '',
+          value: '',
+          urlfile: '',
+          showDefaultTextFile: true,
+        },
+      ],
     });
   };
 
-  changeDates = e => {
+  changeDates = (e) => {
     this.changeValue({
       target: {
-        name: "initdate",
-        value: MomentJs(e).format(this.formatDate)
-      }
+        name: 'initdate',
+        value: MomentJs(e).format(this.formatDate),
+      },
     });
   };
 
-  changeValue = e => {
+  changeValue = (e) => {
     let v = e.target.value;
     let n = e.target.name;
     this.setState({
       ...this.state,
-      [n]: v
+      [n]: v,
     });
   };
 
@@ -249,7 +257,7 @@ class Index extends React.Component {
       ...this.state,
       persons: persons,
       showPopUpPersona: false,
-      addNewPerson: false
+      addNewPerson: false,
     });
   }
 
@@ -257,72 +265,88 @@ class Index extends React.Component {
     let showPopUpPersona = !this.state.showPopUpPersona;
     this.setState({
       ...this.state,
-      showPopUpPersona: showPopUpPersona
+      showPopUpPersona: showPopUpPersona,
     });
   };
   // validate text total
-  updateContent = key => e => {
+  updateContent = (key) => (e) => {
     const { contents } = this.state;
     contents[key][e.target.name] = e.target.value;
     this.setState({
       ...this.state,
-      contents
+      contents,
     });
   };
 
-  hasErrors() {
-    const { contents, inmuebles, quote_contenidomovil } = this.state;
+  getTotal = () => {
+    const { contents } = this.state;
     const {
       fixedContent,
       valuablesAndWorksOfArt,
       jewelry,
       cellPhones,
-      mobileContent
+      mobileContent,
     } = typeItems;
     const total = {
       [fixedContent.id]: 0,
       [valuablesAndWorksOfArt.id]: 0,
       [jewelry.id]: 0,
       [cellPhones.id]: 0,
-      [mobileContent.id]: 0
+      [mobileContent.id]: 0,
     };
+    let error = false;
     for (const content of contents) {
-      const value = Masknumbermoney.formatToNumber(content.value);
+      const value = this.formatToNumber(content.value);
       const contentType = content.type;
-      if (this.getErrors(content, total[contentType] + value)) return true;
+      if (!error && this.getErrors(content, total[contentType] + value))
+        error = true;
       /**
        * @description The value is added to the total
        */
       if (contentType in total) total[contentType] += value;
     }
+    return {
+      error,
+      total: {
+        fixedContent: total[fixedContent.id],
+        valuablesAndWorksOfArt: total[valuablesAndWorksOfArt.id],
+        jewelry: total[jewelry.id],
+        cellPhones: total[cellPhones.id],
+        mobileContent: total[mobileContent.id],
+      },
+    };
+  };
 
+  hasErrors() {
+    const { inmuebles, quote_contenidomovil, contents } = this.state;
+    const { total, error } = this.getTotal();
+    if (error) return true;
     if (
       inmuebles.contenido_asegudado === 1 &&
-      total[fixedContent.id] !== 0 &&
-      inmuebles.contenido_asegudado_valor < total[fixedContent.id]
+      total.fixedContent !== 0 &&
+      inmuebles.contenido_asegudado_valor < total.fixedContent
     )
       return true;
 
     if (
       inmuebles.inmueble_asegudado_obras === 1 &&
-      total[valuablesAndWorksOfArt.id] !== 0 &&
-      inmuebles.inmueble_asegudado_obrasvalor < total[valuablesAndWorksOfArt.id]
+      total.valuablesAndWorksOfArt !== 0 &&
+      inmuebles.inmueble_asegudado_obrasvalor < total.valuablesAndWorksOfArt
     )
       return true;
     if (
       inmuebles.inmueble_asegudado_joyas === 1 &&
-      total[jewelry.id] !== 0 &&
-      inmuebles.inmueble_asegudado_joyasvalor < total[jewelry.id]
+      total.jewelry !== 0 &&
+      inmuebles.inmueble_asegudado_joyasvalor < total.jewelry
     )
       return true;
     if (inmuebles.inmueble_asegudado_telefonos === 1) {
-      return (
-        inmuebles.inmueble_asegudado_telefonosvalor !== total[cellPhones.id]
-      );
+      return inmuebles.inmueble_asegudado_telefonosvalor !== total.cellPhones;
     }
-    if (total[mobileContent.id] > quote_contenidomovil) {
+    if (total.mobileContent > quote_contenidomovil) {
       return true;
     }
+    if (contents.some(({ errorFile }) => !!errorFile)) return true;
     return false;
   }
 
@@ -331,11 +355,11 @@ class Index extends React.Component {
      * @type {{min?:boolean, max?:boolean} | null}
      */
     let errors = null;
-    const value = Masknumbermoney.formatToNumber(content.value);
+    const value = this.formatToNumber(content.value);
     const contentType = content.type;
     const item = this.getItem(contentType);
     const min = value < item.min;
-    const max = value > (maximum > item.max ? item.max : maximum);
+    const max = value > (maximum >= item.max ? item.max : maximum);
     const empty = !value;
     if (min) errors = { ...errors, min };
     if (max) errors = { ...errors, max };
@@ -347,50 +371,60 @@ class Index extends React.Component {
    * @param {string} id
    * @return {Item}
    */
-  getItem = id => {
+  getItem = (id) => {
     const { items } = this.state;
-    const item = { ...items.find(item => String(item.id) === String(id)) };
+    const item = { ...items.find((item) => String(item.id) === String(id)) };
     return {
       ...item,
-      max: item.maxTotal < item.max ? item.maxTotal : item.max
+      max: item.maxTotal < item.max ? item.maxTotal : item.max,
     };
   };
 
-  handleChange = key => e => {
+  handleChange = (key) => (e) => {
     const { contents } = this.state;
     let content = contents[key];
-    content[e.target.name] = Masknumbermoney.formatToMask(e.target.value);
+    content[e.target.name] = e.target.value;
     this.setState({
       ...this.state,
-      contents
+      contents,
     });
   };
 
-  changeTextFile = key => async e => {
-    let validFile = Helpers.validateFile(e.target.files[0]);
+  changeTextFile = (key) => async (e) => {
+    /**
+     * @type {File}
+     */
+    const file = e.target.files[0];
+    let validFile = Helpers.validateFile(file);
     let doc = null;
     let showDefaultTextFile = true;
-    let textFile = "";
-    let errorFile = false;
+    let textFile = '';
+    let errorFile = null;
     let uploaded = false;
-    if (validFile) {
-      showDefaultTextFile = false;
-      doc = e.target.files[0];
-      textFile = e.target.files[0].name;
-    } else {
+    if (!file) {
+      errorFile = 'Este campo es requerido';
+    } else if (!validFile) {
       doc = null;
-      errorFile = true;
+      errorFile = 'Formato no permitido';
+    } else if (file.size >= maxFileSize) {
+      errorFile = `El tamaño del archivo no debe exceder ${(
+        maxFileSize / 1000000
+      ).toFixed(1)}MB`;
+    } else {
+      showDefaultTextFile = false;
+      doc = file;
+      textFile = file.name;
     }
     let contents = this.state.contents;
-    contents[key]["doc"] = doc;
-    contents[key]["showDefaultTextFile"] = showDefaultTextFile;
-    contents[key]["textFile"] = textFile;
-    contents[key]["errorFile"] = errorFile;
-    contents[key]["uploaded"] = uploaded;
+    contents[key]['doc'] = doc;
+    contents[key]['showDefaultTextFile'] = showDefaultTextFile;
+    contents[key]['textFile'] = textFile;
+    contents[key]['errorFile'] = errorFile;
+    contents[key]['uploaded'] = uploaded;
 
     this.setState({
       ...this.state,
-      contents
+      contents,
     });
   };
 
@@ -409,14 +443,15 @@ class Index extends React.Component {
       addNewPerson,
       showPopUpPersona,
       itemSelected,
-      quote_contenidomovil
+      quote_contenidomovil,
     } = this.state;
     const valid = this.hasErrors();
+    const { total } = this.getTotal();
     const {
       contenido_asegudado_valor,
       inmueble_asegudado_obrasvalor,
       inmueble_asegudado_joyasvalor,
-      inmueble_asegudado_telefonosvalor
+      inmueble_asegudado_telefonosvalor,
     } = inmuebles;
     /**
      * @type {Record<string, { lastKey: number | null, value: number, id: number }>}
@@ -424,24 +459,24 @@ class Index extends React.Component {
     const limitInmuebles = {
       [typeItems.fixedContent.id]: {
         lastKey: null,
-        value: contenido_asegudado_valor
+        value: contenido_asegudado_valor,
       },
       [typeItems.valuablesAndWorksOfArt.id]: {
         lastKey: null,
-        value: inmueble_asegudado_obrasvalor
+        value: inmueble_asegudado_obrasvalor,
       },
       [typeItems.jewelry.id]: {
         lastKey: null,
-        value: inmueble_asegudado_joyasvalor
+        value: inmueble_asegudado_joyasvalor,
       },
       [typeItems.cellPhones.id]: {
         lastKey: null,
-        value: inmueble_asegudado_telefonosvalor
+        value: inmueble_asegudado_telefonosvalor,
       },
       [typeItems.mobileContent.id]: {
         lastKey: null,
-        value: quote_contenidomovil
-      }
+        value: quote_contenidomovil,
+      },
     };
     return (
       <React.Fragment>
@@ -467,15 +502,13 @@ class Index extends React.Component {
                     showMonthDropdown
                     showYearDropdown
                     minDate={new Date()}
-                    maxDate={MomentJs()
-                      .add(1, "M")
-                      .toDate()}
+                    maxDate={MomentJs().add(1, 'M').toDate()}
                     name="initdate"
                     value={this.state.initdate}
                     onChange={this.changeDates}
-                    className={"form-control pickerDate"}
+                    className={'form-control pickerDate'}
                     placeholderText={
-                      "Selecciona la fecha de inicio de vigencia"
+                      'Selecciona la fecha de inicio de vigencia'
                     }
                   />
                 </div>
@@ -491,22 +524,22 @@ class Index extends React.Component {
                     name="area"
                     value={area}
                     onChange={this.changeValue}
-                    placeholder={"Ingresa el tamaño de la vivienda"}
+                    placeholder={'Ingresa el tamaño de la vivienda'}
                   />
                   <small>Ingresa la información en M2</small>
                 </div>
               </div>
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                <div className={"no-icon gridgrid form-group"}>
+                <div className={'no-icon gridgrid form-group'}>
                   <label>El inmueble es utilizado como (opcional)</label>
 
                   <div className="row grid-select">
                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                       <div
                         className={
-                          "select-item row " + (utilizado === 1 ? "active" : "")
+                          'select-item row ' + (utilizado === 1 ? 'active' : '')
                         }
-                        onClick={this.selectItems("utilizado", 1)}
+                        onClick={this.selectItems('utilizado', 1)}
                       >
                         <div className="col col-12 no-padding">
                           <i className="home-icon">&nbsp;</i>
@@ -519,9 +552,9 @@ class Index extends React.Component {
                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                       <div
                         className={
-                          "select-item row " + (utilizado === 2 ? "active" : "")
+                          'select-item row ' + (utilizado === 2 ? 'active' : '')
                         }
-                        onClick={this.selectItems("utilizado", 2)}
+                        onClick={this.selectItems('utilizado', 2)}
                       >
                         <div className="col col-12 no-padding">
                           <i className="summer">&nbsp;</i>
@@ -534,9 +567,9 @@ class Index extends React.Component {
                     <div className="col col-6 col-sm-12 col-md-4 col-lg-4">
                       <div
                         className={
-                          "select-item row " + (utilizado === 3 ? "active" : "")
+                          'select-item row ' + (utilizado === 3 ? 'active' : '')
                         }
-                        onClick={this.selectItems("utilizado", 3)}
+                        onClick={this.selectItems('utilizado', 3)}
                       >
                         <div className="col col-12 no-padding">
                           <i className="home-pay">&nbsp;</i>
@@ -559,24 +592,30 @@ class Index extends React.Component {
                     valores
                   </h4>
                 </div>
-                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
-                  <div className="row row-full">
-                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                <div className="col-12">
+                  <div className="row row-full justify-content-center">
+                    <div className="col-auto">
                       <p>
                         <b>Contenidos</b>: $ 12.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Joyas</b>: $ 2.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Teléfonos Móviles:</b> Requiere relación detallada
                         para todos
                       </p>
                     </div>
-                    <div className="col col-sm-12 col-md-6 col-lg-6">
+                    <div className="col-auto">
                       <p>
                         <b>Objetos de valor y obras de Arte:</b> $ 2.000.000
                       </p>
+                    </div>
+                    <div className="col-auto">
                       <p>
                         <b>Contenidos Móviles:</b> $ 2.000.000
                       </p>
@@ -586,23 +625,81 @@ class Index extends React.Component {
                         <p>
                           Recuerda que, para emitir la póliza, debes relacionar
                           las características y el número IMEI de cada teléfono
-                          móvil.{" "}
+                          móvil.
                         </p>
                       </div>
                     )}
+                  </div>
+                </div>
+                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
+                  <table className="table table-sm mt-4">
+                    <thead>
+                      <tr>
+                        <th scope="col">Tipo de articulo</th>
+                        <th scope="col">Valor total máximo</th>
+                        <th scope="col">Valor total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        [
+                          typeItems.fixedContent,
+                          contenido_asegudado_valor,
+                          total.fixedContent,
+                        ],
+                        [
+                          typeItems.jewelry,
+                          inmueble_asegudado_joyasvalor,
+                          total.jewelry,
+                        ],
+                        [
+                          typeItems.cellPhones,
+                          inmueble_asegudado_telefonosvalor,
+                          total.cellPhones,
+                        ],
+                        [
+                          typeItems.valuablesAndWorksOfArt,
+                          inmueble_asegudado_obrasvalor,
+                          total.valuablesAndWorksOfArt,
+                        ],
+                        [
+                          typeItems.mobileContent,
+                          quote_contenidomovil,
+                          total.mobileContent,
+                        ],
+                      ].map(
+                        ([{ label, id }, max, total]) =>
+                          items.find((item) => item.id === id) && (
+                            <tr className="h6 font-weight-normal">
+                              <td className="h6 font-weight-normal font-italic">
+                                {label}
+                              </td>
+                              <td>{this.formatToMask(max)}</td>
+                              <td>{this.formatToMask(total)}</td>
+                            </tr>
+                          )
+                      )}
+                    </tbody>
+                  </table>
+                  <div className="row row-full">
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
+                    <div className="col-auto"></div>
                   </div>
                 </div>
                 <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                   <p className="text-center mt-3">
                     Es importante conocer este tipo de artículos, esto nos
                     permite al momento del siniestro responder de forma efectiva
-                    de acuerdo a la necesidad.{" "}
+                    de acuerdo a la necesidad.{' '}
                   </p>
                 </div>
                 <div className="wrapper-more-items">
                   <div
                     className={
-                      "more-items " + (contents.length !== 0 ? "show" : "hide")
+                      'more-items ' + (contents.length !== 0 ? 'show' : 'hide')
                     }
                   >
                     {contents.map((content, key) => {
@@ -611,14 +708,12 @@ class Index extends React.Component {
                         const currentValue = limitInmuebles[content.type];
                         const keyTemp = currentValue.lastKey;
                         currentValue.lastKey = key;
-                        const valueTemp = Masknumbermoney.formatToNumber(
+                        const valueTemp = this.formatToNumber(
                           currentValue.value
                         );
                         currentValue.value -=
                           (contents[keyTemp] &&
-                            Masknumbermoney.formatToNumber(
-                              contents[keyTemp].value
-                            )) ||
+                            this.formatToNumber(contents[keyTemp].value)) ||
                           0;
                         if (keyTemp !== null) maximum = currentValue.value;
                         else maximum = valueTemp;
@@ -646,8 +741,8 @@ class Index extends React.Component {
                     <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
                       <div
                         className={
-                          "more-items " +
-                          (contents.length !== 0 ? "active" : "")
+                          'more-items ' +
+                          (contents.length !== 0 ? 'active' : '')
                         }
                         onClick={this.addContent}
                       >
@@ -683,8 +778,8 @@ class Index extends React.Component {
               </div>
             )}
 
-            {typeof inmuebles.inspection_policies !== "undefined" &&
-              inmuebles.inspection_policies === "IC" && (
+            {typeof inmuebles.inspection_policies !== 'undefined' &&
+              inmuebles.inspection_policies === 'IC' && (
                 <React.Fragment>
                   <div className="row row-full text-right">
                     <div className="col col-sm-12 col-md-12 col-lg-12">
@@ -704,7 +799,7 @@ class Index extends React.Component {
                       </p>
                     </div>
                     <div className="col col-12 col-sm-12 col-md-8 col-lg-8">
-                      <div className={"no-icon gridgrid form-group"}>
+                      <div className={'no-icon gridgrid form-group'}>
                         <div className="row grid-select justify-content-center  ">
                           {persons.map((item, key) => (
                             <div
@@ -713,17 +808,17 @@ class Index extends React.Component {
                             >
                               <div
                                 className={
-                                  "select-item row " +
-                                  (contactperson === key ? "active" : "")
+                                  'select-item row ' +
+                                  (contactperson === key ? 'active' : '')
                                 }
-                                onClick={this.selectItems("contactperson", key)}
+                                onClick={this.selectItems('contactperson', key)}
                               >
                                 <div className="col col-12 no-padding">
                                   <i className="userperson">&nbsp;</i>
                                 </div>
                                 <div className="col col-12 no-padding">
                                   <p>
-                                    {typeof item.first_name !== "undefined"
+                                    {typeof item.first_name !== 'undefined'
                                       ? item.first_name
                                       : item.name}
                                   </p>

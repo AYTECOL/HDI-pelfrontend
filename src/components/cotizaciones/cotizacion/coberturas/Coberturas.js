@@ -190,7 +190,7 @@ class Coberturas extends Component {
         let index = store.getState().indexPlan;
         let plans = store.getState().AllPlans[index].coverages;
         for (let i = 0; i < plans.length; i++) {
-            if (plans[i].code === code) {
+            if (plans[i].code_content === code) {
                 return {
                     index: i,
                     coverange: plans[i]
@@ -324,7 +324,7 @@ class Coberturas extends Component {
         let state = true;
         newPlans.coverages[key].checked = !check;
 
-        let code = newPlans.coverages[key].code;
+        let code = newPlans.coverages[key].code_content;
         //Validations for dependence's coverages
         if (parseInt(code) === 9692 && !check === false) {
             let find = Coberturas.getCoverangeByCode(9691);
@@ -392,10 +392,6 @@ class Coberturas extends Component {
                     item.values[k].errors.push(`Valor Asegurado de Contenidos Móviles es ${(formatValue > 50000000 ? 'superior' : 'inferior')} al permitido. `);
                     return 1;
                 }
-                if (formatValue >= valueHurto) {
-                    item.values[k].errors.push(`Valor Asegurado de Contenidos Móviles es ${(formatValue >= valueHurto ? 'superior' : 'inferior')} al permitido. `);
-                    return 1;
-                }
                 break;
             case 9652:
                 if (formatValue >= 10000001 || formatValue <= 850000) {
@@ -409,17 +405,22 @@ class Coberturas extends Component {
                     return 1;
                 }
                 break;
-
+            default:
         }
     }
     inputChange = (k, key, type) => e => {
         let plan = this.state.plan;
         let item = plan.coverages[key];
         const hurtoCalificado = plan.coverages.find((element) => element.code_content === 9692)
+        const otrosContenidos = plan.coverages.find((element) => element.code_content === 9670)
         const valueHurto =
             hurtoCalificado &&
             hurtoCalificado.values &&
             hurtoCalificado.values[0].value_to_quotate;
+        const valueContenido = 
+            otrosContenidos &&
+            otrosContenidos.values &&
+            otrosContenidos.values[0].value_to_quotate;
         //Input
         if (type === 1) {
             item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
@@ -452,6 +453,18 @@ class Coberturas extends Component {
                         if (0 >= Masknumbermoney.formatToNumber(item.values[k].value_show)) {
                             item.values[k].errors.push('Valor Asegurado del amparo ' + item.name + ' es inferior al permitido.');
                         }
+                    }
+                    if (item.values[k].errors.length > 0) {
+                        Helpers.disabled('.generatepdf ');
+                        Helpers.disabled('.next-step');
+                    } else {
+                        Helpers.enabled('.generatepdf ');
+                        Helpers.enabled('.next-step');
+                    }
+                }else {
+                    let formatValue = Masknumbermoney.formatToNumber(item.values[k].value_show)
+                    if (formatValue > valueContenido) {
+                        item.values[k].errors.push('Valor asegurado es mayor al reportado en Contenidos');
                     }
                     if (item.values[k].errors.length > 0) {
                         Helpers.disabled('.generatepdf ');

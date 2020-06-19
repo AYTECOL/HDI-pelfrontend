@@ -114,8 +114,6 @@ class Cards extends Component {
     this.unsubscribe = store.subscribe(() => {
       let storeState = store.getState();
       let inmueble = storeState.Inmueble;
-      let a = this.state.Inmueble;
-      let b = this.state.InmuebleOk;
       if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
         let items = this.state.items;
         for (let i = 0; i < 5; i++) {

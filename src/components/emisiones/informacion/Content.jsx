@@ -1,9 +1,10 @@
-import React from "react";
-import classNames from "classnames";
-import { pure } from "recompose";
+import React from 'react';
+import classNames from 'classnames';
+import { pure } from 'recompose';
 
-import Masknumbermoney from "../../../common/helpers/masknumbermoney/Masknumbermoney";
-import { typeItems } from "./typeItems";
+import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
+import { typeItems } from './typeItems';
+import Helpers from '../../../common/helpers/helpers/Helpers';
 
 /**
  * @typedef {{ label: string, id: string, min: number, max: number }} Item
@@ -27,11 +28,11 @@ const Content = pure(
     removeContent,
     changeTextFile,
     maximum,
-    getErrors
+    getErrors,
   }) => {
     const typeItem = content.type;
     function showName(name) {
-      let s = name.split("/");
+      let s = name.split('/');
       return s[s.length - 1];
     }
     const errors = !typeItem ? false : getErrors();
@@ -39,7 +40,7 @@ const Content = pure(
     const canAttachFile = [
       typeItems.valuablesAndWorksOfArt.id,
       typeItems.jewelry.id,
-      typeItems.mobileContent.id
+      typeItems.mobileContent.id,
     ].includes(item.id);
     return (
       <div className="moreitems">
@@ -52,7 +53,7 @@ const Content = pure(
                 name="type"
                 id="type"
                 value={typeItem}
-                onChange={e => {
+                onChange={(e) => {
                   updateContent(e);
                 }}
               >
@@ -79,23 +80,23 @@ const Content = pure(
                 disabled={!typeItem}
               />
               <small className="form-text d-block text-left">
-                Ej: Marca, referencia, {isCellPhone && "Numero IMEI,"} color...
+                Ej: Marca, referencia, {isCellPhone && 'Numero IMEI,'} color...
               </small>
             </div>
           </div>
           <div
             className={classNames(
-              "col no-padding-right",
-              !canAttachFile && "col-4"
+              'col no-padding-right',
+              !canAttachFile && 'col-4'
             )}
           >
-            <div className={"name form-group " + (errors ? "error" : "")}>
+            <div className={'name form-group ' + (errors ? 'error' : '')}>
               <label htmlFor="name">Valor</label>
               <input
                 type="text"
                 className="form-control"
                 name="value"
-                value={content.value}
+                value={Masknumbermoney.formatToMask(content.value)}
                 onChange={handleChange}
                 disabled={!typeItem}
               />
@@ -128,6 +129,7 @@ const Content = pure(
                       className="form-control"
                       name="doc"
                       onChange={changeTextFile}
+                      accept={Helpers.fileFormats.join(', ')}
                     />
                     {content.showDefaultTextFile ? (
                       <p>
@@ -141,14 +143,9 @@ const Content = pure(
                       siniestro
                     </span>
                     <br />
-                    <span
-                      className={
-                        "error-file " +
-                        (content.errorFile === true ? "show" : "hide")
-                      }
-                    >
-                      Formato no permitido
-                    </span>
+                    {content.errorFile && (
+                      <span className="error-file">{content.errorFile}</span>
+                    )}
                   </div>
                 </div>
               </div>
