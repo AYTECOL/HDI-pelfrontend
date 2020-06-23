@@ -28,16 +28,13 @@ class BtnContinue extends Component {
     nextStep = total => async () => {
         Loading.toggle(true);
         const {
-          state,
-          items,
-          toggleErrorPhone,
-          match,
-          history
+            state,
+            getItem,
+            toggleErrorPhone,
+            match,
+            history
         } = this.props;
         let status = true;
-        const getItem = id => {
-            return items.find(({ key }) => String(key) === String(id));
-        };
         for (let i = 0; i < state.contents.length; i++) {
             for (let j in state.contents[i]) if (state.contents[i][j] === "") state.contents[i][j] = '""';
             if (state.contents[i].uploaded === false) {
@@ -45,7 +42,7 @@ class BtnContinue extends Component {
                 state.contents[i].textFile = url.location;
                 state.contents[i].uploaded = true;
             }
-            state.contents[i].nameType = getItem(state.contents[i].type);
+            state.contents[i].nameType = getItem(state.contents[i].type).label;
             state.contents[i].typeCode = 90161;
         }
 
