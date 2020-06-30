@@ -430,9 +430,19 @@ class Coberturas extends Component {
     let formatValue = Masknumbermoney.formatToNumber(item.values[k].value_show);
     switch (item.values[k].code) {
       case 3044:
-        if (formatValue > 50000000) {
+        if (formatValue > 50000000 || formatValue < 900000) {
           item.values[k].errors.push(
             `Valor Asegurado de Contenidos Móviles es ${
+              formatValue > 50000000 ? 'superior' : 'inferior'
+            } al permitido. `
+          );
+          return 1;
+        }
+        break;
+      case 3045:
+        if (formatValue > 50000000 || formatValue < 900000) {
+          item.values[k].errors.push(
+            `Valor Asegurado de Joyas es ${
               formatValue > 50000000 ? 'superior' : 'inferior'
             } al permitido. `
           );
