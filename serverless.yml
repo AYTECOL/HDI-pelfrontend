@@ -3,7 +3,7 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: prod
+  stage: nonprod
   region: us-east-1
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
@@ -14,7 +14,7 @@ provider:
 
 custom:
   s3Bucket: poliza-express-hogar
-  s3BucketPDF: poliza-express-hogar-pdf-prod
+  s3BucketPDF: poliza-express-hogar-pdf-nonprod
 
 package:
   include:
