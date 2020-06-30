@@ -23,25 +23,27 @@ class QuoteIussedById {
                 });
 
                 for (let i in users) {
+                    const user = users[i]
                     let status = false;
-                    for (let j = 0; j < users[i].role.length; j++) {
-                        let role = users[i].role[j];
+                    if (user && user.role && user.role.length)
+                      for (let j = 0; j < user.role.length; j++) {
+                        let role = user.role[j];
                         if (status === false) {
-                            if (role === 1) {
-                                // Tomador
-                                data.quote_iussed_info.Item['taker'] = users[i];
-                                status = true;
-                            } else if (role === 2) {
-                                // Asegurado
-                                data.quote_iussed_info.Item['insured'].push(users[i]);
-                                status = true;
-                            } else if (role === 3) {
-                                // Beneficiario
-                                data.quote_iussed_info.Item['benefist'].push(users[i]);
-                                status = true;
-                            }
+                          if (role === 1) {
+                            // Tomador
+                            data.quote_iussed_info.Item['taker'] = user;
+                            status = true;
+                          } else if (role === 2) {
+                            // Asegurado
+                            data.quote_iussed_info.Item['insured'].push(user);
+                            status = true;
+                          } else if (role === 3) {
+                            // Beneficiario
+                            data.quote_iussed_info.Item['benefist'].push(user);
+                            status = true;
+                          }
                         }
-                    }
+                      }
                 }
             }
         }
