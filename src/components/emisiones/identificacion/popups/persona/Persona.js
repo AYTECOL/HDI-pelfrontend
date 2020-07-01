@@ -110,7 +110,7 @@ export default class Persona extends Component {
             this.state.person['department_code'] = 0;
         }
 
-        if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && this.state.person.code === "37") {
+        if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && String(this.state.person.code) === "37") {
             this.state.nit = true;
         }
         if (typeof this.state.person.sarlfalt_url !== 'string') {
