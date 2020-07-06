@@ -1,5 +1,6 @@
 import Api from './Api';
 import {ApiKeyGoogle} from '../config';
+import Axios from 'axios';
 
 const APIKEY = ApiKeyGoogle;
 // const Cors = '';
@@ -21,9 +22,20 @@ class GetAddresInfo {
     };
 
     static async getAdressByCoors(coors) {
-        return Api.get(encodeURI(`${Cors}https://maps.googleapis.com/maps/api/geocode/json?latlng=${coors.lat()},${coors.lng()}&key=${APIKEY}`), "")
-            .then(response => {
-                return response.results[0].formatted_address;
+        return Axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coors.lat()},${coors.lng()}&key=${APIKEY}`)
+            .then(({ data }) => {
+                const [address] = data.results || [];
+                /**
+                 * @type {{ formatted_address: string }}
+                 */
+                let { formatted_address } = {
+                  formatted_address: '',
+                  ...address,
+                };
+                formatted_address.replace(/,.*/, '');
+                return formatted_address
+                  .replace(/,.*/, '')
+                  .replace(/##|#/, 'Nro. ');
             });
     }
 }
