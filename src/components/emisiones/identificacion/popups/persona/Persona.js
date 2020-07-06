@@ -20,6 +20,10 @@ import { isValidDirection, validationMessages } from '../../../../../common/vali
 
 // 6.5MB
 const maxFileSize = 6500000;
+const phoneTypes = {
+    telephone: '1',
+    mobilePhone: '6'
+}
 
 export default class Persona extends Component {
 
@@ -463,6 +467,8 @@ export default class Persona extends Component {
         const errors = [];
         const { typePerson, nit, person, errorFile } = this.state;
         const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role, address } = person;
+        const tipodetelefono = String(person.tipodetelefono);
+        const telefono = String(person.telefono);
         let fields = document.querySelectorAll(".modal-content input, .modal-content select");
         for (let i = 0; i < fields.length; i++) {
           if (sarlfaltActive === true && fields[i].name === "sarlaft") continue;
@@ -471,9 +477,19 @@ export default class Persona extends Component {
           }
         }
 
-        if (Helpers.validationEmail(email) === false) {
-          errors.push("email");
-        }
+        let telefonoHasError = false;
+        if (tipodetelefono === phoneTypes.mobilePhone) {
+            if (telefono.length < 10) {
+                telefonoHasError = true;
+            };
+        } else if (tipodetelefono === phoneTypes.telephone) {
+            if (telefono.length < 6) {
+                telefonoHasError = true;
+            };
+        } else errors.push('tipodetelefono');
+        if (!telefono || telefonoHasError) errors.push('telefono');
+
+        if (Helpers.validationEmail(email) === false) errors.push("email");
 
         if (typeof sarlfalt_url !== "undefined" && sarlaft === "" && sarlfalt_url !== "") {
           errors.splice(errors.indexOf("sarlfalt"), 1);
@@ -832,8 +848,8 @@ export default class Persona extends Component {
                                                             className={"form-control " + (this.state.person.tipodetelefonoDisabled ? 'disabled' : '')}
                                                             disabled={this.state.person.tipodetelefonoDisabled}>
                                                             <option value="">Seleccione</option>
-                                                            <option value="1">Teléfono</option>
-                                                            <option value="6">Tfno. móvil</option>
+                                                            <option value={phoneTypes.telephone}>Teléfono</option>
+                                                            <option value={phoneTypes.mobilePhone}>Tfno. móvil</option>
                                                         </select>
                                                         <small className="form-text only-errors">Falta información requerida
                                                             para el Tomador. Por favor revise el campo Tipo de teléfono
