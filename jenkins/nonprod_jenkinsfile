@@ -75,7 +75,7 @@ node('linux'){
 	}
 	stage('Testing'){
 		  
-		sh 'curl -X POST http://cunate:a763ac28c58d391b70a382539a8ae7dd@10.142.137.77:8080/job/Katalon-suite-eHome/build?token=SOMESECURITYTOKEN'
+		// sh 'curl -X POST http://cunate:a763ac28c58d391b70a382539a8ae7dd@10.142.137.77:8080/job/Katalon-suite-eHome/build?token=SOMESECURITYTOKEN'
     
 	}
  }
