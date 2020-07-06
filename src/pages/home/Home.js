@@ -79,11 +79,16 @@ class Home extends PureComponent {
    * @param {import("../../services/GetQuote").PolicyRequest[]} dataArray
    */
   formatData = (dataArray) => {
+        /**
+         *
+         * @param {string} text
+         */
+        const cleanQuotes = (text) => text.replace('""', '');
         const dataFormat = dataArray.map((item) => ({
           quoteId: item.quoteId,
           create_at: MomentJs(item.create_at).format('L'),
           hour_at: MomentJs(item.create_at).format('LT'),
-          name: `${item.name} ${item.last_name}`,
+          name: cleanQuotes(item.business_name) || `${item.name} ${item.last_name}`,
           address: item.address,
           document_number: item.document_number,
           document_type: item.document_type,
