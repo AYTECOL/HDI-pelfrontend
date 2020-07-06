@@ -132,8 +132,6 @@ const Table = (props) => {
           const identificationType = identificationTypes.find(
             ({ code }) => String(item.document_type) === String(code)
           );
-          console.log(identificationType);
-
           return (
             <div className="row body" key={item.quoteId}>
               <div className="col">
