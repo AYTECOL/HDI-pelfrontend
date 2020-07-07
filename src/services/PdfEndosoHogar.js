@@ -1,6 +1,6 @@
 import Api from './Api';
 import ConsultaPersonas from './ConsultaPersonas';
-
+import AuthHeader from './AuthHeader';
 const BaseUrl = "/pdf-endoso-hogar/";
 let _index = 0;
 
@@ -8,9 +8,10 @@ class PdfEndosoHogar {
     static async get(id) {
         let user = await ConsultaPersonas.getUser();
         try {
-            return await Api.get(BaseUrl + id, undefined, {
-                pelhauthorization: user !== null ? user['accessToken'] : ''
-            }, true);
+            let authHeader =  new AuthHeader();
+            authHeader = authHeader.generateAuthCode();
+            authHeader['pelhauthorization'] = user !== null ? user['accessToken'] : '';
+            return await Api.get(BaseUrl + id, undefined, authHeader, true);
         } catch (e) {
             if (_index < 3) {
                 _index++;

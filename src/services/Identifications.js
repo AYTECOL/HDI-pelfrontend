@@ -1,8 +1,11 @@
 import Api from './Api';
+import AuthHeader from './AuthHeader';
 
 class Identifications {
     static async get() {
-        return await Api.get('/identifications');
+        let authHeader =  new AuthHeader()
+        authHeader = authHeader.generateAuthCode()
+        return await Api.get('/identifications', undefined, authHeader);
     };
 }
 

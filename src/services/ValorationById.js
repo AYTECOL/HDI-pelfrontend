@@ -1,12 +1,14 @@
 import Api from './Api';
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
-
+import AuthHeader from './AuthHeader';
 const BaseUrl = "/";
 
 class ValorationById {
     static async get(id) {
+        let authHeader =  new AuthHeader();
+        authHeader = authHeader.generateAuthCode();
         let url = BaseUrl + "valoration-by-id/" + id;
-        let data = await Api.get(url);
+        let data = await Api.get(url, undefined, authHeader);
         if (typeof data.valoration.Item !== "undefined") {
             let item = data.valoration.Item;
             for (let i in item) if (item[i] === '""') item[i] = "";

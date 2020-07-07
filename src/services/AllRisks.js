@@ -1,6 +1,6 @@
 import Api from './Api';
 import Helpers from "../common/helpers/helpers/Helpers";
-
+import AuthHeader from './AuthHeader';
 const BaseUrl = "/";
 
 const Default = {
@@ -21,7 +21,10 @@ class AllRisks {
         let url = BaseUrl + "all-risks";
         let risks;
         try {
-            risks = await Api.get(url);
+            // TODO interceptor or request
+            let authHeader =  new AuthHeader()
+            authHeader = authHeader.generateAuthCode()
+            risks = await Api.get(url, undefined, authHeader);
         } catch (e) {
             risks = Default;
         }

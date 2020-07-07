@@ -2,7 +2,6 @@
 import Api from './Api';
 import ConsultaPersonas from './ConsultaPersonas';
 import { UrlAttachPolicyDocuments } from '../config';
-
 const Url = '/attach-policy-documents';
 const UrlLiberty = UrlAttachPolicyDocuments;
 
@@ -58,7 +57,7 @@ class AttachPolicyDocuments {
             archivos: { archivo: [archivo] },
           },
         };
-
+        // TODO interceptor or request
         return Api.post(
           '/adjuntardocumentospoliza',
           dataPost,

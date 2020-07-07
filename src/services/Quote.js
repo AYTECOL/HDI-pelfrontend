@@ -4,6 +4,7 @@ import ConsultaPersonas from './ConsultaPersonas';
 import AccessTokenGeocoding from './AccessTokenProd';
 import SigService from './SigServices';
 const Url = '/quote';
+import AuthHeader from './AuthHeader';
 
 class IdentificationsCities {
   static async save() {
@@ -55,7 +56,11 @@ class IdentificationsCities {
       attachedFile,
     };
     for (let i in data) if (data[i] === '') data[i] = '""';
-    return await Api.post(Url, data);
+    // TODO intercept request
+    let authHeader =  new AuthHeader();
+    authHeader = authHeader.generateAuthCode();
+    authHeader['pelhauthorization'] = user !== null ? user['accessToken'] : '';
+    return await Api.post(Url, data, undefined, undefined, authHeader);
   }
 }
 
