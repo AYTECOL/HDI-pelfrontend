@@ -3,8 +3,8 @@ import Store from '../store';
 import ConsultaPersonas from './ConsultaPersonas';
 import AccessTokenGeocoding from './AccessTokenProd';
 import SigService from './SigServices';
-const Url = '/quote';
 import AuthHeader from './AuthHeader';
+const Url = '/quote';
 
 class IdentificationsCities {
   static async save() {

@@ -1,6 +1,7 @@
 import Api from './Api'
-const Url = "/sig_geocoding_data";
 import AuthHeader from './AuthHeader';
+const Url = "/sig_geocoding_data";
+
 
 class SigService {
     static async LongitudeAndLatitude(tokenAcceess, lon, lan) {
