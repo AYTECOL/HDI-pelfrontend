@@ -1,6 +1,7 @@
 import Api from "./Api";
-const BaseUrl = "/get/all/quote-iussed-by-id/";
 import AuthHeader from './AuthHeader';
+const BaseUrl = "/get/all/quote-iussed-by-id/";
+
 class QuoteIussedById {
 
     static mergeUsers(data) {
