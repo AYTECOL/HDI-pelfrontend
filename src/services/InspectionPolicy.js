@@ -3,7 +3,7 @@ import momentJs from 'moment';
 import store from "../store";
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
 import ConsultaPersonas from "./ConsultaPersonas";
-
+import AuthHeader from './AuthHeader';
 const BaseUrl = "/determine-inspection-policies";
 
 class InspectionPolicy {
@@ -55,7 +55,10 @@ class InspectionPolicy {
             },
             "token":user["accessToken"]
         };
-        let response = await Api.post(BaseUrl, dataToSend);
+        // TODO intercept request
+        let authHeader =  new AuthHeader()
+        authHeader = authHeader.generateAuthCode()
+        let response = await Api.post(BaseUrl, dataToSend, undefined, undefined, authHeader);
         if (typeof response.results === "undefined") {
             response = null;
         } else {

@@ -1,7 +1,6 @@
 import Api from "./Api";
-
 const BaseUrl = "/get/all/quote-iussed-by-id/";
-
+import AuthHeader from './AuthHeader';
 class QuoteIussedById {
 
     static mergeUsers(data) {
@@ -51,7 +50,9 @@ class QuoteIussedById {
     }
 
     static async get(id) {
-        return QuoteIussedById.mergeUsers(await Api.get(BaseUrl + id));
+        let authHeader =  new AuthHeader();
+        authHeader = authHeader.generateAuthCode();
+        return QuoteIussedById.mergeUsers(await Api.get(BaseUrl + id, undefined, authHeader));
     }
 }
 

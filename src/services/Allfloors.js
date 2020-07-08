@@ -1,5 +1,6 @@
 import Api from './Api';
 import Store from '../store';
+import AuthHeader from './AuthHeader';
 import {saveAllfloors} from '../actions';
 import Helpers from "../common/helpers/helpers/Helpers";
 
@@ -26,7 +27,10 @@ class Allfloors {
         let storeState = Store.getState();
         if (storeState.Allfloors.length === 0) {
             try {
-                data = await Api.get(BaseUrl);
+                // TODO interceptor or request
+                let authHeader =  new AuthHeader()
+                authHeader = authHeader.generateAuthCode()
+                data = await Api.get(BaseUrl, undefined, authHeader);
             } catch (e) {
                 data = Default();
             }
@@ -45,4 +49,3 @@ class Allfloors {
 }
 
 export default Allfloors;
-

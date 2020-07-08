@@ -78,8 +78,8 @@ class Api {
         });
     };
 
-    static async put(url, overrideBase) {
-        return await Api.HttpRequest('PUT', url, null, overrideBase).then(function (response) {
+    static async put(url, overrideBase, headers) {
+        return await Api.HttpRequest('PUT', url, null, overrideBase, undefined, headers).then(function (response) {
             try {
                 return JSON.parse(response);
             } catch (e) {
@@ -88,10 +88,10 @@ class Api {
         })
     };
 
-    static async files(url, name, file, overrideBase) {
+    static async files(url, name, file, overrideBase, headers) {
         let formData = new FormData();
         formData.append(name, file);
-        return await Api.HttpRequest('POST', url, formData, overrideBase, true).then(function (response) {
+        return await Api.HttpRequest('POST', url, formData, overrideBase, true, headers).then(function (response) {
             try {
                 return JSON.parse(response);
             } catch (e) {

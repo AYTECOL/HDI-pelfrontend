@@ -1,3 +1,4 @@
+// TODO authentication interceptor
 import Service from "./Api";
 import { UrlPerson } from "../config";
 import Base64 from "../common/helpers/base64/Base64";
@@ -17,7 +18,6 @@ class ConsultaPersonas {
      */
     let data = null;
     let queryString = window.location.search.replace("?", "").split("&");
-
     let parameters = {};
     window.history.pushState({}, document.title, window.location.pathname);
     for (let i = 0; i < queryString.length; i++) {
@@ -53,7 +53,7 @@ class ConsultaPersonas {
         Helpers.goToError();
         return data;
       }
-
+      // TODO authentication interceptor
       let dataRquestVerify = await AccessToken.get(data["refer"]);
       if (
         dataRquestVerify !== null &&
@@ -91,9 +91,8 @@ class ConsultaPersonas {
         consultarAniosExperiencia: false
       }
     };
-
+    // TODO authentication interceptor. entry point 
     //return Default;
-
     let token = await ConsultaPersonas.getUser();
     token =
       token === null
