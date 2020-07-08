@@ -2,7 +2,7 @@ import Api from './Api';
 import Store from '../store';
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
 import momentJs from 'moment';
-
+import AuthHeader from './AuthHeader';
 const BaseUrl = "/create-or-update-valoration/";
 
 class CreateOrUpdateValoration {
@@ -93,7 +93,10 @@ class CreateOrUpdateValoration {
             }
         };
         for (let i in data) if (data[i] === "") data[i] = 0;
-        return await Api.post(BaseUrl + nCotizacion, data);
+        // TODO intercept request
+        let authHeader =  new AuthHeader()
+        authHeader = authHeader.generateAuthCode()
+        return await Api.post(BaseUrl + nCotizacion, data, undefined, undefined, authHeader);
     };
 }
 

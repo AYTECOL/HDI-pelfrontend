@@ -1,7 +1,7 @@
 import Api from "./Api";
 import Helpers from "../common/helpers/helpers/Helpers";
 import AccessToken from "../services/AccessToken";
-
+import AuthHeader from './AuthHeader';
 const Url = "/quote-all-quotes/";
 
 class GetQuote {
@@ -11,7 +11,9 @@ class GetQuote {
       queryString[0].replace("refer=", "")
     );
     const accessToken = localStorage.getItem("JaccessToken") || "";
-    let items = await Api.get(`${Url}${accessToken}`);
+    let authHeader =  new AuthHeader()
+    authHeader = authHeader.generateAuthCode()
+    let items = await Api.get(`${Url}${accessToken}`, undefined, authHeader);
     if (typeof items.quotations === "undefined") {
       return [];
     } else {
@@ -21,7 +23,9 @@ class GetQuote {
 
   static async getById(id) {
     try {
-      let items = await Api.get("/quote/" + id);
+      let authHeader =  new AuthHeader()
+      authHeader = authHeader.generateAuthCode()
+      let items = await Api.get("/quote/" + id, undefined, authHeader);
       if (typeof items.quote !== "undefined") {
         items = items.quote;
         for (let i in items) if (items[i] === '""') items[i] = "";

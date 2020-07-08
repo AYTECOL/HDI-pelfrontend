@@ -1,4 +1,5 @@
 import Api from './Api';
+import AuthHeader from './AuthHeader';
 import Helpers from "../common/helpers/helpers/Helpers";
 
 const BaseUrl = "/all-build-years";
@@ -36,7 +37,10 @@ class AllBuildYears {
     static async get() {
         let data = {};
         try {
-            data = await Api.get(BaseUrl);
+            // TODO interceptor or request test
+            let authHeader =  new AuthHeader()
+            authHeader = authHeader.generateAuthCode()
+            data = await Api.get(BaseUrl, undefined, authHeader);
         } catch (e) {
             data = Default;
         }
@@ -48,4 +52,3 @@ class AllBuildYears {
 }
 
 export default AllBuildYears;
-

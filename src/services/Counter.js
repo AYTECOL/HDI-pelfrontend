@@ -1,10 +1,13 @@
 import Api from './Api';
-
+import AuthHeader from './AuthHeader';
 const Url = "/counter";
 
 class Counter {
     static async get() {
-        return await Api.put(Url);
+      // TODO interceptor or request
+      let authHeader =  new AuthHeader()
+      authHeader = authHeader.generateAuthCode()
+      return await Api.put(Url, undefined, authHeader);
     };
 }
 
