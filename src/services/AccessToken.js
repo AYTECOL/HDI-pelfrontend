@@ -1,4 +1,4 @@
-// TODO authentication interceptor 
+// TODO authentication interceptor
 import Api from "./Api";
 import {UrlAccessToken} from "../config";
 
@@ -14,8 +14,9 @@ class AccessToken {
         try {
             let reponse = await Api.post(Url, data, BaseUrl);
             if (typeof reponse["accessToken"] !== "undefined") {
-                const {agente} = reponse;
+                const {agente, accessToken} = reponse;
                 localStorage.setItem("JaccessToken", agente);
+                localStorage.setItem("serviceToken", accessToken);
                 return reponse;
             } else {
                 return null;
