@@ -1,7 +1,7 @@
 
 class AuthHeader {
     constructor(){
-      this.token = localStorage.getItem("JaccessToken") || "";
+      this.token = localStorage.getItem("serviceToken") || "";
     }
 
     generateAuthCode(){
