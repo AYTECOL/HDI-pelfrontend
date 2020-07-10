@@ -18,7 +18,7 @@ class Api {
             if (typeof headers !== "undefined") {
                 for (let j in headers) xhr.setRequestHeader(j, headers[j]);
             }
-            xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
+            // xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
             xhr.onload = function () {
                 if (this.status >= 200 && this.status < 300) {
                     resolve(xhr.response);
