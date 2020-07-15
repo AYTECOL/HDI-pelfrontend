@@ -52,6 +52,8 @@ class GetAddresInfo {
                   'locality',
                   'neighborhood',
                   'sublocality',
+                  'political',
+                  'postal_code',
                 ];
                 for (const address_component of address_components) {
                   const isRemoved = !!address_component.types.find(
