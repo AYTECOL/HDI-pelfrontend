@@ -21,7 +21,6 @@ import { isValidDirection, validationMessages } from '../../../../../common/vali
 // 6.5MB
 const maxFileSize = 6500000;
 const phoneTypes = {
-    telephone: '1',
     mobilePhone: '6'
 }
 
@@ -131,23 +130,25 @@ export default class Persona extends Component {
 
     /**
      * Merge person data between services iaxis and form data.
-     * @param persona
+     * @param {import('../../../../../services/Person').ResConsultarPersonaRs} resPersona 
      * @param code
      * @param person
      * @returns {*}
      */
-    static extractDataFromIaxis(persona, code, person) {
+    static extractDataFromIaxis(resPersona, code, person) {
+        const consultarPersonaRs = resPersona['consultarPersonaRs'];
+        const persona = consultarPersonaRs && consultarPersonaRs.persona;
         if (parseInt(code) === 37) {
-            if (typeof persona['consultarPersonaRs'] !== "undefined") {
-                if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
-                    if (typeof persona['consultarPersonaRs']['persona']['personaJuridica'] !== "undefined") {
-                        if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'] !== "undefined") {
-                            person.businessname = persona['consultarPersonaRs']['persona']['personaJuridica']['razonSocial'];
+            if (typeof consultarPersonaRs !== "undefined") {
+                if (typeof persona !== "undefined") {
+                    if (typeof persona['personaJuridica'] !== "undefined") {
+                        if (typeof persona['personaJuridica']['razonSocial'] !== "undefined") {
+                            person.businessname = persona['personaJuridica']['razonSocial'];
                             person.businessname = person.businessname == null ? '' : person.businessname;
                             person.businessnameDisabled = person.businessname !== '' && person.businessname !== null;
                         }
-                        if (typeof persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'] !== "undefined") {
-                            person.fechadecontitucion = persona['consultarPersonaRs']['persona']['personaJuridica']['fechaConstitucion'];
+                        if (typeof persona['personaJuridica']['fechaConstitucion'] !== "undefined") {
+                            person.fechadecontitucion = persona['personaJuridica']['fechaConstitucion'];
                             person.fechadecontitucion = person.fechadecontitucion !== null ? person.fechadecontitucion.split("T") : '';
                             person.fechadecontitucion = typeof person.fechadecontitucion[0] !== "undefined" ? person.fechadecontitucion[0] : '';
                             person.fechadecontitucionDisabled = person.fechadecontitucion !== '';
@@ -158,35 +159,35 @@ export default class Persona extends Component {
                 }
             }
         } else {
-            if (typeof persona['consultarPersonaRs'] !== "undefined") {
-                if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
-                    if (typeof persona['consultarPersonaRs']['persona']['personaNatural'] !== "undefined") {
+            if (typeof consultarPersonaRs !== "undefined") {
+                if (typeof persona !== "undefined") {
+                    if (typeof persona['personaNatural'] !== "undefined") {
                         if (typeof person.genero === "undefined" || person.genero === "") {
-                            person.genero = persona['consultarPersonaRs']['persona']['personaNatural']['genero']['codigo'];
+                            person.genero = persona['personaNatural']['genero']['codigo'];
                             person.genero = person.genero === null ? '' : person.genero;
                             person.generoDisabled = person.genero !== '' && person.genero !== null;
                         }
 
                         if (typeof person.name === "undefined" || person.name === "") {
-                            person.name = persona['consultarPersonaRs']['persona']['personaNatural']['primerNombre'];
+                            person.name = persona['personaNatural']['primerNombre'];
                             person.name = person.name === null ? '' : person.name;
                             person.nameDisabled = person.name !== '' && person.name !== null;
                         }
 
                         if (typeof person.secondname === "undefined" || person.secondname === "") {
-                            person.secondname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoNombre'];
+                            person.secondname = persona['personaNatural']['segundoNombre'];
                             person.secondname = person.secondname === null ? '' : person.secondname;
                             person.secondnameDisabled = person.secondname !== '' && person.secondname !== null;
                         }
 
                         if (typeof person.lastname === "undefined" || person.lastname === "") {
-                            person.lastname = persona['consultarPersonaRs']['persona']['personaNatural']['primerApellido'];
+                            person.lastname = persona['personaNatural']['primerApellido'];
                             person.lastname = person.lastname === null ? '' : person.lastname;
                             person.lastnameDisabled = person.lastname !== '' && person.lastname !== null;
                         }
 
                         if (typeof person.secondlastname === "undefined" || person.secondlastname === "") {
-                            person.secondlastname = persona['consultarPersonaRs']['persona']['personaNatural']['segundoApellido'];
+                            person.secondlastname = persona['personaNatural']['segundoApellido'];
                             person.secondlastname = person.secondlastname === null ? '' : person.secondlastname;
                             person.secondlastnameDisabled = person.secondlastname !== '' && person.secondlastname !== null;
                         }
@@ -195,81 +196,112 @@ export default class Persona extends Component {
                         person.codeDisabled = true;
 
                         if (typeof person.fechadenacimiento === "undefined" || person.fechadenacimiento === "") {
-                            person.fechadenacimiento = persona['consultarPersonaRs']['persona']['personaNatural']['fechaNacimiento'];
+                            person.fechadenacimiento = persona['personaNatural']['fechaNacimiento'];
                             person.fechadenacimiento = person.fechadenacimiento !== null ? person.fechadenacimiento.split("T") : '';
                             person.fechadenacimiento = typeof person.fechadenacimiento[0] !== "undefined" ? person.fechadenacimiento[0] : '';
                             person.fechadenacimientoDisabled = person.fechadenacimiento !== '' && person.fechadenacimiento !== null;
                         }
 
-                        person.personaNatural = persona['consultarPersonaRs']['persona']['personaNatural'];
+                        person.personaNatural = persona['personaNatural'];
                     }
                 }
             }
         }
-        if (typeof persona['consultarPersonaRs'] !== "undefined") {
-            if (typeof persona['consultarPersonaRs']['persona'] !== "undefined") {
-                let contactos = persona['consultarPersonaRs']['persona']['contacto'];
+        if (typeof consultarPersonaRs !== "undefined") {
+            if (typeof persona !== "undefined") {
+                const contactos = persona['contacto'];
                 if (typeof contactos !== "undefined") {
                     person.contacto = [];
-                    person.tipoPersona = persona['consultarPersonaRs']['persona']['tipoPersona'];
-                    for (let i = 0; i < contactos.length; i++) {
-                        let contacto = contactos[i];
-                        if (contacto['idContacto'] === 1 || contacto['idContacto'] === 2) {
-                            if (typeof person.telefono === "undefined" || person.telefono === "") {
-                                person.telefono = contacto['textoContacto'];
-                            }
-                        } else if (contacto['idContacto'] === 3) {
-                            if (typeof person.email === "undefined" || person.email === "") {
-                                person.email = contacto['textoContacto'];
-                            }
-                        }
-
-                        person.contacto.push({
-                            "tipoContacto": {
-                                "codigo": typeof contactos[i]['tipoContacto'] !== "undefined" ? contactos[i]['tipoContacto']['codigo'] : []
-                            },
-                            "textoContacto": typeof contactos[i]['textoContacto'] !== "undefined" ? contactos[i]['textoContacto'] : []
-                        });
+                    person.tipoPersona = persona['tipoPersona'];
+                    if (!person.email) {
+                      const lastEmail = contactos.reduce(
+                        (previousValue, currentValue) =>
+                          previousValue
+                            ? currentValue.tipoContacto.codigo === 3 &&
+                              Helpers.validationEmail(currentValue.textoContacto) &&
+                              currentValue.idContacto > previousValue.idContacto
+                              ? currentValue
+                              : previousValue
+                            : currentValue,
+                        null
+                      );
+                      person.email = lastEmail && lastEmail.textoContacto;
                     }
-                    if (typeof contactos[0] !== "undefined") {
-                        if (typeof person.tipodetelefono === "undefined" || person.tipodetelefono === "") {
-                            person.tipodetelefono = contactos[0]['tipoContacto']['codigo'];
-                        }
+                    if (!person.telefono) {
+                      const codesPhone = [1, 2, 3];
+                      const lastPhone = contactos.reduce(
+                        (prevValue, contact) => {
+                          const tipoContacto = contact.tipoContacto.codigo;
+                          if (!prevValue) return contact;
+                          if (
+                            codesPhone.find(
+                              (value) => String(tipoContacto) === String(value)
+                            ) &&
+                            contact.idContacto > prevValue.idContacto &&
+                            Helpers.isNumber(contact.textoContacto)
+                          )
+                            return contact;
+                          return prevValue;
+                        },
+                        null
+                      );
+                      if (lastPhone) {
+                        const tipoContacto = lastPhone.tipoContacto.codigo;
+                        person.telefono = lastPhone.textoContacto;
+                        person.tipodetelefono = !!Object.values(
+                          phoneTypes
+                        ).find((type) => String(type) === String(tipoContacto))
+                          ? tipoContacto
+                          : phoneTypes.mobilePhone;
+                      }
                     }
+                    person.contacto = contactos.map((contacto) => {
+                      const { tipoContacto, textoContacto } = contacto;
+                      const tipoContactoCode = tipoContacto.codigo;
+                      return {
+                        tipoContacto: {
+                          codigo: tipoContactoCode,
+                        },
+                        textoContacto,
+                      };
+                    });
+                }
+                const direcciones = persona.direccion || [];
+                const lastDireccion = direcciones.reduce(
+                  (previousValue, direction) =>
+                    previousValue
+                      ? direction.idDireccion > previousValue.idDireccion
+                        ? direction
+                        : previousValue
+                      : direction,
+                  null
+                );
+                person.direccion = direcciones;
+                if (!!lastDireccion) {
+                  const { departamento, ciudad } = lastDireccion;
+                  if (!person.ciudad)
+                    person.address = lastDireccion['textoDireccion'];
+                  if (!!ciudad) {
+                    if (!person.ciudad)
+                      person.ciudad = ciudad['nombre'];
+                    if (!person.city_code)
+                      person.city_code = ciudad['codigo'];
+                  }
+                  if (!!departamento) {
+                    if (!person.departamento)
+                      person.departamento = departamento['nombre'];
+                    if (!person.department_code)
+                      person.department_code = departamento['codigo'];
+                  }
+                  if (!!lastDireccion['tipoDireccion']) {
+                    if (!person.adresstype)
+                      person.adresstype =
+                        lastDireccion['tipoDireccion']['codigo'];
+                  }
                 }
 
-                if (typeof persona['consultarPersonaRs']['persona']['direccion'] !== "undefined") {
-                    person.direccion = persona['consultarPersonaRs']['persona']['direccion'];
-                    if (typeof persona['consultarPersonaRs']['persona']['direccion'][0] !== "undefined") {
-                        if (typeof person.ciudad === "undefined" || person.address === "") {
-                            person.address = persona['consultarPersonaRs']['persona']['direccion'][0]['textoDireccion'];
-                        }
-
-                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad'] !== "undefined") {
-                            if (typeof person.ciudad === "undefined" || person.ciudad === "") {
-                                person.ciudad = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['nombre'];
-                            }
-                            if (typeof person.city_code === "undefined" || person.city_code === "") {
-                                person.city_code = persona['consultarPersonaRs']['persona']['direccion'][0]['ciudad']['codigo'];
-                            }
-                        }
-                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['departamento'] !== "undefined") {
-                            if (typeof person.departamento === "undefined" || person.departamento === "") {
-                                person.departamento = persona['consultarPersonaRs']['persona']['direccion'][0]['departamento']['nombre'];
-                            }
-                            if (typeof person.department_code === "undefined" || person.department_code === "") {
-                                person.department_code = persona['consultarPersonaRs']['persona']['direccion'][0]['departamento']['codigo'];
-                            }
-                        }
-                        if (typeof persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion'] !== "undefined") {
-                            if (typeof person.adresstype === "undefined" || person.adresstype === "") {
-                                person.adresstype = persona['consultarPersonaRs']['persona']['direccion'][0]['tipoDireccion']['codigo'];
-                            }
-                        }
-                    }
-                }
-
-                person.sarlfaltActive = persona['consultarPersonaRs']['informacionSARLAFT']['vigente'];
+                person.sarlfaltActive =
+                  consultarPersonaRs['informacionSARLAFT']['vigente'];
                 person.sarlfaltActiveDisabled = true;
             }
         }
@@ -279,26 +311,25 @@ export default class Persona extends Component {
     componentDidMount() {
         this._isMounted = true;
         Helpers.fieldNumeric();
-        setTimeout(() => {
-            if (this._isMounted) {
-                let personObject = this.state.person;
-                if (typeof personObject.person !== "undefined") personObject.object = personObject.person;
-                if (typeof personObject.object !== "undefined" && this.props.item !== -1) {
-                    this.validateDoc({
-                        person: personObject.person
-                    });
-                    let person = this.state.person;
-                    person.codeDisabled = true;
-                    person.valueDisabled = true;
-                    setTimeout(() => {
-                        this.setState({
-                            ...this.state,
-                            person: person
-                        });
-                    }, 10);
-                }
-            }
-        }, 400);
+        let personObject = this.state.person;
+        if (typeof personObject.person !== 'undefined')
+            personObject.object = personObject.person;
+        if (
+          typeof personObject.object !== 'undefined' &&
+          this.props.item !== -1
+        )
+          this.validateDoc({ person: personObject.person }, () => {
+            let person = this.state.person;
+            person.codeDisabled = true;
+            person.valueDisabled = true;
+            this.setState(
+              {
+                ...this.state,
+                person: person,
+              },
+              () => this.validateAll()
+            );
+          });
     }
 
     componentWillUnmount() {
@@ -333,17 +364,19 @@ export default class Persona extends Component {
             person.sarlaft_document_url = person.sarlaft;
             person.sarlfalt_url = undefined;
         }
-        this.setState({
+        this.setState(
+          {
             ...this.state,
             textFile: name,
             errorFile,
             showDefaultTextFile: status,
             person: person,
-            sarlfalt_url: undefined
-        });
-        setTimeout(() => {
+            sarlfalt_url: undefined,
+          },
+          () => {
             this.validateAll('sarlaft');
-        }, 250);
+          }
+        );
     };
 
     generoChange = index => () => {
@@ -382,7 +415,7 @@ export default class Persona extends Component {
         });
     };
 
-    validateDoc = async e => {
+    validateDoc = async (e, callback) => {
         if (this.state.person.value === "") return;
         if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
         let code = this.state.person.code;
@@ -400,10 +433,13 @@ export default class Persona extends Component {
             if (persona !== null && persona.consultarPersonaRs.personaRestringida === true) {
                 Loading.toggle(false);
                 Validaridentificacion.toggle(true);
-                this.setState({
+                this.setState(
+                  {
                     ...this.state,
-                    userRestricted: true
-                });
+                    userRestricted: true,
+                  },
+                  callback
+                );
             } else {
                 let person = this.state.person;
                 person = Persona.extractDataFromIaxis(persona, code, person);
@@ -414,9 +450,9 @@ export default class Persona extends Component {
                     userRestricted: false,
                     personExists: true
                 }, () => {
-                  this.validateAll(null, false, false);
+                  Loading.toggle(false);
+                  callback && callback();
                 });
-                Loading.toggle(false);
             }
         } catch (e) {
             if (this.state.personExists) {
@@ -428,11 +464,14 @@ export default class Persona extends Component {
                         if (i !== 'value' && i !== 'code' && i !== 'role') updatePerson[i] = "";
                     }
                 }
-                this.setState({
+                this.setState(
+                  {
                     ...this.state,
                     person: updatePerson,
                     userRestricted: false,
-                });
+                  },
+                  callback
+                );
             }
             Loading.toggle(false);
         }
@@ -479,13 +518,9 @@ export default class Persona extends Component {
 
         let telefonoHasError = false;
         if (tipodetelefono === phoneTypes.mobilePhone) {
-            if (telefono.length < 10) {
-                telefonoHasError = true;
-            };
-        } else if (tipodetelefono === phoneTypes.telephone) {
-            if (telefono.length < 6) {
-                telefonoHasError = true;
-            };
+          if (Helpers.isMobilePhone(telefono)) {
+            telefonoHasError = true;
+          }
         } else errors.push('tipodetelefono');
         if (!telefono || telefonoHasError) errors.push('telefono');
 
@@ -533,7 +568,7 @@ export default class Persona extends Component {
         return !this.getErrors().length;
     }
 
-    async validateAll(name, printErrors, saveData) {
+    async validateAll(name = null, printErrors = false, saveData = false) {
         try {
             if (typeof this.props.updatePerson !== "undefined") {
                 if (typeof printErrors === "undefined") printErrors = false;
@@ -640,7 +675,13 @@ export default class Persona extends Component {
                                                         id="documentfield"
                                                         className={"form-control " + ((this.state.person.valueDisabled) ? 'disabled' : '')}
                                                         disabled={this.state.person.valueDisabled} name="value"
-                                                        value={this.state.person.value} onBlur={this.validateDoc}
+                                                        value={this.state.person.value} 
+                                                        onBlur={(e) => {
+                                                            this.validateDoc(
+                                                                e,
+                                                                () => this.validateAll()
+                                                            );
+                                                        }}
                                                         onChange={this.changeValue} />
                                                     <small className="form-text only-errors">Falta información requerida
                                                         para el Tomador. Por favor revise el campo Identificación
@@ -848,7 +889,6 @@ export default class Persona extends Component {
                                                             className={"form-control " + (this.state.person.tipodetelefonoDisabled ? 'disabled' : '')}
                                                             disabled={this.state.person.tipodetelefonoDisabled}>
                                                             <option value="">Seleccione</option>
-                                                            <option value={phoneTypes.telephone}>Teléfono</option>
                                                             <option value={phoneTypes.mobilePhone}>Tfno. móvil</option>
                                                         </select>
                                                         <small className="form-text only-errors">Falta información requerida
