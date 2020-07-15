@@ -36,7 +36,7 @@ const Default = () => ({
       insurable_limit_id: '4',
       description: 'Joyas',
       min_value: 900000,
-      max_value: 100000000
+      max_value: 50000000
     },
     {
       insurable_limit_id: '3',
