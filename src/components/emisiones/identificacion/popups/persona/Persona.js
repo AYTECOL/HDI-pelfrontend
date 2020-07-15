@@ -505,7 +505,8 @@ export default class Persona extends Component {
     getErrors() {
         const errors = [];
         const { typePerson, nit, person, errorFile } = this.state;
-        const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role, address } = person;
+        const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
+        const address = String(person.address);
         const tipodetelefono = String(person.tipodetelefono);
         const telefono = String(person.telefono);
         let fields = document.querySelectorAll(".modal-content input, .modal-content select");
@@ -560,7 +561,8 @@ export default class Persona extends Component {
         if (errorFile) {
           errors.push('sarlfalt');
         }
-        if (!address || !isValidDirection(address)) errors.push('address');
+        if (!address || !isValidDirection(address) || address.length < 5)
+          errors.push('address');
         return errors;
     }
 
