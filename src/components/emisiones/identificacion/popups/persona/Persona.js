@@ -68,6 +68,7 @@ export default class Persona extends Component {
             ]
         };
         if (this.props.item !== -1 && typeof this.props.persons[this.props.item] !== "undefined") this.state.person = this.props.persons[this.props.item];
+        this.state.person.tipodetelefono = phoneTypes.mobilePhone;
         for (let i = 0; i < this.state.fields.length; i++) {
             let key = this.state.fields[i];
             if (typeof this.state.person[key] === "undefined") {
@@ -228,15 +229,16 @@ export default class Persona extends Component {
                       person.email = lastEmail && lastEmail.textoContacto;
                     }
                     if (!person.telefono) {
-                      const codesPhone = [1, 2, 3];
+                      const codesPhone = [6];
                       const lastPhone = contactos.reduce(
                         (prevValue, contact) => {
                           const tipoContacto = contact.tipoContacto.codigo;
-                          if (!prevValue) return contact;
+                          const isValidCode = codesPhone.find(
+                            (value) => String(tipoContacto) === String(value)
+                          );
+                          if (!prevValue && isValidCode) return contact;
                           if (
-                            codesPhone.find(
-                              (value) => String(tipoContacto) === String(value)
-                            ) &&
+                            isValidCode &&
                             contact.idContacto > prevValue.idContacto &&
                             Helpers.isNumber(contact.textoContacto)
                           )
@@ -270,7 +272,8 @@ export default class Persona extends Component {
                 const lastDireccion = direcciones.reduce(
                   (previousValue, direction) =>
                     previousValue
-                      ? direction.idDireccion > previousValue.idDireccion
+                      ? direction.idDireccion > previousValue.idDireccion &&
+                        direction.textoDireccion
                         ? direction
                         : previousValue
                       : direction,
