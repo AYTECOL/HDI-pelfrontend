@@ -1,5 +1,5 @@
 export function isValidDirection(value) {
-  return !/[°?¿!¡|#]/g.exec(value);
+  return !/[°?¿!¡|#]|^(?!.{5,}).*/g.exec(value);
 }
 export const validationMessages = {
   addressRegex:
