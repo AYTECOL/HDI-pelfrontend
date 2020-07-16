@@ -8,8 +8,8 @@ export const ButtonsFooter = () => {
     <div className="row">
       <div className="col-12 justify-content text-center">
         <div className={"col first items-checkboxes "}>
-          <div class="col first items-checkboxes ">
-            <div class="d-flex form-group p-3">
+          <div className="col first items-checkboxes ">
+            <div className="d-flex form-group p-3">
               <input
                 className="col-auto m-auto"
                 type="checkbox"
@@ -20,7 +20,7 @@ export const ButtonsFooter = () => {
                   setAccept(!accept);
                 }}
               />
-              <div class="col text-left">
+              <div className="col text-left">
                 <label htmlFor="itemcheck-condtions">
                   En mi calidad de intermediario, manifiesto que he verificado
                   la documentación e información entregada por el asegurado y/o
