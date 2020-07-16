@@ -1,4 +1,4 @@
-interface QuoteIussed {
+export interface QuoteIussed {
   quote_iussed_info: QuoteIussedInfo;
   risk_valoration_info: RiskValorationInfo;
   plan_selected_info: PlanSelectedInfo;
@@ -140,12 +140,12 @@ interface QuoteIussedInfoItem {
   insured: any[];
   risk_valoration: string;
   id: string;
-  benefist: any[];
-  onerous: any[];
+  benefist: Taker[];
+  onerous: Taker[];
   taker: Taker;
 }
 
-interface Taker {
+export interface Taker {
   department_code: number;
   birthdate: string;
   role: number[];

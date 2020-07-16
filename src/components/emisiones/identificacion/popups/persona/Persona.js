@@ -508,17 +508,25 @@ export default class Persona extends Component {
     getErrors() {
         const errors = [];
         const { typePerson, nit, person, errorFile } = this.state;
-        const { sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
+        const { code, sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
         const address = String(person.address);
         const tipodetelefono = String(person.tipodetelefono);
         const telefono = String(person.telefono);
         let fields = document.querySelectorAll(".modal-content input, .modal-content select");
         for (let i = 0; i < fields.length; i++) {
-          if (sarlfaltActive === true && fields[i].name === "sarlaft") continue;
-          if (fields[i].value === "" && fields[i].getAttribute("type") !== "checkbox" && fields[i].name !== "secondname" && fields[i].name !== "secondlastname") {
-            errors.push(fields[i].name);
+          const field = fields[i];
+          if (sarlfaltActive === true && field.name === "sarlaft") continue;
+          if (
+            field.value === '' &&
+            field.getAttribute('type') !== 'checkbox' &&
+            !['secondname', 'secondlastname', 'code'].find(
+              (name) => field.name === name
+            )
+          ) {
+            errors.push(field.name);
           }
         }
+        if (!code) errors.push('code');
 
         let telefonoHasError = false;
         if (tipodetelefono === phoneTypes.mobilePhone) {

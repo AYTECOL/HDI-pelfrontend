@@ -68,11 +68,12 @@ class Index extends React.Component {
     let data = await QuoteIussedById.get(params.id);
     let inmuebles = data.risk_valoration_info.Item;
     let persons = this.state.persons;
-
+    const plan_selected_info = data.plan_selected_info.Item
     const { values } = {
-      ...data.plan_selected_info.Item.coverages.find(
-        ({ code, code_content }) => code === 9693 || code_content === 9693
-      ),
+      ...(plan_selected_info &&
+        plan_selected_info.coverages.find(
+          ({ code, code_content }) => code === 9693 || code_content === 9693
+        )),
     };
 
     const coverageValue =
@@ -670,7 +671,7 @@ class Index extends React.Component {
                       ].map(
                         ([{ label, id }, max, total]) =>
                           items.find((item) => item.id === id) && (
-                            <tr className="h6 font-weight-normal">
+                            <tr key={id} className="h6 font-weight-normal">
                               <td className="h6 font-weight-normal font-italic">
                                 {label}
                               </td>
