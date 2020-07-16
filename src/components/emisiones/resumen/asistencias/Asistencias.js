@@ -174,10 +174,12 @@ class Asistencias extends Component {
     };
 
     render() {
+        const { plans, index } = this.state;
+        const plan = plans[index]
         return (
             <div className="asistencias-group">
-                {typeof this.state.plans[this.state.index].assists !== "undefined" &&
-                this.state.plans[this.state.index].assists.map((option, key) => (
+                {plan && typeof plan.assists !== "undefined" &&
+                    plan.assists.map((option, key) => (
                     <div
                         className={"row row-max tabs-cotizaciones row_tab_1 " + (key + 1)}
                         key={key}
