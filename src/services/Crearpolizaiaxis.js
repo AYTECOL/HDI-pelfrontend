@@ -158,6 +158,13 @@ class Crearpolizaiaxis {
                         },
                         "textoContacto": typeof d.telefono === "undefined" || d.telefono === null ? ' ' : d.telefono.toString(),
                     },
+                    // Email
+                    {
+                        "tipoContacto": {
+                            "codigo": 3,
+                        },
+                        "textoContacto": d.email,
+                    },
                 ]
             };
             if( d.role.indexOf(5) !== -1 || d.role.indexOf(6) !== -1){

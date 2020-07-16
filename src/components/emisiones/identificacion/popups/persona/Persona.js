@@ -900,7 +900,7 @@ export default class Persona extends Component {
                                                         <select name="tipodetelefono" onChange={this.changeValue}
                                                             id="tipodetelefono" value={this.state.person.tipodetelefono}
                                                             className={"form-control " + (this.state.person.tipodetelefonoDisabled ? 'disabled' : '')}
-                                                            disabled={this.state.person.tipodetelefonoDisabled}>
+                                                            disabled={this.state.person.tipodetelefonoDisabled || Object.keys(phoneTypes).length < 2}>
                                                             <option value="">Seleccione</option>
                                                             <option value={phoneTypes.mobilePhone}>Tfno. móvil</option>
                                                         </select>
