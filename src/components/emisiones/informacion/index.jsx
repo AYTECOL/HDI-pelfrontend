@@ -342,8 +342,11 @@ class Index extends React.Component {
       inmuebles.inmueble_asegudado_joyasvalor < total.jewelry
     )
       return true;
-    if (inmuebles.inmueble_asegudado_telefonos === 1) {
-      return inmuebles.inmueble_asegudado_telefonosvalor !== total.cellPhones;
+    if (
+      inmuebles.inmueble_asegudado_telefonos === 1 &&
+      inmuebles.inmueble_asegudado_telefonosvalor < total.cellPhones
+    ) {
+      return true;
     }
     if (total.mobileContent > quote_contenidomovil) {
       return true;
@@ -447,7 +450,7 @@ class Index extends React.Component {
       itemSelected,
       quote_contenidomovil,
     } = this.state;
-    const valid = this.hasErrors();
+    const invalid = this.hasErrors();
     const { total } = this.getTotal();
     const {
       contenido_asegudado_valor,
@@ -852,7 +855,7 @@ class Index extends React.Component {
             <div className="row">
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                 <BtnContinue
-                  disable={valid}
+                  disable={invalid}
                   state={this.state}
                   getItem={this.getItem}
                   toggleErrorPhone={this.toggleErrorPhone}
