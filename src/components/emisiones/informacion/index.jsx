@@ -17,9 +17,10 @@ import Helpers from '../../../common/helpers/helpers/Helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
 import { typeItems } from './typeItems';
+import UploadFile from '../../../services/UploadFile';
 
-// 6.5MB
-const maxFileSize = 6500000;
+// 10MB
+const maxFileSize = UploadFile.maxFileSize;
 
 // @ts-check
 class Index extends React.Component {
@@ -68,7 +69,7 @@ class Index extends React.Component {
     let data = await QuoteIussedById.get(params.id);
     let inmuebles = data.risk_valoration_info.Item;
     let persons = this.state.persons;
-    const plan_selected_info = data.plan_selected_info.Item
+    const plan_selected_info = data.plan_selected_info.Item;
     const { values } = {
       ...(plan_selected_info &&
         plan_selected_info.coverages.find(

@@ -18,8 +18,8 @@ import NumeroIdentificacion
     from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
 import { isValidDirection, validationMessages } from '../../../../../common/validations';
 
-// 6.5MB
-const maxFileSize = 6500000;
+const maxFileSize = UploadFile.maxFileSize;
+
 const phoneTypes = {
     mobilePhone: '6'
 }
