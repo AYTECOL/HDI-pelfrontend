@@ -434,14 +434,16 @@ export default class Persona extends Component {
                 persona = e.person;
             }
             if (persona !== null && persona.consultarPersonaRs.personaRestringida === true) {
-                Loading.toggle(false);
-                Validaridentificacion.toggle(true);
                 this.setState(
                   {
                     ...this.state,
                     userRestricted: true,
                   },
-                  callback
+                  () => {
+                    callback && callback();
+                    Loading.toggle(false);
+                    Validaridentificacion.toggle(true);
+                  }
                 );
             } else {
                 let person = this.state.person;
@@ -473,7 +475,10 @@ export default class Persona extends Component {
                     person: updatePerson,
                     userRestricted: false,
                   },
-                  callback
+                  () => {
+                    Loading.toggle(false);
+                    callback && callback();
+                  }
                 );
             }
             Loading.toggle(false);
@@ -489,20 +494,24 @@ export default class Persona extends Component {
         });
     };
 
-    saveFile = async () => {
-        if (this.state.typePerson <= 3 && typeof this.state.person.sarlfalt_url === "undefined") {
-            let person = this.state.person;
-            let file = await UploadFile.upload("Sarlaft", person.sarlaft);
-            if (typeof file['location'] !== "undefined") {
-                person.sarlaft = file['location'];
-                person.sarlaft_document_url = file['location'];
-                person.sarlfalt_url = file['location'];
-                this.setState({
-                    ...this.state,
-                    person: person
-                });
+    saveFile = async ({ person, typePerson }) => {
+        if (typePerson <= 3 && typeof person.sarlfalt_url === "undefined") {
+            const newPerson = { ...person };
+            Loading.toggle(true);
+            const file = await UploadFile.upload('Sarlaft', person.sarlaft).catch(
+              (e) => {
+                console.log(e);
+              }
+            );
+            Loading.toggle(false);
+            if (file && typeof file['location'] !== 'undefined') {
+              newPerson.sarlaft = file['location'];
+              newPerson.sarlaft_document_url = file['location'];
+              newPerson.sarlfalt_url = file['location'];
             }
+            return newPerson;
         }
+        return person;
     };
 
     getErrors() {
@@ -611,12 +620,13 @@ export default class Persona extends Component {
                 const valid = !errors.length;
                 if (valid) msj4 = false;
                 if (valid && saveData) {
-                    await this.saveFile();
-                    let state = this.state;
-                    if (typeof state.person.code === "undefined") state.person.code = state.typePerson !== 4 ? '36' : '37';
-                    if (state.typePerson === 4) state.person.role.push(4);
-
-                    this.props.updatePerson(state.person);
+                    const state = this.state;
+                    const { typePerson } = state;
+                    let { person } = state;
+                    let newPerson = await this.saveFile({ person, typePerson });
+                    if (typeof newPerson.code === "undefined") newPerson.code = typePerson !== 4 ? '36' : '37';
+                    if (state.typePerson === 4) newPerson.role.push(4);
+                    this.props.updatePerson(newPerson);
                 } else {
                     this.setState({
                       ...this.state,
@@ -627,7 +637,7 @@ export default class Persona extends Component {
                 }
             }
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     };
     validateChange = event => {
