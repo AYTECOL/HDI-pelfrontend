@@ -4,6 +4,9 @@ import { UrlService } from '../config';
 import AuthHeader from './AuthHeader';
 
 class UploadFile {
+  // 10MB
+  static maxFileSize = 10 * 1e6;
+
   /**
    *
    * @param {"Sarlaft"| "Docs"} name
