@@ -11,11 +11,9 @@ class IdentificationsCities {
     let storeState = Store.getState();
     let accessToken = await AccessTokenGeocoding.get();
     let infoGeocoding = await SigService.LongitudeAndLatitude(accessToken.access_token, storeState.mapsOptions.latitude, storeState.mapsOptions.longitude)
-    let user = await ConsultaPersonas.getUser();
-    let newUser = {};
-    if (user !== null)
-      for (let i in user)
-        if (i !== 'accessToken' && i !== 'refer') newUser[i] = user[i];
+    const { accessToken: _a, refer: _b, ...user } = {
+      ...(await ConsultaPersonas.getUser()),
+    };
     const {
       code,
       value,
@@ -47,7 +45,7 @@ class IdentificationsCities {
       step: storeState.cotizacion.state,
       person: object,
       pdf_info: storeState.pdf_info,
-      intntermediate: newUser,
+      intntermediate: user,
       policy: {
         emissionId: emissionId,
         emitedDate: emitedDate
