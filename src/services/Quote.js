@@ -3,6 +3,7 @@ import Store from '../store';
 import ConsultaPersonas from './ConsultaPersonas';
 import AccessTokenGeocoding from './AccessTokenProd';
 import SigService from './SigServices';
+import AuthHeader from './AuthHeader';
 const Url = '/quote';
 
 class IdentificationsCities {
@@ -10,11 +11,9 @@ class IdentificationsCities {
     let storeState = Store.getState();
     let accessToken = await AccessTokenGeocoding.get();
     let infoGeocoding = await SigService.LongitudeAndLatitude(accessToken.access_token, storeState.mapsOptions.latitude, storeState.mapsOptions.longitude)
-    let user = await ConsultaPersonas.getUser();
-    let newUser = {};
-    if (user !== null)
-      for (let i in user)
-        if (i !== 'accessToken' && i !== 'refer') newUser[i] = user[i];
+    const { accessToken: _a, refer: _b, ...user } = {
+      ...(await ConsultaPersonas.getUser()),
+    };
     const {
       code,
       value,
@@ -46,7 +45,7 @@ class IdentificationsCities {
       step: storeState.cotizacion.state,
       person: object,
       pdf_info: storeState.pdf_info,
-      intntermediate: newUser,
+      intntermediate: user,
       policy: {
         emissionId: emissionId,
         emitedDate: emitedDate
@@ -55,7 +54,11 @@ class IdentificationsCities {
       attachedFile,
     };
     for (let i in data) if (data[i] === '') data[i] = '""';
-    return await Api.post(Url, data);
+    // TODO intercept request
+    let authHeader =  new AuthHeader();
+    authHeader = authHeader.generateAuthCode();
+    authHeader['pelhauthorization'] = user !== null ? user['accessToken'] : '';
+    return await Api.post(Url, data, undefined, undefined, authHeader);
   }
 }
 

@@ -8,10 +8,14 @@ const Url = UrlCrearpolizaiaxis;
 
 class Crearpolizaiaxis {
 
-    static formatPerson(person) {
+    /**
+     * 
+     * @param {import('./QuoteIussedById').Taker[]} persons 
+     */
+    static formatPerson(persons) {
         let arrayToMerge = [];
-        for (var i = 0; i < person.length; i++) {
-            let d = person[i];
+        for (var i = 0; i < persons.length; i++) {
+            let d = persons[i];
 
             if (typeof d.personaNatural === "undefined") {
                 d.personaNatural = {
@@ -145,14 +149,7 @@ class Crearpolizaiaxis {
             } else {
                 d.city_code = '1';
             }
-            if (typeof d.adresstype !== "undefined" && d.adresstype != null && d.adresstype !== ' ') {
-                if (d.adresstype === 0) {
-                    d.adresstype = '1';
-                }
-            } else {
-                d.adresstype = '1';
-            }
-
+            if (!d.address_type || d.address_type === ' ') d.address_type = '1';
             let contactPerson = {
                 "contacto": [
                     {
@@ -160,6 +157,13 @@ class Crearpolizaiaxis {
                             "codigo": typeof d.phone_type === "undefined" || d.phone_type === null || d.phone_type === ' ' ? '1' : d.phone_type.toString(),
                         },
                         "textoContacto": typeof d.telefono === "undefined" || d.telefono === null ? ' ' : d.telefono.toString(),
+                    },
+                    // Email
+                    {
+                        "tipoContacto": {
+                            "codigo": 3,
+                        },
+                        "textoContacto": d.email,
                     },
                 ]
             };
@@ -187,7 +191,7 @@ class Crearpolizaiaxis {
                         "codigo": d.city_code,
                     },
                     "tipoDireccion": {
-                        "codigo": d.adresstype,
+                        "codigo": d.address_type,
                     },
                     "textoDireccion": typeof d.address === "undefined" || d.address === null ? '' : d.address.toString(),
                 },
@@ -197,6 +201,10 @@ class Crearpolizaiaxis {
         return arrayToMerge;
     }
 
+    /**
+     * 
+     * @param {import('./QuoteIussedById').QuoteIussed} data 
+     */
     static async get(data) {
         let aseguradoArr = [];
         let beneficiarioArr = [];

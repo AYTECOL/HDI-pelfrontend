@@ -212,6 +212,21 @@ class Helpers {
     return re.test(String(email).toLowerCase());
   }
 
+  static isMobilePhone(value) {
+    const regex = /^(3[\d]{9,9}$)/;
+    return !regex.test(String(value));
+  }
+
+  static isTelephone(value) {
+    const regex = /(^[\d]{5,15}$)/;
+    return !regex.test(String(value));
+  }
+
+  static isNumber(value) {
+    const regex = /^\d+$/g;
+    return regex.test(value);
+  }
+
   static fieldNumeric = function() {
     let els = document.querySelectorAll("input.number");
 

@@ -17,9 +17,10 @@ import Helpers from '../../../common/helpers/helpers/Helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
 import { typeItems } from './typeItems';
+import UploadFile from '../../../services/UploadFile';
 
-// 6.5MB
-const maxFileSize = 6500000;
+// 10MB
+const maxFileSize = UploadFile.maxFileSize;
 
 // @ts-check
 class Index extends React.Component {
@@ -68,11 +69,12 @@ class Index extends React.Component {
     let data = await QuoteIussedById.get(params.id);
     let inmuebles = data.risk_valoration_info.Item;
     let persons = this.state.persons;
-
+    const plan_selected_info = data.plan_selected_info.Item;
     const { values } = {
-      ...data.plan_selected_info.Item.coverages.find(
-        ({ code, code_content }) => code === 9693 || code_content === 9693
-      ),
+      ...(plan_selected_info &&
+        plan_selected_info.coverages.find(
+          ({ code, code_content }) => code === 9693 || code_content === 9693
+        )),
     };
 
     const coverageValue =
@@ -340,8 +342,11 @@ class Index extends React.Component {
       inmuebles.inmueble_asegudado_joyasvalor < total.jewelry
     )
       return true;
-    if (inmuebles.inmueble_asegudado_telefonos === 1) {
-      return inmuebles.inmueble_asegudado_telefonosvalor !== total.cellPhones;
+    if (
+      inmuebles.inmueble_asegudado_telefonos === 1 &&
+      inmuebles.inmueble_asegudado_telefonosvalor < total.cellPhones
+    ) {
+      return true;
     }
     if (total.mobileContent > quote_contenidomovil) {
       return true;
@@ -445,7 +450,7 @@ class Index extends React.Component {
       itemSelected,
       quote_contenidomovil,
     } = this.state;
-    const valid = this.hasErrors();
+    const invalid = this.hasErrors();
     const { total } = this.getTotal();
     const {
       contenido_asegudado_valor,
@@ -670,7 +675,7 @@ class Index extends React.Component {
                       ].map(
                         ([{ label, id }, max, total]) =>
                           items.find((item) => item.id === id) && (
-                            <tr className="h6 font-weight-normal">
+                            <tr key={id} className="h6 font-weight-normal">
                               <td className="h6 font-weight-normal font-italic">
                                 {label}
                               </td>
@@ -850,7 +855,7 @@ class Index extends React.Component {
             <div className="row">
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
                 <BtnContinue
-                  disable={valid}
+                  disable={invalid}
                   state={this.state}
                   getItem={this.getItem}
                   toggleErrorPhone={this.toggleErrorPhone}

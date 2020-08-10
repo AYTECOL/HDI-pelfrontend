@@ -129,7 +129,7 @@ const Table = (props) => {
           </div>
         </div>
         {pageOfItems.map((item) => {
-          const identificationType = identificationTypes.find(
+          const identificationType = (identificationTypes || []).find(
             ({ code }) => String(item.document_type) === String(code)
           );
           return (

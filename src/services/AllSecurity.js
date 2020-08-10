@@ -1,6 +1,6 @@
 import Api from './Api';
 import Helpers from "../common/helpers/helpers/Helpers";
-
+import AuthHeader from './AuthHeader';
 const BaseUrl = "/";
 
 const Default = {
@@ -48,7 +48,10 @@ class AllSecurity {
         let url = BaseUrl + "all-security";
         let security;
         try {
-            security = await Api.get(url);
+            // TODO interceptor or request
+            let authHeader =  new AuthHeader()
+            authHeader = authHeader.generateAuthCode()
+            security = await Api.get(url, undefined, authHeader);
         } catch (e) {
             security = Default;
         }

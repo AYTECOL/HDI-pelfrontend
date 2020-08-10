@@ -1,5 +1,6 @@
 import Api from './Api';
 import Store from '../store';
+import AuthHeader from './AuthHeader';
 import { saveAllInsurableLimits } from '../actions';
 import Helpers from '../common/helpers/helpers/Helpers';
 
@@ -35,7 +36,7 @@ const Default = () => ({
       insurable_limit_id: '4',
       description: 'Joyas',
       min_value: 900000,
-      max_value: 100000000
+      max_value: 50000000
     },
     {
       insurable_limit_id: '3',
@@ -54,7 +55,10 @@ class AllInsurableLimits {
     let storeState = Store.getState();
     if (storeState.allInsurableLimits.length === 0) {
       try {
-        data = await Api.get(BaseUrl);
+        // TODO interceptor or request
+        let authHeader =  new AuthHeader()
+        authHeader = authHeader.generateAuthCode()
+        data = await Api.get(BaseUrl, undefined, authHeader);
       } catch (e) {
         data = Default();
       }
