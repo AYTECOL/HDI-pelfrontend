@@ -86,6 +86,8 @@ class Address extends Component {
           disabled={disabled === true}
           onChange={({ target }) => {
             store.dispatch(saveIdentificationValue(target));
+          }}
+          onBlur={() => {
             if (store.getState().showMap !== true)
               store.dispatch(mapShow(true));
           }}
