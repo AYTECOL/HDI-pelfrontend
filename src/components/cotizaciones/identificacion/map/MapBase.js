@@ -62,9 +62,7 @@ class MapBase extends Component {
   }
 
   static async reqAddress(address) {
-    return await GetAddresInfo.get(address).then(response => {
-      return response;
-    });
+    return GetAddresInfo.get(address);
   }
 
   componentDidMount() {
