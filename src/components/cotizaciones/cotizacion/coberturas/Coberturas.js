@@ -153,7 +153,7 @@ class Coberturas extends Component {
           if (hurto !== null) {
             for (let i = 0; i < hurto.values.length; i++)
               dataHurto.push(hurto.values[i].value_show);
-            return item.value_show;
+            return dataHurto[0];
           } else {
             return item.value_show;
           }
