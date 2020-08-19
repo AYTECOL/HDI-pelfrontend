@@ -902,7 +902,7 @@ export default class Persona extends Component {
                                             </div>
                                         }
 
-                                        {(this.state.typePerson !== 4 && this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
+                                        {(this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
                                             <React.Fragment>
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                     <div className={classNames("pisonumero form-group input-select", hasErrorAddClass('tipodetelefono'))}><label
