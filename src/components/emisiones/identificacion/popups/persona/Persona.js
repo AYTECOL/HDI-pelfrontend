@@ -522,6 +522,7 @@ export default class Persona extends Component {
         const tipodetelefono = String(person.tipodetelefono);
         const telefono = String(person.telefono);
         let fields = document.querySelectorAll(".modal-content input, .modal-content select");
+        
         for (let i = 0; i < fields.length; i++) {
           const field = fields[i];
           if (sarlfaltActive === true && field.name === "sarlaft") continue;
@@ -536,14 +537,20 @@ export default class Persona extends Component {
           }
         }
         if (!code) errors.push('code');
-
-        let telefonoHasError = false;
-        if (tipodetelefono === phoneTypes.mobilePhone) {
-          if (Helpers.isMobilePhone(telefono)) {
-            telefonoHasError = true;
-          }
-        } else errors.push('tipodetelefono');
-        if (!telefono || telefonoHasError) errors.push('telefono');
+        console.log(typePerson);
+        if (String(typePerson) !== "4") {
+            let telefonoHasError = false;
+            if (
+            tipodetelefono ===
+            phoneTypes.mobilePhone
+            ) {
+            if (Helpers.isMobilePhone(telefono)) {
+                telefonoHasError = true;
+            }
+            } else errors.push('tipodetelefono');
+            if (!telefono || telefonoHasError)
+            errors.push('telefono');
+        }
 
         if (Helpers.validationEmail(email) === false) errors.push("email");
 
@@ -583,6 +590,7 @@ export default class Persona extends Component {
         }
         if (!address || !isValidDirection(address) || address.length < 5)
           errors.push('address');
+        debugger;
         return errors;
     }
 
@@ -902,7 +910,7 @@ export default class Persona extends Component {
                                             </div>
                                         }
 
-                                        {(this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
+                                        {(this.state.typePerson !== 4 && this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
                                             <React.Fragment>
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                     <div className={classNames("pisonumero form-group input-select", hasErrorAddClass('tipodetelefono'))}><label
