@@ -17,6 +17,7 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import NumeroIdentificacion
     from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
 import { isValidDirection, validationMessages } from '../../../../../common/validations';
+import { roles } from '../../constants';
 
 const maxFileSize = UploadFile.maxFileSize;
 
@@ -537,19 +538,21 @@ export default class Persona extends Component {
           }
         }
         if (!code) errors.push('code');
-        console.log(typePerson);
-        if (String(typePerson) !== "4") {
-            let telefonoHasError = false;
-            if (
-            tipodetelefono ===
-            phoneTypes.mobilePhone
-            ) {
+        const rolesWithPhone = [
+          roles.taker,
+          roles.insured,
+          roles.beneficiary,
+        ];
+        if (
+          !!rolesWithPhone.find((role) => String(role) === String(typePerson))
+        ) {
+          let telefonoHasError = false;
+          if (tipodetelefono === phoneTypes.mobilePhone) {
             if (Helpers.isMobilePhone(telefono)) {
-                telefonoHasError = true;
+              telefonoHasError = true;
             }
-            } else errors.push('tipodetelefono');
-            if (!telefono || telefonoHasError)
-            errors.push('telefono');
+          } else errors.push('tipodetelefono');
+          if (!telefono || telefonoHasError) errors.push('telefono');
         }
 
         if (Helpers.validationEmail(email) === false) errors.push("email");
@@ -590,7 +593,6 @@ export default class Persona extends Component {
         }
         if (!address || !isValidDirection(address) || address.length < 5)
           errors.push('address');
-        debugger;
         return errors;
     }
 
