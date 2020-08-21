@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { roles } from "../constants";
 
 class Card extends Component {
   render() {
@@ -13,24 +14,24 @@ class Card extends Component {
               <div className="col">
                 <span>Rol</span>
                 <p className="font-weight-bold">
-                  {item["role"].indexOf(1) !== -1 ? "Tomador " : ""}
+                  {item["role"].indexOf(roles.taker) !== -1 ? "Tomador " : ""}
                 </p>
                 <p className="font-weight-bold">
-                  {item["role"].indexOf(2) !== -1 ? "Asegurado " : ""}
+                  {item["role"].indexOf(roles.insured) !== -1 ? "Asegurado " : ""}
                 </p>
                 <p className="font-weight-bold">
-                  {item["role"].indexOf(3) !== -1 ? "Beneficiario " : ""}
+                  {item["role"].indexOf(roles.beneficiary) !== -1 ? "Beneficiario " : ""}
                 </p>
                 <p className="font-weight-bold">
-                  {item["role"].indexOf(4) !== -1
+                  {item["role"].indexOf(roles.onerousBeneficiary) !== -1
                     ? "Beneficiario oneroso "
                     : ""}
                 </p>
                 <p className="font-weight-bold">
-                  {item["role"].indexOf(5) !== -1 ? "Exequias " : ""}
+                  {item["role"].indexOf(roles.obsequies) !== -1 ? "Exequias " : ""}
                 </p>
                 <p className="font-weight-bold">
-                  {item["role"].indexOf(6) !== -1
+                  {item["role"].indexOf(roles.personalAccidents) !== -1
                     ? "Accidentes personales "
                     : ""}
                 </p>
