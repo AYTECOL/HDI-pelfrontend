@@ -37,7 +37,7 @@ class Ubicadopiso extends Component {
           (this.state.error ? 'error' : '')
         }
       >
-        <label htmlFor="pisonumero">Piso donde se encuentra ubicado</label>
+        <label htmlFor="pisonumero">Piso donde se encuentra el Apartamento</label>
         <select
           name="pisonumero"
           id="pisonumero"
