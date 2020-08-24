@@ -358,9 +358,7 @@ export default class Persona extends Component {
         } else if (!validFile) {
           errorFile = 'Formato no permitido';
         } else if (file.size >= maxFileSize) {
-            errorFile = `El tamaño del archivo no debe exceder ${(
-                maxFileSize / 1000000
-            ).toFixed(1)}MB`;
+            errorFile = UploadFile.messageLimit;
         } else {
             name = file.name;
             status = false;
@@ -689,8 +687,8 @@ export default class Persona extends Component {
                                         typePerson={this.props.typePerson}
                                         disabledAll={this.props.disabledAll}
                                         exitsTomador={this.state.exitsTomador}
-                                        hasAccident={this.props.hasAccident}
-                                        hasExequias={this.props.hasExequias} />
+                                        hasAccident={true}
+                                        hasExequias={true} />
 
                                     {this.state.typePerson !== 7 &&
                                         <div className="row fields-row">

@@ -412,9 +412,7 @@ class Index extends React.Component {
       doc = null;
       errorFile = 'Formato no permitido';
     } else if (file.size >= maxFileSize) {
-      errorFile = `El tamaño del archivo no debe exceder ${(
-        maxFileSize / 1000000
-      ).toFixed(1)}MB`;
+      errorFile = UploadFile.messageLimit;
     } else {
       showDefaultTextFile = false;
       doc = file;
