@@ -156,11 +156,11 @@ class Asegurarjoyas extends Component {
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor
-                                Asegurado de {Asegurarjoyas.name()} de Arte es inferior al permitido.
+                                Asegurado de {Asegurarjoyas.name()} es inferior al permitido.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 3 ? 'show' : 'hide')}>Valor
-                                Asegurado de {Asegurarjoyas.name()} de Arte es superior al permitido.
+                                Asegurado de {Asegurarjoyas.name()} es superior al permitido.
                             </small>
                         </div>
                     </div>

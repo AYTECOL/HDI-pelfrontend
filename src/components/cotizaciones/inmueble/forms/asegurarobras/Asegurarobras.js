@@ -139,7 +139,7 @@ class Asegurarobras extends Component {
                     <div className="col col-12 col-md-6">
                         <div
                             className={Asegurarobras.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor={Asegurarobras.nameModelValue}>Valor de las {Asegurarobras.name()}</label>
+                            <label htmlFor={Asegurarobras.nameModelValue}>Valor de los {Asegurarobras.name()}</label>
                             <input name={Asegurarobras.nameModelValue} id={Asegurarobras.nameModelValue}
                                    type="text"
                                    value={this.state.value}
@@ -147,8 +147,8 @@ class Asegurarobras extends Component {
                                    placeholder=""
                                    onBlur={this.validateValue}
                                    onChange={this.validateValue}/>
-                            <small
-                                className={"form-text"}>Máximo. {Masknumbermoney.formatToMask(Asegurarobras.max())}</small>
+                            <small className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Asegurarobras.min())} -
+                                Máximo. {Masknumbermoney.formatToMask(Asegurarobras.max())}</small>
                             <small
                                 className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
                                 favor Ingrese el valor asegurado de Objetos de valor y obras de Arte.
