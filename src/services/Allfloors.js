@@ -8,19 +8,25 @@ const BaseUrl = "/all-floors";
 
 const Default = function () {
     let data = {};
+    const { maxFloors } = Allfloors;
     if (typeof data.floors === "undefined") {
         data.floors = [];
-        for (let i = 1; i < 32; i++) {
+        for (let i = 1; i <= maxFloors; i++) {
             data.floors[i] = {
                 answer: i,
                 floorCode: i,
             }
         }
+        data.floors.push({
+          answer: `Mas de ${maxFloors}`,
+          floorCode: maxFloors + 1,
+        });
     }
     return data;
 };
 
 class Allfloors {
+    static maxFloors = 30;
     static async get() {
         let data = {};
         let allfloors = [];

@@ -155,11 +155,11 @@ class Asegurarobras extends Component {
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor
-                                Asegurado de {Asegurarobras.name()} de Arte es inferior al permitido.
+                                Asegurado de {Asegurarobras.name()} es inferior al permitido.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 3 ? 'show' : 'hide')}>Valor
-                                Asegurado de {Asegurarobras.name()} de Arte es superior al permitido.
+                                Asegurado de {Asegurarobras.name()} es superior al permitido.
                             </small>
                         </div>
                     </div>
