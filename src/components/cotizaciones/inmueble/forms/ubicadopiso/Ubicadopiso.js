@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../actions';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Allfloors from '../../../../../services/Allfloors';
 
 class Ubicadopiso extends Component {
   constructor(props) {
@@ -30,6 +31,7 @@ class Ubicadopiso extends Component {
   render() {
     const { value, floors } = this.props;
     const floorsAvalables = Array.from({ length: floors }, (_v, i) => i + 1);
+    const { maxFloors } = Allfloors;
     return (
       <div
         className={
@@ -37,7 +39,9 @@ class Ubicadopiso extends Component {
           (this.state.error ? 'error' : '')
         }
       >
-        <label htmlFor="pisonumero">Piso donde se encuentra ubicado</label>
+        <label htmlFor="pisonumero">
+          Piso donde se encuentra el Apartamento
+        </label>
         <select
           name="pisonumero"
           id="pisonumero"
@@ -47,11 +51,19 @@ class Ubicadopiso extends Component {
           onChange={this.validateEmpty}
         >
           <option value="">Seleccione</option>
-          {floorsAvalables.map((option, i) => (
-            <option key={i} value={option}>
-              {option}
-            </option>
-          ))}
+          {floorsAvalables.map((option, i) => {
+            if (i + 1 > maxFloors)
+              return (
+                <option key={i} value={`Mas de ${maxFloors}`}>
+                  Mas de {maxFloors}
+                </option>
+              );
+            return (
+              <option key={i} value={option}>
+                {option}
+              </option>
+            );
+          })}
         </select>
       </div>
     );
