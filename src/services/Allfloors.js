@@ -19,7 +19,7 @@ const Default = function () {
         }
         data.floors.push({
           answer: `Mas de ${maxFloors}`,
-          floorCode: maxFloors + 1,
+          floorCode: `Mas de ${maxFloors}`,
         });
     }
     return data;

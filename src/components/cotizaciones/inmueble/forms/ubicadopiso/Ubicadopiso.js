@@ -54,7 +54,7 @@ class Ubicadopiso extends Component {
           {floorsAvalables.map((option, i) => {
             if (i + 1 > maxFloors)
               return (
-                <option key={i} value={maxFloors + 1}>
+                <option key={i} value={`Mas de ${maxFloors}`}>
                   Mas de {maxFloors}
                 </option>
               );
