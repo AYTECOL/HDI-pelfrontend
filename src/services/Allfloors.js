@@ -18,8 +18,8 @@ const Default = function () {
             }
         }
         data.floors.push({
-          answer: `Mas de ${maxFloors}`,
-          floorCode: `Mas de ${maxFloors}`,
+          answer: Allfloors.maxFloorsMessage,
+          floorCode: Allfloors.maxFloorsMessage,
         });
     }
     return data;
@@ -27,6 +27,9 @@ const Default = function () {
 
 class Allfloors {
     static maxFloors = 30;
+    static get maxFloorsMessage (){
+        return `Mas de ${Allfloors.maxFloors}`;
+    };
     static async get() {
         let data = {};
         let allfloors = [];

@@ -30,8 +30,9 @@ class Ubicadopiso extends Component {
 
   render() {
     const { value, floors } = this.props;
-    const floorsAvalables = Array.from({ length: floors }, (_v, i) => i + 1);
-    const { maxFloors } = Allfloors;
+    const { maxFloors, maxFloorsMessage } = Allfloors;
+    const length = floors === maxFloorsMessage ? maxFloors + 1 : floors;
+    const floorsAvalables = Array.from({ length }, (_v, i) => i + 1);
     return (
       <div
         className={
@@ -54,8 +55,8 @@ class Ubicadopiso extends Component {
           {floorsAvalables.map((option, i) => {
             if (i + 1 > maxFloors)
               return (
-                <option key={i} value={`Mas de ${maxFloors}`}>
-                  Mas de {maxFloors}
+                <option key={i} value={maxFloorsMessage}>
+                  {maxFloorsMessage}
                 </option>
               );
             return (
