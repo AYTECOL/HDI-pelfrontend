@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { pure } from 'recompose';
 
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
-import { typeItems } from './typeItems';
 import Helpers from '../../../common/helpers/helpers/Helpers';
+import { typeItems } from '../../../common/typeItems';
 
 /**
  * @typedef {{ label: string, id: string, min: number, max: number }} Item

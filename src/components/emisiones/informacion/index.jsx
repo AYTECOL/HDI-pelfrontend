@@ -16,7 +16,7 @@ import QuoteIussedById from '../../../services/QuoteIussedById';
 import Helpers from '../../../common/helpers/helpers/Helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
-import { typeItems } from './typeItems';
+import { typeItems } from '../../../common/typeItems';
 import UploadFile from '../../../services/UploadFile';
 
 // 10MB
