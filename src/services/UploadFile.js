@@ -5,7 +5,7 @@ import AuthHeader from './AuthHeader';
 
 class UploadFile {
   // 10MB
-  static maxFileSize = 10 * 1e6;
+  static maxFileSize = 10 * 1.049e6;
   static get messageLimit() {
     return `El documento que desea adjuntar, supera el límite máximo permitido de ${(
       UploadFile.maxFileSize / 1000000
