@@ -19,7 +19,7 @@ const Default = function () {
         }
         data.floors.push({
           answer: Allfloors.maxFloorsMessage,
-          floorCode: Allfloors.maxFloorsMessage,
+          floorCode: Allfloors.maxFloors + 1,
         });
     }
     return data;
