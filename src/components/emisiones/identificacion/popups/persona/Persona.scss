@@ -215,6 +215,11 @@
       font-weight: 500;
     }
   }
+  p.photo {
+    &::before {
+      background-image: url("../../../../../common/images/photo-camera.png");
+    }
+  }
 }
 
 .react-datepicker__navigation--years-previous {

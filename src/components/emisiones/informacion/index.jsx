@@ -1,3 +1,4 @@
+// @ts-check
 import React from 'react';
 //Component
 import BtnContinue from './forms/btncontinue/BtnContinue';
@@ -22,14 +23,27 @@ import UploadFile from '../../../services/UploadFile';
 // 10MB
 const maxFileSize = UploadFile.maxFileSize;
 
-// @ts-check
 class Index extends React.Component {
   constructor(props) {
     super(props);
     this.current = React.createRef();
     this.formatDate = 'dddd, MMMM Do YYYY';
     /**
-     * @type {{ items: Item[], contents: ContentType[] }>}
+     * @type {{
+     *   items: import('../../../models/types').Item[],
+     *   contents: import('../../../models/types').GoodsOverCostLocal[],
+     *   step: number,
+     *   totalContent: number,
+     *   initdate: string,
+     *   persons: any[],
+     *   quote_contenidomovil: number,
+     *   inmuebles: any,
+     *   area: string,
+     *   addNewPerson: boolean,
+     *   itemSelected: any,
+     *   showPopUpPersona: boolean,
+     *   errorPhone: boolean,
+     *  }}
      */
     this.state = {
       step: parseInt(this.props.match.params.step),
@@ -66,6 +80,9 @@ class Index extends React.Component {
   async getData() {
     Loading.toggle(true);
     const { params } = this.props.match;
+    /**
+     * @type {import('../../../services/QuoteIussedById').QuoteIussed | import('../../../services/QuoteIussedById').MoreInfoItem & { contents?: import('../../../models/types').GoodsOverCost[]}}
+     */
     let data = await QuoteIussedById.get(params.id);
     let inmuebles = data.risk_valoration_info.Item;
     let persons = this.state.persons;
@@ -125,7 +142,7 @@ class Index extends React.Component {
     let celulares = false;
     let contenidoMovil = false;
     /**
-     * @type {Item[]}
+     * @type {import('../../../models/types').Item[]}
      */
     const items = [];
     if (typeof inmuebles !== 'undefined') {
@@ -227,8 +244,6 @@ class Index extends React.Component {
           type: '',
           caracte: '',
           value: '',
-          urlfile: '',
-          showDefaultTextFile: true,
         },
       ],
     });
@@ -351,13 +366,26 @@ class Index extends React.Component {
     if (total.mobileContent > quote_contenidomovil) {
       return true;
     }
-    if (contents.some(({ errorFile }) => !!errorFile)) return true;
+    if (
+      contents.some(
+        ({ files }) =>
+          files &&
+          Object.keys(files).some((key) => {
+            /**
+             * @type {import('../../../models/types').AttachmentLocal}
+             */
+            const file = files[key];
+            return !!file && file.errorFile;
+          })
+      )
+    )
+      return true;
     return false;
   }
 
   getErrors(content, maximum) {
     /**
-     * @type {{min?:boolean, max?:boolean} | null}
+     * @type {{min?:boolean, max?:boolean, empty?: boolean} | null}
      */
     let errors = null;
     const value = this.formatToNumber(content.value);
@@ -374,7 +402,7 @@ class Index extends React.Component {
 
   /**
    * @param {string} id
-   * @return {Item}
+   * @return {import('../../../models/types').Item}
    */
   getItem = (id) => {
     const { items } = this.state;
@@ -395,41 +423,50 @@ class Index extends React.Component {
     });
   };
 
-  changeTextFile = (key) => async (e) => {
+  /**
+   *
+   * @param {number} key
+   */
+  changeTextFile = (key) =>
     /**
-     * @type {File}
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e
+     * @param {import('../../../models/types').TypeAttachments} type
      */
-    const file = e.target.files[0];
-    let validFile = Helpers.validateFile(file);
-    let doc = null;
-    let showDefaultTextFile = true;
-    let textFile = '';
-    let errorFile = null;
-    let uploaded = false;
-    if (!file) {
-      errorFile = 'Este campo es requerido';
-    } else if (!validFile) {
-      doc = null;
-      errorFile = 'Formato no permitido';
-    } else if (file.size >= maxFileSize) {
-      errorFile = UploadFile.messageLimit;
-    } else {
-      showDefaultTextFile = false;
-      doc = file;
-      textFile = file.name;
-    }
-    let contents = this.state.contents;
-    contents[key]['doc'] = doc;
-    contents[key]['showDefaultTextFile'] = showDefaultTextFile;
-    contents[key]['textFile'] = textFile;
-    contents[key]['errorFile'] = errorFile;
-    contents[key]['uploaded'] = uploaded;
+    async (e, type) => {
+      const { contents } = this.state;
+      const content = contents[key];
 
-    this.setState({
-      ...this.state,
-      contents,
-    });
-  };
+      /**
+       * @type {import('../../../models/types').AttachmentsLocal>}
+       */
+      const files = { ...content.files };
+      /**
+       * @type {FileList}
+       */
+      const [file] = e.target.files;
+      let validFile = Helpers.validateFile(file);
+      let doc = null;
+      let errorFile = null;
+      if (!file) {
+        errorFile = 'Este campo es requerido';
+      } else if (!validFile) {
+        doc = null;
+        errorFile = 'Formato no permitido';
+      } else if (file.size >= maxFileSize) {
+        errorFile = UploadFile.messageLimit;
+      } else {
+        doc = file;
+      }
+      files[type] = { file: doc, errorFile };
+
+      content.files = files;
+
+      this.setState({
+        ...this.state,
+        contents,
+      });
+    };
 
   render() {
     const {
@@ -457,7 +494,7 @@ class Index extends React.Component {
       inmueble_asegudado_telefonosvalor,
     } = inmuebles;
     /**
-     * @type {Record<string, { lastKey: number | null, value: number, id: number }>}
+     * @type {Record<string, { lastKey: number | null, value: number }>}
      */
     const limitInmuebles = {
       [typeItems.fixedContent.id]: {
