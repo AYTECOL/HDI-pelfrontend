@@ -4,6 +4,8 @@ import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actions';
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import { Tooltip } from '../../../../Tooltip';
+import Help from '../../../../../common/icons/help';
 
 class Asegurarjoyas extends Component {
 
@@ -24,27 +26,44 @@ class Asegurarjoyas extends Component {
         };
     }
 
+
+    static getContent = () => {
+        const state = store.getState();
+        const {
+          description: name = '',
+          min_value: min = 0,
+          max_value: max = 0,
+          maximumPerItem,
+        } = {
+          ...(state && state.allInsurableLimits[4]),
+        };
+        return {
+          name,
+          min,
+          max,
+          maximumPerItem,
+        };
+    };
+
     static name() {
         try {
-            return store.getState().allInsurableLimits[4].description;
+            return Asegurarjoyas.getContent().name;
         } catch (e) {
-            return "";
+            return '';
         }
     }
 
-    //850000
     static min() {
         try {
-            return store.getState().allInsurableLimits[4].min_value;
+            return Asegurarjoyas.getContent().min;
         } catch (e) {
             return 0;
         }
     }
 
-    //100000001
     static max() {
         try {
-            return store.getState().allInsurableLimits[4].max_value;
+            return Asegurarjoyas.getContent().max;
         } catch (e) {
             return 0;
         }
@@ -113,6 +132,9 @@ class Asegurarjoyas extends Component {
     };
 
     render() {
+        const content = Asegurarjoyas.getContent();
+        const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+
         return (
             <div className="row">
                 <div className="col col-12  col-md-6">
@@ -140,7 +162,15 @@ class Asegurarjoyas extends Component {
                     <div className="col col-12  col-md-6">
                         <div
                             className={Asegurarjoyas.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor={Asegurarjoyas.nameModelValue}>Valor de {Asegurarjoyas.name()}</label>
+                            <div className="d-flex">
+                                <label className="flex-fill" htmlFor={Asegurarjoyas.nameModelValue}>Valor de {Asegurarjoyas.name()}</label>
+                                <Tooltip
+                                    placement="left"
+                                    title={`El valor máximo por cada artículo es de ${maximumPerItem}`}
+                                >
+                                    <Help className={'ml-auto icon-primary'} />
+                                </Tooltip>
+                            </div>
                             <input name="inmuebleasegudadojoyasvalor" id={Asegurarjoyas.nameModelValue}
                                    type="text"
                                    value={this.state.value}
