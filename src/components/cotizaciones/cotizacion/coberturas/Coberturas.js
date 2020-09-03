@@ -4,7 +4,8 @@ import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumb
 import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
-import { AllPlans as AllPlansCreator } from '../../../../actions';
+import { AllPlans as AllPlansCreator, setValidPlans } from '../../../../actions';
+import { getRulesByCode } from '../../../../common';
 
 class Coberturas extends Component {
   _isMounted = false;
@@ -96,57 +97,49 @@ class Coberturas extends Component {
           }
         }
       } else {
+        if (!(type === item.id || type === null)) {
+          return item.value_show;
+        }          
+        const { max } = { ...getRulesByCode(item.code) };
+        /**
+         * @type {number}
+         */
+        let value;
         // Inmueble
         if (item.id === 1) {
-          if (type === item.id || type === null) {
-            return Masknumbermoney.formatToMask(
-              (Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) *
-                parseInt(item.value)) /
-                100
-            );
-          } else {
-            return item.value_show;
-          }
-          //Contenidos
+          value = (
+            (Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) *
+              parseInt(item.value)) /
+              100
+          );
+        //Contenidos
         } else if (item.id === 2) {
-          if (type === item.id || type === null) {
-            return Masknumbermoney.formatToMask(
-              (Masknumbermoney.formatToNumber(
-                inmueble.contenidoasegudadovalor
-              ) *
-                parseInt(item.value)) /
-                100
-            );
-          } else {
-            return item.value_show;
-          }
-          //Obras
+          value = (
+            (Masknumbermoney.formatToNumber(
+              inmueble.contenidoasegudadovalor
+            ) *
+              parseInt(item.value)) /
+              100
+          );
+        //Obras
         } else if (item.id === 3) {
-          if (type === item.id || type === null) {
-            return Masknumbermoney.formatToMask(
-              (Masknumbermoney.formatToNumber(
-                inmueble.inmuebleasegudadoobrasvalor
-              ) *
-                parseInt(item.value)) /
-                100
-            );
-          } else {
-            return item.value_show;
-          }
-          //Telefonos moviles
+          value = (
+            (Masknumbermoney.formatToNumber(
+              inmueble.inmuebleasegudadoobrasvalor
+            ) *
+              parseInt(item.value)) /
+              100
+          );
+        //Telefonos moviles
         } else if (item.id === 4) {
-          if (type === item.id || type === null) {
-            return Masknumbermoney.formatToMask(
-              (Masknumbermoney.formatToNumber(
-                inmueble.inmuebleasegudadotelefonosvalor
-              ) *
-                parseInt(item.value)) /
-                100
-            );
-          } else {
-            return item.value_show;
-          }
-          //Hurto siempre basado en hurto calificado
+          value = (
+            (Masknumbermoney.formatToNumber(
+              inmueble.inmuebleasegudadotelefonosvalor
+            ) *
+              parseInt(item.value)) /
+              100
+          );
+        //Hurto siempre basado en hurto calificado
         } else if (item.id === 5) {
           let dataHurto = [];
           let hurto = Coberturas.getCoverangeById(3, plan);
@@ -159,30 +152,27 @@ class Coberturas extends Component {
           }
           //Joyas
         } else if (item.id === 6) {
-          if (type === item.id || type === null) {
-            return Masknumbermoney.formatToMask(
-              (Masknumbermoney.formatToNumber(
-                inmueble.inmuebleasegudadojoyasvalor
-              ) *
-                parseInt(item.value)) /
-                100
-            );
-          } else {
-            return item.value_show;
-          }
-          //Contenido mobile
+          value = (
+            (Masknumbermoney.formatToNumber(
+              inmueble.inmuebleasegudadojoyasvalor
+            ) *
+              parseInt(item.value)) /
+              100
+          );
+        //Contenido mobile
         } else if (item.id === 7) {
-          if (type === item.id || type === null) {
             let contenido = Masknumbermoney.formatToNumber(
               inmueble.contenidoasegudadovalor
             );
-            return Masknumbermoney.formatToMask(
-              (contenido * parseInt(item.value)) / 100
-            );
-          } else {
-            return item.value_show;
-          }
+          value = (
+            (contenido * parseInt(item.value)) / 100
+          );
         }
+        if (value) {
+            return Masknumbermoney.formatToMask(
+                max ? (value > max ? max : value) : value
+            );
+        };
       }
       return 'N/A';
     } catch (e) {
@@ -331,10 +321,10 @@ class Coberturas extends Component {
     let storeState = store.getState();
     let index = storeState.indexPlan;
     let plans = storeState.AllPlans;
+    plan = Coberturas.calcValue(plan, 5);
+    plans[index] = plan;
     store.dispatch(AllPlansCreator(plans));
     setTimeout(() => {
-      plan = Coberturas.calcValue(plan, 5);
-      plans[index] = plan;
       Plans.sendAndValidate(plans, index, this.props.match.params.id);
     }, 500);
   }
@@ -421,56 +411,40 @@ class Coberturas extends Component {
 
   /**
    * Event change of coverage field
-   * @param k Of value of the specific coverage
-   * @param key Of coverage in the iterator
-   * @param type 1 or 2, input or select
-   * @returns {Function}
+   * @param value Of coverage in the iterator
+   * @param valueHurto 1 or 2, input or select
+   * @returns {null | string[]}
    */
-  validateChange = (item, k, valueHurto) => {
-    let formatValue = Masknumbermoney.formatToNumber(item.values[k].value_show);
-    switch (item.values[k].code) {
-      case 3044:
-        if (formatValue > 50000000 || formatValue < 900000) {
-          item.values[k].errors.push(
-            `Valor Asegurado de Contenidos Móviles es ${
-              formatValue > 50000000 ? 'superior' : 'inferior'
-            } al permitido. `
-          );
-          return 1;
-        }
-        break;
-      case 3045:
-        if (formatValue > 50000000 || formatValue < 900000) {
-          item.values[k].errors.push(
-            `Valor Asegurado de Joyas es ${
-              formatValue > 50000000 ? 'superior' : 'inferior'
-            } al permitido. `
-          );
-          return 1;
-        }
-        break;
-      case 9652:
-        if (formatValue >= 10000001 || formatValue <= 850000) {
-          item.values[k].errors.push(
-            `Valor Asegurado de Teléfonos Móviles es ${
-              formatValue >= 10000001 ? 'superior' : 'inferior'
-            } al permitido. `
-          );
-          return 1;
-        }
-        break;
+  static getErrors = (value, valueHurto) => {
+    let formatValue = Masknumbermoney.formatToNumber(value.value_show);
+    if (!value.hired) return null; 
+    const rules = getRulesByCode(value.code);
+    if (rules) {
+      const { max, min } = rules;
+      const errors = [];
+      if (max && formatValue > max) {
+        errors.push(`${value.name} es superior al permitido.`);
+      }
+      if (min && formatValue < min) {
+        errors.push(`${value.name} es inferior al permitido.`);
+      }
+      return (errors.length && errors) || undefined;
+    }
+    switch (value.code) {
       case 9691:
         if (formatValue > valueHurto) {
-          item.values[k].errors.push(
+          return [
             `Valor Asegurado de Hurto simple ${
               formatValue > valueHurto ? 'superior' : 'inferior'
-            } al permitido. `
-          );
-          return 1;
+            } al permitido. `,
+          ];
         }
         break;
+      default:
+        return null;
     }
   };
+
   inputChange = (k, key, type) => (e) => {
     let plan = this.state.plan;
     let item = plan.coverages[key];
@@ -488,6 +462,9 @@ class Coberturas extends Component {
       otrosContenidos &&
       otrosContenidos.values &&
       otrosContenidos.values[0].value_to_quotate;
+
+    let validTypeOne = true;
+
     //Input
     if (type === 1) {
       item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
@@ -557,13 +534,6 @@ class Coberturas extends Component {
               );
             }
           }
-          if (item.values[k].errors.length > 0) {
-            Helpers.disabled('.generatepdf ');
-            Helpers.disabled('.next-step');
-          } else {
-            Helpers.enabled('.generatepdf ');
-            Helpers.enabled('.next-step');
-          }
         } else {
           let formatValue = Masknumbermoney.formatToNumber(
             item.values[k].value_show
@@ -573,14 +543,8 @@ class Coberturas extends Component {
               'Valor asegurado es mayor al reportado en Contenidos'
             );
           }
-          if (item.values[k].errors.length > 0) {
-            Helpers.disabled('.generatepdf ');
-            Helpers.disabled('.next-step');
-          } else {
-            Helpers.enabled('.generatepdf ');
-            Helpers.enabled('.next-step');
-          }
         }
+        validTypeOne = !item.values[k].errors.length;
       }
       //Select
     } else if (type === 2) {
@@ -602,8 +566,11 @@ class Coberturas extends Component {
     if (e.target.tagName === 'SELECT') {
       this.sendAndValidate(plan);
     }
-    let codeError = this.validateChange(item, k, valueHurto);
-    if (codeError === 1) {
+    const errors = Coberturas.getErrors(item.values[k], valueHurto);
+    item.values[k].errors = errors;
+    const valid = validTypeOne && errors;
+    store.dispatch(setValidPlans(!valid));
+    if (valid) {
       Helpers.disabled('.generatepdf');
       Helpers.disabled('.next-step');
     } else {
@@ -703,8 +670,7 @@ class Coberturas extends Component {
                                     (typeof opt.values === 'undefined'
                                       ? ''
                                       : 'input-select') +
-                                    (typeof opt.errors !== 'undefined' &&
-                                    opt.errors.length > 0
+                                    (opt.errors && opt.errors.length > 0
                                       ? ' error'
                                       : '') +
                                     (Coberturas.isDisabled(option, opt)

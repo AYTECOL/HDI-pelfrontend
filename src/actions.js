@@ -74,6 +74,9 @@ const saveAllInsurableLimits = (data) => {
 const AllPlans = (data) => {
     return {type: "SAVE_ALL_PLANS", data: data}
 };
+export const setValidPlans = (data) => {
+    return { type: 'VALID_PLANS', data: data };
+};
 
 
 //General

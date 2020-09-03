@@ -6,6 +6,7 @@ import Plans from "../../../cotizaciones/cotizacion/plans/Plans";
 import "./Coberturas.scss";
 import check from "../../../../common/images/check-img.png";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
+import { getRulesByCode } from "../../../../common";
 
 class Coberturas extends Component {
     constructor(props) {
@@ -77,6 +78,11 @@ class Coberturas extends Component {
     static getValueFields(item) {
         try {
             let inmueble = store.getState().Inmueble;
+            const { max } = getRulesByCode(item.code);
+            /**
+             * @type {number}
+             */
+            let value;
             if (typeof item.values !== "undefined") {
                 for (let i = 0; i < item.values.length; i++) {
                     if (item.values[i].default === true) {
@@ -86,21 +92,21 @@ class Coberturas extends Component {
             } else {
                 // Inmueble
                 if (item.id === 1) {
-                    return Masknumbermoney.formatToMask(
+                    value = (
                         (Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) *
                             parseInt(item.value)) /
                         100
                     );
                     //Contenidos
                 } else if (item.id === 2) {
-                    return Masknumbermoney.formatToMask(
+                    value = (
                         (Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) *
                             parseInt(item.value)) /
                         100
                     );
                     //Obras
                 } else if (item.id === 3) {
-                    return Masknumbermoney.formatToMask(
+                    value = (
                         (Masknumbermoney.formatToNumber(
                             inmueble.inmuebleasegudadoobrasvalor
                             ) *
@@ -109,7 +115,7 @@ class Coberturas extends Component {
                     );
                     //Telefonos moviles
                 } else if (item.id === 4) {
-                    return Masknumbermoney.formatToMask(
+                    value = (
                         (Masknumbermoney.formatToNumber(
                             inmueble.inmuebleasegudadotelefonosvalor
                             ) *
@@ -122,7 +128,7 @@ class Coberturas extends Component {
                     let hurto = Coberturas.getCoverangeById(3);
                     for (let i = 0; i < hurto.values.length; i++)
                         dataHurto.push(Coberturas.getValueFields(hurto.values[i]));
-                    return Masknumbermoney.formatToMask(
+                    value = (
                         ((Masknumbermoney.formatToNumber(dataHurto[0]) +
                             Masknumbermoney.formatToNumber(dataHurto[1])) *
                             parseInt(item.value)) /
@@ -130,7 +136,7 @@ class Coberturas extends Component {
                     );
                     //Joyas
                 } else if (item.id === 6) {
-                    return Masknumbermoney.formatToMask(
+                    value = (
                         (Masknumbermoney.formatToNumber(
                             inmueble.inmuebleasegudadojoyasvalor
                             ) *
@@ -155,11 +161,16 @@ class Coberturas extends Component {
                             ) *
                             100) /
                         100;
-                    return Masknumbermoney.formatToMask(
+                    value = (
                         ((joyas + contenido + telefonos) * parseInt(item.value)) / 100
                     );
                 }
             }
+            if (value) {
+                return Masknumbermoney.formatToMask(
+                    max ? (value > max ? max : value) : value
+                );
+            };
             return "N/A";
         } catch (e) {
             return "N/A";
