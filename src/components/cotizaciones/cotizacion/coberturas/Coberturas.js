@@ -168,11 +168,10 @@ class Coberturas extends Component {
             (contenido * parseInt(item.value)) / 100
           );
         }
-        if (value) {
-            return Masknumbermoney.formatToMask(
-                max ? (value > max ? max : value) : value
-            );
-        };
+        if (value)
+          return Masknumbermoney.formatToMask(
+            max ? (value > max ? max : value) : value
+          );
       }
       return 'N/A';
     } catch (e) {
@@ -426,7 +425,9 @@ class Coberturas extends Component {
         errors.push(`${value.name} es superior al permitido.`);
       }
       if (min && formatValue < min) {
-        errors.push(`${value.name} es inferior al permitido.`);
+        if (!!value.value || value.value !== formatValue) {
+          errors.push(`${value.name} es inferior al permitido.`);
+        }
       }
       return (errors.length && errors) || undefined;
     }
@@ -568,9 +569,9 @@ class Coberturas extends Component {
     }
     const errors = Coberturas.getErrors(item.values[k], valueHurto);
     item.values[k].errors = errors;
-    const valid = validTypeOne && errors;
-    store.dispatch(setValidPlans(!valid));
-    if (valid) {
+    const valid = validTypeOne && !errors;
+    store.dispatch(setValidPlans(valid));
+    if (!valid) {
       Helpers.disabled('.generatepdf');
       Helpers.disabled('.next-step');
     } else {

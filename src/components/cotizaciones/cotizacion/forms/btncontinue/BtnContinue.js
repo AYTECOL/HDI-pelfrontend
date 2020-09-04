@@ -191,7 +191,7 @@ export default compose(
             })
         );
       } catch (error) {}
-    const disabled = !validPlans && !coveragesValid;
+    const disabled = !validPlans || !coveragesValid;
     return { disabled };
   })
 )(BtnContinue);

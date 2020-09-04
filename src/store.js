@@ -77,7 +77,7 @@ const initialState = {
     Allfloors: [],
     allInsurableLimits: [],
     AllPlans: [],
-    validPlans: false,
+    validPlans: true,
     originalStore: {},
     attachedFile: false
 };
