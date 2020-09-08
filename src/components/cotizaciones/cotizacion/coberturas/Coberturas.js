@@ -141,12 +141,18 @@ class Coberturas extends Component {
           );
         //Hurto siempre basado en hurto calificado
         } else if (item.id === 5) {
+          let j = 0;
           let dataHurto = [];
           let hurto = Coberturas.getCoverangeById(3, plan);
+          let hurtoSimple = 0;
           if (hurto !== null) {
-            for (let i = 0; i < hurto.values.length; i++)
-              dataHurto.push(hurto.values[i].value_show);
-            return dataHurto[0];
+            for ( j; j < hurto.values.length; j++){
+              dataHurto.push(hurto.values[j].value_show);
+              hurtoSimple += Masknumbermoney.formatToNumber(
+                hurto.values[j].value_show
+              )
+            }
+            return Masknumbermoney.formatToMask(hurtoSimple);
           } else {
             return item.value_show;
           }
