@@ -1,5 +1,5 @@
 export const UrlSite = "";
-export const UrlService ="http://localhost:3500/dev"
+export const UrlService = process.env.REACT_APP_DOMAIN;
 export const ApiKeyGoogle = process.env.REACT_APP_KEY;
 
 //Liberty
