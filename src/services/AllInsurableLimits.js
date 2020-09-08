@@ -11,13 +11,13 @@ const Default = () => ({
     {
       insurable_limit_id: '2',
       description: 'Contenidos',
-      min_value: 1000000,
+      min_value: 10000000,
       max_value: 1000000000
     },
     {
       insurable_limit_id: '1',
       description: 'Inmueble',
-      min_value: 2000000,
+      min_value: 20000000,
       max_value: 4000000000
     },
     {
@@ -41,8 +41,8 @@ const Default = () => ({
     {
       insurable_limit_id: '3',
       description: 'Objetos de valor y obras de Arte',
-      min_value: 1,
-      max_value: 600000000
+      min_value: 900000,
+      max_value: 100000000
     }
   ],
   status: 200
