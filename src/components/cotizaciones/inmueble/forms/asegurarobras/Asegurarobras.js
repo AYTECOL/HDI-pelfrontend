@@ -4,6 +4,8 @@ import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actions';
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import { Tooltip } from '../../../../Tooltip';
+import Help from '../../../../../common/icons/help';
 
 class Asegurarobras extends Component {
 
@@ -22,27 +24,43 @@ class Asegurarobras extends Component {
         };
     }
 
+    static getContent = () => {
+        const state = store.getState();
+        const {
+          description: name = '',
+          min_value: min = 0,
+          max_value: max = 0,
+          maximumPerItem,
+        } = {
+          ...(state && state.allInsurableLimits[3]),
+        };
+        return {
+          name,
+          min,
+          max,
+          maximumPerItem,
+        };
+    };
+
     static name() {
         try {
-            return store.getState().allInsurableLimits[3].description;
+            return Asegurarobras.getContent().name;
         } catch (e) {
-            return "";
+            return '';
         }
     }
 
-    //0
     static min() {
         try {
-            return store.getState().allInsurableLimits[3].min_value;
+            return Asegurarobras.getContent().min;
         } catch (e) {
             return 0;
         }
     }
 
-    //600000001
     static max() {
         try {
-            return store.getState().allInsurableLimits[3].max_value;
+            return Asegurarobras.getContent().max;
         } catch (e) {
             return 0;
         }
@@ -111,6 +129,10 @@ class Asegurarobras extends Component {
     };
 
     render() {
+        const content = Asegurarobras.getContent();
+        const maximumPerItem = Masknumbermoney.formatToMask(
+          content.maximumPerItem
+        );
         return (
             <div className="row">
                 <div className="col col-12 col-md-6">
@@ -139,7 +161,15 @@ class Asegurarobras extends Component {
                     <div className="col col-12 col-md-6">
                         <div
                             className={Asegurarobras.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor={Asegurarobras.nameModelValue}>Valor de los {Asegurarobras.name()}</label>
+                             <div className="d-flex">
+                                <label className="flex-fill" htmlFor={Asegurarobras.nameModelValue}>Valor de los {Asegurarobras.name()}</label>
+                                <Tooltip
+                                    placement="left"
+                                    title={`El valor máximo por cada artículo es de ${maximumPerItem}`}
+                                >
+                                    <Help className={'ml-auto icon-primary'} />
+                                </Tooltip>
+                            </div>
                             <input name={Asegurarobras.nameModelValue} id={Asegurarobras.nameModelValue}
                                    type="text"
                                    value={this.state.value}

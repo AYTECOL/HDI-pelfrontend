@@ -4,6 +4,8 @@ import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actions';
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import { Tooltip } from '../../../../Tooltip';
+import Help from '../../../../../common/icons/help';
 
 class Asegurartelefonos extends Component {
 
@@ -22,27 +24,43 @@ class Asegurartelefonos extends Component {
         };
     }
 
+    static getContent = () => {
+        const state = store.getState();
+        const {
+          description: name = '',
+          min_value: min = 0,
+          max_value: max = 0,
+          maximumPerItem,
+        } = {
+          ...(state && state.allInsurableLimits[6]),
+        };
+        return {
+          name,
+          min,
+          max,
+          maximumPerItem,
+        };
+    };
+
     static name() {
         try {
-            return store.getState().allInsurableLimits[6].description;
+            return Asegurartelefonos.getContent().name;
         } catch (e) {
-            return "";
+            return '';
         }
     }
 
-    //850000
     static min() {
         try {
-            return store.getState().allInsurableLimits[6].min_value;
+            return Asegurartelefonos.getContent().min;
         } catch (e) {
             return 0;
         }
     }
 
-    //10000001
     static max() {
         try {
-            return store.getState().allInsurableLimits[6].max_value;
+            return Asegurartelefonos.getContent().max;
         } catch (e) {
             return 0;
         }
@@ -111,6 +129,8 @@ class Asegurartelefonos extends Component {
     };
 
     render() {
+        const content = Asegurartelefonos.getContent();
+        const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
         return (
             <div className="row">
                 <div className="col col-12 col-md-6">
@@ -139,8 +159,15 @@ class Asegurartelefonos extends Component {
                     <div className="col col-12 col-md-6">
                         <div
                             className={Asegurartelefonos.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor={Asegurartelefonos.nameModelValue}>Valor
-                                de {Asegurartelefonos.name()}</label>
+                            <div className="d-flex">
+                                <label className="flex-fill" htmlFor={Asegurartelefonos.nameModelValue}>Valor de {Asegurartelefonos.name()}</label>
+                                <Tooltip
+                                    placement="left"
+                                    title={`El valor máximo por cada teléfono móvil es de ${maximumPerItem}`}
+                                >
+                                    <Help className={'ml-auto icon-primary'} />
+                                </Tooltip>
+                            </div>
                             <input name={Asegurartelefonos.nameModelValue} id="inmuebleasegudadotelefonosvalor"
                                    type="text"
                                    value={this.state.value}
@@ -163,18 +190,6 @@ class Asegurartelefonos extends Component {
                                 className={"form-text only-errors " + (this.state.errorValue === 3 ? 'show' : 'hide')}>Valor
                                 Asegurado de {Asegurartelefonos.name()} es superior al permitido.
                             </small>
-                        </div>
-                    </div>
-                ) : ("")}
-                {(this.state.active === 1) ? (
-                    <div className="col col-12 no-padding">
-                        <div className="col col-12">
-                            {/*<div className="tool-tip info">*/}
-                            {/*<p>Al momento de emitir la póliza ten a la mano el número IMEI de tu celular</p>*/}
-                            {/*</div>*/}
-                            <div className="tool-tip info">
-                                <p>El valor máximo por cada teléfono móvil es de $ 4.000.000</p>
-                            </div>
                         </div>
                     </div>
                 ) : ("")}

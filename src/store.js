@@ -77,6 +77,7 @@ const initialState = {
     Allfloors: [],
     allInsurableLimits: [],
     AllPlans: [],
+    validPlans: true,
     originalStore: {},
     attachedFile: false
 };
@@ -208,6 +209,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             AllPlans: action.data
+        }
+    } else if (action.type === "VALID_PLANS") {
+        return {
+            ...state,
+            validPlans: action.data
         }
     } else if (action.type === "INDEX_PLAN_SELECTED") {
         return {

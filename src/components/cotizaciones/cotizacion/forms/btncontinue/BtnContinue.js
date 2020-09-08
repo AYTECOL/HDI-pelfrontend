@@ -1,7 +1,10 @@
 import React, { Component, Fragment } from "react";
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { withRouter } from "react-router-dom";
 
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
-import { withRouter } from "react-router-dom";
 import { UrlSite } from "../../../../../config";
 import NewPlanSelected from "../../../../../services/NewPlanSelected";
 import store from "../../../../../store";
@@ -12,6 +15,9 @@ import { NextStep, resetStore, saveProspect } from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Links from "../links/Links";
 import "./btncontinue.scss";
+import Coberturas from '../../coberturas/Coberturas';
+
+
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
@@ -137,6 +143,7 @@ class BtnContinue extends Component {
   };
 
   render() {
+    const { disabled } = this.props;
     return (
       <Fragment>
         <div className="msj-total">
@@ -150,15 +157,15 @@ class BtnContinue extends Component {
         </div>
         <button
           type="button"
-          className={"btn btn-default"}
+          className={'btn btn-default'}
           onClick={this.saveAndExit}
         >
           Guardar y salir
         </button>
         <button
-          disabled={this.state.buttonState}
+          disabled={this.state.buttonState || disabled}
           type="button"
-          className={"btn btn-primary next-step"}
+          className={classNames('btn btn-primary', !disabled && 'next-step')}
           onClick={this.nextStep}
         >
           Iniciar emisión
@@ -168,4 +175,23 @@ class BtnContinue extends Component {
   }
 }
 
-export default withRouter(BtnContinue);
+export default compose(
+  withRouter,
+  connect(({ AllPlans, indexPlan, validPlans }) => {
+    const plan = AllPlans[indexPlan];
+    let coveragesValid = true;
+    try {
+      if (plan)
+        coveragesValid = !plan.coverages.some(
+          ({ values }) =>
+            values &&
+            values.some((value) => {
+              const errors = !!Coberturas.getErrors(value);
+              return errors && !!errors.length;
+            })
+        );
+      } catch (error) {}
+    const disabled = !validPlans || !coveragesValid;
+    return { disabled };
+  })
+)(BtnContinue);

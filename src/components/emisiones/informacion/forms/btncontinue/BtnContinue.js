@@ -9,6 +9,7 @@ import store from "../../../../../store";
 import { NextStep } from "../../../../../actions";
 import SaveIdentifications from "../../../../../services/Quote";
 import Loading from "../../../../globals/loading/Loading";
+import { attachmentsItems } from '../../constants';
 
 class BtnContinue extends Component {
 
@@ -26,25 +27,40 @@ class BtnContinue extends Component {
     };
 
     nextStep = total => async () => {
-        Loading.toggle(true);
-        const {
-            state,
-            getItem,
-            toggleErrorPhone,
-            match,
-            history
-        } = this.props;
-        let status = true;
-        for (let i = 0; i < state.contents.length; i++) {
-            for (let j in state.contents[i]) if (state.contents[i][j] === "") state.contents[i][j] = '""';
-            if (state.contents[i].uploaded === false) {
-                let url = await UploadFile.upload('Docs', state.contents[i].doc);
-                state.contents[i].textFile = url.location;
-                state.contents[i].uploaded = true;
+      Loading.toggle(true);
+      const { state, getItem, toggleErrorPhone, match, history } = this.props;
+      /**
+       * @type {import('../../../../../models/types').GoodsOverCostLocal[]}
+       */
+      const contents = state.contents;
+      let status = true;
+      for (let i = 0; i < contents.length; i++) {
+        const content = contents[i];
+        const { files } = content;
+        for (let j in content)
+          if (content[j] === '') content[j] = '""';
+        if (files) {
+            for (const { code } of attachmentsItems) {
+              if (files[code]) {
+                const { file } = files[code];
+                if (file instanceof File) {
+                  try {
+                    let url = await UploadFile.upload('Docs', file);
+                    /**
+                     * @type {import('../../../../../models/types').Attachment}
+                     */
+                    const fileSaved = { name: file.name, url: url.location };
+                    files[code] = fileSaved;
+                  } catch (error) {
+                    files[code] = undefined;
+                  }
+                }
+              }
             }
-            state.contents[i].nameType = getItem(state.contents[i].type).label;
-            state.contents[i].typeCode = 90161;
         }
+        content.nameType = getItem(content.type).label;
+        content.typeCode = 90161;
+      }
 
         //Validations
         if (state.celulares === true) {
