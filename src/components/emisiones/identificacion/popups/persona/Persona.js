@@ -623,7 +623,11 @@ export default class Persona extends Component {
         if (errorFile) {
           errors.push('sarlfalt');
         }
-        if (!address || !isValidDirection(address) || address.length < 5)
+        
+        if (
+          this.isActived(fieldsNames.address) &&
+          (!address || !isValidDirection(address) || address.length < 5)
+        )
           errors.push(fieldsNames.address);
         return errors;
     }
