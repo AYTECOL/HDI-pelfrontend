@@ -53,10 +53,12 @@ class Card extends Component {
                   </p>
                 </div>
               )}
-              <div className="col col-sm-3 col-md-3">
-                <span>Dirección</span>
-                <p>{item["address"]}</p>
-              </div>
+              {String(item.role) !== String(roles.onerousBeneficiary) && (
+                <div className="col col-sm-3 col-md-3">
+                  <span>Dirección</span>
+                  <p>{item['address']}</p>
+                </div>
+              )}
               <div className="col actions">
                 {this.props.showEdit === true && (
                   <p>
