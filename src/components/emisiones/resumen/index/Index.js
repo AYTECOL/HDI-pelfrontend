@@ -26,19 +26,25 @@ import Summary from "../../../cotizaciones/cotizacion/summary/summary";
 class Index extends Component {
   constructor(props) {
     super(props);
+    /**
+     * @type {{
+     *   contents: import("../../../../models/types").GoodsOverCost[],
+     *   step: number,
+     *  }}
+     */
     this.state = {
       step: parseInt(this.props.match.params.step),
       cotizacion: {},
-      adressHome: "",
+      adressHome: '',
       persons: [],
       contents: [],
       itemSelected: null,
       newSecurity: [],
       inmueble: {
-        identificacion: {}
+        identificacion: {},
       },
       typePerson: 1,
-      city: ""
+      city: '',
     };
   }
 
@@ -473,15 +479,28 @@ class Index extends Component {
                             <p>{Masknumbermoney.formatToMask(item.value)}</p>
                           </div>
                           <div className="col col-sm-6 col-md-3">
-                            {typeof item.textFile !== "undefined" &&
-                              item.textFile !== "" && (
-                                <button
-                                  type="button"
-                                  className="btn btn-download"
-                                >
-                                  {Index.getName(item.textFile)}
-                                </button>
-                              )}
+                            {item.files &&
+                              Object.keys(item.files).map((key) => {
+                                /**
+                                 * @type {import("../../../../models/types").Attachment | undefined}
+                                 */
+                                const file = item.files[key];
+                                return (
+                                  file && (
+                                    <div
+                                      key={key}
+                                      className="p-1"
+                                    >
+                                      <button
+                                        type="button"
+                                        className="btn btn-download w-100 text-truncate m-0"
+                                      >
+                                        {file.name}
+                                      </button>
+                                    </div>
+                                  )
+                                );
+                              })}
                           </div>
                         </div>
                       ))}

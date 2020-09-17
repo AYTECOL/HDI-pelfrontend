@@ -1,9 +1,6 @@
 /**
  * @typedef {{ id: number; label: string; max: number; }} TypeItem
  */
-/**
- * @type {Record<string, TypeItem>}
- */
 export const typeItems = {
   /**
    * @description "Contenido Fijo"

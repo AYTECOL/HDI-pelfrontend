@@ -308,7 +308,7 @@ class Index extends Component {
                         </div>
                     </div>
 
-                    {(hasExequias === true || hasAccident === true) &&
+                    {(hasExequias === true || hasAccident === true||true) &&
                     <div className="row justify-content-center">
                         <div className="col col-md-8 col-lg-8 last-items-emision">
                             <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
