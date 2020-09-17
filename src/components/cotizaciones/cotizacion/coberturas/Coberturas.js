@@ -145,7 +145,7 @@ class Coberturas extends Component {
           let dataHurto = [];
           let hurto = Coberturas.getCoverangeById(3, plan);
           let hurtoSimple = 0;
-          if (hurto !== null) {
+          if (hurto !== null && item.value_show == undefined) {
             for ( j; j < hurto.values.length; j++){
               dataHurto.push(hurto.values[j].value_show);
               hurtoSimple += Masknumbermoney.formatToNumber(
