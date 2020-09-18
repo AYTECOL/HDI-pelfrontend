@@ -565,10 +565,6 @@ class Coberturas extends Component {
         item.values[k].values[e.target.value].limit
       );
     }
-    this.setState({
-      ...this.state,
-      plans: plan,
-    });
 
     if (e.target.tagName === 'SELECT') {
       this.sendAndValidate(plan);
@@ -577,6 +573,12 @@ class Coberturas extends Component {
     item.values[k].errors = errors;
     const valid = validTypeOne && !errors;
     store.dispatch(setValidPlans(valid));
+    this.setState(
+      {
+        ...this.state,
+        plans: plan,
+      },
+      () => {
     if (!valid) {
       Helpers.disabled('.generatepdf');
       Helpers.disabled('.next-step');
@@ -584,6 +586,8 @@ class Coberturas extends Component {
       Helpers.enabled('.generatepdf');
       Helpers.enabled('.next-step');
     }
+      }
+    );
   };
 
   blur = (e) => {
@@ -735,7 +739,7 @@ class Coberturas extends Component {
                                       ))}
                                     </select>
                                   )}
-                                  {typeof opt.errors !== 'undefined' &&
+                                  {opt.errors &&
                                     opt.errors.map((item, key) => (
                                       <small
                                         key={key}
