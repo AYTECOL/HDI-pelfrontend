@@ -134,7 +134,6 @@ class MobileContents extends Component {
     const content = MobileContents.getContent();
     const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
     const { active, errorValue } = this.state;
-    console.log(active, errorValue);
     return (
       <div className="row">
         <div className="col col-12 col-md-6">

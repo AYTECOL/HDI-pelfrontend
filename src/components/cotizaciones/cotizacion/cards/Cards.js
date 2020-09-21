@@ -141,9 +141,8 @@ class Cards extends Component {
             items[i].value = inmueble[MobileContents.nameModelValue];
             items[i].active = inmueble[MobileContents.nameModel] === 0;
           }
+          if (items[i].value === '""') items[i].value = '';
         }
-        for (let i = 0; i < 5; i++)
-          if (items[i].value === '""') items[i].value = "";
         this.setState({
           ...this.state,
           items: items,
@@ -168,13 +167,12 @@ class Cards extends Component {
 
   validateToggle() {
     let newItems = this.state.items;
-    newItems[0].inactiveToggle =
-      newItems[1].active === true &&
-      newItems[2].active === true &&
-      newItems[3].active === true &&
-      newItems[4].active === true;
+    const inactiveToggle = newItems
+      .slice(1, newItems.length)
+      .some(({ active }) => !!active);
+    newItems[0].inactiveToggle = inactiveToggle;
     newItems[1].inactiveToggle = newItems[0].active === true;
-    for (let i = 2; i < 5; i++)
+    for (let i = 2; i < newItems.length; i++)
       newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
     this.setState({
       ...this.state,
