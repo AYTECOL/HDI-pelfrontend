@@ -6,6 +6,7 @@ import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator, setValidPlans } from '../../../../actions';
 import { getRulesByCode } from '../../../../common';
+import MobileContents from '../../inmueble/forms/MobileContents';
 
 class Coberturas extends Component {
   _isMounted = false;
@@ -167,9 +168,9 @@ class Coberturas extends Component {
           );
         //Contenido mobile
         } else if (item.id === 7) {
-            let contenido = Masknumbermoney.formatToNumber(
-              inmueble.contenidoasegudadovalor
-            );
+          let contenido = Masknumbermoney.formatToNumber(
+            inmueble.contenidoasegudadovalor
+          );
           value = (
             (contenido * parseInt(item.value)) / 100
           );
@@ -280,7 +281,9 @@ class Coberturas extends Component {
             plan.coverages[key].values[k].hired =
               inmueble.inmuebleasegudadojoyas === 1;
             //Contenido mobile
-          } else if (opt.id >= 7 || opt.id === 0) {
+          } else if (opt.id === 7) {
+            plan.coverages[key].values[k].hired = inmueble[MobileContents.nameModel] === 1;
+          } else if (opt.id >= 8 || opt.id === 0) {
             plan.coverages[key].values[k].hired = true;
           }
         }
@@ -565,11 +568,7 @@ class Coberturas extends Component {
         item.values[k].values[e.target.value].limit
       );
     }
-    this.setState({
-      ...this.state,
-      plans: plan,
-    });
-
+    
     if (e.target.tagName === 'SELECT') {
       this.sendAndValidate(plan);
     }
@@ -577,13 +576,21 @@ class Coberturas extends Component {
     item.values[k].errors = errors;
     const valid = validTypeOne && !errors;
     store.dispatch(setValidPlans(valid));
-    if (!valid) {
-      Helpers.disabled('.generatepdf');
-      Helpers.disabled('.next-step');
-    } else {
-      Helpers.enabled('.generatepdf');
-      Helpers.enabled('.next-step');
-    }
+    this.setState(
+      {
+        ...this.state,
+        plans: plan,
+      },
+      () => {
+        if (!valid) {
+          Helpers.disabled('.generatepdf');
+          Helpers.disabled('.next-step');
+        } else {
+          Helpers.enabled('.generatepdf');
+          Helpers.enabled('.next-step');
+        }
+      }
+    );
   };
 
   blur = (e) => {
