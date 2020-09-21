@@ -24,7 +24,12 @@ class PolizaEmitida extends Component {
 
     let { params } = this.props.match;
     let { emmitedId: emitedPolicy } = params;
+    let urlCodePage = parseInt(params.emmitedId.substr(params.emmitedId.length - 1))
     let endoso = undefined;
+
+    if (urlCodePage % 2 == 0) {
+      window.open('https://www.libertyseguros.co/encuesta-pe-hogar-co', '_blank')
+    }
 
     if (typeof data.quote_iussed_info !== "undefined") {
       if (
