@@ -269,6 +269,8 @@ interface RiskValorationInfoItem {
   inmueble_asegudado_joyas: number;
   seguridad: Seguridad;
   inmueble_asegudado_joyasvalor: number;
+  inmueble_mobile_contents: number;
+  inmueble_mobile_contents_value: number;
   contenido_asegudado: number;
   total_tax_policy: number;
   risk_type: number;
