@@ -177,21 +177,26 @@ class BtnContinue extends Component {
 
 export default compose(
   withRouter,
-  connect(({ AllPlans, indexPlan, validPlans }) => {
+  connect(({ AllPlans, indexPlan }) => {
     const plan = AllPlans[indexPlan];
     let coveragesValid = true;
     try {
       if (plan)
         coveragesValid = !plan.coverages.some(
-          ({ values }) =>
+          ({ values }, k) =>
             values &&
             values.some((value) => {
-              const errors = !!Coberturas.getErrors(value);
+              const errors = !!Coberturas.getErrorsCoverage(
+                plan,
+                value,
+                k,
+                value.values ? 2 : 1,
+              );
               return errors && !!errors.length;
             })
         );
       } catch (error) {}
-    const disabled = !validPlans || !coveragesValid;
+    const disabled = !coveragesValid;
     return { disabled };
   })
 )(BtnContinue);
