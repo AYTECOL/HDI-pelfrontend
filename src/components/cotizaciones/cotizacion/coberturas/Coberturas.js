@@ -4,7 +4,7 @@ import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumb
 import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
-import { AllPlans as AllPlansCreator, setValidPlans } from '../../../../actions';
+import { AllPlans as AllPlansCreator } from '../../../../actions';
 import { getRulesByCode } from '../../../../common';
 
 class Coberturas extends Component {
@@ -99,7 +99,7 @@ class Coberturas extends Component {
       } else {
         if (!(type === item.id || type === null)) {
           return item.value_show;
-        }          
+        }
         const { max } = { ...getRulesByCode(item.code) };
         /**
          * @type {number}
@@ -286,11 +286,46 @@ class Coberturas extends Component {
         }
       }
     }
+    /**
+     * @type {{ values: { hired: boolean, values?: any[], value_show: string, errors?: string[] }[] }[]}
+     */
+    const coverages = plan.coverages || [];
+    let valid = true;
+    const newPlan = {
+      ...plan,
+      coverages: coverages.map(({ values, ...rest }, k) => ({
+        ...rest,
+        values:
+          values &&
+          values.map((value) => {
+            const errors =
+              (value.hired && [
+                ...(Coberturas.getErrorsCoverage(
+                  plan,
+                  value,
+                  k,
+                  value.values ? 2 : 1,
+                ) || []),
+              ]) ||
+              undefined;
+            if (errors && errors.length) valid = false;
+            return {
+              ...value,
+              errors: errors,
+            };
+          }),
+      })),
+    };
     if (this._isMounted === true) {
-      this.setState({
-        ...this.state,
-        plan,
-      });
+      this.setState(
+        {
+          ...this.state,
+          plan: newPlan,
+        },
+        () => {
+          this.toggleValid(valid);
+        }
+      );
     }
   }
 
@@ -300,15 +335,8 @@ class Coberturas extends Component {
       let storeState = store.getState();
       let plan = storeState.AllPlans[storeState.indexPlan];
       if (typeof plan !== 'undefined' && this._isMounted === true) {
-        this.setState({
-          ...this.state,
-          plan: plan,
-          index: storeState.indexPlan,
-        });
-        setTimeout(() => {
-          this.showItem(plan);
-          this.countCoverturas(plan);
-        }, 250);
+        this.showItem(plan);
+        this.countCoverturas(plan);
       }
     });
   }
@@ -394,25 +422,6 @@ class Coberturas extends Component {
     }
   };
 
-  /**
-   * todo Merge method with static method are equals
-   * @param code code Of coverage that you want find
-   */
-  getCoverangeByCode(code) {
-    let index = store.getState().indexPlan;
-    let plans = store.getState().AllPlans[index].coverages;
-    let coverange = {};
-    for (let i = 0; i < plans.length; i++) {
-      if (typeof plans[i].values !== 'undefined') {
-        for (let j = 0; j < plans[i].values.length; j++) {
-          if (plans[i].values[j].code === code) {
-            coverange = plans[i];
-          }
-        }
-      }
-    }
-    return coverange;
-  }
 
   /**
    * Event change of coverage field
@@ -421,8 +430,8 @@ class Coberturas extends Component {
    * @returns {null | string[]}
    */
   static getErrors = (value, valueHurto) => {
-    let formatValue = Masknumbermoney.formatToNumber(value.value_show);
-    if (!value.hired) return null; 
+    let formatValue = Masknumbermoney.formatToNumber(value.value_show || '');
+    if (!value.hired) return null;
     const rules = getRulesByCode(value.code);
     if (rules) {
       const { max, min } = rules;
@@ -452,8 +461,7 @@ class Coberturas extends Component {
     }
   };
 
-  inputChange = (k, key, type) => (e) => {
-    let plan = this.state.plan;
+  static getErrorsCoverage = (plan, planValue, key, type) => {
     let item = plan.coverages[key];
     const hurtoCalificado = plan.coverages.find(
       (element) => element.code_content === 9692
@@ -470,39 +478,51 @@ class Coberturas extends Component {
       otrosContenidos.values &&
       otrosContenidos.values[0].value_to_quotate;
 
-    let validTypeOne = true;
-
+    const errors = [];
     //Input
     if (type === 1) {
-      item.values[k].value_show = Masknumbermoney.formatToMask(e.target.value);
-      item.values[k].errors = [];
+      planValue.errors = [];
       //Validations extra
 
       //--------
       //Validations of max and min
       if (
-        parseInt(item.values[k].code) === 9692 ||
-        parseInt(item.values[k].code) === 3017 ||
-        parseInt(item.values[k].code) === 3008
+        parseInt(planValue.code) === 9692 ||
+        parseInt(planValue.code) === 3017 ||
+        parseInt(planValue.code) === 3008
       ) {
-        let coverange = this.getCoverangeByCode(9667);
+        /**
+         * todo Merge method with static method are equals
+         * @param code code Of coverage that you want find
+         */
+        function getCoverangeByCode(code) {
+          const coverages = plan.coverages;
+          for (const coverage of coverages) 
+            if (coverage.values)
+              for (let j = 0; j < coverage.values.length; j++) {
+                if (coverage.values[j].code === code) {
+                  return coverage;
+                }
+              }
+        }
+        let coverange = getCoverangeByCode(9667);
         if (typeof coverange.values !== 'undefined') {
           for (let i = 0; i < coverange.values.length; i++) {
-            if (coverange.values[i].id === item.values[k].id) {
+            if (coverange.values[i].id === planValue.id) {
               if (
                 typeof coverange.values[i].value_show !== 'undefined' &&
-                typeof item.values[k].value_show !== 'undefined'
+                typeof planValue.value_show !== 'undefined'
               ) {
                 if (
                   Masknumbermoney.formatToNumber(
                     coverange.values[i].value_show
-                  ) < Masknumbermoney.formatToNumber(item.values[k].value_show)
+                  ) < Masknumbermoney.formatToNumber(planValue.value_show)
                 ) {
                   let n = coverange.values[i].name
                     .toUpperCase()
                     .replace('VALOR ', '');
-                  if (parseInt(item.values[k].code) === 3008) {
-                    item.values[k].errors.push(
+                  if (parseInt(planValue.code) === 3008) {
+                    errors.push(
                       'Valor asegurado del amparo ' +
                         item.name +
                         ', es mayor al reportado en “' +
@@ -510,7 +530,7 @@ class Coberturas extends Component {
                         '” del amparo de INCENDIO '
                     );
                   } else {
-                    item.values[k].errors.push(
+                    errors.push(
                       'Valor asegurado de ' +
                         n +
                         ' es mayor al reportado en INCENDIO'
@@ -520,21 +540,21 @@ class Coberturas extends Component {
               }
             }
           }
-          if (parseInt(item.values[k].code) === 3008) {
+          if (parseInt(planValue.code) === 3008) {
             if (
               500000000 <
-              Masknumbermoney.formatToNumber(item.values[k].value_show)
+              Masknumbermoney.formatToNumber(planValue.value_show)
             ) {
-              item.values[k].errors.push(
+              errors.push(
                 'Valor Asegurado del amparo ' +
                   item.name +
                   ' es superior al permitido.'
               );
             }
             if (
-              0 >= Masknumbermoney.formatToNumber(item.values[k].value_show)
+              0 >= Masknumbermoney.formatToNumber(planValue.value_show)
             ) {
-              item.values[k].errors.push(
+              errors.push(
                 'Valor Asegurado del amparo ' +
                   item.name +
                   ' es inferior al permitido.'
@@ -543,42 +563,54 @@ class Coberturas extends Component {
           }
         } else {
           let formatValue = Masknumbermoney.formatToNumber(
-            item.values[k].value_show
+            planValue.value_show
           );
           if (formatValue > valueContenido) {
-            item.values[k].errors.push(
-              'Valor asegurado es mayor al reportado en Contenidos'
-            );
+            errors.push('Valor asegurado es mayor al reportado en Contenidos');
           }
         }
-        validTypeOne = !item.values[k].errors.length;
       }
-      //Select
-    } else if (type === 2) {
-      for (let i = 0; i < item.values[k].values.length; i++)
-        item.values[k].values[i].default = false;
-      item.values[k].values[e.target.value].default = true;
-      item.values[k].value = item.values[k].values[e.target.value].limit;
-      item.values[k].value_to_quotate =
-        item.values[k].values[e.target.value].limit;
-      item.values[k].value_show = Masknumbermoney.formatToMask(
-        item.values[k].values[e.target.value].limit
-      );
     }
+    errors.push(...(Coberturas.getErrors(planValue, valueHurto) || []));
+    return errors;
+  };
+
+  inputChange = (k, key, type) => (e) => {
+    let plan = this.state.plan;
+    let item = plan.coverages[key];
 
     if (e.target.tagName === 'SELECT') {
       this.sendAndValidate(plan);
     }
-    const errors = Coberturas.getErrors(item.values[k], valueHurto);
+    const value = e.target.value;
+    const planValue = item.values[k];
+    planValue.value_show = Masknumbermoney.formatToMask(value);
+    const errors = Coberturas.getErrorsCoverage(
+      plan,
+      item.values[k],
+      key,
+      type,
+    );
+
+    //Select
+    if (type === 2) {
+      for (let i = 0; i < item.values[k].values.length; i++)
+        item.values[k].values[i].default = false;
+      item.values[k].values[value].default = true;
+      item.values[k].value = item.values[k].values[value].limit;
+      item.values[k].value_to_quotate = item.values[k].values[value].limit;
+      item.values[k].value_show = Masknumbermoney.formatToMask(
+        item.values[k].values[value].limit
+      );
+    }
     item.values[k].errors = errors;
-    const valid = validTypeOne && !errors;
-    store.dispatch(setValidPlans(valid));
-    this.setState(
-      {
-        ...this.state,
-        plans: plan,
-      },
-      () => {
+    const valid = !(errors && errors.length);
+    this.setState({ plan }, () => {
+      this.toggleValid(valid);
+    });
+  };
+
+  toggleValid = (valid) => {
     if (!valid) {
       Helpers.disabled('.generatepdf');
       Helpers.disabled('.next-step');
@@ -586,10 +618,7 @@ class Coberturas extends Component {
       Helpers.enabled('.generatepdf');
       Helpers.enabled('.next-step');
     }
-      }
-    );
   };
-
   blur = (e) => {
     if (e.target.parentNode.className.indexOf('error') === -1) {
       this.sendAndValidate(this.state.plan);
