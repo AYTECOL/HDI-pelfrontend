@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
@@ -14,7 +16,6 @@ class Coberturas extends Component {
     super(props);
     this.state = {
       plan: store.getState().AllPlans,
-      index: 0,
       coverturasTotal: 0,
     };
     this.state.plan = {
@@ -321,6 +322,7 @@ class Coberturas extends Component {
         {
           ...this.state,
           plan: newPlan,
+          coverturasTotal: this.countCoverturas(plan),
         },
         () => {
           this.toggleValid(valid);
@@ -336,7 +338,6 @@ class Coberturas extends Component {
       let plan = storeState.AllPlans[storeState.indexPlan];
       if (typeof plan !== 'undefined' && this._isMounted === true) {
         this.showItem(plan);
-        this.countCoverturas(plan);
       }
     });
   }
@@ -354,10 +355,10 @@ class Coberturas extends Component {
     let storeState = store.getState();
     let index = storeState.indexPlan;
     let plans = storeState.AllPlans;
-    plan = Coberturas.calcValue(plan, 5);
-    plans[index] = plan;
     store.dispatch(AllPlansCreator(plans));
     setTimeout(() => {
+      plan = Coberturas.calcValue(plan, 5);
+      plans[index] = plan;
       Plans.sendAndValidate(plans, index, this.props.match.params.id);
     }, 500);
   }
@@ -375,12 +376,7 @@ class Coberturas extends Component {
         t++;
       }
     }
-    if (this._isMounted === true) {
-      this.setState({
-        ...this.state,
-        coverturasTotal: t,
-      });
-    }
+    return t;
   }
 
   checkCoverturas = (index, key) => (e) => {
@@ -416,8 +412,8 @@ class Coberturas extends Component {
       this.setState({
         ...this.state,
         plans: newPlans,
+        coverturasTotal: this.countCoverturas(newPlans)
       });
-      this.countCoverturas(newPlans);
       this.sendAndValidate(newPlans);
     }
   };
@@ -649,6 +645,7 @@ class Coberturas extends Component {
   };
 
   render() {
+    const { index } = this.props;
     return (
       <div className="row row-max tabs-cotizaciones row_tab_0">
         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
@@ -686,7 +683,7 @@ class Coberturas extends Component {
                           disabled={option.optional === false}
                           name={'itemcheck' + key}
                           id={'itemcheck' + key}
-                          onChange={this.checkCoverturas(this.state.index, key)}
+                          onChange={this.checkCoverturas(index, key)}
                         />
                         <label htmlFor={'itemcheck' + key}>{option.name}</label>
                       </div>
@@ -825,4 +822,7 @@ class Coberturas extends Component {
   }
 }
 
-export default withRouter(Coberturas);
+export default compose(
+  withRouter,
+  connect(({ indexPlan }) => ({ index: indexPlan }))
+)(Coberturas);
