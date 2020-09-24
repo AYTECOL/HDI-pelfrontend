@@ -95,7 +95,9 @@ class Coberturas extends Component {
         if (!(type === item.id || type === null)) {
           return item.value_show;
         }
-        const { max } = { ...getRulesByCode(item.code) };
+        const { max } = {
+          ...getRulesByCode(item.code, plan && plan.coverages),
+        };
         /**
          * @type {number}
          */
@@ -137,19 +139,17 @@ class Coberturas extends Component {
         //Hurto siempre basado en hurto calificado
         } else if (item.id === 5) {
           let j = 0;
-          let dataHurto = [];
           let hurto = Coberturas.getCoverangeById(3, plan);
           let hurtoSimple = 0;
-          if (hurto !== null && item.value_show == undefined) {
+          if (hurto !== null) {
             for ( j; j < hurto.values.length; j++){
-              dataHurto.push(hurto.values[j].value_show);
               hurtoSimple += Masknumbermoney.formatToNumber(
                 hurto.values[j].value_show
               )
             }
             return Masknumbermoney.formatToMask(hurtoSimple);
           } else {
-            return item.value_show;
+            value = Masknumbermoney.formatToNumber(item.value_show);
           }
           //Joyas
         } else if (item.id === 6) {
@@ -187,15 +187,17 @@ class Coberturas extends Component {
    * @returns {*}
    */
   static getCoverangeById(id, plan = null) {
-    let index = store.getState().indexPlan;
-    let plans = store.getState().AllPlans[index];
-    if (plan !== null) {
-      plans = plan;
+    const state = store.getState();
+    let coverages;
+    if (plan) {
+      coverages = plan.coverages;
+    } else {
+      coverages = state.AllPlans[state.indexPlan];
     }
-    if (typeof plans.coverages !== 'undefined') {
-      for (let i = 0; i < plans.coverages.length; i++) {
-        if (plans.coverages[i].id === id) {
-          return plans.coverages[i];
+    if (typeof coverages !== 'undefined') {
+      for (let i = 0; i < coverages.length; i++) {
+        if (coverages[i].id === id) {
+          return coverages[i];
         }
       }
     } else {
@@ -209,13 +211,13 @@ class Coberturas extends Component {
    * @returns {{coverange: ({values, name}|*), index: number}}
    */
   static getCoverangeByCode(code) {
-    let index = store.getState().indexPlan;
-    let plans = store.getState().AllPlans[index].coverages;
-    for (let i = 0; i < plans.length; i++) {
-      if (plans[i].code_content === code) {
+    const { indexPlan, AllPlans } = store.getState();
+    let plan = AllPlans[indexPlan].coverages;
+    for (let i = 0; i < plan.length; i++) {
+      if (plan[i].code_content === code) {
         return {
           index: i,
-          coverange: plans[i],
+          coverange: plan[i],
         };
       }
     }
@@ -416,13 +418,13 @@ class Coberturas extends Component {
   /**
    * Event change of coverage field
    * @param value Of coverage in the iterator
-   * @param valueHurto 1 or 2, input or select
+   * @param coverages
    * @returns {null | string[]}
    */
-  static getErrors = (value, valueHurto) => {
+  static getErrors = (value, coverages) => {
     let formatValue = Masknumbermoney.formatToNumber(value.value_show || '');
     if (!value.hired) return null;
-    const rules = getRulesByCode(value.code);
+    const rules = getRulesByCode(value.code, coverages);
     if (rules) {
       const { max, min } = rules;
       const errors = [];
@@ -436,33 +438,13 @@ class Coberturas extends Component {
       }
       return (errors.length && errors) || undefined;
     }
-    switch (value.code) {
-      case 9691:
-        if (formatValue > valueHurto) {
-          return [
-            `Valor Asegurado de Hurto simple ${
-              formatValue > valueHurto ? 'superior' : 'inferior'
-            } al permitido. `,
-          ];
-        }
-        break;
-      default:
-        return null;
-    }
   };
 
   static getErrorsCoverage = (plan, planValue, key, type) => {
     let item = plan.coverages[key];
-    const hurtoCalificado = plan.coverages.find(
-      (element) => element.code_content === 9692
-    );
     const otrosContenidos = plan.coverages.find(
       (element) => element.code_content === 9670
     );
-    const valueHurto =
-      hurtoCalificado &&
-      hurtoCalificado.values &&
-      hurtoCalificado.values[0].value_to_quotate;
     const valueContenido =
       otrosContenidos &&
       otrosContenidos.values &&
@@ -561,7 +543,7 @@ class Coberturas extends Component {
         }
       }
     }
-    errors.push(...(Coberturas.getErrors(planValue, valueHurto) || []));
+    errors.push(...(Coberturas.getErrors(planValue, plan.coverages) || []));
     return errors;
   };
 

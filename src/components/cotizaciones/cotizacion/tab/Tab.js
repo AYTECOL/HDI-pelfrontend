@@ -44,7 +44,10 @@ class Tab extends Component {
                                           value_to_quotate,
                                         } = covergaValue;
                                         const { max } = {
-                                          ...getRulesByCode(covergaValue.code),
+                                          ...getRulesByCode(
+                                            covergaValue.code,
+                                            normal.coverages
+                                          ),
                                         };
                                         coverage.values[i].value = covergaValue.value;
                                         if (max) {
