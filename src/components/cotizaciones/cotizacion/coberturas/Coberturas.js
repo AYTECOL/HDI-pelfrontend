@@ -8,7 +8,6 @@ import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../actions';
 import { getRulesByCode } from '../../../../common';
-
 class Coberturas extends Component {
   _isMounted = false;
 
@@ -59,19 +58,14 @@ class Coberturas extends Component {
       let d = plan.coverages[i].values;
       if (typeof d !== 'undefined') {
         for (let j = 0; j < d.length; j++) {
+          const value_show = Coberturas.getValueFields(d[j], type, plan);
           if (typeof d[j].values === 'undefined') {
-            plan.coverages[i].values[j].value_show = Coberturas.getValueFields(
-              d[j],
-              type,
-              plan
-            );
+            plan.coverages[i].values[j].value_show = value_show;
           } else {
             for (let limit = 0; limit < d[j].values.length; limit++) {
               if (d[j].values[limit].default === true) {
                 plan.coverages[i].values[j].value = d[j].values[limit].limit;
-                plan.coverages[i].values[
-                  j
-                ].value_show = Coberturas.getValueFields(d[j], type, plan);
+                plan.coverages[i].values[j].value_show = value_show;
               }
             }
           }
@@ -175,7 +169,7 @@ class Coberturas extends Component {
             (contenido * parseInt(item.value)) / 100
           );
         }
-        if (value)
+        if (value) 
           return Masknumbermoney.formatToMask(
             max ? (value > max ? max : value) : value
           );
