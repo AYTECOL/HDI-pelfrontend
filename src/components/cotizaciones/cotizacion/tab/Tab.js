@@ -174,7 +174,7 @@ class Tab extends Component {
         }
 
         if (status === true) {
-            this.getPlants(type);
+            this.getPlants(type, inmueble);
         }
         this.setState({
             ...this.state,
@@ -183,7 +183,7 @@ class Tab extends Component {
         });
     }
 
-    async getPlants(type) {
+    async getPlants(type, inmueble = null) {
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
@@ -193,7 +193,8 @@ class Tab extends Component {
         if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
-            plans[indexSelected] = Tab.assignValuesSaved(selected, plans[indexSelected]);
+            const planSelected = Coberturas.setHiredCoverages(selected)
+            plans[indexSelected] = Tab.assignValuesSaved(planSelected, plans[indexSelected]);
             plans[indexSelected] = BtnContinue.toNumberCoverrange(plans[indexSelected]);
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
@@ -213,6 +214,7 @@ class Tab extends Component {
             if (indexSelected !== null && i === indexSelected) {
                 prospect = await DeterminePolizaPrima.get(plans[indexSelected], quotateId);
             } else {
+                plans[i] = Coberturas.setHiredCoverages(plans[i], inmueble);
                 //Calc values to show
                 plans[i] = Coberturas.calcValue(plans[i]);
                 //Add 'value_to_quotate' to each coverange
