@@ -1,4 +1,24 @@
-import Masknumbermoney from "./helpers/masknumbermoney/Masknumbermoney";
+import Masknumbermoney from './helpers/masknumbermoney/Masknumbermoney';
+
+export const IDS_COVERAGE_VALUES = {
+  value: 1,
+  contents: 2,
+  valuablesAndWorksOfArt: 3,
+  mobilePhones: 4,
+  simpleTheft: 5,
+  jewelry: 6,
+  mobileContent: 7,
+};
+/**
+ * @param {{ hired: boolean, value_show }[]} values
+ */
+export const getTotalCoverage = (values) => {
+  return values.reduce((previousValue, { hired, value_show }) => {
+    if (hired && value_show)
+      return previousValue + Masknumbermoney.formatToNumber(value_show);
+    return previousValue;
+  }, 0);
+};
 
 /**
  * @typedef {null | { max?:number, min?:number }} Rules
@@ -28,25 +48,17 @@ export const getRulesByCode = (code, coverages = undefined) => {
       };
     // Asegurado de Teléfonos Móviles
     case 9691:
-      if (coverages){
+      if (coverages) {
         const hurtoCalificado = coverages.find(
           (element) => element.code_content === 9692
         );
-        const [contentsValue, valuablesWorksArt] =
-          (hurtoCalificado && hurtoCalificado.values) || [];
-        if (contentsValue) {
-          let value = 0;
-          if (contentsValue.value_show)
-            value += Masknumbermoney.formatToNumber(contentsValue.value_show);
-          if (valuablesWorksArt.value_show)
-            value += Masknumbermoney.formatToNumber(
-              valuablesWorksArt.value_show
-            );
-          if (value)
-            return {
-              max: value,
-            };
-        }
+        const values = (hurtoCalificado && hurtoCalificado.values) || [];
+
+        const value = getTotalCoverage(values);
+        if (value)
+          return {
+            max: value,
+          };
       }
       break;
     default:
