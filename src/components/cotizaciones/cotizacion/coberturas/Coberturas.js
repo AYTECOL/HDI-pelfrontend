@@ -7,7 +7,7 @@ import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../actions';
-import { getRulesByCode } from '../../../../common';
+import { getRulesByCode, getTotalCoverage } from '../../../../common';
 class Coberturas extends Component {
   _isMounted = false;
 
@@ -78,12 +78,13 @@ class Coberturas extends Component {
   /**
    *
    * @param item the current coverage in the iteration
-   * @param type if you want cal a single type coverage
+   * @param {number|number[]} typeBase if you want cal a single type coverage
    * @param plan current plan selected by user.
    * @returns {*}
    */
-  static getValueFields(item, type = null, plan = null) {
+  static getValueFields(item, typeBase = [], plan = null) {
     try {
+      const types = Array.isArray(typeBase) ? typeBase : [typeBase];
       let inmueble = store.getState().Inmueble;
       if (typeof item.values !== 'undefined') {
         for (let i = 0; i < item.values.length; i++) {
@@ -92,7 +93,8 @@ class Coberturas extends Component {
           }
         }
       } else {
-        if (!(type === item.id || type === null) || !!item.changed) {
+        const some = !types.some((type) => type === item.id || type === null);
+        if (some || !!item.changed) {
           return item.value_show;
         }
         const { max } = {
@@ -138,16 +140,9 @@ class Coberturas extends Component {
           );
         //Hurto siempre basado en hurto calificado
         } else if (item.id === 5) {
-          let j = 0;
           let hurto = Coberturas.getCoverangeById(3, plan);
-          let hurtoSimple = 0;
           if (hurto !== null) {
-            for ( j; j < hurto.values.length; j++){
-              hurtoSimple += Masknumbermoney.formatToNumber(
-                hurto.values[j].value_show
-              )
-            }
-            return Masknumbermoney.formatToMask(hurtoSimple);
+            return Masknumbermoney.formatToMask(getTotalCoverage(hurto.values));
           } else {
             value = Masknumbermoney.formatToNumber(item.value_show);
           }
@@ -354,7 +349,7 @@ class Coberturas extends Component {
     plans[index] = plan;
     store.dispatch(AllPlansCreator([...plans]));
     setTimeout(() => {
-      plan = Coberturas.calcValue(plan, 5);
+      plans[index] = Coberturas.calcValue(plan, 5);
       Plans.sendAndValidate(plans, index, this.props.match.params.id);
     }, 500);
   }
