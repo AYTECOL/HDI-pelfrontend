@@ -92,7 +92,7 @@ class Coberturas extends Component {
           }
         }
       } else {
-        if (!(type === item.id || type === null)) {
+        if (!(type === item.id || type === null) || !!item.changed) {
           return item.value_show;
         }
         const { max } = {
@@ -351,10 +351,10 @@ class Coberturas extends Component {
     let storeState = store.getState();
     let index = storeState.indexPlan;
     let plans = storeState.AllPlans;
-    store.dispatch(AllPlansCreator(plans));
+    plans[index] = plan;
+    store.dispatch(AllPlansCreator([...plans]));
     setTimeout(() => {
       plan = Coberturas.calcValue(plan, 5);
-      plans[index] = plan;
       Plans.sendAndValidate(plans, index, this.props.match.params.id);
     }, 500);
   }
@@ -469,7 +469,7 @@ class Coberturas extends Component {
          */
         function getCoverangeByCode(code) {
           const coverages = plan.coverages;
-          for (const coverage of coverages) 
+          for (const coverage of coverages)
             if (coverage.values)
               for (let j = 0; j < coverage.values.length; j++) {
                 if (coverage.values[j].code === code) {
@@ -555,17 +555,20 @@ class Coberturas extends Component {
       this.sendAndValidate(plan);
     }
     const value = e.target.value;
-    const planValue = item.values[k];
-    planValue.value_show = Masknumbermoney.formatToMask(value);
     const errors = Coberturas.getErrorsCoverage(
       plan,
       item.values[k],
       key,
-      type,
+      type
     );
-
+    //Input
+    if (type === 1) {
+      const planValue = item.values[k];
+      planValue.value_show = Masknumbermoney.formatToMask(value);
+      planValue.changed = true;
+    }
     //Select
-    if (type === 2) {
+    else if (type === 2) {
       for (let i = 0; i < item.values[k].values.length; i++)
         item.values[k].values[i].default = false;
       item.values[k].values[value].default = true;
