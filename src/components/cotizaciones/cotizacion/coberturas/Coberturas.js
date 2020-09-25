@@ -8,6 +8,12 @@ import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../actions';
 import { getRulesByCode, getTotalCoverage } from '../../../../common';
+
+/**
+ * @typedef {import('../../../../services/QuoteIussedById').QuoteIussed} QuoteIussed
+ * @typedef {import('../../../../services/QuoteIussedById').PlanSelectedInfoItem} PlanSelectedInfoItem
+ */
+
 class Coberturas extends Component {
   _isMounted = false;
 
@@ -142,7 +148,8 @@ class Coberturas extends Component {
         } else if (item.id === 5) {
           let hurto = Coberturas.getCoverangeById(3, plan);
           if (hurto !== null) {
-            return Masknumbermoney.formatToMask(getTotalCoverage(hurto.values));
+            const total = getTotalCoverage(hurto.values);
+            return Masknumbermoney.formatToMask(total);
           } else {
             value = Masknumbermoney.formatToNumber(item.value_show);
           }
@@ -236,17 +243,16 @@ class Coberturas extends Component {
   }
 
   /**
-   * Validate if each coverage field it show or not.
-   * @param plan Plan selected by user
-   * @returns {boolean}
+   * 
+   * @param {PlanSelectedInfoItem} plan 
    */
-  showItem(plan) {
+  static setHiredCoverages(plan, inmuebleBase) {
+    const inmueble = inmuebleBase || store.getState().Inmueble;
     for (let key = 0; key < plan.coverages.length; key++) {
       let option = plan.coverages[key].values;
       if (typeof option !== 'undefined') {
         for (let k = 0; k < option.length; k++) {
           let opt = option[k];
-          let inmueble = store.getState().Inmueble;
           // Inmueble
           if (opt.id === 1) {
             plan.coverages[key].values[k].hired =
@@ -278,6 +284,17 @@ class Coberturas extends Component {
         }
       }
     }
+    debugger
+    return plan;
+  }
+
+  /**
+   * Validate if each coverage field it show or not.
+   * @param {PlanSelectedInfoItem} plan Plan selected by user
+   * @returns {boolean}
+   */
+  showItem(plan) {
+    plan = Coberturas.setHiredCoverages(plan);
     /**
      * @type {{ values: { hired: boolean, values?: any[], value_show: string, errors?: string[] }[] }[]}
      */
