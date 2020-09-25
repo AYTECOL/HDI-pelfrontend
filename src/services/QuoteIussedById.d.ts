@@ -29,7 +29,7 @@ interface PlanSelectedInfo {
   Item: PlanSelectedInfoItem;
 }
 
-interface PlanSelectedInfoItem {
+export interface PlanSelectedInfoItem {
   coverages: Coverage[];
   assists: Assist[];
   calculation_of_pure_extra_shelter_premium: Array<
