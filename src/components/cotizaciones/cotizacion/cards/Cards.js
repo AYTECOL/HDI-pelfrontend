@@ -14,6 +14,7 @@ import InspectionPolicy from "../../../../services/InspectionPolicy";
 import AllBuildYears from "../../../../services/AllBuildYears";
 import Plans from "../plans/Plans";
 import Coberturas from "../coberturas/Coberturas";
+import { IDS_COVERAGE_VALUES } from "../../../../common";
 
 class Cards extends Component {
   constructor(props) {
@@ -274,6 +275,7 @@ class Cards extends Component {
     let name = component.nameModel;
 
     let type = null;
+    const { contents, simpleTheft } = IDS_COVERAGE_VALUES;
     if (name === "inmuebleasegudadoobras") {
       type = 3;
     } else if (name === "inmuebleasegudadotelefonos") {
@@ -281,7 +283,7 @@ class Cards extends Component {
     } else if (name === "inmuebleasegudadojoyas") {
       type = 6;
     } else if (name === "contenidoasegudado") {
-      type = 2;
+      type = [contents, simpleTheft];
     } else if (name === "inmuebleasegudado") {
       type = 1;
     }
