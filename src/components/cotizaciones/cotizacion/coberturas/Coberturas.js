@@ -164,7 +164,7 @@ class Coberturas extends Component {
             (contenido * parseInt(item.value)) / 100
           );
         }
-        if (value) 
+        if (typeof value === 'number')
           return Masknumbermoney.formatToMask(
             max ? (value > max ? max : value) : value
           );
