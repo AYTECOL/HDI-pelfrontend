@@ -1,0 +1,16 @@
+$positions: 'top', 'bottom', 'left', 'right';
+
+@each $position in $positions {
+  .tooltip-help {
+    &.bs-tooltip-#{$position} {
+      .arrow {
+        &::before {
+          border-#{$position}-color: #1a1347 !important;
+        }
+      }
+    }
+    .tooltip-inner {
+      background-color: #1a1347 !important;
+    }
+  }
+}

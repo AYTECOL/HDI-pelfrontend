@@ -25,6 +25,14 @@ const phoneTypes = {
     mobilePhone: '6'
 }
 
+const fieldsNames = {
+  fechadecontitucion: 'fechadecontitucion',
+  documentfield: 'documentfield',
+  email: 'email',
+  adresstype: 'adresstype',
+  address: 'address',
+};
+
 export default class Persona extends Component {
 
     _isMounted = false;
@@ -59,12 +67,12 @@ export default class Persona extends Component {
                 "telefono",
                 "genero",
                 "businessname",
-                "fechadecontitucion",
-                "email",
+                fieldsNames.fechadecontitucion,
+                fieldsNames.email,
                 "ciudad",
                 "sarlfaltActive",
-                "adresstype",
-                "address",
+                fieldsNames.adresstype,
+                fieldsNames.address,
                 "sarlaft",
             ]
         };
@@ -99,7 +107,7 @@ export default class Persona extends Component {
         } else if (this.state.typePerson === 7) {
             this.state.total = 3;
         } else if (this.state.typePerson === 4) {
-            this.state.total = 8;
+            this.state.total = 4;
         } else if (this.state.typePerson === 5 || this.state.typePerson === 6) {
             this.state.total = 11;
         }
@@ -340,6 +348,20 @@ export default class Persona extends Component {
         this._isMounted = false;
     }
 
+    isActived = (field) => {
+        const { typePerson } = this.state;
+        const { email, fechadecontitucion, adresstype, address } = fieldsNames;
+        if (typePerson === 4) {
+            const disabled = [fechadecontitucion, email, adresstype, address].some(
+              (fieldName) => fieldName === field
+            );
+            if (disabled) {
+              return false;
+            }
+        }
+        return true;
+    }
+
     changeTextFile = e => {
         let name = "";
         let status = true;
@@ -395,7 +417,7 @@ export default class Persona extends Component {
     changeDates = e => {
         this.changeValue({
             target: {
-                name: (this.state.typePerson === 4) ? 'fechadecontitucion' : 'fechadenacimiento',
+                name: (this.state.typePerson === 4) ? fieldsNames.fechadecontitucion : 'fechadenacimiento',
                 value: MomentJs(e).format("YYYY-MM-DD")
             }
         });
@@ -516,7 +538,7 @@ export default class Persona extends Component {
     getErrors() {
         const errors = [];
         const { typePerson, nit, person, errorFile } = this.state;
-        const { code, sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
+        const { value: documentfield, code, sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
         const address = String(person.address);
         const tipodetelefono = String(person.tipodetelefono);
         const telefono = String(person.telefono);
@@ -534,6 +556,11 @@ export default class Persona extends Component {
           ) {
             errors.push(field.name);
           }
+        }
+
+        let documentfieldInvalid = NumeroIdentificacion.validate(documentfield, code);
+        if (documentfieldInvalid === true) {
+            errors.push(fieldsNames.documentfield)
         }
         if (!code) errors.push('code');
         const rolesWithPhone = [
@@ -553,7 +580,11 @@ export default class Persona extends Component {
           if (!telefono || telefonoHasError) errors.push('telefono');
         }
 
-        if (Helpers.validationEmail(email) === false) errors.push("email");
+        if (
+          this.isActived(fieldsNames.email) &&
+          Helpers.validationEmail(email) === false
+        )
+          errors.push(fieldsNames.email);
 
         if (typeof sarlfalt_url !== "undefined" && sarlaft === "" && sarlfalt_url !== "") {
           errors.splice(errors.indexOf("sarlfalt"), 1);
@@ -569,8 +600,11 @@ export default class Persona extends Component {
           }
         }
         if (typePerson === 4) {
-          if (fechadecontitucion === "") {
-            errors.push("fechadecontitucion");
+          if (
+            fechadecontitucion === '' &&
+            this.isActived(fieldsNames.fechadecontitucion)
+          ) {
+            errors.push(fieldsNames.fechadecontitucion);
           }
         }
         if (typePerson !== 4 && typePerson !== 7) {
@@ -589,8 +623,12 @@ export default class Persona extends Component {
         if (errorFile) {
           errors.push('sarlfalt');
         }
-        if (!address || !isValidDirection(address) || address.length < 5)
-          errors.push('address');
+        
+        if (
+          this.isActived(fieldsNames.address) &&
+          (!address || !isValidDirection(address) || address.length < 5)
+        )
+          errors.push(fieldsNames.address);
         return errors;
     }
 
@@ -611,18 +649,6 @@ export default class Persona extends Component {
                         total = 15;
                     }
                 }
-
-                let v = document.querySelector('#documentfield').value;
-                if (v !== "") {
-                    let type = document.querySelector('#doc-type').value;
-                    let errorStatus = NumeroIdentificacion.validate(v, type);
-                    if (errorStatus === true) {
-                        document.querySelector('#documentfield').parentNode.className += " error";
-                    } else {
-                        document.querySelector('#documentfield').parentNode.className = document.querySelector('#documentfield').parentNode.className.replace(' error', '');
-                    }
-                }
-
 
                 const errors = this.getErrors();
                 const valid = !errors.length;
@@ -756,11 +782,11 @@ export default class Persona extends Component {
                                             </div>
                                             <div
                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className={classNames("email form-group ", hasErrorAddClass("email"))}><label
-                                                    htmlFor="email">Correo electrónico del Contacto</label>
+                                                <div className={classNames("email form-group ", hasErrorAddClass(fieldsNames.email))}><label
+                                                    htmlFor={fieldsNames.email}>Correo electrónico del Contacto</label>
                                                     <input type="text"
                                                         className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
-                                                        disabled={this.state.person.emailDisabled} name="email"
+                                                        disabled={this.state.person.emailDisabled} name={fieldsNames.email}
                                                         value={this.state.person.email}
                                                         onChange={this.changeValue} />
                                                     <small className="form-text only-errors">Falta información
@@ -942,115 +968,114 @@ export default class Persona extends Component {
                                                 </div>
                                             </React.Fragment>
                                         }
+                                        {this.state.typePerson === 4 &&
+                                            <React.Fragment>
+
+                                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                                    <div className={classNames("businessname form-group ", hasErrorAddClass('businessname'))}><label
+                                                        htmlFor="businessname">Razon social</label>
+                                                        <input type="text"
+                                                            className={"form-control " + (this.state.person.businessnameDisabled ? 'disabled' : '')}
+                                                            disabled={this.state.person.businessnameDisabled}
+                                                            name="businessname" value={this.state.person.businessname}
+                                                            onChange={this.changeValue} />
+                                                        <small className="form-text only-errors">Falta información requerida
+                                                            para el Tomador. Por favor revise el campo Razon social
+                                                    </small>
+                                                    </div>
+                                                </div>
+
+                                                {this.isActived(fieldsNames.fechadecontitucion) && <div className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
+                                                    <div className={classNames("fechadecontitucion form-group ", hasErrorAddClass(fieldsNames.fechadecontitucion))}>
+                                                        <label htmlFor="businessname">Fecha de constitución</label>
+                                                        <DatePicker name={fieldsNames.fechadecontitucion}
+                                                            value={this.state.person.fechadecontitucion}
+                                                            selected={this.state.fechadecontitucion}
+                                                            onChange={this.changeDates}
+                                                            showMonthDropdown
+                                                            showYearDropdown
+                                                            scrollableYearDropdown
+                                                            yearDropdownItemNumber={60}
+                                                            disabled={this.state.person.fechadecontitucionDisabled}
+                                                            className={"form-control " + (this.state.person.fechadecontitucionDisabled ? 'disabled' : '')} />
+                                                        <small className="form-text only-errors">Falta información requerida
+                                                            para el Tomador. Por favor revise el campo Fecha de constitución
+                                                    </small>
+                                                    </div>
+                                                </div>}
+
+                                            </React.Fragment>
+                                        }
+                                        {this.state.typePerson !== 7 &&
+                                            <React.Fragment>
+                                                {this.isActived(fieldsNames.email) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                                    <div className={classNames("email form-group ", hasErrorAddClass(fieldsNames.email))}><label
+                                                        htmlFor={fieldsNames.email}>Correo electrónico</label>
+                                                        <input type="text"
+                                                            className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
+                                                            disabled={this.state.person.emailDisabled} name={fieldsNames.email}
+                                                            value={this.state.person.email} onChange={this.changeValue} />
+                                                        <small className="form-text only-errors">Falta información requerida
+                                                            para el Tomador. Por favor revise el campo Correo electrónico
+                                                    </small>
+                                                    </div>
+                                                </div>}
+
+
+                                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div className={classNames("pisonumero form-group", hasErrorAddClass('ciudad'))}>
+                                                        <AutocompleteCities disabled={this.state.person.ciudadDisabled}
+                                                            label={"Ciudad o municipio"} name="ciudad"
+                                                            value={this.state.person.ciudad}
+                                                            onChange={this.changeValue} hideTitle={false} />
+                                                    </div>
+                                                </div>
+
+
+                                                {this.isActived(fieldsNames.adresstype) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+                                                    <div className={classNames("pisonumero form-group input-select", hasErrorAddClass(fieldsNames.adresstype))}><label
+                                                        htmlFor={fieldsNames.adresstype}>Tipo de dirección</label>
+                                                        <select value={this.state.person.adresstype} onChange={this.changeValue}
+                                                            name={fieldsNames.adresstype} id={fieldsNames.adresstype}
+                                                            className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
+                                                            disabled={this.state.person.adresstypeDisabled}>
+                                                            <option value="">Seleccione</option>
+                                                            <option value="9">Residencia</option>
+                                                            <option value="10">Oficina Principal</option>
+                                                            <option value="11">Sede Principal</option>
+                                                            <option value="12">Sucursal</option>
+                                                            <option value="13">Correspondencia</option>
+                                                            <option value="14">Apartado Aereo</option>
+                                                        </select>
+                                                        <small className="form-text only-errors">Falta información requerida
+                                                            para el Tomador. Por favor revise el campo Tipo de dirección
+                                                    </small>
+                                                    </div>
+                                                </div>}
+                                                {this.isActived(fieldsNames.address) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                    <div className={classNames("pisonumero form-group", hasErrorAddClass(fieldsNames.address))}>
+                                                        <label htmlFor={fieldsNames.address}>Dirección</label>
+                                                        <input
+                                                            type="text"
+                                                            className={"form-control " + (this.state.person.addressDisabled ? 'disabled' : '')}
+                                                            disabled={this.state.person.addressDisabled} name={fieldsNames.address}
+                                                            value={this.state.person.address} onChange={this.changeValue} onKeyPress={this.validateChange}
+                                                        />
+                                                        <small className="form-text only-errors">
+                                                            {validationMessages.addressRegex}
+                                                        </small>
+                                                    </div>
+                                                </div>}
+                                            </React.Fragment>
+                                        }
                                     </div>
 
-                                    {this.state.typePerson === 4 &&
-                                        <div className={"row fields-row"}>
-
-                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className={classNames("businessname form-group ", hasErrorAddClass('businessname'))}><label
-                                                    htmlFor="businessname">Razon social</label>
-                                                    <input type="text"
-                                                        className={"form-control " + (this.state.person.businessnameDisabled ? 'disabled' : '')}
-                                                        disabled={this.state.person.businessnameDisabled}
-                                                        name="businessname" value={this.state.person.businessname}
-                                                        onChange={this.changeValue} />
-                                                    <small className="form-text only-errors">Falta información requerida
-                                                        para el Tomador. Por favor revise el campo Razon social
-                                                </small>
-                                                </div>
-                                            </div>
-
-                                            <div className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
-                                                <div className={classNames("fechadecontitucion form-group ", hasErrorAddClass("fechadecontitucion"))}>
-                                                    <label htmlFor="businessname">Fecha de constitución</label>
-                                                    <DatePicker name="fechadecontitucion"
-                                                        value={this.state.person.fechadecontitucion}
-                                                        selected={this.state.fechadecontitucion}
-                                                        onChange={this.changeDates}
-                                                        showMonthDropdown
-                                                        showYearDropdown
-                                                        scrollableYearDropdown
-                                                        yearDropdownItemNumber={60}
-                                                        disabled={this.state.person.fechadecontitucionDisabled}
-                                                        className={"form-control " + (this.state.person.fechadecontitucionDisabled ? 'disabled' : '')} />
-                                                    <small className="form-text only-errors">Falta información requerida
-                                                        para el Tomador. Por favor revise el campo Fecha de constitución
-                                                </small>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    }
-
-                                    {this.state.typePerson !== 7 &&
-                                        <div className="row fields-row">
-                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className={classNames("email form-group ", hasErrorAddClass('email'))}><label
-                                                    htmlFor="email">Correo electrónico</label>
-                                                    <input type="text"
-                                                        className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
-                                                        disabled={this.state.person.emailDisabled} name="email"
-                                                        value={this.state.person.email} onChange={this.changeValue} />
-                                                    <small className="form-text only-errors">Falta información requerida
-                                                        para el Tomador. Por favor revise el campo Correo electrónico
-                                                </small>
-                                                </div>
-                                            </div>
-
-
-                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                <div className={classNames("pisonumero form-group", hasErrorAddClass('ciudad'))}>
-                                                    <AutocompleteCities disabled={this.state.person.ciudadDisabled}
-                                                        label={"Ciudad o municipio"} name="ciudad"
-                                                        value={this.state.person.ciudad}
-                                                        onChange={this.changeValue} hideTitle={false} />
-                                                </div>
-                                            </div>
-
-
-                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
-                                                <div className={classNames("pisonumero form-group input-select", hasErrorAddClass('adresstype'))}><label
-                                                    htmlFor="adresstype">Tipo de dirección</label>
-                                                    <select value={this.state.person.adresstype} onChange={this.changeValue}
-                                                        name="adresstype" id="adresstype"
-                                                        className={"form-control " + (this.state.person.emailDisabled ? 'disabled' : '')}
-                                                        disabled={this.state.person.adresstypeDisabled}>
-                                                        <option value="">Seleccione</option>
-                                                        <option value="9">Residencia</option>
-                                                        <option value="10">Oficina Principal</option>
-                                                        <option value="11">Sede Principal</option>
-                                                        <option value="12">Sucursal</option>
-                                                        <option value="13">Correspondencia</option>
-                                                        <option value="14">Apartado Aereo</option>
-                                                    </select>
-                                                    <small className="form-text only-errors">Falta información requerida
-                                                        para el Tomador. Por favor revise el campo Tipo de dirección
-                                                </small>
-                                                </div>
-                                            </div>
-                                            <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
-                                                <div className={classNames("pisonumero form-group", errors.find((error) => "address" === error) && "error")}>
-                                                    <label htmlFor="address">Dirección</label>
-                                                    <input
-                                                     type="text"
-                                                     className={"form-control " + (this.state.person.addressDisabled ? 'disabled' : '')}
-                                                     disabled={this.state.person.addressDisabled} name="address"
-                                                     value={this.state.person.address} onChange={this.changeValue} onKeyPress={this.validateChange}
-                                                    />
-                                                    <small className="form-text only-errors">
-                                                        {validationMessages.addressRegex}
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
                                     {(this.state.typePerson <= 3 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
                                         <div
                                             className={"row sarlaft"}>
                                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                                                 <div className={classNames("sarlaft form-group", hasErrorAddClass('sarlaft'))}>
-                                                    <label htmlFor="address">Es necesario el sarlaft</label>
+                                                    <label htmlFor={fieldsNames.address}>Es necesario el sarlaft</label>
                                                     <span>Adjunta el Sarlaft diligenciado</span>
                                                     <input type="file" className="form-control" name="sarlaft"
                                                         onChange={this.changeTextFile}  accept={Helpers.fileFormats.join(', ')+ ", .docx, .doc"} />

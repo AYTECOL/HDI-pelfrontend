@@ -19,15 +19,18 @@ class Masknumbermoney {
   /**
    *
    * @param {number} v
-   * @param {typeof Args} args
+   * @param {typeof Args | undefined} args
    */
-  static formatToMask(v, args) {
+  static formatToMask(v, args = {}) {
     if (v === undefined) v = 0;
     const options = { ...Args, ...args };
     /**
      * @type {string}
      */
-    let format = SimpleMaskMoney.formatToMask(v, options);
+    let format = SimpleMaskMoney.formatToMask(
+      typeof v === 'number' ? parseInt(v) : v,
+      options
+    );
 
     if (!options.fractionDigits)
       format =
@@ -35,7 +38,13 @@ class Masknumbermoney {
     return format;
   }
 
+  /**
+   *
+   * @param {string} v
+   * @param {*} arg
+   */
   static formatToNumber(v, arg) {
+    if (v === 'N/A') return 0;
     return SimpleMaskMoney.formatToNumber(v, { ...Args, ...arg });
   }
 }

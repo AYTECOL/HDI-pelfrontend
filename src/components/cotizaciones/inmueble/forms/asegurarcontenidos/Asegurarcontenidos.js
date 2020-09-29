@@ -4,6 +4,8 @@ import store from '../../../../../store';
 import {saveInmuebleValue} from '../../../../../actions';
 import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import Help from '../../../../../common/icons/help';
+import { Tooltip } from '../../../../Tooltip';
 
 class Asegurarcontenidos extends Component {
 
@@ -22,40 +24,45 @@ class Asegurarcontenidos extends Component {
         };
     }
 
+    static getContent = () => {
+        const state = store.getState();
+        const {
+          description: name = '',
+          min_value: min = 0,
+          max_value: max = 0,
+          maximumPerItem,
+        } = {
+          ...(state && state.allInsurableLimits[2]),
+        };
+        return {
+          name,
+          min,
+          max,
+          maximumPerItem,
+        };
+    };
+
     static name() {
-        try {
-            return store.getState().allInsurableLimits[2].description;
-        } catch (e) {
-            return "";
-        }
+        return Asegurarcontenidos.getContent().name;
     }
 
-    //99000
     static min() {
-        try {
-            return store.getState().allInsurableLimits[2].min_value;
-        } catch (e) {
-            return 0;
-        }
+        return Asegurarcontenidos.getContent().min;
     }
 
-    //1000000001
     static max() {
-        try {
-            return store.getState().allInsurableLimits[2].max_value;
-        } catch (e) {
-            return 0;
-        }
+        return Asegurarcontenidos.getContent().max;
     }
 
     static validateField(v) {
         let error = 0;
+        const content = Asegurarcontenidos.getContent();
         v = Masknumbermoney.formatToNumber(v);
         if (v.length < 1) error = 1;
         if (error === 0) {
-            if (v < Asegurarcontenidos.min()) {
+            if (v < content.min) {
                 error = 2;
-            } else if (v > Asegurarcontenidos.max()) {
+            } else if (v > content.max) {
                 error = 3;
             }
         }
@@ -137,12 +144,16 @@ class Asegurarcontenidos extends Component {
     };
 
     render() {
+        const content = Asegurarcontenidos.getContent();
+        const min = Masknumbermoney.formatToMask(content.min);
+        const max = Masknumbermoney.formatToMask(content.max);
+        const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
         return (
             <div className="row">
                 <div className="col col-12  col-md-6">
                     <div className={Asegurarcontenidos.nameModel + " no-icon form-group " + this.state.error}>
                         <label htmlFor={Asegurarcontenidos.nameModel}>¿Deseas
-                            asegurar {Asegurarcontenidos.name()}? </label>
+                            asegurar {content.name}? </label>
                         <ul className="select-item" id={Asegurarcontenidos.nameModel}>
                             <li className={((this.state.active === 1) ? 'active' : '')}
                                 onClick={this.validateEmpty({
@@ -165,8 +176,20 @@ class Asegurarcontenidos extends Component {
                     <div className="col col-12  col-md-6">
                         <div
                             className={Asegurarcontenidos.nameModelValue + " form-group " + (this.state.errorValue !== 0 ? 'error' : '')}>
-                            <label htmlFor={Asegurarcontenidos.nameModelValue}>Valor
-                                de {Asegurarcontenidos.name()}</label>
+                            <div className="d-flex">
+                                <label 
+                                  className="flex-fill"
+                                  htmlFor={Asegurarcontenidos.nameModelValue}
+                                  >
+                                    Valor de {content.name}
+                                </label>
+                                <Tooltip
+                                  placement="left"
+                                  title={`El valor máximo por cada artículo es de ${maximumPerItem}`}
+                                >
+                                  <Help className={'ml-auto icon-primary'} />
+                                </Tooltip>
+                            </div>
                             <input name={Asegurarcontenidos.nameModelValue} id={Asegurarcontenidos.nameModelValue}
                                    type="text"
                                    className={"form-control"}
@@ -175,19 +198,18 @@ class Asegurarcontenidos extends Component {
                                    onBlur={this.validateValue}
                                    onChange={this.validateValue}/>
                             <small
-                                className={"form-text"}>Mínimo. {Masknumbermoney.formatToMask(Asegurarcontenidos.min())} -
-                                Máximo. {Masknumbermoney.formatToMask(Asegurarcontenidos.max())}</small>
+                                className={"form-text"}>Mínimo. {min} - Máximo. {max}</small>
                             <small
                                 className={"form-text only-errors default-error " + (this.state.errorValue === 1 ? 'show' : 'hide')}>Por
                                 favor Ingrese el valor asegurado de Contenidos.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 2 ? 'show' : 'hide')}>Valor
-                                Asegurado de {Asegurarcontenidos.name()} es inferior al permitido.
+                                Asegurado de {content.name} es inferior al permitido.
                             </small>
                             <small
                                 className={"form-text only-errors " + (this.state.errorValue === 3 ? 'show' : 'hide')}>Valor
-                                Asegurado de {Asegurarcontenidos.name()} es superior al permitido.
+                                Asegurado de {content.name} es superior al permitido.
                             </small>
                         </div>
                     </div>

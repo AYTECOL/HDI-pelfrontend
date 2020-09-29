@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import ReactTooltip from 'react-tooltip';
 
 import store from '../../../../../store';
 import { saveIdentificationValue } from '../../../../../actions';
 import Help from '../../../../../common/icons/help';
+import { Tooltip } from '../../../../Tooltip';
 
 class Addressadditional extends Component {
   constructor(props) {
@@ -25,6 +25,9 @@ class Addressadditional extends Component {
         });
       }
     });
+  }
+
+  componentDidUpdate() {
   }
 
   componentWillUnmount() {
@@ -51,17 +54,13 @@ class Addressadditional extends Component {
           <label htmlFor="addressadditional">
             Información adicional de la dirección
           </label>
-          <div data-tip data-for="help-addressAdditional" className={'ml-auto'}>
-            <Help className={'ml-auto icon-primary'} />
-          </div>
-          <ReactTooltip
-            id="help-addressAdditional"
-            className="tooltip-help"
-            multiline
+          <Tooltip
+            className={'ml-auto'}
+            placement="left"
+            title="No olvides agregar la información adicional de la dirección. Por ejemplo, el número de torre, nombre de conjunto ETC."
           >
-            No olvides agregar la información adicional de la dirección. Por
-            ejemplo, el número de torre, nombre de conjunto ETC.
-          </ReactTooltip>
+            <Help className={'ml-auto icon-primary'} />
+          </Tooltip>
         </div>
         <input
           name="addressadditional"

@@ -12,6 +12,8 @@ import QuoteIussedById from "../../../../services/QuoteIussedById";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import BtnContinue from "../forms/btncontinue/BtnContinue";
 import Cards from "../cards/Cards";
+import { getRulesByCode } from "../../../../common";
+import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 
 class Tab extends Component {
     constructor(props) {
@@ -27,25 +29,44 @@ class Tab extends Component {
     //Make merge between default plan and seleted plan
     static assignValuesSaved(selected, normal) {
         for (let j = 0; j < normal.coverages.length; j++) {
-            if (typeof selected.coverages[j] !== "undefined" && normal.coverages[j].name === selected.coverages[j].name) {
-                normal.coverages[j].optional = selected.coverages[j].optional;
-                normal.coverages[j].checked = selected.coverages[j].checked;
-                if (typeof normal.coverages[j].values !== "undefined") {
-                    for (let i = 0; i < normal.coverages[j].values.length; i++) {
-                        if (typeof normal.coverages[j].values[i] !== "undefined") {
-                            if (typeof normal.coverages[j].values[i].values === "undefined") {
+            const coverage = normal.coverages[j]
+            if (typeof selected.coverages[j] !== "undefined" && coverage.name === selected.coverages[j].name) {
+                coverage.optional = selected.coverages[j].optional;
+                coverage.checked = selected.coverages[j].checked;
+                if (typeof coverage.values !== "undefined") {
+                    for (let i = 0; i < coverage.values.length; i++) {
+                        if (typeof coverage.values[i] !== "undefined") {
+                            if (typeof coverage.values[i].values === "undefined") {
                                 if (typeof selected.coverages[j].values !== "undefined") {
                                     if (typeof selected.coverages[j].values[i] !== "undefined") {
-                                        normal.coverages[j].values[i].value = selected.coverages[j].values[i].value;
-                                        normal.coverages[j].values[i].value_show = selected.coverages[j].values[i].value_show;
-                                        normal.coverages[j].values[i].value_to_quotate = selected.coverages[j].values[i].value_to_quotate;
+                                        const covergaValue = selected.coverages[j].values[i]
+                                        const {
+                                          value_to_quotate,
+                                        } = covergaValue;
+                                        const { max } = {
+                                          ...getRulesByCode(
+                                            covergaValue.code,
+                                            normal.coverages
+                                          ),
+                                        };
+                                        coverage.values[i].value = covergaValue.value;
+                                        if (max) {
+                                          const newValue = value_to_quotate > max ? max : value_to_quotate;
+                                          coverage.values[i].value_show = Masknumbermoney.formatToMask(
+                                            newValue
+                                          );
+                                          coverage.values[i].value_to_quotate = newValue;
+                                        } else {
+                                          coverage.values[i].value_show = covergaValue.value_show;
+                                          coverage.values[i].value_to_quotate = value_to_quotate;
+                                        }
                                     }
                                 }
                             } else {
                                 if (typeof selected.coverages[j].values[i].values !== "undefined") {
-                                    for (let k = 0; k < normal.coverages[j].values[i].values.length; k++) {
+                                    for (let k = 0; k < coverage.values[i].values.length; k++) {
                                         if (typeof selected.coverages[j].values[i].values[k] !== "undefined") {
-                                            normal.coverages[j].values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+                                            coverage.values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
                                         }
                                     }
                                 }
@@ -55,10 +76,10 @@ class Tab extends Component {
                 }
             } else {
                 //If no is equal the coverage so calc value for this.
-                if (typeof normal.coverages[j].values !== "undefined") {
-                    for (let i = 0; i < normal.coverages[j].values.length; i++) {
-                        if (typeof normal.coverages[j].values[i] !== "undefined") {
-                            normal = Coberturas.calcValue(normal, normal.coverages[j].values[i].id);
+                if (typeof coverage.values !== "undefined") {
+                    for (let i = 0; i < coverage.values.length; i++) {
+                        if (typeof coverage.values[i] !== "undefined") {
+                            normal = Coberturas.calcValue(normal, coverage.values[i].id);
                         }
                     }
                 }
@@ -153,7 +174,7 @@ class Tab extends Component {
         }
 
         if (status === true) {
-            this.getPlants(type);
+            this.getPlants(type, inmueble);
         }
         this.setState({
             ...this.state,
@@ -162,7 +183,7 @@ class Tab extends Component {
         });
     }
 
-    async getPlants(type) {
+    async getPlants(type, inmueble = null) {
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(this.props.match.params.id);
@@ -172,7 +193,8 @@ class Tab extends Component {
         if (typeof plan.plan_selected_info.Item !== "undefined") {
             let selected = plan.plan_selected_info.Item;
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
-            plans[indexSelected] = Tab.assignValuesSaved(selected, plans[indexSelected]);
+            const planSelected = Coberturas.setHiredCoverages(selected)
+            plans[indexSelected] = Tab.assignValuesSaved(planSelected, plans[indexSelected]);
             plans[indexSelected] = BtnContinue.toNumberCoverrange(plans[indexSelected]);
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
@@ -192,6 +214,7 @@ class Tab extends Component {
             if (indexSelected !== null && i === indexSelected) {
                 prospect = await DeterminePolizaPrima.get(plans[indexSelected], quotateId);
             } else {
+                plans[i] = Coberturas.setHiredCoverages(plans[i], inmueble);
                 //Calc values to show
                 plans[i] = Coberturas.calcValue(plans[i]);
                 //Add 'value_to_quotate' to each coverange

@@ -187,7 +187,7 @@
     background: #FFFFFF;
     border: 2px dashed rgba(52, 55, 65, 0.4);
     box-sizing: border-box;
-    padding: 16px 0;
+    padding: 16px 8px;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -213,6 +213,11 @@
     b {
       color: #28A3AF;
       font-weight: 500;
+    }
+  }
+  p.photo {
+    &::before {
+      background-image: url("../../../../../common/images/photo-camera.png");
     }
   }
 }
