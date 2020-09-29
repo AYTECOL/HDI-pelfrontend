@@ -1,3 +1,4 @@
+import { GoodsOverCost } from '../models/types';
 export interface QuoteIussed {
   quote_iussed_info: QuoteIussedInfo;
   risk_valoration_info: RiskValorationInfo;
@@ -10,11 +11,11 @@ interface MoreInfo {
   Item: MoreInfoItem;
 }
 
-interface MoreInfoItem {
+export interface MoreInfoItem {
   id: string;
   area: number;
   start_policy_date: string;
-  goods_over_cost: any[];
+  goods_over_cost: GoodsOverCost[];
   visit_person: VisitPerson;
 }
 
@@ -69,12 +70,12 @@ interface CalculationOfPureExtraShelterPremiumClass {
 }
 
 enum ColumnName {
-  Description = "Description",
-  Value = "Value"
+  Description = 'Description',
+  Value = 'Value',
 }
 
 enum ResultEnum {
-  JavaMathBigDecimal = "java.math.BigDecimal"
+  JavaMathBigDecimal = 'java.math.BigDecimal',
 }
 
 interface Coverage {
@@ -124,11 +125,11 @@ interface PremiumAfterAllTheRuleClass {
 }
 
 enum RowName {
-  Amparo = "Amparo",
-  AsignaPrimaAnual = "AsignaPrimaAnual",
-  Impuesto = "Impuesto",
-  PrimaComercialTM = "PrimaComercialTM",
-  Tasa = "Tasa"
+  Amparo = 'Amparo',
+  AsignaPrimaAnual = 'AsignaPrimaAnual',
+  Impuesto = 'Impuesto',
+  PrimaComercialTM = 'PrimaComercialTM',
+  Tasa = 'Tasa',
 }
 
 interface QuoteIussedInfo {

@@ -7,6 +7,8 @@ import {Provider} from 'react-redux';
 import './common/scss/reset.scss';
 import './common/fonts/stylesheet.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'jquery';
+import 'bootstrap/dist/js/bootstrap.js';
 import './common/scss/index.scss';
 
 import store from './store';

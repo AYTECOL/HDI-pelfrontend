@@ -3,11 +3,13 @@ import classNames from 'classnames';
 import { pure } from 'recompose';
 
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
-import { typeItems } from './typeItems';
 import Helpers from '../../../common/helpers/helpers/Helpers';
+import { typeItems } from '../../../common/typeItems';
+import { attachmentsItems } from './constants';
 
 /**
- * @typedef {{ label: string, id: string, min: number, max: number }} Item
+ * @typedef {import('../../../models/types').Attachment} Attachment
+ * @typedef {import('../../../models/types').AttachmentLocal} AttachmentLocal
  */
 
 /**
@@ -16,6 +18,7 @@ import Helpers from '../../../common/helpers/helpers/Helpers';
  *  item: Item,
  *  maximum: number,
  *  getErrors: ()=> { min?: boolean, max?: boolean } | null,
+ *  content: import('../../../models/types').GoodsOverCostLocal
  * }>}
  */
 const Content = pure(
@@ -31,9 +34,14 @@ const Content = pure(
     getErrors,
   }) => {
     const typeItem = content.type;
-    function showName(name) {
-      let s = name.split('/');
-      return s[s.length - 1];
+    /**
+     *
+     * @param {Attachment | AttachmentLocal} attachment
+     */
+    function showName(attachment) {
+      const { file } = attachment;
+      if (file instanceof File) return file.name;
+      else return attachment.name;
     }
     const errors = !typeItem ? false : getErrors();
     const isCellPhone = typeItems.cellPhones.id === item.id;
@@ -42,6 +50,7 @@ const Content = pure(
       typeItems.jewelry.id,
       typeItems.mobileContent.id,
     ].includes(item.id);
+    const { files } = content;
     return (
       <div className="moreitems">
         <div className="row">
@@ -121,33 +130,47 @@ const Content = pure(
           </div>
           {canAttachFile && (
             <div className="col-4 no-padding-right">
-              <div className="row sarlaft no-gutters">
-                <div className="col-12">
-                  <div className="sarlaft form-group">
-                    <input
-                      type="file"
-                      className="form-control"
-                      name="doc"
-                      onChange={changeTextFile}
-                      accept={Helpers.fileFormats.join(', ')}
-                    />
-                    {content.showDefaultTextFile ? (
-                      <p>
-                        Arrastre archivos para adjuntar, o <b>buscar</b>
-                      </p>
-                    ) : (
-                      <p>{showName(content.textFile)}</p>
-                    )}
-                    <span>
-                      Si no adjunta documentos, debe presentarlos el día del
-                      siniestro
-                    </span>
-                    <br />
-                    {content.errorFile && (
-                      <span className="error-file">{content.errorFile}</span>
-                    )}
-                  </div>
+              <div className="form-group">
+                <label>Factura o avaluo y fotografía</label>
+                <div className="row">
+                  {attachmentsItems.map(
+                    ({ code, className, icon, ...attachmentsItem }) => {
+                      const file = files && files[code];
+                      return (
+                        <div
+                          key={code}
+                          className={classNames('col px-1', className)}
+                        >
+                          <div className="row sarlaft no-gutters mt-0">
+                            <div className="col-12">
+                              <input
+                                type="file"
+                                className="form-control mt-0"
+                                name={code}
+                                onChange={(e) => changeTextFile(e, code)}
+                                accept={Helpers.fileFormats.join(', ')}
+                              />
+                              {!file ? (
+                                <p className={icon}>{attachmentsItem.label}</p>
+                              ) : (
+                                <p className={icon}>{showName(file)}</p>
+                              )}
+                              {file && file.errorFile && (
+                                <span className="error-file">
+                                  {file.errorFile}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
+                <small>
+                  Si no adjunta documentos, debe presentarlos el día del
+                  siniestro
+                </small>
               </div>
             </div>
           )}

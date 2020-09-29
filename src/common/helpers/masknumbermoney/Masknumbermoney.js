@@ -19,9 +19,9 @@ class Masknumbermoney {
   /**
    *
    * @param {number} v
-   * @param {typeof Args} args
+   * @param {typeof Args | undefined} args
    */
-  static formatToMask(v, args) {
+  static formatToMask(v, args = {}) {
     if (v === undefined) v = 0;
     const options = { ...Args, ...args };
     /**
