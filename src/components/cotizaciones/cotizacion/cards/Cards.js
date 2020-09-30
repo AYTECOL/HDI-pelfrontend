@@ -7,6 +7,7 @@ import Segurarinmueble from "../../inmueble/forms/segurarinmueble/Segurarinmuebl
 import Asegurarcontenidos from "../../inmueble/forms/asegurarcontenidos/Asegurarcontenidos";
 import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
 import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
+import MobileContents from "../../inmueble/forms/MobileContents";
 import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import { saveInmuebleValue } from "../../../../actions";
@@ -30,6 +31,10 @@ class Cards extends Component {
           type: 2
         },
         {
+          parent: MobileContents,
+          type: 6
+        },
+        {
           parent: Asegurarobras,
           type: 3
         },
@@ -40,7 +45,7 @@ class Cards extends Component {
         {
           parent: Asegurartelefonos,
           type: 5
-        }
+        },
       ],
       anoconstruidos: [],
       Inmueble: store.getState().Inmueble,
@@ -49,12 +54,12 @@ class Cards extends Component {
       inspection_detail: "",
       inspection: ""
     };
-    for (let i = 0; i < 5; i++) {
-      this.state.items[i].value = "";
-      this.state.items[i].active = true;
-      this.state.items[i].errorValue = 0;
-      this.state.items[i].inactiveToggle = false;
-      this.state.items[i].inactiveAdd = false;
+    for (const item of this.state.items) {
+      item.value = "";
+      item.active = true;
+      item.errorValue = 0;
+      item.inactiveToggle = false;
+      item.inactiveAdd = false;
     }
     this.state.items[0].active = false;
     this.getAllInsurableLimits();
@@ -117,7 +122,7 @@ class Cards extends Component {
       let inmueble = storeState.Inmueble;
       if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
         let items = this.state.items;
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < items.length; i++) {
           if (items[i].type === 1) {
             items[i].value = inmueble.inmuebleasegudadovalor;
             items[i].active = inmueble.inmuebleasegudado === 0;
@@ -133,10 +138,12 @@ class Cards extends Component {
           } else if (items[i].type === 5) {
             items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
             items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
+          } else if (items[i].type === 6) {
+            items[i].value = inmueble[MobileContents.nameModelValue];
+            items[i].active = inmueble[MobileContents.nameModel] === 0;
           }
+          if (items[i].value === '""') items[i].value = '';
         }
-        for (let i = 0; i < 5; i++)
-          if (items[i].value === '""') items[i].value = "";
         this.setState({
           ...this.state,
           items: items,
@@ -161,13 +168,12 @@ class Cards extends Component {
 
   validateToggle() {
     let newItems = this.state.items;
-    newItems[0].inactiveToggle =
-      newItems[1].active === true &&
-      newItems[2].active === true &&
-      newItems[3].active === true &&
-      newItems[4].active === true;
+    const inactiveToggle = newItems
+      .slice(1, newItems.length)
+      .some(({ active }) => !!active);
+    newItems[0].inactiveToggle = inactiveToggle;
     newItems[1].inactiveToggle = newItems[0].active === true;
-    for (let i = 2; i < 5; i++)
+    for (let i = 2; i < newItems.length; i++)
       newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
     this.setState({
       ...this.state,
@@ -286,6 +292,8 @@ class Cards extends Component {
       type = [contents, simpleTheft];
     } else if (name === "inmuebleasegudado") {
       type = 1;
+    } else if (name === MobileContents.nameModel) {
+      type = 7;
     }
     plans[index] = Coberturas.calcValue(plans[index], type);
     Plans.sendAndValidate(plans, index, this.props.match.params.id);
@@ -303,7 +311,7 @@ class Cards extends Component {
                   (this.state.items[key].active === true ? "active" : "")
                 }
               >
-                <div className={"image image-" + (key + 1)}>&nbsp;</div>
+                <div className={"image image-" + option.type}>&nbsp;</div>
                 <p>{option.parent.name()}</p>
                 <div className="wrapper-over">
                   <div

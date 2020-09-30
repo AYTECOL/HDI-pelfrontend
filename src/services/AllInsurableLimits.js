@@ -31,8 +31,8 @@ const Default = () => ({
     {
       insurable_limit_id: '5',
       description: 'Contenidos móviles',
-      min_value: 1000000,
-      max_value: 160000000,
+      min_value: 900000,
+      max_value: 50000000,
       maximumPerItem: typeItems.mobileContent.max,
     },
     {

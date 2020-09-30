@@ -6,6 +6,7 @@ import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Maskn
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import Help from '../../../../../common/icons/help';
 import { Tooltip } from '../../../../Tooltip';
+import MobileContents from '../MobileContents';
 
 class Asegurarcontenidos extends Component {
 
@@ -104,6 +105,16 @@ class Asegurarcontenidos extends Component {
                 value: 0,
             }));
 
+            store.dispatch(saveInmuebleValue({
+                name: MobileContents.nameModel,
+                value: 0,
+            }));
+            store.dispatch(
+              saveInmuebleValue({
+                name: MobileContents.nameModelValue,
+                value: 0,
+              })
+            );
 
             store.dispatch(saveInmuebleValue({
                 name: "inmuebleasegudadoobras",
