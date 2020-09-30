@@ -170,7 +170,7 @@ class Cards extends Component {
     let newItems = this.state.items;
     const inactiveToggle = newItems
       .slice(1, newItems.length)
-      .some(({ active }) => !!active);
+      .every(({ active }) => !!active);
     newItems[0].inactiveToggle = inactiveToggle;
     newItems[1].inactiveToggle = newItems[0].active === true;
     for (let i = 2; i < newItems.length; i++)

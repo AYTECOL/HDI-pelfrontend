@@ -484,7 +484,7 @@ class Coberturas extends Component {
          * todo Merge method with static method are equals
          * @param code code Of coverage that you want find
          */
-        function getCoverangeByCode(code) {
+        function getCoverageByCode(code) {
           const coverages = plan.coverages;
           for (const coverage of coverages)
             if (coverage.values)
@@ -494,20 +494,20 @@ class Coberturas extends Component {
                 }
               }
         }
-        let coverange = getCoverangeByCode(9667);
-        if (typeof coverange.values !== 'undefined') {
-          for (let i = 0; i < coverange.values.length; i++) {
-            if (coverange.values[i].id === planValue.id) {
+        const coverage = getCoverageByCode(9667);
+        if (coverage && coverage.values) {
+          for (let i = 0; i < coverage.values.length; i++) {
+            if (coverage.values[i].id === planValue.id) {
               if (
-                typeof coverange.values[i].value_show !== 'undefined' &&
+                typeof coverage.values[i].value_show !== 'undefined' &&
                 typeof planValue.value_show !== 'undefined'
               ) {
                 if (
                   Masknumbermoney.formatToNumber(
-                    coverange.values[i].value_show
+                    coverage.values[i].value_show
                   ) < Masknumbermoney.formatToNumber(planValue.value_show)
                 ) {
-                  let n = coverange.values[i].name
+                  let n = coverage.values[i].name
                     .toUpperCase()
                     .replace('VALOR ', '');
                   if (parseInt(planValue.code) === 3008) {
