@@ -3,6 +3,7 @@ import Store from '../store';
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
 import momentJs from 'moment';
 import AuthHeader from './AuthHeader';
+import MobileContents from '../components/cotizaciones/inmueble/forms/MobileContents';
 const BaseUrl = "/create-or-update-valoration/";
 
 class CreateOrUpdateValoration {
@@ -40,6 +41,8 @@ class CreateOrUpdateValoration {
 
             "inmueble_asegudado_joyas": risks.inmuebleasegudadojoyas,
             "inmueble_asegudado_joyasvalor": parseInt(risks.inmuebleasegudadojoyas) === 0 ? 0 : Masknumbermoney.formatToNumber(risks.inmuebleasegudadojoyasvalor),
+            [MobileContents.nameModel]: risks[MobileContents.nameModel],
+            [MobileContents.nameModelValue]: parseInt(risks[MobileContents.nameModelValue]) === 0 ? 0 : Masknumbermoney.formatToNumber(risks[MobileContents.nameModelValue]),
 
             "inmueble_asegudado_obras": risks.inmuebleasegudadoobras,
             "inmueble_asegudado_obrasvalor": parseInt(risks.inmuebleasegudadoobras) === 0 ? 0 : Masknumbermoney.formatToNumber(risks.inmuebleasegudadoobrasvalor),

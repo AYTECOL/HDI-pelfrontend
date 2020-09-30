@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import Asegurarjoyas from '../forms/asegurarjoyas/Asegurarjoyas';
 import Asegurarobras from '../forms/asegurarobras/Asegurarobras';
 import Asegurartelefonos from '../forms/asegurartelefonos/Asegurartelefonos';
+import MobileContents from '../forms/MobileContents';
 import store from "../../../../store";
 
 import './Asegurarcontenidoadicional.scss';
@@ -45,6 +46,11 @@ class Asegurarcontenidoadicional extends Component {
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 no-padding">
                             <Asegurarjoyas/>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col col-sm-12 col-md-12 col-lg-12 no-padding">
+                            <MobileContents/>
                         </div>
                     </div>
                     <div className="row">

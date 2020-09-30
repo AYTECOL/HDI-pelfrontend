@@ -5,6 +5,7 @@ import store from "../../../../../store";
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from "../asegurarcontenidos/Asegurarcontenidos";
 import Asegurarjoyas from "../asegurarjoyas/Asegurarjoyas";
+import MobileContents from '../MobileContents';
 import Asegurarobras from "../asegurarobras/Asegurarobras";
 import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
 
@@ -57,6 +58,15 @@ class Counter extends Component {
             if (inmueble.inmuebleasegudadojoyas === 1) {
                 total++;
                 if (Asegurarjoyas.validateField(inmueble.inmuebleasegudadojoyasvalor) !== 0) errors++;
+            }
+            if (inmueble[MobileContents.nameModel] === 1) {
+                total++;
+                if (
+                  MobileContents.validateField(
+                    inmueble[MobileContents.nameModelValue]
+                  ) !== 0
+                )
+                  errors++;
             }
             if (inmueble.inmuebleasegudadoobras === 1) {
                 total++;
