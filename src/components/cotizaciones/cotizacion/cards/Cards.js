@@ -281,7 +281,12 @@ class Cards extends Component {
     let name = component.nameModel;
 
     let type = null;
-    const { contents, simpleTheft, jewelry } = IDS_COVERAGE_VALUES;
+    const {
+      contents,
+      simpleTheft,
+      jewelry,
+      mobileContent,
+    } = IDS_COVERAGE_VALUES;
     if (name === "inmuebleasegudadoobras") {
       type = 3;
     } else if (name === "inmuebleasegudadotelefonos") {
@@ -293,7 +298,7 @@ class Cards extends Component {
     } else if (name === "inmuebleasegudado") {
       type = 1;
     } else if (name === MobileContents.nameModel) {
-      type = 7;
+      type = [mobileContent, jewelry];
     }
     plans[index] = Coberturas.calcValue(plans[index], type);
     Plans.sendAndValidate(plans, index, this.props.match.params.id);
