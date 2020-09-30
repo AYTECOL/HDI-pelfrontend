@@ -104,7 +104,7 @@ class Coberturas extends Component {
         if (some || !!item.changed) {
           return item.value_show;
         }
-        const { max } = {
+        const { max, min } = {
           ...getRulesByCode(item.code, plan && plan.coverages),
         };
         /**
@@ -166,16 +166,19 @@ class Coberturas extends Component {
         //Contenido mobile
         } else if (item.id === 7) {
           let contenido = Masknumbermoney.formatToNumber(
-            inmueble.contenidoasegudadovalor
+            inmueble[MobileContents.nameModelValue]
           );
           value = (
             (contenido * parseInt(item.value)) / 100
           );
         }
-        if (typeof value === 'number')
+        if (typeof value === 'number') {
+          value = max ? (value > max ? max : value) : value;
+          value = min ? (value < min ? min : value) : value;
           return Masknumbermoney.formatToMask(
             max ? (value > max ? max : value) : value
           );
+        }
       }
       return 'N/A';
     } catch (e) {
@@ -287,7 +290,6 @@ class Coberturas extends Component {
         }
       }
     }
-    debugger
     return plan;
   }
 
