@@ -4,8 +4,8 @@ import AuthHeader from './AuthHeader';
 const BaseUrl = "/prev-determine-poliza-prima/";
 
 class DeterminePolizaPrima {
-    static async get(data, id) {
-        let user = await ConsultaPersonas.getUser();
+    static async get(data, id, callLoading = true) {
+        let user = await ConsultaPersonas.getUser(callLoading);
         let authHeader =  new AuthHeader()
         authHeader = authHeader.generateAuthCode()
         authHeader['pelhauthorization'] = user !== null ? user['accessToken'] : ''

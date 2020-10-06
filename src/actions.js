@@ -78,6 +78,16 @@ export const setValidPlans = (data) => {
     return { type: 'VALID_PLANS', data: data };
 };
 
+/**
+ * @typedef {{ plan: number, state: boolean }} LoadingPlanPerspective
+ */
+/**
+ * @param {LoadingPlanPerspective} data
+ */
+export const setLoadingPlanPerspective = (data) => {
+    return { type: 'LOADING_PLANS_PERSPECTIVE', data: data };
+};
+
 
 //General
 const savePdfInfo = (data) => {
