@@ -210,7 +210,7 @@ class MobileContents extends Component {
                   (errorValue === 1 ? 'show' : 'hide')
                 }
               >
-                Por favor Ingrese el valor asegurado de Teléfonos Móviles.
+                Por favor Ingrese el valor asegurado de contenidos móviles.
               </small>
               <small
                 className={
