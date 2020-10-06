@@ -1,3 +1,8 @@
+.tab-loading {
+  width: 23px;
+  height: 23px;
+  color: #28a3af;
+}
 .contizacion-form {
   .container {
     max-width: 1185px;
@@ -53,13 +58,15 @@
         box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
         border-radius: 3px 3px 0 0;
 
-        span {
+        span, p, .tab-loading {
           color: white;
+        }
+
+        span {
           text-transform: capitalize;
         }
 
         p {
-          color: white;
           font-weight: bold;
         }
 

@@ -136,105 +136,110 @@ class MobileContents extends Component {
     const { active, errorValue } = this.state;
     return (
       <div className="row">
-        <div className="col col-12 col-md-6">
-          <div
-            className={
-              MobileContents.nameModel + ' form-group ' + this.state.error
-            }
-          >
-            <label htmlFor={MobileContents.nameModel}>
-              ¿Adicionalmente deseas asegurar {MobileContents.name()}?{' '}
-            </label>
-            <ul className="select-item" id={MobileContents.nameModel}>
-              <li
-                className={active === 1 ? 'active' : ''}
-                onClick={this.validateEmpty({
-                  value: 1,
-                  name: MobileContents.nameModel,
-                })}
-              >
-                Si
-              </li>
-              <li
-                className={active === 0 ? 'active' : ''}
-                onClick={this.validateEmpty({
-                  value: 0,
-                  name: MobileContents.nameModel,
-                })}
-              >
-                No
-              </li>
-            </ul>
+        <div className="col col-12 p-0">
+          <div className="row">
+            <div className="col col-12 col-md-6 form-group mb-0">
+              <label htmlFor={MobileContents.nameModel}>
+                ¿Adicionalmente deseas asegurar {MobileContents.name()}?{' '}
+              </label>
+            </div>
+            {active === 1 && (
+              <div className="col col-12 col-md-6 p-0 d-flex align-items-end">
+                <div className="d-flex flex-fill form-group mb-0 align-items-center">
+                  <label
+                    className="flex-fill mb-0"
+                    htmlFor={MobileContents.nameModelValue}
+                  >
+                    Valor de {MobileContents.name()}
+                  </label>
+                  <Tooltip
+                    placement="left"
+                    title={`El valor máximo por cada teléfono móvil es de ${maximumPerItem}`}
+                  >
+                    <Help className={'ml-auto icon-primary'} />
+                  </Tooltip>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-        {active === 1 ? (
-          <div className="col col-12 col-md-6">
-            <div
-              className={
-                MobileContents.nameModelValue +
-                ' form-group ' +
-                (errorValue !== 0 ? 'error' : '')
-              }
-            >
-              <div className="d-flex">
-                <label
-                  className="flex-fill"
-                  htmlFor={MobileContents.nameModelValue}
-                >
-                  Valor de {MobileContents.name()}
-                </label>
-                <Tooltip
-                  placement="left"
-                  title={`El valor máximo por cada teléfono móvil es de ${maximumPerItem}`}
-                >
-                  <Help className={'ml-auto icon-primary'} />
-                </Tooltip>
+        <div className="col col-12">
+          <div className="row">
+            <div className="col col-12 col-md-6">
+              <div
+                className={
+                  MobileContents.nameModel + ' form-group ' + this.state.error
+                }
+              >
+                <ul className="select-item" id={MobileContents.nameModel}>
+                  <li
+                    className={active === 1 ? 'active' : ''}
+                    onClick={this.validateEmpty({
+                      value: 1,
+                      name: MobileContents.nameModel,
+                    })}
+                  >
+                    Si
+                  </li>
+                  <li
+                    className={active === 0 ? 'active' : ''}
+                    onClick={this.validateEmpty({
+                      value: 0,
+                      name: MobileContents.nameModel,
+                    })}
+                  >
+                    No
+                  </li>
+                </ul>
               </div>
-              <input
-                name={MobileContents.nameModelValue}
-                id={MobileContents.nameModelValue}
-                type="text"
-                value={this.state.value}
-                className={'form-control'}
-                placeholder=""
-                onBlur={this.validateValue}
-                onChange={this.validateValue}
-              />
-              <small className={'form-text'}>
-                Mínimo. {Masknumbermoney.formatToMask(MobileContents.min())} -
-                Máximo. {Masknumbermoney.formatToMask(MobileContents.max())}
-              </small>
-              <small
-                className={
-                  'form-text only-errors default-error ' +
-                  (errorValue === 1 ? 'show' : 'hide')
-                }
-              >
-                Por favor Ingrese el valor asegurado de Teléfonos Móviles.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (errorValue === 2 ? 'show' : 'hide')
-                }
-              >
-                Valor Asegurado de {MobileContents.name()} es inferior al
-                permitido.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (errorValue === 3 ? 'show' : 'hide')
-                }
-              >
-                Valor Asegurado de {MobileContents.name()} es superior al
-                permitido.
-              </small>
             </div>
+            {active === 1 && (
+              <div className="col col-12 col-md-6">
+                <div
+                  className={
+                    MobileContents.nameModelValue +
+                    ' form-group no-label ' +
+                    (errorValue !== 0 ? 'error' : '')
+                  }
+                >
+                  <input
+                    name={MobileContents.nameModelValue}
+                    id={MobileContents.nameModelValue}
+                    type="text"
+                    value={this.state.value}
+                    className={'form-control'}
+                    placeholder=""
+                    onBlur={this.validateValue}
+                    onChange={this.validateValue}
+                  />
+                  <small className={'form-text'}>
+                    Mínimo. {Masknumbermoney.formatToMask(MobileContents.min())}{' '}
+                    - Máximo.{' '}
+                    {Masknumbermoney.formatToMask(MobileContents.max())}
+                  </small>
+                  {errorValue === 1 && (
+                    <small className={'form-text only-errors default-error'}>
+                      Por favor Ingrese el valor asegurado de contenidos
+                      móviles.
+                    </small>
+                  )}
+                  {errorValue === 2 && (
+                    <small className={'form-text only-errors'}>
+                      Valor Asegurado de {MobileContents.name()} es inferior al
+                      permitido.
+                    </small>
+                  )}
+                  {errorValue === 3 && (
+                    <small className={'form-text only-errors'}>
+                      Valor Asegurado de {MobileContents.name()} es superior al
+                      permitido.
+                    </small>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        ) : (
-          ''
-        )}
+        </div>
       </div>
     );
   }
