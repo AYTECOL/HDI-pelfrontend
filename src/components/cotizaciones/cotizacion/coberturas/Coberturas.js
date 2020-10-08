@@ -53,19 +53,27 @@ class Coberturas extends Component {
   }
 
   /**
+   * 
+   * @typedef {{ recalculate: boolean }} OptionsCalc
+   */
+  /**
    * Cal value for each coverage
    * @param plan selected plan
    * @param type if you want cal a single type coverage
+   * @param {OptionsCalc} options
    * @returns {*}
    */
-  static calcValue(plan, type = null) {
+  static calcValue(plan, type = null, options) {
     if (typeof plan === 'undefined') return;
     if (typeof plan.coverages === 'undefined') return;
     for (let i = 0; i < plan.coverages.length; i++) {
       let d = plan.coverages[i].values;
       if (typeof d !== 'undefined') {
         for (let j = 0; j < d.length; j++) {
-          const value_show = Coberturas.getValueFields(d[j], type, plan);
+          const value_show = Coberturas.getValueFields(d[j], type, {
+            plan,
+            ...options,
+          });
           if (typeof d[j].values === 'undefined') {
             plan.coverages[i].values[j].value_show = value_show;
           } else {
@@ -82,14 +90,17 @@ class Coberturas extends Component {
     return plan;
   }
 
+
+  
   /**
-   *
+   * 
    * @param item the current coverage in the iteration
    * @param {number|number[]} typeBase if you want cal a single type coverage
-   * @param plan current plan selected by user.
+   * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-  static getValueFields(item, typeBase = [], plan = null) {
+  static getValueFields(item, typeBase = [], options) {
+    const { plan, recalculate = false } = { ...options };
     try {
       const types = Array.isArray(typeBase) ? typeBase : [typeBase];
       let inmueble = store.getState().Inmueble;
@@ -100,8 +111,10 @@ class Coberturas extends Component {
           }
         }
       } else {
-        const some = !types.some((type) => type === item.id || type === null);
-        if (some || !!item.changed) {
+        const notExist = !types.some(
+          (type) => type === item.id || type === null
+        );
+        if (notExist || (!!item.changed && !recalculate)) {
           return item.value_show;
         }
         const { max, min } = {
@@ -247,8 +260,8 @@ class Coberturas extends Component {
   }
 
   /**
-   * 
-   * @param {PlanSelectedInfoItem} plan 
+   *
+   * @param {PlanSelectedInfoItem} plan
    */
   static setHiredCoverages(plan, inmuebleBase) {
     const inmueble = inmuebleBase || store.getState().Inmueble;
@@ -541,8 +554,8 @@ class Coberturas extends Component {
               );
             }
             if (
-              0 >= Masknumbermoney.formatToNumber(planValue.value_show)
-            ) {
+                0 >= Masknumbermoney.formatToNumber(planValue.value_show)
+              ) {
               errors.push(
                 'Valor Asegurado del amparo ' +
                   item.name +

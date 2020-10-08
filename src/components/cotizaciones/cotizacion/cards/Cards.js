@@ -300,7 +300,9 @@ class Cards extends Component {
     } else if (name === MobileContents.nameModel) {
       type = [mobileContent, jewelry];
     }
-    plans[index] = Coberturas.calcValue(plans[index], type);
+    plans[index] = Coberturas.calcValue(plans[index], type, {
+      recalculate: true,
+    });
     Plans.sendAndValidate(plans, index, this.props.match.params.id);
   }
 

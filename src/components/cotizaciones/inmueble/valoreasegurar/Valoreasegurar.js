@@ -13,11 +13,10 @@ class Valoreasegurar extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        Valoreasegurar.getAllInsurableLimits();
     }
 
-    static async getAllInsurableLimits() {
-        await AllInsurableLimits.get();
+    componentDidMount(){
+        AllInsurableLimits.get();
     }
 
     render() {
