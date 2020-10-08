@@ -145,7 +145,7 @@ class MobileContents extends Component {
             </div>
             {active === 1 && (
               <div className="col col-12 col-md-6 p-0 d-flex align-items-end">
-                <div className="d-flex flex-fill form-group mb-0 align-items-center">
+                <div className="d-flex flex-fill form-group mb-0 align-items-center h-100">
                   <label
                     className="flex-fill mb-0"
                     htmlFor={MobileContents.nameModelValue}
@@ -153,6 +153,7 @@ class MobileContents extends Component {
                     Valor de {MobileContents.name()}
                   </label>
                   <Tooltip
+                    className="mt-1"
                     placement="left"
                     title={`El valor máximo por cada teléfono móvil es de ${maximumPerItem}`}
                   >
