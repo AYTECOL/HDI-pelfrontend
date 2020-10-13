@@ -94,7 +94,7 @@ class Coberturas extends Component {
   
   /**
    * 
-   * @param item the current coverage in the iteration
+   * @param {{ id: number, hired: boolean }} item the current coverage in the iteration
    * @param {number|number[]} typeBase if you want cal a single type coverage
    * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
@@ -114,7 +114,7 @@ class Coberturas extends Component {
         const notExist = !types.some(
           (type) => type === item.id || type === null
         );
-        if (notExist || (!!item.changed && !recalculate)) {
+        if ((notExist || (!!item.changed && !recalculate)) && item.hired) {
           return item.value_show;
         }
         const { max, min } = {
@@ -188,9 +188,7 @@ class Coberturas extends Component {
         if (typeof value === 'number') {
           value = max ? (value > max ? max : value) : value;
           value = min ? (value < min ? min : value) : value;
-          return Masknumbermoney.formatToMask(
-            max ? (value > max ? max : value) : value
-          );
+          return Masknumbermoney.formatToMask(value);
         }
       }
       return 'N/A';
