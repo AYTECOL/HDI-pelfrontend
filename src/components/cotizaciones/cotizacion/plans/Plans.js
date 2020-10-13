@@ -28,22 +28,26 @@ class Index extends Component {
     /**
      * @param {any[]} plans
      */
-    static async sendAndValidate(plans, index, id) {
+    static async sendAndValidate(plans, index, id, refrechAllPlans = false) {
         Loading.toggle(true);
         await CreateOrUpdateValoration.save();
         await this.refrechPolizaPrima(plans, { planSelected: index, quotateId: id });
         Loading.toggle(false);
-        const otherPlans = [...plans.keys()].filter(
-          (key) => String(key) !== String(index)
-        );
-        const newPlans = plans.map((plan) => Coberturas.calcValue({ ...plan }));
-        for (const plan of otherPlans) {
+        if (refrechAllPlans) {
+          const otherPlans = [...plans.keys()].filter(
+            (key) => String(key) !== String(index)
+          );
+          const newPlans = plans.map((plan) =>
+            Coberturas.calcValue({ ...plan })
+          );
+          for (const plan of otherPlans) {
             this.refrechPolizaPrima(newPlans, {
               planSelected: plan,
               quotateId: id,
             }).catch((e) => {
               console.log(e);
             });
+          }
         }
     }
 
