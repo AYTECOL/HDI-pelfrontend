@@ -276,6 +276,9 @@ class Cards extends Component {
 
   sendAndValidate(component) {
     let storeState = store.getState();
+    /**
+     * @type {any[]}
+     */
     let plans = storeState.AllPlans;
     let index = storeState.indexPlan;
     let name = component.nameModel;
@@ -300,9 +303,11 @@ class Cards extends Component {
     } else if (name === MobileContents.nameModel) {
       type = [mobileContent, jewelry];
     }
-    plans[index] = Coberturas.calcValue(plans[index], type, {
-      recalculate: true,
-    });
+    plans = plans.map((plan) =>
+      Coberturas.calcValue(plan, type, {
+        recalculate: true,
+      })
+    );
     Plans.sendAndValidate(plans, index, this.props.match.params.id);
   }
 
