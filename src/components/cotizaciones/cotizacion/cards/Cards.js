@@ -308,7 +308,7 @@ class Cards extends Component {
         recalculate: true,
       })
     );
-    Plans.sendAndValidate(plans, index, this.props.match.params.id);
+    Plans.sendAndValidate(plans, index, this.props.match.params.id, true);
   }
 
   render() {
