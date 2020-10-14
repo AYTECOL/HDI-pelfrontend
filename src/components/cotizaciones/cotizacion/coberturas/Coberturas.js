@@ -595,7 +595,7 @@ class Coberturas extends Component {
       planValue.value_show = Masknumbermoney.formatToMask(value);
       planValue.changed = true;
         for (let j =0 ; j < plan.coverages.length; j ++) {
-          if (plan.coverages[j].code == 9691) {
+          if (plan.coverages[j].code == 9691 || plan.coverages[j].code_content == 9691) {
             for(let k = 0; k < plan.coverages[j].values.length; k++) {
               if(plan.coverages[j].values[k].code == 9688 ) {
                 if (planValue.code == 9692) {
