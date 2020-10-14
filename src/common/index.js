@@ -47,19 +47,36 @@ export const getRulesByCode = (code, coverages = undefined) => {
         min: 850000,
       };
     // Asegurado de Teléfonos Móviles
-    case 9691:
+    case 9688:
       if (coverages) {
         const hurtoCalificado = coverages.find(
           (element) => element.code_content === 9692
         );
         const values = (hurtoCalificado && hurtoCalificado.values) || [];
-
-        const value = getTotalCoverage(values);
+        const itemValue = values.find(
+          (element) => element.code === 9692
+        );
+        const value = Masknumbermoney.formatToNumber(itemValue.value_show)
         if (value)
           return {
             max: value,
           };
       }
+      case 9687:
+        if (coverages) {
+          const hurtoCalificado = coverages.find(
+            (element) => element.code_content === 9692
+          );
+          const values = (hurtoCalificado && hurtoCalificado.values) || [];
+          const itemValue = values.find(
+            (element) => element.code === 3017
+          );
+          const value = Masknumbermoney.formatToNumber(itemValue.value_show)
+          if (value)
+            return {
+              max: value,
+            };
+        }
       break;
     default:
       return null;
