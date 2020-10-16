@@ -21,7 +21,16 @@ export const getTotalCoverage = (values) => {
 };
 
 /**
- * @typedef {null | { max?:number, min?:number }} Rules
+ * @typedef {{
+ *  value: number,
+ *  max?: boolean,
+ *  min?: boolean,
+ *  }} FormatError
+ * @typedef {null | {
+    max?: number,
+    min?: number,
+    formatError?: (params: FormatError) => string,
+ *  }} Rules
  * @param {number} code  Of coverage in the iterator
  * @param {Coverage|undefined} coverages
  * @return {Rules}
@@ -53,30 +62,32 @@ export const getRulesByCode = (code, coverages = undefined) => {
           (element) => element.code_content === 9692
         );
         const values = (hurtoCalificado && hurtoCalificado.values) || [];
-        const itemValue = values.find(
-          (element) => element.code === 9692
+        const itemValue = values.find((element) => element.code === 9692);
+        const value = Masknumbermoney.formatToNumber(itemValue.value_show);
+        if (value)
+          return {
+            max: value,
+            formatError: ({ max }) => {
+              if (max) {
+                return 'Valor Asegurado de Contenidos es superior al permitido';
+              }
+            },
+          };
+      }
+      break;
+    case 9687:
+      if (coverages) {
+        const hurtoCalificado = coverages.find(
+          (element) => element.code_content === 9692
         );
-        const value = Masknumbermoney.formatToNumber(itemValue.value_show)
+        const values = (hurtoCalificado && hurtoCalificado.values) || [];
+        const itemValue = values.find((element) => element.code === 3017);
+        const value = Masknumbermoney.formatToNumber(itemValue.value_show);
         if (value)
           return {
             max: value,
           };
       }
-      case 9687:
-        if (coverages) {
-          const hurtoCalificado = coverages.find(
-            (element) => element.code_content === 9692
-          );
-          const values = (hurtoCalificado && hurtoCalificado.values) || [];
-          const itemValue = values.find(
-            (element) => element.code === 3017
-          );
-          const value = Masknumbermoney.formatToNumber(itemValue.value_show)
-          if (value)
-            return {
-              max: value,
-            };
-        }
       break;
     default:
       return null;
