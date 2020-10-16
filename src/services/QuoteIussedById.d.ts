@@ -78,7 +78,7 @@ enum ResultEnum {
   JavaMathBigDecimal = 'java.math.BigDecimal',
 }
 
-interface Coverage {
+export interface Coverage {
   code_content: number;
   values?: CoverageValue[];
   deductible?: Deductible[];
@@ -89,7 +89,7 @@ interface Coverage {
   code?: number;
 }
 
-interface Deductible {
+export interface Deductible {
   name: string;
   minimum_salary: number;
   default: boolean;
@@ -97,7 +97,7 @@ interface Deductible {
   percentage: number;
 }
 
-interface CoverageValue {
+export interface CoverageValue {
   value_to_quotate: number;
   value_show?: string;
   code: number;
@@ -113,12 +113,12 @@ interface CoverageValue {
   values?: PurpleValue[];
 }
 
-interface PurpleValue {
+export interface PurpleValue {
   limit: number;
   default: boolean;
 }
 
-interface PremiumAfterAllTheRuleClass {
+export interface PremiumAfterAllTheRuleClass {
   columnNames: ColumnName[];
   results: Array<Array<Array<number | ResultEnum> | string>>;
   rowNames: RowName[];

@@ -101,6 +101,7 @@ class Coberturas extends Component {
    */
   static getValueFields(item, typeBase = [], options) {
     const { plan, recalculate = false } = { ...options };
+    if (!item.hired) return Masknumbermoney.formatToMask(0);
     try {
       const types = Array.isArray(typeBase) ? typeBase : [typeBase];
       let inmueble = store.getState().Inmueble;
@@ -454,14 +455,20 @@ class Coberturas extends Component {
     if (!value.hired) return null;
     const rules = getRulesByCode(value.code, coverages);
     if (rules) {
-      const { max, min } = rules;
+      const { max, min, formatError } = rules;
       const errors = [];
       if (max && formatValue > max) {
-        errors.push(`${value.name} es superior al permitido.`);
+        errors.push(
+          (formatError && formatError({ max: true, value })) ||
+            `${value.name} es superior al permitido.`
+        );
       }
       if (min && formatValue < min) {
         if (!!value.value || value.value !== formatValue) {
-          errors.push(`${value.name} es inferior al permitido.`);
+          errors.push(
+            (formatError && formatError({ min: true, value })) ||
+              `${value.name} es inferior al permitido.`
+          );
         }
       }
       return (errors.length && errors) || undefined;
@@ -576,6 +583,11 @@ class Coberturas extends Component {
   };
 
   inputChange = (k, key, type) => (e) => {
+    /**
+     * @type {{
+     *  coverages: import('../../../../services/QuoteIussedById').Coverage[]
+     * }}
+     */
     let plan = this.state.plan;
     let item = plan.coverages[key];
 
@@ -583,35 +595,35 @@ class Coberturas extends Component {
       this.sendAndValidate(plan);
     }
     const value = e.target.value;
-    const errors = Coberturas.getErrorsCoverage(
-      plan,
-      item.values[k],
-      key,
-      type
-    );
+
     //Input
     if (type === 1) {
       const planValue = item.values[k];
       planValue.value_show = Masknumbermoney.formatToMask(value);
       planValue.changed = true;
-        for (let j =0 ; j < plan.coverages.length; j ++) {
-          if (plan.coverages[j].code == 9691 || plan.coverages[j].code_content == 9691) {
-            for(let k = 0; k < plan.coverages[j].values.length; k++) {
-              if(plan.coverages[j].values[k].code == 9688 ) {
-                if (planValue.code == 9692) {
-                  plan.coverages[j].values[k].value_show = planValue.value_show
-                  plan.coverages[j].values[k].value_to_quotate = planValue.value_to_quotate
-                }
+      for (let j = 0; j < plan.coverages.length; j++) {
+        if (
+          plan.coverages[j].code == 9691 ||
+          plan.coverages[j].code_content == 9691
+        ) {
+          for (let k = 0; k < plan.coverages[j].values.length; k++) {
+            if (plan.coverages[j].values[k].code == 9688) {
+              if (planValue.code == 9692) {
+                plan.coverages[j].values[k].value_show = planValue.value_show;
+                plan.coverages[j].values[k].value_to_quotate =
+                  planValue.value_to_quotate;
               }
-              if(plan.coverages[j].values[k].code == 9687 ) {
-                if (planValue.code == 3017) {
-                  plan.coverages[j].values[k].value_show = planValue.value_show
-                  plan.coverages[j].values[k].value_to_quotate = planValue.value_to_quotate
-                }
+            }
+            if (plan.coverages[j].values[k].code == 9687) {
+              if (planValue.code == 3017) {
+                plan.coverages[j].values[k].value_show = planValue.value_show;
+                plan.coverages[j].values[k].value_to_quotate =
+                  planValue.value_to_quotate;
               }
             }
           }
         }
+      }
     }
     //Select
     else if (type === 2) {
@@ -624,11 +636,36 @@ class Coberturas extends Component {
         item.values[k].values[value].limit
       );
     }
-    item.values[k].errors = errors;
+    const errors = Coberturas.getErrorsCoverage(
+      plan,
+      item.values[k],
+      key,
+      type
+    );
     const valid = !(errors && errors.length);
-    this.setState({ plan }, () => {
-      this.toggleValid(valid);
-    });
+    const { coverages } = plan;
+    const newPlan = {
+      ...plan,
+      coverages: coverages.map((coverage, i) => {
+        if (key === i) {
+          const { values } = coverage;
+          return {
+            ...coverage,
+            values: values.map((value, j) => k === j ? { ...value, errors } : value
+            ),
+          };
+        }
+        return coverage;
+      }),
+    };
+    this.setState(
+      {
+        plan: newPlan,
+      },
+      () => {
+        this.toggleValid(valid);
+      }
+    );
   };
 
   toggleValid = (valid) => {
