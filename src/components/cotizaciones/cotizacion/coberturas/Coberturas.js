@@ -595,6 +595,24 @@ class Coberturas extends Component {
       const planValue = item.values[k];
       planValue.value_show = Masknumbermoney.formatToMask(value);
       planValue.changed = true;
+        for (let j =0 ; j < plan.coverages.length; j ++) {
+          if (plan.coverages[j].code == 9691 || plan.coverages[j].code_content == 9691) {
+            for(let k = 0; k < plan.coverages[j].values.length; k++) {
+              if(plan.coverages[j].values[k].code == 9688 ) {
+                if (planValue.code == 9692) {
+                  plan.coverages[j].values[k].value_show = planValue.value_show
+                  plan.coverages[j].values[k].value_to_quotate = planValue.value_to_quotate
+                }
+              }
+              if(plan.coverages[j].values[k].code == 9687 ) {
+                if (planValue.code == 3017) {
+                  plan.coverages[j].values[k].value_show = planValue.value_show
+                  plan.coverages[j].values[k].value_to_quotate = planValue.value_to_quotate
+                }
+              }
+            }
+          }
+        }
     }
     //Select
     else if (type === 2) {
