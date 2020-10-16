@@ -101,6 +101,7 @@ class Coberturas extends Component {
    */
   static getValueFields(item, typeBase = [], options) {
     const { plan, recalculate = false } = { ...options };
+    if (!item.hired) return Masknumbermoney.formatToMask(0);
     try {
       const types = Array.isArray(typeBase) ? typeBase : [typeBase];
       let inmueble = store.getState().Inmueble;
