@@ -60,6 +60,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
         if (value)
           return {
             max: value,
+            min: 10000000,
           };
       }
       case 9687:
@@ -75,6 +76,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
           if (value)
             return {
               max: value,
+              min: 900000,
             };
         }
       break;

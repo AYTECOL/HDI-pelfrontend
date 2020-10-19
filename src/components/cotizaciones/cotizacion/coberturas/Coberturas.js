@@ -583,12 +583,7 @@ class Coberturas extends Component {
       this.sendAndValidate(plan);
     }
     const value = e.target.value;
-    const errors = Coberturas.getErrorsCoverage(
-      plan,
-      item.values[k],
-      key,
-      type
-    );
+
     //Input
     if (type === 1) {
       const planValue = item.values[k];
@@ -624,6 +619,12 @@ class Coberturas extends Component {
         item.values[k].values[value].limit
       );
     }
+    const errors = Coberturas.getErrorsCoverage(
+      plan,
+      item.values[k],
+      key,
+      type
+    );
     item.values[k].errors = errors;
     const valid = !(errors && errors.length);
     this.setState({ plan }, () => {
