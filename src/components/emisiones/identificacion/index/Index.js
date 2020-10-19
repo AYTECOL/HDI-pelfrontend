@@ -311,8 +311,7 @@ class Index extends Component {
                     {(hasExequias === true || hasAccident === true||true) &&
                     <div className="row justify-content-center">
                         <div className="col col-md-8 col-lg-8 last-items-emision">
-                            <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
-                                asegurar a personas adicionales. ¿Deseas hacerlo?</p>
+                            <p>Has contratado algunas coberturas (exequias y accidentes personales) puedes indicar los beneficiarios en caso de fallecimiento. ¿Deseas hacerlo?</p>
                             <div className="more-items" onClick={this.togglePopUpPersona(-1, 5)}>
                                 <button type="button" className="more-btn">+</button>
                                 <p>Si, agregar persona</p>
