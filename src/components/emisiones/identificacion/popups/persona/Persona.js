@@ -699,7 +699,7 @@ export default class Persona extends Component {
                             </div>
                             <div
                                 className={"modal-header " + (this.state.typePerson === 5 || this.state.typePerson === 6 ? '' : 'hide')}>
-                                <h5 className="modal-title">Personas adicionales</h5>
+                                <h5 className="modal-title">Beneficiario en caso de fallecimiento</h5>
                                 <p className="modal-subtitle">Ingresa la información de las persona, selecciona los
                                     amparos que deseas para ella</p>
                                 <button type="button" className="close" aria-label="Close"
