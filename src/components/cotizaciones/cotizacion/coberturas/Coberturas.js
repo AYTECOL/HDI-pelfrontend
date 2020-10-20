@@ -532,7 +532,7 @@ class Coberturas extends Component {
                     errors.push(
                       'Valor asegurado del amparo ' +
                         item.name +
-                        ', es mayor al reportado en “' +
+                        ', es superior al reportado en “' +
                         n +
                         '” del amparo de INCENDIO '
                     );
@@ -540,7 +540,7 @@ class Coberturas extends Component {
                     errors.push(
                       'Valor asegurado de ' +
                         n +
-                        ' es mayor al reportado en INCENDIO'
+                        ' es superior al reportado en INCENDIO'
                     );
                   }
                 }
@@ -642,10 +642,7 @@ class Coberturas extends Component {
       key,
       type
     );
-<<<<<<< HEAD
     item.values[k].errors = errors;
-=======
->>>>>>> 753c1898e209bb8c7f2c6918697d0dd228cde495
     const valid = !(errors && errors.length);
     const { coverages } = plan;
     const newPlan = {
