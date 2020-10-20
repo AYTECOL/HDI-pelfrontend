@@ -21,9 +21,23 @@ export const getTotalCoverage = (values) => {
 };
 
 /**
- * @typedef {null | { max?:number, min?:number }} Rules
+ *
+ * @typedef {import('../services/QuoteIussedById').Coverage} Coverage
+ */
+/**
+ * @typedef {{
+ *  value: number,
+ *  coverage: Coverage
+ *  max?: boolean,
+ *  min?: boolean,
+ *  }} FormatError
+ * @typedef {null | {
+    max?: number,
+    min?: number,
+    formatError?: (params: FormatError) => string,
+ *  }} Rules
  * @param {number} code  Of coverage in the iterator
- * @param {Coverage|undefined} coverages
+ * @param {Coverage[]|undefined} coverages
  * @return {Rules}
  */
 export const getRulesByCode = (code, coverages = undefined) => {
@@ -53,10 +67,8 @@ export const getRulesByCode = (code, coverages = undefined) => {
           (element) => element.code_content === 9692
         );
         const values = (hurtoCalificado && hurtoCalificado.values) || [];
-        const itemValue = values.find(
-          (element) => element.code === 9692
-        );
-        const value = Masknumbermoney.formatToNumber(itemValue.value_show)
+        const itemValue = values.find((element) => element.code === 9692);
+        const value = Masknumbermoney.formatToNumber(itemValue.value_show);
         if (value)
           return {
             max: value,
@@ -80,6 +92,31 @@ export const getRulesByCode = (code, coverages = undefined) => {
             };
         }
       break;
+    case 3017:
+      return { min: 900000 };
+    case 9687:
+      const common = {
+        min: 900000,
+      };
+      if (coverages) {
+        const hurtoCalificado = coverages.find(
+          (element) => element.code_content === 9692
+        );
+        const values = (hurtoCalificado && hurtoCalificado.values) || [];
+        const itemValue = values.find((element) => element.code === 3017);
+        const value = Masknumbermoney.formatToNumber(itemValue.value_show);
+        if (value)
+          return {
+            max: value,
+            formatError: ({ max }) => {
+              if (max) {
+                return 'Valor Asegurado de Contenidos es superior al permitido';
+              }
+            },
+            ...common,
+          };
+      }
+      return { ...common };
     default:
       return null;
   }
