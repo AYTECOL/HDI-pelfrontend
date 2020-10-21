@@ -13,6 +13,7 @@ import MobileContents from '../../inmueble/forms/MobileContents';
 /**
  * @typedef {import('../../../../services/QuoteIussedById').QuoteIussed} QuoteIussed
  * @typedef {import('../../../../services/QuoteIussedById').PlanSelectedInfoItem} PlanSelectedInfoItem
+ * @typedef {import('../../../../services/QuoteIussedById').Coverage} Coverage
  */
 
 class Coberturas extends Component {
@@ -313,7 +314,7 @@ class Coberturas extends Component {
   showItem(plan) {
     plan = Coberturas.setHiredCoverages(plan);
     /**
-     * @type {{ values: { hired: boolean, values?: any[], value_show: string, errors?: string[] }[] }[]}
+     * @type {Coverage[]}
      */
     const coverages = plan.coverages || [];
     let valid = true;
@@ -475,8 +476,16 @@ class Coberturas extends Component {
     }
   };
 
+  /**
+   * @param {PlanSelectedInfoItem} plan
+   * @param {import('../../../../services/QuoteIussedById').CoverageValue} planValue
+   * @param {number} key
+   * @param {number} type
+   */
   static getErrorsCoverage = (plan, planValue, key, type) => {
     let item = plan.coverages[key];
+    const { checked } = item;
+    if (!checked) return [];
     const otrosContenidos = plan.coverages.find(
       (element) => element.code_content === 9670
     );
@@ -585,7 +594,7 @@ class Coberturas extends Component {
   inputChange = (k, key, type) => (e) => {
     /**
      * @type {{
-     *  coverages: import('../../../../services/QuoteIussedById').Coverage[]
+     *  coverages: Coverage[]
      * }}
      */
     let plan = this.state.plan;
