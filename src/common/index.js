@@ -77,13 +77,25 @@ export const getRulesByCode = (code, coverages = undefined) => {
         if (value)
           return {
             max: value,
-            formatError: ({ max }) => {
-              if (max) {
-                return 'Valor Asegurado de Contenidos es superior al permitido';
-              }
-            },
+            min: 10000000,
           };
       }
+      case 9687:
+        if (coverages) {
+          const hurtoCalificado = coverages.find(
+            (element) => element.code_content === 9692
+          );
+          const values = (hurtoCalificado && hurtoCalificado.values) || [];
+          const itemValue = values.find(
+            (element) => element.code === 3017
+          );
+          const value = Masknumbermoney.formatToNumber(itemValue.value_show)
+          if (value)
+            return {
+              max: value,
+              min: 900000,
+            };
+        }
       break;
     case 3017:
       return { min: 900000 };
