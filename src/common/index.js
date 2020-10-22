@@ -78,6 +78,11 @@ export const getRulesByCode = (code, coverages = undefined) => {
           return {
             max: value,
             min: 10000000,
+            formatError: ({ max }) => {
+              if (max) {
+                return 'Valor Asegurado de Contenidos es superior al permitido';
+              }
+            },
           };
       }
       break;
@@ -100,7 +105,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
             max: value,
             formatError: ({ max }) => {
               if (max) {
-                return 'Valor Asegurado de Contenidos es superior al permitido';
+                return 'Valor Asegurado de objetos de valor y obras de Arte es superior al permitido';
               }
             },
             ...common,
