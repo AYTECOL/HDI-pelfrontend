@@ -41,7 +41,7 @@ class Index extends Component {
             Coberturas.calcValue({ ...plan })
           );
           for (const plan of otherPlans) {
-            this.refrechPolizaPrima(newPlans, {
+            await this.refrechPolizaPrima(newPlans, {
               planSelected: plan,
               quotateId: id,
             }).catch((e) => {
@@ -54,13 +54,13 @@ class Index extends Component {
     static async refrechPolizaPrima(plans, { planSelected: i, quotateId }) {
         let plan = plans[i];
         plan = BtnContinue.toNumberCoverrange(plan);
-        store.dispatch(setLoadingPlanPerspective({ plan: i, state: true }));
+        await store.dispatch(setLoadingPlanPerspective({ plan: i, state: true }));
         let total = await DeterminePolizaPrima.get(plan, quotateId, false);
-        store.dispatch(setLoadingPlanPerspective({ plan: i, state: false }));
+        await store.dispatch(setLoadingPlanPerspective({ plan: i, state: false }));
         if (typeof total.prospect !== "undefined") {
             plans[i].value = total.prospect;
             plans[i].prima = total;
-            store.dispatch(AllPlansCreator(plans));
+            await store.dispatch(AllPlansCreator(plans));
         }
     }
 
