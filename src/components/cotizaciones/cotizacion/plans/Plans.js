@@ -38,10 +38,10 @@ class Index extends Component {
             (key) => String(key) !== String(index)
           );
           const newPlans = plans.map((plan) =>
-            Coberturas.calcValue({ ...plan })
+            Coberturas.calcValue({ ...Coberturas.setHiredCoverages(plan) })
           );
           for (const plan of otherPlans) {
-            await this.refrechPolizaPrima(newPlans, {
+            this.refrechPolizaPrima(newPlans, {
               planSelected: plan,
               quotateId: id,
             }).catch((e) => {
@@ -56,12 +56,14 @@ class Index extends Component {
         plan = BtnContinue.toNumberCoverrange(plan);
         await store.dispatch(setLoadingPlanPerspective({ plan: i, state: true }));
         let total = await DeterminePolizaPrima.get(plan, quotateId, false);
-        await store.dispatch(setLoadingPlanPerspective({ plan: i, state: false }));
-        if (typeof total.prospect !== "undefined") {
+        store.dispatch((dispatch) => {
+          dispatch(setLoadingPlanPerspective({ plan: i, state: false }));
+          if (typeof total.prospect !== 'undefined') {
             plans[i].value = total.prospect;
             plans[i].prima = total;
-            await store.dispatch(AllPlansCreator(plans));
-        }
+            dispatch(AllPlansCreator(plans));
+          }
+        });
     }
 
     componentDidMount() {
@@ -83,11 +85,14 @@ class Index extends Component {
     }
 
     changeIndexPlan = index => e => {
-        store.dispatch(indexPlanSelected(index));
-        let storeState = store.getState();
-        let plans = storeState.AllPlans;
-        plans[index] = Coberturas.calcValue(plans[index]);
-        store.dispatch(AllPlansCreator(plans));
+        store.dispatch((dispatch) => {
+          dispatch(indexPlanSelected(index));
+          let storeState = store.getState();
+          let plans = storeState.AllPlans;
+          const plan = Coberturas.setHiredCoverages(plans[index]);
+          plans[index] = Coberturas.calcValue(plan);
+          dispatch(AllPlansCreator(plans));
+        });
     };
 
     render() {
