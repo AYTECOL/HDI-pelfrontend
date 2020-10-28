@@ -274,73 +274,105 @@ class Index extends Component {
             typePerson,
         } = this.state
         return (
-            <form autoComplete="off" className="index-form emision">
-                <div className="container">
-                    <div className="row">
-                        <div className="col col-sm-12 col-md-12 col-lg-12 title">
-                            <h2>Cuéntanos sobre las personas</h2>
-                            <p>Diligencia la siguiente información, agrega a los beneficiarios, asigna roles y no
-                                olvides ningún dato, puede ser importante en el futuro.</p>
-                        </div>
-                    </div>
-
-                    <Card persons={persons}
-                          showEdit={true}
-                          togglePopUpPersona={this.togglePopUpPersona}
-                          togglePopUpDelete={this.togglePopUpDelete}/>
-
-                    <div className="row">
-                        <div className="col wrapper-more-items">
-                            <div className="more-items" onClick={this.togglePopUpPersona(-1)}>
-                                <button type="button" className="more-btn">+</button>
-                                <p>Agregar persona</p>
-                            </div>
-                            <div className="more-items" onClick={this.togglePopUpPersona(-1, 4)}>
-                                <button type="button" className="more-btn">+</button>
-                                <p>Agregar beneficiario oneroso</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row no-gutters">
-                        <div className="col">
-                            <hr/>
-                        </div>
-                    </div>
-
-                    {(hasExequias === true || hasAccident === true) &&
-                    <div className="row justify-content-center">
-                        <div className="col col-md-8 col-lg-8 last-items-emision">
-                            <p>Has contratado algunas coberturas (exequias y accidentes personales) que te permiten
-                                asegurar a personas adicionales. ¿Deseas hacerlo?</p>
-                            <div className="more-items" onClick={this.togglePopUpPersona(-1, 5)}>
-                                <button type="button" className="more-btn">+</button>
-                                <p>Si, agregar persona</p>
-                            </div>
-                        </div>
-                    </div>
-                    }
-
-                    <div className="row">
-                        <div
-                            className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                            <BtnContinue persons={persons} inactiveBtn={this.isDisabled()}/>
-                        </div>
-                    </div>
+          <form autoComplete="off" className="index-form emision">
+            <div className="container">
+              <div className="row">
+                <div className="col col-sm-12 col-md-12 col-lg-12 title">
+                  <h2>Cuéntanos sobre las personas</h2>
+                  <p>
+                    Diligencia la siguiente información, agrega a los
+                    beneficiarios, asigna roles y no olvides ningún dato, puede
+                    ser importante en el futuro.
+                  </p>
                 </div>
-                {showPopUpDelete === true &&
-                <PopUpDelete toggle={this.togglePopUpDelete} removeItem={this.removeItem}/>}
-                {showPopUpPersona === true && <PopUpPersona
-                    toggle={this.togglePopUpPersona}
+              </div>
+
+              <Card
+                persons={persons}
+                showEdit={true}
+                togglePopUpPersona={this.togglePopUpPersona}
+                togglePopUpDelete={this.togglePopUpDelete}
+              />
+
+              <div className="row">
+                <div className="col wrapper-more-items">
+                  <div
+                    className="more-items"
+                    onClick={this.togglePopUpPersona(-1)}
+                  >
+                    <button type="button" className="more-btn">
+                      +
+                    </button>
+                    <p>Agregar persona</p>
+                  </div>
+                  <div
+                    className="more-items"
+                    onClick={this.togglePopUpPersona(-1, 4)}
+                  >
+                    <button type="button" className="more-btn">
+                      +
+                    </button>
+                    <p>Agregar beneficiario oneroso</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="row no-gutters">
+                <div className="col">
+                  <hr />
+                </div>
+              </div>
+
+              {(hasExequias === true || hasAccident === true) && (
+                <div className="row justify-content-center">
+                  <div className="col col-md-8 col-lg-8 last-items-emision">
+                    <p>
+                      Has contratado algunas coberturas (exequias y accidentes
+                      personales) que te permiten asegurar a personas
+                      adicionales. ¿Deseas hacerlo?
+                    </p>
+                    <div
+                      className="more-items"
+                      onClick={this.togglePopUpPersona(-1, 5)}
+                    >
+                      <button type="button" className="more-btn">
+                        +
+                      </button>
+                      <p>Si, agregar persona</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="row">
+                <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
+                  <BtnContinue
                     persons={persons}
-                    item={itemSelected}
-                    hasExequias={hasExequias}
-                    hasAccident={hasAccident}
-                    typePerson={typePerson}
-                    updatePerson={this.updatePerson}/>}
-                <Validaridentificacion/>
-            </form>
-        )
+                    inactiveBtn={this.isDisabled()}
+                  />
+                </div>
+              </div>
+            </div>
+            {showPopUpDelete === true && (
+              <PopUpDelete
+                toggle={this.togglePopUpDelete}
+                removeItem={this.removeItem}
+              />
+            )}
+            {showPopUpPersona === true && (
+              <PopUpPersona
+                toggle={this.togglePopUpPersona}
+                persons={persons}
+                item={itemSelected}
+                hasExequias={hasExequias}
+                hasAccident={hasAccident}
+                typePerson={typePerson}
+                updatePerson={this.updatePerson}
+              />
+            )}
+            <Validaridentificacion />
+          </form>
+        );
     }
 
 }
