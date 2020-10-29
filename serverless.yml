@@ -1,10 +1,5 @@
 service: poliza-express-hogar
 
-custom:
-  default_stage: dev
-  s3Bucket: poliza-express-hogar
-  s3BucketPDF: poliza-express-hogar-pdf-nonprod
-
 provider:
   name: aws
   runtime: nodejs10.x
@@ -16,7 +11,7 @@ provider:
   stackTags:
     lm_troux_uid: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
     lm_app: "CO_HOME_AWS"
-    lm_app_env: ${self:custom.stage}
+    lm_app_env: ${self:provider.stage}
     lm_sbu: INTL
     intl_country: co
     intl_region: latam
@@ -25,6 +20,8 @@ provider:
       Action:
         - s3:PutItem
       Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+
+custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
 package:
   include:
@@ -149,6 +146,12 @@ resources:
             #Certificado PROD:AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
+          WebACLId: ${self:custom.WebACLId}
+          Logging:
+            Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
+            IncludeCookies: true
+            Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
+          HttpVersion: http2  
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:

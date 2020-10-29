@@ -1,0 +1,3 @@
+s3Bucket: poliza-express-hogar-nonprod
+s3BucketPDF: poliza-express-hogar-pdf-nonprod
+WebACLId: arn:aws:wafv2:us-east-1:038612146925:global/webacl/aws-cloudfront-webacl-internal-count-nonprod/c9bde024-6a4f-4197-8bfd-468a5ba99763
