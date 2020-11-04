@@ -71,11 +71,23 @@ const saveAllfloors = (data) => {
 const saveAllInsurableLimits = (data) => {
     return {type: "SAVE_ALL_INSURABLE_LIMITS", data: data}
 };
-const AllPlans = (data) => {
-    return {type: "SAVE_ALL_PLANS", data: data}
+const AllPlans = (data) => (dispatch) => {
+    dispatch({ type: 'SAVE_ALL_PLANS', data: data });
+    return Promise.resolve();
 };
 export const setValidPlans = (data) => {
     return { type: 'VALID_PLANS', data: data };
+};
+
+/**
+ * @typedef {{ plan: number, state: boolean }} LoadingPlanPerspective
+ */
+/**
+ * @param {LoadingPlanPerspective} data
+ */
+export const setLoadingPlanPerspective = (data) => (dispatch) => {
+  dispatch({ type: 'LOADING_PLANS_PERSPECTIVE', data: data });
+  return Promise.resolve();
 };
 
 

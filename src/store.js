@@ -1,5 +1,6 @@
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
+import MobileContents from './components/cotizaciones/inmueble/forms/MobileContents';
 
 const initialState = {
 
@@ -68,6 +69,8 @@ const initialState = {
         inmuebleasegudadoobrasvalor: "",
         inmuebleasegudadotelefonos: 0,
         inmuebleasegudadotelefonosvalor: "",
+        [MobileContents.nameModel]: 0,
+        [MobileContents.nameModelValue]: "",
     },
 
     // tercer formulario Cotizacion
@@ -78,6 +81,7 @@ const initialState = {
     allInsurableLimits: [],
     AllPlans: [],
     validPlans: true,
+    loadingPlansPerspective: {},
     originalStore: {},
     attachedFile: false
 };
@@ -215,6 +219,19 @@ const reducer = (state = initialState, action) => {
             ...state,
             validPlans: action.data
         }
+    } else if (action.type === "LOADING_PLANS_PERSPECTIVE") {
+        const { loadingPlansPerspective } = { ...state };
+        /**
+         * @type {import('./actions').LoadingPlanPerspective}
+         */
+        const data = action.data;
+        return {
+          ...state,
+          loadingPlansPerspective: {
+            ...loadingPlansPerspective,
+            [data.plan]: data.state,
+          },
+        };
     } else if (action.type === "INDEX_PLAN_SELECTED") {
         return {
             ...state,

@@ -28,8 +28,8 @@ class ConsultaPersonas {
   /**
    * @return {Promise<Intermediary>}
    */
-  static async getUser() {
-    Loading.toggle(true);
+  static async getUser(callLoading = true) {
+    callLoading && Loading.toggle(true);
     /**
      * @type {string|null}
      */

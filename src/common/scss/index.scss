@@ -243,7 +243,13 @@ $color-primary: #28A3AF;
       //  border: 1px solid $error-fields;
       //}
     }
+    &.no-label {
+      &::after {
+        top: 16px;
+      }
+    }
   }
+
 
   label {
     font-style: normal;

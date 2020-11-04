@@ -8,10 +8,12 @@ import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../actions';
 import { getRulesByCode, getTotalCoverage } from '../../../../common';
+import MobileContents from '../../inmueble/forms/MobileContents';
 
 /**
  * @typedef {import('../../../../services/QuoteIussedById').QuoteIussed} QuoteIussed
  * @typedef {import('../../../../services/QuoteIussedById').PlanSelectedInfoItem} PlanSelectedInfoItem
+ * @typedef {import('../../../../services/QuoteIussedById').Coverage} Coverage
  */
 
 class Coberturas extends Component {
@@ -52,19 +54,27 @@ class Coberturas extends Component {
   }
 
   /**
+   * 
+   * @typedef {{ recalculate: boolean }} OptionsCalc
+   */
+  /**
    * Cal value for each coverage
    * @param plan selected plan
    * @param type if you want cal a single type coverage
+   * @param {OptionsCalc} options
    * @returns {*}
    */
-  static calcValue(plan, type = null) {
+  static calcValue(plan, type = null, options) {
     if (typeof plan === 'undefined') return;
     if (typeof plan.coverages === 'undefined') return;
     for (let i = 0; i < plan.coverages.length; i++) {
       let d = plan.coverages[i].values;
       if (typeof d !== 'undefined') {
         for (let j = 0; j < d.length; j++) {
-          const value_show = Coberturas.getValueFields(d[j], type, plan);
+          const value_show = Coberturas.getValueFields(d[j], type, {
+            plan,
+            ...options,
+          });
           if (typeof d[j].values === 'undefined') {
             plan.coverages[i].values[j].value_show = value_show;
           } else {
@@ -81,14 +91,18 @@ class Coberturas extends Component {
     return plan;
   }
 
+
+  
   /**
-   *
-   * @param item the current coverage in the iteration
+   * 
+   * @param {{ id: number, hired: boolean }} item the current coverage in the iteration
    * @param {number|number[]} typeBase if you want cal a single type coverage
-   * @param plan current plan selected by user.
+   * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-  static getValueFields(item, typeBase = [], plan = null) {
+  static getValueFields(item, typeBase = [], options) {
+    const { plan, recalculate = false } = { ...options };
+    if (!item.hired) return Masknumbermoney.formatToMask(0);
     try {
       const types = Array.isArray(typeBase) ? typeBase : [typeBase];
       let inmueble = store.getState().Inmueble;
@@ -99,11 +113,13 @@ class Coberturas extends Component {
           }
         }
       } else {
-        const some = !types.some((type) => type === item.id || type === null);
-        if (some || !!item.changed) {
+        const notExist = !types.some(
+          (type) => type === item.id || type === null
+        );
+        if ((notExist || (!!item.changed && !recalculate)) && item.hired) {
           return item.value_show;
         }
-        const { max } = {
+        const { max, min } = {
           ...getRulesByCode(item.code, plan && plan.coverages),
         };
         /**
@@ -164,17 +180,18 @@ class Coberturas extends Component {
           );
         //Contenido mobile
         } else if (item.id === 7) {
-            let contenido = Masknumbermoney.formatToNumber(
-              inmueble.contenidoasegudadovalor
-            );
+          let contenido = Masknumbermoney.formatToNumber(
+            inmueble[MobileContents.nameModelValue]
+          );
           value = (
             (contenido * parseInt(item.value)) / 100
           );
         }
-        if (typeof value === 'number')
-          return Masknumbermoney.formatToMask(
-            max ? (value > max ? max : value) : value
-          );
+        if (typeof value === 'number') {
+          value = max ? (value > max ? max : value) : value;
+          value = min ? (value < min ? min : value) : value;
+          return Masknumbermoney.formatToMask(value);
+        }
       }
       return 'N/A';
     } catch (e) {
@@ -243,8 +260,8 @@ class Coberturas extends Component {
   }
 
   /**
-   * 
-   * @param {PlanSelectedInfoItem} plan 
+   *
+   * @param {PlanSelectedInfoItem} plan
    */
   static setHiredCoverages(plan, inmuebleBase) {
     const inmueble = inmuebleBase || store.getState().Inmueble;
@@ -278,13 +295,14 @@ class Coberturas extends Component {
             plan.coverages[key].values[k].hired =
               inmueble.inmuebleasegudadojoyas === 1;
             //Contenido mobile
-          } else if (opt.id >= 7 || opt.id === 0) {
+          } else if (opt.id === 7) {
+            plan.coverages[key].values[k].hired = inmueble[MobileContents.nameModel] === 1;
+          } else if (opt.id >= 8 || opt.id === 0) {
             plan.coverages[key].values[k].hired = true;
           }
         }
       }
     }
-    debugger
     return plan;
   }
 
@@ -296,7 +314,7 @@ class Coberturas extends Component {
   showItem(plan) {
     plan = Coberturas.setHiredCoverages(plan);
     /**
-     * @type {{ values: { hired: boolean, values?: any[], value_show: string, errors?: string[] }[] }[]}
+     * @type {Coverage[]}
      */
     const coverages = plan.coverages || [];
     let valid = true;
@@ -438,22 +456,36 @@ class Coberturas extends Component {
     if (!value.hired) return null;
     const rules = getRulesByCode(value.code, coverages);
     if (rules) {
-      const { max, min } = rules;
+      const { max, min, formatError } = rules;
       const errors = [];
       if (max && formatValue > max) {
-        errors.push(`${value.name} es superior al permitido.`);
+        errors.push(
+          (formatError && formatError({ max: true, value })) ||
+            `${value.name} es superior al permitido.`
+        );
       }
       if (min && formatValue < min) {
         if (!!value.value || value.value !== formatValue) {
-          errors.push(`${value.name} es inferior al permitido.`);
+          errors.push(
+            (formatError && formatError({ min: true, value })) ||
+              `${value.name} es inferior al permitido.`
+          );
         }
       }
       return (errors.length && errors) || undefined;
     }
   };
 
+  /**
+   * @param {PlanSelectedInfoItem} plan
+   * @param {import('../../../../services/QuoteIussedById').CoverageValue} planValue
+   * @param {number} key
+   * @param {number} type
+   */
   static getErrorsCoverage = (plan, planValue, key, type) => {
     let item = plan.coverages[key];
+    const { checked } = item;
+    if (!checked) return [];
     const otrosContenidos = plan.coverages.find(
       (element) => element.code_content === 9670
     );
@@ -509,7 +541,7 @@ class Coberturas extends Component {
                     errors.push(
                       'Valor asegurado del amparo ' +
                         item.name +
-                        ', es mayor al reportado en “' +
+                        ', es superior al reportado en “' +
                         n +
                         '” del amparo de INCENDIO '
                     );
@@ -517,7 +549,7 @@ class Coberturas extends Component {
                     errors.push(
                       'Valor asegurado de ' +
                         n +
-                        ' es mayor al reportado en INCENDIO'
+                        ' es superior al reportado en INCENDIO'
                     );
                   }
                 }
@@ -536,8 +568,8 @@ class Coberturas extends Component {
               );
             }
             if (
-              0 >= Masknumbermoney.formatToNumber(planValue.value_show)
-            ) {
+                0 >= Masknumbermoney.formatToNumber(planValue.value_show)
+              ) {
               errors.push(
                 'Valor Asegurado del amparo ' +
                   item.name +
@@ -560,6 +592,11 @@ class Coberturas extends Component {
   };
 
   inputChange = (k, key, type) => (e) => {
+    /**
+     * @type {{
+     *  coverages: Coverage[]
+     * }}
+     */
     let plan = this.state.plan;
     let item = plan.coverages[key];
 
@@ -567,17 +604,35 @@ class Coberturas extends Component {
       this.sendAndValidate(plan);
     }
     const value = e.target.value;
-    const errors = Coberturas.getErrorsCoverage(
-      plan,
-      item.values[k],
-      key,
-      type
-    );
+
     //Input
     if (type === 1) {
       const planValue = item.values[k];
       planValue.value_show = Masknumbermoney.formatToMask(value);
       planValue.changed = true;
+      for (let j = 0; j < plan.coverages.length; j++) {
+        if (
+          plan.coverages[j].code == 9691 ||
+          plan.coverages[j].code_content == 9691
+        ) {
+          for (let k = 0; k < plan.coverages[j].values.length; k++) {
+            if (plan.coverages[j].values[k].code == 9688) {
+              if (planValue.code == 9692) {
+                plan.coverages[j].values[k].value_show = planValue.value_show;
+                plan.coverages[j].values[k].value_to_quotate =
+                  planValue.value_to_quotate;
+              }
+            }
+            if (plan.coverages[j].values[k].code == 9687) {
+              if (planValue.code == 3017) {
+                plan.coverages[j].values[k].value_show = planValue.value_show;
+                plan.coverages[j].values[k].value_to_quotate =
+                  planValue.value_to_quotate;
+              }
+            }
+          }
+        }
+      }
     }
     //Select
     else if (type === 2) {
@@ -590,11 +645,37 @@ class Coberturas extends Component {
         item.values[k].values[value].limit
       );
     }
+    const errors = Coberturas.getErrorsCoverage(
+      plan,
+      item.values[k],
+      key,
+      type
+    );
     item.values[k].errors = errors;
     const valid = !(errors && errors.length);
-    this.setState({ plan }, () => {
-      this.toggleValid(valid);
-    });
+    const { coverages } = plan;
+    const newPlan = {
+      ...plan,
+      coverages: coverages.map((coverage, i) => {
+        if (key === i) {
+          const { values } = coverage;
+          return {
+            ...coverage,
+            values: values.map((value, j) => k === j ? { ...value, errors } : value
+            ),
+          };
+        }
+        return coverage;
+      }),
+    };
+    this.setState(
+      {
+        plan: newPlan,
+      },
+      () => {
+        this.toggleValid(valid);
+      }
+    );
   };
 
   toggleValid = (valid) => {

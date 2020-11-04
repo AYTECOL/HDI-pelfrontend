@@ -5,6 +5,7 @@ import store from "../../../../../store";
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from "../asegurarcontenidos/Asegurarcontenidos";
 import Asegurarjoyas from "../asegurarjoyas/Asegurarjoyas";
+import MobileContents from '../MobileContents';
 import Asegurarobras from "../asegurarobras/Asegurarobras";
 import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
 
@@ -58,6 +59,15 @@ class Counter extends Component {
                 total++;
                 if (Asegurarjoyas.validateField(inmueble.inmuebleasegudadojoyasvalor) !== 0) errors++;
             }
+            if (inmueble[MobileContents.nameModel] === 1) {
+                total++;
+                if (
+                  MobileContents.validateField(
+                    inmueble[MobileContents.nameModelValue]
+                  ) !== 0
+                )
+                  errors++;
+            }
             if (inmueble.inmuebleasegudadoobras === 1) {
                 total++;
                 if (Asegurarobras.validateField(inmueble.inmuebleasegudadoobrasvalor) !== 0) errors++;
@@ -82,7 +92,7 @@ class Counter extends Component {
 
     render() {
         return (
-            <div className={"msj-total"}>
+            <div className={"msj-total mt-1"}>
                 <p className="error-label">Haz diligenciado {this.state.ok} de {this.state.total} campos</p>
             </div>
         );

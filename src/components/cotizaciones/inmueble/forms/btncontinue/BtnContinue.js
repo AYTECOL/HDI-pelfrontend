@@ -11,6 +11,7 @@ import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from "../asegurarcontenidos/Asegurarcontenidos";
 import Asegurarjoyas from "../asegurarjoyas/Asegurarjoyas";
+import MobileContents from '../MobileContents';
 import Asegurarobras from "../asegurarobras/Asegurarobras";
 import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
 import {UrlSite} from "../../../../../config";
@@ -131,6 +132,17 @@ class BtnContinue extends Component {
             } else {
                 Helpers.removeClass(".inmuebleasegudadojoyasvalor", "error");
             }
+        }
+        if (inmueble[MobileContents.nameModel] === 1) {
+          if (
+            MobileContents.validateField(inmueble[MobileContents.nameModelValue]) !==
+            0
+          ) {
+            Helpers.addClass(`${MobileContents.nameModel}`, 'error');
+            errors++;
+          } else {
+            Helpers.removeClass(`${MobileContents.nameModel}`, 'error');
+          }
         }
 
         if (inmueble.inmuebleasegudadoobras === 1) {
