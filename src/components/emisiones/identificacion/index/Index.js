@@ -15,6 +15,13 @@ import Validaridentificacion
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Loading from "../../../globals/loading/Loading";
 import { isValidDirection } from '../../../../common/validations';
+import {
+  isRoleParticipation,
+  getTotalParticipationPercentage,
+  isTotalValid,
+  participationValues,
+  validateParticipationPercentage,
+} from '../popups/persona/ParticipationPercentages/utils';
 
 class Index extends Component {
 
@@ -207,6 +214,22 @@ class Index extends Component {
         let persons = this.state.persons;
         let status = [];
         let asegurado = false;
+        for (const participationValue of participationValues) {
+          const haveRole = persons.some((person) =>
+            isRoleParticipation(participationValue, person.role)
+          );
+          if (haveRole) {
+            if (!validateParticipationPercentage(persons, participationValue))
+              return true;
+            const total = getTotalParticipationPercentage(
+              persons,
+              participationValue
+            );
+            if (!isTotalValid(total)) {
+              return true;
+            }
+          }
+        }
         for (let i = 0; i < persons.length; i++) {
             if (!isValidDirection(persons[i].address)) return true;
             for (let j = 0; j < persons[i].role.length; j++) {
