@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import MomentJs from "moment";
 import DatePicker from "react-datepicker";
-import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 
 import './Persona.scss';
 import Loading from "../../../../../components/globals/loading/Loading";
@@ -20,6 +19,7 @@ import { isValidDirection, validationMessages } from '../../../../../common/vali
 import { roles } from '../../constants';
 import { fieldsNames } from './constants';
 import ParticipationPercentages from './ParticipationPercentages';
+import { DateInput } from './DateInput';
 import {
   validatePercentageField,
   participationValues,
@@ -959,23 +959,7 @@ export default class Persona extends Component {
                                         {(this.state.nit === false && typePerson !== 4) &&
                                             <div
                                                 className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
-                                                <div className={classNames("fechadenacimiento form-group ", hasErrorAddClass('fechadenacimiento'))}><label
-                                                    htmlFor="fechadenacimiento">Fecha de nacimiento</label>
-                                                    <DatePicker locale={es}
-                                                        name="fechadenacimiento"
-                                                        value={this.state.person.fechadenacimiento}
-                                                        onChange={this.changeDates}
-                                                        showMonthDropdown
-                                                        showYearDropdown
-                                                        scrollableYearDropdown
-                                                        yearDropdownItemNumber={100}
-                                                        maxDate={new Date()}
-                                                        disabled={this.state.person.fechadenacimientoDisabled}
-                                                        className={"form-control " + (this.state.person.fechadenacimientoDisabled ? 'disabled' : '')} />
-                                                    <small className="form-text only-errors">Falta información requerida
-                                                        para el Tomador. Por favor revise el campo Fecha de nacimiento
-                                                </small>
-                                                </div>
+                                                <DateInput person={this.state.person} changeDates={this.changeDates} hasErrorAddClass={hasErrorAddClass} isActived={this.isActived}/>
                                             </div>
                                         }
 
