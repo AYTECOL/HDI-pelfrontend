@@ -106,7 +106,7 @@ export default class Persona extends Component {
         }
         const { typePerson } = this.state;
         this.state.total = this.getTotal();
-
+        
         if (typeof this.props.disabledAll !== "undefined") {
             for (let i in this.state.person) {
                 this.state.person[i + "Disabled"] = true;
@@ -154,7 +154,7 @@ export default class Persona extends Component {
               );
             }).length;
             return totalFields + selectedRoleFields;
-    }
+        }
     }
 
     /**
@@ -361,6 +361,7 @@ export default class Persona extends Component {
               () => this.validateAll()
             );
           });
+        else this.validateAll();
     }
 
     componentWillUnmount() {
@@ -389,9 +390,9 @@ export default class Persona extends Component {
           const fields = [fechadecontitucion, email, adresstype, address];
           if (typePerson !== 4) fields.push(ciudad);
           const disabled = fields.some((fieldName) => fieldName === field);
-            if (disabled) {
-              return false;
-            }
+          if (disabled) {
+            return false;
+          }
         }
         return true;
     }
@@ -584,31 +585,33 @@ export default class Persona extends Component {
     getErrors() {
         const errors = [];
         const { typePerson, nit, person, errorFile } = this.state;
-        const { value: documentfield, code, sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
+        const {
+          value: documentfield,
+          code,
+          sarlfaltActive,
+          email,
+          sarlfalt_url,
+          sarlaft,
+          genero,
+          fechadenacimiento,
+          fechadecontitucion,
+          role,
+          lastname,
+          name,
+          businessname,
+          ciudad,
+          adresstype,
+        } = person;
         const address = String(person.address);
         const tipodetelefono = String(person.tipodetelefono);
         const telefono = String(person.telefono);
-        let fields = document.querySelectorAll(".modal-content input, .modal-content select");
+        const empty = (value) => !String(value || '').trim();
         
-        for (let i = 0; i < fields.length; i++) {
-          const field = fields[i];
-          if (sarlfaltActive === true && field.name === "sarlaft") continue;
-          if (
-            field.value === '' &&
-            field.getAttribute('type') !== 'checkbox' &&
-            !['secondname', 'secondlastname', 'code'].find(
-              (name) => field.name === name
-            )
-          ) {
-            errors.push(field.name);
-          }
-        }
-
         let documentfieldInvalid = NumeroIdentificacion.validate(documentfield, code);
         if (documentfieldInvalid === true) {
             errors.push(fieldsNames.documentfield)
         }
-        if (!code) errors.push('code');
+        if (empty(code)) errors.push('code');
         const rolesWithPhone = [
           roles.taker,
           roles.insured,
@@ -623,7 +626,7 @@ export default class Persona extends Component {
               telefonoHasError = true;
             }
           } else errors.push('tipodetelefono');
-          if (!telefono || telefonoHasError) errors.push('telefono');
+          if (empty(telefono) || telefonoHasError) errors.push('telefono');
         }
 
         if (
@@ -632,22 +635,41 @@ export default class Persona extends Component {
         )
           errors.push(fieldsNames.email);
 
-        if (typeof sarlfalt_url !== "undefined" && sarlaft === "" && sarlfalt_url !== "") {
-          errors.splice(errors.indexOf("sarlfalt"), 1);
+        if (
+          (typePerson <= 3 &&
+            !sarlfaltActive &&
+            !String(sarlfalt_url || '').trim() &&
+            !sarlaft) ||
+          errorFile
+        ) {
+          errors.push('sarlfalt');
         }
+        if (typePerson === 4 || nit) {
+          if (empty(businessname)) errors.push('businessname');
+        } else {
+          if (empty(lastname)) errors.push('lastname');
+          if (empty(name)) errors.push('name');
+        }
+
+        if (this.isActived(fieldsNames.ciudad) && !ciudad)
+          errors.push('ciudad');
+        if (this.isActived(fieldsNames.adresstype) && !adresstype)
+          errors.push('adresstype');
+
+
         if (typePerson === 1 && nit === false) {
-          if (genero === "") {
+          if (empty(genero)) {
             errors.push("genero");
           }
         }
-        if ((typePerson === 1 || typePerson === 2) && nit === false) {
-          if (fechadenacimiento === "") {
-            errors.push("fechadenacimiento");
+        if (typePerson !== 4 && nit === false) {
+          if (empty(fechadenacimiento)) {
+            errors.push('fechadenacimiento');
           }
         }
         if (typePerson === 4) {
           if (
-            fechadecontitucion === '' &&
+            !fechadecontitucion &&
             this.isActived(fieldsNames.fechadecontitucion)
           ) {
             errors.push(fieldsNames.fechadecontitucion);
@@ -659,22 +681,19 @@ export default class Persona extends Component {
 
         let indexSecondName = errors.indexOf("secondname");
         if (indexSecondName !== -1) errors.splice(indexSecondName, 1);
-
-        let sarlaftError = errors.indexOf("sarlaft");
-        if (sarlaftError !== -1 && typeof sarlfalt_url !== "undefined" && sarlfalt_url !== null) {
-          if (sarlfalt_url.trim() !== "") {
-            errors.splice(sarlaftError, 1);
-          }
-        }
-        if (errorFile) {
-          errors.push('sarlfalt');
-        }
         
         if (
           this.isActived(fieldsNames.address) &&
-          (!address || !isValidDirection(address) || address.length < 5)
+          (empty(address) || !isValidDirection(address) || address.length < 5)
         )
           errors.push(fieldsNames.address);
+        
+        participationValues.forEach((participationValue) => {
+          if (this.isActived(participationValue)) {
+            if (!validatePercentageField(person[participationValue]))
+              errors.push(participationValue);
+          }
+        });
         return errors;
     }
 
