@@ -19,6 +19,13 @@ import NumeroIdentificacion
 import { isValidDirection, validationMessages } from '../../../../../common/validations';
 import { roles } from '../../constants';
 import { fieldsNames } from './constants';
+import ParticipationPercentages from './ParticipationPercentages';
+import {
+  validatePercentageField,
+  participationValues,
+  rolesParticipations,
+  isRoleParticipation,
+} from './ParticipationPercentages/utils';
 
 const maxFileSize = UploadFile.maxFileSize;
 
@@ -67,6 +74,8 @@ export default class Persona extends Component {
                 "sarlfaltActive",
                 fieldsNames.adresstype,
                 fieldsNames.address,
+                fieldsNames.personalAccidents,
+                fieldsNames.exequiasParticipation,
                 "sarlaft",
             ]
         };
@@ -358,19 +367,46 @@ export default class Persona extends Component {
         this._isMounted = false;
     }
 
-    isActived = (field) => {
-        const { typePerson } = this.state;
+    /**
+     * 
+     * @param {string} field 
+     * @param {number} typePerson 
+     */
+    fieldActive = (field, typePerson) => {
         const { email, fechadecontitucion, adresstype, address } = fieldsNames;
-        if (typePerson === 4) {
-            const disabled = [fechadecontitucion, email, adresstype, address].some(
-              (fieldName) => fieldName === field
-            );
+        const { ciudad } = fieldsNames;
+        const rolesParticipation = rolesParticipations[field];
+        if (rolesParticipation) {
+            const roleActived = isRoleParticipation(field, [typePerson]);
+            if (!roleActived) return false;
+        }
+
+        if (
+          typePerson === 4 ||
+          typePerson === roles.personalAccidents ||
+          typePerson === roles.obsequies
+        ) {
+          const fields = [fechadecontitucion, email, adresstype, address];
+          if (typePerson !== 4) fields.push(ciudad);
+          const disabled = fields.some((fieldName) => fieldName === field);
             if (disabled) {
               return false;
             }
         }
         return true;
     }
+
+    isActived = (field) => {
+        const { typePerson, person } = this.state;
+        /**
+         * @type {number[]}
+         */
+        const rolesPerson = person.role;
+        return (
+          this.fieldActive(field, typePerson) ||
+          rolesPerson.some((role) => this.fieldActive(field, role))
+        );
+    };
 
     changeTextFile = e => {
         let name = "";
@@ -684,8 +720,13 @@ export default class Persona extends Component {
         }
       }
     render() {
+        const { persons, item } = this.props;
+        const { typePerson } = this.state;
         const errors = this.getErrors()
         const hasErrorAddClass = (field) => errors.find((error) => field === error) && "error ";
+        const participationPercentages =
+          this.isActived(fieldsNames.personalAccidents) ||
+          this.isActived(fieldsNames.exequiasParticipation);
         return (
             <React.Fragment>
                 <div className={"modal validaridentificacion show person-popup"}>
@@ -1070,6 +1111,24 @@ export default class Persona extends Component {
                                                 </div>}
                                             </React.Fragment>
                                         }
+                                        {participationPercentages && (
+                                            <ParticipationPercentages
+                                                onChange={({ name, value }) => {
+                                                    const { person } = this.state;
+                                                    this.setState({
+                                                      ...this.state,
+                                                      person: {
+                                                        ...person,
+                                                        [name]: value,
+                                                      },
+                                                    }, () => {
+                                                        this.validateAll(name);
+                                                    });
+                                                }}
+                                                isActived={(field) => this.isActived(field)}
+                                                {...{ persons, item, person: this.state.person }}
+                                            />
+                                        )}
                                     </div>
 
                                     {(this.state.typePerson <= 3 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
