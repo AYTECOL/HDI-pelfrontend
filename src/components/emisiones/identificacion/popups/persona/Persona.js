@@ -118,7 +118,7 @@ export default class Persona extends Component {
             this.state.person['department_code'] = 0;
         }
 
-        if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && String(this.state.person.code) === "37") {
+        if (typePerson !== 4 && typePerson !== 2 && String(this.state.person.code) === "37") {
             this.state.nit = true;
         }
         if (typeof this.state.person.sarlfalt_url !== 'string') {
@@ -733,7 +733,7 @@ export default class Persona extends Component {
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div
-                                className={"modal-header " + (this.state.typePerson <= 4 ? '' : 'hide')}>
+                                className={"modal-header " + (typePerson <= 4 ? '' : 'hide')}>
                                 <h5 className="modal-title">Información adicional</h5>
                                 <p className="modal-subtitle">Ingresa la información faltante, conocerla es importante
                                     para
@@ -742,7 +742,7 @@ export default class Persona extends Component {
                                     onClick={this.props.toggle(0)}>&nbsp;</button>
                             </div>
                             <div
-                                className={"modal-header " + (this.state.typePerson === 5 || this.state.typePerson === 6 ? '' : 'hide')}>
+                                className={"modal-header " + (typePerson === 5 || typePerson === 6 ? '' : 'hide')}>
                                 <h5 className="modal-title">Beneficiario en caso de fallecimiento</h5>
                                 <p className="modal-subtitle">Ingresa la información del beneficiario, selecciona los amparos que deseas para el</p>
                                 <button type="button" className="close" aria-label="Close"
@@ -759,11 +759,11 @@ export default class Persona extends Component {
                                         hasAccident={true}
                                         hasExequias={true} />
 
-                                    {this.state.typePerson !== 7 &&
+                                    {typePerson !== 7 &&
                                         <div className="row fields-row">
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                 <TypeDocuments
-                                                    disabled={this.state.person.codeDisabled || this.state.typePerson === 4}
+                                                    disabled={this.state.person.codeDisabled || typePerson === 4}
                                                     hideLoader={this.state.hideLoader}
                                                     value={this.state.person.code} onChange={this.changeValue} />
                                             </div>
@@ -791,7 +791,7 @@ export default class Persona extends Component {
                                         </div>
                                     }
 
-                                    {this.state.typePerson === 7 &&
+                                    {typePerson === 7 &&
                                         <div className={"row fields-row"}>
                                             <div
                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -862,7 +862,7 @@ export default class Persona extends Component {
                                             </React.Fragment>
                                         ) : (
                                                 <React.Fragment>
-                                                    {this.state.typePerson !== 4 &&
+                                                    {typePerson !== 4 &&
                                                         <React.Fragment>
                                                             <div
                                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -934,7 +934,7 @@ export default class Persona extends Component {
                                                 </React.Fragment>
                                             )}
 
-                                        {(this.state.typePerson !== 4) &&
+                                        {(typePerson !== 4) &&
                                             <div
                                                 className={"col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right " + (this.state.nit ? 'hide' : '')}>
                                                 <div className={classNames("generofield no-icon form-group", hasErrorAddClass('genero'))}>
@@ -956,7 +956,7 @@ export default class Persona extends Component {
                                             </div>
                                         }
 
-                                        {(this.state.nit === false && this.state.typePerson !== 4) &&
+                                        {(this.state.nit === false && typePerson !== 4) &&
                                             <div
                                                 className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
                                                 <div className={classNames("fechadenacimiento form-group ", hasErrorAddClass('fechadenacimiento'))}><label
@@ -979,7 +979,7 @@ export default class Persona extends Component {
                                             </div>
                                         }
 
-                                        {(this.state.typePerson !== 4 && this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
+                                        {(typePerson !== 4 && typePerson !== 5 && typePerson !== 6) &&
                                             <React.Fragment>
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                     <div className={classNames("pisonumero form-group input-select", hasErrorAddClass('tipodetelefono'))}><label
@@ -1011,7 +1011,7 @@ export default class Persona extends Component {
                                                 </div>
                                             </React.Fragment>
                                         }
-                                        {this.state.typePerson === 4 &&
+                                        {typePerson === 4 &&
                                             <React.Fragment>
 
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -1049,7 +1049,7 @@ export default class Persona extends Component {
 
                                             </React.Fragment>
                                         }
-                                        {this.state.typePerson !== 7 &&
+                                        {typePerson !== 7 &&
                                             <React.Fragment>
                                                 {this.isActived(fieldsNames.email) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                     <div className={classNames("email form-group ", hasErrorAddClass(fieldsNames.email))}><label
@@ -1065,14 +1065,14 @@ export default class Persona extends Component {
                                                 </div>}
 
 
-                                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                {this.isActived(fieldsNames.ciudad) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                                                     <div className={classNames("pisonumero form-group", hasErrorAddClass('ciudad'))}>
                                                         <AutocompleteCities disabled={this.state.person.ciudadDisabled}
                                                             label={"Ciudad o municipio"} name="ciudad"
                                                             value={this.state.person.ciudad}
                                                             onChange={this.changeValue} hideTitle={false} />
                                                     </div>
-                                                </div>
+                                                </div>}
 
 
                                                 {this.isActived(fieldsNames.adresstype) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -1130,8 +1130,7 @@ export default class Persona extends Component {
                                             />
                                         )}
                                     </div>
-
-                                    {(this.state.typePerson <= 3 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
+                                    {(typePerson <= 3 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
                                         <div
                                             className={"row sarlaft"}>
                                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -1183,7 +1182,7 @@ export default class Persona extends Component {
                                 {typeof this.props.disabledAll === "undefined" &&
                                     <React.Fragment>
                                         <div className="buttons">
-                                            {(this.state.msj4 === true && this.state.typePerson === 7) &&
+                                            {(this.state.msj4 === true && typePerson === 7) &&
                                                 <p className="error">Falta información requerida para el Contacto. Por favor
                                             revise los detalles de los datos de Contacto</p>
                                             }
