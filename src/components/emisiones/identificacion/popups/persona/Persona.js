@@ -18,6 +18,7 @@ import NumeroIdentificacion
     from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
 import { isValidDirection, validationMessages } from '../../../../../common/validations';
 import { roles } from '../../constants';
+import { fieldsNames } from './constants';
 
 const maxFileSize = UploadFile.maxFileSize;
 
@@ -25,13 +26,6 @@ const phoneTypes = {
     mobilePhone: '6'
 }
 
-const fieldsNames = {
-  fechadecontitucion: 'fechadecontitucion',
-  documentfield: 'documentfield',
-  email: 'email',
-  adresstype: 'adresstype',
-  address: 'address',
-};
 
 export default class Persona extends Component {
 
