@@ -95,16 +95,8 @@ export default class Persona extends Component {
                 if (this.props.persons[i]['role'].indexOf(1) !== -1) this.state.exitsTomador = true;
             }
         }
-
-        if (this.state.typePerson === 1 || this.state.typePerson === 3 || this.state.typePerson === 2) {
-            this.state.total = 15;
-        } else if (this.state.typePerson === 7) {
-            this.state.total = 3;
-        } else if (this.state.typePerson === 4) {
-            this.state.total = 4;
-        } else if (this.state.typePerson === 5 || this.state.typePerson === 6) {
-            this.state.total = 11;
-        }
+        const { typePerson } = this.state;
+        this.state.total = this.getTotal();
 
         if (typeof this.props.disabledAll !== "undefined") {
             for (let i in this.state.person) {
@@ -129,7 +121,31 @@ export default class Persona extends Component {
         } else {
             this.state.hideLoader = undefined;
         }
+    }
 
+    getTotal() {
+        const { typePerson } = this.state;
+        if (typePerson === 1 || typePerson === 3 || typePerson === 2) {
+            return 15;
+        } else if (typePerson === 7) {
+            return 3;
+        } else if (typePerson === 4) {
+            return 4;
+        } else if (typePerson === 5 || typePerson === 6) {
+            /**
+             * @type {{ role: number[] }}
+             */
+            const { role: roles } = this.state.person;
+            const totalFields = 6;
+
+            const selectedRoleFields = participationValues.filter((key) => {
+              const rolesParticipation = rolesParticipations[key] || [];
+              return rolesParticipation.some((roleParticipation) =>
+                roles.some((role) => role === roleParticipation)
+              );
+            }).length;
+            return totalFields + selectedRoleFields;
+    }
     }
 
     /**
@@ -635,21 +651,14 @@ export default class Persona extends Component {
             if (typeof this.props.updatePerson !== "undefined") {
                 if (typeof printErrors === "undefined") printErrors = false;
                 let msj4 = true;
-                let total = this.state.total;
-                if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
-                    if (this.state.nit === true) {
-                        total = 11;
-                    } else {
-                        total = 15;
-                    }
-                }
+                const { typePerson } = this.state;
+                const total = this.getTotal()
 
                 const errors = this.getErrors();
                 const valid = !errors.length;
                 if (valid) msj4 = false;
                 if (valid && saveData) {
                     const state = this.state;
-                    const { typePerson } = state;
                     let { person } = state;
                     let newPerson = await this.saveFile({ person, typePerson });
                     if (typeof newPerson.code === "undefined") newPerson.code = typePerson !== 4 ? '36' : '37';
