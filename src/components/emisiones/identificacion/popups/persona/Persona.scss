@@ -1,4 +1,11 @@
+$error: #dd133c;
+
 .person-popup {
+  .error-label {
+    color: $error;
+    text-align: left;
+  }
+
   &.modal {
     .modal-dialog {
       max-width: 1032px;
@@ -18,7 +25,7 @@
     }
 
     p.error {
-      color: #DD133C;
+      color: $error;
       font-size: 12px;
       width: 80%;
       margin: 0 auto !important;
@@ -77,11 +84,11 @@
 
         &.error {
           label {
-            color: #DD133C
+            color: $error
           }
 
           input::before {
-            border: 1px solid #DD133C !important;
+            border: 1px solid $error !important;
           }
         }
       }
@@ -105,7 +112,7 @@
           }
 
           .form-control {
-            border: 1px solid #DD133C !important;
+            border: 1px solid $error !important;
           }
 
           &.sarlaft {
@@ -114,7 +121,7 @@
             }
 
             p {
-              border: 2px dashed #DD133C !important;
+              border: 2px dashed $error !important;
             }
           }
         }
@@ -157,7 +164,7 @@
     color: #565656;
 
     &.error-file {
-      color: #DD133C;
+      color: $error;
     }
   }
 
