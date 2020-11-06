@@ -402,11 +402,13 @@ export default class Persona extends Component {
         /**
          * @type {number[]}
          */
+        if (
+          typePerson === roles.onerousBeneficiary &&
+          field === fieldsNames.ciudad
+        )
+          return true;
         const rolesPerson = person.role;
-        return (
-          this.fieldActive(field, typePerson) ||
-          rolesPerson.some((role) => this.fieldActive(field, role))
-        );
+        return rolesPerson.some((role) => this.fieldActive(field, role));
     };
 
     changeTextFile = e => {
