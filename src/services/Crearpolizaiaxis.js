@@ -2,6 +2,10 @@ import Api from './Api';
 import {UrlCrearpolizaiaxis} from "../config";
 import momentJs from 'moment';
 import ConsultaPersonas from './ConsultaPersonas';
+import {
+  isRoleParticipation,
+  fieldsParticipation,
+} from '../components/emisiones/identificacion/popups/persona/ParticipationPercentages/utils';
 
 const BaseUrl = "/crearpolizaiaxis";
 const Url = UrlCrearpolizaiaxis;
@@ -253,6 +257,9 @@ class Crearpolizaiaxis {
             }
         }
 
+        /**
+         * @type {import('./QuoteIussedById').PersonAditional[]}
+         */
         let additional = [];
         let persons_aditionals = data.quote_iussed_info.Item.persons_aditionals;
         if (typeof persons_aditionals !== "undefined") additional = persons_aditionals;
@@ -262,22 +269,17 @@ class Crearpolizaiaxis {
         if( typeof onerous_people !== "undefined" ) onerous = onerous_people;
 
         let asegurado = Crearpolizaiaxis.formatPerson(aseguradoArr);
-        let beneficiario = Crearpolizaiaxis.formatPerson(beneficiarioArr);
+        let beneficiarios = Crearpolizaiaxis.formatPerson(beneficiarioArr);
         let additionals = Crearpolizaiaxis.formatPerson(additional);
         let onerosos = Crearpolizaiaxis.formatPerson(onerous);
         let tomador = Crearpolizaiaxis.formatPerson(tomadorArr)[0];
 
-        for (let i = 0; i < additionals.length; i++) {
-            let add = additionals[i];
-            beneficiario.push(add);
-        }
-
         let exitsExcequias = false;
-        for (let i = 0; i < beneficiario.length; i++) {
+        for (let i = 0; i < beneficiarios.length; i++) {
             let code = "0";
             for (let j = 0; j < additional.length; j++) {
-                if (parseInt(additional[j].document) === parseInt(beneficiario[i].numeroDocumento) &&
-                    parseInt(additional[j].document_type) === parseInt(beneficiario[i]['tipoDocumento']['codigo'])
+                if (parseInt(additional[j].document) === parseInt(beneficiarios[i].numeroDocumento) &&
+                    parseInt(additional[j].document_type) === parseInt(beneficiarios[i]['tipoDocumento']['codigo'])
                 ) {
                     if (exitsExcequias === false) {
                         exitsExcequias = true;
@@ -291,19 +293,42 @@ class Crearpolizaiaxis {
                 }
             }
 
-            beneficiario[i] = {
-                "persona": beneficiario[i],
-                "tipoBeneficiario": {
-                    "codigoTexto": "G"
-                },
-                "garantiaBeneficiario": {
-                    "codigo": code
+            beneficiarios[i] = Crearpolizaiaxis.mapBeneficiary(beneficiarios[i], { code })
+        }
+
+        const {
+          exequiasParticipation,
+          personalAccidents,
+        } = fieldsParticipation;
+        const codes = {
+          [exequiasParticipation]: 774,
+          [personalAccidents]: 716,
+        };
+        for (let i = 0; i < additionals.length; i++) {
+          const additionalMap = additionals[i];
+          const person = additional[i];
+          let existsParticipation = false;
+          Object.keys(codes).forEach((participationValue) => {
+            if (isRoleParticipation(participationValue, person.role)) {
+              existsParticipation = true;
+              const porcentaje = String(person[participationValue]);
+              const beneficiary = Crearpolizaiaxis.mapBeneficiary(
+                additionalMap,
+                {
+                  code: String(codes[participationValue]),
+                  garantiaBeneficiario: { porcentaje },
                 }
+              );
+              beneficiarios.push(beneficiary);
             }
+          });
+          if (!existsParticipation) {
+            beneficiarios.push(additionalMap, '0');
+          }
         }
 
         for (let i = 0; i < onerosos.length; i++) {
-            beneficiario.push({
+            beneficiarios.push({
                 "persona": onerosos[i],
                 "tipoBeneficiario": {
                     "codigoTexto": "O"
@@ -317,9 +342,22 @@ class Crearpolizaiaxis {
         return {
             "asegurado": asegurado,
             "tomador": tomador,
-            "beneficiario": beneficiario,
+            "beneficiario": beneficiarios,
         };
     };
+
+    static mapBeneficiary(beneficiario, { code, garantiaBeneficiario }) {
+        return {
+            "persona": beneficiario,
+            "tipoBeneficiario": {
+                "codigoTexto": "G"
+            },
+            "garantiaBeneficiario": {
+                "codigo": code,
+                ...garantiaBeneficiario
+            }
+        };
+    }
 
     static async save(data) {
         let user = await ConsultaPersonas.getUser();

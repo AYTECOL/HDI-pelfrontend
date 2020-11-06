@@ -136,8 +136,34 @@ interface QuoteIussedInfo {
   Item: QuoteIussedInfoItem;
 }
 
+export interface PersonAditional {
+  department_code: number;
+  phone_type: string;
+  birthdate: string;
+  address: string;
+  role: number[];
+  gender: number | string;
+  address_type: string;
+  document: string;
+  fechadecontitucion: string;
+  city_code: number;
+  sarlaft_document_url: string;
+  first_last_name: string;
+  exequiasParticipation: number | string;
+  personalAccidents: number | string;
+  phone: string;
+  ciudad: string;
+  second_name: string;
+  businessname: string;
+  location: string;
+  first_name: string;
+  email: string;
+  second_last_name: string;
+  document_type: string;
+}
+
 interface QuoteIussedInfoItem {
-  persons_aditionals: any[];
+  persons_aditionals: PersonAditional[];
   insured: any[];
   risk_valoration: string;
   id: string;
