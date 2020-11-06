@@ -18,8 +18,13 @@ provider:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - s3:PutItem
-      Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+        - s3:PutObject
+        - s3:PutObjectAcl
+        - s3:GetObject
+        - s3:GetObjectAcl
+      Resource: 
+        - "arn:aws:s3:::${self:custom.s3Bucket}/*"
+        - "arn:aws:s3:::${self:custom.s3Bucket}"
 
 custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
