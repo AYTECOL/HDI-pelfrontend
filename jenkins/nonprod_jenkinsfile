@@ -2,28 +2,36 @@ library ('utils@master') _
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
-def BUCKET_NAME = "poliza-express-hogar-uat" 
-def REACT_APP_DOMAIN = "https://6ion89fdgb.execute-api.us-east-1.amazonaws.com/dev"
-def REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
-def REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
-def REACT_APP_PDF_SARLAFT = "https://www.libertyseguros.co/zona-de-cliente/condicionados-y-documentos?category=62"
-def REACT_APP_PERSON = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
-def REACT_APP_ACCESS_TOKEN = "https://a86t6v1qyj.execute-api.us-east-1.amazonaws.com/dev"
-def REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
-def REACT_APP_CREARPOLIZAIAXIS = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
 
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
+        
 node('linux'){
+
+	stage("Env Variables") {
+    	script {
+        	env.BUCKET_NAME = "poliza-express-hogar-uat" 
+			env.REACT_APP_DOMAIN = "https://6ion89fdgb.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
+			env.REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
+			env.REACT_APP_PDF_SARLAFT = "https://www.libertyseguros.co/zona-de-cliente/condicionados-y-documentos?category=62"
+			env.REACT_APP_PERSON = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_ACCESS_TOKEN = "https://a86t6v1qyj.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_CREARPOLIZAIAXIS = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
+         }
+    	 sh 'printenv'
+	}    
 
 	stage('Git Checkout'){
 		checkout scm develop
+        
 	}
 
     stage('cloudfront') {
     	deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-                sh "sls deploy -v --force"
+            	sh "sls deploy -v --force"
 				//sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-nonprod'){
                 	sh 'pwd'
@@ -43,10 +51,12 @@ node('linux'){
                 npm run build
                 ls -ltr
             """
-            sh 'aws s3 sync build s3://poliza-express-hogar-nonprod --delete'
-            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar-nonprod --delete'
-            sh 'aws s3 cp build s3://poliza-express-hogar-nonprod  --recursive --metadata-directive REPLACE --acl public-read'
-            sh 'aws s3 cp build s3://poliza-express-hogar-nonprod  --recursive --metadata-directive REPLACE --recursive --cache-control max-age=0,no-cache,no-store,must-revalidate --acl public-read'
+			dir('build') {
+                  sh 'pwd'
+                  sh 'ls'
+                  sh 'aws s3 rm s3://poliza-express-hogar-nonprod --recursive' // Clean bucket
+                  sh 'aws s3 sync .  s3://poliza-express-hogar-nonprod' // Sync bucket
+            }
             sh 'aws cloudfront create-invalidation --distribution-id E29UJTXEFLRNQZ --paths "/*"'
         }
 		
@@ -58,17 +68,16 @@ node('linux'){
 	 	}
 	}	
 
-	/*stage('Completion Email'){
+	stage('Completion Email'){
 		    
-	 mail to: '2ffc3f9d.LibertyMutual.onmicrosoft.com@amer.teams.ms', from: 'noreply-cdp@libertymutual.com',
+	 mail to: 'carlos.unate@libertycolombia.com', from: 'noreply-cdp@libertymutual.com',
                 subject: "nonpro Infra Deployment: ${env.JOB_NAME}", 
-                body: "Despliegue realizado validar ambiente nonprod en: http://poliza-express-hogar-front-uat.s3-website-us-east-1.amazonaws.com Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
+                body: "Despliegue realizado validar ambiente nonprod en: http://poliza-express-hogar Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
 	
 	}
 	stage('Testing'){
 		  
-		sh 'curl -X POST  http://cunate:38a9806ece2c583ef858ffde13ae9498@10.142.137.77:8080/job/sahi-test/build?token=08b214cb68e0ed63132813dca24a7233'
-		echo 'Ver resultados test funcional en: 9 http://10.142.137.77:9999/_s_/dyn/pro/DBReports'
+		// sh 'curl -X POST http://cunate:a763ac28c58d391b70a382539a8ae7dd@10.142.137.77:8080/job/Katalon-suite-eHome/build?token=SOMESECURITYTOKEN'
     
-	}*/
+	}
  }

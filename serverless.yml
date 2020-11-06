@@ -2,8 +2,8 @@ service: poliza-express-hogar
 
 provider:
   name: aws
-  runtime: nodejs10.x
-  stage: nonprod
+  runtime: nodejs12.x
+  stage: dev
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
   Tags:
@@ -18,8 +18,13 @@ provider:
   iamRoleStatements:
     - Effect: "Allow"
       Action:
-        - s3:PutItem
-      Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+        - s3:PutObject
+        - s3:PutObjectAcl
+        - s3:GetObject
+        - s3:GetObjectAcl
+      Resource: 
+        - "arn:aws:s3:::${self:custom.s3Bucket}/*"
+        - "arn:aws:s3:::${self:custom.s3Bucket}"
 
 custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
