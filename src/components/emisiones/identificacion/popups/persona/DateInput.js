@@ -9,7 +9,7 @@ import { fieldsNames } from './constants';
 
 export const DateInput = (props) => {
   const participationPercentages =
-    props.isActived(fieldsNames.personalAccidents) &&
+    props.isActived(fieldsNames.personalAccidents) ||
     props.isActived(fieldsNames.exequiasParticipation);
   const initialDate = moment().subtract(18, 'years').toDate();
   const { fechadenacimiento, fechadenacimientoDisabled } = props.person;
