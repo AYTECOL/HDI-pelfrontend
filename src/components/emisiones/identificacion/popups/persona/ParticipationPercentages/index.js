@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import './styles.scss';
 import { fieldsNames } from '../constants';
@@ -22,6 +23,7 @@ export const ParticipationPercentages = (props) => {
   const max = getMaxParticipationPercentage(
     persons.filter((_p, i) => i !== item)
   );
+  const min = 1;
   /**
    * @type {(event: React.ChangeEvent<HTMLInputElement>) => void}
    */
@@ -33,36 +35,37 @@ export const ParticipationPercentages = (props) => {
   return (
     <div className="col col-12">
       <div className="form-group participation-percentages">
-        <label>Porcentajes de participación para las coberturas</label>
-        <div className="row">
-          {isActived(personalAccidents) && (
-            <div className="col">
-              <div className="form-group">
-                <label>Accidentes Personales</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name={personalAccidents}
-                  value={person[personalAccidents]}
-                  onChange={onChange}
-                />
-              </div>
-            </div>
-          )}
-          {isActived(exequiasParticipation) && (
-            <div className="col">
-              <div className="form-group">
-                <label>Accidentes Personales</label>
-                <input
-                  type="number"
-                  className="form-control"
-                  name={exequiasParticipation}
-                  value={person[exequiasParticipation]}
-                  onChange={onChange}
-                />
-              </div>
-            </div>
-          )}
+        <label className="font-weight-normal my-3 text-center">
+          Porcentajes de participación
+        </label>
+        <div className="row mt-2">
+          {[
+            { label: 'Accidentes Personales', name: personalAccidents },
+            { label: 'Exequias', name: exequiasParticipation },
+          ].map(({ label, name }, i) => {
+            const value = person[name];
+            return (
+              isActived(name) && (
+                <div className="col" key={i}>
+                  <div
+                    className={classNames('form-group', {
+                      error:
+                        (value && min > Number(value)) || value > max[name],
+                    })}
+                  >
+                    <label>{label}</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      name={name}
+                      value={value}
+                      onChange={onChange}
+                    />
+                  </div>
+                </div>
+              )
+            );
+          })}
         </div>
       </div>
     </div>
