@@ -251,13 +251,19 @@ class Index extends Component {
         if (state !== null) persons = state;
         let status = false;
         for (let i = 0; i < persons.length; i++) {
-            if (parseInt(persons[i].code) === parseInt(person.code) && parseInt(persons[i].value) === parseInt(person.value)) {
-                person['role'] = [...person['role'], ...persons[i]['role']];
-                person['role'] = [...new Set(person['role'])].sort(Helpers.orderArrayNumeric);
-                status = {
-                    person,
-                    index: i
-                };
+            const currentPerson = persons[i];
+            if (
+              parseInt(currentPerson.code) === parseInt(person.code) &&
+              parseInt(currentPerson.value) === parseInt(person.value)
+            ) {
+              person['role'] = [...person['role'], ...currentPerson['role']];
+              person['role'] = [...new Set(person['role'])].sort(
+                Helpers.orderArrayNumeric
+              );
+              status = {
+                person,
+                index: i
+              };
             }
         }
         return status;
