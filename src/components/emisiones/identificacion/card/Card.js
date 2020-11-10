@@ -17,16 +17,20 @@ const Card = (props) => {
   const personalAccidents = [];
   const someRole = (personRoles) => (role) =>
     personRoles.some((r) => String(r) === String(role));
-
+  
   props.persons.forEach((person, key) => {
     const value = { person, key };
     const hasRole = someRole(person.role);
     const hasObsequies = hasRole(roles.obsequies);
     const hasPersonalAccidents = hasRole(roles.personalAccidents);
-    if (hasObsequies || hasPersonalAccidents) {
-      if (hasObsequies) obsequies.push(value);
-      if (hasPersonalAccidents) personalAccidents.push(value);
-    } else persons.push(value);
+    if (
+      hasRole(roles.beneficiary) ||
+      hasRole(roles.insured) ||
+      hasRole(roles.taker)
+    )
+      persons.push(value);
+    if (hasObsequies) obsequies.push(value);
+    if (hasPersonalAccidents) personalAccidents.push(value);
   });
 
   const percentageProps = {

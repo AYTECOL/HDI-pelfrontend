@@ -94,14 +94,16 @@ class Index extends Component {
       }
     }
 
-    let persons = plan;
-    let items = persons.quote_iussed_info.Item;
-    let person = [];
+    let items = plan.quote_iussed_info.Item;
+    /**
+     * @type {import("../../../../services/QuoteIussedById").PersonAditional[]}
+     */
+    const persons = [];
     if (typeof items !== "undefined") {
       if (items.taker.length !== 0) {
-        person.push(items.taker);
-        for (let i = 0; i < person.length; i++)
-          if (typeof person[i].role === "undefined") person[i].role = [1];
+        persons.push(items.taker);
+        for (let i = 0; i < persons.length; i++)
+          if (typeof persons[i].role === "undefined") persons[i].role = [1];
       }
 
       [
@@ -109,31 +111,36 @@ class Index extends Component {
         { name: "benefist", role: 3 },
         { name: "onerous", role: 4 },
         { name: "persons_aditionals", role: 5 }
-      ].map((item, key) => {
+      ].forEach((item) => {
         if (typeof items[item.name] !== "undefined") {
-          for (let i = 0; i < items[item.name].length; i++)
-            person.push(items[item.name][i]);
-          for (let i = 0; i < person.length; i++)
-            if (typeof person[i].role === "undefined")
-              person[i].role = [item.role];
+          for (let i = 0; i < items[item.name].length; i++) {
+            const person = items[item.name][i];
+            const existsPerson = persons.some(
+              ({ document, document_type }) => String(person.document) === String(document) &&
+                String(person.document_type) === String(document_type)
+            );
+            if (!existsPerson) persons.push(person);
+          }
+          for (let i = 0; i < persons.length; i++)
+            if (typeof persons[i].role === "undefined")
+              persons[i].role = [item.role];
         }
-        return true;
       });
 
-      for (let i = 0; i < person.length; i++) {
-        person[i]["name"] = person[i]["first_name"];
-        person[i]["secondname"] = person[i]["second_name"];
-        person[i]["lastname"] = person[i]["first_last_name"];
-        person[i]["secondlastname"] = person[i]["second_last_name"];
-        person[i]["code"] = person[i]["document_type"];
-        person[i]["value"] = person[i]["document"];
-        person[i]["genero"] = person[i]["gender"];
-        person[i]["fechadenacimiento"] = person[i]["birthdate"];
-        person[i]["tipodetelefono"] = person[i]["phone_type"];
-        person[i]["telefono"] = person[i]["phone"];
-        person[i]["ciudad"] = person[i]["location"];
-        person[i]["adresstype"] = person[i]["address_type"];
-        person[i]["sarlfaltActive"] = person[i]["sarlaft_document_url"];
+      for (let i = 0; i < persons.length; i++) {
+        persons[i]["name"] = persons[i]["first_name"];
+        persons[i]["secondname"] = persons[i]["second_name"];
+        persons[i]["lastname"] = persons[i]["first_last_name"];
+        persons[i]["secondlastname"] = persons[i]["second_last_name"];
+        persons[i]["code"] = persons[i]["document_type"];
+        persons[i]["value"] = persons[i]["document"];
+        persons[i]["genero"] = persons[i]["gender"];
+        persons[i]["fechadenacimiento"] = persons[i]["birthdate"];
+        persons[i]["tipodetelefono"] = persons[i]["phone_type"];
+        persons[i]["telefono"] = persons[i]["phone"];
+        persons[i]["ciudad"] = persons[i]["location"];
+        persons[i]["adresstype"] = persons[i]["address_type"];
+        persons[i]["sarlfaltActive"] = persons[i]["sarlaft_document_url"];
       }
     }
 
@@ -208,11 +215,11 @@ class Index extends Component {
     this.setState({
       ...this.state,
       plans: plansLoader,
-      persons: person,
+      persons: persons,
       inmueble: inmueble,
       contents: data["contents"],
       newSecurity: newSecurity,
-      city: person[0].location,
+      city: persons[0].location,
       adressHome: store.getState().pdf_info.addressHome
 
     });
