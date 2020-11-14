@@ -40,8 +40,8 @@ export const ParticipationPercentages = (props) => {
         </label>
         <div className="row mt-2">
           {[
-            { label: 'Accidentes Personales', name: personalAccidents },
             { label: 'Exequias', name: exequiasParticipation },
+            { label: 'Accidentes Personales', name: personalAccidents },
           ].map(({ label, name }, i) => {
             const value = person[name];
             return (
