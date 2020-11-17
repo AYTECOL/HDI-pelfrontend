@@ -29,10 +29,10 @@ node('linux'){
 	}
 
     stage('cloudfront') {
-    	deployToNonProd{
+    	deployToDev{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
             	sh "sls deploy -v --force"
-				//sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+                //sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-dev'){
                 	sh 'pwd'
                     sh 'ls'

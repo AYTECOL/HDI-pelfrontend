@@ -131,7 +131,7 @@ resources:
                 OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
           Enabled: 'true'
           Aliases:
-            - hogar-uat.libertyseguros.co
+            - hogar-dev.libertyseguros.co
           DefaultRootObject: index.html
           CustomErrorResponses:
             - ErrorCode: 404
@@ -154,16 +154,16 @@ resources:
             ViewerProtocolPolicy: redirect-to-https
           ViewerCertificate:
             #Certificado DEV:
-            #AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
-            AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+            AcmCertificateArn: arn:aws:acm:us-east-1:710809157942:certificate/e4b7e1ca-e779-4489-99c6-bb6ff36b2e4f
+            #AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
             #Certificado PROD:AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
           WebACLId: ${self:custom.WebACLId}
           Logging:
-            Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
-            IncludeCookies: true
-            Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
+             Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
+             IncludeCookies: true
+             Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
           HttpVersion: http2  
   Outputs:
     WebAppCloudFrontDistributionOutput:
