@@ -65,6 +65,14 @@ resources:
       Properties:
         BucketName: ${self:custom.s3BucketPDF}
         AccessControl: PublicReadWrite
+        CorsConfiguration:
+          CorsRules:
+            - AllowedOrigins:
+                - '*'
+              AllowedMethods:
+                - PUT
+              AllowedHeaders:
+                - '*'
     PdfS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
