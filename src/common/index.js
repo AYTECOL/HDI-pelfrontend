@@ -37,7 +37,7 @@ export const getTotalCoverage = (values) => {
     formatError?: (params: FormatError) => string,
  *  }} Rules
  * @param {number} code  Of coverage in the iterator
- * @param {Coverage[]|undefined} coverages
+ * @param {Coverage[] | undefined} coverages
  * @return {Rules}
  */
 export const getRulesByCode = (code, coverages = undefined) => {
@@ -77,6 +77,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
         if (value)
           return {
             max: value,
+            min: 10000000,
             formatError: ({ max }) => {
               if (max) {
                 return 'Valor Asegurado de Contenidos es superior al permitido';
@@ -87,6 +88,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
       break;
     case 3017:
       return { min: 900000 };
+    // Valor objetos de valor y obras de Arte
     case 9687:
       const common = {
         min: 900000,
@@ -103,7 +105,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
             max: value,
             formatError: ({ max }) => {
               if (max) {
-                return 'Valor Asegurado de Contenidos es superior al permitido';
+                return 'Valor Asegurado de objetos de valor y obras de Arte es superior al permitido';
               }
             },
             ...common,
