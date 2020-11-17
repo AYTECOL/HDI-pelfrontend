@@ -274,26 +274,8 @@ class Crearpolizaiaxis {
         let onerosos = Crearpolizaiaxis.formatPerson(onerous);
         let tomador = Crearpolizaiaxis.formatPerson(tomadorArr)[0];
 
-        let exitsExcequias = false;
         for (let i = 0; i < beneficiarios.length; i++) {
-            let code = "0";
-            for (let j = 0; j < additional.length; j++) {
-                if (parseInt(additional[j].document) === parseInt(beneficiarios[i].numeroDocumento) &&
-                    parseInt(additional[j].document_type) === parseInt(beneficiarios[i]['tipoDocumento']['codigo'])
-                ) {
-                    if (exitsExcequias === false) {
-                        exitsExcequias = true;
-                        code = 774;
-                        break;
-                    } else {
-                        code = 716;
-                        exitsExcequias = false;
-                        break;
-                    }
-                }
-            }
-
-            beneficiarios[i] = Crearpolizaiaxis.mapBeneficiary(beneficiarios[i], { code })
+            beneficiarios[i] = Crearpolizaiaxis.mapBeneficiary(beneficiarios[i])
         }
 
         const {
@@ -315,15 +297,17 @@ class Crearpolizaiaxis {
               const beneficiary = Crearpolizaiaxis.mapBeneficiary(
                 additionalMap,
                 {
-                  code: String(codes[participationValue]),
-                  garantiaBeneficiario: { porcentaje },
+                  garantiaBeneficiario: {
+                    codigo: String(codes[participationValue]),
+                    porcentaje,
+                  },
                 }
               );
               beneficiarios.push(beneficiary);
             }
           });
           if (!existsParticipation) {
-            beneficiarios.push(additionalMap, '0');
+            beneficiarios.push(additionalMap);
           }
         }
 
@@ -346,16 +330,16 @@ class Crearpolizaiaxis {
         };
     };
 
-    static mapBeneficiary(beneficiario, { code, garantiaBeneficiario }) {
+    static mapBeneficiary(beneficiario, { garantiaBeneficiario } = {}) {
         return {
-            "persona": beneficiario,
-            "tipoBeneficiario": {
-                "codigoTexto": "G"
-            },
-            "garantiaBeneficiario": {
-                "codigo": code,
-                ...garantiaBeneficiario
-            }
+          persona: beneficiario,
+          tipoBeneficiario: {
+            codigoTexto: 'G',
+          },
+          garantiaBeneficiario: {
+            codigo: '0',
+            ...garantiaBeneficiario,
+          },
         };
     }
 
