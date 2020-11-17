@@ -22,6 +22,7 @@ import {
   participationValues,
   validateParticipationPercentage,
 } from '../popups/persona/ParticipationPercentages/utils';
+import { roles } from '../constants';
 
 class Index extends Component {
 
@@ -246,15 +247,27 @@ class Index extends Component {
         return status.length < 3 || asegurado === false;
     }
 
+    /**
+     * 
+     * @param {import('../popups/persona/ParticipationPercentages').Person} person 
+     * @param {*} state 
+     */
     exitsPerson(person, state = null) {
         let persons = this.state.persons;
         if (state !== null) persons = state;
         let status = false;
         for (let i = 0; i < persons.length; i++) {
             const currentPerson = persons[i];
+            const mergeRoles = [
+              ...currentPerson['role'],
+              ...person['role'],
+            ].some((role) =>
+              [roles.obsequies, roles.personalAccidents].some((r) => r === role)
+            );
             if (
               parseInt(currentPerson.code) === parseInt(person.code) &&
-              parseInt(currentPerson.value) === parseInt(person.value)
+              parseInt(currentPerson.value) === parseInt(person.value) &&
+              !mergeRoles
             ) {
               person['role'] = [...person['role'], ...currentPerson['role']];
               person['role'] = [...new Set(person['role'])].sort(
@@ -262,7 +275,7 @@ class Index extends Component {
               );
               status = {
                 person,
-                index: i
+                index: i,
               };
             }
         }
