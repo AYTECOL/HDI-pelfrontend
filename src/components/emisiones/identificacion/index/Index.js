@@ -143,19 +143,9 @@ class Index extends Component {
                 hasExequias: hasExequias
             });
         } else {
-
-            let persons = [];
-            for (let i = 0; i < person.length; i++) {
-                if (typeof persons[person[i].value] === "undefined") {
-                    persons[person[i].value] = person[i];
-                }
-            }
-            let newPerson = [];
-            for (let i in persons) newPerson.push(persons[i]);
-
             this.setState({
                 ...this.state,
-                persons: newPerson,
+                persons: person,
                 hasAccident: hasAccident,
                 hasExequias: hasExequias
             });
