@@ -39,32 +39,21 @@ class BtnContinue extends PureComponent {
     let benefists = [];
     let onerous = [];
     let additional = [];
-    let personsMerge = {};
+    let newPersons = [];
     for (let i = 0; i < persons.length; i++) {
       let person = persons[i];
-      if (typeof personsMerge[person["value"]] === "undefined") {
         if (
-          typeof persons[i].object !== "undefined" &&
-          persons[i].object !== ""
+          typeof persons[i].object !== 'undefined' &&
+          persons[i].object !== ''
         ) {
           person = Persona.extractDataFromIaxis(
             persons[i].object,
-            persons[i]["code"],
+            persons[i]['code'],
             person
           );
         }
-        personsMerge[person["value"]] = person;
-      } else {
-        person["role"] = person["role"].concat(
-          personsMerge[person["value"]]["role"]
-        );
-        personsMerge[person["value"]]["role"] = [
-          ...new Set(person["role"])
-        ].sort(Helpers.orderArrayNumeric);
-      }
+        newPersons.push(person)
     }
-    let newPersons = [];
-    for (let i in personsMerge) newPersons.push(personsMerge[i]);
     persons = newPersons;
     const { personalAccidents, exequiasParticipation } = fieldsNames;
     for (let i = 0; i < persons.length; i++) {
