@@ -358,8 +358,8 @@ class Index extends Component {
                   <div className="col col-md-8 col-lg-8 last-items-emision">
                     <p>
                       Has contratado algunas coberturas (exequias y accidentes
-                      personales) que te permiten asegurar a personas
-                      adicionales. ¿Deseas hacerlo?
+                      personales) puedes indicar los beneficiarios en caso de
+                      fallecimiento. ¿Deseas hacerlo?
                     </p>
                     <div
                       className="more-items"
