@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { roles } from '../constants';
 import ParticipationPercentage from './ParticipationPercentage';
 import { fieldsNames } from '../popups/persona/constants';
+import { someRole } from '../../utils';
 
 /**
  *
@@ -15,9 +16,7 @@ const Card = (props) => {
   const persons = [];
   const obsequies = [];
   const personalAccidents = [];
-  const someRole = (personRoles) => (role) =>
-    personRoles.some((r) => String(r) === String(role));
-  
+
   props.persons.forEach((person, key) => {
     const value = { person, key };
     const hasRole = someRole(person.role);

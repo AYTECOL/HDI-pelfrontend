@@ -22,6 +22,8 @@ import AllBuildYears from "../../../../services/AllBuildYears";
 import AllSecurity from "../../../../services/AllSecurity";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import Summary from "../../../cotizaciones/cotizacion/summary/summary";
+import { roles } from "../../identificacion/constants";
+import { someRole } from "../../utils";
 
 class Index extends Component {
   constructor(props) {
@@ -115,10 +117,17 @@ class Index extends Component {
         if (typeof items[item.name] !== "undefined") {
           for (let i = 0; i < items[item.name].length; i++) {
             const person = items[item.name][i];
-            const existsPerson = persons.some(
-              ({ document, document_type }) => String(person.document) === String(document) &&
-                String(person.document_type) === String(document_type)
+            const hasRole = someRole(person.role);
+            const check = ![roles.obsequies, roles.personalAccidents].some((r) =>
+              hasRole(r)
             );
+            const existsPerson =
+              check &&
+              persons.some(
+                ({ document, document_type }) =>
+                  String(person.document) === String(document) &&
+                  String(person.document_type) === String(document_type)
+              );
             if (!existsPerson) persons.push(person);
           }
           for (let i = 0; i < persons.length; i++)
