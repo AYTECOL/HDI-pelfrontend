@@ -70,6 +70,7 @@ resources:
             - AllowedOrigins:
                 - '*'
               AllowedMethods:
+                - GET
                 - PUT
               AllowedHeaders:
                 - '*'
