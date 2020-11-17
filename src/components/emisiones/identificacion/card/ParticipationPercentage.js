@@ -58,7 +58,7 @@ const ParticipationPercentage = (props) => {
                   <td className="text-truncate">
                     {person['name']} {person['lastname']}
                   </td>
-                  <td className="text-center">{getPercentage(person) || 0}</td>
+                  <td className="text-center">{getPercentage(person) || 0} %</td>
                   <td>
                     <div className="col actions pt-0">
                       {props.showEdit === true && (
@@ -90,10 +90,9 @@ const ParticipationPercentage = (props) => {
               <td></td>
               <td></td>
               <td>
-                <div className="d-flex total-percentage">
-                  <div className="flex-fill">Total:</div>
+                <div className="text-center total-percentage">
                   <div className={classNames(!totalValid && 'error')}>
-                    {total} %
+                    Total: {total} %
                   </div>
                 </div>
               </td>
