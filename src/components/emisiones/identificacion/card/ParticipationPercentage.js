@@ -42,7 +42,9 @@ const ParticipationPercentage = (props) => {
             <tr>
               <th scope="col">Identificación</th>
               <th scope="col">Nombre y apellido</th>
-              <th scope="col" className="">% Participación</th>
+              <th scope="col" className="col-percentage">
+                % Participación
+              </th>
               <th scope="col" className="text-center">
                 Acciones
               </th>
