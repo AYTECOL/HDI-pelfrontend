@@ -58,7 +58,7 @@ const ParticipationPercentage = (props) => {
                   <td className="text-truncate">
                     {person['name']} {person['lastname']}
                   </td>
-                  <td className="text-right">{getPercentage(person) || 0}</td>
+                  <td className="text-center">{getPercentage(person) || 0}</td>
                   <td>
                     <div className="col actions pt-0">
                       {props.showEdit === true && (
