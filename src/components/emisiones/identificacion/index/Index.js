@@ -76,16 +76,28 @@ class Index extends Component {
 
     async getData() {
         Loading.toggle(true);
-        let persons = await QuoteIussedById.get(this.props.match.params.id);
-        let person = [];
+        let quote = await QuoteIussedById.get(this.props.match.params.id);
+        let persons = [];
         let hasExequias = false;
         let hasAccident = false;
-        if (typeof persons.quote_iussed_info.Item !== "undefined") {
-            let items = persons.quote_iussed_info.Item;
+        if (typeof quote.plan_selected_info.Item !== "undefined") {
+            const { coverages } = quote.plan_selected_info.Item;
+            for (let i = 0; i < coverages.length; i++) {
+              const coverage = coverages[i];
+              const { checked, code_content, code_real_estate } = coverage;
+              if (checked === true) {
+                const codes = [code_content, code_real_estate];
+                if (codes.some((code) => code === 716)) hasAccident = true;
+                if (codes.some((code) => code === 774)) hasExequias = true;
+              }
+            }
+        }
+        if (typeof quote.quote_iussed_info.Item !== "undefined") {
+            let items = quote.quote_iussed_info.Item;
 
             if (items.taker.length !== 0) {
-                person.push(items.taker);
-                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
+                persons.push(items.taker);
+                for (let i = 0; i < persons.length; i++) if (typeof persons[i].role === "undefined") persons[i].role = [1];
             }
 
             [
@@ -94,49 +106,62 @@ class Index extends Component {
                 {name: 'onerous', role: 4},
                 {name: 'persons_aditionals', role: 5},
             ].map((item, key) => {
-                if (typeof items[item.name] !== "undefined") {
-                    for (let i = 0; i < items[item.name].length; i++) person.push(items[item.name][i]);
-                    for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [item.role];
+                if (typeof items[item.name] !== 'undefined') {
+                  for (let i = 0; i < items[item.name].length; i++) {
+                    const person = items[item.name][i];
+                    const rolesPerson = person.role || [];
+                    const findIndex = (role) =>
+                      rolesPerson.findIndex((r) => r === role);
+                    const indexObsequies = findIndex(roles.obsequies);
+
+                    const splice = (index) => rolesPerson.splice(index, 1);
+
+                    if (indexObsequies !== -1 && !hasExequias) {
+                      splice(indexObsequies);
+                    }
+
+                    const indexPersonalAccidents = findIndex(
+                      roles.personalAccidents
+                    );
+
+                    if (indexPersonalAccidents !== -1 && !hasAccident) {
+                      splice(indexPersonalAccidents);
+                    }
+                    if (rolesPerson.length) {
+                      const newPerson = { ...person, role: rolesPerson };
+                      persons.push(newPerson);
+                    }
+                  }
+                  for (let i = 0; i < persons.length; i++)
+                    if (typeof persons[i].role === 'undefined')
+                      persons[i].role = [item.role];
                 }
                 return true;
             });
 
-            for (let i = 0; i < person.length; i++) {
-                person[i]['name'] = person[i]['first_name'];
-                person[i]['secondname'] = person[i]['second_name'];
-                person[i]['lastname'] = person[i]['first_last_name'];
-                person[i]['secondlastname'] = person[i]['second_last_name'];
-                person[i]['code'] = person[i]['document_type'];
-                person[i]['value'] = person[i]['document'];
-                person[i]['genero'] = person[i]['gender'];
-                person[i]['fechadenacimiento'] = person[i]['birthdate'];
-                person[i]['tipodetelefono'] = person[i]['phone_type'];
-                person[i]['telefono'] = person[i]['phone'];
-                person[i]['ciudad'] = person[i]['location'];
-                person[i]['adresstype'] = person[i]['address_type'];
-                person[i]['sarlaft'] = person[i]['sarlaft_document_url'];
-                person[i]['sarlfalt_url'] = person[i]['sarlaft_document_url'];
-                person[i]['department'] = person[i]['departamento'];
-                person[i]['city'] = person[i]['ciudad'];
+            for (let i = 0; i < persons.length; i++) {
+                persons[i]['name'] = persons[i]['first_name'];
+                persons[i]['secondname'] = persons[i]['second_name'];
+                persons[i]['lastname'] = persons[i]['first_last_name'];
+                persons[i]['secondlastname'] = persons[i]['second_last_name'];
+                persons[i]['code'] = persons[i]['document_type'];
+                persons[i]['value'] = persons[i]['document'];
+                persons[i]['genero'] = persons[i]['gender'];
+                persons[i]['fechadenacimiento'] = persons[i]['birthdate'];
+                persons[i]['tipodetelefono'] = persons[i]['phone_type'];
+                persons[i]['telefono'] = persons[i]['phone'];
+                persons[i]['ciudad'] = persons[i]['location'];
+                persons[i]['adresstype'] = persons[i]['address_type'];
+                persons[i]['sarlaft'] = persons[i]['sarlaft_document_url'];
+                persons[i]['sarlfalt_url'] = persons[i]['sarlaft_document_url'];
+                persons[i]['department'] = persons[i]['departamento'];
+                persons[i]['city'] = persons[i]['ciudad'];
             }
         }
 
-        if (typeof persons.plan_selected_info.Item !== "undefined") {
-            let coverange = persons.plan_selected_info.Item.coverages;
-            for (let i = 0; i < coverange.length; i++) {
-                if (coverange[i]['name'].toLowerCase() === 'accidentes personales' && coverange[i]['checked'] === true) hasAccident = true;
-                if (coverange[i]['name'].toLowerCase() === 'exequial' && coverange[i]['checked'] === true) hasExequias = true;
-                if (coverange[i]['name'].toLowerCase() === 'exequias' && coverange[i]['checked'] === true) hasExequias = true;
-                if (typeof coverange[i]['code_content'] !== "undefined") {
-                    if (coverange[i]['checked'] === true) {
-                        if (coverange[i]['code_content'] === 716) hasAccident = true;
-                        if (coverange[i]['code_content'] === 774) hasExequias = true;
-                    }
-                }
-            }
-        }
+        
 
-        if (person.length === 0) {
+        if (persons.length === 0) {
             this.setState({
                 ...this.state,
                 hasAccident: hasAccident,
@@ -145,7 +170,7 @@ class Index extends Component {
         } else {
             this.setState({
                 ...this.state,
-                persons: person,
+                persons: persons,
                 hasAccident: hasAccident,
                 hasExequias: hasExequias
             });
