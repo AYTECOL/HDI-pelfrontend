@@ -22,28 +22,28 @@ const ParticipationPercentage = (props) => {
   const totalValid = isTotalValid(total);
   return (
     <div className="row item-select">
-      <div className="col col-2 d-flex align-items-center">
-        <div className="row align-items-center">
-          <div className="col-sm-12 col-md-6 p-0">
-            <div className="icon-image m-auto">&nbsp</div>
-          </div>
-          <div className="col-sm-12 col-md-6 p-0">
-            <span>Rol</span>
-            <p className="font-weight-bold">{name}</p>
-          </div>
+      <div className="col col-custom col-1 d-flex align-items-center">
+        <div className="icon-image">&nbsp</div>
+      </div>
+      <div className="col col-2 col-custom d-flex align-items-center">
+        <div>
+          <span>Rol</span>
+          <p className="font-weight-bold">{name}</p>
         </div>
       </div>
-      <div className="col-10">
+      <div className="col p-0">
         <table
           className="table table-sm table-borderless mb-0"
           style={{ tableLayout: 'fixed' }}
         >
           <thead className="table-titles">
             <tr>
-              <th scope="col">Identificación</th>
+              <th scope="col" width="23%">
+                Identificación
+              </th>
               <th scope="col">Nombre y apellido</th>
               <th scope="col" className="col-percentage">
-                % Participación
+                % Benef
               </th>
               <th scope="col" className="text-center">
                 Acciones
@@ -92,7 +92,7 @@ const ParticipationPercentage = (props) => {
               <td>
                 <div className="text-center total-percentage">
                   <div className={classNames(!totalValid && 'error')}>
-                    Total: {total} %
+                    Total: {total}%
                   </div>
                 </div>
               </td>
