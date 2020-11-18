@@ -777,8 +777,8 @@ export default class Persona extends Component {
                                         typePerson={this.props.typePerson}
                                         disabledAll={this.props.disabledAll}
                                         exitsTomador={this.state.exitsTomador}
-                                        hasAccident={true}
-                                        hasExequias={true} />
+                                        hasAccident={this.props.hasAccident}
+                                        hasExequias={this.props.hasExequias} />
 
                                     {typePerson !== 7 &&
                                         <div className="row fields-row">
