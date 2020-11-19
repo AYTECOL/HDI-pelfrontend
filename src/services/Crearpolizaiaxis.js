@@ -78,14 +78,6 @@ class Crearpolizaiaxis {
                 }
             }
 
-            if (typeof d.secondname === "undefined" || d.secondname === null) {
-                if (typeof d.second_name === "undefined" || d.second_name === null) {
-                    d.secondname = " ";
-                } else {
-                    d.secondname = d.second_last_name;
-                }
-            }
-
             if (typeof d.lastname === "undefined" || d.lastname === null) {
                 if (typeof d.first_last_name === "undefined" || d.first_last_name === null) {
                     d.lastname = " ";
@@ -106,8 +98,8 @@ class Crearpolizaiaxis {
                 "personaNatural": {
                     "primerApellido": d.lastname,
                     "primerNombre": typeof d.first_name === "undefined" || d.first_name === null ? ' ' : d.first_name,
-                    "segundoApellido": d.secondlastname,
-                    "segundoNombre": d.secondname,
+                    "segundoApellido": d.secondlastname || ' ',
+                    "segundoNombre": d.secondname || ' ',
                     "genero": {
                         "codigo": typeof d.genero === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
                     },
