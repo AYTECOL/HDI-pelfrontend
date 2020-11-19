@@ -27,19 +27,28 @@ class Tab extends Component {
     }
 
     //Make merge between default plan and seleted plan
+    /**
+     * 
+     * @param {import("../coberturas/Coberturas").PlanSelectedInfoItem} selected 
+     * @param {import("../coberturas/Coberturas").PlanSelectedInfoItem} normal 
+     */
     static assignValuesSaved(selected, normal) {
         for (let j = 0; j < normal.coverages.length; j++) {
             const coverage = normal.coverages[j]
-            if (typeof selected.coverages[j] !== "undefined" && coverage.name === selected.coverages[j].name) {
-                coverage.optional = selected.coverages[j].optional;
-                coverage.checked = selected.coverages[j].checked;
+            const selectedCoverage = selected.coverages.find(
+              ({ code_real_estate }) =>
+                coverage.code_real_estate === code_real_estate
+            );
+            if (typeof selectedCoverage !== "undefined" && coverage.name === selectedCoverage.name) {
+                coverage.optional = selectedCoverage.optional;
+                coverage.checked = selectedCoverage.checked;
                 if (typeof coverage.values !== "undefined") {
                     for (let i = 0; i < coverage.values.length; i++) {
                         if (typeof coverage.values[i] !== "undefined") {
                             if (typeof coverage.values[i].values === "undefined") {
-                                if (typeof selected.coverages[j].values !== "undefined") {
-                                    if (typeof selected.coverages[j].values[i] !== "undefined") {
-                                        const covergaValue = selected.coverages[j].values[i]
+                                if (typeof selectedCoverage.values !== "undefined") {
+                                    if (typeof selectedCoverage.values[i] !== "undefined") {
+                                        const covergaValue = selectedCoverage.values[i]
                                         const {
                                           value_to_quotate,
                                         } = covergaValue;
@@ -63,10 +72,10 @@ class Tab extends Component {
                                     }
                                 }
                             } else {
-                                if (typeof selected.coverages[j].values[i].values !== "undefined") {
+                                if (typeof selectedCoverage.values[i].values !== "undefined") {
                                     for (let k = 0; k < coverage.values[i].values.length; k++) {
-                                        if (typeof selected.coverages[j].values[i].values[k] !== "undefined") {
-                                            coverage.values[i].values[k].default = selected.coverages[j].values[i].values[k].default;
+                                        if (typeof selectedCoverage.values[i].values[k] !== "undefined") {
+                                            coverage.values[i].values[k].default = selectedCoverage.values[i].values[k].default;
                                         }
                                     }
                                 }
@@ -76,12 +85,17 @@ class Tab extends Component {
                 }
             } else {
                 //If no is equal the coverage so calc value for this.
-                if (typeof coverage.values !== "undefined") {
-                    for (let i = 0; i < coverage.values.length; i++) {
-                        if (typeof coverage.values[i] !== "undefined") {
-                            normal = Coberturas.calcValue(normal, coverage.values[i].id);
-                        }
-                    }
+                if (coverage.values) {
+                  coverage.values.forEach((value) => {
+                    const value_show = Coberturas.getValueFields(
+                      value,
+                      value.id,
+                      {
+                        plan: normal,
+                      }
+                    );
+                    value.value_show = value_show;
+                  });
                 }
             }
         }
@@ -190,10 +204,10 @@ class Tab extends Component {
         //let inmuble = store.getState().Inmueble;
         let indexSelected = null;
 
-        if (typeof plan.plan_selected_info.Item !== "undefined") {
-            let selected = plan.plan_selected_info.Item;
+        let selected = plan.plan_selected_info.Item;
+        if (typeof selected !== "undefined") {
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
-            const planSelected = Coberturas.setHiredCoverages(selected)
+            const planSelected = Coberturas.setHiredCoverages(selected, inmueble)
             plans[indexSelected] = Tab.assignValuesSaved(planSelected, plans[indexSelected]);
             plans[indexSelected] = BtnContinue.toNumberCoverrange(plans[indexSelected]);
             //Save in store the index of plan selected
