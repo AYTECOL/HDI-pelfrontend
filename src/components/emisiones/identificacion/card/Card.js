@@ -25,7 +25,8 @@ const Card = (props) => {
     if (
       hasRole(roles.beneficiary) ||
       hasRole(roles.insured) ||
-      hasRole(roles.taker)
+      hasRole(roles.taker) ||
+      hasRole(roles.onerousBeneficiary)
     )
       persons.push(value);
     if (hasObsequies) obsequies.push(value);
@@ -98,12 +99,15 @@ const Card = (props) => {
                 </div>
               )}
               {showAddress && (
-                <div className="col col-custom col-sm-3 col-md-3">
+                <div className="col col-custom col-sm-3 col-md-3 text-center">
                   <span>Dirección</span>
                   <p>{person['address']}</p>
                 </div>
               )}
-              <div className="col col-custom actions">
+              <div
+                className="col col-custom actions"
+                style={{ paddingRight: '18px' }}
+              >
                 {props.showEdit === true && (
                   <p>
                     <i onClick={props.togglePopUpPersona(key)}>Modificar</i>
