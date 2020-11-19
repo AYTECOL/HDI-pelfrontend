@@ -55,10 +55,12 @@ node('linux'){
                 npm run-script build
                 ls -ltr
             """
-            sh 'aws s3 sync build s3://poliza-express-hogar --delete'
-            sh 'aws s3 sync --acl public-read-write build s3://poliza-express-hogar --delete'
-            sh 'aws s3 cp build s3://poliza-express-hogar  --recursive --metadata-directive REPLACE --acl public-read'
-            sh 'aws s3 cp build s3://poliza-express-hogar  --recursive --metadata-directive REPLACE --recursive --cache-control max-age=0,no-cache,no-store,must-revalidate --acl public-read'
+            dir('build') {
+                  sh 'pwd'
+                  sh 'ls'
+                  sh 'aws s3 rm s3://poliza-express-hogar --recursive' // Clean bucket
+                  sh 'aws s3 sync .  s3://poliza-express-hogar' // Sync bucket
+            }
             sh 'aws cloudfront create-invalidation --distribution-id E34Q7LYXR9QKMW --paths "/*"'
         }
     }
