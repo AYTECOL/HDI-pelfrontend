@@ -73,17 +73,17 @@ export const getRulesByCode = (code, coverages = undefined) => {
         );
         const values = (hurtoCalificado && hurtoCalificado.values) || [];
         const itemValue = values.find((element) => element.code === 9692);
-        const value = Masknumbermoney.formatToNumber(itemValue.value_show);
-        if (value)
-          return {
-            max: value,
-            min: 10000000,
-            formatError: ({ max }) => {
-              if (max) {
-                return 'Valor Asegurado de Contenidos es superior al permitido';
-              }
-            },
-          };
+        return {
+          ...(typeof itemValue.value_show === 'string' && {
+            max: Masknumbermoney.formatToNumber(itemValue.value_show),
+          }),
+          min: 10000000,
+          formatError: ({ max }) => {
+            if (max) {
+              return 'Valor Asegurado de Contenidos es superior al permitido';
+            }
+          },
+        };
       }
       break;
     case 3017:
@@ -115,4 +115,15 @@ export const getRulesByCode = (code, coverages = undefined) => {
     default:
       return null;
   }
+};
+
+/**
+ * 
+ * @param {number} value 
+ * @param {Rules} param1 
+ */
+export const getValue = (value, { max, min }) => {
+  value = max ? (value > max ? max : value) : value;
+  value = min ? (value < min ? min : value) : value;
+  return value;
 };

@@ -7,7 +7,7 @@ import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../actions';
-import { getRulesByCode, getTotalCoverage } from '../../../../common';
+import { getRulesByCode, getTotalCoverage, getValue } from '../../../../common';
 import MobileContents from '../../inmueble/forms/MobileContents';
 
 /**
@@ -119,7 +119,7 @@ class Coberturas extends Component {
         if ((notExist || (!!item.changed && !recalculate)) && item.hired) {
           return item.value_show;
         }
-        const { max, min } = {
+        const rules = {
           ...getRulesByCode(item.code, plan && plan.coverages),
         };
         /**
@@ -188,8 +188,7 @@ class Coberturas extends Component {
           );
         }
         if (typeof value === 'number') {
-          value = max ? (value > max ? max : value) : value;
-          value = min ? (value < min ? min : value) : value;
+          value = getValue(value, rules);
           return Masknumbermoney.formatToMask(value);
         }
       }
