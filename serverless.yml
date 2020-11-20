@@ -3,7 +3,7 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev
+  stage: nonprod
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
   Tags:
