@@ -13,6 +13,13 @@ const Url = UrlCrearpolizaiaxis;
 class Crearpolizaiaxis {
 
     /**
+     * @param {(string|number)[]} value
+     */
+    static getValue(...value) {
+        return value.find((v) => String(v || '').trim()) || ' ';
+    }
+
+    /**
      * 
      * @param {import('./QuoteIussedById').Taker[]} persons 
      */
@@ -70,22 +77,6 @@ class Crearpolizaiaxis {
             if (d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
             d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
 
-            if (typeof d.secondlastname === "undefined" || d.secondlastname === null) {
-                if (typeof d.second_last_name === "undefined" || d.second_last_name === null) {
-                    d.secondlastname = " ";
-                } else {
-                    d.secondlastname = d.second_last_name;
-                }
-            }
-
-            if (typeof d.lastname === "undefined" || d.lastname === null) {
-                if (typeof d.first_last_name === "undefined" || d.first_last_name === null) {
-                    d.lastname = " ";
-                } else {
-                    d.lastname = d.first_last_name;
-                }
-            }
-
             if (typeof d.tipodetelefono === "undefined" || d.tipodetelefono === null) {
                 if (typeof d.phone_type === "undefined" || d.phone_type === null) {
                     d.tipodetelefono = " ";
@@ -93,13 +84,14 @@ class Crearpolizaiaxis {
                     d.tipodetelefono = d.phone_type;
                 }
             }
-
+            let segundoApellido = this.getValue(d.secondlastname, d.second_last_name);
+            let segundoNombre = this.getValue(d.secondname, d.second_name);
             let personAdd = {
                 "personaNatural": {
-                    "primerApellido": d.lastname,
-                    "primerNombre": typeof d.first_name === "undefined" || d.first_name === null ? ' ' : d.first_name,
-                    "segundoApellido": d.secondlastname || ' ',
-                    "segundoNombre": d.secondname || ' ',
+                    "primerApellido": this.getValue(d.first_last_name),
+                    "primerNombre": this.getValue(d.first_name),
+                    segundoApellido,
+                    segundoNombre,
                     "genero": {
                         "codigo": typeof d.genero === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
                     },
