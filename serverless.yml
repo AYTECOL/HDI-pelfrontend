@@ -3,9 +3,9 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: nonprod
+  stage: dev
   region: us-east-1
-  account: {Ref: "AWS::AccountId"}
+  account: { Ref: "AWS::AccountId" }
   Tags:
   # Set Tags for Resource
   stackTags:
@@ -166,3 +166,4 @@ resources:
     WebAppCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+
