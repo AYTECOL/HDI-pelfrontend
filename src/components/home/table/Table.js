@@ -10,6 +10,8 @@ import Identifications from '../../../services/Identifications';
 import { UrlSite } from '../../../config';
 import Pagination from '../../../common/helpers/Pagination/Pagination';
 import Loading from '../../../components/globals/loading/Loading';
+import QuoteIussedById from '../../../services/QuoteIussedById';
+import PdfEndosoHogar from "../../../services/PdfEndosoHogar";
 
 /**
  *  @typedef {{ type_person: string, description: string, code: number }} IdentificationType
@@ -66,21 +68,36 @@ const Table = (props) => {
     Loading.toggle(true);
     try {
       let a = document.createElement('a');
+      let data = await QuoteIussedById.get(id);
+      let endoso = false;
+      if (typeof data.quote_iussed_info !== "undefined") {
+        if (
+          typeof data.quote_iussed_info.Item !== "undefined" &&
+          typeof data.quote_iussed_info.Item.onerous !== "undefined"
+        ) {
+          if (data.quote_iussed_info.Item.onerous.length > 0) {
+            endoso = true;
+          }
+        }
+      }
 
+      if (endoso)  {
+        let pdfEndoso = await PdfEndosoHogar.get(id);
+
+        let a = document.createElement("a");
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.href = "data:application/pdf;base64," + pdfEndoso;
+        a.setAttribute("download", "BeneficiarioOnerosoHogar.pdf");
+        a.click();
+        document.body.removeChild(a);
+      }
       let pdf = await PdfPolizaHogar.get(id);
       a = document.createElement('a');
       a.style.display = 'none';
       document.body.appendChild(a);
       a.href = 'data:application/pdf;base64,' + pdf;
       a.setAttribute('download', 'PdfPolizaPrima.pdf');
-      a.click();
-      document.body.removeChild(a);
-
-      let pdfAnexo = await PolizaAnexoHogar.get(id);
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.href = 'data:application/pdf;base64,' + pdfAnexo;
-      a.setAttribute('download', 'PolizaAnexoHogar.pdf');
       a.click();
       document.body.removeChild(a);
 
