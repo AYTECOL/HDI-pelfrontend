@@ -85,14 +85,6 @@ class PolizaEmitida extends Component {
       a.click();
       document.body.removeChild(a);
 
-      let pdfAnexo = await PolizaAnexoHogar.get(this.state.quote);
-      a.style.display = "none";
-      document.body.appendChild(a);
-      a.href = "data:application/pdf;base64," + pdfAnexo;
-      a.setAttribute("download", "PolizaAnexoHogar.pdf");
-      a.click();
-      document.body.removeChild(a);
-
       Loading.toggle(false);
     } catch (e) {
       Loading.toggle(false);

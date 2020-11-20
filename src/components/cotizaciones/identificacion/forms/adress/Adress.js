@@ -47,7 +47,6 @@ class Address extends Component {
     if (!isValidDirection(value)) errors.push(validationMessages.addressRegex);
     return errors;
   }
-
   validateChar = (event) => {
     if (!isValidDirection(event.key)) {
       event.preventDefault();
@@ -74,7 +73,7 @@ class Address extends Component {
           name="address"
           id="address"
           type="text"
-          value={address}
+          {...(address === "" ? {} : {value: address})}
           className={classNames(
             'form-control text-truncate',
             disabled && 'disabled'
