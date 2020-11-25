@@ -54,36 +54,36 @@ class Tab extends Component {
                 coverage.checked = selectedCoverage.checked;
                 if (typeof coverage.values !== "undefined") {
                     for (let i = 0; i < coverage.values.length; i++) {
-                        if (typeof coverage.values[i] !== "undefined") {
-                            if (typeof coverage.values[i].values === "undefined") {
-                                if (typeof selectedCoverage.values !== "undefined") {
-                                    if (typeof selectedCoverage.values[i] !== "undefined") {
-                                        const covergaValue = selectedCoverage.values[i]
-                                        const {
-                                          value_to_quotate,
-                                        } = covergaValue;
-                                        const rules = {
-                                          ...getRulesByCode(
-                                            covergaValue.code,
-                                            normal.coverages
-                                          ),
-                                        };
-                                        coverage.values[i].value = covergaValue.value;
-                                        const newValue = getValue(
-                                          value_to_quotate,
-                                          rules
-                                        );
-                                        coverage.values[i].value_show = Masknumbermoney.formatToMask(
-                                          newValue
-                                        );
-                                        coverage.values[i].value_to_quotate = newValue
-                                    }
-                                }
+                        const coverageValue = coverage.values[i];
+                        if (
+                          coverageValue &&
+                          coverageValue.hired
+                        ) {
+                            if (!selectedCoverage.values || !coverageValue.values) {
+                              const valueSelected = selectedCoverage.values[i];
+                              if (valueSelected) {
+                                const { value_to_quotate } = valueSelected;
+                                const rules = {
+                                  ...getRulesByCode(
+                                    valueSelected.code,
+                                    normal.coverages
+                                  ),
+                                };
+                                coverageValue.value = valueSelected.value;
+                                const newValue = getValue(
+                                  value_to_quotate,
+                                  rules
+                                );
+                                coverageValue.value_show = Masknumbermoney.formatToMask(
+                                  newValue
+                                );
+                                coverageValue.value_to_quotate = newValue;
+                              }
                             } else {
                                 if (typeof selectedCoverage.values[i].values !== "undefined") {
-                                    for (let k = 0; k < coverage.values[i].values.length; k++) {
+                                    for (let k = 0; k < coverageValue.values.length; k++) {
                                         if (typeof selectedCoverage.values[i].values[k] !== "undefined") {
-                                            coverage.values[i].values[k].default = selectedCoverage.values[i].values[k].default;
+                                            coverageValue.values[k].default = selectedCoverage.values[i].values[k].default;
                                         }
                                     }
                                 }
@@ -215,8 +215,14 @@ class Tab extends Component {
         let selected = plan.plan_selected_info.Item;
         if (typeof selected !== "undefined") {
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
-            const planSelected = Coberturas.setHiredCoverages(selected, inmueble)
-            plans[indexSelected] = Tab.assignValuesSaved(planSelected, plans[indexSelected]);
+            const plan = Coberturas.setHiredCoverages(
+              plans[indexSelected],
+              inmueble
+            );
+            plans[indexSelected] = Tab.assignValuesSaved(
+              selected,
+              plan
+            );
             plans[indexSelected] = BtnContinue.toNumberCoverrange(plans[indexSelected]);
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
