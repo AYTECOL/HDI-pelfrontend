@@ -24,6 +24,7 @@ import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumb
 import Summary from "../../../cotizaciones/cotizacion/summary/summary";
 import { roles } from "../../identificacion/constants";
 import { someRole } from "../../utils";
+import Cities from "../../../../services/Cities";
 
 class Index extends Component {
   constructor(props) {
@@ -220,17 +221,30 @@ class Index extends Component {
         }
       }
     }
+    
+    const { cotizacion } = store.getState();
+    const { identification } = cotizacion;
+    const { cities } = await Cities.get();
+    /**
+     * @type {{
+     *  city: string
+     * }}
+     */
+    const city = cities.find(
+      ({ code_city, code_department }) =>
+        identification.city === parseInt(code_city) &&
+        identification.department === parseInt(code_department)
+    );
 
     this.setState({
       ...this.state,
       plans: plansLoader,
       persons: persons,
       inmueble: inmueble,
-      contents: data["contents"],
+      contents: data['contents'],
       newSecurity: newSecurity,
-      city: persons[0].location,
-      adressHome: store.getState().pdf_info.addressHome
-
+      city: (city && city.city) || '',
+      adressHome: store.getState().pdf_info.addressHome,
     });
     store.dispatch(indexPlanSelected(0));
     store.dispatch(AllPlansCreator(plansLoader));
