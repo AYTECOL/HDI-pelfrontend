@@ -4,10 +4,6 @@ import classNames from 'classnames';
 import Cities from '../../../../../services/Cities';
 
 import store from '../../../../../store';
-import {
-  saveDescriptionCity,
-  saveIdentificationValue
-} from '../../../../../actions';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
 import { withRouter } from 'react-router-dom';
 
@@ -102,35 +98,9 @@ class AutocompleteCities extends Component {
     }
   }
 
-  resetAddress() {
-    store.dispatch(
-      saveIdentificationValue({
-        name: 'address',
-        value: ''
-      })
-    );
-  }
-
-  resetCity() {
-    store.dispatch(
-      saveIdentificationValue({
-        name: this.nameInput,
-        value: ''
-      })
-    );
-    this.resetAddress();
-  }
-
   getTextById() {
     /**
-     * @typedef City
-     * @type {object}
-     * @property {string} code_city
-     * @property {string} code_department
-     * @property {string} city
-     * @property {string} department
-     * @property {string} description
-     */
+     * */
 
     /**
      *  @const  {City[]} cities
@@ -177,69 +147,42 @@ class AutocompleteCities extends Component {
     }
   };
 
-  saveOption = option => e => {
+  saveOption = option => () => {
+    const { onSelect } = this.props;
+    onSelect && onSelect(option);
     let code = option.code_city;
     let value = option.description;
     let description = option.department;
     let city = option.city;
     let codeDepartment = option.code_department;
-    let { location } = this.props;
     setTimeout(() => {
-      if (location.pathname.substr(0, 13) === '/cotizacion/1') {
-        Helpers.updatePdfInfo({
-          cityHome: option.city
-        });
-        Helpers.updatePdfInfo({
-          departmentHome: option.department
-        });
-      }
-      Helpers.updatePdfInfo({
-        city: option.city
-      });
-      Helpers.updatePdfInfo({
-        department: option.department
-      });
-      store.dispatch(
-        saveIdentificationValue({
-          name: 'city',
-          value: code
-        })
-      );
-      store.dispatch(
-        saveIdentificationValue({
-          name: 'department',
-          value: codeDepartment
-        })
-      );
-      this.resetAddress();
-      store.dispatch(saveDescriptionCity(description));
       this.setState({
         ...this.state,
         value,
-        empty: false
+        empty: false,
       });
       if (typeof this.props.onChange !== 'undefined') {
         this.changeTargets([
           {
             value: value,
-            name: this.props.name
+            name: this.props.name,
           },
           {
             value: parseInt(code),
-            name: 'city_code'
+            name: 'city_code',
           },
           {
             value: parseInt(codeDepartment),
-            name: 'department_code'
+            name: 'department_code',
           },
           {
             value: city,
-            name: 'city'
+            name: 'city',
           },
           {
             value: description,
-            name: 'departamento'
-          }
+            name: 'departamento',
+          },
         ]);
       }
     }, 200);
@@ -250,10 +193,10 @@ class AutocompleteCities extends Component {
     return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
-  searchData = ({ target: { value, name } }) => {
+  searchData = ({ target: { value } }) => {
     const { cities } = this.state.originalOptions;
     const options = { cities: [] };
-    cities.forEach((option, key) => {
+    cities.forEach((option) => {
       const city = this.removeAccents(option.city || '').toLowerCase();
       const search = city.search(this.removeAccents(value.toLowerCase()));
       if (search !== -1 && search === 0) {
@@ -267,10 +210,11 @@ class AutocompleteCities extends Component {
         value: value,
         toggle: true,
         options,
-        empty: !value
+        empty: !value,
       },
       () => {
-        this.state.empty && this.resetCity();
+        const { onSelect } = this.props;
+        this.state.empty && onSelect && onSelect();
       }
     );
   };
