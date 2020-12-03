@@ -8,6 +8,8 @@ import Adress from '../forms/adress/Adress';
 import Addressadditional from '../forms/addressadditional/Addressadditional';
 import AutoCompleteCities from '../forms/autocompletecities/AutocompleteCities';
 import Map from "../map/Map.js"
+import Helpers from '../../../../common/helpers/helpers/Helpers';
+import { saveDescriptionCity, saveIdentificationValue } from '../../../../actions';
 
 class SecondForm extends Component {
 
@@ -34,13 +36,74 @@ class SecondForm extends Component {
         });
     }
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
-    render() {
-        return (
-            <div className={(this.state.show ? 'show' : 'hide')}>
+  resetAddress() {
+    store.dispatch(
+      saveIdentificationValue({
+        name: 'address',
+        value: '',
+      })
+    );
+  }
+
+  resetCity() {
+    store.dispatch(
+      saveIdentificationValue({
+        name: 'city',
+        value: '',
+      })
+    );
+    this.resetAddress();
+  }
+
+  /**
+   *
+   * @param {{
+   * code_city: number;
+   * department: string;
+   * code_department: number;
+   * }|undefined} option
+   */
+  onChangeCity = (option) => {
+    this.resetAddress();
+    if (option) {
+      let code = option.code_city;
+      let description = option.department;
+      let codeDepartment = option.code_department;
+      Helpers.updatePdfInfo({
+        cityHome: option.city,
+      });
+      Helpers.updatePdfInfo({
+        departmentHome: option.department,
+      });
+      Helpers.updatePdfInfo({
+        city: option.city,
+      });
+      Helpers.updatePdfInfo({
+        department: option.department,
+      });
+      store.dispatch(
+        saveIdentificationValue({
+          name: 'city',
+          value: code,
+        })
+      );
+      store.dispatch(
+        saveIdentificationValue({
+          name: 'department',
+          value: codeDepartment,
+        })
+      );
+      store.dispatch(saveDescriptionCity(description));
+    } else this.resetCity();
+  };
+
+  render() {
+    return (
+         <div className={(this.state.show ? 'show' : 'hide')}>
                 <div className={(this.state.type !== 1 ? "hide " : "") + "row"}>
                     <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
                         <Name/>
@@ -58,8 +121,10 @@ class SecondForm extends Component {
 
                 <div className="row">
                     <div className="col col-12 p-0">
-                        <AutoCompleteCities/>
-                    </div>
+                        <AutoCompleteCities
+                          onSelect={(option) => this.onChangeCity(option)}
+                        />
+                     </div>
                     <div className="col col-12 p-0">
                         <Adress/>
                     </div>

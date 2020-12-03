@@ -34,8 +34,8 @@ class Address extends Component {
     nextState.disabled = disabled;
     nextState.errors = disabled ? [] : nextState.errors;
     if (
-      city !== prevIdentification.city ||
-      department !== prevIdentification.department
+      (city && city !== prevIdentification.city) ||
+      (department && department !== prevIdentification.department)
     )
       this.textInput.current.focus();
   }

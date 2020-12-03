@@ -54,7 +54,7 @@ class Index extends Component {
                 if (this.state.persons.length > 0) {
                     persons = this.state.persons;
                 } else {
-                    let tomador = cotizacion.identification;
+                    let tomador = { ...cotizacion.identification };
                     if (tomador.name || tomador.businessname) {
                       tomador['role'] = [1];
                       persons.push(tomador);
