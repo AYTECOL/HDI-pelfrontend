@@ -2,11 +2,22 @@ import Api from './Api';
 import {UrlCrearpolizaiaxis} from "../config";
 import momentJs from 'moment';
 import ConsultaPersonas from './ConsultaPersonas';
+import {
+  isRoleParticipation,
+  fieldsParticipation,
+} from '../components/emisiones/identificacion/popups/persona/ParticipationPercentages/utils';
 
 const BaseUrl = "/crearpolizaiaxis";
 const Url = UrlCrearpolizaiaxis;
 
 class Crearpolizaiaxis {
+
+    /**
+     * @param {(string|number)[]} value
+     */
+    static getValue(...value) {
+        return value.find((v) => String(v || '').trim()) || ' ';
+    }
 
     /**
      * 
@@ -66,30 +77,6 @@ class Crearpolizaiaxis {
             if (d.fechadenacimiento.trim() === "" || d.fechadenacimiento === null) d.fechadenacimiento = '1948-03-06';
             d.fechadenacimiento = momentJs(d.fechadenacimiento).format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
 
-            if (typeof d.secondlastname === "undefined" || d.secondlastname === null) {
-                if (typeof d.second_last_name === "undefined" || d.second_last_name === null) {
-                    d.secondlastname = " ";
-                } else {
-                    d.secondlastname = d.second_last_name;
-                }
-            }
-
-            if (typeof d.secondname === "undefined" || d.secondname === null) {
-                if (typeof d.second_name === "undefined" || d.second_name === null) {
-                    d.secondname = " ";
-                } else {
-                    d.secondname = d.second_last_name;
-                }
-            }
-
-            if (typeof d.lastname === "undefined" || d.lastname === null) {
-                if (typeof d.first_last_name === "undefined" || d.first_last_name === null) {
-                    d.lastname = " ";
-                } else {
-                    d.lastname = d.first_last_name;
-                }
-            }
-
             if (typeof d.tipodetelefono === "undefined" || d.tipodetelefono === null) {
                 if (typeof d.phone_type === "undefined" || d.phone_type === null) {
                     d.tipodetelefono = " ";
@@ -97,13 +84,14 @@ class Crearpolizaiaxis {
                     d.tipodetelefono = d.phone_type;
                 }
             }
-
+            let segundoApellido = this.getValue(d.secondlastname, d.second_last_name);
+            let segundoNombre = this.getValue(d.secondname, d.second_name);
             let personAdd = {
                 "personaNatural": {
-                    "primerApellido": d.lastname,
-                    "primerNombre": typeof d.first_name === "undefined" || d.first_name === null ? ' ' : d.first_name,
-                    "segundoApellido": d.secondlastname,
-                    "segundoNombre": d.secondname,
+                    "primerApellido": this.getValue(d.first_last_name),
+                    "primerNombre": this.getValue(d.first_name),
+                    segundoApellido,
+                    segundoNombre,
                     "genero": {
                         "codigo": typeof d.genero === "undefined" || d.genero === null || d.genero === ' ' ? '1' : d.genero.toString(),
                     },
@@ -253,6 +241,9 @@ class Crearpolizaiaxis {
             }
         }
 
+        /**
+         * @type {import('./QuoteIussedById').PersonAditional[]}
+         */
         let additional = [];
         let persons_aditionals = data.quote_iussed_info.Item.persons_aditionals;
         if (typeof persons_aditionals !== "undefined") additional = persons_aditionals;
@@ -262,48 +253,50 @@ class Crearpolizaiaxis {
         if( typeof onerous_people !== "undefined" ) onerous = onerous_people;
 
         let asegurado = Crearpolizaiaxis.formatPerson(aseguradoArr);
-        let beneficiario = Crearpolizaiaxis.formatPerson(beneficiarioArr);
+        let beneficiarios = Crearpolizaiaxis.formatPerson(beneficiarioArr);
         let additionals = Crearpolizaiaxis.formatPerson(additional);
         let onerosos = Crearpolizaiaxis.formatPerson(onerous);
         let tomador = Crearpolizaiaxis.formatPerson(tomadorArr)[0];
 
-        for (let i = 0; i < additionals.length; i++) {
-            let add = additionals[i];
-            beneficiario.push(add);
+        for (let i = 0; i < beneficiarios.length; i++) {
+            beneficiarios[i] = Crearpolizaiaxis.mapBeneficiary(beneficiarios[i])
         }
 
-        let exitsExcequias = false;
-        for (let i = 0; i < beneficiario.length; i++) {
-            let code = "0";
-            for (let j = 0; j < additional.length; j++) {
-                if (parseInt(additional[j].document) === parseInt(beneficiario[i].numeroDocumento) &&
-                    parseInt(additional[j].document_type) === parseInt(beneficiario[i]['tipoDocumento']['codigo'])
-                ) {
-                    if (exitsExcequias === false) {
-                        exitsExcequias = true;
-                        code = 774;
-                        break;
-                    } else {
-                        code = 716;
-                        exitsExcequias = false;
-                        break;
-                    }
+        const {
+          exequiasParticipation,
+          personalAccidents,
+        } = fieldsParticipation;
+        const codes = {
+          [exequiasParticipation]: 774,
+          [personalAccidents]: 716,
+        };
+        for (let i = 0; i < additionals.length; i++) {
+          const additionalMap = additionals[i];
+          const person = additional[i];
+          let existsParticipation = false;
+          Object.keys(codes).forEach((participationValue) => {
+            if (isRoleParticipation(participationValue, person.role)) {
+              existsParticipation = true;
+              const porcentaje = String(person[participationValue]);
+              const beneficiary = Crearpolizaiaxis.mapBeneficiary(
+                additionalMap,
+                {
+                  garantiaBeneficiario: {
+                    codigo: String(codes[participationValue]),
+                    porcentaje,
+                  },
                 }
+              );
+              beneficiarios.push(beneficiary);
             }
-
-            beneficiario[i] = {
-                "persona": beneficiario[i],
-                "tipoBeneficiario": {
-                    "codigoTexto": "G"
-                },
-                "garantiaBeneficiario": {
-                    "codigo": code
-                }
-            }
+          });
+          if (!existsParticipation) {
+            beneficiarios.push(additionalMap);
+          }
         }
 
         for (let i = 0; i < onerosos.length; i++) {
-            beneficiario.push({
+            beneficiarios.push({
                 "persona": onerosos[i],
                 "tipoBeneficiario": {
                     "codigoTexto": "O"
@@ -317,9 +310,22 @@ class Crearpolizaiaxis {
         return {
             "asegurado": asegurado,
             "tomador": tomador,
-            "beneficiario": beneficiario,
+            "beneficiario": beneficiarios,
         };
     };
+
+    static mapBeneficiary(beneficiario, { garantiaBeneficiario } = {}) {
+        return {
+          persona: beneficiario,
+          tipoBeneficiario: {
+            codigoTexto: 'G',
+          },
+          garantiaBeneficiario: {
+            codigo: '0',
+            ...garantiaBeneficiario,
+          },
+        };
+    }
 
     static async save(data) {
         let user = await ConsultaPersonas.getUser();

@@ -1,0 +1,16 @@
+.total-percentage {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 19px;
+  color: #808080;
+  font-weight: 700 !important;
+  &.error,
+  .error {
+    color: #dd133c;
+  }
+}
+
+.col-percentage {
+  text-align: center;
+}

@@ -116,3 +116,14 @@ export const getRulesByCode = (code, coverages = undefined) => {
       return null;
   }
 };
+
+/**
+ * 
+ * @param {number} value 
+ * @param {Rules} param1 
+ */
+export const getValue = (value, { max, min }) => {
+  value = max ? (value > max ? max : value) : value;
+  value = min ? (value < min ? min : value) : value;
+  return value;
+};

@@ -1,0 +1,26 @@
+$color-primary: #28a3af;
+
+.participation-percentages {
+  input[type='range'] {
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 50%;
+      background: $color-primary;
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      border-radius: 50%;
+      background: $color-primary;
+      cursor: pointer;
+    }
+    &::-webkit-slider-runnable-track {
+      background: '#fff';
+    }
+
+    &::-moz-range-track {
+      background: $color-primary;
+    }
+  }
+}

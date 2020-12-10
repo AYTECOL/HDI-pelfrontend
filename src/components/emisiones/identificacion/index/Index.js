@@ -15,6 +15,14 @@ import Validaridentificacion
 import QuoteIussedById from "../../../../services/QuoteIussedById";
 import Loading from "../../../globals/loading/Loading";
 import { isValidDirection } from '../../../../common/validations';
+import {
+  isRoleParticipation,
+  getTotalParticipationPercentage,
+  isTotalValid,
+  participationValues,
+  validateParticipationPercentage,
+} from '../popups/persona/ParticipationPercentages/utils';
+import { roles } from '../constants';
 
 class Index extends Component {
 
@@ -46,7 +54,7 @@ class Index extends Component {
                 if (this.state.persons.length > 0) {
                     persons = this.state.persons;
                 } else {
-                    let tomador = cotizacion.identification;
+                    let tomador = { ...cotizacion.identification };
                     if (tomador.name || tomador.businessname) {
                       tomador['role'] = [1];
                       persons.push(tomador);
@@ -68,16 +76,28 @@ class Index extends Component {
 
     async getData() {
         Loading.toggle(true);
-        let persons = await QuoteIussedById.get(this.props.match.params.id);
-        let person = [];
+        let quote = await QuoteIussedById.get(this.props.match.params.id);
+        let persons = [];
         let hasExequias = false;
         let hasAccident = false;
-        if (typeof persons.quote_iussed_info.Item !== "undefined") {
-            let items = persons.quote_iussed_info.Item;
+        if (typeof quote.plan_selected_info.Item !== "undefined") {
+            const { coverages } = quote.plan_selected_info.Item;
+            for (let i = 0; i < coverages.length; i++) {
+              const coverage = coverages[i];
+              const { checked, code_content, code_real_estate } = coverage;
+              if (checked === true) {
+                const codes = [code_content, code_real_estate];
+                if (codes.some((code) => code === 716)) hasAccident = true;
+                if (codes.some((code) => code === 774)) hasExequias = true;
+              }
+            }
+        }
+        if (typeof quote.quote_iussed_info.Item !== "undefined") {
+            let items = quote.quote_iussed_info.Item;
 
             if (items.taker.length !== 0) {
-                person.push(items.taker);
-                for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [1];
+                persons.push(items.taker);
+                for (let i = 0; i < persons.length; i++) if (typeof persons[i].role === "undefined") persons[i].role = [1];
             }
 
             [
@@ -86,68 +106,71 @@ class Index extends Component {
                 {name: 'onerous', role: 4},
                 {name: 'persons_aditionals', role: 5},
             ].map((item, key) => {
-                if (typeof items[item.name] !== "undefined") {
-                    for (let i = 0; i < items[item.name].length; i++) person.push(items[item.name][i]);
-                    for (let i = 0; i < person.length; i++) if (typeof person[i].role === "undefined") person[i].role = [item.role];
+                if (typeof items[item.name] !== 'undefined') {
+                  for (let i = 0; i < items[item.name].length; i++) {
+                    const person = items[item.name][i];
+                    const rolesPerson = person.role || [];
+                    const findIndex = (role) =>
+                      rolesPerson.findIndex((r) => r === role);
+                    const indexObsequies = findIndex(roles.obsequies);
+
+                    const splice = (index) => rolesPerson.splice(index, 1);
+
+                    if (indexObsequies !== -1 && !hasExequias) {
+                      splice(indexObsequies);
+                    }
+
+                    const indexPersonalAccidents = findIndex(
+                      roles.personalAccidents
+                    );
+
+                    if (indexPersonalAccidents !== -1 && !hasAccident) {
+                      splice(indexPersonalAccidents);
+                    }
+                    if (rolesPerson.length) {
+                      const newPerson = { ...person, role: rolesPerson };
+                      persons.push(newPerson);
+                    }
+                  }
+                  for (let i = 0; i < persons.length; i++)
+                    if (typeof persons[i].role === 'undefined')
+                      persons[i].role = [item.role];
                 }
                 return true;
             });
 
-            for (let i = 0; i < person.length; i++) {
-                person[i]['name'] = person[i]['first_name'];
-                person[i]['secondname'] = person[i]['second_name'];
-                person[i]['lastname'] = person[i]['first_last_name'];
-                person[i]['secondlastname'] = person[i]['second_last_name'];
-                person[i]['code'] = person[i]['document_type'];
-                person[i]['value'] = person[i]['document'];
-                person[i]['genero'] = person[i]['gender'];
-                person[i]['fechadenacimiento'] = person[i]['birthdate'];
-                person[i]['tipodetelefono'] = person[i]['phone_type'];
-                person[i]['telefono'] = person[i]['phone'];
-                person[i]['ciudad'] = person[i]['location'];
-                person[i]['adresstype'] = person[i]['address_type'];
-                person[i]['sarlaft'] = person[i]['sarlaft_document_url'];
-                person[i]['sarlfalt_url'] = person[i]['sarlaft_document_url'];
-                person[i]['department'] = person[i]['departamento'];
-                person[i]['city'] = person[i]['ciudad'];
+            for (let i = 0; i < persons.length; i++) {
+                persons[i]['name'] = persons[i]['first_name'];
+                persons[i]['secondname'] = persons[i]['second_name'];
+                persons[i]['lastname'] = persons[i]['first_last_name'];
+                persons[i]['secondlastname'] = persons[i]['second_last_name'];
+                persons[i]['code'] = persons[i]['document_type'];
+                persons[i]['value'] = persons[i]['document'];
+                persons[i]['genero'] = persons[i]['gender'];
+                persons[i]['fechadenacimiento'] = persons[i]['birthdate'];
+                persons[i]['tipodetelefono'] = persons[i]['phone_type'];
+                persons[i]['telefono'] = persons[i]['phone'];
+                persons[i]['ciudad'] = persons[i]['location'];
+                persons[i]['adresstype'] = persons[i]['address_type'];
+                persons[i]['sarlaft'] = persons[i]['sarlaft_document_url'];
+                persons[i]['sarlfalt_url'] = persons[i]['sarlaft_document_url'];
+                persons[i]['department'] = persons[i]['departamento'];
+                persons[i]['city'] = persons[i]['ciudad'];
             }
         }
 
-        if (typeof persons.plan_selected_info.Item !== "undefined") {
-            let coverange = persons.plan_selected_info.Item.coverages;
-            for (let i = 0; i < coverange.length; i++) {
-                if (coverange[i]['name'].toLowerCase() === 'accidentes personales' && coverange[i]['checked'] === true) hasAccident = true;
-                if (coverange[i]['name'].toLowerCase() === 'exequial' && coverange[i]['checked'] === true) hasExequias = true;
-                if (coverange[i]['name'].toLowerCase() === 'exequias' && coverange[i]['checked'] === true) hasExequias = true;
-                if (typeof coverange[i]['code_content'] !== "undefined") {
-                    if (coverange[i]['checked'] === true) {
-                        if (coverange[i]['code_content'] === 716) hasAccident = true;
-                        if (coverange[i]['code_content'] === 774) hasExequias = true;
-                    }
-                }
-            }
-        }
+        
 
-        if (person.length === 0) {
+        if (persons.length === 0) {
             this.setState({
                 ...this.state,
                 hasAccident: hasAccident,
                 hasExequias: hasExequias
             });
         } else {
-
-            let persons = [];
-            for (let i = 0; i < person.length; i++) {
-                if (typeof persons[person[i].value] === "undefined") {
-                    persons[person[i].value] = person[i];
-                }
-            }
-            let newPerson = [];
-            for (let i in persons) newPerson.push(persons[i]);
-
             this.setState({
                 ...this.state,
-                persons: newPerson,
+                persons: persons,
                 hasAccident: hasAccident,
                 hasExequias: hasExequias
             });
@@ -207,6 +230,22 @@ class Index extends Component {
         let persons = this.state.persons;
         let status = [];
         let asegurado = false;
+        for (const participationValue of participationValues) {
+          const haveRole = persons.some((person) =>
+            isRoleParticipation(participationValue, person.role)
+          );
+          if (haveRole) {
+            if (!validateParticipationPercentage(persons, participationValue))
+              return true;
+            const total = getTotalParticipationPercentage(
+              persons,
+              participationValue
+            );
+            if (!isTotalValid(total)) {
+              return true;
+            }
+          }
+        }
         for (let i = 0; i < persons.length; i++) {
             if (!isValidDirection(persons[i].address)) return true;
             for (let j = 0; j < persons[i].role.length; j++) {
@@ -223,18 +262,36 @@ class Index extends Component {
         return status.length < 3 || asegurado === false;
     }
 
+    /**
+     * 
+     * @param {import('../popups/persona/ParticipationPercentages').Person} person 
+     * @param {*} state 
+     */
     exitsPerson(person, state = null) {
         let persons = this.state.persons;
         if (state !== null) persons = state;
         let status = false;
         for (let i = 0; i < persons.length; i++) {
-            if (parseInt(persons[i].code) === parseInt(person.code) && parseInt(persons[i].value) === parseInt(person.value)) {
-                person['role'] = [...person['role'], ...persons[i]['role']];
-                person['role'] = [...new Set(person['role'])].sort(Helpers.orderArrayNumeric);
-                status = {
-                    person,
-                    index: i
-                };
+            const currentPerson = persons[i];
+            const mergeRoles = [
+              ...currentPerson['role'],
+              ...person['role'],
+            ].some((role) =>
+              [roles.obsequies, roles.personalAccidents].some((r) => r === role)
+            );
+            if (
+              parseInt(currentPerson.code) === parseInt(person.code) &&
+              parseInt(currentPerson.value) === parseInt(person.value) &&
+              !mergeRoles
+            ) {
+              person['role'] = [...person['role'], ...currentPerson['role']];
+              person['role'] = [...new Set(person['role'])].sort(
+                Helpers.orderArrayNumeric
+              );
+              status = {
+                person,
+                index: i,
+              };
             }
         }
         return status;
@@ -316,20 +373,18 @@ class Index extends Component {
                   </div>
                 </div>
               </div>
-
               <div className="row no-gutters">
                 <div className="col">
                   <hr />
                 </div>
               </div>
-
               {(hasExequias === true || hasAccident === true) && (
                 <div className="row justify-content-center">
                   <div className="col col-md-8 col-lg-8 last-items-emision">
                     <p>
                       Has contratado algunas coberturas (exequias y accidentes
-                      personales) que te permiten asegurar a personas
-                      adicionales. ¿Deseas hacerlo?
+                      personales) puedes indicar los beneficiarios en caso de
+                      fallecimiento. ¿Deseas hacerlo?
                     </p>
                     <div
                       className="more-items"

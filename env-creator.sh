@@ -6,28 +6,28 @@ usage() { exit 1; }
 while getopts ":a:b:c:d:e:f:g:h:" o; do
     case "${o}" in
         a)
-            a=${REACT_APP_DOMAIN}
+            a=${OPTARG}
             ;;
         b)
-            b=${REACT_APP_KEY}
+            b=${OPTARG}
             ;;
         c)
-            c=${REACT_APP_OFICINA}
+            c=${OPTARG}
             ;; 
         d)
-            d=${REACT_APP_PDF_SARLAFT}
+            d=${OPTARG}
             ;;
         e)
-            e=${REACT_APP_PERSON}
+            e=${OPTARG}
             ;;     
         f)
-            f=${REACT_APP_ACCESS_TOKEN}
+            f=${OPTARG}
             ;; 
         g)
-            g=${REACT_APP_ACCESS_TOKEN}
+            g=${OPTARG}
             ;; 
         h)
-            h=${REACT_APP_CREARPOLIZAIAXIS}
+            h=${OPTARG}
             ;;                     
         *)
             usage
