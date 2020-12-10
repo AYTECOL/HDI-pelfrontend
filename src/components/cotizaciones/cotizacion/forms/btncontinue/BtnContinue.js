@@ -16,6 +16,7 @@ import SaveIdentifications from "../../../../../services/Quote";
 import Links from "../links/Links";
 import "./btncontinue.scss";
 import Coberturas from '../../coberturas/Coberturas';
+import { getItems } from "../../cards/getItems";
 
 
 class BtnContinue extends Component {
@@ -177,26 +178,40 @@ class BtnContinue extends Component {
 
 export default compose(
   withRouter,
-  connect(({ AllPlans, indexPlan }) => {
+  connect(({ AllPlans, indexPlan, Inmueble }) => {
     const plan = AllPlans[indexPlan];
-    let coveragesValid = true;
-    try {
-      if (plan)
-        coveragesValid = !plan.coverages.some(
-          ({ values }, k) =>
-            values &&
-            values.some((value) => {
-              const errors = !!Coberturas.getErrorsCoverage(
-                plan,
-                value,
-                k,
-                value.values ? 2 : 1,
-              );
-              return errors && !!errors.length;
-            })
-        );
-      } catch (error) {}
-    const disabled = !coveragesValid;
-    return { disabled };
+    const items = getItems();
+    const hasError = () => {
+      try {
+        const errorInmueble = items.some(({ parent }) => {
+          if (Inmueble && Inmueble[parent.nameModel]) {
+            const error = parent.validateField(Inmueble[parent.nameModelValue]);
+            if (error) return true;
+          }
+          return false;
+        });
+        if (errorInmueble) return true;
+
+        let coveragesValid = true;
+        if (plan)
+          coveragesValid = !plan.coverages.some(
+            ({ values }, k) =>
+              values &&
+              values.some((value) => {
+                const errors = !!Coberturas.getErrorsCoverage(
+                  plan,
+                  value,
+                  k,
+                  value.values ? 2 : 1
+                );
+                return errors && !!errors.length;
+              })
+          );
+        return !coveragesValid;
+      } catch (error) {
+        return false;
+      }
+    };
+    return { disabled: hasError() };
   })
 )(BtnContinue);
