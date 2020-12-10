@@ -12,7 +12,7 @@ import QuoteIussedById from "../../../../services/QuoteIussedById";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import BtnContinue from "../forms/btncontinue/BtnContinue";
 import Cards from "../cards/Cards";
-import { getRulesByCode } from "../../../../common";
+import { getRulesByCode, getValue } from "../../../../common";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 
 class Tab extends Component {
@@ -33,49 +33,57 @@ class Tab extends Component {
      * @param {import("../coberturas/Coberturas").PlanSelectedInfoItem} normal 
      */
     static assignValuesSaved(selected, normal) {
+        const isEqual = (a, b) => a && b && a === b;
+        /**
+         * 
+         * @param {import("../coberturas/Coberturas").Coverage} coverage 
+         */
+        const findSelectedCoverage = (coverage) => ({ code_real_estate, code_content }) => {
+          return (
+            isEqual(coverage.code_real_estate, code_real_estate) ||
+            isEqual(coverage.code_content, code_content)
+          );
+        };
         for (let j = 0; j < normal.coverages.length; j++) {
             const coverage = normal.coverages[j]
             const selectedCoverage = selected.coverages.find(
-              ({ code_real_estate }) =>
-                coverage.code_real_estate === code_real_estate
+              findSelectedCoverage(coverage)
             );
-            if (typeof selectedCoverage !== "undefined" && coverage.name === selectedCoverage.name) {
+            if (selectedCoverage) {
                 coverage.optional = selectedCoverage.optional;
                 coverage.checked = selectedCoverage.checked;
                 if (typeof coverage.values !== "undefined") {
                     for (let i = 0; i < coverage.values.length; i++) {
-                        if (typeof coverage.values[i] !== "undefined") {
-                            if (typeof coverage.values[i].values === "undefined") {
-                                if (typeof selectedCoverage.values !== "undefined") {
-                                    if (typeof selectedCoverage.values[i] !== "undefined") {
-                                        const covergaValue = selectedCoverage.values[i]
-                                        const {
-                                          value_to_quotate,
-                                        } = covergaValue;
-                                        const { max } = {
-                                          ...getRulesByCode(
-                                            covergaValue.code,
-                                            normal.coverages
-                                          ),
-                                        };
-                                        coverage.values[i].value = covergaValue.value;
-                                        if (max) {
-                                          const newValue = value_to_quotate > max ? max : value_to_quotate;
-                                          coverage.values[i].value_show = Masknumbermoney.formatToMask(
-                                            newValue
-                                          );
-                                          coverage.values[i].value_to_quotate = newValue;
-                                        } else {
-                                          coverage.values[i].value_show = covergaValue.value_show;
-                                          coverage.values[i].value_to_quotate = value_to_quotate;
-                                        }
-                                    }
-                                }
+                        const coverageValue = coverage.values[i];
+                        if (
+                          coverageValue &&
+                          coverageValue.hired
+                        ) {
+                            if (!selectedCoverage.values || !coverageValue.values) {
+                              const valueSelected = selectedCoverage.values[i];
+                              if (valueSelected) {
+                                const { value_to_quotate } = valueSelected;
+                                const rules = {
+                                  ...getRulesByCode(
+                                    valueSelected.code,
+                                    normal.coverages
+                                  ),
+                                };
+                                coverageValue.value = valueSelected.value;
+                                const newValue = getValue(
+                                  value_to_quotate,
+                                  rules
+                                );
+                                coverageValue.value_show = Masknumbermoney.formatToMask(
+                                  newValue
+                                );
+                                coverageValue.value_to_quotate = newValue;
+                              }
                             } else {
                                 if (typeof selectedCoverage.values[i].values !== "undefined") {
-                                    for (let k = 0; k < coverage.values[i].values.length; k++) {
+                                    for (let k = 0; k < coverageValue.values.length; k++) {
                                         if (typeof selectedCoverage.values[i].values[k] !== "undefined") {
-                                            coverage.values[i].values[k].default = selectedCoverage.values[i].values[k].default;
+                                            coverageValue.values[k].default = selectedCoverage.values[i].values[k].default;
                                         }
                                     }
                                 }
@@ -207,8 +215,14 @@ class Tab extends Component {
         let selected = plan.plan_selected_info.Item;
         if (typeof selected !== "undefined") {
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
-            const planSelected = Coberturas.setHiredCoverages(selected, inmueble)
-            plans[indexSelected] = Tab.assignValuesSaved(planSelected, plans[indexSelected]);
+            const plan = Coberturas.setHiredCoverages(
+              plans[indexSelected],
+              inmueble
+            );
+            plans[indexSelected] = Tab.assignValuesSaved(
+              selected,
+              plan
+            );
             plans[indexSelected] = BtnContinue.toNumberCoverrange(plans[indexSelected]);
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
@@ -221,18 +235,27 @@ class Tab extends Component {
                 }
             }
         }
-
+        function setPlanDefault(plan, inmueble) {
+          let newPlan = Coberturas.setHiredCoverages(plan, inmueble);
+          //Calc values to show
+          newPlan = Coberturas.calcValue(newPlan);
+          //Add 'value_to_quotate' to each coverange
+          newPlan = BtnContinue.toNumberCoverrange(newPlan);
+          return newPlan;
+        }
         for (let i = 0; i < plans.length; i++) {
             let prospect = 0;
             //Validate if selected plan
             if (indexSelected !== null && i === indexSelected) {
-                prospect = await DeterminePolizaPrima.get(plans[indexSelected], quotateId);
+                prospect = await DeterminePolizaPrima.get(
+                  plans[i],
+                  quotateId
+                ).catch(() => {
+                  plans[i] = setPlanDefault(plans[i]);
+                  return DeterminePolizaPrima.get(plans[i], quotateId);
+                });
             } else {
-                plans[i] = Coberturas.setHiredCoverages(plans[i], inmueble);
-                //Calc values to show
-                plans[i] = Coberturas.calcValue(plans[i]);
-                //Add 'value_to_quotate' to each coverange
-                plans[i] = BtnContinue.toNumberCoverrange(plans[i]);
+                plans[i] = setPlanDefault(plans[i]);
                 prospect = await DeterminePolizaPrima.get(plans[i], quotateId);
             }
             plans[i].value = prospect.prospect;
