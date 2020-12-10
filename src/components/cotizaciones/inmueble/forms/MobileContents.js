@@ -155,7 +155,7 @@ class MobileContents extends Component {
                   <Tooltip
                     className="mt-1"
                     placement="left"
-                    title={`El valor máximo por cada teléfono móvil es de ${maximumPerItem}`}
+                    title={`El valor máximo por cada artículo móvil es de ${maximumPerItem}`}
                   >
                     <Help className={'ml-auto icon-primary'} />
                   </Tooltip>

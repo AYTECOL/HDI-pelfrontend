@@ -90,12 +90,6 @@ class Construidocon extends Component {
                                         <i className="ladrillo">&nbsp;</i>) : ("")}
                                     {(parseInt(option.order) === 3) ? (
                                         <i className="aceror">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.order) === 4) ? (
-                                        <i className="bahareque">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.order) === 5) ? (
-                                        <i className="madera">&nbsp;</i>) : ("")}
-                                    {(parseInt(option.order) === 6) ? (
-                                        <i className="adobe">&nbsp;</i>) : ("")}
                                 </div>
                                 <div className="col col-12 no-padding">
                                     <p>{option.answer}</p>

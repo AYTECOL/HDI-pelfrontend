@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import MomentJs from "moment";
 import DatePicker from "react-datepicker";
-import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 
 import './Persona.scss';
 import Loading from "../../../../../components/globals/loading/Loading";
@@ -18,6 +17,15 @@ import NumeroIdentificacion
     from "../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion";
 import { isValidDirection, validationMessages } from '../../../../../common/validations';
 import { roles } from '../../constants';
+import { fieldsNames } from './constants';
+import ParticipationPercentages from './ParticipationPercentages';
+import { DateInput } from './DateInput';
+import {
+  validatePercentageField,
+  participationValues,
+  rolesParticipations,
+  isRoleParticipation,
+} from './ParticipationPercentages/utils';
 
 const maxFileSize = UploadFile.maxFileSize;
 
@@ -25,13 +33,6 @@ const phoneTypes = {
     mobilePhone: '6'
 }
 
-const fieldsNames = {
-  fechadecontitucion: 'fechadecontitucion',
-  documentfield: 'documentfield',
-  email: 'email',
-  adresstype: 'adresstype',
-  address: 'address',
-};
 
 export default class Persona extends Component {
 
@@ -73,6 +74,8 @@ export default class Persona extends Component {
                 "sarlfaltActive",
                 fieldsNames.adresstype,
                 fieldsNames.address,
+                fieldsNames.personalAccidents,
+                fieldsNames.exequiasParticipation,
                 "sarlaft",
             ]
         };
@@ -101,17 +104,9 @@ export default class Persona extends Component {
                 if (this.props.persons[i]['role'].indexOf(1) !== -1) this.state.exitsTomador = true;
             }
         }
-
-        if (this.state.typePerson === 1 || this.state.typePerson === 3 || this.state.typePerson === 2) {
-            this.state.total = 15;
-        } else if (this.state.typePerson === 7) {
-            this.state.total = 3;
-        } else if (this.state.typePerson === 4) {
-            this.state.total = 4;
-        } else if (this.state.typePerson === 5 || this.state.typePerson === 6) {
-            this.state.total = 11;
-        }
-
+        const { typePerson } = this.state;
+        this.state.total = this.getTotal();
+        
         if (typeof this.props.disabledAll !== "undefined") {
             for (let i in this.state.person) {
                 this.state.person[i + "Disabled"] = true;
@@ -123,7 +118,7 @@ export default class Persona extends Component {
             this.state.person['department_code'] = 0;
         }
 
-        if (this.state.typePerson !== 4 && this.state.typePerson !== 2 && String(this.state.person.code) === "37") {
+        if (typePerson !== 4 && typePerson !== 2 && String(this.state.person.code) === "37") {
             this.state.nit = true;
         }
         if (typeof this.state.person.sarlfalt_url !== 'string') {
@@ -135,7 +130,31 @@ export default class Persona extends Component {
         } else {
             this.state.hideLoader = undefined;
         }
+    }
 
+    getTotal() {
+        const { typePerson } = this.state;
+        if (typePerson === 1 || typePerson === 3 || typePerson === 2) {
+            return 15;
+        } else if (typePerson === 7) {
+            return 3;
+        } else if (typePerson === 4) {
+            return 4;
+        } else if (typePerson === 5 || typePerson === 6) {
+            /**
+             * @type {{ role: number[] }}
+             */
+            const { role: roles } = this.state.person;
+            const totalFields = 6;
+
+            const selectedRoleFields = participationValues.filter((key) => {
+              const rolesParticipation = rolesParticipations[key] || [];
+              return rolesParticipation.some((roleParticipation) =>
+                roles.some((role) => role === roleParticipation)
+              );
+            }).length;
+            return totalFields + selectedRoleFields;
+        }
     }
 
     /**
@@ -342,25 +361,55 @@ export default class Persona extends Component {
               () => this.validateAll()
             );
           });
+        else this.validateAll();
     }
 
     componentWillUnmount() {
         this._isMounted = false;
     }
 
-    isActived = (field) => {
-        const { typePerson } = this.state;
+    /**
+     * 
+     * @param {string} field 
+     * @param {number} typePerson 
+     */
+    fieldActive = (field, typePerson) => {
         const { email, fechadecontitucion, adresstype, address } = fieldsNames;
-        if (typePerson === 4) {
-            const disabled = [fechadecontitucion, email, adresstype, address].some(
-              (fieldName) => fieldName === field
-            );
-            if (disabled) {
-              return false;
-            }
+        const { ciudad } = fieldsNames;
+        const rolesParticipation = rolesParticipations[field];
+        if (rolesParticipation) {
+            const roleActived = isRoleParticipation(field, [typePerson]);
+            if (!roleActived) return false;
+        }
+
+        if (
+          typePerson === 4 ||
+          typePerson === roles.personalAccidents ||
+          typePerson === roles.obsequies
+        ) {
+          const fields = [fechadecontitucion, email, adresstype, address];
+          if (typePerson !== 4) fields.push(ciudad);
+          const disabled = fields.some((fieldName) => fieldName === field);
+          if (disabled) {
+            return false;
+          }
         }
         return true;
     }
+
+    isActived = (field) => {
+        const { typePerson, person } = this.state;
+        /**
+         * @type {number[]}
+         */
+        if (
+          typePerson === roles.onerousBeneficiary &&
+          field === fieldsNames.ciudad
+        )
+          return true;
+        const rolesPerson = person.role;
+        return rolesPerson.some((role) => this.fieldActive(field, role));
+    };
 
     changeTextFile = e => {
         let name = "";
@@ -538,31 +587,33 @@ export default class Persona extends Component {
     getErrors() {
         const errors = [];
         const { typePerson, nit, person, errorFile } = this.state;
-        const { value: documentfield, code, sarlfaltActive, email, sarlfalt_url, sarlaft, genero, fechadenacimiento, fechadecontitucion, role } = person;
+        const {
+          value: documentfield,
+          code,
+          sarlfaltActive,
+          email,
+          sarlfalt_url,
+          sarlaft,
+          genero,
+          fechadenacimiento,
+          fechadecontitucion,
+          role,
+          lastname,
+          name,
+          businessname,
+          ciudad,
+          adresstype,
+        } = person;
         const address = String(person.address);
         const tipodetelefono = String(person.tipodetelefono);
         const telefono = String(person.telefono);
-        let fields = document.querySelectorAll(".modal-content input, .modal-content select");
+        const empty = (value) => !String(value || '').trim();
         
-        for (let i = 0; i < fields.length; i++) {
-          const field = fields[i];
-          if (sarlfaltActive === true && field.name === "sarlaft") continue;
-          if (
-            field.value === '' &&
-            field.getAttribute('type') !== 'checkbox' &&
-            !['secondname', 'secondlastname', 'code'].find(
-              (name) => field.name === name
-            )
-          ) {
-            errors.push(field.name);
-          }
-        }
-
         let documentfieldInvalid = NumeroIdentificacion.validate(documentfield, code);
         if (documentfieldInvalid === true) {
             errors.push(fieldsNames.documentfield)
         }
-        if (!code) errors.push('code');
+        if (empty(code)) errors.push('code');
         const rolesWithPhone = [
           roles.taker,
           roles.insured,
@@ -577,7 +628,7 @@ export default class Persona extends Component {
               telefonoHasError = true;
             }
           } else errors.push('tipodetelefono');
-          if (!telefono || telefonoHasError) errors.push('telefono');
+          if (empty(telefono) || telefonoHasError) errors.push('telefono');
         }
 
         if (
@@ -586,22 +637,41 @@ export default class Persona extends Component {
         )
           errors.push(fieldsNames.email);
 
-        if (typeof sarlfalt_url !== "undefined" && sarlaft === "" && sarlfalt_url !== "") {
-          errors.splice(errors.indexOf("sarlfalt"), 1);
+        if (
+          (typePerson <= 3 &&
+            !sarlfaltActive &&
+            !String(sarlfalt_url || '').trim() &&
+            !sarlaft) ||
+          errorFile
+        ) {
+          errors.push('sarlfalt');
         }
+        if (typePerson === 4 || nit) {
+          if (empty(businessname)) errors.push('businessname');
+        } else {
+          if (empty(lastname)) errors.push('lastname');
+          if (empty(name)) errors.push('name');
+        }
+
+        if (this.isActived(fieldsNames.ciudad) && !ciudad)
+          errors.push('ciudad');
+        if (this.isActived(fieldsNames.adresstype) && !adresstype)
+          errors.push('adresstype');
+
+
         if (typePerson === 1 && nit === false) {
-          if (genero === "") {
+          if (empty(genero)) {
             errors.push("genero");
           }
         }
-        if ((typePerson === 1 || typePerson === 2) && nit === false) {
-          if (fechadenacimiento === "") {
-            errors.push("fechadenacimiento");
+        if (typePerson !== 4 && nit === false) {
+          if (empty(fechadenacimiento)) {
+            errors.push('fechadenacimiento');
           }
         }
         if (typePerson === 4) {
           if (
-            fechadecontitucion === '' &&
+            !fechadecontitucion &&
             this.isActived(fieldsNames.fechadecontitucion)
           ) {
             errors.push(fieldsNames.fechadecontitucion);
@@ -613,22 +683,19 @@ export default class Persona extends Component {
 
         let indexSecondName = errors.indexOf("secondname");
         if (indexSecondName !== -1) errors.splice(indexSecondName, 1);
-
-        let sarlaftError = errors.indexOf("sarlaft");
-        if (sarlaftError !== -1 && typeof sarlfalt_url !== "undefined" && sarlfalt_url !== null) {
-          if (sarlfalt_url.trim() !== "") {
-            errors.splice(sarlaftError, 1);
-          }
-        }
-        if (errorFile) {
-          errors.push('sarlfalt');
-        }
         
         if (
           this.isActived(fieldsNames.address) &&
-          (!address || !isValidDirection(address) || address.length < 5)
+          (empty(address) || !isValidDirection(address) || address.length < 5)
         )
           errors.push(fieldsNames.address);
+        
+        participationValues.forEach((participationValue) => {
+          if (this.isActived(participationValue)) {
+            if (!validatePercentageField(person[participationValue]))
+              errors.push(participationValue);
+          }
+        });
         return errors;
     }
 
@@ -641,21 +708,14 @@ export default class Persona extends Component {
             if (typeof this.props.updatePerson !== "undefined") {
                 if (typeof printErrors === "undefined") printErrors = false;
                 let msj4 = true;
-                let total = this.state.total;
-                if (this.state.typePerson !== 4 && this.state.typePerson !== 7) {
-                    if (this.state.nit === true) {
-                        total = 11;
-                    } else {
-                        total = 15;
-                    }
-                }
+                const { typePerson } = this.state;
+                const total = this.getTotal()
 
                 const errors = this.getErrors();
                 const valid = !errors.length;
                 if (valid) msj4 = false;
                 if (valid && saveData) {
                     const state = this.state;
-                    const { typePerson } = state;
                     let { person } = state;
                     let newPerson = await this.saveFile({ person, typePerson });
                     if (typeof newPerson.code === "undefined") newPerson.code = typePerson !== 4 ? '36' : '37';
@@ -681,15 +741,20 @@ export default class Persona extends Component {
         }
       }
     render() {
+        const { persons, item } = this.props;
+        const { typePerson } = this.state;
         const errors = this.getErrors()
         const hasErrorAddClass = (field) => errors.find((error) => field === error) && "error ";
+        const participationPercentages =
+          this.isActived(fieldsNames.personalAccidents) ||
+          this.isActived(fieldsNames.exequiasParticipation);
         return (
             <React.Fragment>
                 <div className={"modal validaridentificacion show person-popup"}>
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div
-                                className={"modal-header " + (this.state.typePerson <= 4 ? '' : 'hide')}>
+                                className={"modal-header " + (typePerson <= 4 ? '' : 'hide')}>
                                 <h5 className="modal-title">Información adicional</h5>
                                 <p className="modal-subtitle">Ingresa la información faltante, conocerla es importante
                                     para
@@ -698,10 +763,9 @@ export default class Persona extends Component {
                                     onClick={this.props.toggle(0)}>&nbsp;</button>
                             </div>
                             <div
-                                className={"modal-header " + (this.state.typePerson === 5 || this.state.typePerson === 6 ? '' : 'hide')}>
-                                <h5 className="modal-title">Personas adicionales</h5>
-                                <p className="modal-subtitle">Ingresa la información de las persona, selecciona los
-                                    amparos que deseas para ella</p>
+                                className={"modal-header " + (typePerson === 5 || typePerson === 6 ? '' : 'hide')}>
+                                <h5 className="modal-title">Beneficiario en caso de fallecimiento</h5>
+                                <p className="modal-subtitle">Ingresa la información del beneficiario, selecciona los amparos que deseas para el</p>
                                 <button type="button" className="close" aria-label="Close"
                                     onClick={this.props.toggle(0)}>&nbsp;</button>
                             </div>
@@ -713,14 +777,14 @@ export default class Persona extends Component {
                                         typePerson={this.props.typePerson}
                                         disabledAll={this.props.disabledAll}
                                         exitsTomador={this.state.exitsTomador}
-                                        hasAccident={true}
-                                        hasExequias={true} />
+                                        hasAccident={this.props.hasAccident}
+                                        hasExequias={this.props.hasExequias} />
 
-                                    {this.state.typePerson !== 7 &&
+                                    {typePerson !== 7 &&
                                         <div className="row fields-row">
                                             <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                 <TypeDocuments
-                                                    disabled={this.state.person.codeDisabled || this.state.typePerson === 4}
+                                                    disabled={this.state.person.codeDisabled || typePerson === 4}
                                                     hideLoader={this.state.hideLoader}
                                                     value={this.state.person.code} onChange={this.changeValue} />
                                             </div>
@@ -748,7 +812,7 @@ export default class Persona extends Component {
                                         </div>
                                     }
 
-                                    {this.state.typePerson === 7 &&
+                                    {typePerson === 7 &&
                                         <div className={"row fields-row"}>
                                             <div
                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -819,7 +883,7 @@ export default class Persona extends Component {
                                             </React.Fragment>
                                         ) : (
                                                 <React.Fragment>
-                                                    {this.state.typePerson !== 4 &&
+                                                    {typePerson !== 4 &&
                                                         <React.Fragment>
                                                             <div
                                                                 className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -891,7 +955,7 @@ export default class Persona extends Component {
                                                 </React.Fragment>
                                             )}
 
-                                        {(this.state.typePerson !== 4) &&
+                                        {(typePerson !== 4) &&
                                             <div
                                                 className={"col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right " + (this.state.nit ? 'hide' : '')}>
                                                 <div className={classNames("generofield no-icon form-group", hasErrorAddClass('genero'))}>
@@ -913,30 +977,14 @@ export default class Persona extends Component {
                                             </div>
                                         }
 
-                                        {(this.state.nit === false && this.state.typePerson !== 4) &&
+                                        {(this.state.nit === false && typePerson !== 4) &&
                                             <div
                                                 className={"col col-12 col-sm-12 col-md-6 col-lg-6"}>
-                                                <div className={classNames("fechadenacimiento form-group ", hasErrorAddClass('fechadenacimiento'))}><label
-                                                    htmlFor="fechadenacimiento">Fecha de nacimiento</label>
-                                                    <DatePicker locale={es}
-                                                        name="fechadenacimiento"
-                                                        value={this.state.person.fechadenacimiento}
-                                                        onChange={this.changeDates}
-                                                        showMonthDropdown
-                                                        showYearDropdown
-                                                        scrollableYearDropdown
-                                                        yearDropdownItemNumber={100}
-                                                        maxDate={new Date()}
-                                                        disabled={this.state.person.fechadenacimientoDisabled}
-                                                        className={"form-control " + (this.state.person.fechadenacimientoDisabled ? 'disabled' : '')} />
-                                                    <small className="form-text only-errors">Falta información requerida
-                                                        para el Tomador. Por favor revise el campo Fecha de nacimiento
-                                                </small>
-                                                </div>
+                                                <DateInput person={this.state.person} changeDates={this.changeDates} hasErrorAddClass={hasErrorAddClass} isActived={this.isActived}/>
                                             </div>
                                         }
 
-                                        {(this.state.typePerson !== 4 && this.state.typePerson !== 5 && this.state.typePerson !== 6) &&
+                                        {(typePerson !== 4 && typePerson !== 5 && typePerson !== 6) &&
                                             <React.Fragment>
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                     <div className={classNames("pisonumero form-group input-select", hasErrorAddClass('tipodetelefono'))}><label
@@ -968,7 +1016,7 @@ export default class Persona extends Component {
                                                 </div>
                                             </React.Fragment>
                                         }
-                                        {this.state.typePerson === 4 &&
+                                        {typePerson === 4 &&
                                             <React.Fragment>
 
                                                 <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -1006,7 +1054,7 @@ export default class Persona extends Component {
 
                                             </React.Fragment>
                                         }
-                                        {this.state.typePerson !== 7 &&
+                                        {typePerson !== 7 &&
                                             <React.Fragment>
                                                 {this.isActived(fieldsNames.email) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
                                                     <div className={classNames("email form-group ", hasErrorAddClass(fieldsNames.email))}><label
@@ -1022,14 +1070,14 @@ export default class Persona extends Component {
                                                 </div>}
 
 
-                                                <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+                                                {this.isActived(fieldsNames.ciudad) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
                                                     <div className={classNames("pisonumero form-group", hasErrorAddClass('ciudad'))}>
                                                         <AutocompleteCities disabled={this.state.person.ciudadDisabled}
                                                             label={"Ciudad o municipio"} name="ciudad"
                                                             value={this.state.person.ciudad}
                                                             onChange={this.changeValue} hideTitle={false} />
                                                     </div>
-                                                </div>
+                                                </div>}
 
 
                                                 {this.isActived(fieldsNames.adresstype) && <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
@@ -1068,9 +1116,26 @@ export default class Persona extends Component {
                                                 </div>}
                                             </React.Fragment>
                                         }
+                                        {participationPercentages && (
+                                            <ParticipationPercentages
+                                                onChange={({ name, value }) => {
+                                                    const { person } = this.state;
+                                                    this.setState({
+                                                      ...this.state,
+                                                      person: {
+                                                        ...person,
+                                                        [name]: value,
+                                                      },
+                                                    }, () => {
+                                                        this.validateAll(name);
+                                                    });
+                                                }}
+                                                isActived={(field) => this.isActived(field)}
+                                                {...{ persons, item, person: this.state.person }}
+                                            />
+                                        )}
                                     </div>
-
-                                    {(this.state.typePerson <= 3 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
+                                    {(typePerson <= 3 && this.state.person.sarlfaltActive === false && typeof this.props.disabledAll === "undefined") &&
                                         <div
                                             className={"row sarlaft"}>
                                             <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
@@ -1122,7 +1187,7 @@ export default class Persona extends Component {
                                 {typeof this.props.disabledAll === "undefined" &&
                                     <React.Fragment>
                                         <div className="buttons">
-                                            {(this.state.msj4 === true && this.state.typePerson === 7) &&
+                                            {(this.state.msj4 === true && typePerson === 7) &&
                                                 <p className="error">Falta información requerida para el Contacto. Por favor
                                             revise los detalles de los datos de Contacto</p>
                                             }

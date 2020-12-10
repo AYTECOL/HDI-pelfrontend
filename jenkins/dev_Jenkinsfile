@@ -1,0 +1,63 @@
+library ('utils@master') _
+
+def MAJOR_VERSION = "1"
+def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
+
+//def  = "intl-latam-poliza-backend-jenks"
+//def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
+        
+node('linux'){
+
+	stage("Env Variables") {
+    	script {
+        	env.BUCKET_NAME = "poliza-express-hogar-uat" 
+			env.REACT_APP_DOMAIN = "https://6ion89fdgb.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
+			env.REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
+			env.REACT_APP_PDF_SARLAFT = "https://www.libertyseguros.co/zona-de-cliente/condicionados-y-documentos?category=62"
+			env.REACT_APP_PERSON = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_ACCESS_TOKEN = "https://a86t6v1qyj.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
+			env.REACT_APP_CREARPOLIZAIAXIS = "https://fay88y18qk.execute-api.us-east-1.amazonaws.com/dev"
+         }
+    	 sh 'printenv'
+	}    
+
+	stage('Git Checkout'){
+		checkout scm develop
+        
+	}
+
+    stage('cloudfront') {
+    	deployToDev{
+        	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+            	sh "sls deploy -v --force"
+                //sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+                dir('dist/poliza-express-hogar-dev'){
+                	sh 'pwd'
+                    sh 'ls'
+                }
+            }
+        }
+    }
+
+    stage('Build') {
+        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+            sh """
+                ls -ltr
+
+                npm install
+                npm run build
+                ls -ltr
+            """
+			dir('build') {
+                  sh 'pwd'
+                  sh 'ls'
+                  sh 'aws s3 rm s3://poliza-express-hogar-dev --recursive' // Clean bucket
+                  sh 'aws s3 sync .  s3://poliza-express-hogar-dev' // Sync bucket
+            }
+            sh 'aws cloudfront create-invalidation --distribution-id E2C3ZC7CFLAPGU --paths "/*"'
+        }
+		
+    }
+ }

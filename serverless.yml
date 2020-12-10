@@ -5,12 +5,18 @@ provider:
   runtime: nodejs12.x
   stage: prod
   region: us-east-1
+  account: { Ref: "AWS::AccountId" }
   account: {Ref: "AWS::AccountId"}
   iamRoleStatements:
-      - Effect: "Allow"
-        Action:
-          - s3:PutItem
-        Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
+    - Effect: "Allow"
+      Action:
+        - s3:PutObject
+        - s3:PutObjectAcl
+        - s3:GetObject
+        - s3:GetObjectAcl
+      Resource: 
+        - "arn:aws:s3:::${self:custom.s3Bucket}/*"
+        - "arn:aws:s3:::${self:custom.s3Bucket}"
 
 custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
@@ -123,11 +129,12 @@ resources:
             SslSupportMethod: sni-only
           WebACLId: ${self:custom.WebACLId}
           Logging:
-            Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
-            IncludeCookies: true
-            Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
+             Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
+             IncludeCookies: true
+             Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
           HttpVersion: http2  
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+
