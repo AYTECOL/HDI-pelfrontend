@@ -85,16 +85,18 @@ class BtnContinue extends Component {
                 } catch (error) {
                     attachedFile = false;
                 }
-                
-                store.dispatch(saveAttachedFile(attachedFile));
-                store.dispatch(saveIdentificationValue({
-                    name: 'emissionId',
-                    value: numeroPoliza.currentValue
-                }));
-                store.dispatch(saveIdentificationValue({
-                    name: 'emitedDate',
-                    value: date
-                }));
+                await store.dispatch((dispatch) => {
+                    dispatch(saveAttachedFile(attachedFile));
+                    dispatch(saveIdentificationValue({
+                        name: 'emissionId',
+                        value: numeroPoliza.currentValue
+                    }));
+                    dispatch(saveIdentificationValue({
+                        name: 'emitedDate',
+                        value: date
+                    }));
+                    return Promise.resolve()
+                  });
             }else{
                 numeroPoliza.currentValue = cotizacion.emissionId;
             }
