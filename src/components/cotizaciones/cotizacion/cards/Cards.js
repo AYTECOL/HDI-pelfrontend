@@ -12,7 +12,7 @@ import Plans from "../plans/Plans";
 import Coberturas from "../coberturas/Coberturas";
 import { IDS_COVERAGE_VALUES } from "../../../../common";
 import { getItems } from "./getItems";
-
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 class Cards extends Component {
   constructor(props) {
     super(props);
@@ -206,11 +206,17 @@ class Cards extends Component {
     let target = e.target;
     e.target.value = Masknumbermoney.formatToMask(target.value);
     let parent = this.state.items[index].parent;
+    let error = parent.validateField(target.value);
+    if (error != 0 && e.type === "blur") {
+      Helpers.disabled('.generatepdf');
+      Helpers.disabled('.next-step');
+      return ;
+    }
     let component = new parent();
+
     if (e.type === "blur") {
       component.validateValue(e);
     }
-    let error = parent.validateField(target.value);
     let newItems = this.state.items;
     newItems[index].value = target.value;
     newItems[index].errorValue = error;
@@ -219,6 +225,7 @@ class Cards extends Component {
       items: newItems
     });
     this.validateToggle();
+
     if (
       e.type === "blur" &&
       parseInt(error) === 0 &&
