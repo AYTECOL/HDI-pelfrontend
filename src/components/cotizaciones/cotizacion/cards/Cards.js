@@ -3,12 +3,7 @@ import "./Cards.scss";
 import { withRouter } from "react-router-dom";
 import store from "../../../../store";
 import AllInsurableLimits from "../../../../services/AllInsurableLimits";
-import Segurarinmueble from "../../inmueble/forms/segurarinmueble/Segurarinmueble";
-import Asegurarcontenidos from "../../inmueble/forms/asegurarcontenidos/Asegurarcontenidos";
-import Asegurarobras from "../../inmueble/forms/asegurarobras/Asegurarobras";
-import Asegurarjoyas from "../../inmueble/forms/asegurarjoyas/Asegurarjoyas";
 import MobileContents from "../../inmueble/forms/MobileContents";
-import Asegurartelefonos from "../../inmueble/forms/asegurartelefonos/Asegurartelefonos";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import { saveInmuebleValue } from "../../../../actions";
 import InspectionPolicy from "../../../../services/InspectionPolicy";
@@ -16,37 +11,13 @@ import AllBuildYears from "../../../../services/AllBuildYears";
 import Plans from "../plans/Plans";
 import Coberturas from "../coberturas/Coberturas";
 import { IDS_COVERAGE_VALUES } from "../../../../common";
-
+import { getItems } from "./getItems";
+import Helpers from "../../../../common/helpers/helpers/Helpers";
 class Cards extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        {
-          parent: Segurarinmueble,
-          type: 1
-        },
-        {
-          parent: Asegurarcontenidos,
-          type: 2
-        },
-        {
-          parent: MobileContents,
-          type: 6
-        },
-        {
-          parent: Asegurarobras,
-          type: 3
-        },
-        {
-          parent: Asegurarjoyas,
-          type: 4
-        },
-        {
-          parent: Asegurartelefonos,
-          type: 5
-        },
-      ],
+      items: getItems(),
       anoconstruidos: [],
       Inmueble: store.getState().Inmueble,
       InmuebleOk: false,
@@ -123,26 +94,12 @@ class Cards extends Component {
       if (inmueble !== this.state.Inmueble && this.state.InmuebleOk === false) {
         let items = this.state.items;
         for (let i = 0; i < items.length; i++) {
-          if (items[i].type === 1) {
-            items[i].value = inmueble.inmuebleasegudadovalor;
-            items[i].active = inmueble.inmuebleasegudado === 0;
-          } else if (items[i].type === 2) {
-            items[i].value = inmueble.contenidoasegudadovalor;
-            items[i].active = inmueble.contenidoasegudado === 0;
-          } else if (items[i].type === 3) {
-            items[i].value = inmueble.inmuebleasegudadoobrasvalor;
-            items[i].active = inmueble.inmuebleasegudadoobras === 0;
-          } else if (items[i].type === 4) {
-            items[i].value = inmueble.inmuebleasegudadojoyasvalor;
-            items[i].active = inmueble.inmuebleasegudadojoyas === 0;
-          } else if (items[i].type === 5) {
-            items[i].value = inmueble.inmuebleasegudadotelefonosvalor;
-            items[i].active = inmueble.inmuebleasegudadotelefonos === 0;
-          } else if (items[i].type === 6) {
-            items[i].value = inmueble[MobileContents.nameModelValue];
-            items[i].active = inmueble[MobileContents.nameModel] === 0;
-          }
+          const { parent } = items[i];
+          items[i].value = inmueble[parent.nameModelValue] || '';
+          items[i].active = inmueble[parent.nameModel] === 0;
           if (items[i].value === '""') items[i].value = '';
+          let error = items[i].parent.validateField(items[i].value);
+          items[i].errorValue = error;
         }
         this.setState({
           ...this.state,
@@ -249,11 +206,17 @@ class Cards extends Component {
     let target = e.target;
     e.target.value = Masknumbermoney.formatToMask(target.value);
     let parent = this.state.items[index].parent;
+    let error = parent.validateField(target.value);
+    if (error != 0 && e.type === "blur") {
+      Helpers.disabled('.generatepdf');
+      Helpers.disabled('.next-step');
+      return ;
+    }
     let component = new parent();
+
     if (e.type === "blur") {
       component.validateValue(e);
     }
-    let error = parent.validateField(target.value);
     let newItems = this.state.items;
     newItems[index].value = target.value;
     newItems[index].errorValue = error;
@@ -262,6 +225,7 @@ class Cards extends Component {
       items: newItems
     });
     this.validateToggle();
+
     if (
       e.type === "blur" &&
       parseInt(error) === 0 &&
