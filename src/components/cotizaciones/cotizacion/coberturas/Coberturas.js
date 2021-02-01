@@ -259,50 +259,66 @@ class Coberturas extends Component {
   }
 
   /**
+   * @param {import('../../../../services/QuoteIussedById').Coverage} coverage
+   */
+  static stateCoverage(coverage) {
+    const { values } = coverage;
+    if (values)
+      return values.some(
+        (opt) => typeof opt.hired !== 'undefined' && opt.hired
+      );
+    return true;
+  }
+
+  /**
    *
    * @param {PlanSelectedInfoItem} plan
    */
   static setHiredCoverages(plan, inmuebleBase) {
     const inmueble = inmuebleBase || store.getState().Inmueble;
-    for (let key = 0; key < plan.coverages.length; key++) {
-      let option = plan.coverages[key].values;
+    const { coverages } = plan;
+    for (let key = 0; key < coverages.length; key++) {
+      let option = coverages[key].values;
       if (typeof option !== 'undefined') {
         for (let k = 0; k < option.length; k++) {
           let opt = option[k];
           // Inmueble
           if (opt.id === 1) {
-            plan.coverages[key].values[k].hired =
+            coverages[key].values[k].hired =
               inmueble.inmuebleasegudado === 1;
             //Contenidos
           } else if (opt.id === 2) {
-            plan.coverages[key].values[k].hired =
+            coverages[key].values[k].hired =
               inmueble.contenidoasegudado === 1;
             //Obras
           } else if (opt.id === 3) {
-            plan.coverages[key].values[k].hired =
+            coverages[key].values[k].hired =
               inmueble.inmuebleasegudadoobras === 1;
             //Telefonos moviles
           } else if (opt.id === 4) {
-            plan.coverages[key].values[k].hired =
+            coverages[key].values[k].hired =
               inmueble.inmuebleasegudadotelefonos === 1;
             //Hurto siempre basado en hurto calificado
           } else if (opt.id === 5) {
-            plan.coverages[key].values[k].hired =
+            coverages[key].values[k].hired =
               inmueble.contenidoasegudado === 1;
             //Joyas
           } else if (opt.id === 6) {
-            plan.coverages[key].values[k].hired =
+            coverages[key].values[k].hired =
               inmueble.inmuebleasegudadojoyas === 1;
             //Contenido mobile
           } else if (opt.id === 7) {
-            plan.coverages[key].values[k].hired = inmueble[MobileContents.nameModel] === 1;
+            coverages[key].values[k].hired = inmueble[MobileContents.nameModel] === 1;
           } else if (opt.id >= 8 || opt.id === 0) {
-            plan.coverages[key].values[k].hired = true;
+            coverages[key].values[k].hired = true;
           }
         }
       }
     }
-    return plan;
+    return {
+      ...plan,
+      coverages,
+    };
   }
 
   /**
@@ -397,7 +413,7 @@ class Coberturas extends Component {
     let t = 0;
     let item = plan.coverages;
     for (let i in item) {
-      if (item[i].checked === true) {
+      if (item[i].checked === true && Coberturas.stateCoverage(item[i])) {
         t++;
       }
     }
@@ -738,154 +754,140 @@ class Coberturas extends Component {
 
           <div className="wrapper-box">
             {typeof this.state.plan.coverages !== 'undefined' &&
-              this.state.plan.coverages.map((option, key) => (
-                <div className={'rowor'} key={key}>
-                  <div className={'row'}>
-                    <div
-                      className={
-                        'col first items-checkboxes ' +
-                        (option.optional === true ? '' : ' disabled-item')
-                      }
-                    >
-                      <div className="form-group">
-                        <input
-                          type="checkbox"
-                          checked={option.checked === true ? 'checked' : false}
-                          disabled={option.optional === false}
-                          name={'itemcheck' + key}
-                          id={'itemcheck' + key}
-                          onChange={this.checkCoverturas(index, key)}
-                        />
-                        <label htmlFor={'itemcheck' + key}>{option.name}</label>
+              this.state.plan.coverages.map((option, key) => {
+                if (!Coberturas.stateCoverage(option)) return null;
+                return (
+                  <div className={'rowor'} key={key}>
+                    <div className={'row'}>
+                      <div
+                        className={'col first items-checkboxes ' +
+                          (option.optional === true ? '' : ' disabled-item')}
+                      >
+                        <div className="form-group">
+                          <input
+                            type="checkbox"
+                            checked={option.checked === true ? 'checked' : false}
+                            disabled={option.optional === false}
+                            name={'itemcheck' + key}
+                            id={'itemcheck' + key}
+                            onChange={this.checkCoverturas(index, key)} />
+                          <label htmlFor={'itemcheck' + key}>{option.name}</label>
+                        </div>
+                      </div>
+                      <div
+                        className={'col col-12 col-sm-12 col-md-3 col-lg-3 middle ' +
+                          (option.checked === false ? ' disabled-item' : '') +
+                          (option.optional === true ? '' : ' disabled-item')}
+                      >
+                        {typeof option.values !== 'undefined' && (
+                          <Fragment>
+                            {option.values.map(
+                              (opt, k) => typeof opt.hired !== 'undefined' &&
+                                opt.hired === true && (
+                                  <div
+                                    className={'form-group ' +
+                                      (typeof opt.values === 'undefined'
+                                        ? ''
+                                        : 'input-select') +
+                                      (opt.errors && opt.errors.length > 0
+                                        ? ' error'
+                                        : '') +
+                                      (Coberturas.isDisabled(option, opt)
+                                        ? ' disabled-item'
+                                        : '')}
+                                    key={k}
+                                  >
+                                    <label htmlFor={'item' + k + '_' + key}>
+                                      {opt.name}
+                                    </label>
+                                    {typeof opt.values === 'undefined' ? (
+                                      <input
+                                        name={'item' + k + '_' + key}
+                                        id={'item' + k + '_' + key}
+                                        placeholder={opt.value_show}
+                                        onBlur={Coberturas.isDisabled(option, opt)
+                                          ? null
+                                          : this.blur}
+                                        value={typeof opt.value_show === 'undefined'
+                                          ? '$0'
+                                          : opt.value_show}
+                                        onChange={this.inputChange(k, key, 1)}
+                                        disabled={Coberturas.isDisabled(
+                                          option,
+                                          opt
+                                        )}
+                                        type="text"
+                                        className={'form-control'} />
+                                    ) : (
+                                        <select
+                                          className={'form-control'}
+                                          name={'item' + k + '_' + key}
+                                          id={'item' + k + '_' + key}
+                                          disabled={option.optional === false ||
+                                            option.checked === false}
+                                          value={Coberturas.getSelectFields(
+                                            opt.values
+                                          )}
+                                          onChange={this.inputChange(k, key, 2)}
+                                        >
+                                          {opt.values.map((opt, k) => (
+                                            <option key={k} value={k}>
+                                              {Masknumbermoney.formatToMask(
+                                                opt.limit
+                                              )}
+                                            </option>
+                                          ))}
+                                        </select>
+                                      )}
+                                    {opt.errors &&
+                                      opt.errors.map((item, key) => (
+                                        <small
+                                          key={key}
+                                          className={'form-text only-errors'}
+                                        >
+                                          {item}
+                                        </small>
+                                      ))}
+                                  </div>
+                                )
+                            )}
+                          </Fragment>
+                        )}
+                      </div>
+                      <div className="col last">
+                        {typeof option.deductible !== 'undefined' ? (
+                          <div
+                            className={'pisonumero input-select form-group ' +
+                              (this.state.error ? 'error' : '')}
+                          >
+                            <label htmlFor={'itemdeducible' + key}>
+                              Deducible
+                            </label>
+                            <select
+                              name={'itemdeducible' + key}
+                              id={'itemdeducible' + key}
+                              className="form-control"
+                              disabled={false}
+                              onChange={this.selectChangeDeducible(key)}
+                              value={Coberturas.getSelectByItems(
+                                option.deductible
+                              )}
+                            >
+                              {option.deductible.map((opt, k) => (
+                                <option key={k} value={opt.id}>
+                                  {opt.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        ) : (
+                            <div className={'form-group'}>&nbsp;</div>
+                          )}
                       </div>
                     </div>
-                    <div
-                      className={
-                        'col col-12 col-sm-12 col-md-3 col-lg-3 middle ' +
-                        (option.checked === false ? ' disabled-item' : '') +
-                        (option.optional === true ? '' : ' disabled-item')
-                      }
-                    >
-                      {typeof option.values !== 'undefined' && (
-                        <Fragment>
-                          {option.values.map(
-                            (opt, k) =>
-                              typeof opt.hired !== 'undefined' &&
-                              opt.hired === true && (
-                                <div
-                                  className={
-                                    'form-group ' +
-                                    (typeof opt.values === 'undefined'
-                                      ? ''
-                                      : 'input-select') +
-                                    (opt.errors && opt.errors.length > 0
-                                      ? ' error'
-                                      : '') +
-                                    (Coberturas.isDisabled(option, opt)
-                                      ? ' disabled-item'
-                                      : '')
-                                  }
-                                  key={k}
-                                >
-                                  <label htmlFor={'item' + k + '_' + key}>
-                                    {opt.name}
-                                  </label>
-                                  {typeof opt.values === 'undefined' ? (
-                                    <input
-                                      name={'item' + k + '_' + key}
-                                      id={'item' + k + '_' + key}
-                                      placeholder={opt.value_show}
-                                      onBlur={
-                                        Coberturas.isDisabled(option, opt)
-                                          ? null
-                                          : this.blur
-                                      }
-                                      value={
-                                        typeof opt.value_show === 'undefined'
-                                          ? '$0'
-                                          : opt.value_show
-                                      }
-                                      onChange={this.inputChange(k, key, 1)}
-                                      disabled={Coberturas.isDisabled(
-                                        option,
-                                        opt
-                                      )}
-                                      type="text"
-                                      className={'form-control'}
-                                    />
-                                  ) : (
-                                    <select
-                                      className={'form-control'}
-                                      name={'item' + k + '_' + key}
-                                      id={'item' + k + '_' + key}
-                                      disabled={
-                                        option.optional === false ||
-                                        option.checked === false
-                                      }
-                                      value={Coberturas.getSelectFields(
-                                        opt.values
-                                      )}
-                                      onChange={this.inputChange(k, key, 2)}
-                                    >
-                                      {opt.values.map((opt, k) => (
-                                        <option key={k} value={k}>
-                                          {Masknumbermoney.formatToMask(
-                                            opt.limit
-                                          )}
-                                        </option>
-                                      ))}
-                                    </select>
-                                  )}
-                                  {opt.errors &&
-                                    opt.errors.map((item, key) => (
-                                      <small
-                                        key={key}
-                                        className={'form-text only-errors'}
-                                      >
-                                        {item}
-                                      </small>
-                                    ))}
-                                </div>
-                              )
-                          )}
-                        </Fragment>
-                      )}
-                    </div>
-                    <div className="col last">
-                      {typeof option.deductible !== 'undefined' ? (
-                        <div
-                          className={
-                            'pisonumero input-select form-group ' +
-                            (this.state.error ? 'error' : '')
-                          }
-                        >
-                          <label htmlFor={'itemdeducible' + key}>
-                            Deducible
-                          </label>
-                          <select
-                            name={'itemdeducible' + key}
-                            id={'itemdeducible' + key}
-                            className="form-control"
-                            disabled={false}
-                            onChange={this.selectChangeDeducible(key)}
-                            value={Coberturas.getSelectByItems(
-                              option.deductible
-                            )}
-                          >
-                            {option.deductible.map((opt, k) => (
-                              <option key={k} value={opt.id}>
-                                {opt.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      ) : (
-                        <div className={'form-group'}>&nbsp;</div>
-                      )}
-                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
         </div>
       </div>
