@@ -1066,3 +1066,7 @@ body #root .cotizacion .container .tool-tip-hover {
   -webkit-animation-name: shake;
   animation-name: shake;
 }
+
+.select-item.error li {
+  border-bottom: 2px solid #dd133c !important;
+}
