@@ -12,7 +12,12 @@ const PropertyNotAllowed = ({ open, onClose }) => {
               No podemos procesar tu solicitud. Comunícate con tu Gestor
               comercial
             </p>
-            <button type="button" className="close" aria-label="Close">
+            <button
+              type="button"
+              className="close"
+              aria-label="Close"
+              onClick={onClose}
+            >
               &nbsp;
             </button>
           </div>
