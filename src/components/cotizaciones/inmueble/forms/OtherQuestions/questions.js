@@ -10,7 +10,7 @@ const questions = [
         ubicada dentro de bases o guarniciones militares o policiales?
       </p>
     ),
-    validValues: [true],
+    validValues: [false],
     throwError: true,
   },
 ];
