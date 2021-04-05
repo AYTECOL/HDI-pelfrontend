@@ -52,6 +52,11 @@ const saveInmuebleValue = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE", data: {[element.name]: element.value}};
 };
 
+const setPropertyValidation = (validate) => (dispatch) => {
+    dispatch({ type: 'SAVE_INMUEBLE_VALUE', data: { validate } });
+    return Promise.resolve();
+};
+
 const saveInmuebleValueSeguridad = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: {[element.name]: element.value}};
 };
@@ -130,5 +135,6 @@ export {
     savePdfInfo,
     saveProspect,
     resetStore,
-    saveAttachedFile as attachedFile
+    saveAttachedFile as attachedFile,
+    setPropertyValidation
 };

@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 //Components
 import Segurarinmueble from '../forms/segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from '../forms/asegurarcontenidos/Asegurarcontenidos';
@@ -6,54 +7,58 @@ import Asegurarcontenidoadicional from '../asegurarcontenidoadicional/Asegurarco
 //Api
 import AllInsurableLimits from '../../../../services/AllInsurableLimits';
 
-import {withRouter} from "react-router-dom";
+import OtherQuestions from '../forms/OtherQuestions';
 
 class Valoreasegurar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {};
-    }
+  componentDidMount() {
+    AllInsurableLimits.get();
+  }
 
-    componentDidMount(){
-        AllInsurableLimits.get();
-    }
-
-    render() {
-        return (
-            <div className="inmuebleform">
-                <div className="container">
-                    <div className="row">
-                        <div className="col col-sm-12 col-md-12 col-lg-12">
-                            <h5>Valores a asegurar</h5>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col col-sm-12 col-md-12 col-lg-12">
-                            <Segurarinmueble/>
-                        </div>
-                    </div>
-
-                    <div className="hr-mid">
-                        <hr/>
-                    </div>
-
-                    <div className="row">
-                        <div className="col col-sm-12 col-md-12 col-lg-12">
-                            <Asegurarcontenidos/>
-                        </div>
-                    </div>
-
-                    <div className="row justify-content-center">
-                        <div className="col col-sm-12 col-md-12 col-lg-12">
-                            <Asegurarcontenidoadicional/>
-                        </div>
-                    </div>
-
-                </div>
+  render() {
+    return (
+      <div className="inmuebleform">
+        <div className="container">
+          <div className="row">
+            <div className="col col-sm-12 col-md-12 col-lg-12">
+              <h5>Valores a asegurar</h5>
             </div>
-        )
-    }
+          </div>
+          <div className="row">
+            <div className="col col-sm-12 col-md-12 col-lg-12">
+              <Segurarinmueble />
+            </div>
+          </div>
+
+          <div className="hr-mid">
+            <hr />
+          </div>
+
+          <div className="row">
+            <div className="col col-sm-12 col-md-12 col-lg-12">
+              <Asegurarcontenidos />
+            </div>
+          </div>
+
+          <div className="row justify-content-center">
+            <div className="col col-sm-12 col-md-12 col-lg-12">
+              <Asegurarcontenidoadicional />
+            </div>
+          </div>
+          <hr />
+          <div className="row">
+            <div className="col col-sm-12 col-md-12 col-lg-12">
+              <OtherQuestions />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default withRouter(Valoreasegurar);
