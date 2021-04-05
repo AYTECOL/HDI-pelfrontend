@@ -40,6 +40,7 @@ const initialState = {
     // Segundo formulario Inmueble
     typeInmueble: 0,
     Inmueble: {
+        validate: false,
         type_risk: "",
         type_risk_id: "",
         pisonumero: "",
