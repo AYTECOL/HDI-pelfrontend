@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import questions from './questions';
 
 class OtherQuestions extends Component {
-  static nameModel = 'otherquestions';
-  static nameModelValue = 'otherquestionsvalor';
+  static nameModel = 'other_questions';
+  static nameModelValue = 'other_questions_value';
   _isMounted = false;
 
   constructor(props) {
