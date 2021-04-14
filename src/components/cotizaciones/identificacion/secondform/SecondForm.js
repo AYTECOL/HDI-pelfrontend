@@ -8,8 +8,7 @@ import Adress from '../forms/adress/Adress';
 import Addressadditional from '../forms/addressadditional/Addressadditional';
 import AutoCompleteCities from '../forms/autocompletecities/AutocompleteCities';
 import Map from "../map/Map.js"
-import Helpers from '../../../../common/helpers/helpers/Helpers';
-import { saveDescriptionCity, saveIdentificationValue } from '../../../../actions';
+import { saveDescriptionCity, saveIdentificationValue, savePdfInfo } from '../../../../actions';
 
 class SecondForm extends Component {
 
@@ -73,31 +72,29 @@ class SecondForm extends Component {
       let code = option.code_city;
       let description = option.department;
       let codeDepartment = option.code_department;
-      Helpers.updatePdfInfo({
-        cityHome: option.city,
+      store.dispatch((dispatch) => {
+        dispatch(
+          savePdfInfo({
+            cityHome: option.city,
+            departmentHome: option.department,
+            city: option.city,
+            department: option.department,
+          })
+        );
+        dispatch(
+          saveIdentificationValue({
+            name: 'city',
+            value: code,
+          })
+        );
+        dispatch(
+          saveIdentificationValue({
+            name: 'department',
+            value: codeDepartment,
+          })
+        );
+        dispatch(saveDescriptionCity(description));
       });
-      Helpers.updatePdfInfo({
-        departmentHome: option.department,
-      });
-      Helpers.updatePdfInfo({
-        city: option.city,
-      });
-      Helpers.updatePdfInfo({
-        department: option.department,
-      });
-      store.dispatch(
-        saveIdentificationValue({
-          name: 'city',
-          value: code,
-        })
-      );
-      store.dispatch(
-        saveIdentificationValue({
-          name: 'department',
-          value: codeDepartment,
-        })
-      );
-      store.dispatch(saveDescriptionCity(description));
     } else this.resetCity();
   };
 
