@@ -1,83 +1,68 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import {saveInmuebleValue} from '../../../../../actions';
+import { saveInmuebleValue, savePdfInfo } from '../../../../../actions';
 import './Zona.scss';
-import AllPropertiesZones from "../../../../../services/AllPropertiesZones";
-import Helpers from "../../../../../common/helpers/helpers/Helpers";
+import AllPropertiesZones from '../../../../../services/AllPropertiesZones';
+import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import { connect } from 'react-redux';
 
 class Zona extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
             error: false,
-            active: 0,
             zonas: []
         };
     }
 
     componentDidMount() {
         this.getZones();
-        this.unsubscribe = store.subscribe(async () => {
-            let storeState = store.getState();
-            let value = storeState.Inmueble.zona;
-            if (this.state.active !== value) {
-                this.setState({
-                    ...this.state,
-                    active: value,
-                });
-            }
-        });
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
     }
 
     async getZones() {
         let zonas = await AllPropertiesZones.get();
         this.setState({
             ...this.state,
-            zonas: zonas,
+            zonas: zonas
         });
     }
 
-    saveData = e => event => {
+    saveData = (e) => (event) => {
+        Helpers.removeClass('.zona', 'error');
         store.dispatch(saveInmuebleValue(e));
-        Helpers.removeClass(".zona", "error");
-        this.setState({
-            ...this.state,
-            active: e.value
-        });
-        Helpers.updatePdfInfo({
-            [e.name]: e.text
-        });
+        store.dispatch(
+            savePdfInfo({
+                [e.name]: e.text
+            })
+        );
     };
 
     render() {
+        const { value } = this.props;
         return (
-            <div className={"zona no-icon form-group " + this.state.error}>
+            <div className={'zona no-icon form-group ' + this.state.error}>
                 <label htmlFor="zona">El inmueble está ubicado en zona</label>
                 <ul className="select-item" id="zona">
-                    {this.state.zonas.map((option, key) =>
-                        <li key={option.zoneCode}
-                            className={parseInt(this.state.active) === parseInt(option.zoneCode) ? 'active' : ''}
+                    {this.state.zonas.map((option, key) => (
+                        <li
+                            key={option.zoneCode}
+                            className={+value === +option.zoneCode ? 'active' : ''}
                             onClick={this.saveData({
-                                value: parseInt(option.zoneCode),
-                                name: "zona",
+                                value: +option.zoneCode,
+                                name: 'zona',
                                 text: option.answer
-                            })}>
+                            })}
+                        >
                             {option.answer}
                         </li>
-                    )}
+                    ))}
                 </ul>
             </div>
         );
     }
 }
 
-export default Zona;
-
-
-
+export default connect(({ Inmueble }) => {
+    return { value: Inmueble.zona };
+})(Zona);
