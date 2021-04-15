@@ -4,7 +4,6 @@ import store from "../../../store";
 import {
   restoreCotizacion,
   restoreCotizacionRisk,
-  savePdfInfo,
   saveProspect
 } from "../../../actions";
 import ValorationById from "../../../services/ValorationById";

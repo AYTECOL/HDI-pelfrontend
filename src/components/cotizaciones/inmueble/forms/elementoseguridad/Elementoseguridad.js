@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import store from "../../../../../store";
-import { saveInmuebleValueSeguridad, savePdfInfo } from "../../../../../actions";
+import { saveInmuebleValueSeguridad } from "../../../../../actions";
 
 import "./Elementoseguridad.scss";
 import AllSecurity from "../../../../../services/AllSecurity";
@@ -56,11 +56,6 @@ class Elementoseguridad extends Component {
         }
         store.dispatch((dispatch) => {
             dispatch(saveInmuebleValueSeguridad(e));
-            dispatch(
-                savePdfInfo({
-                    [e.name]: e.text
-                })
-            );
         });
     };
 

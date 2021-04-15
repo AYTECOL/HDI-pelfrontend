@@ -12,7 +12,7 @@ import Btns from '../forms/btncontinue/BtnContinue';
 import Risk from '../../../../services/AllRisks';
 
 import './Index.scss';
-import { saveInmuebleValue, savePdfInfo, typeInmueble } from '../../../../actions';
+import { saveInmuebleValue, typeInmueble } from '../../../../actions';
 import Loading from '../../../globals/loading/Loading';
 
 class Index extends Component {
@@ -49,19 +49,14 @@ class Index extends Component {
             dispatch(typeInmueble(item));
             dispatch(
                 saveInmuebleValue({
-                    name: 'type_risk',
+                    name: "type_risk",
                     value: type
                 })
             );
             dispatch(
                 saveInmuebleValue({
-                    name: 'type_risk_id',
+                    name: "type_risk_id",
                     value: item
-                })
-            );
-            dispatch(
-                savePdfInfo({
-                    type_risk: option.risk_type
                 })
             );
         });
@@ -84,8 +79,8 @@ class Index extends Component {
                         <div className="col col-sm-12 col-md-12 col-lg-12 content-select">
                             <ul>
                                 {options.risks.map((option) => (
-                                    <li key={option.riskId} data={option.riskId} className={parseInt(active) === parseInt(option.riskId) ? 'active' : ''} onClick={this.active(option)}>
-                                        <i className={parseInt(option.riskId) === 1 ? 'home-icon' : 'apartamento-icon'}>&nbsp;</i>
+                                    <li key={option.riskId} data={option.riskId} className={parseInt(active) === parseInt(option.riskId) ? "active" : ""} onClick={this.active(option)}>
+                                        <i className={parseInt(option.riskId) === 1 ? "home-icon" : "apartamento-icon"}>&nbsp;</i>
                                         <p>{option.risk_type}</p>
                                     </li>
                                 ))}
@@ -93,7 +88,7 @@ class Index extends Component {
                         </div>
                     </div>
 
-                    <div className={typeInmueble === 0 ? 'hide' : ''}>
+                    <div className={typeInmueble === 0 ? "hide" : ""}>
                         <DatosGenerales />
 
                         <hr />

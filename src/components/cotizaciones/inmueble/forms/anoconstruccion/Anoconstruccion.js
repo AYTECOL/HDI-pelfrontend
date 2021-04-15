@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import store from '../../../../../store';
-import { saveInmuebleValue, savePdfInfo } from "../../../../../actions";
+import { saveInmuebleValue } from "../../../../../actions";
 import BuildYears from "../../../../../services/AllBuildYears";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 
@@ -32,17 +32,8 @@ class Anoconstruccion extends Component {
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".anoconstruido", "error");
-
-        const year = this.state.years.find(({ buildYearCode }) => +e.value === +buildYearCode);
-        const text = (year && year.answer) || "";
-
         await store.dispatch((dispatch) => {
             dispatch(saveInmuebleValue(e));
-            dispatch(
-                savePdfInfo({
-                    [e.name]: text
-                })
-            );
             return Promise.resolve();
         });
         if (error !== this.state.error)

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import store from "../../../../../store";
-import { saveInmuebleValue, savePdfInfo } from "../../../../../actions";
+import { saveInmuebleValue } from "../../../../../actions";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 import { years } from "./constants";
 
@@ -32,15 +32,8 @@ class Refuerzoestructural extends Component {
         let error = false;
         if (e.value.length < 1) error = true;
         if (error === false) Helpers.removeClass(".anorefuerzo", "error");
-        const year = years.find(({ id }) => +e.value === id);
-        const text = (year && year.text) || "";
         await store.dispatch((dispatch) => {
             dispatch(saveInmuebleValue(e));
-            dispatch(
-                savePdfInfo({
-                    [e.name]: text
-                })
-            );
             return Promise.resolve();
         });
         if (this.state.error !== error)

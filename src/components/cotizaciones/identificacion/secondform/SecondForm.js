@@ -8,7 +8,7 @@ import Adress from '../forms/adress/Adress';
 import Addressadditional from '../forms/addressadditional/Addressadditional';
 import AutoCompleteCities from '../forms/autocompletecities/AutocompleteCities';
 import Map from "../map/Map.js"
-import { saveDescriptionCity, saveIdentificationValue, savePdfInfo } from '../../../../actions';
+import { saveDescriptionCity, saveIdentificationValue } from '../../../../actions';
 
 class SecondForm extends Component {
 
@@ -73,14 +73,6 @@ class SecondForm extends Component {
       let description = option.department;
       let codeDepartment = option.code_department;
       store.dispatch((dispatch) => {
-        dispatch(
-          savePdfInfo({
-            cityHome: option.city,
-            departmentHome: option.department,
-            city: option.city,
-            department: option.department,
-          })
-        );
         dispatch(
           saveIdentificationValue({
             name: 'city',

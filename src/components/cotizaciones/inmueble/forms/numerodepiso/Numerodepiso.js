@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import store from '../../../../../store';
-import { saveInmuebleValue, savePdfInfo } from '../../../../../actions';
+import { saveInmuebleValue } from '../../../../../actions';
 import AllFloors from '../../../../../services/Allfloors';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
 
@@ -36,11 +36,6 @@ class Numerodepiso extends Component {
     await store.dispatch((dispatch) => {
       dispatch(saveInmuebleValue(e));
       dispatch(saveInmuebleValue({ name: 'pisonumero', value: '' }));
-      dispatch(
-        savePdfInfo({
-          [e.name]: e.value,
-        })
-      );
       return Promise.resolve();
     });
 

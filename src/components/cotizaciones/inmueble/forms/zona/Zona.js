@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import { saveInmuebleValue, savePdfInfo } from '../../../../../actions';
+import { saveInmuebleValue } from '../../../../../actions';
 import './Zona.scss';
 import AllPropertiesZones from '../../../../../services/AllPropertiesZones';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
@@ -31,11 +31,6 @@ class Zona extends Component {
     saveData = (e) => (event) => {
         Helpers.removeClass('.zona', 'error');
         store.dispatch(saveInmuebleValue(e));
-        store.dispatch(
-            savePdfInfo({
-                [e.name]: e.text
-            })
-        );
     };
 
     render() {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import store from "../../../../../store";
-import { saveInmuebleValue, savePdfInfo } from "../../../../../actions";
+import { saveInmuebleValue } from "../../../../../actions";
 
 import "./Construidocon.scss";
 import AllBuildMaterial from "../../../../../services/AllBuildMaterial";
@@ -40,11 +40,6 @@ class Construidocon extends Component {
                 saveInmuebleValue({
                     name: "indexBuild",
                     value: e.data
-                })
-            );
-            dispatch(
-                savePdfInfo({
-                    [e.name]: e.text
                 })
             );
             return Promise.resolve();

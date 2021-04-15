@@ -244,7 +244,7 @@ class Index extends Component {
       contents: data['contents'],
       newSecurity: newSecurity,
       city: (city && city.city) || '',
-      adressHome: store.getState().pdf_info.addressHome,
+      adressHome: store.getState().address,
     });
     store.dispatch(indexPlanSelected(0));
     store.dispatch(AllPlansCreator(plansLoader));
