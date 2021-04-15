@@ -12,7 +12,6 @@ export interface PolicyRequest {
   address: string;
   document_number: string;
   quoteId: string;
-  pdf_info: PDFInfo;
   name: string;
   city: number;
   last_name: string;
@@ -119,15 +118,6 @@ export interface Intntermediate {
   usuario: string;
   nombreUsuario: string;
   perfil: string;
-}
-
-export interface PDFInfo {
-  addressHome: null;
-  cityHome: string;
-  doc_type: string;
-  departmentHome: string;
-  department: string;
-  city: string;
 }
 
 export interface Policy {}
