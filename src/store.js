@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 import MobileContents from './components/cotizaciones/inmueble/forms/MobileContents';
+import OtherQuestions from './components/cotizaciones/inmueble/forms/OtherQuestions';
 
 const initialState = {
 
@@ -40,6 +41,7 @@ const initialState = {
     // Segundo formulario Inmueble
     typeInmueble: 0,
     Inmueble: {
+        validate: false,
         type_risk: "",
         type_risk_id: "",
         pisonumero: "",
@@ -71,6 +73,8 @@ const initialState = {
         inmuebleasegudadotelefonosvalor: "",
         [MobileContents.nameModel]: 0,
         [MobileContents.nameModelValue]: "",
+        [OtherQuestions.nameModel]: 1,
+        [OtherQuestions.nameModelValue]: [],
     },
 
     // tercer formulario Cotizacion
