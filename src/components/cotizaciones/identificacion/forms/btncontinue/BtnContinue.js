@@ -103,11 +103,11 @@ class BtnContinue extends Component {
             } catch (e) {
                 NumeroIdentificacion.toggleDisable(false);
                 TipoDocumento.toggleDisable(false);
-                this.setState({
-                    ...this.state,
-                    loading: false
-                });
             }
+            this.setState({
+                ...this.state,
+                loading: false
+            });
             Loading.toggle(false);
         }
     };
@@ -122,6 +122,7 @@ class BtnContinue extends Component {
     render() {
         const { stateFormIdentificacion, continueButtonDisable } = this.props;
         const { loading } = this.state;
+        console.log(loading);
         const disabled = loading || continueButtonDisable;
         return (
             <Fragment>
