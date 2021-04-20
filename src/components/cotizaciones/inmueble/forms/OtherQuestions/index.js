@@ -99,7 +99,7 @@ class OtherQuestions extends Component {
               const active = value.get(question.id);
               const error = validate && active === undefined;
               return (
-                <React.Fragment>
+                <React.Fragment key={question.id}>
                   {question.message}
                   <ul className={classNames('select-item', error && 'error')}>
                     <li

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import { compose } from 'recompose';
+import { withRouter } from 'react-router-dom';
 
-import Cities from '../../../../../services/Cities';
-
+import { withCities } from '../../hooks/cities';
 import store from '../../../../../store';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
-import { withRouter } from 'react-router-dom';
 
 class AutocompleteCities extends Component {
   _isMounted = false;
@@ -75,7 +75,7 @@ class AutocompleteCities extends Component {
     if (value && typeof value === 'string' && value.trim()) {
       this.setState({
         ...this.state,
-        value: value,
+        value: value
       });
     }
   }
@@ -85,13 +85,15 @@ class AutocompleteCities extends Component {
    * @return {Promise<void>}
    */
   async getOptions(callBack) {
-    let data = await Cities.get();
+    const { citiesProps } = this.props;
+    let cities = await citiesProps.promise;
+    const options = { cities };
     if (this._isMounted) {
       this.setState(
         {
           ...this.state,
-          options: data,
-          originalOptions: data
+          options: options,
+          originalOptions: options
         },
         callBack
       );
@@ -159,30 +161,30 @@ class AutocompleteCities extends Component {
       this.setState({
         ...this.state,
         value,
-        empty: false,
+        empty: false
       });
       if (typeof this.props.onChange !== 'undefined') {
         this.changeTargets([
           {
             value: value,
-            name: this.props.name,
+            name: this.props.name
           },
           {
             value: parseInt(code),
-            name: 'city_code',
+            name: 'city_code'
           },
           {
             value: parseInt(codeDepartment),
-            name: 'department_code',
+            name: 'department_code'
           },
           {
             value: city,
-            name: 'city',
+            name: 'city'
           },
           {
             value: description,
-            name: 'departamento',
-          },
+            name: 'departamento'
+          }
         ]);
       }
     }, 200);
@@ -196,7 +198,7 @@ class AutocompleteCities extends Component {
   searchData = ({ target: { value } }) => {
     const { cities } = this.state.originalOptions;
     const options = { cities: [] };
-    cities.forEach((option) => {
+    cities.forEach(option => {
       const city = this.removeAccents(option.city || '').toLowerCase();
       const search = city.search(this.removeAccents(value.toLowerCase()));
       if (search !== -1 && search === 0) {
@@ -210,7 +212,7 @@ class AutocompleteCities extends Component {
         value: value,
         toggle: true,
         options,
-        empty: !value,
+        empty: !value
       },
       () => {
         const { onSelect } = this.props;
@@ -325,4 +327,4 @@ class AutocompleteCities extends Component {
   }
 }
 
-export default withRouter(AutocompleteCities);
+export default compose(withRouter, withCities)(AutocompleteCities);

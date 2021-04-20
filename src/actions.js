@@ -95,12 +95,6 @@ export const setLoadingPlanPerspective = (data) => (dispatch) => {
   return Promise.resolve();
 };
 
-
-//General
-const savePdfInfo = (data) => {
-    return {type: "PDF_INFO", data: data}
-};
-
 /**
  * 
  * @param {boolean} state 
@@ -132,7 +126,6 @@ export {
     saveAllInsurableLimits,
     AllPlans,
     indexPlanSelected,
-    savePdfInfo,
     saveProspect,
     resetStore,
     saveAttachedFile as attachedFile,

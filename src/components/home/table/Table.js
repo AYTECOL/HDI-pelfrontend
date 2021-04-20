@@ -4,7 +4,6 @@ import './Table.scss';
 import store from '../../../store';
 import { restoreCotizacion } from '../../../actions';
 import PdfPolizaHogar from '../../../services/PdfPolizaHogar';
-import PolizaAnexoHogar from '../../../services/PolizaAnexoHogar';
 import GetQuote from '../../../services/GetQuote';
 import Identifications from '../../../services/Identifications';
 import { UrlSite } from '../../../config';
@@ -173,9 +172,7 @@ const Table = (props) => {
               </div>
               <div className="col">
                 <p>
-                  {'addressHome' in item.pdf_info
-                    ? item.pdf_info.addressHome
-                    : item.address}
+                <p>{item.address || (item.pdf_info && item.pdf_info.addressHome)}</p>
                 </p>
               </div>
               <div className="col">
