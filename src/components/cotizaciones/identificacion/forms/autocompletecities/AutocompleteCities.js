@@ -311,16 +311,17 @@ class AutocompleteCities extends Component {
           Por favor ingrese la {(!label && defaultLabel) || label}.
         </small>
         <ul className={(toggle ? 'show' : 'hide') + ' list-items'}>
-          {options.cities.map((option, key) => (
-            <li
-              key={key}
-              value={option.code_city}
-              className={option.active ? 'active' : ''}
-              onClick={this.saveOption(option)}
-            >
-              {option.description}
-            </li>
-          ))}
+          {options.cities &&
+            options.cities.map((option, key) => (
+              <li
+                key={key}
+                value={option.code_city}
+                className={option.active ? 'active' : ''}
+                onClick={this.saveOption(option)}
+              >
+                {option.description}
+              </li>
+            ))}
         </ul>
       </div>
     );
