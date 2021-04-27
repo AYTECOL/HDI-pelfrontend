@@ -2,6 +2,7 @@ import Api from './Api';
 import Masknumbermoney from "../common/helpers/masknumbermoney/Masknumbermoney";
 import AuthHeader from './AuthHeader';
 import MobileContents from '../components/cotizaciones/inmueble/forms/MobileContents';
+import OtherQuestions from '../components/cotizaciones/inmueble/forms/OtherQuestions';
 const BaseUrl = "/";
 
 class ValorationById {
@@ -42,6 +43,8 @@ class ValorationById {
                 inmuebleasegudadojoyasvalor: Masknumbermoney.formatToMask(item.inmueble_asegudado_joyasvalor),
                 [MobileContents.nameModel]: item[MobileContents.nameModel] || 0,
                 [MobileContents.nameModelValue]: Masknumbermoney.formatToMask(item[MobileContents.nameModelValue]) || '',
+                [OtherQuestions.nameModel]: item[OtherQuestions.nameModel],
+                [OtherQuestions.nameModelValue]: item[OtherQuestions.nameModelValue],
                 inmuebleasegudadoobras: item.inmueble_asegudado_obras,
                 inmuebleasegudadoobrasvalor: Masknumbermoney.formatToMask(item.inmueble_asegudado_obrasvalor),
                 inmuebleasegudadotelefonos: item.inmueble_asegudado_telefonos,

@@ -4,7 +4,6 @@ import store from "../../../store";
 import {
   restoreCotizacion,
   restoreCotizacionRisk,
-  savePdfInfo,
   saveProspect
 } from "../../../actions";
 import ValorationById from "../../../services/ValorationById";
@@ -304,38 +303,6 @@ class Helpers {
     }
     y = x % 11;
     return y > 1 ? 11 - y : y;
-  }
-
-  static getFormData() {
-    let data = {};
-    let els = document
-      .querySelector(".index-form")
-      .querySelectorAll("input, select");
-    for (let i = 0; i < els.length; i++) {
-      let v = els[i].value;
-      if (v !== "") {
-        data[els[i].getAttribute("name")] = v;
-      }
-    }
-    return data;
-  }
-
-  static savePdfInfo() {
-    let pdfinfo = store.getState().pdf_info;
-    pdfinfo = {
-      ...pdfinfo,
-      ...Helpers.getFormData()
-    };
-    store.dispatch(savePdfInfo(pdfinfo));
-  }
-
-  static updatePdfInfo(data) {
-    let pdfinfo = store.getState().pdf_info;
-    pdfinfo = {
-      ...pdfinfo,
-      ...data
-    };
-    store.dispatch(savePdfInfo(pdfinfo));
   }
 
   static clone(obj) {

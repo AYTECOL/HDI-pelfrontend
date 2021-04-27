@@ -8,6 +8,8 @@ import Asegurarjoyas from "../asegurarjoyas/Asegurarjoyas";
 import MobileContents from '../MobileContents';
 import Asegurarobras from "../asegurarobras/Asegurarobras";
 import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
+import OtherQuestions from '../OtherQuestions';
+import questions from '../OtherQuestions/questions';
 
 class Counter extends Component {
 
@@ -25,7 +27,7 @@ class Counter extends Component {
             let storeState = store.getState();
             let errors = 0;
             let inmueble = storeState.Inmueble;
-            let total = 5;
+            let total = 5 + questions.length;
 
             if (inmueble.type_risk === 2) total++;
 
@@ -67,6 +69,11 @@ class Counter extends Component {
                   ) !== 0
                 )
                   errors++;
+            }
+            const value = inmueble[OtherQuestions.nameModelValue] || [];
+            const errorsCount = OtherQuestions.unansweredQuestions(value);
+            if (!!errorsCount) {
+              errors += errorsCount;
             }
             if (inmueble.inmuebleasegudadoobras === 1) {
                 total++;

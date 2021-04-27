@@ -11,7 +11,6 @@ class Numerodepiso extends Component {
     super(props);
     this.state = {
       errorerror: false,
-      value: '',
       floors: [],
     };
   }
@@ -28,21 +27,23 @@ class Numerodepiso extends Component {
     });
   }
 
-  validateEmpty = (e) => {
+  validateEmpty = async (e) => {
     e = e.target;
     let error = false;
     if (e.value.length < 1) error = true;
     if (error === false) Helpers.removeClass('.numerodepisos', 'error');
-    this.setState({
-      ...this.state,
-      error: error,
-      value: e.value,
+
+    await store.dispatch((dispatch) => {
+      dispatch(saveInmuebleValue(e));
+      dispatch(saveInmuebleValue({ name: 'pisonumero', value: '' }));
+      return Promise.resolve();
     });
-    Helpers.updatePdfInfo({
-      [e.name]: e.value,
-    });
-    store.dispatch(saveInmuebleValue(e));
-    store.dispatch(saveInmuebleValue({ name: 'pisonumero', value: '' }));
+
+    if (error !== this.state.error)
+      this.setState({
+        ...this.state,
+        error: error,
+      });
   };
 
   render() {

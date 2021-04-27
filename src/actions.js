@@ -52,6 +52,11 @@ const saveInmuebleValue = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE", data: {[element.name]: element.value}};
 };
 
+const setPropertyValidation = (validate) => (dispatch) => {
+    dispatch({ type: 'SAVE_INMUEBLE_VALUE', data: { validate } });
+    return Promise.resolve();
+};
+
 const saveInmuebleValueSeguridad = (element) => {
     return {type: "SAVE_INMUEBLE_VALUE_SEGURIDAD", data: {[element.name]: element.value}};
 };
@@ -90,12 +95,6 @@ export const setLoadingPlanPerspective = (data) => (dispatch) => {
   return Promise.resolve();
 };
 
-
-//General
-const savePdfInfo = (data) => {
-    return {type: "PDF_INFO", data: data}
-};
-
 /**
  * 
  * @param {boolean} state 
@@ -127,8 +126,8 @@ export {
     saveAllInsurableLimits,
     AllPlans,
     indexPlanSelected,
-    savePdfInfo,
     saveProspect,
     resetStore,
-    saveAttachedFile as attachedFile
+    saveAttachedFile as attachedFile,
+    setPropertyValidation
 };
