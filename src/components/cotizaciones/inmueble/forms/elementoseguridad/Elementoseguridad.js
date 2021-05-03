@@ -49,11 +49,6 @@ class Elementoseguridad extends Component {
     }
 
     saveValue = (e) => () => {
-        if (this.state[e.name] === 1) {
-            e.value = 0;
-        } else if (this.state[e.name] === 0) {
-            e.value = 1;
-        }
         store.dispatch((dispatch) => {
             dispatch(saveInmuebleValueSeguridad(e));
         });
@@ -76,7 +71,7 @@ class Elementoseguridad extends Component {
                                         name={name}
                                         id={name}
                                         onChange={this.saveValue({
-                                            value: 1,
+                                            value: !this.props[name],
                                             name,
                                             text: item.description
                                         })}
