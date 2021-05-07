@@ -69,21 +69,29 @@ class Cards extends Component {
     });
   }
 
-  async getInspectionPolicy() {
-    let inspect = await Cards.getDataFromInspectionPolicy();
-    if (inspect !== false) {
-      this.setState({
-        ...this.state,
-        inspection_detail: inspect[0],
-        inspection: inspect[1],
-        showInspect: true
-      });
-    } else {
-      this.setState({
-        ...this.state,
-        showInspect: false
-      });
-    }
+  getInspectionPolicy() {
+    return new Promise(async (resolve) => {
+      let inspect = await Cards.getDataFromInspectionPolicy();
+      if (inspect !== false) {
+        this.setState(
+          {
+            ...this.state,
+            inspection_detail: inspect[0],
+            inspection: inspect[1],
+            showInspect: true,
+          },
+          resolve
+        );
+      } else {
+        this.setState(
+          {
+            ...this.state,
+            showInspect: false,
+          },
+          resolve
+        );
+      }
+    });
   }
 
   componentDidMount() {
@@ -101,16 +109,18 @@ class Cards extends Component {
           let error = items[i].parent.validateField(items[i].value);
           items[i].errorValue = error;
         }
-        this.setState({
-          ...this.state,
-          items: items,
-          Inmueble: inmueble,
-          InmuebleOk: true
-        });
-        this.getInspectionPolicy();
-        setTimeout(() => {
-          this.validateToggle();
-        }, 500);
+        this.setState(
+          {
+            ...this.state,
+            items: items,
+            Inmueble: inmueble,
+            InmuebleOk: true,
+          },
+          async () => {
+            await this.getInspectionPolicy();
+            this.validateToggle();
+          }
+        );
       }
     });
   }
@@ -123,8 +133,8 @@ class Cards extends Component {
     await AllInsurableLimits.get();
   }
 
-  validateToggle() {
-    let newItems = this.state.items;
+  getItemsActive(items) {
+    let newItems = items;
     const inactiveToggle = newItems
       .slice(1, newItems.length)
       .every(({ active }) => !!active);
@@ -132,9 +142,13 @@ class Cards extends Component {
     newItems[1].inactiveToggle = newItems[0].active === true;
     for (let i = 2; i < newItems.length; i++)
       newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
+    return newItems;
+  }
+
+  validateToggle() {
     this.setState({
       ...this.state,
-      items: newItems
+      items: this.getItemsActive(this.state.items)
     });
   }
 
@@ -161,6 +175,7 @@ class Cards extends Component {
   }
 
   toggleItem = index => e => {
+    const { type } = e;
     let active = this.state.items[index].active;
     let newItems = this.state.items;
     let saved = false;
@@ -188,47 +203,48 @@ class Cards extends Component {
     }
     if (saved === false) this.updateStoreItem(index);
 
-    this.setState({
-      ...this.state,
-      items: newItems
-    });
-    this.validateToggle();
+    this.setState(
+      {
+        ...this.state,
+        items: this.getItemsActive(newItems),
+      },
+      async () => {
+        if (type === 'click' && parseInt(error) === 0 && valueItem > 0) {
+          await this.getInspectionPolicy();
+          await this.sendAndValidate(parent);
+        }
+      }
+    );
 
-    if (e.type === "click" && parseInt(error) === 0 && valueItem > 0) {
-      setTimeout(() => {
-        this.getInspectionPolicy();
-        this.sendAndValidate(parent);
-      }, 500);
-    }
   };
 
   validateValue = index => e => {
     let target = e.target;
-    e.target.value = Masknumbermoney.formatToMask(target.value);
+    const { type } = e;
+    const value = Masknumbermoney.formatToMask(target.value);
+    e.target.value = value;
     let parent = this.state.items[index].parent;
     let component = new parent();
-    if (e.type === "blur") {
+    if (type === 'blur') {
       component.validateValue(e);
     }
     let error = parent.validateField(target.value);
     let newItems = this.state.items;
     newItems[index].value = target.value;
     newItems[index].errorValue = error;
-    this.setState({
-      ...this.state,
-      items: newItems
-    });
-    this.validateToggle();
-    if (
-      e.type === "blur" &&
-      parseInt(error) === 0 &&
-      e.target.value.trim() !== ""
-    ) {
-      setTimeout(() => {
-        this.getInspectionPolicy();
-        this.sendAndValidate(parent);
-      }, 500);
-    }
+    this.setState(
+      {
+        ...this.state,
+        items: this.getItemsActive(newItems),
+      },
+      async () => {
+        if (type === 'blur' && parseInt(error) === 0 && value.trim() !== '') {
+          await this.getInspectionPolicy();
+          this.sendAndValidate(parent);
+        }
+      }
+    );
+
   };
 
   sendAndValidate(component) {
