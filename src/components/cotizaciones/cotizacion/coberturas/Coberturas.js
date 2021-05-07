@@ -276,7 +276,7 @@ class Coberturas extends Component {
    */
   static setHiredCoverages(plan, inmuebleBase) {
     const inmueble = inmuebleBase || store.getState().Inmueble;
-    const { coverages } = plan;
+    const { coverages = [] } = plan;
     for (let key = 0; key < coverages.length; key++) {
       let option = coverages[key].values;
       if (typeof option !== 'undefined') {
