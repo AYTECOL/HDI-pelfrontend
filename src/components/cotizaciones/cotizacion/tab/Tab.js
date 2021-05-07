@@ -1,6 +1,9 @@
 import React, {Component, Fragment} from "react";
-import "./Tab.scss";
+import { compose } from "recompose";
 import {withRouter} from "react-router-dom";
+import { connect } from "react-redux";
+
+import "./Tab.scss";
 import AllPlans from "../../../../services/AllPlans";
 import store from "../../../../store";
 import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
@@ -14,15 +17,15 @@ import BtnContinue from "../forms/btncontinue/BtnContinue";
 import Cards from "../cards/Cards";
 import { getRulesByCode, getValue } from "../../../../common";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import RateNotCalculated from "../../../RateNotCalculated";
 
 class Tab extends Component {
     constructor(props) {
         super(props);
         this.state = {
             plans: [],
-            Inmueble: {},
             typePlans: 3,
-            index: "",
+            errorRateCalculated: false,
         };
     }
 
@@ -134,82 +137,79 @@ class Tab extends Component {
         return plans;
     }
 
-    componentDidMount() {
-        this.unsubscribe = store.subscribe(() => {
-            let storeState = store.getState();
-            let inmueble = storeState.Inmueble;
-            let indexPlan = storeState.indexPlan;
-            if (inmueble !== this.state.Inmueble) {
-                this.updateType(inmueble);
-            }
-            if (this.state.index !== indexPlan) {
-                this.setState({
-                    ...this.state,
-                    index: indexPlan
-                });
-            }
-        });
+    componentWillReceiveProps({ inmueble }) {
+        if (inmueble !== this.props.inmueble) {
+          this.updateType(inmueble);
+        };
     }
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
 
-    updateType(inmueble) {
+    updateType(newInmueble) {
         let type = this.state.typePlans;
-        let Inmueble = this.state.Inmueble;
-        if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
+        const { inmueble } = this.props;
+        const { contenidoasegudado, inmuebleasegudado } = newInmueble;
+        const { contenidoasegudadovalor, inmuebleasegudadovalor } = newInmueble;
+        
+        if (inmuebleasegudado === 1 && contenidoasegudado === 1) {
             type = 3;
-        } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
+        } else if (inmuebleasegudado === 0 && contenidoasegudado === 1) {
             type = 2;
-        } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
+        } else if (inmuebleasegudado === 1 && contenidoasegudado === 0) {
             type = 1;
         }
 
-        let status = false;
+        const contentAssuredOld = Masknumbermoney.formatToNumber(
+          inmueble.contenidoasegudadovalor || ''
+        );
+        const insuredPropertyOld = Masknumbermoney.formatToNumber(
+          inmueble.inmuebleasegudadovalor || ''
+        );
+        const contentAssured = Masknumbermoney.formatToNumber(
+            contenidoasegudadovalor || ''
+        );
+        const insuredProperty = Masknumbermoney.formatToNumber(
+          inmuebleasegudadovalor || ''
+        );
+
+        let status = !this.props.inmueble;
+
         //Detect if this.state is not equal to store and validate id empty values.
-        if (typeof inmueble.contenidoasegudadovalor !== "undefined") {
-            if (inmueble.contenidoasegudadovalor.toString().trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
-                if (Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) {
-                    status = true;
-                    //Check when the value is empty on this.state and it is not empty in store
-                } else if (Inmueble.contenidoasegudadovalor.toString().trim() === "") {
-                    if (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor) {
-                        status = true;
-                    }
-                }
-            }
+        if (contentAssured) {
+          if (inmueble.contenidoasegudado !== contenidoasegudado) {
+            status = true;
+            //Check when the value is empty on this.state and it is not empty in store
+          } else if (contentAssuredOld !== contentAssured) {
+            status = true;
+          }
         }
 
         //Detect if this.state is not equal to store and validate id empty values.
-        if (typeof inmueble.inmuebleasegudadovalor !== "undefined") {
-            if (inmueble.inmuebleasegudadovalor.toString().trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
-                if (Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) {
-                    status = true;
-                    //Check when the value is empty on this.state and it is not empty in store
-                } else if (Inmueble.inmuebleasegudadovalor.toString().trim() === "") {
-                    if (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor) {
-                        status = true;
-                    }
-                }
-            }
+        if (insuredProperty) {
+          if (inmueble.inmuebleasegudado !== inmuebleasegudado) {
+            status = true;
+            //Check when the value is empty on this.state and it is not empty in store
+          } else if (insuredPropertyOld !== insuredProperty) {
+            status = true;
+          }
         }
+
 
         if (status === true) {
-            this.getPlants(type, inmueble);
+          this.getPlans(type, newInmueble).catch(() => {
+            Loading.toggle(false);
+            this.setState({ errorRateCalculated: true });
+          });
         }
         this.setState({
             ...this.state,
-            Inmueble: inmueble,
             typePlans: type
         });
     }
 
-    async getPlants(type, inmueble = null) {
+    async getPlans(type, inmueble = null) {
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
-        let plan = await QuoteIussedById.get(this.props.match.params.id);
-        //let inmuble = store.getState().Inmueble;
+        let plan = await QuoteIussedById.get(quotateId);
         let indexSelected = null;
 
         let selected = plan.plan_selected_info.Item;
@@ -227,7 +227,7 @@ class Tab extends Component {
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
-            if (this.state.index === "") {
+            if (!this.props.indexPlan) {
                 for (let i in plans) {
                     if (plans[i].isdefault === true) {
                         store.dispatch(indexPlanSelected(i));
@@ -279,30 +279,54 @@ class Tab extends Component {
     }
 
     render() {
-        if (typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index] === "undefined") return <div
-            className="hide">&nbsp;</div>;
+        const { indexPlan } = this.props;
+        const { plans, errorRateCalculated } = this.state;
+        
+        const plan = !!(plans && plans[indexPlan]); 
         return (
-            <Fragment>
+          <Fragment>
+            {!plan && <div className="hide">&nbsp;</div>}
+            {plan && (
+              <Fragment>
                 <div className="first-content">
-                    <div className="row">
-                        <div className="col col-12 col-md-3 col-lg-3">
-                            <p className="textdescript">Ver asistencias</p>
-                        </div>
-                        <div className="col col-12 col-md-6 col-lg-6">
-                            {/*<p className="centerdescription">*/}
-                                {/*<span>Financiación</span> $30.000 / 10 cuotas*/}
-                            {/*</p>*/}
-                        </div>
-                        <div className="col col-12 col-md-3 col-lg-3"/>
+                  <div className="row">
+                    <div className="col col-12 col-md-3 col-lg-3">
+                      <p className="textdescript">Ver asistencias</p>
                     </div>
+                    <div className="col col-12 col-md-6 col-lg-6">
+                      {/*<p className="centerdescription">*/}
+                      {/*<span>Financiación</span> $30.000 / 10 cuotas*/}
+                      {/*</p>*/}
+                    </div>
+                    <div className="col col-12 col-md-3 col-lg-3" />
+                  </div>
                 </div>
                 <div className="wrapper-items">
-                    <Coberturas/>
-                    <Asistencias/>
+                  <Coberturas />
+                  <Asistencias />
                 </div>
-            </Fragment>
+              </Fragment>
+            )}
+            <RateNotCalculated
+              open={errorRateCalculated}
+              onRetry={() => {
+                this.getPlans(this.state.typePlans, this.props.inmueble)
+                  .then(() => {
+                      this.setState({ errorRateCalculated: false });
+                  })
+                  .catch(() => {
+                    Loading.toggle(false);
+                  });
+              }}
+            />
+          </Fragment>
         );
     }
 }
 
-export default withRouter(Tab);
+export default compose(
+  withRouter,
+  connect(({ indexPlan, Inmueble }) => {
+    return { indexPlan, inmueble: Inmueble };
+  })
+)(Tab);
