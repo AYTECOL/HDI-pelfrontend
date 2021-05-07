@@ -1,7 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+import withRouter from 'react-router/withRouter';
 
-const PropertyNotAllowed = ({ open, onClose }) => {
+const RateNotCalculated = withRouter(({ open, onRetry, history }) => {
+  const route = '/';
   return (
     <div className={classNames('modal d-flex', !open && 'hide')}>
       <div className="modal-dialog" role="document">
@@ -9,29 +11,34 @@ const PropertyNotAllowed = ({ open, onClose }) => {
           <div className="modal-header">
             <h5 className="modal-title">Ups, lo sentimos</h5>
             <p className="modal-subtitle">
-              No podemos procesar tu solicitud. Comunícate con tu Gestor
-              comercial
+              No podemos calcular la prima tu hogar en este momento
             </p>
             <button
               type="button"
               className="close"
               aria-label="Close"
-              onClick={onClose}
+              onClick={() => {
+                history.push(route);
+              }}
             >
               &nbsp;
             </button>
           </div>
           <div className="modal-body">
             <div className="buttons">
-              <a href="/" className="btn btn-secondary" data-dismiss="modal">
+              <a
+                href={route}
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
                 Mis negocios
               </a>
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={onClose}
+                onClick={onRetry}
               >
-                Ajustar
+                Reintentar
               </button>
             </div>
           </div>
@@ -39,6 +46,6 @@ const PropertyNotAllowed = ({ open, onClose }) => {
       </div>
     </div>
   );
-};
+});
 
-export default PropertyNotAllowed;
+export default RateNotCalculated;
