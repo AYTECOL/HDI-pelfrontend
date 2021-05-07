@@ -310,11 +310,12 @@ class Tab extends Component {
             <RateNotCalculated
               open={errorRateCalculated}
               onRetry={() => {
+                Loading.toggle(true);
                 this.getPlans(this.state.typePlans, this.props.inmueble)
                   .then(() => {
                       this.setState({ errorRateCalculated: false });
                   })
-                  .catch(() => {
+                  .catch((e) => {
                     Loading.toggle(false);
                   });
               }}
