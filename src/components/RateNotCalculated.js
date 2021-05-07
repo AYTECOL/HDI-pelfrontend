@@ -11,7 +11,7 @@ const RateNotCalculated = withRouter(({ open, onRetry, history }) => {
           <div className="modal-header">
             <h5 className="modal-title">Ups, lo sentimos</h5>
             <p className="modal-subtitle">
-              No podemos calcular la prima tu hogar en este momento
+              No podemos calcular la prima de tu hogar en este momento
             </p>
             <button
               type="button"
