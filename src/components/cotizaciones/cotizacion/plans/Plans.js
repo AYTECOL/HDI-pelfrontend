@@ -50,6 +50,8 @@ class Index extends Component {
             }
           }
         } catch (error) {
+          Loading.toggle(false);
+          throw error;
         }
         Loading.toggle(false);
     }
