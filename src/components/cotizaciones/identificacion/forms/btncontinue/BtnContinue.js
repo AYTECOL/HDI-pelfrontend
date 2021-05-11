@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 import store from '../../../../../store';
 import { NextStep, nextStepIndentification, resetStore, saveIdentificationValue } from '../../../../../actions';
@@ -19,87 +21,30 @@ import { withRouter } from "react-router-dom";
 import { isValidDirection } from '../../../../../common/validations';
 
 class BtnContinue extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            continueButtonDisable: true,
+            loading: false,
             stateFormIdentificacion: 0,
-            cotizacionExclude: [],
+            cotizacionExclude: []
         };
     }
 
-    componentDidMount() {
-        this.unsubscribe = store.subscribe(() => {
-            let storeState = store.getState();
-            let stateForm = storeState.stateFormIdentificacion;
-            let typeDoc = storeState.typeDocument;
-            const {
-              businessname,
-              name,
-              lastname,
-              address,
-              department,
-              city,
-            } = storeState.cotizacion.identification;
-            if (stateForm === 1) {
-                let i = 0;
-                if (typeDoc === 2) {
-                    if (businessname.length > RazonSocial.limit() ||
-                        businessname === ""
-                    ) i++;
-                } else {
-                    if (name.length > Name.limit() ||
-                        lastname.length > LastName.limit() ||
-                        name === "" ||
-                        lastname === ""
-                    ) i++;
-                }
-                if (
-                  address === '' ||
-                  department === '' ||
-                  city === '' ||
-                  !isValidDirection(address)
-                ) {
-                  i++;
-                }
-                storeState.continueButtonDisable = i !== 0;
-            }
-            if (
-                this.state.continueButtonDisable !== storeState.continueButtonDisable ||
-                this.state.stateFormIdentificacion !== storeState.stateFormIdentificacion
-            ) {
-                this.setState({
-                    ...this.state,
-                    continueButtonDisable: storeState.continueButtonDisable,
-                    stateFormIdentificacion: storeState.stateFormIdentificacion,
-                });
-            }
-        });
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
     nextStepIndex = async () => {
-        let storeState = store.getState();
-        Helpers.updatePdfInfo({
-            addressHome: storeState.cotizacion.identification.address
-        })
-        if (this.state.stateFormIdentificacion === 1) {
+        const { identification, stateFormIdentificacion } = this.props;
+        if (stateFormIdentificacion === 1) {
             Loading.toggle(true);
             store.dispatch(NextStep(2));
             await SaveIdentifications.save();
-            this.props.history.push(UrlSite + '/cotizacion/2/' + this.props.match.params.id);
+            this.props.history.push(UrlSite + "/cotizacion/2/" + this.props.match.params.id);
         } else {
             Loading.toggle(true);
             this.setState({
                 ...this.state,
-                continueButtonDisable: true,
+                loading: true
             });
-            let code = storeState.cotizacion.identification.code;
-            let value = storeState.cotizacion.identification.value;
+            let code = identification.code;
+            let value = identification.value;
             if (code === "37") value = value.replace("-", "", value);
             NumeroIdentificacion.toggleDisable(true);
             try {
@@ -109,40 +54,47 @@ class BtnContinue extends Component {
                     Validaridentificacion.toggle(true);
                 } else {
                     store.dispatch(nextStepIndentification());
-                    store.dispatch(saveIdentificationValue({
-                        name: 'object',
-                        value: persona
-                    }));
+                    store.dispatch(
+                        saveIdentificationValue({
+                            name: "object",
+                            value: persona
+                        })
+                    );
                     if (persona.consultarPersonaRs.personaEncontradaIAXIS === true) {
                         let personaData = persona.consultarPersonaRs.persona;
                         let personaType = persona.consultarPersonaRs.persona.tipoPersona.codigo;
 
                         if ((parseInt(code) === 36 && personaType === 1) || (parseInt(code) === 37 && personaType === 2)) {
                             NumeroIdentificacion.toggleDisable(true);
-                            personaData = personaData[(personaType === 2 ? 'personaJuridica' : 'personaNatural')];
+                            personaData = personaData[personaType === 2 ? 'personaJuridica' : 'personaNatural'];
                             if (typeof personaData.primerNombre !== 'undefined' && personaData.primerNombre !== '' && personaData.primerNombre !== null) {
-                                store.dispatch(saveIdentificationValue({
-                                    name: 'name',
-                                    value: personaData.primerNombre
-                                }));
+                                store.dispatch(
+                                    saveIdentificationValue({
+                                        name: 'name',
+                                        value: personaData.primerNombre
+                                    })
+                                );
                                 Name.toggleDisable(true);
                             }
                             if (typeof personaData.primerApellido !== 'undefined' && personaData.primerApellido !== '' && personaData.primerApellido !== null) {
-                                store.dispatch(saveIdentificationValue({
-                                    name: 'lastname',
-                                    value: personaData.primerApellido
-                                }));
+                                store.dispatch(
+                                    saveIdentificationValue({
+                                        name: 'lastname',
+                                        value: personaData.primerApellido
+                                    })
+                                );
                                 LastName.toggleDisable(true);
                             }
-                            if (typeof personaData.razonSocial !== 'undefined' && personaData.razonSocial !== '' && personaData.razonSocial !== null) {
-                                store.dispatch(saveIdentificationValue({
-                                    name: 'businessname',
-                                    value: personaData.razonSocial
-                                }));
+                            if (typeof personaData.razonSocial !== "undefined" && personaData.razonSocial !== "" && personaData.razonSocial !== null) {
+                                store.dispatch(
+                                    saveIdentificationValue({
+                                        name: 'businessname',
+                                        value: personaData.razonSocial
+                                    })
+                                );
                                 RazonSocial.toggleDisable(true);
                             }
                         }
-
                     } else {
                         NumeroIdentificacion.toggleDisable(false);
                         TipoDocumento.toggleDisable(false);
@@ -151,11 +103,11 @@ class BtnContinue extends Component {
             } catch (e) {
                 NumeroIdentificacion.toggleDisable(false);
                 TipoDocumento.toggleDisable(false);
-                this.setState({
-                    ...this.state,
-                    continueButtonDisable: false,
-                });
             }
+            this.setState({
+                ...this.state,
+                loading: false
+            });
             Loading.toggle(false);
         }
     };
@@ -167,26 +119,53 @@ class BtnContinue extends Component {
         Helpers.goToHome(this.props.history);
     };
 
-    render = () => (
-        <Fragment>
-            <div className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " return-button"}>
-                <button type="button" className="btn btn-link" onClick={this.saveAndExit}>
-                    <i className="back-icon">&nbsp;</i>Volver
+    render() {
+        const { stateFormIdentificacion, continueButtonDisable } = this.props;
+        const { loading } = this.state;
+        console.log(loading);
+        const disabled = loading || continueButtonDisable;
+        return (
+            <Fragment>
+                <div className={(stateFormIdentificacion !== 1 ? "hide " : "") + " return-button"}>
+                    <button type="button" className="btn btn-link" onClick={this.saveAndExit}>
+                        <i className="back-icon">&nbsp;</i>Volver
+                    </button>
+                </div>
+                <button type="button" className={(stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"} onClick={this.saveAndExit}>
+                    Guardar y salir
                 </button>
-            </div>
-            <button type="button"
-                className={(this.state.stateFormIdentificacion !== 1 ? "hide " : "") + " btn btn-default"}
-                onClick={this.saveAndExit}>Guardar y salir
-            </button>
-            <button disabled={this.state.continueButtonDisable} onClick={this.nextStepIndex}
-                type="button"
-                className={(this.state.continueButtonDisable ? 'disabled ' : '') + "btn btn-primary"}>Continuar
-            </button>
-        </Fragment>
-    );
+                <button disabled={disabled} onClick={this.nextStepIndex} type="button" className={(disabled ? "disabled " : "") + "btn btn-primary"}>
+                    Continuar
+                </button>
+            </Fragment>
+        );
+    }
 }
 
-export default withRouter(BtnContinue);
+export default compose(
+    withRouter,
+    connect(({ stateFormIdentificacion, typeDocument, cotizacion, continueButtonDisable }) => {
+        let stateForm = stateFormIdentificacion;
+        let typeDoc = typeDocument;
+        let { identification } = cotizacion;
+        const { businessname, name, lastname, address, department, city } = identification;
+        if (stateForm === 1) {
+            let i = 0;
+            if (typeDoc === 2) {
+                if (businessname.length > RazonSocial.limit() || businessname === "") i++;
+            } else {
+                if (name.length > Name.limit() || lastname.length > LastName.limit() || name === "" || lastname === "") i++;
+            }
+            if (address === "" || department === "" || city === "" || !isValidDirection(address)) {
+                i++;
+            }
+            continueButtonDisable = i !== 0;
+        }
 
-
-
+        return {
+            identification,
+            continueButtonDisable,
+            stateFormIdentificacion
+        };
+    })
+)(BtnContinue);

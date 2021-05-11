@@ -26,6 +26,7 @@ import {
   rolesParticipations,
   isRoleParticipation,
 } from './ParticipationPercentages/utils';
+import { CitiesProvider } from '../../../../cotizaciones/identificacion/hooks/cities';
 
 const maxFileSize = UploadFile.maxFileSize;
 
@@ -750,6 +751,7 @@ export default class Persona extends Component {
           this.isActived(fieldsNames.exequiasParticipation);
         return (
             <React.Fragment>
+                <CitiesProvider>
                 <div className={"modal validaridentificacion show person-popup"}>
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
@@ -1203,6 +1205,7 @@ export default class Persona extends Component {
                     </div>
                 </div>
                 <Validaridentificacion toggle={this.props.toggle} changeValue={this.changeValuePopup} />
+                </CitiesProvider>
             </React.Fragment>
         )
     };
