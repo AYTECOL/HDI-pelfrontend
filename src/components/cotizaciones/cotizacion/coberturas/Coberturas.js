@@ -416,9 +416,11 @@ class Coberturas extends Component {
       return Promise.resolve();
     });
     plans[index] = Coberturas.calcValue(plan, 5);
-    Plans.sendAndValidate(plans, index, this.props.match.params.id).catch(() => {
+    await Plans.sendAndValidate(plans, index, this.props.match.params.id).catch((e) => {
       this.setState({ errorRateCalculated: true });
+      throw e;
     });
+    this.setState({ errorRateCalculated: false });
   }
 
   /**
@@ -627,7 +629,7 @@ class Coberturas extends Component {
     return errors;
   };
 
-  inputChange = (k, key, type) => (e) => {
+  inputChange = (k, key, type) => async ({ target }) => {
     /**
      * @type {{
      *  coverages: Coverage[]
@@ -636,10 +638,10 @@ class Coberturas extends Component {
     let plan = this.state.plan;
     let item = plan.coverages[key];
 
-    if (e.target.tagName === 'SELECT') {
-      this.sendAndValidate(plan);
+    const { value, tagName } = target;
+    if (tagName === 'SELECT') {
+      await this.sendAndValidate(plan);
     }
-    const value = e.target.value;
 
     //Input
     if (type === 1) {
