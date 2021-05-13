@@ -13,7 +13,7 @@ export function BuiltMetersHousing({ value, onChange }) {
         name="area"
         value={value}
         onChange={({ target: { value } }) => {
-          const valid = validate(value);
+          const valid = validate(value) || !value;
           if (valid)
             onChange({
               value,
