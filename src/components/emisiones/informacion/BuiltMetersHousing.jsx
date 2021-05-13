@@ -1,7 +1,20 @@
 import React from 'react';
 
-export const validate = (newValue) => !isNaN(parseFloat(newValue));
+export const validate = (newValue) =>
+  !isNaN(parseFloat(newValue)) && +newValue > 0;
 export function BuiltMetersHousing({ value, onChange }) {
+  const handleChange = ({ target: { value } }) => {
+    const valid = validate(value);
+    if (valid || !value)
+      onChange({
+        value,
+      });
+    if (!valid) {
+      onChange({
+        value: '',
+      });
+    }
+  };
   return (
     <div className="form-group ">
       <label htmlFor="area">
@@ -12,13 +25,8 @@ export function BuiltMetersHousing({ value, onChange }) {
         className="form-control number"
         name="area"
         value={value}
-        onChange={({ target: { value } }) => {
-          const valid = validate(value) || !value;
-          if (valid)
-            onChange({
-              value,
-            });
-        }}
+        onInput={handleChange}
+        onChange={handleChange}
         placeholder={'Ingresa el tamaño de la vivienda'}
       />
       <small>Ingresa la información en M2</small>
