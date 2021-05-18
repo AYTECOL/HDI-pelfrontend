@@ -19,6 +19,7 @@ import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumberm
 import Content from './Content';
 import { typeItems } from '../../../common/typeItems';
 import UploadFile from '../../../services/UploadFile';
+import { BuiltMetersHousing } from './BuiltMetersHousing';
 
 // 10MB
 const maxFileSize = UploadFile.maxFileSize;
@@ -250,21 +251,7 @@ class Index extends React.Component {
   };
 
   changeDates = (e) => {
-    this.changeValue({
-      target: {
-        name: 'initdate',
-        value: MomentJs(e).format(this.formatDate),
-      },
-    });
-  };
-
-  changeValue = (e) => {
-    let v = e.target.value;
-    let n = e.target.name;
-    this.setState({
-      ...this.state,
-      [n]: v,
-    });
+    this.setState({ initdate: MomentJs(e).format(this.formatDate) });
   };
 
   updatePerson(person) {
@@ -554,20 +541,12 @@ class Index extends React.Component {
                 </div>
               </div>
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                <div className="form-group ">
-                  <label htmlFor="area">
-                    Metros construidos de vivienda (m2) (Opcional)
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control number"
-                    name="area"
-                    value={area}
-                    onChange={this.changeValue}
-                    placeholder={'Ingresa el tamaño de la vivienda'}
-                  />
-                  <small>Ingresa la información en M2</small>
-                </div>
+                <BuiltMetersHousing
+                  value={area}
+                  onChange={({ value }) => {
+                    this.setState({ area: value });
+                  }}
+                />
               </div>
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                 <div className={'no-icon gridgrid form-group'}>
