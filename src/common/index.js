@@ -122,7 +122,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
  * @param {number} value 
  * @param {Rules} param1 
  */
-export const getValue = (value, { max, min }) => {
+export const getValue = (value = 0, { max, min } = {}) => {
   value = max ? (value > max ? max : value) : value;
   value = min ? (value < min ? min : value) : value;
   return value;
