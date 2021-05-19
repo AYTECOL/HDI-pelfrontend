@@ -216,15 +216,14 @@ class Coberturas extends Component {
                     storeState.indexPlan
                 );
                 if (typeof plans !== "undefined") {
+                    const plan = plans[storeState.indexPlan];
                     this.setState({
                         ...this.state,
                         plans: plans,
                         Inmueble: storeState.Inmueble,
-                        index: storeState.indexPlan
+                        index: storeState.indexPlan,
+                        coverturasTotal: this.countCoverturas(plan),                       
                     });
-                    setTimeout(() => {
-                        this.countCoverturas();
-                    }, 100);
                 }
             }
         });
@@ -242,33 +241,32 @@ class Coberturas extends Component {
         );
     }
 
-    countCoverturas() {
-        if (typeof this.state.plans[this.state.index] === "undefined") return;
+    countCoverturas(plan) {
+        if (typeof plan === "undefined") return;
         let t = 0;
-        let item = this.state.plans[this.state.index].coverages;
+        let item = plan.coverages;
         for (let i in item) {
             if (item[i].checked === true) {
                 t++;
             }
         }
-        this.setState({
-            ...this.state,
-            coverturasTotal: t
-        });
+        return t;
     }
 
     checkCoverturas = (index, key) => e => {
-        let check = this.state.plans[index].coverages[key].checked;
-        let newPlans = this.state.plans;
-        newPlans[index].coverages[key].checked = !check;
-        this.setState({
-            ...this.state,
-            plans: newPlans
-        });
-        this.countCoverturas();
-        setTimeout(() => {
+        const plans = [...this.state.plans];
+        const plan = plans[index];
+        let check = plan.coverages[key].checked;
+        plans.coverages[key].checked = !check;
+        this.setState(
+          {
+            plans: plans,
+            coverturasTotal: this.countCoverturas(plan),
+          },
+          () => {
             this.sendAndValidate();
-        }, 500);
+          }
+        );
     };
 
     blur = () => {
