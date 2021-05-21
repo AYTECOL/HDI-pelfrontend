@@ -193,7 +193,8 @@ export default compose(
         if (errorInmueble) return true;
 
         let coveragesValid = true;
-        if (plan)
+        if (plan) {
+          if (!plan.value) return true;
           coveragesValid = !plan.coverages.some(
             ({ values }, k) =>
               values &&
@@ -207,6 +208,7 @@ export default compose(
                 return errors && !!errors.length;
               })
           );
+        } else return true;
         return !coveragesValid;
       } catch (error) {
         return false;

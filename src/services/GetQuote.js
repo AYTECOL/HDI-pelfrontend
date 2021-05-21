@@ -57,7 +57,6 @@ class GetQuote {
           },
           stateFormIdentificacion: 1,
           showMap: true,
-          pdf_info: items.pdf_info
         };
       } else {
         return {};

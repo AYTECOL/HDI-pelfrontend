@@ -23,6 +23,7 @@ import {
   validateParticipationPercentage,
 } from '../popups/persona/ParticipationPercentages/utils';
 import { roles } from '../constants';
+import { fieldsNames } from '../popups/persona/constants';
 
 class Index extends Component {
 
@@ -247,7 +248,14 @@ class Index extends Component {
           }
         }
         for (let i = 0; i < persons.length; i++) {
-            if (!isValidDirection(persons[i].address)) return true;
+            const rolesPerson = persons[i].role || [];
+            if (
+              rolesPerson.some((role) =>
+                PopUpPersona.fieldActive(fieldsNames.address, role)
+              ) &&
+              !isValidDirection(persons[i].address)
+            )
+              return true;
             for (let j = 0; j < persons[i].role.length; j++) {
                 if (persons[i].role[j] === 1 || persons[i].role[j] === 2 || persons[i].role[j] === 3 || persons[i].role[j] === 4) {
                     if ((typeof persons[i].sarlfalt_url !== "undefined" && persons[i].sarlfalt_url !== "") || persons[i].role[j] === 4 || persons[i].sarlfaltActive) {

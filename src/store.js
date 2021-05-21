@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 import MobileContents from './components/cotizaciones/inmueble/forms/MobileContents';
+import OtherQuestions from './components/cotizaciones/inmueble/forms/OtherQuestions';
 
 const initialState = {
 
@@ -29,7 +30,6 @@ const initialState = {
             object: {},
         }
     },
-    pdf_info: {},
     cityDescription: "",
     continueButtonDisable: true,
     stateFormIdentificacion: 0,
@@ -40,6 +40,7 @@ const initialState = {
     // Segundo formulario Inmueble
     typeInmueble: 0,
     Inmueble: {
+        validate: false,
         type_risk: "",
         type_risk_id: "",
         pisonumero: "",
@@ -71,6 +72,8 @@ const initialState = {
         inmuebleasegudadotelefonosvalor: "",
         [MobileContents.nameModel]: 0,
         [MobileContents.nameModelValue]: "",
+        [OtherQuestions.nameModel]: 1,
+        [OtherQuestions.nameModelValue]: [],
     },
 
     // tercer formulario Cotizacion
@@ -159,7 +162,6 @@ const reducer = (state = initialState, action) => {
             stateFormIdentificacion: action.data.stateFormIdentificacion,
             showMap: action.data.showMap,
             mapsOptions: action.data.mapsOptions,
-            pdf_info: action.data.pdf_info,
         }
     } else if (action.type === "RESTORE_COTIZACION_RISK") {
         return {
@@ -236,11 +238,6 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             indexPlan: action.data
-        }
-    } else if (action.type === "PDF_INFO") {
-        return {
-            ...state,
-            pdf_info: action.data
         }
     } else if (action.type === "SAVE_PROSPECT") {
         return {

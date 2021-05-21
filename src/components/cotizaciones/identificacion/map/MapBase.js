@@ -14,6 +14,7 @@ import store from "../../../../store";
 import { setAddresMap, saveIdentificationValue } from "../../../../actions";
 import GetAddresInfo from "../../../../services/AddresCoordenates";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
+import { withCities } from "../hooks/cities";
 
 class MapBase extends Component {
   place = {
@@ -73,22 +74,32 @@ class MapBase extends Component {
     this.setAddres(newProps);
   }
 
-  setAddres = newProps => {
+  setAddres = async newProps => {
     const {
-      pdf_info,
-      cityDescription,
       cotizacion: {
         identification: { address, city, department }
-      }
+      },
+      citiesProps
     } = newProps;
     const place = { address, city, department };
+    /**
+     * @type {{
+     * code_city: number,
+     * code_department: number,
+     * city: string
+     * department: string
+     * }}
+     */
+    const cityObject = {
+      ...(await citiesProps.getCity({ city, departament: department }))
+    };
 
     if (!city || !department || !address) this.setError();
     else if (!isEqual(this.place, place)) {
       this.place = place;
       Helpers.removeClass(this.elementError, "error");
       MapBase.reqAddress(
-        address + ", " + pdf_info["city"] + " " + cityDescription
+        address + ", " + cityObject.city + " " + cityObject.department
       ).then(data => {
         if (data.lng && data.lat) {
           this.setState(
@@ -122,7 +133,7 @@ class MapBase extends Component {
   };
 
   onMapClick = async e => {
-    return await GetAddresInfo.getAdressByCoors(e.latLng).then(response => {
+    return GetAddresInfo.getAdressByCoors(e.latLng).then(response => {
       this.place.address = response;
       this.setState({
         markerPosition: e.latLng,
@@ -159,8 +170,8 @@ class MapBase extends Component {
 export default compose(
   withScriptjs,
   withGoogleMap,
-  connect(({ pdf_info, cityDescription, cotizacion }) => ({
-    pdf_info,
+  withCities,
+  connect(({ cityDescription, cotizacion }) => ({
     cityDescription,
     cotizacion
   }))

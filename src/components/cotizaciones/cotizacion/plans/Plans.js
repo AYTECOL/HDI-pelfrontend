@@ -30,40 +30,51 @@ class Index extends Component {
      */
     static async sendAndValidate(plans, index, id, refrechAllPlans = false) {
         Loading.toggle(true);
-        await CreateOrUpdateValoration.save();
-        await this.refrechPolizaPrima(plans, { planSelected: index, quotateId: id });
-        Loading.toggle(false);
-        if (refrechAllPlans) {
-          const otherPlans = [...plans.keys()].filter(
-            (key) => String(key) !== String(index)
-          );
-          const newPlans = plans.map((plan) =>
-            Coberturas.calcValue({ ...Coberturas.setHiredCoverages(plan) })
-          );
-          for (const plan of otherPlans) {
-            this.refrechPolizaPrima(newPlans, {
-              planSelected: plan,
-              quotateId: id,
-            }).catch((e) => {
-              console.log(e);
-            });
+        try {
+          await CreateOrUpdateValoration.save();
+          await this.refrechPolizaPrima(plans, { planSelected: index, quotateId: id });
+          if (refrechAllPlans) {
+            const otherPlans = [...plans.keys()].filter(
+              (key) => String(key) !== String(index)
+            );
+            const newPlans = plans.map((plan) =>
+              Coberturas.calcValue({ ...Coberturas.setHiredCoverages(plan) })
+            );
+            for (const plan of otherPlans) {
+              this.refrechPolizaPrima(newPlans, {
+                planSelected: plan,
+                quotateId: id,
+              }).catch((e) => {
+                console.log(e);
+              });
+            }
           }
+        } catch (error) {
+          Loading.toggle(false);
+          throw error;
         }
+        Loading.toggle(false);
     }
 
     static async refrechPolizaPrima(plans, { planSelected: i, quotateId }) {
         let plan = plans[i];
         plan = BtnContinue.toNumberCoverrange(plan);
         await store.dispatch(setLoadingPlanPerspective({ plan: i, state: true }));
-        let total = await DeterminePolizaPrima.get(plan, quotateId, false);
-        store.dispatch((dispatch) => {
-          dispatch(setLoadingPlanPerspective({ plan: i, state: false }));
-          if (typeof total.prospect !== 'undefined') {
-            plans[i].value = total.prospect;
-            plans[i].prima = total;
-            dispatch(AllPlansCreator(plans));
-          }
-        });
+        await DeterminePolizaPrima.get(plan, quotateId, false)
+          .then((total) => {
+            store.dispatch((dispatch) => {
+              if (typeof total.prospect !== 'undefined') {
+                plans[i].value = total.prospect;
+                plans[i].prima = total;
+                dispatch(AllPlansCreator(plans));
+              }
+            });
+          })
+          .finally(() => {
+            store.dispatch(
+              setLoadingPlanPerspective({ plan: i, state: false })
+            );
+          });
     }
 
     componentDidMount() {

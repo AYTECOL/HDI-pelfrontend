@@ -26,6 +26,7 @@ import {
   rolesParticipations,
   isRoleParticipation,
 } from './ParticipationPercentages/utils';
+import { CitiesProvider } from '../../../../cotizaciones/identificacion/hooks/cities';
 
 const maxFileSize = UploadFile.maxFileSize;
 
@@ -373,7 +374,7 @@ export default class Persona extends Component {
      * @param {string} field 
      * @param {number} typePerson 
      */
-    fieldActive = (field, typePerson) => {
+    static fieldActive = (field, typePerson) => {
         const { email, fechadecontitucion, adresstype, address } = fieldsNames;
         const { ciudad } = fieldsNames;
         const rolesParticipation = rolesParticipations[field];
@@ -408,7 +409,7 @@ export default class Persona extends Component {
         )
           return true;
         const rolesPerson = person.role;
-        return rolesPerson.some((role) => this.fieldActive(field, role));
+        return rolesPerson.some((role) => Persona.fieldActive(field, role));
     };
 
     changeTextFile = e => {
@@ -750,6 +751,7 @@ export default class Persona extends Component {
           this.isActived(fieldsNames.exequiasParticipation);
         return (
             <React.Fragment>
+                <CitiesProvider>
                 <div className={"modal validaridentificacion show person-popup"}>
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
@@ -1203,6 +1205,7 @@ export default class Persona extends Component {
                     </div>
                 </div>
                 <Validaridentificacion toggle={this.props.toggle} changeValue={this.changeValuePopup} />
+                </CitiesProvider>
             </React.Fragment>
         )
     };

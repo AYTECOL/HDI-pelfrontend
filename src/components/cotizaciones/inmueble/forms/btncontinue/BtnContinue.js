@@ -5,7 +5,7 @@ import {withRouter} from "react-router-dom";
 
 import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
 import SaveIdentifications from "../../../../../services/Quote";
-import {NextStep} from "../../../../../actions";
+import {NextStep, setPropertyValidation} from "../../../../../actions";
 import Helpers from "../../../../../common/helpers/helpers/Helpers";
 // Components
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
@@ -16,13 +16,16 @@ import Asegurarobras from "../asegurarobras/Asegurarobras";
 import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
 import {UrlSite} from "../../../../../config";
 import Loading from "../../../../globals/loading/Loading";
+import OtherQuestions from '../OtherQuestions';
+import PropertyNotAllowed from '../../../../PropertyNotAllowed';
 
 class BtnContinue extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            disabled: false
+          disabled: false,
+          propertyNotAllowed: false,
         };
     }
 
@@ -43,6 +46,7 @@ class BtnContinue extends Component {
 
     saveServiceContinue = async () => {
         let storeState = store.getState();
+        await store.dispatch(setPropertyValidation(true));
 
         let errors = 0;
         let inmueble = storeState.Inmueble;
@@ -163,35 +167,76 @@ class BtnContinue extends Component {
             }
         }
 
+        const otherQuestions = inmueble[OtherQuestions.nameModelValue];
+        const unansweredQuestions = OtherQuestions.unansweredQuestions(
+          otherQuestions
+        );
+        const validateField = OtherQuestions.validateField(otherQuestions);
+
+        if (unansweredQuestions || !validateField) {
+          errors++;
+        };
+
+
         let disabled = errors !== 0;
-        if (disabled !== false) {
-            Helpers.scrollToElement(".error");
+        if (disabled) {
+          const element = document.querySelector('.error');
+          element &&
+            element.scrollIntoView({
+              behavior: 'smooth',
+            });
+          if (!unansweredQuestions && !validateField) {
+            this.setState({ propertyNotAllowed: true });
+          }
         } else {
-            Loading.toggle(true);
-            store.dispatch(NextStep(3));
-            await SaveIdentifications.save();
-            await CreateOrUpdateValoration.save();
-            this.props.history.push(UrlSite + '/cotizacion/3/' + storeState.cotizacion.number);
+          Loading.toggle(true);
+          store.dispatch(NextStep(3));
+          await SaveIdentifications.save();
+          await CreateOrUpdateValoration.save();
+          this.props.history.push(
+            UrlSite + '/cotizacion/3/' + storeState.cotizacion.number
+          );
         }
     };
 
     render() {
+        const { propertyNotAllowed } = this.state;
         return (
-            <Fragment>
-                <div className={"return-button"}>
-                    <button className="btn btn-link" type="button" onClick={this.goBack}><i
-                        className="back-icon">&nbsp;</i>Volver
-                    </button>
-                </div>
-                <button type="button" className={"btn btn-default"}
-                    onClick={this.saveService}>Guardar y salir
-                </button>
-                <button type="button"
-                        disabled={this.state.disabled}
-                        onClick={this.saveServiceContinue}
-                        className={"btn btn-primary " + (this.state.disabled === true ? 'disabled' : '')}>Continuar
-                </button>
-            </Fragment>
+          <Fragment>
+            <div className={'return-button'}>
+              <button
+                className="btn btn-link"
+                type="button"
+                onClick={this.goBack}
+              >
+                <i className="back-icon">&nbsp;</i>Volver
+              </button>
+            </div>
+            <button
+              type="button"
+              className={'btn btn-default'}
+              onClick={this.saveService}
+            >
+              Guardar y salir
+            </button>
+            <button
+              type="button"
+              disabled={this.state.disabled}
+              onClick={this.saveServiceContinue}
+              className={
+                'btn btn-primary ' +
+                (this.state.disabled === true ? 'disabled' : '')
+              }
+            >
+              Continuar
+            </button>
+            <PropertyNotAllowed
+              open={propertyNotAllowed}
+              onClose={() => {
+                this.setState({ propertyNotAllowed: false });
+              }}
+            />
+          </Fragment>
         );
     }
 }

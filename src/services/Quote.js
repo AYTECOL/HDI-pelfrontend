@@ -44,7 +44,6 @@ class IdentificationsCities {
       last_name: lastname,
       step: storeState.cotizacion.state,
       person: object,
-      pdf_info: storeState.pdf_info,
       intntermediate: user,
       policy: {
         emissionId: emissionId,

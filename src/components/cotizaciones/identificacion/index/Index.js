@@ -9,6 +9,7 @@ import SecondForm from '../secondform/SecondForm';
 
 import './Index.scss';
 import Loading from "../../../globals/loading/Loading";
+import { CitiesProvider } from '../hooks/cities';
 
 
 
@@ -25,6 +26,7 @@ class Index extends Component {
     render() {
         return (
             <form autoComplete="off" className="index-form">
+              <CitiesProvider>
                 <div className="container">
                     <div className="row">
                         <div className="col col-sm-12 col-md-12 col-lg-12 title">
@@ -51,6 +53,7 @@ class Index extends Component {
                         </div>
                     </div>
                 </div>
+              </CitiesProvider>
             </form>
         )
     }
