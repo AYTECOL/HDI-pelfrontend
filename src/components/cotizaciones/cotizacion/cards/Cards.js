@@ -231,35 +231,12 @@ class Cards extends Component {
       return ;
     }
     let component = new parent();
-<<<<<<< HEAD
-
-    if (e.type === "blur") {
-=======
     if (type === 'blur') {
->>>>>>> be35e0c4347275df95e8e0193b4792dbe9340cea
       component.validateValue(e);
     }
     let newItems = this.state.items;
     newItems[index].value = target.value;
     newItems[index].errorValue = error;
-<<<<<<< HEAD
-    this.setState({
-      ...this.state,
-      items: newItems
-    });
-    this.validateToggle();
-
-    if (
-      e.type === "blur" &&
-      parseInt(error) === 0 &&
-      e.target.value.trim() !== ""
-    ) {
-      setTimeout(() => {
-        this.getInspectionPolicy();
-        this.sendAndValidate(parent);
-      }, 500);
-    }
-=======
     this.setState(
       {
         ...this.state,
@@ -273,7 +250,6 @@ class Cards extends Component {
       }
     );
 
->>>>>>> be35e0c4347275df95e8e0193b4792dbe9340cea
   };
 
   sendAndValidate(component) {
