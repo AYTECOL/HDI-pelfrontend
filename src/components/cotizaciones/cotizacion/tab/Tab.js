@@ -48,67 +48,72 @@ class Tab extends Component {
           );
         };
         for (let j = 0; j < normal.coverages.length; j++) {
-            const coverage = normal.coverages[j]
-            const selectedCoverage = selected.coverages.find(
-              findSelectedCoverage(coverage)
-            );
-            if (selectedCoverage) {
-                coverage.optional = selectedCoverage.optional;
-                coverage.checked = selectedCoverage.checked;
-                if (typeof coverage.values !== "undefined") {
-                    for (let i = 0; i < coverage.values.length; i++) {
-                        const coverageValue = coverage.values[i];
-                        if (
-                          coverageValue &&
-                          coverageValue.hired
-                        ) {
-                            if (!selectedCoverage.values || !coverageValue.values) {
-                              const valueSelected = selectedCoverage.values[i];
-                              if (valueSelected) {
-                                const { value_to_quotate } = valueSelected;
-                                const rules = {
-                                  ...getRulesByCode(
-                                    valueSelected.code,
-                                    normal.coverages
-                                  ),
-                                };
-                                coverageValue.value = valueSelected.value;
-                                const newValue = getValue(
-                                  value_to_quotate,
-                                  rules
-                                );
-                                coverageValue.value_show = Masknumbermoney.formatToMask(
-                                  newValue
-                                );
-                                coverageValue.value_to_quotate = newValue;
-                              }
-                            } else {
-                                if (typeof selectedCoverage.values[i].values !== "undefined") {
-                                    for (let k = 0; k < coverageValue.values.length; k++) {
-                                        if (typeof selectedCoverage.values[i].values[k] !== "undefined") {
-                                            coverageValue.values[k].default = selectedCoverage.values[i].values[k].default;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+          const coverage = normal.coverages[j];
+          const selectedCoverage = selected.coverages.find(
+            findSelectedCoverage(coverage)
+          );
+
+          if (selectedCoverage) {
+            coverage.optional = selectedCoverage.optional;
+            coverage.checked = selectedCoverage.checked;
+          }
+          if (typeof coverage.values !== 'undefined') {
+            for (let i = 0; i < coverage.values.length; i++) {
+              const coverageValue = coverage.values[i];
+              const selectedCoverageValue =
+                selectedCoverage &&
+                selectedCoverage.values &&
+                selectedCoverage.values.find(({ code }) => {
+                  return coverageValue.code === code;
+                });
+                
+              if (coverageValue && coverageValue.hired) {
+                const valueSelected = selectedCoverageValue;
+                if (valueSelected) {
+                  const isDisabled = Coberturas.isDisabled(
+                    coverage,
+                    valueSelected
+                  );
+                  const value = !isDisabled
+                    ? valueSelected.value_to_quotate
+                    : Coberturas.getValue(coverageValue);
+                  const rules = {
+                    ...getRulesByCode(valueSelected.code, normal.coverages),
+                  };
+                  coverageValue.value = valueSelected.value;
+                  const newValue = getValue(value, rules);
+                  coverageValue.value_show = Masknumbermoney.formatToMask(
+                    newValue
+                  );
+                  coverageValue.value_to_quotate = newValue;
+                } else if (coverageValue && coverageValue.hired) {
+                  const value_show = Coberturas.getValueFields(coverageValue);
+                  coverageValue.value_show = value_show;
+                }
+
+                if (selectedCoverageValue && selectedCoverageValue.values) {
+                  for (let k = 0; k < selectedCoverageValue.values.length; k++) {
+                    if (
+                      typeof selectedCoverageValue.values[k] !== 'undefined'
+                    ) {
+                      coverageValue.values[k].default =
+                        selectedCoverageValue.values[k].default;
                     }
+                  }
                 }
-            } else {
-                //If no is equal the coverage so calc value for this.
-                if (coverage.values) {
-                  coverage.values.forEach((value) => {
-                    const value_show = Coberturas.getValueFields(
-                      value,
-                      value.id,
-                      {
-                        plan: normal,
-                      }
-                    );
-                    value.value_show = value_show;
-                  });
-                }
+              }
             }
+          } else {
+            //If no is equal the coverage so calc value for this.
+            if (coverage.values) {
+              coverage.values.forEach((value) => {
+                const value_show = Coberturas.getValueFields(value, value.id, {
+                  plan: normal,
+                });
+                value.value_show = value_show;
+              });
+            }
+          }
         }
         for (let j = 0; j < normal.assists.length; j++) {
             normal.assists[j].optional = selected.assists[j].optional;
