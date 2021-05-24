@@ -2,6 +2,7 @@ import React, {Component, Fragment} from "react";
 import { compose } from "recompose";
 import {withRouter} from "react-router-dom";
 import { connect } from "react-redux";
+import difference from "lodash/difference";
 
 import "./Tab.scss";
 import AllPlans from "../../../../services/AllPlans";
@@ -24,7 +25,6 @@ class Tab extends Component {
         super(props);
         this.state = {
             plans: [],
-            typePlans: 3,
             errorRateCalculated: false,
         };
     }
@@ -137,76 +137,41 @@ class Tab extends Component {
         return plans;
     }
 
-    componentWillReceiveProps({ inmueble }) {
-        if (inmueble !== this.props.inmueble) {
-          this.updateType(inmueble);
-        };
+    componentDidMount() {
+      const { inmueble } = this.props;
+      this.getPlans(inmueble).catch(() => {
+        Loading.toggle(false);
+        this.setState({ errorRateCalculated: true });
+      });
     }
 
+    componentWillReceiveProps({ inmueble }) {
+        if (difference(inmueble, this.props.inmueble))
+          this.updateType(inmueble);
+    }
+
+
+    getType({ contenidoasegudado, inmuebleasegudado }) {
+      let type = 3;
+      if (inmuebleasegudado === 1 && contenidoasegudado === 1) {
+        type = 3;
+      } else if (inmuebleasegudado === 0 && contenidoasegudado === 1) {
+        type = 2;
+      } else if (inmuebleasegudado === 1 && contenidoasegudado === 0) {
+        type = 1;
+      }
+      return type;
+    }
 
     updateType(newInmueble) {
-        let type = this.state.typePlans;
-        const { inmueble } = this.props;
-        const { contenidoasegudado, inmuebleasegudado } = newInmueble;
-        const { contenidoasegudadovalor, inmuebleasegudadovalor } = newInmueble;
-        
-        if (inmuebleasegudado === 1 && contenidoasegudado === 1) {
-            type = 3;
-        } else if (inmuebleasegudado === 0 && contenidoasegudado === 1) {
-            type = 2;
-        } else if (inmuebleasegudado === 1 && contenidoasegudado === 0) {
-            type = 1;
-        }
-
-        const contentAssuredOld = Masknumbermoney.formatToNumber(
-          inmueble.contenidoasegudadovalor || ''
-        );
-        const insuredPropertyOld = Masknumbermoney.formatToNumber(
-          inmueble.inmuebleasegudadovalor || ''
-        );
-        const contentAssured = Masknumbermoney.formatToNumber(
-            contenidoasegudadovalor || ''
-        );
-        const insuredProperty = Masknumbermoney.formatToNumber(
-          inmuebleasegudadovalor || ''
-        );
-
-        let status = !this.props.inmueble;
-
-        //Detect if this.state is not equal to store and validate id empty values.
-        if (contentAssured) {
-          if (inmueble.contenidoasegudado !== contenidoasegudado) {
-            status = true;
-            //Check when the value is empty on this.state and it is not empty in store
-          } else if (contentAssuredOld !== contentAssured) {
-            status = true;
-          }
-        }
-
-        //Detect if this.state is not equal to store and validate id empty values.
-        if (insuredProperty) {
-          if (inmueble.inmuebleasegudado !== inmuebleasegudado) {
-            status = true;
-            //Check when the value is empty on this.state and it is not empty in store
-          } else if (insuredPropertyOld !== insuredProperty) {
-            status = true;
-          }
-        }
-
-
-        if (status === true) {
-          this.getPlans(type, newInmueble).catch(() => {
-            Loading.toggle(false);
-            this.setState({ errorRateCalculated: true });
-          });
-        }
-        this.setState({
-            ...this.state,
-            typePlans: type
-        });
+      this.getPlans(newInmueble).catch(() => {
+        Loading.toggle(false);
+        this.setState({ errorRateCalculated: true });
+      });
     }
 
-    async getPlans(type, inmueble = null) {
+    async getPlans(inmueble = null) {
+        const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
         let plan = await QuoteIussedById.get(quotateId);
@@ -311,7 +276,7 @@ class Tab extends Component {
               open={errorRateCalculated}
               onRetry={() => {
                 Loading.toggle(true);
-                this.getPlans(this.state.typePlans, this.props.inmueble)
+                this.getPlans(this.props.inmueble)
                   .then(() => {
                       this.setState({ errorRateCalculated: false });
                   })
