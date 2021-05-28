@@ -155,16 +155,19 @@ class Helpers {
         if (cotizacion.state >= 2 && parseInt(step) >= 2) {
           let riskData = await ValorationById.get(id);
           if (riskData !== null) {
-            store.dispatch(
-              saveProspect({
-                prospect: riskData.prospect,
-                total_premium_policy: riskData.total_premium_policy,
-                expedition_expenses: riskData.expedition_expenses,
-                total_tax_policy: riskData.total_tax_policy,
-                iva_expedition_expenses: riskData.iva_expedition_expenses
-              })
-            );
-            store.dispatch(restoreCotizacionRisk(riskData));
+            await store.dispatch((dispatch) => {
+              dispatch(
+                saveProspect({
+                  prospect: riskData.prospect,
+                  total_premium_policy: riskData.total_premium_policy,
+                  expedition_expenses: riskData.expedition_expenses,
+                  total_tax_policy: riskData.total_tax_policy,
+                  iva_expedition_expenses: riskData.iva_expedition_expenses,
+                })
+              );
+              dispatch(restoreCotizacionRisk(riskData));
+              return Promise.resolve();
+            });
           }
         }
       }
