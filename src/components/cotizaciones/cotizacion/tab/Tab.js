@@ -162,10 +162,13 @@ class Tab extends Component {
 
     componentDidMount() {
       const { inmueble } = this.props;
-      this.getPlans(inmueble).catch(() => {
-        Loading.toggle(false);
-        this.setState({ errorRateCalculated: true });
-      });
+      this.getPlans(inmueble)
+        .catch(() => {
+          this.setState({ errorRateCalculated: true });
+        })
+        .finally(() => {
+          Loading.toggle(false);
+        });
     }
 
     componentWillReceiveProps({ inmueble }) {
