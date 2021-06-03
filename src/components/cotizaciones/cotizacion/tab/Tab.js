@@ -29,6 +29,24 @@ class Tab extends Component {
         };
     }
 
+    isValid(inmueble){
+      const keys = [
+        'inmuebleasegudadovalor',
+        'contenidoasegudadovalor',
+        'inmuebleasegudadojoyasvalor',
+        'inmuebleasegudadoobrasvalor',
+        'inmuebleasegudadotelefonosvalor',
+      ];
+      if (inmueble) {
+        const valid = keys.some((key) => {
+          const value = Masknumbermoney.formatToNumber(inmueble[key] || '');
+          return typeof value === 'number' ? value > 0 : false;
+        });
+        return valid;
+      }
+      return false
+    }
+
     //Make merge between default plan and seleted plan
     /**
      * 
@@ -144,10 +162,13 @@ class Tab extends Component {
 
     componentDidMount() {
       const { inmueble } = this.props;
-      this.getPlans(inmueble).catch(() => {
-        Loading.toggle(false);
-        this.setState({ errorRateCalculated: true });
-      });
+      this.getPlans(inmueble)
+        .catch(() => {
+          this.setState({ errorRateCalculated: true });
+        })
+        .finally(() => {
+          Loading.toggle(false);
+        });
     }
 
     componentWillReceiveProps({ inmueble }) {
@@ -176,6 +197,7 @@ class Tab extends Component {
     }
 
     async getPlans(inmueble = null) {
+        if (!this.isValid(inmueble)) return;
         const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
         let plans = await AllPlans.get(type);
