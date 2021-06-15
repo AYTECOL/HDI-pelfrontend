@@ -2,6 +2,7 @@ import React, {Component, Fragment} from "react";
 import { compose } from "recompose";
 import {withRouter} from "react-router-dom";
 import { connect } from "react-redux";
+import difference from "lodash/difference";
 
 import "./Tab.scss";
 import AllPlans from "../../../../services/AllPlans";
@@ -18,15 +19,36 @@ import Cards from "../cards/Cards";
 import { getRulesByCode, getValue } from "../../../../common";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import RateNotCalculated from "../../../RateNotCalculated";
+import { getItems } from "../../../cotizaciones/cotizacion/cards/getItems";
 
 class Tab extends Component {
     constructor(props) {
         super(props);
         this.state = {
             plans: [],
-            typePlans: 3,
             errorRateCalculated: false,
         };
+    }
+
+    isValid(inmueble){
+      const keys = getItems().map(({ parent }) => [
+        parent.nameModel,
+        parent.nameModelValue,
+      ]);
+      if (inmueble) {
+        const invalid = keys.some(([key, keyValue]) => {
+          if (inmueble[key]) {
+            const value = Masknumbermoney.formatToNumber(
+              inmueble[keyValue] || ''
+            );
+            const valid = typeof value === 'number' ? value > 0 : false;
+            return !valid;
+          }
+          return false;
+        });
+        return !invalid;
+      }
+      return false
     }
 
     //Make merge between default plan and seleted plan
@@ -142,78 +164,53 @@ class Tab extends Component {
         return plans;
     }
 
-    componentWillReceiveProps({ inmueble }) {
-        if (inmueble !== this.props.inmueble) {
-          this.updateType(inmueble);
-        };
-    }
-
-
-    updateType(newInmueble) {
-        let type = this.state.typePlans;
-        const { inmueble } = this.props;
-        const { contenidoasegudado, inmuebleasegudado } = newInmueble;
-        const { contenidoasegudadovalor, inmuebleasegudadovalor } = newInmueble;
-        
-        if (inmuebleasegudado === 1 && contenidoasegudado === 1) {
-            type = 3;
-        } else if (inmuebleasegudado === 0 && contenidoasegudado === 1) {
-            type = 2;
-        } else if (inmuebleasegudado === 1 && contenidoasegudado === 0) {
-            type = 1;
-        }
-
-        const contentAssuredOld = Masknumbermoney.formatToNumber(
-          inmueble.contenidoasegudadovalor || ''
-        );
-        const insuredPropertyOld = Masknumbermoney.formatToNumber(
-          inmueble.inmuebleasegudadovalor || ''
-        );
-        const contentAssured = Masknumbermoney.formatToNumber(
-            contenidoasegudadovalor || ''
-        );
-        const insuredProperty = Masknumbermoney.formatToNumber(
-          inmuebleasegudadovalor || ''
-        );
-
-        let status = !this.props.inmueble;
-
-        //Detect if this.state is not equal to store and validate id empty values.
-        if (contentAssured) {
-          if (inmueble.contenidoasegudado !== contenidoasegudado) {
-            status = true;
-            //Check when the value is empty on this.state and it is not empty in store
-          } else if (contentAssuredOld !== contentAssured) {
-            status = true;
-          }
-        }
-
-        //Detect if this.state is not equal to store and validate id empty values.
-        if (insuredProperty) {
-          if (inmueble.inmuebleasegudado !== inmuebleasegudado) {
-            status = true;
-            //Check when the value is empty on this.state and it is not empty in store
-          } else if (insuredPropertyOld !== insuredProperty) {
-            status = true;
-          }
-        }
-
-
-        if (status === true) {
-          this.getPlans(type, newInmueble).catch(() => {
-            Loading.toggle(false);
-            this.setState({ errorRateCalculated: true });
-          });
-        }
-        this.setState({
-            ...this.state,
-            typePlans: type
+    componentDidMount() {
+      const { inmueble } = this.props;
+      this.getPlans(inmueble)
+        .catch(() => {
+          this.setState({ errorRateCalculated: true });
+        })
+        .finally(() => {
+          Loading.toggle(false);
         });
     }
 
-    async getPlans(type, inmueble = null) {
+    componentWillReceiveProps({ inmueble }) {
+        if (difference(inmueble, this.props.inmueble))
+          this.updateType(inmueble);
+    }
+
+
+    getType({ contenidoasegudado, inmuebleasegudado }) {
+      let type = 3;
+      if (inmuebleasegudado === 1 && contenidoasegudado === 1) {
+        type = 3;
+      } else if (inmuebleasegudado === 0 && contenidoasegudado === 1) {
+        type = 2;
+      } else if (inmuebleasegudado === 1 && contenidoasegudado === 0) {
+        type = 1;
+      }
+      return type;
+    }
+
+    updateType(newInmueble) {
+      this.getPlans(newInmueble).catch(() => {
+        Loading.toggle(false);
+        this.setState({ errorRateCalculated: true });
+      });
+    }
+
+    async getPlans(inmueble = null) {
+        if (!this.isValid(inmueble)) {
+          Loading.toggle(false);
+          return;
+        }
+        Loading.toggle(true);
+        const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
+        debugger
         let plans = await AllPlans.get(type);
+        debugger
         let plan = await QuoteIussedById.get(quotateId);
         let indexSelected = null;
 
@@ -315,8 +312,7 @@ class Tab extends Component {
             <RateNotCalculated
               open={errorRateCalculated}
               onRetry={() => {
-                Loading.toggle(true);
-                this.getPlans(this.state.typePlans, this.props.inmueble)
+                this.getPlans(this.props.inmueble)
                   .then(() => {
                       this.setState({ errorRateCalculated: false });
                   })
