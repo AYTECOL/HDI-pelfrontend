@@ -19,6 +19,7 @@ import Cards from "../cards/Cards";
 import { getRulesByCode, getValue } from "../../../../common";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
 import RateNotCalculated from "../../../RateNotCalculated";
+import { getItems } from "../../../cotizaciones/cotizacion/cards/getItems";
 
 class Tab extends Component {
     constructor(props) {
@@ -30,19 +31,22 @@ class Tab extends Component {
     }
 
     isValid(inmueble){
-      const keys = [
-        'inmuebleasegudadovalor',
-        'contenidoasegudadovalor',
-        'inmuebleasegudadojoyasvalor',
-        'inmuebleasegudadoobrasvalor',
-        'inmuebleasegudadotelefonosvalor',
-      ];
+      const keys = getItems().map(({ parent }) => [
+        parent.nameModel,
+        parent.nameModelValue,
+      ]);
       if (inmueble) {
-        const valid = keys.some((key) => {
-          const value = Masknumbermoney.formatToNumber(inmueble[key] || '');
-          return typeof value === 'number' ? value > 0 : false;
+        const invalid = keys.some(([key, keyValue]) => {
+          if (inmueble[key]) {
+            const value = Masknumbermoney.formatToNumber(
+              inmueble[keyValue] || ''
+            );
+            const valid = typeof value === 'number' ? value > 0 : false;
+            return !valid;
+          }
+          return false;
         });
-        return valid;
+        return !invalid;
       }
       return false
     }
@@ -197,10 +201,16 @@ class Tab extends Component {
     }
 
     async getPlans(inmueble = null) {
-        if (!this.isValid(inmueble)) return;
+        if (!this.isValid(inmueble)) {
+          Loading.toggle(false);
+          return;
+        }
+        Loading.toggle(true);
         const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
+        debugger
         let plans = await AllPlans.get(type);
+        debugger
         let plan = await QuoteIussedById.get(quotateId);
         let indexSelected = null;
 
@@ -302,7 +312,6 @@ class Tab extends Component {
             <RateNotCalculated
               open={errorRateCalculated}
               onRetry={() => {
-                Loading.toggle(true);
                 this.getPlans(this.props.inmueble)
                   .then(() => {
                       this.setState({ errorRateCalculated: false });
