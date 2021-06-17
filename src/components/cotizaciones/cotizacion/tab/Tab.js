@@ -2,7 +2,6 @@ import React, {Component, Fragment} from "react";
 import { compose } from "recompose";
 import {withRouter} from "react-router-dom";
 import { connect } from "react-redux";
-import difference from "lodash/difference";
 
 import "./Tab.scss";
 import AllPlans from "../../../../services/AllPlans";
@@ -29,12 +28,20 @@ class Tab extends Component {
             errorRateCalculated: false,
         };
     }
-
-    isValid(inmueble){
-      const keys = getItems().map(({ parent }) => [
+    
+    /**
+     * 
+     * @returns {[string,string][]}
+     */
+    getItems() {
+      return getItems().map(({ parent }) => [
         parent.nameModel,
         parent.nameModelValue,
       ]);
+    }
+
+    isValid(inmueble){
+      const keys = this.getItems();
       if (inmueble) {
         const invalid = keys.some(([key, keyValue]) => {
           if (inmueble[key]) {
@@ -50,6 +57,7 @@ class Tab extends Component {
       }
       return false
     }
+
 
     //Make merge between default plan and seleted plan
     /**
@@ -176,8 +184,11 @@ class Tab extends Component {
     }
 
     componentWillReceiveProps({ inmueble }) {
-        if (difference(inmueble, this.props.inmueble))
-          this.updateType(inmueble);
+      const entries = this.getItems();
+      const different = entries.some(
+        ([key]) => this.props.inmueble[key] !== inmueble[key]
+      );
+      if (different) this.updateType(inmueble);
     }
 
 
@@ -208,9 +219,7 @@ class Tab extends Component {
         Loading.toggle(true);
         const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
-        debugger
         let plans = await AllPlans.get(type);
-        debugger
         let plan = await QuoteIussedById.get(quotateId);
         let indexSelected = null;
 
