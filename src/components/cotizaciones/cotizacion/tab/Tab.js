@@ -27,6 +27,7 @@ class Tab extends Component {
             plans: [],
             errorRateCalculated: false,
         };
+        this.lastType = undefined;
     }
     
     /**
@@ -224,7 +225,7 @@ class Tab extends Component {
         let indexSelected = null;
 
         let selected = plan.plan_selected_info.Item;
-        if (typeof selected !== "undefined") {
+        if (selected && this.lastType === undefined) {
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
             const plan = Coberturas.setHiredCoverages(
               plans[indexSelected],
@@ -246,6 +247,7 @@ class Tab extends Component {
                 }
             }
         }
+        this.lastType = type;
         function setPlanDefault(plan, inmueble) {
           let newPlan = Coberturas.setHiredCoverages(plan, inmueble);
           //Calc values to show
