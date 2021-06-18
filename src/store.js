@@ -4,7 +4,7 @@ import MobileContents from './components/cotizaciones/inmueble/forms/MobileConte
 import OtherQuestions from './components/cotizaciones/inmueble/forms/OtherQuestions';
 
 const initialState = {
-
+    loading: true,
     // Primer formulario identificacion
     mapsOptions: {
         longitude: 0,
@@ -238,6 +238,11 @@ const reducer = (state = initialState, action) => {
         return {
             ...state,
             indexPlan: action.data
+        }
+    } else if (action.type === "LOADING") {
+        return {
+            ...state,
+            loading: action.data
         }
     } else if (action.type === "SAVE_PROSPECT") {
         return {

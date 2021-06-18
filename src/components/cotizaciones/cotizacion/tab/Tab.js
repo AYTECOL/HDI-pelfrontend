@@ -27,7 +27,7 @@ class Tab extends Component {
             plans: [],
             errorRateCalculated: false,
         };
-        this.lastType = undefined;
+        this.planLoaded = false;
     }
     
     /**
@@ -175,13 +175,10 @@ class Tab extends Component {
 
     componentDidMount() {
       const { inmueble } = this.props;
-      this.getPlans(inmueble)
-        .catch(() => {
-          this.setState({ errorRateCalculated: true });
-        })
-        .finally(() => {
-          Loading.toggle(false);
-        });
+      this.getPlans(inmueble).catch(() => {
+        this.setState({ errorRateCalculated: true });
+        Loading.toggle(false);
+      });
     }
 
     componentWillReceiveProps({ inmueble }) {
@@ -189,7 +186,10 @@ class Tab extends Component {
       const different = entries.some(
         ([key]) => this.props.inmueble[key] !== inmueble[key]
       );
-      if (different) this.updateType(inmueble);
+      const valid = this.isValid(inmueble);
+      const change = valid !== this.isValid(this.props.inmueble);
+      if (different || (valid && (!this.planLoaded || change)))
+        this.updateType(inmueble);
     }
 
 
@@ -213,19 +213,24 @@ class Tab extends Component {
     }
 
     async getPlans(inmueble = null) {
-        if (!this.isValid(inmueble)) {
-          Loading.toggle(false);
-          return;
-        }
+        if (!this.isValid(inmueble)) return;
         Loading.toggle(true);
         const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
+        const plansLoaded = this.planLoaded;
+        this.planLoaded = true;
         let plans = await AllPlans.get(type);
-        let plan = await QuoteIussedById.get(quotateId);
+        let plan =
+          !plansLoaded &&
+          (await QuoteIussedById.get(quotateId).catch((e) => {
+            this.planLoaded = false;
+            throw e;
+          }));
+
         let indexSelected = null;
 
-        let selected = plan.plan_selected_info.Item;
-        if (selected && this.lastType === undefined) {
+        let selected = plan && plan.plan_selected_info.Item;
+        if (selected && !plansLoaded) {
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
             const plan = Coberturas.setHiredCoverages(
               plans[indexSelected],
@@ -247,7 +252,6 @@ class Tab extends Component {
                 }
             }
         }
-        this.lastType = type;
         function setPlanDefault(plan, inmueble) {
           let newPlan = Coberturas.setHiredCoverages(plan, inmueble);
           //Calc values to show
