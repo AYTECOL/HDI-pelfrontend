@@ -629,7 +629,7 @@ class Coberturas extends Component {
     return errors;
   };
 
-  inputChange = (k, key, type) => async ({ target }) => {
+  inputChange = async ({ target }, k, key, type) => {
     /**
      * @type {{
      *  coverages: Coverage[]
@@ -639,9 +639,6 @@ class Coberturas extends Component {
     let item = plan.coverages[key];
 
     const { value, tagName } = target;
-    if (tagName === 'SELECT') {
-      await this.sendAndValidate(plan);
-    }
 
     //Input
     if (type === 1) {
@@ -672,7 +669,6 @@ class Coberturas extends Component {
         }
       }
     }
-    //Select
     else if (type === 2) {
       for (let i = 0; i < item.values[k].values.length; i++)
         item.values[k].values[i].default = false;
@@ -706,6 +702,10 @@ class Coberturas extends Component {
         return coverage;
       }),
     };
+    // Select
+    if (tagName === 'SELECT') {
+      await this.sendAndValidate(newPlan);
+    }
     this.setState(
       {
         plan: newPlan,
@@ -725,6 +725,7 @@ class Coberturas extends Component {
       Helpers.enabled('.next-step');
     }
   };
+
   blur = (e) => {
     if (e.target.parentNode.className.indexOf('error') === -1) {
       this.sendAndValidate(this.state.plan);
@@ -835,7 +836,7 @@ class Coberturas extends Component {
                                         value={typeof opt.value_show === 'undefined'
                                           ? '$0'
                                           : opt.value_show}
-                                        onChange={this.inputChange(k, key, 1)}
+                                        onChange={(e) => this.inputChange(e, k, key, 1)}
                                         disabled={Coberturas.isDisabled(
                                           option,
                                           opt
@@ -852,7 +853,7 @@ class Coberturas extends Component {
                                           value={Coberturas.getSelectFields(
                                             opt.values
                                           )}
-                                          onChange={this.inputChange(k, key, 2)}
+                                          onChange={(e) => this.inputChange(e, k, key, 2)}
                                         >
                                           {opt.values.map((opt, k) => (
                                             <option key={k} value={k}>
