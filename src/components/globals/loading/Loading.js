@@ -13,7 +13,6 @@ class Loading extends Component {
 
   render() {
     const { loading } = this.props;
-    console.log(loading);
     return (
       <div className={`app-loader ${(!loading && 'hide') || ''}`}>
         <div className="content-loader">
