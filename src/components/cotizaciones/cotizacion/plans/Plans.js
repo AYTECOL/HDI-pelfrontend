@@ -32,7 +32,7 @@ class Index extends Component {
         Loading.toggle(true);
         try {
           await CreateOrUpdateValoration.save();
-          await this.refrechPolizaPrima(plans, { planSelected: index, quotateId: id });
+          await this.refrechPolizaPrima(plans[index], { planSelected: index, quotateId: id });
           if (refrechAllPlans) {
             const otherPlans = [...plans.keys()].filter(
               (key) => String(key) !== String(index)
@@ -41,7 +41,7 @@ class Index extends Component {
               Coberturas.calcValue({ ...Coberturas.setHiredCoverages(plan) })
             );
             for (const plan of otherPlans) {
-              this.refrechPolizaPrima(newPlans, {
+              this.refrechPolizaPrima(newPlans[plan], {
                 planSelected: plan,
                 quotateId: id,
               }).catch((e) => {
@@ -56,17 +56,18 @@ class Index extends Component {
         Loading.toggle(false);
     }
 
-    static async refrechPolizaPrima(plans, { planSelected: i, quotateId }) {
-        let plan = plans[i];
-        plan = BtnContinue.toNumberCoverrange(plan);
+    static async refrechPolizaPrima(plan, { planSelected: i, quotateId }) {
+        const newPlan = BtnContinue.toNumberCoverrange(plan);
         await store.dispatch(setLoadingPlanPerspective({ plan: i, state: true }));
-        await DeterminePolizaPrima.get(plan, quotateId, false)
+        await DeterminePolizaPrima.get(newPlan, quotateId, false)
           .then((total) => {
-            store.dispatch((dispatch) => {
+            store.dispatch((dispatch, getState) => {
+              // The last value of the plans is obtained
+              const { AllPlans } = getState();
               if (typeof total.prospect !== 'undefined') {
-                plans[i].value = total.prospect;
-                plans[i].prima = total;
-                dispatch(AllPlansCreator(plans));
+                AllPlans[i].value = total.prospect;
+                AllPlans[i].prima = total;
+                dispatch(AllPlansCreator(AllPlans));
               }
             });
           })
