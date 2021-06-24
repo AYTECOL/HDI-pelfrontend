@@ -87,9 +87,10 @@ const Content = pure(
                 value={content.caracte}
                 onChange={updateContent}
                 disabled={!typeItem}
+                maxlength="400"
               />
               <small className="form-text d-block text-left">
-                Ej: Marca, referencia, {isCellPhone && 'Numero IMEI,'} color...
+                Ej: Marca, referencia, {isCellPhone && 'Numero IMEI,'} color... (max 400 caracteres)
               </small>
             </div>
           </div>
