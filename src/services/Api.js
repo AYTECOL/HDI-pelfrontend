@@ -49,7 +49,7 @@ class Api {
                 xhr.send();
             } else {
                 if (formData === false) {
-                    data = JSON.stringify(data).replace(/<(?:.|\n)*?>/gm, '');
+                    data = JSON.stringify(data || '').replace(/<(?:.|\n)*?>/gm, '');
                 }
                 xhr.send(data);
             }

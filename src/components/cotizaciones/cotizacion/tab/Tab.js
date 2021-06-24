@@ -2,7 +2,6 @@ import React, {Component, Fragment} from "react";
 import { compose } from "recompose";
 import {withRouter} from "react-router-dom";
 import { connect } from "react-redux";
-import difference from "lodash/difference";
 
 import "./Tab.scss";
 import AllPlans from "../../../../services/AllPlans";
@@ -28,13 +27,22 @@ class Tab extends Component {
             plans: [],
             errorRateCalculated: false,
         };
+        this.planLoaded = false;
     }
-
-    isValid(inmueble){
-      const keys = getItems().map(({ parent }) => [
+    
+    /**
+     * 
+     * @returns {[string,string][]}
+     */
+    getItems() {
+      return getItems().map(({ parent }) => [
         parent.nameModel,
         parent.nameModelValue,
       ]);
+    }
+
+    isValid(inmueble){
+      const keys = this.getItems();
       if (inmueble) {
         const invalid = keys.some(([key, keyValue]) => {
           if (inmueble[key]) {
@@ -50,6 +58,7 @@ class Tab extends Component {
       }
       return false
     }
+
 
     //Make merge between default plan and seleted plan
     /**
@@ -166,18 +175,21 @@ class Tab extends Component {
 
     componentDidMount() {
       const { inmueble } = this.props;
-      this.getPlans(inmueble)
-        .catch(() => {
-          this.setState({ errorRateCalculated: true });
-        })
-        .finally(() => {
-          Loading.toggle(false);
-        });
+      this.getPlans(inmueble).catch(() => {
+        this.setState({ errorRateCalculated: true });
+        Loading.toggle(false);
+      });
     }
 
     componentWillReceiveProps({ inmueble }) {
-        if (difference(inmueble, this.props.inmueble))
-          this.updateType(inmueble);
+      const entries = this.getItems();
+      const different = entries.some(
+        ([key]) => this.props.inmueble[key] !== inmueble[key]
+      );
+      const valid = this.isValid(inmueble);
+      const change = valid !== this.isValid(this.props.inmueble);
+      if (different || (valid && (!this.planLoaded || change)))
+        this.updateType(inmueble);
     }
 
 
@@ -201,21 +213,24 @@ class Tab extends Component {
     }
 
     async getPlans(inmueble = null) {
-        if (!this.isValid(inmueble)) {
-          Loading.toggle(false);
-          return;
-        }
+        if (!this.isValid(inmueble)) return;
         Loading.toggle(true);
         const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
-        debugger
+        const plansLoaded = this.planLoaded;
+        this.planLoaded = true;
         let plans = await AllPlans.get(type);
-        debugger
-        let plan = await QuoteIussedById.get(quotateId);
+        let plan =
+          !plansLoaded &&
+          (await QuoteIussedById.get(quotateId).catch((e) => {
+            this.planLoaded = false;
+            throw e;
+          }));
+
         let indexSelected = null;
 
-        let selected = plan.plan_selected_info.Item;
-        if (typeof selected !== "undefined") {
+        let selected = plan && plan.plan_selected_info.Item;
+        if (selected && !plansLoaded) {
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
             const plan = Coberturas.setHiredCoverages(
               plans[indexSelected],
