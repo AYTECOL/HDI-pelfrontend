@@ -36,13 +36,11 @@ class Asistencias extends Component {
             if (this.state.index !== index || this.state.plans !== plans) {
                 if (index !== "") {
                     this.setState({
-                        ...this.state,
-                        index: index,
-                        plans: plans
+                      ...this.state,
+                      index: index,
+                      plans: plans,
+                      assistsTotal: this.countAsistencias(plans[index]),
                     });
-                    setTimeout(() => {
-                        this.countAsistencias();
-                    }, 100);
                 }
             }
         });
@@ -52,10 +50,10 @@ class Asistencias extends Component {
         this.unsubscribe();
     }
 
-    countAsistencias() {
-        if (typeof this.state.plans[this.state.index] === "undefined") return;
+    countAsistencias(plan) {
+        if (typeof plan === "undefined") return;
         let t = 0;
-        let item = this.state.plans[this.state.index].assists[0].values;
+        let item = plan.assists[0].values;
         for (let i in item) {
             if (item[i].checked === true) t++;
             if (typeof item[i].assists !== "undefined") {
@@ -64,10 +62,7 @@ class Asistencias extends Component {
                 }
             }
         }
-        this.setState({
-            ...this.state,
-            assistsTotal: t
-        });
+        return t;
     }
 
     sendAndValidate() {
@@ -126,51 +121,48 @@ class Asistencias extends Component {
 
     checkAsistencia = (index, key, k, i, parent) => e => {
         let check;
-        let newPlans;
+        let { plans } = this.state;
         let error1 = false;
         let error2 = false;
+        const plan = plans[index];
         if (typeof parent !== "undefined") {
-            check = this.state.plans[index].assists[key].values[k].checked;
-            newPlans = this.state.plans;
-            newPlans[index].assists[key].values[k].checked = !check;
-            if (!check === false) newPlans = this.unCheckAssistsNextsByKey(0);
+            check = plan.assists[key].values[k].checked;
+            plan.assists[key].values[k].checked = !check;
+            if (!check === false) plans = this.unCheckAssistsNextsByKey(0);
         } else {
-            check = this.state.plans[index].assists[key].values[k].assists[i].checked;
-            newPlans = this.state.plans;
+            check = plan.assists[key].values[k].assists[i].checked;
             if (
-                parseInt(newPlans[index].assists[key].values[k].assists[i].code) ===
+                parseInt(plan.assists[key].values[k].assists[i].code) ===
                 9695
             ) {
-                if (newPlans[index].assists[key].values[k].checked === false) {
+                if (plan.assists[key].values[k].checked === false) {
                     error1 = true;
                     error2 = false;
                 } else {
-                    newPlans[index].assists[key].values[k].assists[i].checked = !check;
-                    if (!check === false) newPlans = this.unCheckAssistsNextsByKey(i);
+                    plan.assists[key].values[k].assists[i].checked = !check;
+                    if (!check === false) plans = this.unCheckAssistsNextsByKey(i);
                 }
             } else {
                 if (this.isCheckedAssistsByCode(9695) === false) {
                     error1 = false;
                     error2 = true;
                 } else {
-                    newPlans[index].assists[key].values[k].assists[i].checked = !check;
+                    plan.assists[key].values[k].assists[i].checked = !check;
                 }
             }
         }
-        this.setState({
+        this.setState(
+          {
             ...this.state,
-            plans: newPlans,
+            plans: plans,
             error1: error1,
-            error2: error2
-        });
-        if (error1 === false && error2 === false) {
-            setTimeout(() => {
-                this.countAsistencias();
-            }, 250);
-            setTimeout(() => {
-                this.sendAndValidate();
-            }, 500);
-        }
+            error2: error2,
+            assistsTotal: this.countAsistencias(plan),
+          },
+          () => {
+            this.sendAndValidate();
+          }
+        );
     };
 
     render() {

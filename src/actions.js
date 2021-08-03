@@ -103,6 +103,14 @@ export const saveAttachedFile = (state) => {
   return { type: 'ATTACHED_FILE', data: state };
 };
 
+/**
+ * 
+ * @param {boolean} state 
+ */
+export const setLoading = (state) => {
+  return { type: 'LOADING', data: state };
+};
+
 const resetStore = () => {
     return {type: "RESET_STORE"}
 };

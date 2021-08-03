@@ -1,6 +1,9 @@
 import React, {Component, Fragment} from "react";
-import "./Tab.scss";
+import { compose } from "recompose";
 import {withRouter} from "react-router-dom";
+import { connect } from "react-redux";
+
+import "./Tab.scss";
 import AllPlans from "../../../../services/AllPlans";
 import store from "../../../../store";
 import {AllPlans as AllPlansCreator, indexPlanSelected} from "../../../../actions";
@@ -14,17 +17,48 @@ import BtnContinue from "../forms/btncontinue/BtnContinue";
 import Cards from "../cards/Cards";
 import { getRulesByCode, getValue } from "../../../../common";
 import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
+import RateNotCalculated from "../../../RateNotCalculated";
+import { getItems } from "../../../cotizaciones/cotizacion/cards/getItems";
 
 class Tab extends Component {
     constructor(props) {
         super(props);
         this.state = {
             plans: [],
-            Inmueble: {},
-            typePlans: 3,
-            index: "",
+            errorRateCalculated: false,
         };
+        this.planLoaded = false;
     }
+    
+    /**
+     * 
+     * @returns {[string,string][]}
+     */
+    getItems() {
+      return getItems().map(({ parent }) => [
+        parent.nameModel,
+        parent.nameModelValue,
+      ]);
+    }
+
+    isValid(inmueble){
+      const keys = this.getItems();
+      if (inmueble) {
+        const invalid = keys.some(([key, keyValue]) => {
+          if (inmueble[key]) {
+            const value = Masknumbermoney.formatToNumber(
+              inmueble[keyValue] || ''
+            );
+            const valid = typeof value === 'number' ? value > 0 : false;
+            return !valid;
+          }
+          return false;
+        });
+        return !invalid;
+      }
+      return false
+    }
+
 
     //Make merge between default plan and seleted plan
     /**
@@ -45,67 +79,72 @@ class Tab extends Component {
           );
         };
         for (let j = 0; j < normal.coverages.length; j++) {
-            const coverage = normal.coverages[j]
-            const selectedCoverage = selected.coverages.find(
-              findSelectedCoverage(coverage)
-            );
-            if (selectedCoverage) {
-                coverage.optional = selectedCoverage.optional;
-                coverage.checked = selectedCoverage.checked;
-                if (typeof coverage.values !== "undefined") {
-                    for (let i = 0; i < coverage.values.length; i++) {
-                        const coverageValue = coverage.values[i];
-                        if (
-                          coverageValue &&
-                          coverageValue.hired
-                        ) {
-                            if (!selectedCoverage.values || !coverageValue.values) {
-                              const valueSelected = selectedCoverage.values[i];
-                              if (valueSelected) {
-                                const { value_to_quotate } = valueSelected;
-                                const rules = {
-                                  ...getRulesByCode(
-                                    valueSelected.code,
-                                    normal.coverages
-                                  ),
-                                };
-                                coverageValue.value = valueSelected.value;
-                                const newValue = getValue(
-                                  value_to_quotate,
-                                  rules
-                                );
-                                coverageValue.value_show = Masknumbermoney.formatToMask(
-                                  newValue
-                                );
-                                coverageValue.value_to_quotate = newValue;
-                              }
-                            } else {
-                                if (typeof selectedCoverage.values[i].values !== "undefined") {
-                                    for (let k = 0; k < coverageValue.values.length; k++) {
-                                        if (typeof selectedCoverage.values[i].values[k] !== "undefined") {
-                                            coverageValue.values[k].default = selectedCoverage.values[i].values[k].default;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+          const coverage = normal.coverages[j];
+          const selectedCoverage = selected.coverages.find(
+            findSelectedCoverage(coverage)
+          );
+
+          if (selectedCoverage) {
+            coverage.optional = selectedCoverage.optional;
+            coverage.checked = selectedCoverage.checked;
+          }
+          if (typeof coverage.values !== 'undefined') {
+            for (let i = 0; i < coverage.values.length; i++) {
+              const coverageValue = coverage.values[i];
+              const selectedCoverageValue =
+                selectedCoverage &&
+                selectedCoverage.values &&
+                selectedCoverage.values.find(({ code }) => {
+                  return coverageValue.code === code;
+                });
+                
+              if (coverageValue && coverageValue.hired) {
+                const valueSelected = selectedCoverageValue;
+                if (valueSelected) {
+                  const isDisabled = Coberturas.isDisabled(
+                    coverage,
+                    valueSelected
+                  );
+                  const value = !isDisabled
+                    ? valueSelected.value_to_quotate
+                    : Coberturas.getValue(coverageValue);
+                  const rules = {
+                    ...getRulesByCode(valueSelected.code, normal.coverages),
+                  };
+                  coverageValue.value = valueSelected.value;
+                  const newValue = getValue(value, rules);
+                  coverageValue.value_show = Masknumbermoney.formatToMask(
+                    newValue
+                  );
+                  coverageValue.value_to_quotate = newValue;
+                } else if (coverageValue && coverageValue.hired) {
+                  const value_show = Coberturas.getValueFields(coverageValue);
+                  coverageValue.value_show = value_show;
+                }
+
+                if (selectedCoverageValue && selectedCoverageValue.values) {
+                  for (let k = 0; k < selectedCoverageValue.values.length; k++) {
+                    if (
+                      typeof selectedCoverageValue.values[k] !== 'undefined'
+                    ) {
+                      coverageValue.values[k].default =
+                        selectedCoverageValue.values[k].default;
                     }
+                  }
                 }
-            } else {
-                //If no is equal the coverage so calc value for this.
-                if (coverage.values) {
-                  coverage.values.forEach((value) => {
-                    const value_show = Coberturas.getValueFields(
-                      value,
-                      value.id,
-                      {
-                        plan: normal,
-                      }
-                    );
-                    value.value_show = value_show;
-                  });
-                }
+              }
             }
+          } else {
+            //If no is equal the coverage so calc value for this.
+            if (coverage.values) {
+              coverage.values.forEach((value) => {
+                const value_show = Coberturas.getValueFields(value, value.id, {
+                  plan: normal,
+                });
+                value.value_show = value_show;
+              });
+            }
+          }
         }
         for (let j = 0; j < normal.assists.length; j++) {
             normal.assists[j].optional = selected.assists[j].optional;
@@ -135,85 +174,63 @@ class Tab extends Component {
     }
 
     componentDidMount() {
-        this.unsubscribe = store.subscribe(() => {
-            let storeState = store.getState();
-            let inmueble = storeState.Inmueble;
-            let indexPlan = storeState.indexPlan;
-            if (inmueble !== this.state.Inmueble) {
-                this.updateType(inmueble);
-            }
-            if (this.state.index !== indexPlan) {
-                this.setState({
-                    ...this.state,
-                    index: indexPlan
-                });
-            }
-        });
+      const { inmueble } = this.props;
+      this.getPlans(inmueble).catch(() => {
+        this.setState({ errorRateCalculated: true });
+        Loading.toggle(false);
+      });
     }
 
-    componentWillUnmount() {
-        this.unsubscribe();
+    componentWillReceiveProps({ inmueble }) {
+      const entries = this.getItems();
+      const different = entries.some(
+        ([key]) => this.props.inmueble[key] !== inmueble[key]
+      );
+      const valid = this.isValid(inmueble);
+      const change = valid !== this.isValid(this.props.inmueble);
+      if (different || (valid && (!this.planLoaded || change)))
+        this.updateType(inmueble);
     }
 
-    updateType(inmueble) {
-        let type = this.state.typePlans;
-        let Inmueble = this.state.Inmueble;
-        if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 1) {
-            type = 3;
-        } else if (inmueble.inmuebleasegudado === 0 && inmueble.contenidoasegudado === 1) {
-            type = 2;
-        } else if (inmueble.inmuebleasegudado === 1 && inmueble.contenidoasegudado === 0) {
-            type = 1;
-        }
 
-        let status = false;
-        //Detect if this.state is not equal to store and validate id empty values.
-        if (typeof inmueble.contenidoasegudadovalor !== "undefined") {
-            if (inmueble.contenidoasegudadovalor.toString().trim() !== "" && inmueble.contenidoasegudadovalor !== "$0") {
-                if (Inmueble.contenidoasegudado !== inmueble.contenidoasegudado) {
-                    status = true;
-                    //Check when the value is empty on this.state and it is not empty in store
-                } else if (Inmueble.contenidoasegudadovalor.toString().trim() === "") {
-                    if (Inmueble.contenidoasegudadovalor !== inmueble.contenidoasegudadovalor) {
-                        status = true;
-                    }
-                }
-            }
-        }
-
-        //Detect if this.state is not equal to store and validate id empty values.
-        if (typeof inmueble.inmuebleasegudadovalor !== "undefined") {
-            if (inmueble.inmuebleasegudadovalor.toString().trim() !== "" && inmueble.inmuebleasegudadovalor !== "$0") {
-                if (Inmueble.inmuebleasegudado !== inmueble.inmuebleasegudado) {
-                    status = true;
-                    //Check when the value is empty on this.state and it is not empty in store
-                } else if (Inmueble.inmuebleasegudadovalor.toString().trim() === "") {
-                    if (Inmueble.inmuebleasegudadovalor !== inmueble.inmuebleasegudadovalor) {
-                        status = true;
-                    }
-                }
-            }
-        }
-
-        if (status === true) {
-            this.getPlants(type, inmueble);
-        }
-        this.setState({
-            ...this.state,
-            Inmueble: inmueble,
-            typePlans: type
-        });
+    getType({ contenidoasegudado, inmuebleasegudado }) {
+      let type = 3;
+      if (inmuebleasegudado === 1 && contenidoasegudado === 1) {
+        type = 3;
+      } else if (inmuebleasegudado === 0 && contenidoasegudado === 1) {
+        type = 2;
+      } else if (inmuebleasegudado === 1 && contenidoasegudado === 0) {
+        type = 1;
+      }
+      return type;
     }
 
-    async getPlants(type, inmueble = null) {
+    updateType(newInmueble) {
+      this.getPlans(newInmueble).catch(() => {
+        Loading.toggle(false);
+        this.setState({ errorRateCalculated: true });
+      });
+    }
+
+    async getPlans(inmueble = null) {
+        if (!this.isValid(inmueble)) return;
+        Loading.toggle(true);
+        const type = this.getType(inmueble);
         const quotateId = this.props.match.params.id;
+        const plansLoaded = this.planLoaded;
+        this.planLoaded = true;
         let plans = await AllPlans.get(type);
-        let plan = await QuoteIussedById.get(this.props.match.params.id);
-        //let inmuble = store.getState().Inmueble;
+        let plan =
+          !plansLoaded &&
+          (await QuoteIussedById.get(quotateId).catch((e) => {
+            this.planLoaded = false;
+            throw e;
+          }));
+
         let indexSelected = null;
 
-        let selected = plan.plan_selected_info.Item;
-        if (typeof selected !== "undefined") {
+        let selected = plan && plan.plan_selected_info.Item;
+        if (selected && !plansLoaded) {
             indexSelected = parseInt(selected["assists"][0]["selected_id"]);
             const plan = Coberturas.setHiredCoverages(
               plans[indexSelected],
@@ -227,7 +244,7 @@ class Tab extends Component {
             //Save in store the index of plan selected
             store.dispatch(indexPlanSelected(indexSelected));
         } else {
-            if (this.state.index === "") {
+            if (!this.props.indexPlan) {
                 for (let i in plans) {
                     if (plans[i].isdefault === true) {
                         store.dispatch(indexPlanSelected(i));
@@ -279,30 +296,54 @@ class Tab extends Component {
     }
 
     render() {
-        if (typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index] === "undefined") return <div
-            className="hide">&nbsp;</div>;
+        const { indexPlan } = this.props;
+        const { plans, errorRateCalculated } = this.state;
+        
+        const plan = !!(plans && plans[indexPlan]); 
         return (
-            <Fragment>
+          <Fragment>
+            {!plan && <div className="hide">&nbsp;</div>}
+            {plan && (
+              <Fragment>
                 <div className="first-content">
-                    <div className="row">
-                        <div className="col col-12 col-md-3 col-lg-3">
-                            <p className="textdescript">Ver asistencias</p>
-                        </div>
-                        <div className="col col-12 col-md-6 col-lg-6">
-                            {/*<p className="centerdescription">*/}
-                                {/*<span>Financiación</span> $30.000 / 10 cuotas*/}
-                            {/*</p>*/}
-                        </div>
-                        <div className="col col-12 col-md-3 col-lg-3"/>
+                  <div className="row">
+                    <div className="col col-12 col-md-3 col-lg-3">
+                      <p className="textdescript">Ver asistencias</p>
                     </div>
+                    <div className="col col-12 col-md-6 col-lg-6">
+                      {/*<p className="centerdescription">*/}
+                      {/*<span>Financiación</span> $30.000 / 10 cuotas*/}
+                      {/*</p>*/}
+                    </div>
+                    <div className="col col-12 col-md-3 col-lg-3" />
+                  </div>
                 </div>
                 <div className="wrapper-items">
-                    <Coberturas/>
-                    <Asistencias/>
+                  <Coberturas />
+                  <Asistencias />
                 </div>
-            </Fragment>
+              </Fragment>
+            )}
+            <RateNotCalculated
+              open={errorRateCalculated}
+              onRetry={() => {
+                this.getPlans(this.props.inmueble)
+                  .then(() => {
+                      this.setState({ errorRateCalculated: false });
+                  })
+                  .catch((e) => {
+                    Loading.toggle(false);
+                  });
+              }}
+            />
+          </Fragment>
         );
     }
 }
 
-export default withRouter(Tab);
+export default compose(
+  withRouter,
+  connect(({ indexPlan, Inmueble }) => {
+    return { indexPlan, inmueble: Inmueble };
+  })
+)(Tab);

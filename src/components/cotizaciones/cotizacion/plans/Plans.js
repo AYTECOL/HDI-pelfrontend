@@ -14,96 +14,96 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 class Index extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            step: parseInt(this.props.match.params.step),
-            plans: [],
-            index: 1,
-        };
-        for (let i = 0; i < 3; i++) this.state.plans[i] = {name: "------"};
-    }
-
     /**
      * @param {any[]} plans
      */
     static async sendAndValidate(plans, index, id, refrechAllPlans = false) {
         Loading.toggle(true);
-        await CreateOrUpdateValoration.save();
-        await this.refrechPolizaPrima(plans, { planSelected: index, quotateId: id });
-        Loading.toggle(false);
-        if (refrechAllPlans) {
-          const otherPlans = [...plans.keys()].filter(
-            (key) => String(key) !== String(index)
-          );
-          const newPlans = plans.map((plan) =>
-            Coberturas.calcValue({ ...Coberturas.setHiredCoverages(plan) })
-          );
-          for (const plan of otherPlans) {
-            this.refrechPolizaPrima(newPlans, {
-              planSelected: plan,
-              quotateId: id,
-            }).catch((e) => {
-              console.log(e);
-            });
+        try {
+          await CreateOrUpdateValoration.save();
+          await this.refrechPolizaPrima(plans[index], { planSelected: index, quotateId: id });
+          if (refrechAllPlans) {
+            const otherPlans = [...plans.keys()].filter(
+              (key) => String(key) !== String(index)
+            );
+            const newPlans = plans.map((plan) =>
+              Coberturas.calcValue({ ...Coberturas.setHiredCoverages(plan) })
+            );
+            for (const plan of otherPlans) {
+              this.refrechPolizaPrima(newPlans[plan], {
+                planSelected: plan,
+                quotateId: id,
+              }).catch((e) => {
+                console.log(e);
+              });
+            }
           }
+        } catch (error) {
+          Loading.toggle(false);
+          throw error;
         }
+        Loading.toggle(false);
     }
 
-    static async refrechPolizaPrima(plans, { planSelected: i, quotateId }) {
-        let plan = plans[i];
-        plan = BtnContinue.toNumberCoverrange(plan);
+    static async refrechPolizaPrima(plan, { planSelected: i, quotateId }) {
+        const newPlan = BtnContinue.toNumberCoverrange(plan);
         await store.dispatch(setLoadingPlanPerspective({ plan: i, state: true }));
-        let total = await DeterminePolizaPrima.get(plan, quotateId, false);
-        store.dispatch((dispatch) => {
-          dispatch(setLoadingPlanPerspective({ plan: i, state: false }));
-          if (typeof total.prospect !== 'undefined') {
-            plans[i].value = total.prospect;
-            plans[i].prima = total;
-            dispatch(AllPlansCreator(plans));
-          }
-        });
+        await DeterminePolizaPrima.get(newPlan, quotateId, false)
+          .then((total) => {
+            store.dispatch((dispatch, getState) => {
+              // The last value of the plans is obtained
+              const { AllPlans } = getState();
+              if (typeof total.prospect !== 'undefined') {
+                AllPlans[i].value = total.prospect;
+                AllPlans[i].prima = total;
+                dispatch(AllPlansCreator(AllPlans));
+              }
+            });
+          })
+          .finally(() => {
+            store.dispatch(
+              setLoadingPlanPerspective({ plan: i, state: false })
+            );
+          });
     }
 
     componentDidMount() {
         new Sticky("wrapper-tabs");
-        this.unsubscribe = store.subscribe(() => {
-            let storeState = store.getState();
-            let plans = storeState.AllPlans;
-            let index = storeState.indexPlan;
-            this.setState({
-                ...this.state,
-                plans: plans,
-                index: index
-            });
-        });
     }
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
 
-    changeIndexPlan = index => e => {
-        store.dispatch((dispatch) => {
-          dispatch(indexPlanSelected(index));
+    changeIndexPlan = (newIndex) => async (e) => {
+      const {
+        match: { params },
+      } = this.props;
+      let plan;
+      await store.dispatch((dispatch) => {
+          dispatch(indexPlanSelected(newIndex));
           let storeState = store.getState();
           let plans = storeState.AllPlans;
-          const plan = Coberturas.setHiredCoverages(plans[index]);
-          plans[index] = Coberturas.calcValue(plan);
+          plan = Coberturas.setHiredCoverages(plans[newIndex]);
+          plan = Coberturas.calcValue(plan);
+          plans[newIndex] = plan;
           dispatch(AllPlansCreator(plans));
+          return Promise.resolve();
+      });
+      if (plan) {
+        Index.refrechPolizaPrima(plan, {
+          planSelected: newIndex,
+          quotateId: params.id,
         });
+      }
     };
 
     render() {
-        const { loadingPlansPerspective } = this.props;
+        const { loadingPlansPerspective, plans, index } = this.props;
         return (
           <div className="wrapper-tabs">
             <div className="row tabs text-center">
-              {typeof this.state.plans !== 'undefined' &&
-                this.state.plans.map((option, key) => {
+              {typeof plans !== 'undefined' &&
+                plans.map((option, key) => {
                   const loading = !!loadingPlansPerspective[key];
-                  const active = parseInt(this.state.index) === key;
+                  const active = +index === key;
                   return (
                     <div
                       className="col col-12 col-sm-12 col-md-4 col-lg-4 no-padding"
@@ -143,5 +143,9 @@ class Index extends Component {
 
 export default compose(
   withRouter,
-  connect(({ loadingPlansPerspective }) => ({ loadingPlansPerspective }))
+  connect(({ loadingPlansPerspective, indexPlan, AllPlans }) => ({
+    loadingPlansPerspective,
+    index: indexPlan,
+    plans: AllPlans,
+  }))
 )(Index);

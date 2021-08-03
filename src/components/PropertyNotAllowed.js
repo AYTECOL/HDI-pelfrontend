@@ -24,7 +24,7 @@ const PropertyNotAllowed = ({ open, onClose }) => {
           <div className="modal-body">
             <div className="buttons">
               <a href="/" className="btn btn-secondary" data-dismiss="modal">
-                Mi negocios
+                Mis negocios
               </a>
               <button
                 type="button"

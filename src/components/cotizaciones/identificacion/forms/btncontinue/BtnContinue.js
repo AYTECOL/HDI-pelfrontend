@@ -122,7 +122,6 @@ class BtnContinue extends Component {
     render() {
         const { stateFormIdentificacion, continueButtonDisable } = this.props;
         const { loading } = this.state;
-        console.log(loading);
         const disabled = loading || continueButtonDisable;
         return (
             <Fragment>

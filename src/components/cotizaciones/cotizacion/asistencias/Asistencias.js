@@ -4,59 +4,24 @@ import store from "../../../../store";
 import "./Asistencias.scss";
 import Plans from "../plans/Plans";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { AllPlans } from '../../../../actions';
 
 class Asistencias extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            index: 1,
-            plans: store.getState().AllPlans,
-            assistsTotal: 0,
             error1: false,
             error2: false,
         };
-        for (let i = 0; i < 3; i++) {
-            this.state.plans[i] = {
-                assists: [
-                    {
-                        name: "",
-                        values: []
-                    }
-                ]
-            }
-        }
     }
 
-    componentDidMount() {
-        this.unsubscribe = store.subscribe(() => {
-            let storeState = store.getState();
-            let index = storeState.indexPlan;
-            let plans = storeState.AllPlans;
-            if (this.state.index !== index || this.state.plans !== plans) {
-                if (index !== "") {
-                    this.setState({
-                        ...this.state,
-                        index: index,
-                        plans: plans
-                    });
-                    setTimeout(() => {
-                        this.countAsistencias();
-                    }, 100);
-                }
-            }
-        });
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
-    countAsistencias() {
-        if (typeof this.state.plans === "undefined") return;
-        if (typeof this.state.plans[this.state.index] === "undefined") return;
+    countAsistencias(plan) {
+        if (typeof plan === "undefined") return;
         let t = 0;
-        let item = this.state.plans[this.state.index].assists[0].values;
+        let item = plan.assists[0].values;
         for (let i in item) {
             if (item[i].checked === true) t++;
             if (typeof item[i].assists !== 'undefined') {
@@ -65,24 +30,22 @@ class Asistencias extends Component {
                 }
             }
         }
-        this.setState({
-            ...this.state,
-            assistsTotal: t
-        });
+        return t;
     }
 
     sendAndValidate() {
-        Plans.sendAndValidate(this.state.plans, this.state.index, this.props.match.params.id);
+        const { plans, indexPlan, match } = this.props;
+        Plans.sendAndValidate(plans, indexPlan, match.params.id);
     }
 
     isCheckedAssistsByCode(code) {
-        let index = this.state.index;
+        const { plan } = this.props;
         let status = false;
-        for (let i = 0; i < this.state.plans[index].assists.length; i++) {
-            for (let j = 0; j < this.state.plans[index].assists[i].values.length; j++) {
-                for (let k = 0; k < this.state.plans[index].assists[i].values[j].assists.length; k++) {
-                    if (parseInt(this.state.plans[index].assists[i].values[j].assists[k].code) === parseInt(code)) {
-                        status = this.state.plans[index].assists[i].values[j].assists[k].checked;
+        for (let i = 0; i < plan.assists.length; i++) {
+            for (let j = 0; j < plan.assists[i].values.length; j++) {
+                for (let k = 0; k < plan.assists[i].values[j].assists.length; k++) {
+                    if (parseInt(plan.assists[i].values[j].assists[k].code) === parseInt(code)) {
+                        status = plan.assists[i].values[j].assists[k].checked;
                     }
                 }
             }
@@ -91,74 +54,75 @@ class Asistencias extends Component {
     }
 
     unCheckAssistsNextsByKey(key) {
-        let index = this.state.index;
-        let newPlans = this.state.plans;
-        for (let i = 0; i < newPlans[index].assists.length; i++) {
-            for (let j = 0; j < newPlans[index].assists[i].values.length; j++) {
-                for (let k = 0; k < newPlans[index].assists[i].values[j].assists.length; k++) {
-                    if (k >= key) newPlans[index].assists[i].values[j].assists[k].checked = false;
+        const { indexPlan, plans } = this.props;
+        let newPlans = [...plans];
+        for (const assist of newPlans[indexPlan].assists) {
+            for (let j = 0; j < assist.values.length; j++) {
+                for (let k = 0; k < assist.values[j].assists.length; k++) {
+                    if (k >= key) assist.values[j].assists[k].checked = false;
                 }
             }
         }
         return newPlans;
     }
 
-    checkAsistencia = (index, key, k, i, parent) => e => {
+    checkAsistencia = (key, k, i, parent) => {
+        const index = this.props.indexPlan
         let check;
-        let newPlans;
+        let { plans } = this.props;
         let error1 = false;
         let error2 = false;
+        const plan = plans[index];
         if (typeof parent !== 'undefined') {
-            check = this.state.plans[index].assists[key].values[k].checked;
-            newPlans = this.state.plans;
-            newPlans[index].assists[key].values[k].checked = !check;
-            if (!check === false) newPlans = this.unCheckAssistsNextsByKey(0);
+            check = plan.assists[key].values[k].checked;
+            plan.assists[key].values[k].checked = !check;
+            if (!check === false) plans = this.unCheckAssistsNextsByKey(0);
         } else {
-            check = this.state.plans[index].assists[key].values[k].assists[i].checked;
-            newPlans = this.state.plans;
-            if (parseInt(newPlans[index].assists[key].values[k].assists[i].code) === 9695) {
-                if (newPlans[index].assists[key].values[k].checked === false) {
+            check = plan.assists[key].values[k].assists[i].checked;
+            if (parseInt(plan.assists[key].values[k].assists[i].code) === 9695) {
+                if (plan.assists[key].values[k].checked === false) {
                     error1 = true;
                     error2 = false;
                 } else {
-                    newPlans[index].assists[key].values[k].assists[i].checked = !check;
-                    if (!check === false) newPlans = this.unCheckAssistsNextsByKey(i);
+                    plan.assists[key].values[k].assists[i].checked = !check;
+                    if (!check === false) plans = this.unCheckAssistsNextsByKey(i);
                 }
             } else {
                 if (this.isCheckedAssistsByCode(9695) === false) {
                     error1 = false;
                     error2 = true;
                 } else {
-                    newPlans[index].assists[key].values[k].assists[i].checked = !check;
+                    plan.assists[key].values[k].assists[i].checked = !check;
                 }
             }
         }
-        this.setState({
-            ...this.state,
-            plans: newPlans,
+        this.setState(
+          {
             error1: error1,
             error2: error2,
-        });
-        if (error1 === false && error2 === false) {
-            setTimeout(() => {
-                this.countAsistencias();
-            }, 250);
-            setTimeout(() => {
-                this.sendAndValidate();
-            }, 500);
-        }
+          },
+          async () => {
+            await AllPlans(plans);
+            if (error1 === false && error2 === false) {
+              this.sendAndValidate();
+            }
+          }
+        );
+        
     };
 
     render() {
+        const { plan } = this.props;
+        const assistsTotal = this.countAsistencias(plan);
         return (
             <div className={"asistencias-group " + (typeof this.props.summary === "undefined" ? '' : 'summary')}>
-                {(typeof this.state.plans !== "undefined" && typeof this.state.plans[this.state.index].assists !== "undefined") && this.state.plans[this.state.index].assists.map((option, key) =>
+                {plan && (typeof plan.assists !== "undefined") && plan.assists.map((option, key) =>
                     <div className={"row row-max tabs-cotizaciones row_tab_1 " + (key + 1)} key={key}>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
                             <div className="row" onClick={Helpers.toggleSlide(key + 1)}>
                                 <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
                                     <h4>
-                                        <span>{this.state.assistsTotal}</span>{option.name}
+                                        <span>{assistsTotal}</span>{option.name}
                                     </h4>
                                 </div>
                                 <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-right">
@@ -177,7 +141,7 @@ class Asistencias extends Component {
                                                            id={"itemm" + k + "_" + key}
                                                            checked={(opt.checked === true ? 'checked' : false)}
                                                            disabled={opt.optional === false}
-                                                           onChange={this.checkAsistencia(this.state.index, key, k, 0, true)}
+                                                           onChange={() => this.checkAsistencia(key, k, 0, true)}
                                                     />
                                                     <div className="group">
                                                         <label htmlFor={"itemm" + k + "_" + key}>{opt.name}</label>
@@ -192,7 +156,7 @@ class Asistencias extends Component {
                                                                        id={"itemm" + k + "_" + key + "_" + i}
                                                                        disabled={op.optional === false || opt.optional === false}
                                                                        checked={(op.checked === true ? 'checked' : false)}
-                                                                       onChange={this.checkAsistencia(this.state.index, key, k, i)}
+                                                                       onChange={() => this.checkAsistencia(key, k, i)}
                                                                 />
                                                                 <div className="group">
                                                                     <label
@@ -224,4 +188,11 @@ class Asistencias extends Component {
 
 }
 
-export default withRouter(Asistencias);
+export default compose(
+  withRouter,
+  connect(({ AllPlans, indexPlan }) => ({
+    plans: AllPlans,
+    indexPlan,
+    plan: AllPlans[indexPlan],
+  }))
+)(Asistencias);
