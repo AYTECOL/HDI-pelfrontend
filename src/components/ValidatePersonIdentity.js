@@ -21,21 +21,14 @@ const ValidatePersonIdentity = withRouter(
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">{tittle}</h5>
+              <br />
               <p className="modal-subtitle">{message}</p>
+              <br />
               <div>
                 <p className="modal-subtitle">{subtittle}</p>
               </div>
+              <br />
               <div> Cotización: {idPolicy} </div>
-              <button
-                type="button"
-                className="close"
-                aria-label="Close"
-                onClick={() => {
-                  history.push(route);
-                }}
-              >
-                &nbsp;
-              </button>
             </div>
             <div className="modal-body">
               <div className="buttons">
