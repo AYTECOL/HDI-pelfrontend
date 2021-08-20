@@ -124,8 +124,12 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document,
-              dataUser.first_last_name
+              dataUser.document_type === '37'
+                ? dataUser.document.substring(0, dataUser.document.length - 1)
+                : dataUser.document,
+              dataUser.document_type === '37'
+                ? dataUser.businessname
+                : dataUser.first_last_name
             )
           );
         } else if (persons[i]['role'][j] === 2) {
@@ -135,8 +139,12 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document,
-              dataUser.first_last_name
+              dataUser.document_type === '37'
+                ? dataUser.businessname
+                : dataUser.first_last_name,
+              dataUser.document_type === '37'
+                ? dataUser.businessname
+                : dataUser.first_last_name
             )
           );
         } else if (persons[i]['role'][j] === 3) {
@@ -145,8 +153,12 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document,
-              dataUser.first_last_name
+              dataUser.document_type === '37'
+                ? dataUser.businessname
+                : dataUser.first_last_name,
+              dataUser.document_type === '37'
+                ? dataUser.businessname
+                : dataUser.first_last_name
             )
           );
         } else if (persons[i]['role'][j] === 4) {
@@ -162,42 +174,43 @@ class BtnContinue extends PureComponent {
       }
     }
     let token = localStorage.getItem('serviceToken');
-    try {
-      let responseValidateIndentity = await Service.post(
-        Baseurl,
-        validatePersons,
-        UrlServicePerson,
-        undefined,
-        {
-          Authorization: 'Bearer ' + token,
-        }
-      );
+    if (typeof total !== 'undefined') {
+      try {
+        let responseValidateIndentity = await Service.post(
+          Baseurl,
+          validatePersons,
+          UrlServicePerson,
+          undefined,
+          {
+            Authorization: 'Bearer ' + token,
+          }
+        );
 
-      if (responseValidateIndentity.status === 0) {
+        if (responseValidateIndentity.status === 0) {
+          Loading.toggle(false);
+          this.setState({ errorValidatePerson: true });
+          this.setState({
+            tittle: 'Validación de rol No Exitosa',
+            message: `Alguno de los roles no se ha podido verificar: Por favor revise los datos ingresados`,
+            buttonRetry: false,
+            subtittle:
+              'Nota: En caso que la información diligenciada esté correcta, consulta en oficina en linea',
+          });
+          return;
+        }
+      } catch (err) {
         Loading.toggle(false);
         this.setState({ errorValidatePerson: true });
         this.setState({
-          tittle: 'Validación de rol No Exitosa',
-          message: `Alguno de los roles no se ha podido verificar: Por favor revise los datos ingresados`,
-          buttonRetry: false,
+          tittle: 'Ups, lo sentimos',
+          message: `Tenemos un problema técnico en este momento`,
+          buttonRetry: true,
           subtittle:
-            'Nota: En caso que la información diligenciada esté correcta, consulta en oficina en linea',
+            'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios',
         });
         return;
       }
-    } catch (err) {
-      Loading.toggle(false);
-      this.setState({ errorValidatePerson: true });
-      this.setState({
-        tittle: 'Ups, lo sentimos',
-        message: `Tenemos un problema técnico en este momento`,
-        buttonRetry: true,
-        subtittle:
-          'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios',
-      });
-      return;
     }
-
     let quouteId = this.props.match.params.id;
     await QuoteIussed.get({
       id: quouteId,
@@ -215,6 +228,8 @@ class BtnContinue extends PureComponent {
         UrlSite + '/emision/2/' + this.props.match.params.id
       );
     } else {
+      store.dispatch(NextStep(4));
+      await SaveIdentifications.save();
       Helpers.goToHome(this.props.history);
     }
     Loading.toggle(false);
