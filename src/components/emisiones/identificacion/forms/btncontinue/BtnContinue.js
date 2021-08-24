@@ -166,7 +166,9 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document,
+              dataUser.document_type === '37'
+                ? dataUser.document.substring(0, dataUser.document.length - 1)
+                : dataUser.document,
               dataUser.businessname
             )
           );
