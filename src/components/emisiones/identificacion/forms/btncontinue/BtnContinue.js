@@ -140,8 +140,8 @@ class BtnContinue extends PureComponent {
             this.validateData(
               dataUser.document_type,
               dataUser.document_type === '37'
-                ? dataUser.businessname
-                : dataUser.first_last_name,
+                ? dataUser.document.substring(0, dataUser.document.length - 1)
+                : dataUser.document,
               dataUser.document_type === '37'
                 ? dataUser.businessname
                 : dataUser.first_last_name
@@ -154,8 +154,8 @@ class BtnContinue extends PureComponent {
             this.validateData(
               dataUser.document_type,
               dataUser.document_type === '37'
-                ? dataUser.businessname
-                : dataUser.first_last_name,
+                ? dataUser.document.substring(0, dataUser.document.length - 1)
+                : dataUser.document,
               dataUser.document_type === '37'
                 ? dataUser.businessname
                 : dataUser.first_last_name
