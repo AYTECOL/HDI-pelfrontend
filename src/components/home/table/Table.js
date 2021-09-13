@@ -10,7 +10,7 @@ import { UrlSite } from '../../../config';
 import Pagination from '../../../common/helpers/Pagination/Pagination';
 import Loading from '../../../components/globals/loading/Loading';
 import QuoteIussedById from '../../../services/QuoteIussedById';
-import PdfEndosoHogar from "../../../services/PdfEndosoHogar";
+import PdfEndosoHogar from '../../../services/PdfEndosoHogar';
 
 /**
  *  @typedef {{ type_person: string, description: string, code: number }} IdentificationType
@@ -69,10 +69,10 @@ const Table = (props) => {
       let a = document.createElement('a');
       let data = await QuoteIussedById.get(id);
       let endoso = false;
-      if (typeof data.quote_iussed_info !== "undefined") {
+      if (typeof data.quote_iussed_info !== 'undefined') {
         if (
-          typeof data.quote_iussed_info.Item !== "undefined" &&
-          typeof data.quote_iussed_info.Item.onerous !== "undefined"
+          typeof data.quote_iussed_info.Item !== 'undefined' &&
+          typeof data.quote_iussed_info.Item.onerous !== 'undefined'
         ) {
           if (data.quote_iussed_info.Item.onerous.length > 0) {
             endoso = true;
@@ -80,14 +80,14 @@ const Table = (props) => {
         }
       }
 
-      if (endoso)  {
+      if (endoso) {
         let pdfEndoso = await PdfEndosoHogar.get(id);
 
-        let a = document.createElement("a");
-        a.style.display = "none";
+        let a = document.createElement('a');
+        a.style.display = 'none';
         document.body.appendChild(a);
-        a.href = "data:application/pdf;base64," + pdfEndoso;
-        a.setAttribute("download", "BeneficiarioOnerosoHogar.pdf");
+        a.href = 'data:application/pdf;base64,' + pdfEndoso;
+        a.setAttribute('download', 'BeneficiarioOnerosoHogar.pdf');
         a.click();
         document.body.removeChild(a);
       }
@@ -149,58 +149,66 @@ const Table = (props) => {
             ({ code }) => String(item.document_type) === String(code)
           );
           return (
-            <div className="row body" key={item.quoteId}>
-              <div className="col">
-                <p>{item.quoteId}</p>
-              </div>
-              <div className="col">
-                <p>
-                  {item.create_at} <span>{item.hour_at}</span>
-                </p>
-              </div>
-              <div className="col">
-                <p>{item.name}</p>
-              </div>
-              <div className="col">
-                <p>
-                  {item.document_number}
-                  <span>
-                    {(identificationType && identificationType.description) ||
-                      'Cédula de ciudadanía'}
-                  </span>
-                </p>
-              </div>
-              <div className="col">
-                <p>
-                <p>{item.address || (item.pdf_info && item.pdf_info.addressHome)}</p>
-                </p>
-              </div>
-              <div className="col">
-                <p>{item.validity} días</p>
-              </div>
-              <div className="col">
-                <p>{item.stateQuote}</p>
-              </div>
-              <div className="col">
-                {item.step !== 7 && (
-                  <button
-                    onClick={getRowById(item.quoteId)}
-                    className="btn btn-default"
-                  >
-                    {' '}
-                    Retomar
-                  </button>
-                )}
-                {item.step === 7 && (
-                  <button
-                    onClick={getPdf(item.quoteId)}
-                    className="btn btn-default"
-                  >
-                    {' '}
-                    Descargar PDF
-                  </button>
-                )}
-              </div>
+            <div>
+              {item.validity > 0 && (
+                <div className="row body" key={item.quoteId}>
+                  <div className="col">
+                    <p>{item.quoteId}</p>
+                  </div>
+                  <div className="col">
+                    <p>
+                      {item.create_at} <span>{item.hour_at}</span>
+                    </p>
+                  </div>
+                  <div className="col">
+                    <p>{item.name}</p>
+                  </div>
+                  <div className="col">
+                    <p>
+                      {item.document_number}
+                      <span>
+                        {(identificationType &&
+                          identificationType.description) ||
+                          'Cédula de ciudadanía'}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="col">
+                    <p>
+                      <p>
+                        {item.address ||
+                          (item.pdf_info && item.pdf_info.addressHome)}
+                      </p>
+                    </p>
+                  </div>
+                  <div className="col">
+                    <p>{item.validity} días</p>
+                  </div>
+                  <div className="col">
+                    <p>{item.stateQuote}</p>
+                  </div>
+                  <div className="col">
+                    {item.step !== 7 && (
+                      <button
+                        onClick={getRowById(item.quoteId)}
+                        className="btn btn-default"
+                      >
+                        {' '}
+                        Retomar
+                      </button>
+                    )}
+                    {item.step === 7 && (
+                      <button
+                        onClick={getPdf(item.quoteId)}
+                        className="btn btn-default"
+                      >
+                        {' '}
+                        Descargar PDF
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
