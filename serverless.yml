@@ -6,6 +6,8 @@ provider:
   stage: prod
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
+  Tags: ${file(./tags.yml)}
+  stackTags: ${file(./tags.yml)}
   iamRoleStatements:
     - Effect: "Allow"
       Action:

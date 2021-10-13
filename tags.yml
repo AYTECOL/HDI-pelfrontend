@@ -1,0 +1,6 @@
+lm_troux_uid: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
+lm_app: "CO_HOME_AWS"
+lm_app_env: ${self:provider.stage}
+lm_sbu: INTL
+intl_country: co
+intl_region: latam
