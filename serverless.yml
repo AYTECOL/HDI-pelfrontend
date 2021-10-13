@@ -3,10 +3,10 @@ service: poliza-express-hogar
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: nonprod
+  stage: ${opt:stage, 'dev'} 
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
-  Tags: ${file(./tags.yml)}
+  tags: ${file(./tags.yml)}
   stackTags: ${file(./tags.yml)}
   iamRoleStatements:
     - Effect: "Allow"
@@ -107,7 +107,7 @@ resources:
               Value: 'CO_HOME_AWS'
             -
               Key: lm_app_env
-              Value: nonprod
+              Value: ${self:provider.stage}
             -
               Key: lm_sbu
               Value: INTL
