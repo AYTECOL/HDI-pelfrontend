@@ -1,5 +1,8 @@
 service: poliza-express-hogar
 
+plugins:
+ - serverless-plugin-resource-tagging
+
 provider:
   name: aws
   runtime: nodejs12.x
@@ -95,28 +98,6 @@ resources:
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
-        Tags:
-            -
-              Key: Name
-              Value: CloudFrontLibertyBucket
-            -
-              Key: lm_troux_uid
-              Value: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
-            -
-              Key: lm_app
-              Value: 'CO_HOME_AWS'
-            -
-              Key: lm_app_env
-              Value: ${self:provider.stage}
-            -
-              Key: lm_sbu
-              Value: INTL
-            -
-              Key: intl_country
-              Value: co
-            -
-              Key: intl_region
-              Value: latam  
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
