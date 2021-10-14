@@ -31,8 +31,8 @@ node('linux'){
     stage('cloudfront') {
     	deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            	sh "sls deploy -v --force"
-				//sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+				sh 'npm install'
+				sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-nonprod'){
                 	sh 'pwd'
                     sh 'ls'
@@ -47,7 +47,6 @@ node('linux'){
             sh """
                 ls -ltr
 
-                npm install
                 npm run build
                 ls -ltr
             """

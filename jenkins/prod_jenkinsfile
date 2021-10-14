@@ -27,7 +27,8 @@ node('linux'){
 
     stage('cloudfront') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh "sls deploy -v --stage prod"
+            sh 'npm install'
+            sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
             dir('dist/poliza-express-hogar'){
                 sh 'pwd'
                 sh 'ls'
@@ -38,7 +39,6 @@ node('linux'){
     stage('Build') {
          sh 'npm --version'
          sh 'aws --version'
-         sh 'npm install'
          sh 'echo $PATH'
          sh 'sls --version'
          sh 'pwd'
