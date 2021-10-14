@@ -12,6 +12,7 @@ node('linux'){
 
     stage('cloudfront') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+            sh 'npm install'
             sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
             dir('dist/poliza-express-hogar'){
                 sh 'pwd'
@@ -24,7 +25,6 @@ node('linux'){
          git credentialsId: 'intl_gituser', url: ' https://intl_gituser@bitbucket-latam.aws.lmig.com/scm/rt/pelhfrontend.git', branch: 'master'
          sh 'npm --version'
          sh 'aws --version'
-         sh 'npm install'
          sh 'echo $PATH'
          sh 'sls --version'
          sh 'pwd'
