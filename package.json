@@ -25,7 +25,6 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "serverless-lambda-edge-pre-existing-cloudfront": "^1.2.0",
     "serverless-plugin-resource-tagging": "^1.1.1",
     "simple-mask-money": "^3.0.1",
     "yarn": "^1.15.2"
@@ -56,6 +55,7 @@
   },
   "browserslist": [],
   "devDependencies": {
+    "@silvermine/serverless-plugin-cloudfront-lambda-edge": "2.2.3",
     "enzyme": "^3.10.0",
     "jest-sonar-reporter": "^2.0.0",
     "react-test-renderer": "^16.8.6"

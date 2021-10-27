@@ -1,12 +1,13 @@
 service: poliza-express-hogar
 
 plugins:
- - serverless-plugin-resource-tagging
+  - serverless-plugin-resource-tagging
+  - '@silvermine/serverless-plugin-cloudfront-lambda-edge'
 
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'dev'} 
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
   tags: ${file(./tags.yml)}
@@ -18,7 +19,7 @@ provider:
         - s3:PutObjectAcl
         - s3:GetObject
         - s3:GetObjectAcl
-      Resource: 
+      Resource:
         - "arn:aws:s3:::${self:custom.s3Bucket}/*"
         - "arn:aws:s3:::${self:custom.s3Bucket}"
 
@@ -26,14 +27,22 @@ custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
 package:
   include:
-  # - .git/**
+    - handler.js
   exclude:
-  #  - .git/**
-  excludeDevDependencies: true
+    - ./**
 
 functions:
   hogar:
-    handler: handler.hogar
+    name: ${self:service}-${self:provider.stage}-lambdaEdge
+    handler: handler.infr
+    role: { 'Fn::GetAtt': [LambdaIAMRole, Arn] }
+    runtime: nodejs12.x
+    MemorySize: 256
+    timeout: 29
+    lambdaAtEdge:
+      distribution: 'WebAppCloudFrontDistribution'
+      eventType: origin-response
+      includeBody: false
 
 resources:
   Resources:
@@ -94,7 +103,24 @@ resources:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
         CloudFrontOriginAccessIdentityConfig:
-          Comment: "CloudFrontOriginAccessIdentity for ${self:service}-${self:provider.stage}"
+          Comment: 'CloudFrontOriginAccessIdentity for ${self:service}-${self:provider.stage}'
+    LambdaIAMRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+          AssumeRolePolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: "AllowLambdaServiceToAssumeRole"
+                Effect: "Allow"
+                Action:
+                  - "sts:AssumeRole"
+                Principal:
+                  Service:
+                    - "lambda.amazonaws.com"
+                    - "edgelambda.amazonaws.com"
+          Path: "/"
+          ManagedPolicyArns:
+            - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -140,4 +166,5 @@ resources:
     WebAppCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
-
+    cloudfrontId:
+      Value: !Ref WebAppCloudFrontDistribution
