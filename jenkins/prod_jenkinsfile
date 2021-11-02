@@ -28,7 +28,7 @@ node('linux'){
     stage('cloudfront') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
             sh 'npm install'
-            sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+            sh "sls deploy -v --force --stage prod"
             dir('dist/poliza-express-hogar'){
                 sh 'pwd'
                 sh 'ls'
