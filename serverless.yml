@@ -26,10 +26,9 @@ custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
 package:
   include:
-  # - .git/**
+    - handler.js
   exclude:
-  #  - .git/**
-  excludeDevDependencies: true
+    - ./**
 
 functions:
   hogar:
