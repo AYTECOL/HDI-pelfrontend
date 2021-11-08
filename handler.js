@@ -8,18 +8,19 @@ exports.infr = (event, context, callback) => {
   event.Records.forEach((record) => {
     console.log(record.body);
   });
-  const api_endpoint = 'https://*.execute-api.us-east-1.amazonaws.com';
+  const api_endpoint = 'https://*.execute-api.us-east-1.amazonaws.com https://*.libertymutual.com https://*.s3.amazonaws.com';
 
   const analytics =
-    'https://www.googletagmanager.com https://www.google-analytics.com https://*.hotjar.com https://*.qualtrics.com';
+    'https://www.googletagmanager.com https://www.google-analytics.com https://*.qualtrics.com';
 
   const valueCSP =
     'default-src https://*.googleapis.com https://maps.gstatic.com;' +
     `img-src 'self' data:  https://maps.gstatic.com/  *.googleapis.com *.ggpht ${analytics};` +
     `script-src 'self' 'unsafe-inline' maps.googleapis.com maps.gstatic.com https://maps.google.com https://*.googleapis.com https://maps.gstatic.com ${analytics};` +
     "style-src 'self' https://maps.googleapis.com  https://cdnjs.cloudflare.com https://fonts.googleapis.com 'unsafe-inline' ; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com;" +
-    `connect-src 'self' ${api_endpoint} https://ipv4.icanhazip.com https://api.ipify.org https://maps.google.com https://maps.googleapis.com https://*.googleapis.com https://maps.gstatic.com https://*.qualtrics.com;` +
+    `connect-src 'self' ${api_endpoint} https://www.google-analytics.com https://stats.g.doubleclick.net https://ipv4.icanhazip.com https://api.ipify.org https://maps.google.com https://maps.googleapis.com https://*.googleapis.com https://maps.gstatic.com https://*.qualtrics.com;` +
     "base-uri 'self';" +
+    "object-src 'self' 'unsafe-inline'; " +
     "manifest-src 'self';";
 
   headers['content-security-policy'] = [
