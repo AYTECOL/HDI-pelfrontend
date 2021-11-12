@@ -1,20 +1,17 @@
 service: poliza-express-hogar
 
+plugins:
+  - serverless-plugin-resource-tagging
+  - '@silvermine/serverless-plugin-cloudfront-lambda-edge'
+
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: dev
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   account: { Ref: "AWS::AccountId" }
-  Tags:
-  # Set Tags for Resource
-  stackTags:
-    lm_troux_uid: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
-    lm_app: "CO_HOME_AWS"
-    lm_app_env: ${self:provider.stage}
-    lm_sbu: INTL
-    intl_country: co
-    intl_region: latam
+  tags: ${file(./tags.yml)}
+  stackTags: ${file(./tags.yml)}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -22,7 +19,7 @@ provider:
         - s3:PutObjectAcl
         - s3:GetObject
         - s3:GetObjectAcl
-      Resource: 
+      Resource:
         - "arn:aws:s3:::${self:custom.s3Bucket}/*"
         - "arn:aws:s3:::${self:custom.s3Bucket}"
 
@@ -30,14 +27,22 @@ custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
 package:
   include:
-  # - .git/**
+    - handler.js
   exclude:
-  #  - .git/**
-  excludeDevDependencies: true
+    - ./**
 
 functions:
   hogar:
-    handler: handler.hogar
+    name: ${self:service}-${self:provider.stage}-lambdaEdge
+    handler: handler.infr
+    role: { 'Fn::GetAtt': [LambdaIAMRole, Arn] }
+    runtime: nodejs12.x
+    MemorySize: 256
+    timeout: 29
+    lambdaAtEdge:
+      distribution: 'WebAppCloudFrontDistribution'
+      eventType: origin-response
+      includeBody: false
 
 resources:
   Resources:
@@ -98,32 +103,27 @@ resources:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
         CloudFrontOriginAccessIdentityConfig:
-          Comment: "CloudFrontOriginAccessIdentity for ${self:service}-${self:provider.stage}"
+          Comment: 'CloudFrontOriginAccessIdentity for ${self:service}-${self:provider.stage}'
+    LambdaIAMRole:
+        Type: "AWS::IAM::Role"
+        Properties:
+          AssumeRolePolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: "AllowLambdaServiceToAssumeRole"
+                Effect: "Allow"
+                Action:
+                  - "sts:AssumeRole"
+                Principal:
+                  Service:
+                    - "lambda.amazonaws.com"
+                    - "edgelambda.amazonaws.com"
+          Path: "/"
+          ManagedPolicyArns:
+            - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
-        Tags:
-            -
-              Key: Name
-              Value: CloudFrontLibertyBucket
-            -
-              Key: lm_troux_uid
-              Value: B1E58FE2-E5A2-4A00-98DD-7B42BFF29677
-            -
-              Key: lm_app
-              Value: 'CO_HOME_AWS'
-            -
-              Key: lm_app_env
-              Value: nonprod
-            -
-              Key: lm_sbu
-              Value: INTL
-            -
-              Key: intl_country
-              Value: co
-            -
-              Key: intl_region
-              Value: latam  
         DistributionConfig:
           Origins:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
@@ -166,4 +166,5 @@ resources:
     WebAppCloudFrontDistributionOutput:
       Value:
         'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
-
+    cloudfrontId:
+      Value: !Ref WebAppCloudFrontDistribution
