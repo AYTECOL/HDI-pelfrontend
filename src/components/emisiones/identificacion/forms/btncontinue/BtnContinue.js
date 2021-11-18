@@ -16,6 +16,7 @@ import ValidatePersonIdentity from '../../../../../components/ValidatePersonIden
 
 const UrlServicePerson = UrlPerson;
 const Baseurl = '/validarIdentidad';
+const BaseurlOnerous = '/validarOneroso';
 class BtnContinue extends PureComponent {
   constructor(props) {
     super(props);
@@ -49,6 +50,8 @@ class BtnContinue extends PureComponent {
   };
   nextStep = (total) => async () => {
     Loading.toggle(true);
+    let token = localStorage.getItem('serviceToken');
+
     let persons = this.props.persons;
     let takers = {};
     let insured = [];
@@ -57,6 +60,7 @@ class BtnContinue extends PureComponent {
     let additional = [];
     let newPersons = [];
     let validatePersons = [];
+    let validateOnerous;
     for (let i = 0; i < persons.length; i++) {
       let person = persons[i];
       if (
@@ -162,7 +166,35 @@ class BtnContinue extends PureComponent {
             )
           );
         } else if (persons[i]['role'][j] === 4) {
+          try {
+            validateOnerous = { nitConsulta: dataUser.document };
+            let responseValidateOnerous = await Service.post(
+              BaseurlOnerous,
+              validateOnerous,
+              UrlServicePerson,
+              undefined,
+              {
+                Authorization: 'Bearer ' + token,
+              }
+            );
+            if (responseValidateOnerous.results[0][1][1].length > 0) {
+              dataUser.clausulas =
+                responseValidateOnerous.results[0][1][1][0].clausulas;
+            }
+          } catch (err) {
+            Loading.toggle(false);
+            this.setState({ errorValidatePerson: true });
+            this.setState({
+              tittle: 'Ups, lo sentimos',
+              message: `Tenemos un problema técnico en este momento`,
+              buttonRetry: true,
+              subtittle:
+                'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios',
+            });
+            return;
+          }
           onerous.push(dataUser);
+
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
@@ -175,7 +207,7 @@ class BtnContinue extends PureComponent {
         }
       }
     }
-    let token = localStorage.getItem('serviceToken');
+
     if (typeof total !== 'undefined') {
       try {
         let responseValidateIndentity = await Service.post(
