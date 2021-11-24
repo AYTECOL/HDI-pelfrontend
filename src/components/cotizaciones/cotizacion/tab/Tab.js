@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from "react";
-import { compose } from "recompose";
 import {withRouter} from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -341,9 +340,8 @@ class Tab extends Component {
     }
 }
 
-export default compose(
-  withRouter,
+export default withRouter(
   connect(({ indexPlan, Inmueble }) => {
     return { indexPlan, inmueble: Inmueble };
-  })
-)(Tab);
+  })(Tab)
+);
