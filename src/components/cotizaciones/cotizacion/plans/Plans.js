@@ -10,7 +10,6 @@ import CreateOrUpdateValoration from "../../../../services/CreateOrUpdateValorat
 import BtnContinue from "../forms/btncontinue/BtnContinue";
 import DeterminePolizaPrima from "../../../../services/DeterminePolizaPrima";
 import Coberturas from "../coberturas/Coberturas";
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 class Index extends Component {
@@ -141,11 +140,10 @@ class Index extends Component {
 
 }
 
-export default compose(
-  withRouter,
+export default withRouter(
   connect(({ loadingPlansPerspective, indexPlan, AllPlans }) => ({
     loadingPlansPerspective,
     index: indexPlan,
     plans: AllPlans,
-  }))
-)(Index);
+  }))(Index)
+);

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import store from '../../../../../store';
@@ -141,30 +140,49 @@ class BtnContinue extends Component {
     }
 }
 
-export default compose(
-    withRouter,
-    connect(({ stateFormIdentificacion, typeDocument, cotizacion, continueButtonDisable }) => {
-        let stateForm = stateFormIdentificacion;
-        let typeDoc = typeDocument;
-        let { identification } = cotizacion;
-        const { businessname, name, lastname, address, department, city } = identification;
-        if (stateForm === 1) {
-            let i = 0;
-            if (typeDoc === 2) {
-                if (businessname.length > RazonSocial.limit() || businessname === "") i++;
-            } else {
-                if (name.length > Name.limit() || lastname.length > LastName.limit() || name === "" || lastname === "") i++;
-            }
-            if (address === "" || department === "" || city === "" || !isValidDirection(address)) {
-                i++;
-            }
-            continueButtonDisable = i !== 0;
+export default withRouter(
+  connect(
+    ({
+      stateFormIdentificacion,
+      typeDocument,
+      cotizacion,
+      continueButtonDisable,
+    }) => {
+      let stateForm = stateFormIdentificacion;
+      let typeDoc = typeDocument;
+      let { identification } = cotizacion;
+      const { businessname, name, lastname, address, department, city } =
+        identification;
+      if (stateForm === 1) {
+        let i = 0;
+        if (typeDoc === 2) {
+          if (businessname.length > RazonSocial.limit() || businessname === '')
+            i++;
+        } else {
+          if (
+            name.length > Name.limit() ||
+            lastname.length > LastName.limit() ||
+            name === '' ||
+            lastname === ''
+          )
+            i++;
         }
+        if (
+          address === '' ||
+          department === '' ||
+          city === '' ||
+          !isValidDirection(address)
+        ) {
+          i++;
+        }
+        continueButtonDisable = i !== 0;
+      }
 
-        return {
-            identification,
-            continueButtonDisable,
-            stateFormIdentificacion
-        };
-    })
-)(BtnContinue);
+      return {
+        identification,
+        continueButtonDisable,
+        stateFormIdentificacion,
+      };
+    }
+  )(BtnContinue)
+);
