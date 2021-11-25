@@ -1,20 +1,15 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import isEqual from 'lodash/isEqual';
+import { connect } from 'react-redux';
+import GoogleMapReact from 'google-map-react';
 
 import './Map.scss';
-import {
-  GoogleMap,
-  Marker,
-  withGoogleMap,
-  withScriptjs,
-} from '../../../../utils/react-google-maps';
 import store from '../../../../store';
 import { setAddresMap, saveIdentificationValue } from '../../../../actions';
 import GetAddresInfo from '../../../../services/AddresCoordenates';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import { withCities } from '../hooks/cities';
+import Marker from './Marker';
 
 class MapBase extends Component {
   place = {
@@ -132,11 +127,15 @@ class MapBase extends Component {
     Helpers.addClass(this.elementError, 'error');
   };
 
+  /**
+   * @param {GoogleMapReact.ClickEventValue} e
+   */
   onMapClick = async (e) => {
-    return GetAddresInfo.getAdressByCoors(e.latLng).then((response) => {
+    const { lat, lng } = e;
+    return GetAddresInfo.getAdressByCoors({ lat, lng }).then((response) => {
       this.place.address = response;
       this.setState({
-        markerPosition: e.latLng,
+        markerPosition: { lat, lng },
         isMarkerShown: true,
       });
       Helpers.removeClass(this.elementError, 'error');
@@ -150,9 +149,13 @@ class MapBase extends Component {
   };
 
   render() {
+    const { googleMapURL } = this.props;
     const { zoom, markerPosition, isMarkerShown } = this.state;
     return (
-      <GoogleMap
+      <GoogleMapReact
+        bootstrapURLKeys={{
+          client: googleMapURL,
+        }}
         defaultZoom={zoom}
         defaultCenter={markerPosition}
         center={markerPosition}
@@ -161,18 +164,15 @@ class MapBase extends Component {
         defaultOptions={this.defaultOptions}
         disableDefaultUI
       >
-        {isMarkerShown && <Marker position={markerPosition} />}
-      </GoogleMap>
+        {isMarkerShown && <Marker {...markerPosition} />}
+      </GoogleMapReact>
     );
   }
 }
 
-export default compose(
-  withScriptjs,
-  withGoogleMap,
-  withCities,
+export default withCities(
   connect(({ cityDescription, cotizacion }) => ({
     cityDescription,
     cotizacion,
-  }))
-)(MapBase);
+  }))(MapBase)
+);
