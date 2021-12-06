@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import store from '../../../../store';
@@ -926,7 +925,6 @@ class Coberturas extends Component {
   }
 }
 
-export default compose(
-  withRouter,
-  connect(({ indexPlan }) => ({ index: indexPlan }))
-)(Coberturas);
+export default withRouter(
+  connect(({ indexPlan }) => ({ index: indexPlan }))(Coberturas)
+);

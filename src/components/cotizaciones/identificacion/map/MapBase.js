@@ -1,29 +1,24 @@
-import React, { Component } from "react";
-import {
-  GoogleMap,
-  Marker,
-  withGoogleMap,
-  withScriptjs
-} from "react-google-maps";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import isEqual from "lodash/isEqual";
+import React, { Component } from 'react';
+import isEqual from 'lodash/isEqual';
+import { connect } from 'react-redux';
+import GoogleMapReact from 'google-map-react';
 
-import "./Map.scss";
-import store from "../../../../store";
-import { setAddresMap, saveIdentificationValue } from "../../../../actions";
-import GetAddresInfo from "../../../../services/AddresCoordenates";
-import Helpers from "../../../../common/helpers/helpers/Helpers";
-import { withCities } from "../hooks/cities";
+import './Map.scss';
+import store from '../../../../store';
+import { setAddresMap, saveIdentificationValue } from '../../../../actions';
+import GetAddresInfo from '../../../../services/AddresCoordenates';
+import Helpers from '../../../../common/helpers/helpers/Helpers';
+import { withCities } from '../hooks/cities';
+import Marker from './Marker';
 
 class MapBase extends Component {
   place = {
-    address: "",
-    city: "",
-    department: ""
+    address: '',
+    city: '',
+    department: '',
   };
 
-  elementError = ".wrapper-map";
+  elementError = '.wrapper-map';
 
   /**
    *
@@ -39,7 +34,7 @@ class MapBase extends Component {
       panControl: true,
       zoomControl: true,
       rotateControl: false,
-      fullscreenControl: false
+      fullscreenControl: false,
     };
   }
 
@@ -49,7 +44,7 @@ class MapBase extends Component {
     const {
       longitude,
       latitude,
-      options: { zoom }
+      options: { zoom },
     } = mapsOptions;
 
     this.state = {
@@ -57,8 +52,8 @@ class MapBase extends Component {
       zoom,
       markerPosition: {
         lat: latitude,
-        lng: longitude
-      }
+        lng: longitude,
+      },
     };
   }
 
@@ -74,12 +69,12 @@ class MapBase extends Component {
     this.setAddres(newProps);
   }
 
-  setAddres = async newProps => {
+  setAddres = async (newProps) => {
     const {
       cotizacion: {
-        identification: { address, city, department }
+        identification: { address, city, department },
       },
-      citiesProps
+      citiesProps,
     } = newProps;
     const place = { address, city, department };
     /**
@@ -91,28 +86,28 @@ class MapBase extends Component {
      * }}
      */
     const cityObject = {
-      ...(await citiesProps.getCity({ city, departament: department }))
+      ...(await citiesProps.getCity({ city, departament: department })),
     };
 
     if (!city || !department || !address) this.setError();
     else if (!isEqual(this.place, place)) {
       this.place = place;
-      Helpers.removeClass(this.elementError, "error");
+      Helpers.removeClass(this.elementError, 'error');
       MapBase.reqAddress(
-        address + ", " + cityObject.city + " " + cityObject.department
-      ).then(data => {
+        address + ', ' + cityObject.city + ' ' + cityObject.department
+      ).then((data) => {
         if (data.lng && data.lat) {
           this.setState(
             {
               ...this.state,
               markerPosition: data,
-              isMarkerShown: true
+              isMarkerShown: true,
             },
             () => {
               store.dispatch(
                 setAddresMap({
                   longitude: data.lng,
-                  latitude: data.lat
+                  latitude: data.lat,
                 })
               );
             }
@@ -127,32 +122,40 @@ class MapBase extends Component {
   setError = () => {
     this.setState({
       ...this.state,
-      isMarkerShown: false
+      isMarkerShown: false,
     });
-    Helpers.addClass(this.elementError, "error");
+    Helpers.addClass(this.elementError, 'error');
   };
 
-  onMapClick = async e => {
-    return GetAddresInfo.getAdressByCoors(e.latLng).then(response => {
+  /**
+   * @param {GoogleMapReact.ClickEventValue} e
+   */
+  onMapClick = async (e) => {
+    const { lat, lng } = e;
+    return GetAddresInfo.getAdressByCoors({ lat, lng }).then((response) => {
       this.place.address = response;
       this.setState({
-        markerPosition: e.latLng,
-        isMarkerShown: true
+        markerPosition: { lat, lng },
+        isMarkerShown: true,
       });
-      Helpers.removeClass(this.elementError, "error");
+      Helpers.removeClass(this.elementError, 'error');
       store.dispatch(
         saveIdentificationValue({
-          name: "address",
-          value: response
+          name: 'address',
+          value: response,
         })
       );
     });
   };
 
   render() {
+    const { googleMapURL } = this.props;
     const { zoom, markerPosition, isMarkerShown } = this.state;
     return (
-      <GoogleMap
+      <GoogleMapReact
+        bootstrapURLKeys={{
+          client: googleMapURL,
+        }}
         defaultZoom={zoom}
         defaultCenter={markerPosition}
         center={markerPosition}
@@ -161,18 +164,15 @@ class MapBase extends Component {
         defaultOptions={this.defaultOptions}
         disableDefaultUI
       >
-        {isMarkerShown && <Marker position={markerPosition} />}
-      </GoogleMap>
+        {isMarkerShown && <Marker {...markerPosition} />}
+      </GoogleMapReact>
     );
   }
 }
 
-export default compose(
-  withScriptjs,
-  withGoogleMap,
-  withCities,
+export default withCities(
   connect(({ cityDescription, cotizacion }) => ({
     cityDescription,
-    cotizacion
-  }))
-)(MapBase);
+    cotizacion,
+  }))(MapBase)
+);

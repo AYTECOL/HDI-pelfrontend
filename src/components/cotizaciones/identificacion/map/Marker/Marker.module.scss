@@ -1,0 +1,17 @@
+.root {
+  bottom: 45px;
+  position: absolute;
+  .marker {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 27px;
+    height: 43px;
+    user-select: none;
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+    max-width: none;
+    transform: translate(-50%);
+  }
+}

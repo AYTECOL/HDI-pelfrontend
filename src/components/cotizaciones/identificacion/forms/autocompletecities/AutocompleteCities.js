@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 
 import { withCities } from '../../hooks/cities';
@@ -328,4 +327,4 @@ class AutocompleteCities extends Component {
   }
 }
 
-export default compose(withRouter, withCities)(AutocompleteCities);
+export default withRouter(withCities(AutocompleteCities));
