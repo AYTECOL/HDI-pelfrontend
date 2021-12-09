@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {withRouter} from "react-router-dom";
-import store from "../../../../store";
 import "./Asistencias.scss";
 import Plans from "../plans/Plans";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { AllPlans } from '../../../../actions';
 
@@ -188,11 +186,10 @@ class Asistencias extends Component {
 
 }
 
-export default compose(
-  withRouter,
+export default withRouter(
   connect(({ AllPlans, indexPlan }) => ({
     plans: AllPlans,
     indexPlan,
     plan: AllPlans[indexPlan],
-  }))
-)(Asistencias);
+  }))(Asistencias)
+);

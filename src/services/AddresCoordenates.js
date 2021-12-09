@@ -31,9 +31,9 @@ class GetAddresInfo {
     });
   }
 
-  static async getAdressByCoors(coors) {
+  static async getAdressByCoors({ lat, lng }) {
     return Axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coors.lat()},${coors.lng()}&key=${APIKEY}`
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${APIKEY}`
     ).then(({ data }) => {
       /**
        * @typedef {{

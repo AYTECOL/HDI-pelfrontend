@@ -9,6 +9,7 @@
     "dotenv": "^7.0.0",
     "es6-promise": "^4.2.6",
     "es6-promise-promise": "^1.0.0",
+    "google-map-react": "^2.1.10",
     "jquery": "^3.5.1",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
@@ -16,18 +17,15 @@
     "react": "^16.8.4",
     "react-datepicker": "^2.10.1",
     "react-dom": "^16.8.4",
-    "react-google-maps": "^9.4.5",
     "react-redux": "^6.0.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
     "react-scripts": "2.1.8",
-    "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "serverless-plugin-resource-tagging": "^1.1.1",
-    "simple-mask-money": "^3.0.1",
-    "yarn": "^1.15.2"
+    "simple-mask-money": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
