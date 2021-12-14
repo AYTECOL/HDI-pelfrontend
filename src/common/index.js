@@ -118,12 +118,22 @@ export const getRulesByCode = (code, coverages = undefined) => {
 };
 
 /**
- * 
- * @param {number} value 
- * @param {Rules} param1 
+ *
+ * @param {number} value
+ * @param {Rules} param1
  */
 export const getValue = (value = 0, { max, min } = {}) => {
   value = max ? (value > max ? max : value) : value;
   value = min ? (value < min ? min : value) : value;
   return value;
+};
+
+/**
+ * @param {import('../services/QuoteIussedById').Coverage} coverage
+ */
+export const stateCoverage = (coverage) => {
+  const { values } = coverage;
+  if (values)
+    return values.some((opt) => typeof opt.hired !== 'undefined' && opt.hired);
+  return true;
 };
