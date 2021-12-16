@@ -6,7 +6,7 @@ import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../actions';
-import { getRulesByCode, getTotalCoverage, getValue } from '../../../../common';
+import { getRulesByCode, getTotalCoverage, getValue, stateCoverage } from '../../../../common';
 import MobileContents from '../../inmueble/forms/MobileContents';
 import RateNotCalculated from '../../../RateNotCalculated';
 
@@ -272,18 +272,6 @@ class Coberturas extends Component {
   }
 
   /**
-   * @param {import('../../../../services/QuoteIussedById').Coverage} coverage
-   */
-  static stateCoverage(coverage) {
-    const { values } = coverage;
-    if (values)
-      return values.some(
-        (opt) => typeof opt.hired !== 'undefined' && opt.hired
-      );
-    return true;
-  }
-
-  /**
    *
    * @param {PlanSelectedInfoItem} plan
    */
@@ -431,7 +419,7 @@ class Coberturas extends Component {
     let t = 0;
     let item = plan.coverages;
     for (let i in item) {
-      if (item[i].checked === true && Coberturas.stateCoverage(item[i])) {
+      if (item[i].checked === true && stateCoverage(item[i])) {
         t++;
       }
     }
@@ -779,7 +767,7 @@ class Coberturas extends Component {
           <div className="wrapper-box">
             {typeof this.state.plan.coverages !== 'undefined' &&
               this.state.plan.coverages.map((option, key) => {
-                if (!Coberturas.stateCoverage(option)) return null;
+                if (!stateCoverage(option)) return null;
                 return (
                   <div className={'rowor'} key={key}>
                     <div className={'row'}>

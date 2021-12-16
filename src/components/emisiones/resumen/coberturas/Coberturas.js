@@ -6,7 +6,7 @@ import Plans from "../../../cotizaciones/cotizacion/plans/Plans";
 import "./Coberturas.scss";
 import check from "../../../../common/images/check-img.png";
 import Helpers from "../../../../common/helpers/helpers/Helpers";
-import { getRulesByCode } from "../../../../common";
+import { getRulesByCode, stateCoverage } from "../../../../common";
 
 class Coberturas extends Component {
     constructor(props) {
@@ -275,74 +275,73 @@ class Coberturas extends Component {
 
     render() {
         const { coverturasTotal, plans, index }= this.state
+        const { coverages } = plans[index];
         return (
-            <div className="row row-max tabs-cotizaciones row_tab_0 ">
-                <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                    <div className="row" onClick={Helpers.toggleSlide(0)}>
-                        <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
-                            <h4>
-                                <span>{coverturasTotal}</span>Coberturas
-                            </h4>
-                        </div>
-                        <div className="col-md-2">
-                            <b className="title-text">Valor</b>
-                        </div>
-                        <div className="col-md-2">
-                            <b className="text2 title-text">Deducibles</b>
-                        </div>
-                        <div className="col-md-2 text-right">
-                            <div className="close-section closeclose">
-                                <i>&nbsp;</i>
-                            </div>
-                            <div className="close-section open">
-                                <i>&nbsp;</i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="wrapper-box-info">
-                        {typeof plans[index].coverages !==
-                        "undefined" &&
-                        plans[index].coverages.map(
-                            (option, key) => (
-                                <div
-                                    className={
-                                        "rowor " +
-                                        (option.optional === true ? "" : "disabled-item")
-                                    }
-                                    key={key}
-                                >
-                                    {option.checked === true ? (
-                                        <div className="form-group">
-                                            <div className="row">
-                                                <div className="col-md-1 center-text">
-                                                    <img src={check} alt=""/>
-                                                </div>
-
-                                                <div className="col-md-5 center-text">
-                                                    <label className="description-text">
-                                                        {option.name}
-                                                    </label>
-                                                </div>
-                                                <div className="col-md-3 center-text">
-                                                    <p className="description-text">
-                                                        {Coberturas.calcValueCoverages(option)}
-                                                    </p>
-                                                </div>
-                                                <div className="col-md-2 center-text">
-                                                    <p className="description-text">
-                                                        {Coberturas.getSelectByItems(option.deductible)}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : null}
-                                </div>
-                            )
-                        )}
-                    </div>
+          <div className="row row-max tabs-cotizaciones row_tab_0 ">
+            <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
+              <div className="row" onClick={Helpers.toggleSlide(0)}>
+                <div className="col col-6 col-sm-6 col-md-6 col-lg-6 text-left">
+                  <h4>
+                    <span>{coverturasTotal}</span>Coberturas
+                  </h4>
                 </div>
+                <div className="col-md-2">
+                  <b className="title-text">Valor</b>
+                </div>
+                <div className="col-md-2">
+                  <b className="text2 title-text">Deducibles</b>
+                </div>
+                <div className="col-md-2 text-right">
+                  <div className="close-section closeclose">
+                    <i>&nbsp;</i>
+                  </div>
+                  <div className="close-section open">
+                    <i>&nbsp;</i>
+                  </div>
+                </div>
+              </div>
+
+              <div className="wrapper-box-info">
+                {typeof coverages !== 'undefined' &&
+                  coverages.map((coverage, key) => {
+                      if (!stateCoverage(coverage)) return null;
+                      return (
+                          <div
+                              className={'rowor ' +
+                                  (coverage.optional === true ? '' : 'disabled-item')}
+                              key={key}
+                          >
+                              {coverage.checked === true ? (
+                                  <div className="form-group">
+                                      <div className="row">
+                                          <div className="col-md-1 center-text">
+                                              <img src={check} alt="" />
+                                          </div>
+
+                                          <div className="col-md-5 center-text">
+                                              <label className="description-text">
+                                                  {coverage.name}
+                                              </label>
+                                          </div>
+                                          <div className="col-md-3 center-text">
+                                              <p className="description-text">
+                                                  {Coberturas.calcValueCoverages(coverage)}
+                                              </p>
+                                          </div>
+                                          <div className="col-md-2 center-text">
+                                              <p className="description-text">
+                                                  {Coberturas.getSelectByItems(coverage.deductible)}
+                                              </p>
+                                          </div>
+                                      </div>
+                                  </div>
+                              ) : null}
+                          </div>
+                      );
+                  })}
+              </div>
             </div>
+          </div>
         );
     }
 }
