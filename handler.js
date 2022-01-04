@@ -5,9 +5,6 @@ exports.infr = (event, context, callback) => {
     return callback(new Error('Records not available'));
   }
   const headers = response.headers;
-  event.Records.forEach((record) => {
-    console.log(record.body);
-  });
   const api_endpoint = 'https://*.execute-api.us-east-1.amazonaws.com https://*.libertymutual.com https://*.s3.amazonaws.com';
 
   const analytics =
