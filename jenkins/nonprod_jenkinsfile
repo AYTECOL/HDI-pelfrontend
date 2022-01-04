@@ -32,7 +32,6 @@ node('linux'){
     	deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
 				sh 'npm install'
-				sh 'npm i -g serverless@1.83.2'
 				sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
                 dir('dist/poliza-express-hogar-nonprod'){
                 	sh 'pwd'
