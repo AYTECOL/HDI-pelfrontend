@@ -187,9 +187,9 @@ class Asistencias extends Component {
 }
 
 export default withRouter(
-  connect(({ AllPlans, indexPlan }) => ({
-    plans: AllPlans,
+  connect(({ AllPlans: plans, indexPlan }) => ({
+    plans,
     indexPlan,
-    plan: AllPlans[indexPlan],
+    plan: plans[indexPlan],
   }))(Asistencias)
 );

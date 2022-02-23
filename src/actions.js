@@ -44,8 +44,8 @@ const NextStep = (step) => {
 };
 
 // Segundo formulario
-const typeInmueble = (typeInmueble) => {
-    return {type: "TYPE_INMUEBLE", data: typeInmueble}
+const typeInmueble = (type_inmueble) => {
+    return {type: "TYPE_INMUEBLE", data: type_inmueble}
 };
 
 const saveInmuebleValue = (element) => {

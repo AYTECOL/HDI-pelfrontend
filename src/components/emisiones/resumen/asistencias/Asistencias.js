@@ -53,12 +53,13 @@ class Asistencias extends Component {
     countAsistencias(plan) {
         if (typeof plan === "undefined") return;
         let t = 0;
-        let item = plan.assists[0].values;
-        for (let i in item) {
-            if (item[i].checked === true) t++;
-            if (typeof item[i].assists !== "undefined") {
-                for (let o in item[i].assists) {
-                    if (item[i].assists[o].checked === true) t++;
+        const { values } = plan.assists[0];
+        for (const item of values) {
+            if (item.checked === true) t++;
+            if(typeof item.assists !== "undefined") {
+                const { assists } = item;
+                for (const index in assists) {
+                    if(assists[index].checked === true) t++;
                 }
             }
         }

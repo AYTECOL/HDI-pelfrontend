@@ -106,7 +106,7 @@ class Index extends Component {
                 {name: 'benefist', role: 3},
                 {name: 'onerous', role: 4},
                 {name: 'persons_aditionals', role: 5},
-            ].map((item, key) => {
+            ].forEach((item, key) => {
                 if (typeof items[item.name] !== 'undefined') {
                   for (let i = 0; i < items[item.name].length; i++) {
                     const person = items[item.name][i];
@@ -137,7 +137,6 @@ class Index extends Component {
                     if (typeof persons[i].role === 'undefined')
                       persons[i].role = [item.role];
                 }
-                return true;
             });
 
             for (let i = 0; i < persons.length; i++) {

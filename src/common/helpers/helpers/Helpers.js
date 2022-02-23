@@ -87,15 +87,15 @@ class Helpers {
 
     if (typeof ignoreZero === "undefined") ignoreZero = false;
 
-    function findValue(el) {
+    function findValue(value) {
       if (
-        el.offsetTop === 0 &&
-        el.offsetParent !== null &&
+        value.offsetTop === 0 &&
+        value.offsetParent !== null &&
         ignoreZero === false
       ) {
-        return findValue(el.offsetParent);
+        return findValue(value.offsetParent);
       } else {
-        return el.offsetTop;
+        return value.offsetTop;
       }
     }
 

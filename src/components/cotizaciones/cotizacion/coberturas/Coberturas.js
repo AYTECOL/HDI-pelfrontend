@@ -9,7 +9,7 @@ import { AllPlans as AllPlansCreator } from '../../../../actions';
 import { getRulesByCode, getTotalCoverage, getValue } from '../../../../common';
 import MobileContents from '../../inmueble/forms/MobileContents';
 import RateNotCalculated from '../../../RateNotCalculated';
-
+import clsx from 'clsx';
 /**
  * @typedef {import('../../../../services/QuoteIussedById').QuoteIussed} QuoteIussed
  * @typedef {import('../../../../services/QuoteIussedById').PlanSelectedInfoItem} PlanSelectedInfoItem
@@ -65,7 +65,7 @@ class Coberturas extends Component {
    * @param {OptionsCalc} options
    * @returns {*}
    */
-  static calcValue(plan, type = null, options) {
+  static calcValue(plan, type , options) {
     if (typeof plan === 'undefined') return;
     if (typeof plan.coverages === 'undefined') return;
     for (let i = 0; i < plan.coverages.length; i++) {
@@ -101,7 +101,7 @@ class Coberturas extends Component {
    * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-  static getValue(item, typeBase = [], options) {
+  static getValue(item, typeBase, options) {
     const { plan, recalculate = false } = { ...options };
     if (!item.hired) return 0;
     const rules = {
@@ -207,7 +207,7 @@ class Coberturas extends Component {
    * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-   static getValueFields(item, typeBase = [], options) {
+   static getValueFields(item, typeBase , options) {
       const value = Coberturas.getValue(item, typeBase, options);
       return Masknumbermoney.formatToMask(value);
    }
@@ -550,11 +550,11 @@ class Coberturas extends Component {
          */
         function getCoverageByCode(code) {
           const coverages = plan.coverages;
-          for (const coverage of coverages)
-            if (coverage.values)
+          for (const Itemcoverage of coverages)
+            if (Itemcoverage.values)
               for (let j = 0; j < coverage.values.length; j++) {
-                if (coverage.values[j].code === code) {
-                  return coverage;
+                if (Itemcoverage.values[j].code === code) {
+                  return Itemcoverage;
                 }
               }
         }
@@ -694,7 +694,7 @@ class Coberturas extends Component {
           const { values } = coverage;
           return {
             ...coverage,
-            values: values.map((value, j) => k === j ? { ...value, errors } : value
+            values: values.map((valueItem, j) => k === j ? { ...valueItem, errors } : value
             ),
           };
         }
@@ -757,6 +757,7 @@ class Coberturas extends Component {
   render() {
     const { index } = this.props;
     const { errorRateCalculated } = this.state;
+    
     return (
       <div className="row row-max tabs-cotizaciones row_tab_0">
         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
@@ -829,9 +830,7 @@ class Coberturas extends Component {
                                         name={'item' + k + '_' + key}
                                         id={'item' + k + '_' + key}
                                         placeholder={opt.value_show}
-                                        onBlur={Coberturas.isDisabled(option, opt)
-                                          ? null
-                                          : this.blur}
+                                        onBlur={Coberturas.isDisabled(option, opt) ? null : this.blur}
                                         value={typeof opt.value_show === 'undefined'
                                           ? '$0'
                                           : opt.value_show}
@@ -854,19 +853,19 @@ class Coberturas extends Component {
                                           )}
                                           onChange={(e) => this.inputChange(e, k, key, 2)}
                                         >
-                                          {opt.values.map((opt, k) => (
-                                            <option key={k} value={k}>
+                                          {opt.values.map((optValue, keyValue) => (
+                                            <option key={keyValue} value={keyValue}>
                                               {Masknumbermoney.formatToMask(
-                                                opt.limit
+                                                optValue.limit
                                               )}
                                             </option>
                                           ))}
                                         </select>
                                       )}
                                     {opt.errors &&
-                                      opt.errors.map((item, key) => (
+                                      opt.errors.map((item, i) => (
                                         <small
-                                          key={key}
+                                          key={i}
                                           className={'form-text only-errors'}
                                         >
                                           {item}
@@ -881,8 +880,7 @@ class Coberturas extends Component {
                       <div className="col last">
                         {typeof option.deductible !== 'undefined' ? (
                           <div
-                            className={'pisonumero input-select form-group ' +
-                              (this.state.error ? 'error' : '')}
+                            className={clsx('pisonumero input-select form-group', this.state.error && 'error')}
                           >
                             <label htmlFor={'itemdeducible' + key}>
                               Deducible

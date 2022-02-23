@@ -36,10 +36,10 @@ class Pagination extends React.Component {
 
     setPage(page) {
         var {items, pageSize} = this.props;
-        var pager = this.state.pager;
+        /* var pager = this.state.pager; */
 
         // get new pager object for specified page
-        pager = this.getPager(items.length, page, pageSize);
+        const pager = this.getPager(items.length, page, pageSize);
 
         // get new page of items from items array
         var pageOfItems = items.slice(pager.startIndex, pager.endIndex + 1);
