@@ -1,4 +1,4 @@
-import { ResConsultarPersonaRs } from "./Person";
+import { ResConsultarPersonaRs } from './Person';
 
 export interface PolicyRequest {
   business_name: string;

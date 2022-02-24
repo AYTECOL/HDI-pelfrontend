@@ -3,7 +3,7 @@ import React from 'react';
  *
  * @param {React.SVGSVGElement} props
  */
-export const Help = props => (
+export const Help = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     height="24"

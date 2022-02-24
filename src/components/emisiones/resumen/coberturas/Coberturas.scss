@@ -111,7 +111,7 @@
         }
 
         &::after {
-          content: "";
+          content: '';
           width: 0;
           height: 0;
           border-left: 8px solid transparent;
@@ -147,11 +147,11 @@
     cursor: pointer;
 
     &::after {
-      content: "";
+      content: '';
       width: 19px;
       height: 16px;
       display: inline-block;
-      background-image: url("../../../../common/images/arrow_bottom.png");
+      background-image: url('../../../../common/images/arrow_bottom.png');
       background-size: 100% auto;
       position: relative;
       top: 2px;
@@ -224,7 +224,7 @@
     transition: all 0.3s ease;
 
     i {
-      background-image: url("../../../../common/images/arrowupup.png");
+      background-image: url('../../../../common/images/arrowupup.png');
       display: inline-block;
       width: 24px;
       height: 14px;

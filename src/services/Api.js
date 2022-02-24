@@ -1,104 +1,136 @@
 import Promise from 'es6-promise';
 // Data from Env
-import {UrlService} from '../config';
+import { UrlService } from '../config';
 
 class Api {
-
-    static HttpRequest(method, url, data, overrideBase, formData, headers) {
-        return new Promise(function (resolve, reject) {
-            var xhr = new XMLHttpRequest();
-            if (typeof formData === "undefined") formData = false;
-            if (typeof overrideBase === "undefined") {
-                url = UrlService + url;
-            } else {
-                url = overrideBase + url;
-            }
-            xhr.open(method, url);
-            if (formData === false) xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
-            if (typeof headers !== "undefined") {
-                for (let j in headers) xhr.setRequestHeader(j, headers[j]);
-            }
-            // xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
-            xhr.onload = function () {
-                if (this.status >= 200 && this.status < 300) {
-                    resolve(xhr.response);
-                } else {
-                    console.log(xhr.response);
-                    let response;
-                    try {
-                        response = JSON.parse(xhr.response);
-                    } catch (error) {
-                        response = xhr.response;
-                    }
-                    reject({
-                      status: this.status,
-                      statusText: xhr.statusText,
-                      response,
-                    });
-                }
-            };
-            xhr.onerror = function () {
-                console.log(xhr.response);
-                reject({
-                  status: this.status,
-                  statusText: xhr.statusText,
-                  response: xhr.response,
-                });
-            };
-            if (data === null) {
-                xhr.send();
-            } else {
-                if (formData === false) {
-                    data = JSON.stringify(data || '').replace(/<(?:.|\n)*?>/gm, '');
-                }
-                xhr.send(data);
-            }
+  static HttpRequest(method, url, data, overrideBase, formData, headers) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      if (typeof formData === 'undefined') formData = false;
+      if (typeof overrideBase === 'undefined') {
+        url = UrlService + url;
+      } else {
+        url = overrideBase + url;
+      }
+      xhr.open(method, url);
+      if (formData === false)
+        xhr.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+      if (typeof headers !== 'undefined') {
+        for (let j in headers) xhr.setRequestHeader(j, headers[j]);
+      }
+      // xhr.setRequestHeader("Access-Control-Allow-Origin", '*');
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          resolve(xhr.response);
+        } else {
+          console.log(xhr.response);
+          let response;
+          try {
+            response = JSON.parse(xhr.response);
+          } catch (error) {
+            response = xhr.response;
+          }
+          reject({
+            status: this.status,
+            statusText: xhr.statusText,
+            response,
+          });
+        }
+      };
+      xhr.onerror = function () {
+        console.log(xhr.response);
+        reject({
+          status: this.status,
+          statusText: xhr.statusText,
+          response: xhr.response,
         });
-    }
+      };
+      if (data === null) {
+        xhr.send();
+      } else {
+        if (formData === false) {
+          data = JSON.stringify(data || '').replace(/<(?:.|\n)*?>/gm, '');
+        }
+        xhr.send(data);
+      }
+    });
+  }
 
-    static async get(url, overrideBase, headers, format) {
-        return await Api.HttpRequest('GET', url, null, overrideBase, undefined, headers).then(function (response) {
-            try {
-                return typeof format === "undefined" ? JSON.parse(response) : response;
-            } catch (e) {
-                return [];
-            }
-        }).catch(function (e) {
-           return false;
-        });
-    };
+  static async get(url, overrideBase, headers, format) {
+    return await Api.HttpRequest(
+      'GET',
+      url,
+      null,
+      overrideBase,
+      undefined,
+      headers
+    )
+      .then(function (response) {
+        try {
+          return typeof format === 'undefined'
+            ? JSON.parse(response)
+            : response;
+        } catch (e) {
+          return [];
+        }
+      })
+      .catch(function (e) {
+        return false;
+      });
+  }
 
-    static async post(url, data, overrideBase, formData, headers, format) {
-        return await Api.HttpRequest('POST', url, data, overrideBase, formData, headers).then(function (response) {
-            try {
-                return typeof format === "undefined" ? JSON.parse(response) : response;
-            } catch (e) {
-                return [];
-            }
-        });
-    };
+  static async post(url, data, overrideBase, formData, headers, format) {
+    return await Api.HttpRequest(
+      'POST',
+      url,
+      data,
+      overrideBase,
+      formData,
+      headers
+    ).then(function (response) {
+      try {
+        return typeof format === 'undefined' ? JSON.parse(response) : response;
+      } catch (e) {
+        return [];
+      }
+    });
+  }
 
-    static async put(url, overrideBase, headers) {
-        return await Api.HttpRequest('PUT', url, null, overrideBase, undefined, headers).then(function (response) {
-            try {
-                return JSON.parse(response);
-            } catch (e) {
-                return [];
-            }
-        })
-    };
+  static async put(url, overrideBase, headers) {
+    return await Api.HttpRequest(
+      'PUT',
+      url,
+      null,
+      overrideBase,
+      undefined,
+      headers
+    ).then(function (response) {
+      try {
+        return JSON.parse(response);
+      } catch (e) {
+        return [];
+      }
+    });
+  }
 
-    static async files(url, name, file, overrideBase, headers) {
-        let formData = new FormData();
-        formData.append(name, file);
-        return await Api.HttpRequest('POST', url, formData, overrideBase, true, headers).then(function (response) {
-            try {
-                return JSON.parse(response);
-            } catch (e) {
-                return [];
-            }
-        })
-    }
+  static async files(url, name, file, overrideBase, headers) {
+    let formData = new FormData();
+    formData.append(name, file);
+    return await Api.HttpRequest(
+      'POST',
+      url,
+      formData,
+      overrideBase,
+      true,
+      headers
+    ).then(function (response) {
+      try {
+        return JSON.parse(response);
+      } catch (e) {
+        return [];
+      }
+    });
+  }
 }
 
 export default Api;

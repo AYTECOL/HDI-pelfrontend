@@ -75,7 +75,8 @@ export const getRulesByCode = (code, coverages = undefined) => {
           }),
           min: 10000000,
           formatError: ({ max }) => {
-            if (max) return 'Valor Asegurado de Contenidos es superior al permitido';
+            if (max)
+              return 'Valor Asegurado de Contenidos es superior al permitido';
           },
         };
       }
@@ -112,12 +113,12 @@ export const getRulesByCode = (code, coverages = undefined) => {
 };
 
 /**
- * 
- * @param {number} value 
- * @param {Rules} param1 
+ *
+ * @param {number} value
+ * @param {Rules} param1
  */
 export const getValue = (value = 0, { max, min } = {}) => {
   value = max && value > max ? max : value;
-  value = min  && value < min ? min : value;
+  value = min && value < min ? min : value;
   return value;
 };
