@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { UrlPdfSarlaft } from '../../../../config';
-import './Index.scss';
-//Component
-/*import SendMail from "../popups/sendmail/SendMail";*/
 import Cards from '../cards/Cards';
 import Tab from '../tab/Tab';
 import Btns from '../forms/btncontinue/BtnContinue';
 import Links from '../forms/links/Links';
 import Plans from '../plans/Plans';
 import Loading from '../../../globals/loading/Loading';
+import './Index.scss';
 
 class Index extends Component {
   componentDidMount() {
@@ -65,7 +63,6 @@ class Index extends Component {
             </div>
           </div>
         </div>
-        {/*<SendMail/>*/}
       </form>
     );
   }

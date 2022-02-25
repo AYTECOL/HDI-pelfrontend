@@ -13,7 +13,6 @@ class SigService {
     );
     return dataM;
   }
-  static async LongitudeAndLatitudeConsumer() {}
 }
 
 export default SigService;

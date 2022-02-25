@@ -6,6 +6,7 @@ import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Maskn
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
 import { Tooltip } from '../../../../Tooltip';
 import Help from '../../../../../common/icons/help';
+import clsx from 'clsx';
 
 class Asegurarjoyas extends Component {
   static nameModel = 'inmuebleasegudadojoyas';
@@ -135,50 +136,47 @@ class Asegurarjoyas extends Component {
   render() {
     const content = Asegurarjoyas.getContent();
     const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
-
+    const { active, value, errorValue, error } = this.state;
     return (
       <div className="row">
         <div className="col col-12  col-md-6">
           <div
-            className={
-              Asegurarjoyas.nameModel +
-              ' no-icon form-group ' +
-              this.state.error
-            }
+            className={clsx(
+              Asegurarjoyas.nameModel,
+              'no-icon form-group',
+              error
+            )}
           >
             <label htmlFor={Asegurarjoyas.nameModel}>
               ¿Adicionalmente deseas {Asegurarjoyas.name()}?{' '}
             </label>
             <ul className="select-item" id={Asegurarjoyas.nameModel}>
-              <li
-                className={this.state.active === 1 ? 'active' : ''}
-                onClick={this.validateEmpty({
-                  value: 1,
-                  name: Asegurarjoyas.nameModel,
-                })}
-              >
-                Si
-              </li>
-              <li
-                className={this.state.active === 0 ? 'active' : ''}
-                onClick={this.validateEmpty({
-                  value: 0,
-                  name: Asegurarjoyas.nameModel,
-                })}
-              >
-                No
-              </li>
+              {[
+                { label: 'Si', value: 1 },
+                { label: 'No', value: 0 },
+              ].map((item, index) => (
+                <li
+                  key={index}
+                  className={clsx(item.value === active && 'active')}
+                  onClick={this.validateEmpty({
+                    value: item.value,
+                    name: Asegurarjoyas.nameModel,
+                  })}
+                >
+                  {item.label}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
-        {this.state.active === 1 ? (
+        {active === 1 ? (
           <div className="col col-12  col-md-6">
             <div
-              className={
-                Asegurarjoyas.nameModelValue +
-                ' form-group ' +
-                (this.state.errorValue !== 0 ? 'error' : '')
-              }
+              className={clsx(
+                Asegurarjoyas.nameModelValue,
+                'form-group',
+                errorValue !== 0 && 'error'
+              )}
             >
               <div className="d-flex">
                 <label
@@ -198,7 +196,7 @@ class Asegurarjoyas extends Component {
                 name="inmuebleasegudadojoyasvalor"
                 id={Asegurarjoyas.nameModelValue}
                 type="text"
-                value={this.state.value}
+                value={value}
                 className={'form-control'}
                 placeholder=""
                 onBlur={this.validateValue}
@@ -208,32 +206,23 @@ class Asegurarjoyas extends Component {
                 Mínimo. {Masknumbermoney.formatToMask(Asegurarjoyas.min())} -
                 Máximo. {Masknumbermoney.formatToMask(Asegurarjoyas.max())}
               </small>
-              <small
-                className={
-                  'form-text only-errors default-error ' +
-                  (this.state.errorValue === 1 ? 'show' : 'hide')
-                }
-              >
-                Por favor Ingrese el valor asegurado de Joyas.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (this.state.errorValue === 2 ? 'show' : 'hide')
-                }
-              >
-                Valor Asegurado de {Asegurarjoyas.name()} es inferior al
-                permitido.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (this.state.errorValue === 3 ? 'show' : 'hide')
-                }
-              >
-                Valor Asegurado de {Asegurarjoyas.name()} es superior al
-                permitido.
-              </small>
+              {errorValue === 1 && (
+                <small className={'form-text only-errors default-error show'}>
+                  Por favor Ingrese el valor asegurado de Joyas.
+                </small>
+              )}
+              {errorValue === 2 && (
+                <small className={'form-text only-errors show'}>
+                  Valor Asegurado de {Asegurarjoyas.name()} es inferior al
+                  permitido.
+                </small>
+              )}
+              {errorValue === 3 && (
+                <small className={'form-text only-errors show'}>
+                  Valor Asegurado de {Asegurarjoyas.name()} es superior al
+                  permitido.
+                </small>
+              )}
             </div>
           </div>
         ) : (

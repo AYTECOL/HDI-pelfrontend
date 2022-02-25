@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import clsx from 'clsx';
 
 import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../actions';
@@ -113,6 +114,7 @@ class Segurarinmueble extends Component {
   };
 
   render() {
+    const { errorValue } = this.state;
     return (
       <div className="row">
         <div className="col col-12 col-md-6">
@@ -151,11 +153,11 @@ class Segurarinmueble extends Component {
         {this.state.active === 1 ? (
           <div className="col col-12 col-md-6">
             <div
-              className={
-                Segurarinmueble.nameModelValue +
-                ' form-group ' +
-                (this.state.errorValue !== 0 ? 'error' : '')
-              }
+              className={clsx(
+                Segurarinmueble.nameModelValue,
+                'form-group',
+                errorValue !== 0 && 'error'
+              )}
             >
               <label htmlFor={Segurarinmueble.nameModelValue}>
                 Valor del inmueble
@@ -174,37 +176,26 @@ class Segurarinmueble extends Component {
                 Mínimo. {Masknumbermoney.formatToMask(Segurarinmueble.min())} -
                 Máximo. {Masknumbermoney.formatToMask(Segurarinmueble.max())}
               </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (this.state.errorValue === 1 ? 'show' : 'hide')
-                }
-              >
-                Por favor Ingrese el valor asegurado de Inmueble.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (this.state.errorValue === 2 ? 'show' : 'hide')
-                }
-              >
-                Valor asegurado del {Segurarinmueble.name()} es inferior al
-                permitido.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (this.state.errorValue === 3 ? 'show' : 'hide')
-                }
-              >
-                Valor asegurado del {Segurarinmueble.name()} es superior al
-                permitido.
-              </small>
+              {errorValue === 1 && (
+                <small className={'form-text only-errors show'}>
+                  Por favor Ingrese el valor asegurado de Inmueble.
+                </small>
+              )}
+              {errorValue === 2 && (
+                <small className={'form-text only-errors show'}>
+                  Valor asegurado del {Segurarinmueble.name()} es inferior al
+                  permitido.
+                </small>
+              )}
+              {errorValue === 3 && (
+                <small className={'form-text only-errors show'}>
+                  Valor asegurado del {Segurarinmueble.name()} es superior al
+                  permitido.
+                </small>
+              )}
             </div>
           </div>
-        ) : (
-          ''
-        )}
+        ) : null}
       </div>
     );
   }

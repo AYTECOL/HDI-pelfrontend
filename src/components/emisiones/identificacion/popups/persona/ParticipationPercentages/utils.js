@@ -75,14 +75,11 @@ export const validatePercentageField = (value) => {
 /**
  *
  * @param {keyof typeof fieldsParticipation} field
- * @param {number[]} roles
+ * @param {number[]} items
  */
-export const isRoleParticipation = (field, roles) => {
+export const isRoleParticipation = (field, items) => {
   const rolesParticipation = rolesParticipations[field] || [];
-  const roleActived = rolesParticipation.some((role) =>
-    roles.some((r) => r === role)
-  );
-  return roleActived;
+  return rolesParticipation.some((role) => items.some((r) => r === role));
 };
 
 export const isTotalValid = (total) => {

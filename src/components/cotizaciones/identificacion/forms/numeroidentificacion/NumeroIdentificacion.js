@@ -58,10 +58,6 @@ class NumeroIdentificacion extends Component {
       //NIT
     } else if (type === '37') {
       if (v.length <= 9 || isNaN(v)) error = true;
-      // if( v.length === 10 && v.substr(-1) === "-" ){
-      //     let sub = parseInt(v.toString().substr(0,9));
-      //     v = sub + "-" + Helpers.calcularDigitoVerificacion(v);
-      // }
       let sub = parseInt(v.toString().substr(0, 9));
       if (sub < 80000000 || sub > 999999999) error = true;
     }

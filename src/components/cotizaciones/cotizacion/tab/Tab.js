@@ -2,7 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import './Tab.scss';
 import AllPlans from '../../../../services/AllPlans';
 import store from '../../../../store';
 import {
@@ -115,7 +114,7 @@ class Tab extends Component {
               const newValue = getValue(value, rules);
               coverageValue.value_show = Masknumbermoney.formatToMask(newValue);
               coverageValue.value_to_quotate = newValue;
-            } else if (coverageValue && coverageValue.hired) {
+            } else {
               const value_show = Coberturas.getValueFields(coverageValue);
               coverageValue.value_show = value_show;
             }
@@ -143,15 +142,16 @@ class Tab extends Component {
       }
     }
     for (let j = 0; j < normal.assists.length; j++) {
-      normal.assists[j].optional = selected.assists[j].optional;
-      for (let k = 0; k < normal.assists[j].values.length; k++) {
-        normal.assists[j].values[k].optional =
-          selected.assists[j].values[k].optional;
-        for (let l = 0; l < normal.assists[j].values[k].assists.length; l++) {
-          normal.assists[j].values[k].assists[l].checked =
-            selected.assists[j].values[k].assists[l].checked;
-          normal.assists[j].values[k].assists[l].optional =
-            selected.assists[j].values[k].assists[l].optional;
+      const assist = normal.assists[j];
+      const selectedAssist = selected.assists[j];
+      assist.optional = selectedAssist.optional;
+      for (let k = 0; k < assist.values.length; k++) {
+        const value = assist.values[k];
+        const valueSelected = selectedAssist.values[k];
+        value.optional = valueSelected.optional;
+        for (let l = 0; l < value.assists.length; l++) {
+          value.assists[l].checked = valueSelected.assists[l].checked;
+          value.assists[l].optional = valueSelected.assists[l].optional;
         }
       }
     }
@@ -193,13 +193,8 @@ class Tab extends Component {
 
   getType({ contenidoasegudado, inmuebleasegudado }) {
     let type = 3;
-    if (inmuebleasegudado === 1 && contenidoasegudado === 1) {
-      type = 3;
-    } else if (inmuebleasegudado === 0 && contenidoasegudado === 1) {
-      type = 2;
-    } else if (inmuebleasegudado === 1 && contenidoasegudado === 0) {
-      type = 1;
-    }
+    if (inmuebleasegudado === 0 && contenidoasegudado === 1) type = 2;
+    else if (inmuebleasegudado === 1 && contenidoasegudado === 0) type = 1;
     return type;
   }
 
@@ -230,8 +225,11 @@ class Tab extends Component {
     let selected = plan && plan.plan_selected_info.Item;
     if (selected && !plansLoaded) {
       indexSelected = parseInt(selected['assists'][0]['selected_id']);
-      const plan = Coberturas.setHiredCoverages(plans[indexSelected], inmueble);
-      plans[indexSelected] = Tab.assignValuesSaved(selected, plan);
+      const mappedPlan = Coberturas.setHiredCoverages(
+        plans[indexSelected],
+        inmueble
+      );
+      plans[indexSelected] = Tab.assignValuesSaved(selected, mappedPlan);
       plans[indexSelected] = BtnContinue.toNumberCoverrange(
         plans[indexSelected]
       );
@@ -258,12 +256,14 @@ class Tab extends Component {
       let prospect = 0;
       //Validate if selected plan
       if (indexSelected !== null && i === indexSelected) {
-        prospect = await DeterminePolizaPrima.get(plans[i], quotateId).catch(
-          () => {
-            plans[i] = setPlanDefault(plans[i]);
-            return DeterminePolizaPrima.get(plans[i], quotateId);
-          }
-        );
+        prospect = await DeterminePolizaPrima.get(
+          plans[i],
+          quotateId
+          // eslint-disable-next-line no-loop-func
+        ).catch(() => {
+          plans[i] = setPlanDefault(plans[i]);
+          return DeterminePolizaPrima.get(plans[i], quotateId);
+        });
       } else {
         plans[i] = setPlanDefault(plans[i]);
         prospect = await DeterminePolizaPrima.get(plans[i], quotateId);
@@ -272,7 +272,7 @@ class Tab extends Component {
       plans[i].prima = prospect;
     }
 
-    let inspect = await Cards.getDataFromInspectionPolicy();
+    const inspect = await Cards.getDataFromInspectionPolicy();
     if (inspect !== false) {
       if (inspect[1] === 'IC') {
         //Is IC alter dedutibles of plan.

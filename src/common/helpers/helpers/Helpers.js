@@ -257,10 +257,10 @@ class Helpers {
       e.target.value = e.target.value.replace(/\.(?=\.)|G(?!^)\.|`|,/gm, '');
     }
 
-    for (let i = 0; i < els.length; i++) {
-      let events = ['input', 'change', 'paste', 'keypress'];
-      for (let j = 0; j < events.length; j++) {
-        els[i].addEventListener(events[j], validateNumber);
+    const events = ['input', 'change', 'paste', 'keypress'];
+    for (const element of els) {
+      for (const event of events) {
+        element.addEventListener(event, validateNumber);
       }
     }
   };

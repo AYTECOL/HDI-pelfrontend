@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import './Links.scss';
-// import SendMail from "../../popups/sendmail/SendMail";
 import PrevPdfPolizaPrima from '../../../../../services/PrevPdfPolizaPrima';
 import { withRouter } from 'react-router-dom';
 import store from '../../../../../store';
@@ -13,10 +12,6 @@ class Links extends Component {
     super(props);
     this.state = {};
   }
-
-  /*    openModal = () => {
-            SendMail.toggle(true);
-        };*/
 
   static async pdf(it, download = true) {
     let quote = it.props.match.params.id;

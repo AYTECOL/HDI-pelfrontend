@@ -174,14 +174,13 @@ class Asegurarcontenidos extends Component {
     const min = Masknumbermoney.formatToMask(content.min);
     const max = Masknumbermoney.formatToMask(content.max);
     const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+    const { error, active, errorValue, value } = this.state;
     return (
       <div className="row">
         <div className="col col-12  col-md-6">
           <div
             className={
-              Asegurarcontenidos.nameModel +
-              ' no-icon form-group ' +
-              this.state.error
+              Asegurarcontenidos.nameModel + ' no-icon form-group ' + error
             }
           >
             <label htmlFor={Asegurarcontenidos.nameModel}>
@@ -189,7 +188,7 @@ class Asegurarcontenidos extends Component {
             </label>
             <ul className="select-item" id={Asegurarcontenidos.nameModel}>
               <li
-                className={this.state.active === 1 ? 'active' : ''}
+                className={active === 1 ? 'active' : ''}
                 onClick={this.validateEmpty({
                   value: 1,
                   name: Asegurarcontenidos.nameModel,
@@ -198,7 +197,7 @@ class Asegurarcontenidos extends Component {
                 Si
               </li>
               <li
-                className={this.state.active === 0 ? 'active' : ''}
+                className={active === 0 ? 'active' : ''}
                 onClick={this.validateEmpty({
                   value: 0,
                   name: Asegurarcontenidos.nameModel,
@@ -209,13 +208,13 @@ class Asegurarcontenidos extends Component {
             </ul>
           </div>
         </div>
-        {this.state.active === 1 ? (
+        {active === 1 ? (
           <div className="col col-12  col-md-6">
             <div
               className={
                 Asegurarcontenidos.nameModelValue +
                 ' form-group ' +
-                (this.state.errorValue !== 0 ? 'error' : '')
+                (errorValue !== 0 ? 'error' : '')
               }
             >
               <div className="d-flex">
@@ -237,7 +236,7 @@ class Asegurarcontenidos extends Component {
                 id={Asegurarcontenidos.nameModelValue}
                 type="text"
                 className={'form-control'}
-                value={this.state.value}
+                value={value}
                 placeholder=""
                 onBlur={this.validateValue}
                 onChange={this.validateValue}
@@ -245,30 +244,22 @@ class Asegurarcontenidos extends Component {
               <small className={'form-text'}>
                 Mínimo. {min} - Máximo. {max}
               </small>
-              <small
-                className={
-                  'form-text only-errors default-error ' +
-                  (this.state.errorValue === 1 ? 'show' : 'hide')
-                }
-              >
-                Por favor Ingrese el valor asegurado de Contenidos.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (this.state.errorValue === 2 ? 'show' : 'hide')
-                }
-              >
-                Valor Asegurado de {content.name} es inferior al permitido.
-              </small>
-              <small
-                className={
-                  'form-text only-errors ' +
-                  (this.state.errorValue === 3 ? 'show' : 'hide')
-                }
-              >
-                Valor Asegurado de {content.name} es superior al permitido.
-              </small>
+
+              {errorValue === 1 && (
+                <small className={'form-text only-errors default-error show'}>
+                  Por favor Ingrese el valor asegurado de Contenidos.
+                </small>
+              )}
+              {errorValue === 2 && (
+                <small className={'form-text only-errors show'}>
+                  Valor Asegurado de {content.name} es inferior al permitido.
+                </small>
+              )}
+              {errorValue === 3 && (
+                <small className={'form-text only-errors show '}>
+                  Valor Asegurado de {content.name} es superior al permitido.
+                </small>
+              )}
             </div>
           </div>
         ) : (

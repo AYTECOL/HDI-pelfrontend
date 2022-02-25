@@ -7,9 +7,7 @@ const Url = '/quote-all-quotes/';
 class GetQuote {
   static async get() {
     let queryString = window.location.search.replace('?', '').split('&');
-    let dataRquest = await AccessToken.get(
-      queryString[0].replace('refer=', '')
-    );
+    await AccessToken.get(queryString[0].replace('refer=', ''));
     const accessToken = localStorage.getItem('JaccessToken') || '';
     let authHeader = new AuthHeader();
     authHeader = authHeader.generateAuthCode();
