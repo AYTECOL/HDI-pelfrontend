@@ -116,8 +116,8 @@ class BtnContinue extends PureComponent {
         dataUser['sarlaft_document_url'] = persons[i]['sarlaft_document_url'];
       if (typeof persons[i]['sarlfalt_url'] !== 'undefined')
         dataUser['sarlaft_document_url'] = persons[i]['sarlfalt_url'];
-      for (let i in dataUser) if (dataUser[i] === '""') dataUser[i] = ' ';
-      for (let i in dataUser) if (dataUser[i] === '') dataUser[i] = ' ';
+      for (let j in dataUser)
+        if (dataUser[j] === '""' || dataUser[j] === '') dataUser[j] = ' ';
       if (dataUser.role.indexOf(5) > -1 || dataUser.role.indexOf(6) > -1) {
         additional.push(dataUser);
       }
@@ -128,10 +128,10 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document_type == '37'
+              +dataUser.document_type === 37
                 ? dataUser.document.substring(0, dataUser.document.length - 1)
                 : dataUser.document,
-              dataUser.document_type == '37'
+              +dataUser.document_type === 37
                 ? dataUser.businessname
                 : dataUser.first_last_name
             )
@@ -143,10 +143,10 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document_type == '37'
+              +dataUser.document_type === 37
                 ? dataUser.document.substring(0, dataUser.document.length - 1)
                 : dataUser.document,
-              dataUser.document_type == '37'
+              +dataUser.document_type === 37
                 ? dataUser.businessname
                 : dataUser.first_last_name
             )
@@ -157,10 +157,10 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document_type == '37'
+              +dataUser.document_type === 37
                 ? dataUser.document.substring(0, dataUser.document.length - 1)
                 : dataUser.document,
-              dataUser.document_type == '37'
+              +dataUser.document_type === 37
                 ? dataUser.businessname
                 : dataUser.first_last_name
             )
@@ -198,7 +198,7 @@ class BtnContinue extends PureComponent {
           validatePersons.push(
             this.validateData(
               dataUser.document_type,
-              dataUser.document_type == '37'
+              +dataUser.document_type === 37
                 ? dataUser.document.substring(0, dataUser.document.length - 1)
                 : dataUser.document,
               dataUser.businessname

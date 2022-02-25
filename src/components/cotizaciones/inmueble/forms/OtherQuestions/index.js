@@ -64,25 +64,27 @@ class OtherQuestions extends Component {
   };
 
   getQuestions = () => {
-    const questions = new Map();
+    const questionsValue = new Map();
     const { value } = this.props;
     if (value instanceof Array)
-      value.forEach(({ id, value }) => questions.set(id, value));
-    return questions;
+      value.forEach(({ id, value: questionValue }) =>
+        questionsValue.set(id, questionValue)
+      );
+    return questionsValue;
   };
 
-  mapQuestions = (questions) => {
+  mapQuestions = (questionsValue) => {
     const newQuestions = [];
-    questions.forEach((value, id) => {
+    questionsValue.forEach((value, id) => {
       newQuestions.push({ id, value });
     });
     return newQuestions;
   };
 
   setQuestion = (id, value) => {
-    const questions = this.getQuestions();
-    questions.set(id, value);
-    this.changeValue(this.mapQuestions(questions));
+    const questionsValue = this.getQuestions();
+    questionsValue.set(id, value);
+    this.changeValue(this.mapQuestions(questionsValue));
   };
 
   render() {

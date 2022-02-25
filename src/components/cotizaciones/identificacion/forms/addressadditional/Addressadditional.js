@@ -27,8 +27,6 @@ class Addressadditional extends Component {
     });
   }
 
-  componentDidUpdate() {}
-
   componentWillUnmount() {
     this.unsubscribe();
   }

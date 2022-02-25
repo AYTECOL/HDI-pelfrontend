@@ -30,7 +30,7 @@ class Address extends Component {
     const prevIdentification = this.props;
     const { city, department } = nextProps;
     let disabled = false;
-    if (!city && !department) disabled = false;
+    if (!city && !department) disabled = true;
     nextState.disabled = disabled;
     nextState.errors = disabled ? [] : nextState.errors;
     if (

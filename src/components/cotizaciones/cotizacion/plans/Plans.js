@@ -72,7 +72,11 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    new Sticky('wrapper-tabs');
+    this.sticky = new Sticky('wrapper-tabs');
+  }
+
+  componentWillUnmount() {
+    if (this.sticky) this.sticky.destroy();
   }
 
   changeIndexPlan = (newIndex) => async (e) => {

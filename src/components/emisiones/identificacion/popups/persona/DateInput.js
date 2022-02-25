@@ -1,12 +1,10 @@
 import React from 'react';
+import moment from 'moment';
 import classNames from 'classnames';
-import MomentJs from 'moment';
 import DatePicker from 'react-datepicker';
 import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
-import moment from 'moment';
 
 import { fieldsNames } from './constants';
-
 export const DateInput = (props) => {
   const participationPercentages =
     props.isActived(fieldsNames.personalAccidents) ||
@@ -18,7 +16,7 @@ export const DateInput = (props) => {
   const className = props.hasErrorAddClass('fechadenacimiento');
   let selected = initialDate;
   if (fechadenacimiento) {
-    const date = MomentJs(fechadenacimiento, 'YYYY-MM-DD');
+    const date = moment(fechadenacimiento, 'YYYY-MM-DD');
     if (date.isValid()) {
       selected = date.toDate();
     }
@@ -39,7 +37,7 @@ export const DateInput = (props) => {
         scrollableYearDropdown
         yearDropdownItemNumber={100}
         maxDate={new Date()}
-        startDate={MomentJs().subtract(18, 'years').toDate()}
+        startDate={moment().subtract(18, 'years').toDate()}
         disabled={fechadenacimientoDisabled}
         className={
           'form-control ' + (fechadenacimientoDisabled ? 'disabled' : '')

@@ -12,7 +12,10 @@ import Btns from '../forms/btncontinue/BtnContinue';
 import Risk from '../../../../services/AllRisks';
 
 import './Index.scss';
-import { saveInmuebleValue, typeInmueble } from '../../../../actions';
+import {
+  saveInmuebleValue,
+  typeInmueble as typeInmuebleAction,
+} from '../../../../actions';
 import Loading from '../../../globals/loading/Loading';
 
 class Index extends Component {
@@ -46,7 +49,7 @@ class Index extends Component {
     let item = +option.riskId;
     let type = +option.riskId;
     store.dispatch((dispatch) => {
-      dispatch(typeInmueble(item));
+      dispatch(typeInmuebleAction(item));
       dispatch(
         saveInmuebleValue({
           name: 'type_risk',

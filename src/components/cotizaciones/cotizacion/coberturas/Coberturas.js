@@ -275,7 +275,8 @@ class Coberturas extends Component {
           if (opt.id === 1) {
             coverages[key].values[k].hired = inmueble.inmuebleasegudado === 1;
             //Contenidos
-          } else if (opt.id === 2) {
+            //Hurto siempre basado en hurto calificado
+          } else if (opt.id === 2 || opt.id === 5) {
             coverages[key].values[k].hired = inmueble.contenidoasegudado === 1;
             //Obras
           } else if (opt.id === 3) {
@@ -285,9 +286,6 @@ class Coberturas extends Component {
           } else if (opt.id === 4) {
             coverages[key].values[k].hired =
               inmueble.inmuebleasegudadotelefonos === 1;
-            //Hurto siempre basado en hurto calificado
-          } else if (opt.id === 5) {
-            coverages[key].values[k].hired = inmueble.contenidoasegudado === 1;
             //Joyas
           } else if (opt.id === 6) {
             coverages[key].values[k].hired =
@@ -525,13 +523,10 @@ class Coberturas extends Component {
          */
         function getCoverageByCode(code) {
           const coverages = plan.coverages;
-          for (const Itemcoverage of coverages)
-            if (Itemcoverage.values)
-              for (let j = 0; j < coverage.values.length; j++) {
-                if (Itemcoverage.values[j].code === code) {
-                  return Itemcoverage;
-                }
-              }
+          for (const item of coverages)
+            if (item.values)
+              for (const value of item.values)
+                if (value.code === code) return item;
         }
         const coverage = getCoverageByCode(9667);
         if (coverage && coverage.values) {
@@ -617,23 +612,19 @@ class Coberturas extends Component {
       planValue.value_show = Masknumbermoney.formatToMask(value);
       planValue.changed = true;
       for (let j = 0; j < plan.coverages.length; j++) {
-        if (
-          plan.coverages[j].code == 9691 ||
-          plan.coverages[j].code_content == 9691
-        ) {
-          for (let k = 0; k < plan.coverages[j].values.length; k++) {
-            if (plan.coverages[j].values[k].code == 9688) {
-              if (planValue.code == 9692) {
-                plan.coverages[j].values[k].value_show = planValue.value_show;
-                plan.coverages[j].values[k].value_to_quotate =
-                  planValue.value_to_quotate;
+        const coverage = plan.coverages[j];
+        if (+coverage.code === 9691 || +coverage.code_content === 9691) {
+          for (const value of coverage.values) {
+            if (+value.code === 9688) {
+              if (+planValue.code === 9692) {
+                value.value_show = planValue.value_show;
+                value.value_to_quotate = planValue.value_to_quotate;
               }
             }
-            if (plan.coverages[j].values[k].code == 9687) {
-              if (planValue.code == 3017) {
-                plan.coverages[j].values[k].value_show = planValue.value_show;
-                plan.coverages[j].values[k].value_to_quotate =
-                  planValue.value_to_quotate;
+            if (+value.code === 9687) {
+              if (+planValue.code === 3017) {
+                value.value_show = planValue.value_show;
+                value.value_to_quotate = planValue.value_to_quotate;
               }
             }
           }
@@ -728,7 +719,7 @@ class Coberturas extends Component {
 
   render() {
     const { index } = this.props;
-    const { errorRateCalculated } = this.state;
+    const { errorRateCalculated, error } = this.state;
 
     return (
       <div className="row row-max tabs-cotizaciones row_tab_0">
@@ -757,10 +748,10 @@ class Coberturas extends Component {
                   <div className={'rowor'} key={key}>
                     <div className={'row'}>
                       <div
-                        className={
-                          'col first items-checkboxes ' +
-                          (option.optional === true ? '' : ' disabled-item')
-                        }
+                        className={clsx(
+                          'col first items-checkboxes',
+                          option.optional && 'disabled-item'
+                        )}
                       >
                         <div className="form-group">
                           <input
@@ -779,103 +770,90 @@ class Coberturas extends Component {
                         </div>
                       </div>
                       <div
-                        className={
-                          'col col-12 col-sm-12 col-md-3 col-lg-3 middle ' +
-                          (option.checked === false ? ' disabled-item' : '') +
-                          (option.optional === true ? '' : ' disabled-item')
-                        }
+                        className={clsx(
+                          'col col-12 col-sm-12 col-md-3 col-lg-3 middle',
+                          (!option.checked || option.optional) &&
+                            'disabled-item'
+                        )}
                       >
                         {typeof option.values !== 'undefined' && (
                           <Fragment>
-                            {option.values.map(
-                              (opt, k) =>
-                                typeof opt.hired !== 'undefined' &&
-                                opt.hired === true && (
-                                  <div
-                                    className={
-                                      'form-group ' +
-                                      (typeof opt.values === 'undefined'
-                                        ? ''
-                                        : 'input-select') +
-                                      (opt.errors && opt.errors.length > 0
-                                        ? ' error'
-                                        : '') +
-                                      (Coberturas.isDisabled(option, opt)
-                                        ? ' disabled-item'
-                                        : '')
-                                    }
-                                    key={k}
-                                  >
-                                    <label htmlFor={'item' + k + '_' + key}>
-                                      {opt.name}
-                                    </label>
-                                    {typeof opt.values === 'undefined' ? (
-                                      <input
-                                        name={'item' + k + '_' + key}
-                                        id={'item' + k + '_' + key}
-                                        placeholder={opt.value_show}
-                                        onBlur={
-                                          Coberturas.isDisabled(option, opt)
-                                            ? null
-                                            : this.blur
-                                        }
-                                        value={
-                                          typeof opt.value_show === 'undefined'
-                                            ? '$0'
-                                            : opt.value_show
-                                        }
-                                        onChange={(e) =>
-                                          this.inputChange(e, k, key, 1)
-                                        }
-                                        disabled={Coberturas.isDisabled(
-                                          option,
-                                          opt
-                                        )}
-                                        type="text"
-                                        className={'form-control'}
-                                      />
-                                    ) : (
-                                      <select
-                                        className={'form-control'}
-                                        name={'item' + k + '_' + key}
-                                        id={'item' + k + '_' + key}
-                                        disabled={
-                                          option.optional === false ||
-                                          option.checked === false
-                                        }
-                                        value={Coberturas.getSelectFields(
-                                          opt.values
-                                        )}
-                                        onChange={(e) =>
-                                          this.inputChange(e, k, key, 2)
-                                        }
-                                      >
-                                        {opt.values.map(
-                                          (optValue, keyValue) => (
-                                            <option
-                                              key={keyValue}
-                                              value={keyValue}
-                                            >
-                                              {Masknumbermoney.formatToMask(
-                                                optValue.limit
-                                              )}
-                                            </option>
-                                          )
-                                        )}
-                                      </select>
-                                    )}
-                                    {opt.errors &&
-                                      opt.errors.map((item, i) => (
-                                        <small
-                                          key={i}
-                                          className={'form-text only-errors'}
-                                        >
-                                          {item}
-                                        </small>
+                            {option.values.map((opt, k) => {
+                              if (opt.hired === false) return null;
+                              const disabled = Coberturas.isDisabled(
+                                option,
+                                opt
+                              );
+                              const value =
+                                typeof opt.value_show === 'undefined'
+                                  ? '$0'
+                                  : opt.value_show;
+                              return (
+                                <div
+                                  className={clsx(
+                                    'form-group',
+                                    opt.values && 'input-select',
+                                    opt.errors &&
+                                      !!opt.errors.length &&
+                                      'error',
+                                    disabled && 'disabled-item'
+                                  )}
+                                  key={k}
+                                >
+                                  <label htmlFor={'item' + k + '_' + key}>
+                                    {opt.name}
+                                  </label>
+                                  {typeof opt.values === 'undefined' ? (
+                                    <input
+                                      name={'item' + k + '_' + key}
+                                      id={'item' + k + '_' + key}
+                                      placeholder={opt.value_show}
+                                      onBlur={(!disabled && this.blur) || null}
+                                      value={value}
+                                      onChange={(e) =>
+                                        this.inputChange(e, k, key, 1)
+                                      }
+                                      disabled={disabled}
+                                      type="text"
+                                      className="form-control"
+                                    />
+                                  ) : (
+                                    <select
+                                      className={'form-control'}
+                                      name={'item' + k + '_' + key}
+                                      id={'item' + k + '_' + key}
+                                      disabled={
+                                        option.optional === false ||
+                                        option.checked === false
+                                      }
+                                      value={Coberturas.getSelectFields(
+                                        opt.values
+                                      )}
+                                      onChange={(e) =>
+                                        this.inputChange(e, k, key, 2)
+                                      }
+                                    >
+                                      {opt.values.map((optValue, keyValue) => (
+                                        <option key={keyValue} value={keyValue}>
+                                          {Masknumbermoney.formatToMask(
+                                            optValue.limit
+                                          )}
+                                        </option>
                                       ))}
-                                  </div>
-                                )
-                            )}
+                                    </select>
+                                  )}
+                                  {opt.errors &&
+                                    opt.errors.map((item, i) => (
+                                      <small
+                                        key={i}
+                                        className={'form-text only-errors'}
+                                      >
+                                        {item}
+                                      </small>
+                                    ))}
+                                </div>
+                              );
+                            })}
                           </Fragment>
                         )}
                       </div>
@@ -884,7 +862,7 @@ class Coberturas extends Component {
                           <div
                             className={clsx(
                               'pisonumero input-select form-group',
-                              this.state.error && 'error'
+                              error && 'error'
                             )}
                           >
                             <label htmlFor={'itemdeducible' + key}>

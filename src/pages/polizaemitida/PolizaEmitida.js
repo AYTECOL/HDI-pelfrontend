@@ -3,7 +3,6 @@ import './PolizaEmitida.scss';
 import SendMail from '../../components/cotizaciones/cotizacion/popups/sendmail/SendMail';
 import Loading from '../../components/globals/loading/Loading';
 import QuoteIussedById from '../../services/QuoteIussedById';
-import PolizaAnexoHogar from '../../services/PolizaAnexoHogar';
 import PdfEndosoHogar from '../../services/PdfEndosoHogar';
 import PdfPolizaHogar from '../../services/PdfPolizaHogar';
 import Counter from '../../services/Counter';
@@ -29,7 +28,7 @@ class PolizaEmitida extends Component {
     );
     let endoso = undefined;
 
-    if (urlCodePage % 2 == 0) {
+    if (urlCodePage % 2 === 0) {
       window.open(
         'https://www.libertyseguros.co/encuesta-pe-hogar-co',
         '_blank'

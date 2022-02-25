@@ -224,7 +224,7 @@ class Cards extends Component {
     e.target.value = value;
     let parent = this.state.items[index].parent;
     let error = parent.validateField(target.value);
-    if (error != 0 && e.type === 'blur') {
+    if (+error !== 0 && e.type === 'blur') {
       Helpers.disabled('.generatepdf');
       Helpers.disabled('.next-step');
       return;
