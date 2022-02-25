@@ -1,84 +1,88 @@
-import React, {Component} from "react";
-import {Route, Switch, withRouter} from "react-router-dom";
+import React, { Component } from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
-import Header from "./components/globals/header/Header";
-import Footer from "./components/globals/footer/Footer";
-import Loading from "./components/globals/loading/Loading";
+import Header from './components/globals/header/Header';
+import Footer from './components/globals/footer/Footer';
+import Loading from './components/globals/loading/Loading';
 
-import Cotizacion from "./pages/cotizacion/Cotizacion";
-import Home from "./pages/home/Home";
-import PolizaEmitida from "./pages/polizaemitida/PolizaEmitida";
-import Emision from "./pages/emision/Emision";
-import NotFound from "./pages/notfound/NotFound";
-import ErrorNetwork from "./pages/errornetwork/ErrorNetwork";
-import ConsultaPersonas from "./services/ConsultaPersonas";
+import Cotizacion from './pages/cotizacion/Cotizacion';
+import Home from './pages/home/Home';
+import PolizaEmitida from './pages/polizaemitida/PolizaEmitida';
+import Emision from './pages/emision/Emision';
+import NotFound from './pages/notfound/NotFound';
+import ErrorNetwork from './pages/errornetwork/ErrorNetwork';
+import ConsultaPersonas from './services/ConsultaPersonas';
 
 class App extends Component {
-    _isMounted = false;
+  _isMounted = false;
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: null
-        };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: null,
+    };
+  }
 
-    componentDidMount() {
-        this._isMounted = true;
-        this.getUser();
-    }
+  componentDidMount() {
+    this._isMounted = true;
+    this.getUser();
+  }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-        this.unlisten();
-    }
+  componentWillUnmount() {
+    this._isMounted = false;
+    this.unlisten();
+  }
 
-    componentWillMount() {
-        this.unlisten = this.props.history.listen((location, action) => {
-            window.scroll({
-                top: 0,
-                left: 0,
-            });
+  componentWillMount() {
+    this.unlisten = this.props.history.listen((location, action) => {
+      window.scroll({
+        top: 0,
+        left: 0,
+      });
+    });
+  }
+
+  async getUser() {
+    if (this._isMounted === true && this.state.data === null) {
+      const { pathname } = this.props.location;
+      if (
+        pathname === '/' ||
+        pathname.indexOf('exito') !== -1 ||
+        pathname.indexOf('cotizacion') !== -1 ||
+        pathname.indexOf('emision') !== -1
+      ) {
+        this.setState({
+          ...this.state,
+          data: await ConsultaPersonas.getUser(),
         });
+      }
     }
+  }
 
-    async getUser() {
-        if (this._isMounted === true && this.state.data === null) {
-            const {pathname} = this.props.location;
-            if (
-                pathname === "/" ||
-                pathname.indexOf("exito") !== -1 ||
-                pathname.indexOf("cotizacion") !== -1 ||
-                pathname.indexOf("emision") !== -1
-            ) {
-                this.setState({
-                    ...this.state,
-                    data: await ConsultaPersonas.getUser()
-                });
-            }
-        }
-    }
-
-    render() {
-        return (
-            <div className="App">
-                <Header data={this.state.data}/>
-                <main>
-                    <Switch>
-                        <Route exact path="/exito/:polizaId/:emmitedId" component={PolizaEmitida}/>
-                        <Route exact path="/exito/:polizaId" component={PolizaEmitida}/>
-                        <Route exact path="/cotizacion/:step/:id" component={Cotizacion}/>
-                        <Route exact path="/emision/:step/:id" component={Emision}/>
-                        <Route exact path="/error" component={ErrorNetwork}/>
-                        <Route exact path="/" component={Home}/>
-                        <Route component={NotFound}/>
-                    </Switch>
-                </main>
-                <Footer/>
-                <Loading/>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="App">
+        <Header data={this.state.data} />
+        <main>
+          <Switch>
+            <Route
+              exact
+              path="/exito/:polizaId/:emmitedId"
+              component={PolizaEmitida}
+            />
+            <Route exact path="/exito/:polizaId" component={PolizaEmitida} />
+            <Route exact path="/cotizacion/:step/:id" component={Cotizacion} />
+            <Route exact path="/emision/:step/:id" component={Emision} />
+            <Route exact path="/error" component={ErrorNetwork} />
+            <Route exact path="/" component={Home} />
+            <Route component={NotFound} />
+          </Switch>
+        </main>
+        <Footer />
+        <Loading />
+      </div>
+    );
+  }
 }
 
 export default withRouter(App);

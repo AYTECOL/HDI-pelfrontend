@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import "./PolizaEmitida.scss";
-import SendMail from "../../components/cotizaciones/cotizacion/popups/sendmail/SendMail";
-import Loading from "../../components/globals/loading/Loading";
-import QuoteIussedById from "../../services/QuoteIussedById";
-import PolizaAnexoHogar from "../../services/PolizaAnexoHogar";
-import PdfEndosoHogar from "../../services/PdfEndosoHogar";
-import PdfPolizaHogar from "../../services/PdfPolizaHogar";
-import Counter from "../../services/Counter";
-import store from "../../store";
-import { resetStore } from "../../actions";
-import Helpers from "../../common/helpers/helpers/Helpers";
+import React, { Component } from 'react';
+import './PolizaEmitida.scss';
+import SendMail from '../../components/cotizaciones/cotizacion/popups/sendmail/SendMail';
+import Loading from '../../components/globals/loading/Loading';
+import QuoteIussedById from '../../services/QuoteIussedById';
+import PolizaAnexoHogar from '../../services/PolizaAnexoHogar';
+import PdfEndosoHogar from '../../services/PdfEndosoHogar';
+import PdfPolizaHogar from '../../services/PdfPolizaHogar';
+import Counter from '../../services/Counter';
+import store from '../../store';
+import { resetStore } from '../../actions';
+import Helpers from '../../common/helpers/helpers/Helpers';
 
 class PolizaEmitida extends Component {
   state = {
     quote: this.props.match.params.polizaId,
     data: {},
-    emitedPolicy: 0
+    emitedPolicy: 0,
   };
 
   async getData() {
@@ -24,28 +24,33 @@ class PolizaEmitida extends Component {
 
     let { params } = this.props.match;
     let { emmitedId: emitedPolicy } = params;
-    let urlCodePage = parseInt(params.emmitedId.substr(params.emmitedId.length - 1))
+    let urlCodePage = parseInt(
+      params.emmitedId.substr(params.emmitedId.length - 1)
+    );
     let endoso = undefined;
 
     if (urlCodePage % 2 == 0) {
-      window.open('https://www.libertyseguros.co/encuesta-pe-hogar-co', '_blank')
+      window.open(
+        'https://www.libertyseguros.co/encuesta-pe-hogar-co',
+        '_blank'
+      );
     }
 
-    if (typeof data.quote_iussed_info !== "undefined") {
+    if (typeof data.quote_iussed_info !== 'undefined') {
       if (
-        typeof data.quote_iussed_info.Item !== "undefined" &&
-        typeof data.quote_iussed_info.Item.onerous !== "undefined"
+        typeof data.quote_iussed_info.Item !== 'undefined' &&
+        typeof data.quote_iussed_info.Item.onerous !== 'undefined'
       ) {
         if (data.quote_iussed_info.Item.onerous.length > 0) {
           endoso = true;
         }
       }
     }
-    this.setState(state => ({
+    this.setState((state) => ({
       ...state,
       data,
       endoso,
-      emitedPolicy
+      emitedPolicy,
     }));
     Loading.toggle(false);
   }
@@ -61,11 +66,11 @@ class PolizaEmitida extends Component {
   getPdfEndoso = async () => {
     let pdfEndoso = await PdfEndosoHogar.get(this.state.quote);
 
-    let a = document.createElement("a");
-    a.style.display = "none";
+    let a = document.createElement('a');
+    a.style.display = 'none';
     document.body.appendChild(a);
-    a.href = "data:application/pdf;base64," + pdfEndoso;
-    a.setAttribute("download", "BeneficiarioOnerosoHogar.pdf");
+    a.href = 'data:application/pdf;base64,' + pdfEndoso;
+    a.setAttribute('download', 'BeneficiarioOnerosoHogar.pdf');
     a.click();
     document.body.removeChild(a);
     Loading.toggle(false);
@@ -74,14 +79,14 @@ class PolizaEmitida extends Component {
   getPdf = async () => {
     Loading.toggle(true);
     try {
-      let a = document.createElement("a");
+      let a = document.createElement('a');
 
       let pdf = await PdfPolizaHogar.get(this.state.quote);
-      a = document.createElement("a");
-      a.style.display = "none";
+      a = document.createElement('a');
+      a.style.display = 'none';
       document.body.appendChild(a);
-      a.href = "data:application/pdf;base64," + pdf;
-      a.setAttribute("download", "PdfPolizaPrima.pdf");
+      a.href = 'data:application/pdf;base64,' + pdf;
+      a.setAttribute('download', 'PdfPolizaPrima.pdf');
       a.click();
       document.body.removeChild(a);
 
@@ -97,7 +102,7 @@ class PolizaEmitida extends Component {
     store.dispatch(resetStore());
     try {
       let number = await Counter.get();
-      if (typeof number.currentValue !== "undefined") {
+      if (typeof number.currentValue !== 'undefined') {
         number = number.currentValue.toString();
         history.push(`/cotizacion/1/${number}`);
       }
@@ -124,14 +129,14 @@ class PolizaEmitida extends Component {
               </div>
             </div>
 
-            <div className={"row text-center links-row"}>
+            <div className={'row text-center links-row'}>
               <div className="col col-sm-12 col-md-12 col-lg-12">
                 <div className="generatepdf link-item">
                   <p onClick={this.getPdf}>
                     <i>&nbsp;</i> Descargar PDFS
                   </p>
                   <br />
-                  {typeof this.state.endoso !== "undefined" && (
+                  {typeof this.state.endoso !== 'undefined' && (
                     <p onClick={this.getPdfEndoso}>
                       <i>&nbsp;</i> PDF Anexo Beneficiario Oneroso
                     </p>
@@ -143,16 +148,16 @@ class PolizaEmitida extends Component {
               </div>
             </div>
 
-            <div className={"row text-center"}>
+            <div className={'row text-center'}>
               <div className="col col-sm-12 col-md-12 col-lg-12">
                 <button
                   onClick={this.getNumber}
                   type="button"
-                  className={"btn btn-default"}
+                  className={'btn btn-default'}
                 >
                   Nueva cotización
                 </button>
-                <a href={"/"} type="button" className={"btn btn-primary"}>
+                <a href={'/'} type="button" className={'btn btn-primary'}>
                   Ir a mis negocios
                 </a>
               </div>

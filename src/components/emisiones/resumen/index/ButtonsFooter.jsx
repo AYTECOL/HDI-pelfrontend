@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 //Component
-import BtnContinue from "../forms/btncontinue/BtnContinue";
+import BtnContinue from '../forms/btncontinue/BtnContinue';
 
 export const ButtonsFooter = () => {
   const [accept, setAccept] = React.useState(false);
   return (
     <div className="row">
       <div className="col-12 justify-content text-center">
-        <div className={"col first items-checkboxes "}>
+        <div className={'col first items-checkboxes '}>
           <div className="col first items-checkboxes ">
             <div className="d-flex form-group p-3">
               <input
                 className="col-auto m-auto"
                 type="checkbox"
                 checked={accept}
-                name={"itemcheck-condtions"}
-                id={"itemcheck-condtions"}
+                name={'itemcheck-condtions'}
+                id={'itemcheck-condtions'}
                 onChange={() => {
                   setAccept(!accept);
                 }}

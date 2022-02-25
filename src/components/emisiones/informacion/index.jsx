@@ -414,7 +414,8 @@ class Index extends React.Component {
    *
    * @param {number} key
    */
-  changeTextFile = (key) =>
+  changeTextFile =
+    (key) =>
     /**
      *
      * @param {React.ChangeEvent<HTMLInputElement>} e

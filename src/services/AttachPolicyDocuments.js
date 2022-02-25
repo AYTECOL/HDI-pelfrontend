@@ -72,7 +72,8 @@ class AttachPolicyDocuments {
           responseType: 'arraybuffer',
         });
         const file = new Blob([arraybuffer]);
-        const signedUrlAttachDocument = await AttachPolicyDocuments.getSignedUrlAttachDocuments();
+        const signedUrlAttachDocument =
+          await AttachPolicyDocuments.getSignedUrlAttachDocuments();
         await Axios.put(signedUrlAttachDocument.url, file);
         const body = getArgumentsBinaryFile(
           {

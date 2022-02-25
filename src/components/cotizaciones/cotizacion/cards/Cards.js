@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import "./Cards.scss";
-import { withRouter } from "react-router-dom";
-import store from "../../../../store";
-import AllInsurableLimits from "../../../../services/AllInsurableLimits";
-import MobileContents from "../../inmueble/forms/MobileContents";
-import Masknumbermoney from "../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import { saveInmuebleValue } from "../../../../actions";
-import InspectionPolicy from "../../../../services/InspectionPolicy";
-import AllBuildYears from "../../../../services/AllBuildYears";
-import Plans from "../plans/Plans";
-import Coberturas from "../coberturas/Coberturas";
-import { IDS_COVERAGE_VALUES } from "../../../../common";
-import { getItems } from "./getItems";
-import Helpers from "../../../../common/helpers/helpers/Helpers";
+import React, { Component } from 'react';
+import './Cards.scss';
+import { withRouter } from 'react-router-dom';
+import store from '../../../../store';
+import AllInsurableLimits from '../../../../services/AllInsurableLimits';
+import MobileContents from '../../inmueble/forms/MobileContents';
+import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
+import { saveInmuebleValue } from '../../../../actions';
+import InspectionPolicy from '../../../../services/InspectionPolicy';
+import AllBuildYears from '../../../../services/AllBuildYears';
+import Plans from '../plans/Plans';
+import Coberturas from '../coberturas/Coberturas';
+import { IDS_COVERAGE_VALUES } from '../../../../common';
+import { getItems } from './getItems';
+import Helpers from '../../../../common/helpers/helpers/Helpers';
 class Cards extends Component {
   constructor(props) {
     super(props);
@@ -22,11 +22,11 @@ class Cards extends Component {
       Inmueble: store.getState().Inmueble,
       InmuebleOk: false,
       showInspect: false,
-      inspection_detail: "",
-      inspection: ""
+      inspection_detail: '',
+      inspection: '',
     };
     for (const item of this.state.items) {
-      item.value = "";
+      item.value = '';
       item.active = true;
       item.errorValue = 0;
       item.inactiveToggle = false;
@@ -39,18 +39,18 @@ class Cards extends Component {
 
   static async getDataFromInspectionPolicy() {
     let inspect = await InspectionPolicy.get();
-    if (inspect !== null && typeof inspect !== "undefined") {
-      if (typeof inspect[1] !== "undefined" && inspect[1] !== "NA") {
+    if (inspect !== null && typeof inspect !== 'undefined') {
+      if (typeof inspect[1] !== 'undefined' && inspect[1] !== 'NA') {
         store.dispatch(
           saveInmuebleValue({
             value: inspect[1],
-            name: "inspection_policies"
+            name: 'inspection_policies',
           })
         );
         store.dispatch(
           saveInmuebleValue({
             value: true,
-            name: "max_values_dedu"
+            name: 'max_values_dedu',
           })
         );
         return inspect;
@@ -65,7 +65,7 @@ class Cards extends Component {
   async getAllBuildYears() {
     this.setState({
       ...this.state,
-      anoconstruidos: await AllBuildYears.get()
+      anoconstruidos: await AllBuildYears.get(),
     });
   }
 
@@ -141,14 +141,14 @@ class Cards extends Component {
     newItems[0].inactiveToggle = inactiveToggle;
     newItems[1].inactiveToggle = newItems[0].active === true;
     for (let i = 2; i < newItems.length; i++)
-      newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === "";
+      newItems[i].inactiveAdd = newItems[1].active || newItems[1].value === '';
     return newItems;
   }
 
   validateToggle() {
     this.setState({
       ...this.state,
-      items: this.getItemsActive(this.state.items)
+      items: this.getItemsActive(this.state.items),
     });
   }
 
@@ -158,23 +158,23 @@ class Cards extends Component {
     store.dispatch(
       saveInmuebleValue({
         value: newItems[index].active === true ? 0 : 1,
-        name: newItems[index].parent.nameModel
+        name: newItems[index].parent.nameModel,
       })
     );
     store.dispatch(
       saveInmuebleValue({
-        value: "",
-        name: newItems[index].parent.nameModelValue
+        value: '',
+        name: newItems[index].parent.nameModelValue,
       })
     );
-    newItems[index].value = "";
+    newItems[index].value = '';
     this.setState({
       ...this.state,
-      items: newItems
+      items: newItems,
     });
   }
 
-  toggleItem = index => e => {
+  toggleItem = (index) => (e) => {
     const { type } = e;
     let active = this.state.items[index].active;
     let newItems = this.state.items;
@@ -215,20 +215,19 @@ class Cards extends Component {
         }
       }
     );
-
   };
 
-  validateValue = index => e => {
+  validateValue = (index) => (e) => {
     let target = e.target;
     const { type } = e;
     const value = Masknumbermoney.formatToMask(target.value);
     e.target.value = value;
     let parent = this.state.items[index].parent;
     let error = parent.validateField(target.value);
-    if (error != 0 && e.type === "blur") {
+    if (error != 0 && e.type === 'blur') {
       Helpers.disabled('.generatepdf');
       Helpers.disabled('.next-step');
-      return ;
+      return;
     }
     let component = new parent();
     if (type === 'blur') {
@@ -249,7 +248,6 @@ class Cards extends Component {
         }
       }
     );
-
   };
 
   sendAndValidate(component) {
@@ -262,21 +260,17 @@ class Cards extends Component {
     let name = component.nameModel;
 
     let type = null;
-    const {
-      contents,
-      simpleTheft,
-      jewelry,
-      mobileContent,
-    } = IDS_COVERAGE_VALUES;
-    if (name === "inmuebleasegudadoobras") {
+    const { contents, simpleTheft, jewelry, mobileContent } =
+      IDS_COVERAGE_VALUES;
+    if (name === 'inmuebleasegudadoobras') {
       type = 3;
-    } else if (name === "inmuebleasegudadotelefonos") {
+    } else if (name === 'inmuebleasegudadotelefonos') {
       type = 4;
-    } else if (name === "inmuebleasegudadojoyas") {
+    } else if (name === 'inmuebleasegudadojoyas') {
       type = [simpleTheft, jewelry];
-    } else if (name === "contenidoasegudado") {
+    } else if (name === 'contenidoasegudado') {
       type = [contents, simpleTheft];
-    } else if (name === "inmuebleasegudado") {
+    } else if (name === 'inmuebleasegudado') {
       type = 1;
     } else if (name === MobileContents.nameModel) {
       type = [mobileContent, jewelry];
@@ -297,17 +291,17 @@ class Cards extends Component {
             <div className="col" key={key}>
               <div
                 className={
-                  "box-col " +
-                  (this.state.items[key].active === true ? "active" : "")
+                  'box-col ' +
+                  (this.state.items[key].active === true ? 'active' : '')
                 }
               >
-                <div className={"image image-" + option.type}>&nbsp;</div>
+                <div className={'image image-' + option.type}>&nbsp;</div>
                 <p>{option.parent.name()}</p>
                 <div className="wrapper-over">
                   <div
                     className={
-                      (option.inactiveAdd === true ? "invisible" : "") +
-                      " btntoggle"
+                      (option.inactiveAdd === true ? 'invisible' : '') +
+                      ' btntoggle'
                     }
                     onClick={this.toggleItem(key)}
                   >
@@ -315,37 +309,37 @@ class Cards extends Component {
                   </div>
                   <div
                     className={
-                      "form-group " + (option.errorValue !== 0 ? "error" : "")
+                      'form-group ' + (option.errorValue !== 0 ? 'error' : '')
                     }
                   >
                     <label htmlFor="incendios">Valor</label>
                     <input
                       type="text"
-                      className={"form-control"}
+                      className={'form-control'}
                       name="incendios"
                       id="incendios"
                       value={option.value}
                       onBlur={this.validateValue(key)}
                       onChange={this.validateValue(key)}
                     />
-                    <small className={"form-text"}>
-                      Mínimo.{" "}
+                    <small className={'form-text'}>
+                      Mínimo.{' '}
                       {Masknumbermoney.formatToMask(option.parent.min())} -
-                      Máximo.{" "}
+                      Máximo.{' '}
                       {Masknumbermoney.formatToMask(option.parent.max())}
                     </small>
                     <small
                       className={
-                        "form-text only-errors " +
-                        (option.errorValue === 1 ? "show" : "hide")
+                        'form-text only-errors ' +
+                        (option.errorValue === 1 ? 'show' : 'hide')
                       }
                     >
                       Por Ingrese el valor asegurado de Teléfonos Móviles.
                     </small>
                     <small
                       className={
-                        "form-text only-errors " +
-                        (option.errorValue === 2 ? "show" : "hide")
+                        'form-text only-errors ' +
+                        (option.errorValue === 2 ? 'show' : 'hide')
                       }
                     >
                       Valor Asegurado de {option.parent.name()} es inferior al
@@ -353,8 +347,8 @@ class Cards extends Component {
                     </small>
                     <small
                       className={
-                        "form-text only-errors " +
-                        (option.errorValue === 3 ? "show" : "hide")
+                        'form-text only-errors ' +
+                        (option.errorValue === 3 ? 'show' : 'hide')
                       }
                     >
                       Valor Asegurado de {option.parent.name()} es superior al
@@ -363,7 +357,7 @@ class Cards extends Component {
                   </div>
                   <span
                     className={
-                      option.inactiveToggle === true ? "invisible" : ""
+                      option.inactiveToggle === true ? 'invisible' : ''
                     }
                     onClick={this.toggleItem(key)}
                   >
@@ -387,8 +381,8 @@ class Cards extends Component {
 
         <div
           className={
-            "row justify-content-center " +
-            (this.state.showInspect === false ? "hide" : "")
+            'row justify-content-center ' +
+            (this.state.showInspect === false ? 'hide' : '')
           }
         >
           <div className="col col-sm-12 col-md-10 col-lg-10">
@@ -400,7 +394,7 @@ class Cards extends Component {
                 <p>Más información</p>
                 <div className="span">
                   <span>?</span>
-                  {this.state.inspection === "IC" ? (
+                  {this.state.inspection === 'IC' ? (
                     <div className="text">
                       La vivienda requiere que la revisemos más al detalle, ten
                       presente los siguientes datos para poder agendar una

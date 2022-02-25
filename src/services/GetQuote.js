@@ -1,35 +1,35 @@
-import Api from "./Api";
-import Helpers from "../common/helpers/helpers/Helpers";
-import AccessToken from "../services/AccessToken";
+import Api from './Api';
+import Helpers from '../common/helpers/helpers/Helpers';
+import AccessToken from '../services/AccessToken';
 import AuthHeader from './AuthHeader';
-const Url = "/quote-all-quotes/";
+const Url = '/quote-all-quotes/';
 
 class GetQuote {
   static async get() {
-    let queryString = window.location.search.replace("?", "").split("&");
+    let queryString = window.location.search.replace('?', '').split('&');
     let dataRquest = await AccessToken.get(
-      queryString[0].replace("refer=", "")
+      queryString[0].replace('refer=', '')
     );
-    const accessToken = localStorage.getItem("JaccessToken") || "";
-    let authHeader =  new AuthHeader()
-    authHeader = authHeader.generateAuthCode()
+    const accessToken = localStorage.getItem('JaccessToken') || '';
+    let authHeader = new AuthHeader();
+    authHeader = authHeader.generateAuthCode();
     let items = await Api.get(`${Url}${accessToken}`, undefined, authHeader);
-    if (typeof items.quotations === "undefined") {
+    if (typeof items.quotations === 'undefined') {
       return [];
     } else {
-      return Helpers.orderArray(items.quotations, "quoteId", true).reverse();
+      return Helpers.orderArray(items.quotations, 'quoteId', true).reverse();
     }
   }
 
   static async getById(id) {
     try {
-      let authHeader =  new AuthHeader()
-      authHeader = authHeader.generateAuthCode()
-      let items = await Api.get("/quote/" + id, undefined, authHeader);
-      if (typeof items.quote !== "undefined") {
+      let authHeader = new AuthHeader();
+      authHeader = authHeader.generateAuthCode();
+      let items = await Api.get('/quote/' + id, undefined, authHeader);
+      if (typeof items.quote !== 'undefined') {
         items = items.quote;
-        for (let i in items) if (items[i] === '""') items[i] = "";
-        items.policy = typeof items.policy === "undefined" ? {} : items.policy;
+        for (let i in items) if (items[i] === '""') items[i] = '';
+        items.policy = typeof items.policy === 'undefined' ? {} : items.policy;
         return {
           number: items.quoteId,
           typeDocument: parseInt(items.document_type) === 37 ? 2 : 1,
@@ -46,14 +46,14 @@ class GetQuote {
             addressadditional: items.address_additional,
             object: items.person,
             emissionId: items.policy.emissionId,
-            emitedDate: items.policy.emitedDate
+            emitedDate: items.policy.emitedDate,
           },
           mapsOptions: {
             longitude: items.longitude,
             latitude: items.latitude,
             options: {
-              zoom: 20
-            }
+              zoom: 20,
+            },
           },
           stateFormIdentificacion: 1,
           showMap: true,

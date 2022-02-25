@@ -1,109 +1,134 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Counter.scss';
-import store from "../../../../../store";
+import store from '../../../../../store';
 // Components
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
-import Asegurarcontenidos from "../asegurarcontenidos/Asegurarcontenidos";
-import Asegurarjoyas from "../asegurarjoyas/Asegurarjoyas";
+import Asegurarcontenidos from '../asegurarcontenidos/Asegurarcontenidos';
+import Asegurarjoyas from '../asegurarjoyas/Asegurarjoyas';
 import MobileContents from '../MobileContents';
-import Asegurarobras from "../asegurarobras/Asegurarobras";
-import Asegurartelefonos from "../asegurartelefonos/Asegurartelefonos";
+import Asegurarobras from '../asegurarobras/Asegurarobras';
+import Asegurartelefonos from '../asegurartelefonos/Asegurartelefonos';
 import OtherQuestions from '../OtherQuestions';
 import questions from '../OtherQuestions/questions';
 
 class Counter extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      total: 14,
+      error: 0,
+      ok: 0,
+    };
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            total: 14,
-            error: 0,
-            ok: 0,
-        };
-    }
+  componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+      let storeState = store.getState();
+      let errors = 0;
+      let inmueble = storeState.Inmueble;
+      let total = 5 + questions.length;
 
-    componentDidMount() {
-        this.unsubscribe = store.subscribe(() => {
-            let storeState = store.getState();
-            let errors = 0;
-            let inmueble = storeState.Inmueble;
-            let total = 5 + questions.length;
+      if (inmueble.type_risk === 2) total++;
 
-            if (inmueble.type_risk === 2) total++;
+      if (inmueble.type_risk === 2 && inmueble.pisonumero === '') errors++;
+      if (inmueble.cojuntocerrado === '') errors++;
+      if (inmueble.construidocon === '') errors++;
+      if (inmueble.anoconstruido === '') errors++;
+      if (inmueble.zona === '') errors++;
+      if (inmueble.numerodepisos === '') errors++;
 
-            if (inmueble.type_risk === 2 && inmueble.pisonumero === "") errors++;
-            if (inmueble.cojuntocerrado === "") errors++;
-            if (inmueble.construidocon === "") errors++;
-            if (inmueble.anoconstruido === "") errors++;
-            if (inmueble.zona === "") errors++;
-            if (inmueble.numerodepisos === "") errors++;
+      if (inmueble.refuerzo === 1) {
+        total++;
+        if (inmueble.anorefuerzo === '') errors++;
+      }
 
-            if (inmueble.refuerzo === 1) {
-                total++;
-                if (inmueble.anorefuerzo === "") errors++;
-            }
+      if (
+        inmueble.inmuebleasegudado === 0 &&
+        (inmueble.contenidoasegudado === 0 ||
+          inmueble.contenidoasegudado === '')
+      ) {
+        total++;
+        errors++;
+      }
 
-            if (inmueble.inmuebleasegudado === 0 && (inmueble.contenidoasegudado === 0 || inmueble.contenidoasegudado === "")) {
-                total++;
-                errors++;
-            }
+      if (inmueble.inmuebleasegudado === 1) {
+        total++;
+        if (
+          Segurarinmueble.validateField(inmueble.inmuebleasegudadovalor) !== 0
+        )
+          errors++;
+      }
+      if (inmueble.contenidoasegudado === 1) {
+        total++;
+        if (
+          Asegurarcontenidos.validateField(inmueble.contenidoasegudadovalor) !==
+          0
+        )
+          errors++;
+      }
 
-            if (inmueble.inmuebleasegudado === 1) {
-                total++;
-                if (Segurarinmueble.validateField(inmueble.inmuebleasegudadovalor) !== 0) errors++;
-            }
-            if (inmueble.contenidoasegudado === 1) {
-                total++;
-                if (Asegurarcontenidos.validateField(inmueble.contenidoasegudadovalor) !== 0) errors++;
-            }
+      if (inmueble.inmuebleasegudadojoyas === 1) {
+        total++;
+        if (
+          Asegurarjoyas.validateField(inmueble.inmuebleasegudadojoyasvalor) !==
+          0
+        )
+          errors++;
+      }
+      if (inmueble[MobileContents.nameModel] === 1) {
+        total++;
+        if (
+          MobileContents.validateField(
+            inmueble[MobileContents.nameModelValue]
+          ) !== 0
+        )
+          errors++;
+      }
+      const value = inmueble[OtherQuestions.nameModelValue] || [];
+      const errorsCount = OtherQuestions.unansweredQuestions(value);
+      if (!!errorsCount) {
+        errors += errorsCount;
+      }
+      if (inmueble.inmuebleasegudadoobras === 1) {
+        total++;
+        if (
+          Asegurarobras.validateField(inmueble.inmuebleasegudadoobrasvalor) !==
+          0
+        )
+          errors++;
+      }
+      if (inmueble.inmuebleasegudadotelefonos === 1) {
+        total++;
+        if (
+          Asegurartelefonos.validateField(
+            inmueble.inmuebleasegudadotelefonosvalor
+          ) !== 0
+        )
+          errors++;
+      }
 
-            if (inmueble.inmuebleasegudadojoyas === 1) {
-                total++;
-                if (Asegurarjoyas.validateField(inmueble.inmuebleasegudadojoyasvalor) !== 0) errors++;
-            }
-            if (inmueble[MobileContents.nameModel] === 1) {
-                total++;
-                if (
-                  MobileContents.validateField(
-                    inmueble[MobileContents.nameModelValue]
-                  ) !== 0
-                )
-                  errors++;
-            }
-            const value = inmueble[OtherQuestions.nameModelValue] || [];
-            const errorsCount = OtherQuestions.unansweredQuestions(value);
-            if (!!errorsCount) {
-              errors += errorsCount;
-            }
-            if (inmueble.inmuebleasegudadoobras === 1) {
-                total++;
-                if (Asegurarobras.validateField(inmueble.inmuebleasegudadoobrasvalor) !== 0) errors++;
-            }
-            if (inmueble.inmuebleasegudadotelefonos === 1) {
-                total++;
-                if (Asegurartelefonos.validateField(inmueble.inmuebleasegudadotelefonosvalor) !== 0) errors++;
-            }
+      let ok = total - errors;
+      this.setState({
+        ...this.state,
+        ok: ok,
+        total: total,
+      });
+    });
+  }
 
-            let ok = total - errors;
-            this.setState({
-                ...this.state,
-                ok: ok,
-                total: total
-            });
-        });
-    }
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
-    render() {
-        return (
-            <div className={"msj-total mt-1"}>
-                <p className="error-label">Haz diligenciado {this.state.ok} de {this.state.total} campos</p>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className={'msj-total mt-1'}>
+        <p className="error-label">
+          Haz diligenciado {this.state.ok} de {this.state.total} campos
+        </p>
+      </div>
+    );
+  }
 }
 
 export default Counter;

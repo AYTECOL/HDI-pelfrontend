@@ -64,8 +64,8 @@ $error: #dd133c;
           cursor: not-allowed;
 
           &:checked {
-            background: #E6E6E6;
-            border: 1px solid #E6E6E6;
+            background: #e6e6e6;
+            border: 1px solid #e6e6e6;
           }
 
           &:checked::before {
@@ -74,7 +74,8 @@ $error: #dd133c;
           }
         }
 
-        input, label {
+        input,
+        label {
           vertical-align: middle;
           display: inline-block;
         }
@@ -84,7 +85,7 @@ $error: #dd133c;
 
         &.error {
           label {
-            color: $error
+            color: $error;
           }
 
           input::before {
@@ -135,13 +136,12 @@ $error: #dd133c;
       .buttons {
         margin-top: 16px;
       }
-
     }
   }
 }
 
 #root .row.sarlaft {
-  background: #F0FBFC;
+  background: #f0fbfc;
   margin: 30px 0 30px 0;
   padding: 30px 0 60px;
 
@@ -191,7 +191,7 @@ $error: #dd133c;
     margin-top: -49px;
     opacity: 1;
     z-index: 1;
-    background: #FFFFFF;
+    background: #ffffff;
     border: 2px dashed rgba(52, 55, 65, 0.4);
     box-sizing: border-box;
     padding: 16px 8px;
@@ -211,20 +211,20 @@ $error: #dd133c;
       vertical-align: middle;
       margin-right: 8px;
       display: inline-block;
-      background-image: url("../../../../../common/images/upload.png");
+      background-image: url('../../../../../common/images/upload.png');
       background-position: center;
       background-repeat: no-repeat;
       background-size: 100% auto;
     }
 
     b {
-      color: #28A3AF;
+      color: #28a3af;
       font-weight: 500;
     }
   }
   p.photo {
     &::before {
-      background-image: url("../../../../../common/images/photo-camera.png");
+      background-image: url('../../../../../common/images/photo-camera.png');
     }
   }
 }

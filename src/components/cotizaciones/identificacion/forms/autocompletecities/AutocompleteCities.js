@@ -17,17 +17,17 @@ class AutocompleteCities extends Component {
     super(props);
     this.state = {
       options: {
-        cities: []
+        cities: [],
       },
       originalOptions: {
-        cities: []
+        cities: [],
       },
       value: this.props.value || '',
       empty: false,
       idElement: '',
       toggle: false,
       valueLoadedCity: 0,
-      valueLoadedDepartment: 0
+      valueLoadedDepartment: 0,
     };
   }
 
@@ -52,7 +52,7 @@ class AutocompleteCities extends Component {
             {
               ...this.state,
               valueLoadedCity: city,
-              valueLoadedDepartment: department
+              valueLoadedDepartment: department,
             },
             async () => {
               getOptions.then(() => {
@@ -74,7 +74,7 @@ class AutocompleteCities extends Component {
     if (value && typeof value === 'string' && value.trim()) {
       this.setState({
         ...this.state,
-        value: value
+        value: value,
       });
     }
   }
@@ -92,7 +92,7 @@ class AutocompleteCities extends Component {
         {
           ...this.state,
           options: options,
-          originalOptions: options
+          originalOptions: options,
         },
         callBack
       );
@@ -117,12 +117,12 @@ class AutocompleteCities extends Component {
     if (value !== '' && this._isMounted) {
       this.setState({
         ...this.state,
-        value: value
+        value: value,
       });
     }
   }
 
-  onBlur = v => {
+  onBlur = (v) => {
     if (v !== 'noempty') {
       v = v.target.value;
       let empty = false;
@@ -131,7 +131,7 @@ class AutocompleteCities extends Component {
         this.setState({
           ...this.state,
           toggle: false,
-          empty: empty
+          empty: empty,
         });
       }, 200);
     }
@@ -140,15 +140,15 @@ class AutocompleteCities extends Component {
   /**
    * @param {({ name:string, value:any })[]} targets
    */
-  changeTargets = targets => {
+  changeTargets = (targets) => {
     for (const { name, value } of targets) {
       this.props.onChange({
-        target: { name, value }
+        target: { name, value },
       });
     }
   };
 
-  saveOption = option => () => {
+  saveOption = (option) => () => {
     const { onSelect } = this.props;
     onSelect && onSelect(option);
     let code = option.code_city;
@@ -160,30 +160,30 @@ class AutocompleteCities extends Component {
       this.setState({
         ...this.state,
         value,
-        empty: false
+        empty: false,
       });
       if (typeof this.props.onChange !== 'undefined') {
         this.changeTargets([
           {
             value: value,
-            name: this.props.name
+            name: this.props.name,
           },
           {
             value: parseInt(code),
-            name: 'city_code'
+            name: 'city_code',
           },
           {
             value: parseInt(codeDepartment),
-            name: 'department_code'
+            name: 'department_code',
           },
           {
             value: city,
-            name: 'city'
+            name: 'city',
           },
           {
             value: description,
-            name: 'departamento'
-          }
+            name: 'departamento',
+          },
         ]);
       }
     }, 200);
@@ -197,7 +197,7 @@ class AutocompleteCities extends Component {
   searchData = ({ target: { value } }) => {
     const { cities } = this.state.originalOptions;
     const options = { cities: [] };
-    cities.forEach(option => {
+    cities.forEach((option) => {
       const city = this.removeAccents(option.city || '').toLowerCase();
       const search = city.search(this.removeAccents(value.toLowerCase()));
       if (search !== -1 && search === 0) {
@@ -211,7 +211,7 @@ class AutocompleteCities extends Component {
         value: value,
         toggle: true,
         options,
-        empty: !value
+        empty: !value,
       },
       () => {
         const { onSelect } = this.props;
@@ -245,7 +245,7 @@ class AutocompleteCities extends Component {
     return options;
   };
 
-  moveOptions = e => {
+  moveOptions = (e) => {
     let key = e.keyCode;
     let options = this.state.options;
     let element = '.form-group.autocomplete .list-items li.active';
@@ -265,7 +265,7 @@ class AutocompleteCities extends Component {
     if (typeof options !== 'undefined') {
       this.setState({
         ...this.state,
-        options: options
+        options: options,
       });
       setTimeout(() => {
         if (Helpers.hasClass(element, 'active'))

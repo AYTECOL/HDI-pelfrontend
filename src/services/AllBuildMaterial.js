@@ -1,32 +1,32 @@
-import Helpers from "../common/helpers/helpers/Helpers";
+import Helpers from '../common/helpers/helpers/Helpers';
 
 const Default = {
   build_materials: [
     {
-      buildMaterialCode: "2",
+      buildMaterialCode: '2',
       order: 2,
       description:
-        "Estructuras construidas con muros conformados por la unión de bloques o ladrillos de arcilla o ladrillos de concreto con mortero.",
-      create_at: "2019-05-15 21:48:48",
-      answer: "Mampostería"
+        'Estructuras construidas con muros conformados por la unión de bloques o ladrillos de arcilla o ladrillos de concreto con mortero.',
+      create_at: '2019-05-15 21:48:48',
+      answer: 'Mampostería',
     },
     {
-      buildMaterialCode: "1",
+      buildMaterialCode: '1',
       order: 1,
       description:
-        "Estructuras construidas con columnas y vigas y/o muros en concreto reforzado.",
-      create_at: "2019-05-15 21:47:41",
-      answer: "Concreto Reforzado"
+        'Estructuras construidas con columnas y vigas y/o muros en concreto reforzado.',
+      create_at: '2019-05-15 21:47:41',
+      answer: 'Concreto Reforzado',
     },
     {
-      buildMaterialCode: "3",
+      buildMaterialCode: '3',
       order: 3,
       description:
-        "Estructuras construidas con columnas y vigas y/o muros en Acero.",
-      create_at: "2019-05-15 21:49:46",
-      answer: "Acero"
-    }
-  ]
+        'Estructuras construidas con columnas y vigas y/o muros en Acero.',
+      create_at: '2019-05-15 21:49:46',
+      answer: 'Acero',
+    },
+  ],
 };
 
 class AllBuildMaterial {
@@ -41,7 +41,7 @@ class AllBuildMaterial {
     //     data = Default;
     // }
     let data = Default;
-    return Helpers.orderArray(data.build_materials, "order");
+    return Helpers.orderArray(data.build_materials, 'order');
   }
 }
 

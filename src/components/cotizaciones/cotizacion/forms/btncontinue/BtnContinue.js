@@ -1,23 +1,22 @@
-import React, { Component, Fragment } from "react";
+import React, { Component, Fragment } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
-import Helpers from "../../../../../common/helpers/helpers/Helpers";
-import { UrlSite } from "../../../../../config";
-import NewPlanSelected from "../../../../../services/NewPlanSelected";
-import store from "../../../../../store";
-import CreateOrUpdateValoration from "../../../../../services/CreateOrUpdateValoration";
-import Loading from "../../../../globals/loading/Loading";
-import Masknumbermoney from "../../../../../common/helpers/masknumbermoney/Masknumbermoney";
-import { NextStep, resetStore, saveProspect } from "../../../../../actions";
-import SaveIdentifications from "../../../../../services/Quote";
-import Links from "../links/Links";
-import "./btncontinue.scss";
+import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import { UrlSite } from '../../../../../config';
+import NewPlanSelected from '../../../../../services/NewPlanSelected';
+import store from '../../../../../store';
+import CreateOrUpdateValoration from '../../../../../services/CreateOrUpdateValoration';
+import Loading from '../../../../globals/loading/Loading';
+import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
+import { NextStep, resetStore, saveProspect } from '../../../../../actions';
+import SaveIdentifications from '../../../../../services/Quote';
+import Links from '../links/Links';
+import './btncontinue.scss';
 import Coberturas from '../../coberturas/Coberturas';
-import { getItems } from "../../cards/getItems";
-
+import { getItems } from '../../cards/getItems';
 
 class BtnContinue extends Component {
   constructor(props) {
@@ -26,19 +25,19 @@ class BtnContinue extends Component {
       continueButtonDisable: true,
       stateFormIdentificacion: 0,
       cotizacionExclude: [],
-      msgErrorInspect: "",
-      buttonState: false
+      msgErrorInspect: '',
+      buttonState: false,
     };
   }
 
   static toNumberCoverrange(plan) {
-    if (typeof plan !== "undefined") {
+    if (typeof plan !== 'undefined') {
       for (let i = 0; i < plan.coverages.length; i++) {
-        if (typeof plan.coverages[i].values !== "undefined") {
+        if (typeof plan.coverages[i].values !== 'undefined') {
           for (let j = 0; j < plan.coverages[i].values.length; j++) {
             let v = plan.coverages[i].values[j].value_show;
-            if (v === "N/A") v = plan.coverages[i].values[j].value;
-            if (typeof plan.coverages[i].values[j].values !== "undefined") {
+            if (v === 'N/A') v = plan.coverages[i].values[j].value;
+            if (typeof plan.coverages[i].values[j].values !== 'undefined') {
               let value = 0;
               let values = plan.coverages[i].values[j].values;
               for (let k = 0; k < values.length; k++) {
@@ -48,10 +47,9 @@ class BtnContinue extends Component {
               }
               plan.coverages[i].values[j].value_to_quotate = value;
             } else {
-              if (typeof v !== "undefined") {
-                plan.coverages[i].values[
-                  j
-                ].value_to_quotate = Masknumbermoney.formatToNumber(v);
+              if (typeof v !== 'undefined') {
+                plan.coverages[i].values[j].value_to_quotate =
+                  Masknumbermoney.formatToNumber(v);
               } else {
                 plan.coverages[i].values[j].value_to_quotate = 0;
               }
@@ -68,16 +66,16 @@ class BtnContinue extends Component {
     let plans = storeState.AllPlans;
     let index = storeState.indexPlan;
     let plan = plans[index];
-    plan["premium_after_all_the_rules"] =
+    plan['premium_after_all_the_rules'] =
       plan.prima.premium_after_all_the_rules;
-    plan["calculation_of_pure_extra_shelter_premium"] =
+    plan['calculation_of_pure_extra_shelter_premium'] =
       plan.prima.calculation_of_pure_extra_shelter_premium;
-    plan["prospect"] = plan.value;
-    plan["quote_id"] = this.props.match.params.id;
-    plan["assists"][0]["selected_id"] = index;
+    plan['prospect'] = plan.value;
+    plan['quote_id'] = this.props.match.params.id;
+    plan['assists'][0]['selected_id'] = index;
 
     plan = BtnContinue.toNumberCoverrange(plan);
-    store.dispatch(saveProspect(plan["prima"]));
+    store.dispatch(saveProspect(plan['prima']));
     return plan;
   }
 
@@ -88,18 +86,18 @@ class BtnContinue extends Component {
       let dataStore = store.getState();
       let inspectType = dataStore.Inmueble.inspection_policies;
       switch (inspectType) {
-        case "RF":
+        case 'RF':
           this.setState({
             msgErrorInspect:
-              "Cotización sujeta a registro fotográfico, contacte a su gestor"
+              'Cotización sujeta a registro fotográfico, contacte a su gestor',
           });
           this.setState({ buttonState: false });
           Loading.toggle(false);
           return;
-        case "IC":
+        case 'IC':
           this.setState({
             msgErrorInspect:
-              "Cotización sujeta a inspección, contacte a su gestor"
+              'Cotización sujeta a inspección, contacte a su gestor',
           });
           this.setState({ buttonState: false });
           Loading.toggle(false);
@@ -113,7 +111,7 @@ class BtnContinue extends Component {
       await CreateOrUpdateValoration.save();
       await NewPlanSelected.get(plan);
       this.props.history.push(
-        UrlSite + "/emision/1/" + this.props.match.params.id
+        UrlSite + '/emision/1/' + this.props.match.params.id
       );
       Loading.toggle(false);
     } catch (e) {
@@ -139,7 +137,7 @@ class BtnContinue extends Component {
     await CreateOrUpdateValoration.save();
     store.dispatch(resetStore());
     this.props.history.push(
-      UrlSite + "/cotizacion/2/" + this.props.match.params.id
+      UrlSite + '/cotizacion/2/' + this.props.match.params.id
     );
   };
 
