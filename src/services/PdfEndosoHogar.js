@@ -12,7 +12,7 @@ class PdfEndosoHogar {
       authHeader = authHeader.generateAuthCode();
       authHeader['pelhauthorization'] =
         user !== null ? user['accessToken'] : '';
-      return await Api.get(BaseUrl + id, undefined, authHeader, true);
+      return await Api.get(`${BaseUrl}${id}?name=${user.nombreUsuario}`, undefined, authHeader, true);
     } catch (e) {
       if (_index < 3) {
         _index++;
