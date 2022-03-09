@@ -8,8 +8,8 @@
   }
 
   .box-col {
-    background: #FFFFFF;
-    border: 1px solid #99E5EA;
+    background: #ffffff;
+    border: 1px solid #99e5ea;
     box-sizing: border-box;
     box-shadow: 0 0 8px rgba(40, 163, 175, 0.32);
     border-radius: 3px;
@@ -25,31 +25,31 @@
       margin: 30px 0 15px;
 
       &.image-1 {
-        background-image: url("../../../../common/images/home.png");
+        background-image: url('../../../../common/images/home.png');
         width: 44px;
         height: 32px;
       }
 
       &.image-2 {
-        background-image: url("../../../../common/images/sillon.png");
+        background-image: url('../../../../common/images/sillon.png');
       }
 
       &.image-3 {
-        background-image: url("../../../../common/images/otro.png");
+        background-image: url('../../../../common/images/otro.png');
         background-size: 90% auto;
       }
 
       &.image-4 {
-        background-image: url("../../../../common/images/a.png");
+        background-image: url('../../../../common/images/a.png');
         background-size: auto 100%;
       }
 
       &.image-5 {
-        background-image: url("../../../../common/images/phone.png");
+        background-image: url('../../../../common/images/phone.png');
         background-size: auto 100%;
       }
       &.image-6 {
-        background-image: url("../../../../common/images/mobile_contents.png");
+        background-image: url('../../../../common/images/mobile_contents.png');
         background-size: auto 100%;
       }
     }
@@ -73,7 +73,7 @@
       font-size: 12px;
       line-height: 14px;
       text-align: center;
-      color: #037B86;
+      color: #037b86;
       margin: 7px 0 10px;
       display: block;
       cursor: pointer;
@@ -121,8 +121,8 @@
     }
 
     &.active {
-      background: #F5F5F5;
-      border: 1px dashed #C0BFC0;
+      background: #f5f5f5;
+      border: 1px dashed #c0bfc0;
       box-shadow: 0 0 3px rgba(86, 86, 86, 0.404806);
       border-radius: 3px;
 
@@ -135,13 +135,14 @@
       .wrapper-over {
         position: relative;
 
-        .form-group, span {
+        .form-group,
+        span {
           visibility: hidden;
         }
 
         .btntoggle {
-          background: #28A3AF;
-          border: 1px solid #28A3AF;
+          background: #28a3af;
+          border: 1px solid #28a3af;
           box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
           border-radius: 3px;
           height: 32px;
@@ -167,6 +168,5 @@
         }
       }
     }
-
   }
 }

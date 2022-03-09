@@ -10,7 +10,7 @@ class Addressadditional extends Component {
     super(props);
     this.state = {
       error: false,
-      value: ''
+      value: '',
     };
   }
 
@@ -21,13 +21,10 @@ class Addressadditional extends Component {
       if (this.state.value !== value) {
         this.setState({
           ...this.state,
-          value: value
+          value: value,
         });
       }
     });
-  }
-
-  componentDidUpdate() {
   }
 
   componentWillUnmount() {
@@ -42,7 +39,7 @@ class Addressadditional extends Component {
     this.setState({
       ...this.state,
       error: error,
-      value
+      value,
     });
   };
 

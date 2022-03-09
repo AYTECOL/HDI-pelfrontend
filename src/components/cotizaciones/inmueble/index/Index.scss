@@ -2,7 +2,7 @@
   text-align: center;
 
   li {
-    background: #FFFFFF;
+    background: #ffffff;
     box-shadow: 0 0 3px rgba(86, 86, 86, 0.404806);
     border-radius: 3px;
     text-align: center;
@@ -17,8 +17,8 @@
 
     &.active,
     &:hover {
-      background: #28A3AF;
-      border: 1px solid #28A3AF;
+      background: #28a3af;
+      border: 1px solid #28a3af;
       box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
       border-radius: 3px;
 
@@ -28,11 +28,11 @@
 
       i {
         &.home-icon {
-          background-image: url("../../../../common/images/home-icon-hover.png");
+          background-image: url('../../../../common/images/home-icon-hover.png');
         }
 
         &.apartamento-icon {
-          background-image: url("../../../../common/images/apartamento-icon-hover.png");
+          background-image: url('../../../../common/images/apartamento-icon-hover.png');
         }
       }
     }
@@ -52,13 +52,13 @@
       transform: scale(1);
 
       &.home-icon {
-        background-image: url("../../../../common/images/home-icon.png");
+        background-image: url('../../../../common/images/home-icon.png');
       }
 
       &.apartamento-icon {
         width: 29px;
         height: 36px;
-        background-image: url("../../../../common/images/apartamento-icon.png");
+        background-image: url('../../../../common/images/apartamento-icon.png');
       }
     }
 
@@ -81,7 +81,7 @@
     max-width: 90%;
     display: block;
     margin: 0 auto;
-    border: 1px solid #E6E6E6;
+    border: 1px solid #e6e6e6;
   }
 
   h5 {
@@ -120,8 +120,8 @@
 
     &::before {
       content: '';
-      background: #FFFFFF;
-      border: 1px solid #C0BFC0;
+      background: #ffffff;
+      border: 1px solid #c0bfc0;
       border-radius: 2px;
       width: 100%;
       height: 100%;
@@ -141,7 +141,7 @@
       right: 0;
       bottom: 0;
       margin: auto;
-      background-image: url("../../../../common/images/check.svg");
+      background-image: url('../../../../common/images/check.svg');
       background-size: 100% auto;
       background-repeat: no-repeat;
       background-position: center;
@@ -150,8 +150,8 @@
 
     &:checked {
       &::before {
-        background: #28A3AF;
-        border: 1px solid #28A3AF;
+        background: #28a3af;
+        border: 1px solid #28a3af;
         border-radius: 2px;
       }
 

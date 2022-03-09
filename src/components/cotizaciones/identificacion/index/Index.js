@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 //Component
 import TipoDocumento from '../forms/tipodocumento/TipoDocumento';
@@ -8,10 +8,8 @@ import BtnContinue from '../forms/btncontinue/BtnContinue';
 import SecondForm from '../secondform/SecondForm';
 
 import './Index.scss';
-import Loading from "../../../globals/loading/Loading";
+import Loading from '../../../globals/loading/Loading';
 import { CitiesProvider } from '../hooks/cities';
-
-
 
 const TipoDocumentoHoc = connect(({ cotizacion, stateFormIdentificacion }) => ({
   value: cotizacion.identification.code,
@@ -19,44 +17,45 @@ const TipoDocumentoHoc = connect(({ cotizacion, stateFormIdentificacion }) => ({
 }))(TipoDocumento);
 
 class Index extends Component {
-    componentDidMount() {
-        Loading.toggle(true);
-    }
+  componentDidMount() {
+    Loading.toggle(true);
+  }
 
-    render() {
-        return (
-            <form autoComplete="off" className="index-form">
-              <CitiesProvider>
-                <div className="container">
-                    <div className="row">
-                        <div className="col col-sm-12 col-md-12 col-lg-12 title">
-                            <h2>Comencemos</h2>
-                            <p>Ingresa la siguiente información, así sabremos si es viable continuar con el proceso de
-                                cotización</p>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
-                            <TipoDocumentoHoc />
-                        </div>
-                        <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
-                            <NumeroIdentificacion/>
-                        </div>
-                    </div>
+  render() {
+    return (
+      <form autoComplete="off" className="index-form">
+        <CitiesProvider>
+          <div className="container">
+            <div className="row">
+              <div className="col col-sm-12 col-md-12 col-lg-12 title">
+                <h2>Comencemos</h2>
+                <p>
+                  Ingresa la siguiente información, así sabremos si es viable
+                  continuar con el proceso de cotización
+                </p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                <TipoDocumentoHoc />
+              </div>
+              <div className="col col-12 col-sm-6 col-md-6 col-lg-6 form-first">
+                <NumeroIdentificacion />
+              </div>
+            </div>
 
-                    <SecondForm/>
+            <SecondForm />
 
-                    <div className="row">
-                        <div
-                            className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-                            <BtnContinue/>
-                        </div>
-                    </div>
-                </div>
-              </CitiesProvider>
-            </form>
-        )
-    }
+            <div className="row">
+              <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
+                <BtnContinue />
+              </div>
+            </div>
+          </div>
+        </CitiesProvider>
+      </form>
+    );
+  }
 }
 
 export default Index;

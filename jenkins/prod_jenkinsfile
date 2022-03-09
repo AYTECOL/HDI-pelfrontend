@@ -2,6 +2,8 @@ library ('utils@master') _
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
+def BRANCH_SONAR = scm.branches[0].name.replace("*/", "")
+def NAME_SONAR = "poliza-express-hogar-front"
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
 node('linux'){
@@ -28,7 +30,7 @@ node('linux'){
     stage('cloudfront') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
             sh 'npm install'
-            sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+            sh "sls deploy -v --force --stage prod"
             dir('dist/poliza-express-hogar'){
                 sh 'pwd'
                 sh 'ls'
@@ -67,7 +69,7 @@ node('linux'){
 
     stage('Test sonarqube'){
 		withSonarQubeEnv('sonarqube') {
-        	sh 'sonar-scanner -Dsonar.projectKey=poliza-express-hogar-front -Dsonar.projectName=poliza-express-hogar-front -Dsonar.projectVersion=0.0.1 -Dsonar.sources=src'
+        	sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
 	 	}
 	}
  }

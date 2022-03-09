@@ -9,7 +9,7 @@
     padding-left: 9px;
     padding-right: 9px;
 
-    &:nth-child(2n+1) {
+    &:nth-child(2n + 1) {
       padding-left: 0;
       @media (max-width: 769px) {
         padding-left: 9px;

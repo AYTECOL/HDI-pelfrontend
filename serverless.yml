@@ -27,9 +27,9 @@ custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
 
 package:
   include:
-    - handler.js
+   - handler.js
   exclude:
-    - ./**
+    - node_modules/**
 
 functions:
   hogar:
