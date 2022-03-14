@@ -48,13 +48,13 @@ export const getRulesByCode = (code, coverages = undefined) => {
     case 3045:
       return {
         max: 50000000,
-        min: 900000,
+        min: 1500000,
       };
     // Asegurado de Teléfonos Móviles
     case 9652:
       return {
         max: 10000000,
-        min: 850000,
+        min: 1500000,
       };
     // Valor contenidos
     case 9692:
