@@ -99,7 +99,7 @@ class Coberturas extends Component {
    * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-  static getValue(item, typeBase, options) {
+  static getValue(item, typeBase = [], options = {}) {
     const { plan, recalculate = false } = { ...options };
     if (!item.hired) return 0;
     const rules = {
@@ -195,7 +195,7 @@ class Coberturas extends Component {
    * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-  static getValueFields(item, typeBase, options) {
+  static getValueFields(item, typeBase = [], options) {
     const value = Coberturas.getValue(item, typeBase, options);
     return Masknumbermoney.formatToMask(value);
   }
@@ -669,7 +669,7 @@ class Coberturas extends Component {
           return {
             ...coverage,
             values: values.map((valueItem, j) =>
-              k === j ? { ...valueItem, errors } : value
+              k === j ? { ...valueItem, errors } : valueItem
             ),
           };
         }
@@ -762,7 +762,7 @@ class Coberturas extends Component {
                       <div
                         className={clsx(
                           'col first items-checkboxes',
-                          option.optional && 'disabled-item'
+                          !option.optional && 'disabled-item'
                         )}
                       >
                         <div className="form-group">
@@ -784,7 +784,7 @@ class Coberturas extends Component {
                       <div
                         className={clsx(
                           'col col-12 col-sm-12 col-md-3 col-lg-3 middle',
-                          (!option.checked || option.optional) &&
+                          (!option.checked || !option.optional) &&
                             'disabled-item'
                         )}
                       >
@@ -835,8 +835,7 @@ class Coberturas extends Component {
                                       name={'item' + k + '_' + key}
                                       id={'item' + k + '_' + key}
                                       disabled={
-                                        option.optional === false ||
-                                        option.checked === false
+                                        !option.optional || !option.checked
                                       }
                                       value={Coberturas.getSelectFields(
                                         opt.values
