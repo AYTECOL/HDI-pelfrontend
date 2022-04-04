@@ -9,7 +9,7 @@ import { AllPlans as AllPlansCreator } from '../../../../actions';
 import { getRulesByCode, getTotalCoverage, getValue, stateCoverage } from '../../../../common';
 import MobileContents from '../../inmueble/forms/MobileContents';
 import RateNotCalculated from '../../../RateNotCalculated';
-
+import clsx from 'clsx';
 /**
  * @typedef {import('../../../../services/QuoteIussedById').QuoteIussed} QuoteIussed
  * @typedef {import('../../../../services/QuoteIussedById').PlanSelectedInfoItem} PlanSelectedInfoItem
@@ -55,7 +55,7 @@ class Coberturas extends Component {
   }
 
   /**
-   * 
+   *
    * @typedef {{ recalculate: boolean }} OptionsCalc
    */
   /**
@@ -65,7 +65,7 @@ class Coberturas extends Component {
    * @param {OptionsCalc} options
    * @returns {*}
    */
-  static calcValue(plan, type = null, options) {
+  static calcValue(plan, type, options) {
     if (typeof plan === 'undefined') return;
     if (typeof plan.coverages === 'undefined') return;
     for (let i = 0; i < plan.coverages.length; i++) {
@@ -92,16 +92,14 @@ class Coberturas extends Component {
     return plan;
   }
 
-
-  
   /**
-   * 
+   *
    * @param {{ id: number, hired: boolean }} item the current coverage in the iteration
    * @param {number|number[]} typeBase if you want cal a single type coverage
    * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-  static getValue(item, typeBase = [], options) {
+  static getValue(item, typeBase = [], options = {}) {
     const { plan, recalculate = false } = { ...options };
     if (!item.hired) return 0;
     const rules = {
@@ -132,39 +130,33 @@ class Coberturas extends Component {
         let value;
         // Inmueble
         if (item.id === 1) {
-          value = (
+          value =
             (Masknumbermoney.formatToNumber(inmueble.inmuebleasegudadovalor) *
               parseInt(item.value)) /
-              100
-          );
-        //Contenidos
+            100;
+          //Contenidos
         } else if (item.id === 2) {
-          value = (
-            (Masknumbermoney.formatToNumber(
-              inmueble.contenidoasegudadovalor
-            ) *
+          value =
+            (Masknumbermoney.formatToNumber(inmueble.contenidoasegudadovalor) *
               parseInt(item.value)) /
-              100
-          );
-        //Obras
+            100;
+          //Obras
         } else if (item.id === 3) {
-          value = (
+          value =
             (Masknumbermoney.formatToNumber(
               inmueble.inmuebleasegudadoobrasvalor
             ) *
               parseInt(item.value)) /
-              100
-          );
-        //Telefonos moviles
+            100;
+          //Telefonos moviles
         } else if (item.id === 4) {
-          value = (
+          value =
             (Masknumbermoney.formatToNumber(
               inmueble.inmuebleasegudadotelefonosvalor
             ) *
               parseInt(item.value)) /
-              100
-          );
-        //Hurto siempre basado en hurto calificado
+            100;
+          //Hurto siempre basado en hurto calificado
         } else if (item.id === 5) {
           let hurto = Coberturas.getCoverangeById(3, plan);
           if (hurto !== null) {
@@ -175,21 +167,18 @@ class Coberturas extends Component {
           }
           //Joyas
         } else if (item.id === 6) {
-          value = (
+          value =
             (Masknumbermoney.formatToNumber(
               inmueble.inmuebleasegudadojoyasvalor
             ) *
               parseInt(item.value)) /
-              100
-          );
-        //Contenido mobile
+            100;
+          //Contenido mobile
         } else if (item.id === 7) {
           let contenido = Masknumbermoney.formatToNumber(
             inmueble[MobileContents.nameModelValue]
           );
-          value = (
-            (contenido * parseInt(item.value)) / 100
-          );
+          value = (contenido * parseInt(item.value)) / 100;
         }
         return getValue(value, rules);
       }
@@ -199,18 +188,17 @@ class Coberturas extends Component {
     return rules.min || 0;
   }
 
-    
   /**
-   * 
+   *
    * @param {{ id: number, hired: boolean }} item the current coverage in the iteration
    * @param {number|number[]} typeBase if you want cal a single type coverage
    * @param {{ plan: any } & OptionsCalc} options
    * @returns {*}
    */
-   static getValueFields(item, typeBase = [], options) {
-      const value = Coberturas.getValue(item, typeBase, options);
-      return Masknumbermoney.formatToMask(value);
-   }
+  static getValueFields(item, typeBase = [], options) {
+    const value = Coberturas.getValue(item, typeBase, options);
+    return Masknumbermoney.formatToMask(value);
+  }
   /**
    *
    * @param id Of coverage that you want find
@@ -285,12 +273,11 @@ class Coberturas extends Component {
           let opt = option[k];
           // Inmueble
           if (opt.id === 1) {
-            coverages[key].values[k].hired =
-              inmueble.inmuebleasegudado === 1;
+            coverages[key].values[k].hired = inmueble.inmuebleasegudado === 1;
             //Contenidos
-          } else if (opt.id === 2) {
-            coverages[key].values[k].hired =
-              inmueble.contenidoasegudado === 1;
+            //Hurto siempre basado en hurto calificado
+          } else if (opt.id === 2 || opt.id === 5) {
+            coverages[key].values[k].hired = inmueble.contenidoasegudado === 1;
             //Obras
           } else if (opt.id === 3) {
             coverages[key].values[k].hired =
@@ -299,17 +286,14 @@ class Coberturas extends Component {
           } else if (opt.id === 4) {
             coverages[key].values[k].hired =
               inmueble.inmuebleasegudadotelefonos === 1;
-            //Hurto siempre basado en hurto calificado
-          } else if (opt.id === 5) {
-            coverages[key].values[k].hired =
-              inmueble.contenidoasegudado === 1;
             //Joyas
           } else if (opt.id === 6) {
             coverages[key].values[k].hired =
               inmueble.inmuebleasegudadojoyas === 1;
             //Contenido mobile
           } else if (opt.id === 7) {
-            coverages[key].values[k].hired = inmueble[MobileContents.nameModel] === 1;
+            coverages[key].values[k].hired =
+              inmueble[MobileContents.nameModel] === 1;
           } else if (opt.id >= 8 || opt.id === 0) {
             coverages[key].values[k].hired = true;
           }
@@ -347,7 +331,7 @@ class Coberturas extends Component {
                   plan,
                   value,
                   k,
-                  value.values ? 2 : 1,
+                  value.values ? 2 : 1
                 ) || []),
               ]) ||
               undefined;
@@ -403,10 +387,12 @@ class Coberturas extends Component {
       return Promise.resolve();
     });
     plans[index] = Coberturas.calcValue(plan, 5);
-    await Plans.sendAndValidate(plans, index, this.props.match.params.id).catch((e) => {
-      this.setState({ errorRateCalculated: true });
-      throw e;
-    });
+    await Plans.sendAndValidate(plans, index, this.props.match.params.id).catch(
+      (e) => {
+        this.setState({ errorRateCalculated: true });
+        throw e;
+      }
+    );
     this.setState({ errorRateCalculated: false });
   }
 
@@ -468,7 +454,6 @@ class Coberturas extends Component {
       );
     }
   };
-
 
   /**
    * Event change of coverage field
@@ -538,13 +523,10 @@ class Coberturas extends Component {
          */
         function getCoverageByCode(code) {
           const coverages = plan.coverages;
-          for (const coverage of coverages)
-            if (coverage.values)
-              for (let j = 0; j < coverage.values.length; j++) {
-                if (coverage.values[j].code === code) {
-                  return coverage;
-                }
-              }
+          for (const item of coverages)
+            if (item.values)
+              for (const value of item.values)
+                if (value.code === code) return item;
         }
         const coverage = getCoverageByCode(9667);
         if (coverage && coverage.values) {
@@ -583,8 +565,7 @@ class Coberturas extends Component {
           }
           if (parseInt(planValue.code) === 3008) {
             if (
-              500000000 <
-              Masknumbermoney.formatToNumber(planValue.value_show)
+              500000000 < Masknumbermoney.formatToNumber(planValue.value_show)
             ) {
               errors.push(
                 'Valor Asegurado del amparo ' +
@@ -592,9 +573,7 @@ class Coberturas extends Component {
                   ' es superior al permitido.'
               );
             }
-            if (
-                0 >= Masknumbermoney.formatToNumber(planValue.value_show)
-              ) {
+            if (0 >= Masknumbermoney.formatToNumber(planValue.value_show)) {
               errors.push(
                 'Valor Asegurado del amparo ' +
                   item.name +
@@ -633,30 +612,25 @@ class Coberturas extends Component {
       planValue.value_show = Masknumbermoney.formatToMask(value);
       planValue.changed = true;
       for (let j = 0; j < plan.coverages.length; j++) {
-        if (
-          plan.coverages[j].code == 9691 ||
-          plan.coverages[j].code_content == 9691
-        ) {
-          for (let k = 0; k < plan.coverages[j].values.length; k++) {
-            if (plan.coverages[j].values[k].code == 9688) {
-              if (planValue.code == 9692) {
-                plan.coverages[j].values[k].value_show = planValue.value_show;
-                plan.coverages[j].values[k].value_to_quotate =
-                  planValue.value_to_quotate;
+        const coverage = plan.coverages[j];
+        if (+coverage.code === 9691 || +coverage.code_content === 9691) {
+          for (const value of coverage.values) {
+            if (+value.code === 9688) {
+              if (+planValue.code === 9692) {
+                value.value_show = planValue.value_show;
+                value.value_to_quotate = planValue.value_to_quotate;
               }
             }
-            if (plan.coverages[j].values[k].code == 9687) {
-              if (planValue.code == 3017) {
-                plan.coverages[j].values[k].value_show = planValue.value_show;
-                plan.coverages[j].values[k].value_to_quotate =
-                  planValue.value_to_quotate;
+            if (+value.code === 9687) {
+              if (+planValue.code === 3017) {
+                value.value_show = planValue.value_show;
+                value.value_to_quotate = planValue.value_to_quotate;
               }
             }
           }
         }
       }
-    }
-    else if (type === 2) {
+    } else if (type === 2) {
       for (let i = 0; i < item.values[k].values.length; i++)
         item.values[k].values[i].default = false;
       item.values[k].values[value].default = true;
@@ -682,7 +656,8 @@ class Coberturas extends Component {
           const { values } = coverage;
           return {
             ...coverage,
-            values: values.map((value, j) => k === j ? { ...value, errors } : value
+            values: values.map((valueItem, j) =>
+              k === j ? { ...valueItem, errors } : valueItem
             ),
           };
         }
@@ -744,7 +719,8 @@ class Coberturas extends Component {
 
   render() {
     const { index } = this.props;
-    const { errorRateCalculated } = this.state;
+    const { errorRateCalculated, error } = this.state;
+
     return (
       <div className="row row-max tabs-cotizaciones row_tab_0">
         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
@@ -772,105 +748,121 @@ class Coberturas extends Component {
                   <div className={'rowor'} key={key}>
                     <div className={'row'}>
                       <div
-                        className={'col first items-checkboxes ' +
-                          (option.optional === true ? '' : ' disabled-item')}
+                        className={clsx(
+                          'col first items-checkboxes',
+                          !option.optional && 'disabled-item'
+                        )}
                       >
                         <div className="form-group">
                           <input
                             type="checkbox"
-                            checked={option.checked === true ? 'checked' : false}
+                            checked={
+                              option.checked === true ? 'checked' : false
+                            }
                             disabled={option.optional === false}
                             name={'itemcheck' + key}
                             id={'itemcheck' + key}
-                            onChange={this.checkCoverturas(index, key)} />
-                          <label htmlFor={'itemcheck' + key}>{option.name}</label>
+                            onChange={this.checkCoverturas(index, key)}
+                          />
+                          <label htmlFor={'itemcheck' + key}>
+                            {option.name}
+                          </label>
                         </div>
                       </div>
                       <div
-                        className={'col col-12 col-sm-12 col-md-3 col-lg-3 middle ' +
-                          (option.checked === false ? ' disabled-item' : '') +
-                          (option.optional === true ? '' : ' disabled-item')}
+                        className={clsx(
+                          'col col-12 col-sm-12 col-md-3 col-lg-3 middle',
+                          (!option.checked || !option.optional) &&
+                            'disabled-item'
+                        )}
                       >
                         {typeof option.values !== 'undefined' && (
                           <Fragment>
-                            {option.values.map(
-                              (opt, k) => typeof opt.hired !== 'undefined' &&
-                                opt.hired === true && (
-                                  <div
-                                    className={'form-group ' +
-                                      (typeof opt.values === 'undefined'
-                                        ? ''
-                                        : 'input-select') +
-                                      (opt.errors && opt.errors.length > 0
-                                        ? ' error'
-                                        : '') +
-                                      (Coberturas.isDisabled(option, opt)
-                                        ? ' disabled-item'
-                                        : '')}
-                                    key={k}
-                                  >
-                                    <label htmlFor={'item' + k + '_' + key}>
-                                      {opt.name}
-                                    </label>
-                                    {typeof opt.values === 'undefined' ? (
-                                      <input
-                                        name={'item' + k + '_' + key}
-                                        id={'item' + k + '_' + key}
-                                        placeholder={opt.value_show}
-                                        onBlur={Coberturas.isDisabled(option, opt)
-                                          ? null
-                                          : this.blur}
-                                        value={typeof opt.value_show === 'undefined'
-                                          ? '$0'
-                                          : opt.value_show}
-                                        onChange={(e) => this.inputChange(e, k, key, 1)}
-                                        disabled={Coberturas.isDisabled(
-                                          option,
-                                          opt
-                                        )}
-                                        type="text"
-                                        className={'form-control'} />
-                                    ) : (
-                                        <select
-                                          className={'form-control'}
-                                          name={'item' + k + '_' + key}
-                                          id={'item' + k + '_' + key}
-                                          disabled={option.optional === false ||
-                                            option.checked === false}
-                                          value={Coberturas.getSelectFields(
-                                            opt.values
-                                          )}
-                                          onChange={(e) => this.inputChange(e, k, key, 2)}
-                                        >
-                                          {opt.values.map((opt, k) => (
-                                            <option key={k} value={k}>
-                                              {Masknumbermoney.formatToMask(
-                                                opt.limit
-                                              )}
-                                            </option>
-                                          ))}
-                                        </select>
+                            {option.values.map((opt, k) => {
+                              if (opt.hired === false) return null;
+                              const disabled = Coberturas.isDisabled(
+                                option,
+                                opt
+                              );
+                              const value =
+                                typeof opt.value_show === 'undefined'
+                                  ? '$0'
+                                  : opt.value_show;
+                              return (
+                                <div
+                                  className={clsx(
+                                    'form-group',
+                                    opt.values && 'input-select',
+                                    opt.errors &&
+                                      !!opt.errors.length &&
+                                      'error',
+                                    disabled && 'disabled-item'
+                                  )}
+                                  key={k}
+                                >
+                                  <label htmlFor={'item' + k + '_' + key}>
+                                    {opt.name}
+                                  </label>
+                                  {typeof opt.values === 'undefined' ? (
+                                    <input
+                                      name={'item' + k + '_' + key}
+                                      id={'item' + k + '_' + key}
+                                      placeholder={opt.value_show}
+                                      onBlur={(!disabled && this.blur) || null}
+                                      value={value}
+                                      onChange={(e) =>
+                                        this.inputChange(e, k, key, 1)
+                                      }
+                                      disabled={disabled}
+                                      type="text"
+                                      className="form-control"
+                                    />
+                                  ) : (
+                                    <select
+                                      className={'form-control'}
+                                      name={'item' + k + '_' + key}
+                                      id={'item' + k + '_' + key}
+                                      disabled={
+                                        !option.optional || !option.checked
+                                      }
+                                      value={Coberturas.getSelectFields(
+                                        opt.values
                                       )}
-                                    {opt.errors &&
-                                      opt.errors.map((item, key) => (
-                                        <small
-                                          key={key}
-                                          className={'form-text only-errors'}
-                                        >
-                                          {item}
-                                        </small>
+                                      onChange={(e) =>
+                                        this.inputChange(e, k, key, 2)
+                                      }
+                                    >
+                                      {opt.values.map((optValue, keyValue) => (
+                                        <option key={keyValue} value={keyValue}>
+                                          {Masknumbermoney.formatToMask(
+                                            optValue.limit
+                                          )}
+                                        </option>
                                       ))}
-                                  </div>
-                                )
-                            )}
+                                    </select>
+                                  )}
+                                  {opt.errors &&
+                                    opt.errors.map((item, i) => (
+                                      <small
+                                        key={i}
+                                        className={'form-text only-errors'}
+                                      >
+                                        {item}
+                                      </small>
+                                    ))}
+                                </div>
+                              );
+                            })}
                           </Fragment>
                         )}
                       </div>
                       <div className="col last">
                         {typeof option.deductible !== 'undefined' ? (
                           <div
-                            className={'pisonumero input-select form-group ' +
-                              (this.state.error ? 'error' : '')}
+                            className={clsx(
+                              'pisonumero input-select form-group',
+                              error && 'error'
+                            )}
                           >
                             <label htmlFor={'itemdeducible' + key}>
                               Deducible
@@ -893,8 +885,8 @@ class Coberturas extends Component {
                             </select>
                           </div>
                         ) : (
-                            <div className={'form-group'}>&nbsp;</div>
-                          )}
+                          <div className={'form-group'}>&nbsp;</div>
+                        )}
                       </div>
                     </div>
                   </div>

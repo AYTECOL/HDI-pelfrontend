@@ -1,5 +1,5 @@
 .wrapper-map {
-  border-top: 2px solid #28A3AF;
+  border-top: 2px solid #28a3af;
   margin: 0 21px 0;
   position: relative;
   height: 600px;
@@ -15,8 +15,8 @@
     right: 0;
     top: -2px;
 
-    background: #FFECDB;
-    border: 1px solid #EE7000;
+    background: #ffecdb;
+    border: 1px solid #ee7000;
     box-sizing: border-box;
     box-shadow: 0 2px 12px rgba(212, 57, 0, 0.3);
     border-radius: 3px;
@@ -32,7 +32,7 @@
       height: 0;
       border-left: 13px solid transparent;
       border-right: 13px solid transparent;
-      border-bottom: 13px solid #EE7000;
+      border-bottom: 13px solid #ee7000;
       position: absolute;
       top: -13px;
       left: 0;
@@ -46,7 +46,7 @@
       height: 0;
       border-left: 11px solid transparent;
       border-right: 11px solid transparent;
-      border-bottom: 11px solid #FFECDB;
+      border-bottom: 11px solid #ffecdb;
       position: absolute;
       top: -11px;
       left: 0;
@@ -59,13 +59,13 @@
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
-      color: #D43900;
+      color: #d43900;
       line-height: 26px;
 
       span {
         display: block;
-        background: #D43900;
-        border: 1px solid #D43900;
+        background: #d43900;
+        border: 1px solid #d43900;
         box-sizing: border-box;
         color: white;
         position: absolute;
@@ -99,7 +99,7 @@
   }
 
   &.error {
-    border-top: 2px solid #EE7000;
+    border-top: 2px solid #ee7000;
 
     .error-info {
       display: block;
@@ -125,7 +125,7 @@
     button {
       width: 32px !important;
       height: 32px !important;
-      background: #28A3AF !important;
+      background: #28a3af !important;
       box-shadow: 0 4px 8px rgba(128, 128, 128, 0.695114) !important;
       border-radius: 3px;
       border: 0 !important;

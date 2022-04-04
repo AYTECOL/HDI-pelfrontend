@@ -45,8 +45,8 @@ class GetAddresInfo {
        * @type {{ results: Result[] }}
        */
       const { results } = data;
-      const address = (results || []).find(({ types }) =>
-        types.indexOf('street_address' !== -1)
+      const address = (results || []).find(
+        ({ types }) => types.indexOf('street_address') !== -1
       );
       let { formatted_address, address_components } = {
         formatted_address: '',

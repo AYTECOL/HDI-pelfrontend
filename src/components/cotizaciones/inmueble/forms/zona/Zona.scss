@@ -4,8 +4,8 @@
   justify-content: flex-end;
 
   li {
-    background: #FFFFFF;
-    border: 1px solid #C0BFC0;
+    background: #ffffff;
+    border: 1px solid #c0bfc0;
     border-radius: 3px 0 0 3px;
     width: 50%;
     text-align: center;
@@ -24,8 +24,8 @@
 
     &.active,
     &:hover {
-      background: #28A3AF;
-      border: 1px solid #28A3AF;
+      background: #28a3af;
+      border: 1px solid #28a3af;
       box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
       color: white;
     }

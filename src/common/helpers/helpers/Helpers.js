@@ -1,21 +1,21 @@
-import { UrlSite } from "../../../config";
-import Identifications from "../../../services/GetQuote";
-import store from "../../../store";
+import { UrlSite } from '../../../config';
+import Identifications from '../../../services/GetQuote';
+import store from '../../../store';
 import {
   restoreCotizacion,
   restoreCotizacionRisk,
-  saveProspect
-} from "../../../actions";
-import ValorationById from "../../../services/ValorationById";
+  saveProspect,
+} from '../../../actions';
+import ValorationById from '../../../services/ValorationById';
 
 class Helpers {
   static toCapitalize(str) {
-    var splitStr = str.toLowerCase().split(" ");
+    var splitStr = str.toLowerCase().split(' ');
     for (let i = 0; i < splitStr.length; i++) {
       splitStr[i] =
         splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
     }
-    return splitStr.join(" ");
+    return splitStr.join(' ');
   }
 
   static hasClass(selector, className) {
@@ -30,10 +30,10 @@ class Helpers {
 
   static disabled(selector) {
     let el = document.querySelector(selector);
-    let className = "disabled";
+    let className = 'disabled';
     if (el != null) {
       if (el.className.indexOf(className) === -1) {
-        el.className += " " + className;
+        el.className += ' ' + className;
         el.setAttribute(className, true);
       }
     }
@@ -41,10 +41,10 @@ class Helpers {
 
   static enabled(selector) {
     let el = document.querySelector(selector);
-    let className = "disabled";
+    let className = 'disabled';
     if (el != null) {
       if (el.className.indexOf(className) !== -1) {
-        el.className = el.className.replace(" " + className, "");
+        el.className = el.className.replace(' ' + className, '');
         el.removeAttribute(className);
       }
     }
@@ -54,7 +54,7 @@ class Helpers {
     let el = document.querySelector(selector);
     if (el != null) {
       if (el.className.indexOf(className) === -1) {
-        el.className += " " + className;
+        el.className += ' ' + className;
       }
     }
   }
@@ -62,22 +62,22 @@ class Helpers {
   static removeClass(selector, className) {
     let el = document.querySelector(selector);
     if (el != null) {
-      el.className = el.className.replace(" " + className, "");
+      el.className = el.className.replace(' ' + className, '');
     }
   }
 
   static scrollElement(size, scrollElement, inverse) {
-    if (typeof scrollElement === "undefined") {
+    if (typeof scrollElement === 'undefined') {
       scrollElement = window;
     } else {
       scrollElement = document.querySelector(scrollElement);
     }
-    if (typeof inverse === "undefined") inverse = false;
+    if (typeof inverse === 'undefined') inverse = false;
     let scrollTop = scrollElement.scrollTop;
     scrollElement.scroll({
       top: inverse ? scrollTop - size : scrollTop + size,
       left: 0,
-      behavior: "smooth"
+      behavior: 'smooth',
     });
   }
 
@@ -85,24 +85,24 @@ class Helpers {
     let el = document.querySelector(selector);
     let top;
 
-    if (typeof ignoreZero === "undefined") ignoreZero = false;
+    if (typeof ignoreZero === 'undefined') ignoreZero = false;
 
-    function findValue(el) {
+    function findValue(value) {
       if (
-        el.offsetTop === 0 &&
-        el.offsetParent !== null &&
+        value.offsetTop === 0 &&
+        value.offsetParent !== null &&
         ignoreZero === false
       ) {
-        return findValue(el.offsetParent);
+        return findValue(value.offsetParent);
       } else {
-        return el.offsetTop;
+        return value.offsetTop;
       }
     }
 
     top = findValue(el);
     if (top === 0) return;
-    if (typeof scrollElement === "undefined") behavior = "smooth";
-    if (typeof scrollElement === "undefined") {
+    if (typeof scrollElement === 'undefined') behavior = 'smooth';
+    if (typeof scrollElement === 'undefined') {
       scrollElement = window;
     } else {
       scrollElement = document.querySelector(scrollElement);
@@ -110,12 +110,12 @@ class Helpers {
     scrollElement.scroll({
       top: top,
       left: 0,
-      behavior: behavior
+      behavior: behavior,
     });
   }
 
   static orderArray(array, key) {
-    return array.sort(function(a, b) {
+    return array.sort(function (a, b) {
       a = parseInt(a[key]);
       b = parseInt(b[key]);
       if (a > b) {
@@ -132,22 +132,22 @@ class Helpers {
   }
 
   static goToNotFound(history) {
-    history.push(UrlSite + "/404");
+    history.push(UrlSite + '/404');
   }
 
   static goToHome(history) {
-    history.push(UrlSite + "/");
+    history.push(UrlSite + '/');
   }
 
   static goToError() {
-    if (window.location.pathname !== "/error") {
-      window.location.href = UrlSite + "/error";
+    if (window.location.pathname !== '/error') {
+      window.location.href = UrlSite + '/error';
     }
   }
 
   static async getRowById(id, step, history) {
     let cotizacion = await Identifications.getById(id);
-    if (typeof cotizacion.identification !== "undefined") {
+    if (typeof cotizacion.identification !== 'undefined') {
       store.dispatch(restoreCotizacion(cotizacion));
       if (cotizacion.state === 7) {
         Helpers.goToNotFound(history);
@@ -172,7 +172,7 @@ class Helpers {
         }
       }
     } else if (
-      typeof cotizacion.status !== "undefined" &&
+      typeof cotizacion.status !== 'undefined' &&
       parseInt(step) !== 1
     ) {
       if (cotizacion.status === 400) {
@@ -183,34 +183,30 @@ class Helpers {
     }
   }
 
-  static toggleSlide = index => () => {
-    let className = "close_item";
-    if (Helpers.hasClass(".row_tab_" + index, className)) {
-      Helpers.removeClass(".row_tab_" + index, className);
+  static toggleSlide = (index) => () => {
+    let className = 'close_item';
+    if (Helpers.hasClass('.row_tab_' + index, className)) {
+      Helpers.removeClass('.row_tab_' + index, className);
     } else {
-      let el = document.querySelector(".row_tab_" + index + " .wrapper-box ");
+      let el = document.querySelector('.row_tab_' + index + ' .wrapper-box ');
       if (el == null)
-        el = document.querySelector(".row_tab_" + index + " .wrapper-box-info");
-      el.style.height = el.offsetHeight + "px";
-      Helpers.addClass(".row_tab_" + index, className);
+        el = document.querySelector('.row_tab_' + index + ' .wrapper-box-info');
+      el.style.height = el.offsetHeight + 'px';
+      Helpers.addClass('.row_tab_' + index, className);
     }
   };
 
-  static fileFormats = [
-    "image/*",
-    "application/pdf"
-  ];
+  static fileFormats = ['image/*', 'application/pdf'];
 
   static validateFile(file) {
-    if (typeof file !== "undefined") {
-      return Helpers.fileFormats.some(
-        (format) =>file.type.match(format)
-      );
+    if (typeof file !== 'undefined') {
+      return Helpers.fileFormats.some((format) => file.type.match(format));
     }
   }
 
   static validationEmail(email) {
-    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
 
@@ -229,11 +225,11 @@ class Helpers {
     return regex.test(value);
   }
 
-  static fieldNumeric = function() {
-    let els = document.querySelectorAll("input.number");
+  static fieldNumeric = function () {
+    let els = document.querySelectorAll('input.number');
 
     function validateNumber(e) {
-      if (typeof e.which !== "undefined") {
+      if (typeof e.which !== 'undefined') {
         var k = e.which;
         if (
           !(
@@ -258,13 +254,13 @@ class Helpers {
           return;
         }
       }
-      e.target.value = e.target.value.replace(/\.(?=\.)|G(?!^)\.|`|,/gm, "");
+      e.target.value = e.target.value.replace(/\.(?=\.)|G(?!^)\.|`|,/gm, '');
     }
 
-    for (let i = 0; i < els.length; i++) {
-      let events = ["input", "change", "paste", "keypress"];
-      for (let j = 0; j < events.length; j++) {
-        els[i].addEventListener(events[j], validateNumber);
+    const events = ['input', 'change', 'paste', 'keypress'];
+    for (const element of els) {
+      for (const event of events) {
+        element.addEventListener(event, validateNumber);
       }
     }
   };
@@ -272,13 +268,13 @@ class Helpers {
   static calcularDigitoVerificacion(myNit) {
     // Se limpia el Nit
     myNit = myNit.toString();
-    myNit = myNit.replace(/\s/g, ""); // Espacios
-    myNit = myNit.replace(/,/g, ""); // Comas
-    myNit = myNit.replace(/\./g, ""); // Puntos
-    myNit = myNit.replace(/-/g, ""); // Guiones
+    myNit = myNit.replace(/\s/g, ''); // Espacios
+    myNit = myNit.replace(/,/g, ''); // Comas
+    myNit = myNit.replace(/\./g, ''); // Puntos
+    myNit = myNit.replace(/-/g, ''); // Guiones
     // Se valida el nit
     if (isNaN(myNit)) {
-      return "";
+      return '';
     }
     // Procedimiento
     var vpri = new Array(16);
@@ -309,7 +305,7 @@ class Helpers {
   }
 
   static clone(obj) {
-    if (null == obj || "object" != typeof obj) return obj;
+    if (null == obj || 'object' != typeof obj) return obj;
     var copy = obj.constructor();
     for (var attr in obj) {
       if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
@@ -321,7 +317,7 @@ class Helpers {
     var copy;
 
     // Handle the 3 simple types, and null or undefined
-    if (null == obj || "object" != typeof obj) return obj;
+    if (null == obj || 'object' != typeof obj) return obj;
 
     // Handle Date
     if (obj instanceof Date) {

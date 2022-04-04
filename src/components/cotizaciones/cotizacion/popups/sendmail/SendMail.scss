@@ -14,7 +14,8 @@
 }
 
 .more-items {
-  p, button {
+  p,
+  button {
     display: inline-block;
   }
 
@@ -23,7 +24,7 @@
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
-    color: #28A3AF;
+    color: #28a3af;
     cursor: pointer;
 
     &:hover {
@@ -32,8 +33,8 @@
   }
 
   button {
-    background: #28A3AF;
-    border: 1px solid #28A3AF;
+    background: #28a3af;
+    border: 1px solid #28a3af;
     box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
     border-radius: 3px;
     height: 30px;

@@ -43,22 +43,18 @@ export const getTotalCoverage = (values) => {
 export const getRulesByCode = (code, coverages = undefined) => {
   switch (code) {
     // Asegurado de Contenidos Móviles
-    case 3044:
-      return {
-        max: 50000000,
-        min: 900000,
-      };
     // Asegurado de Joyas
+    case 3044:
     case 3045:
       return {
         max: 50000000,
-        min: 900000,
+        min: 1500000,
       };
     // Asegurado de Teléfonos Móviles
     case 9652:
       return {
         max: 10000000,
-        min: 850000,
+        min: 1500000,
       };
     // Valor contenidos
     case 9692:
@@ -79,9 +75,8 @@ export const getRulesByCode = (code, coverages = undefined) => {
           }),
           min: 10000000,
           formatError: ({ max }) => {
-            if (max) {
+            if (max)
               return 'Valor Asegurado de Contenidos es superior al permitido';
-            }
           },
         };
       }
@@ -123,8 +118,8 @@ export const getRulesByCode = (code, coverages = undefined) => {
  * @param {Rules} param1
  */
 export const getValue = (value = 0, { max, min } = {}) => {
-  value = max ? (value > max ? max : value) : value;
-  value = min ? (value < min ? min : value) : value;
+  if (max && value > max) return max;
+  if (min && value < min) return min;
   return value;
 };
 

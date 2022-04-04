@@ -10,8 +10,16 @@ class IdentificationsCities {
   static async save() {
     let storeState = Store.getState();
     let accessToken = await AccessTokenGeocoding.get();
-    let infoGeocoding = await SigService.LongitudeAndLatitude(accessToken.access_token, storeState.mapsOptions.latitude, storeState.mapsOptions.longitude)
-    const { accessToken: _a, refer: _b, ...user } = {
+    let infoGeocoding = await SigService.LongitudeAndLatitude(
+      accessToken.access_token,
+      storeState.mapsOptions.latitude,
+      storeState.mapsOptions.longitude
+    );
+    const {
+      accessToken: _a,
+      refer: _b,
+      ...user
+    } = {
       ...(await ConsultaPersonas.getUser()),
     };
     const {
@@ -26,7 +34,7 @@ class IdentificationsCities {
       lastname,
       object,
       emissionId,
-      emitedDate
+      emitedDate,
     } = storeState.cotizacion.identification;
     const { attachedFile } = storeState;
     let data = {
@@ -47,14 +55,14 @@ class IdentificationsCities {
       intntermediate: user,
       policy: {
         emissionId: emissionId,
-        emitedDate: emitedDate
+        emitedDate: emitedDate,
       },
       infoGeocodingSig: infoGeocoding.value,
       attachedFile,
     };
     for (let i in data) if (data[i] === '') data[i] = '""';
     // TODO intercept request
-    let authHeader =  new AuthHeader();
+    let authHeader = new AuthHeader();
     authHeader = authHeader.generateAuthCode();
     authHeader['pelhauthorization'] = user !== null ? user['accessToken'] : '';
     return await Api.post(Url, data, undefined, undefined, authHeader);

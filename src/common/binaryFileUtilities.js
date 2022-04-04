@@ -8,14 +8,13 @@ export const getArgumentsBinaryFile = (
   { infoRequest, codigoProducto, numeroPoliza }
 ) => {
   const ficheroDescripcion = { ...file };
-  const body = {
+  return {
     fileKey,
     infoRequest,
     codigoProducto,
     numeroPoliza,
     ficheroDescripcion,
   };
-  return body;
 };
 /**
  *

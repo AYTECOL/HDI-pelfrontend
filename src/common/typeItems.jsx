@@ -12,7 +12,7 @@ export const typeItems = {
   valuablesAndWorksOfArt: {
     id: 1,
     label: 'Objetos de valor y obras de Arte',
-    max: 20000000
+    max: 20000000,
   },
   /**
    * @description "Joyas"
@@ -25,5 +25,5 @@ export const typeItems = {
   /**
    * @description "Contenido Movil"
    **/
-  mobileContent: { id: 4, label: 'Contenido Movil', max: 20000000 }
+  mobileContent: { id: 4, label: 'Contenido Movil', max: 20000000 },
 };

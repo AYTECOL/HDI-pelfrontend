@@ -22,8 +22,8 @@
 
   .tabs {
     .item-tab {
-      background: #FFFFFF;
-      border: 1px solid #C0BFC0;
+      background: #ffffff;
+      border: 1px solid #c0bfc0;
       box-sizing: border-box;
       transition: all 0.3s ease;
       cursor: pointer;
@@ -37,7 +37,7 @@
         font-size: 12px;
         line-height: 14px;
         text-align: center;
-        color: #28A3AF;
+        color: #28a3af;
       }
 
       p {
@@ -52,13 +52,15 @@
 
       &:hover,
       &.active {
-        $bg: #28A3AF;
+        $bg: #28a3af;
         background: $bg;
         border: 1px solid $bg;
         box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
         border-radius: 3px 3px 0 0;
 
-        span, p, .tab-loading {
+        span,
+        p,
+        .tab-loading {
           color: white;
         }
 
@@ -91,8 +93,8 @@
 
 .first-content {
   padding: 24px 0 18px;
-  border-top: 1px solid #E6E6E6;
-  border-bottom: 1px solid #E6E6E6;
+  border-top: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
 
   p {
     margin: 0;
@@ -103,7 +105,7 @@
     font-weight: normal;
     font-size: 14px;
     line-height: 22px;
-    color: #28A3AF;
+    color: #28a3af;
     cursor: pointer;
 
     &::after {
@@ -137,7 +139,7 @@
 }
 
 .wrapper-items {
-  background: #F0FBFC;
+  background: #f0fbfc;
   box-shadow: inset 0 6px 8px rgba(40, 163, 175, 0.32);
   padding: 24px 0;
 }
@@ -165,20 +167,20 @@
     line-height: 29px;
 
     span {
-      background: #F0FBFC;
+      background: #f0fbfc;
       border-radius: 6px;
       font-style: normal;
       font-weight: bold;
       font-size: 18px;
       line-height: 29px;
-      color: #28A3AF;
+      color: #28a3af;
       padding: 8px 10px;
       margin-right: 16px;
     }
   }
 
   .close-section {
-    color: #28A3AF;
+    color: #28a3af;
     cursor: pointer;
     font-weight: 400;
     transition: all 0.3s ease;
@@ -228,8 +230,8 @@
       }
 
       .row {
-        background: #FFFFFF;
-        border: 1px solid #99E5EA;
+        background: #ffffff;
+        border: 1px solid #99e5ea;
         box-sizing: border-box;
         box-shadow: 0 0 8px rgba(40, 163, 175, 0.32);
         border-radius: 3px;
@@ -254,8 +256,8 @@
         }
 
         .form-control {
-          background: rgba(#FFFFFF, 0.5) !important;
-          border: 1px solid #C0BFC0 !important;
+          background: rgba(#ffffff, 0.5) !important;
+          border: 1px solid #c0bfc0 !important;
         }
       }
     }
@@ -308,8 +310,8 @@
         }
 
         select {
-          background: #FFFFFF;
-          border: 1px solid #C0BFC0;
+          background: #ffffff;
+          border: 1px solid #c0bfc0;
           box-sizing: border-box;
           border-radius: 3px;
           padding: 8px 25px 9px 5px;
@@ -320,7 +322,7 @@
     }
 
     .middle {
-      background: #F0FBFC;
+      background: #f0fbfc;
       min-width: 30.5%;
 
       .form-group {
@@ -341,8 +343,8 @@
 
         .form-control {
           padding: 8px 11px 6px;
-          background: rgba(#FFFFFF, 1);
-          border: 1px solid #28A3AF;
+          background: rgba(#ffffff, 1);
+          border: 1px solid #28a3af;
           mix-blend-mode: normal;
           box-sizing: border-box;
           border-radius: 3px;
@@ -358,7 +360,7 @@
 
     &.asistencias {
       .asistencia {
-        background: #F0FBFC;
+        background: #f0fbfc;
         padding: 28px;
 
         &.summary {
@@ -448,7 +450,7 @@
 
 .contizacion-form .container .row.alert-contizacion {
   max-width: 100%;
-  background: #F0FBFC;
+  background: #f0fbfc;
   border-radius: 3px;
 
   p {
@@ -457,13 +459,13 @@
     font-size: 18px;
     line-height: 21px;
     text-align: center;
-    color: #037B86;
+    color: #037b86;
     margin: 0;
 
     i {
       display: inline-block;
-      color: #037B86;
-      border: 1.5px solid #037B86;
+      color: #037b86;
+      border: 1.5px solid #037b86;
       border-radius: 100%;
       padding: 4px 7px 0;
       line-height: 1;
@@ -488,7 +490,6 @@
   .form-action {
     padding: 20px;
     margin: 0;
-
   }
 }
 
@@ -508,8 +509,8 @@
 
   .item-tab {
     border: 0;
-    border-left: 1px solid #C0BFC0;
-    border-right: 1px solid #C0BFC0;
+    border-left: 1px solid #c0bfc0;
+    border-right: 1px solid #c0bfc0;
     margin-bottom: 10px;
     margin-top: 9px;
     padding: 0;

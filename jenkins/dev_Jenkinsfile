@@ -2,7 +2,8 @@ library ('utils@master') _
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
-
+def BRANCH_SONAR = scm.branches[0].name.replace("*/", "").replace("*/", "")
+def NAME_SONAR = "poliza-express-hogar-front"
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
         
@@ -24,8 +25,7 @@ node('linux'){
 	}    
 
 	stage('Git Checkout'){
-		checkout scm develop
-        
+		checkout scm dev
 	}
 
     stage('cloudfront') {
@@ -59,4 +59,10 @@ node('linux'){
         }
 		
     }
+
+    stage('Test sonarqube'){
+		withSonarQubeEnv('sonarqube') {
+        	sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
+	 	}
+	}  
  }
