@@ -17,22 +17,29 @@ const reloadTooltipHelp = () => {
  * @param {{
  *  title: string;
  *  placement: 'top'| 'bottom'| 'left'| 'right';
+ *  component?: any;
  *  children?: React.ReactNode
  * } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>} props
  */
 export const Tooltip = (props) => {
-  const { placement, title, children, ...rest } = props;
+  const {
+    placement,
+    component: Component = 'div',
+    title,
+    children,
+    ...rest
+  } = props;
   React.useEffect(() => {
     reloadTooltipHelp();
   }, []);
   return (
-    <div
+    <Component
       {...rest}
       data-toggle="tooltip-help"
       data-placement={placement}
       title={title}
     >
       {children}
-    </div>
+    </Component>
   );
 };

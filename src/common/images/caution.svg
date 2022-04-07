@@ -1,0 +1,17 @@
+<svg id="Gem_Caution" data-name="Gem/Caution" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+  viewBox="0 0 24 24">
+  <g id="Gem_Background_Caution" data-name="Gem Background Caution">
+    <rect id="Gem_Background_Caution-2" data-name="Gem Background Caution" width="24" height="24" rx="12" fill="none" />
+    <rect id="Gem_Background_Caution-3" data-name="Gem Background Caution" width="24" height="24" rx="12" fill="none" />
+    <rect id="Gem_Background_Caution-4" data-name="Gem Background Caution" width="24" height="24" rx="12"
+      fill="#ffeedc" />
+    <rect id="Gem_Background_Caution-5" data-name="Gem Background Caution" width="24" height="24" rx="12" fill="none" />
+    <rect id="Gem_Background_Caution-6" data-name="Gem Background Caution" width="24" height="24" rx="12" fill="none" />
+    <rect id="Gem_Background_Caution-7" data-name="Gem Background Caution" width="24" height="24" rx="12" fill="none" />
+  </g>
+  <g id="Icon_System_Warning_16px" data-name="Icon/System/Warning/16px" transform="translate(3.995 4.52)">
+    <path id="Combined_Shape" data-name="Combined Shape"
+      d="M2.751,14.622A2.716,2.716,0,0,1,.386,13.263,2.75,2.75,0,0,1,.357,10.5L5.624,1.385a2.728,2.728,0,0,1,4.751,0l4.078,7.061-.866.5L9.507,1.885a1.728,1.728,0,0,0-3.014,0L1.226,11a1.753,1.753,0,0,0,.023,1.758,1.725,1.725,0,0,0,1.5.866h10.5A1.761,1.761,0,0,0,14.771,11l-.435-.759.867-.5.435.759a2.761,2.761,0,0,1-2.39,4.122Zm6.114-2.555H7.27V10.4h1.6v1.664h0Zm-.3-3.047h-1L7.4,4.523H8.716l-.15,4.5h0Z"
+      transform="translate(0)" fill="#b85d00" />
+  </g>
+</svg>
