@@ -56,6 +56,7 @@ export const Articles = ({
 
   const last = labels[labels.length - 1];
   const text =
+    !!labels.length &&
     labels.slice(0, -1).join(', ') + (labels.length > 1 ? ' y ' : '') + last;
   return (
     <>
@@ -123,7 +124,7 @@ export const Articles = ({
           necesidad.{' '}
         </p>
       </div>
-      {invalid && (
+      {text && (
         <div className="col col-12">
           <div className="alert warn w-100 d-flex mt-3">
             <img className="mr-3" src={caution} />
