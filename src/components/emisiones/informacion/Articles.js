@@ -83,7 +83,10 @@ export const Articles = ({
                 required &&
                 ((isValid(id) && <img src={positive} />) || (
                   <>
-                    <img className="mr-2" src={caution} />
+                    <Tooltip placement="bottom" component="span" title={title}>
+                      <img className="mr-2" src={caution} />
+                    </Tooltip>
+
                     <Tooltip placement="bottom" component="span" title={title}>
                       <img src={warning} />
                     </Tooltip>

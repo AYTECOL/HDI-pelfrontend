@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from '../../../common/helpers/helpers/Helpers';
+import informative from '../../../common/images/informative.svg';
 import { typeItems } from '../../../common/typeItems';
 import { attachmentsItems } from './constants';
 
@@ -110,11 +111,11 @@ const Content = ({
               disabled={!typeItem}
             />
             <small className="form-text d-block text-left total-value">
-              {`Maximo: ${
+              {`Máximo: ${
                 maximum > (item && item.max)
                   ? Masknumbermoney.formatToMask(item && item.max)
                   : Masknumbermoney.formatToMask(maximum)
-              }`}
+              } por artículo`}
             </small>
             {errors && errors.min && (
               <small className="form-text only-errors show">
@@ -170,6 +171,7 @@ const Content = ({
                 )}
               </div>
               <small>
+                <img className="mr-2" src={informative} />
                 Si no adjunta documentos, debe presentarlos el día del siniestro
               </small>
             </div>

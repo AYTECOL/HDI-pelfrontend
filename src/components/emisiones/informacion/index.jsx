@@ -664,42 +664,28 @@ class Index extends React.Component {
                   </h4>
                 </div>
                 <div className="col-12">
-                  <div className="row row-full justify-content-center">
-                    <div className="col-auto">
+                  <div className="row justify-content-center">
+                    <div className="col-6 ">
                       <p>
-                        <b>Contenidos</b>: $ 12.000.000
+                        <b> • Contenidos Fijos</b>: $ 12.000.000
+                      </p>
+                      <p>
+                        <b> • Objetos de valor y obras de Arte:</b> $ 2.000.000
                       </p>
                     </div>
-                    <div className="col-auto">
+                    <div className="col-6">
                       <p>
-                        <b>Joyas</b>: $ 2.000.000
+                        <b> • Joyas</b>: Requiere relación detallada para todos
                       </p>
-                    </div>
-                    <div className="col-auto">
                       <p>
-                        <b>Teléfonos Móviles:</b> Requiere relación detallada
+                        <b> • Contenidos Móviles:</b> Requiere relación
+                        detallada para todos
+                      </p>
+                      <p>
+                        <b> • Teléfonos Móviles:</b> Requiere relación detallada
                         para todos
                       </p>
                     </div>
-                    <div className="col-auto">
-                      <p>
-                        <b>Objetos de valor y obras de Arte:</b> $ 2.000.000
-                      </p>
-                    </div>
-                    <div className="col-auto">
-                      <p>
-                        <b>Contenidos Móviles:</b> $ 2.000.000
-                      </p>
-                    </div>
-                    {celulares === true && (
-                      <div className="col col-sm-12 col-md-12 col-lg-12">
-                        <p>
-                          Recuerda que, para emitir la póliza, debes relacionar
-                          las características y el número IMEI de cada teléfono
-                          móvil.
-                        </p>
-                      </div>
-                    )}
                   </div>
                 </div>
                 <Articles
