@@ -30,4 +30,5 @@ export interface Item {
   min: number;
   max: number;
   maxTotal: number;
+  required?: boolean;
 }

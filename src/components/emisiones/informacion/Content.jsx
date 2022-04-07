@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from '../../../common/helpers/helpers/Helpers';
+import informative from '../../../common/images/informative.svg';
 import { typeItems } from '../../../common/typeItems';
 import { attachmentsItems } from './constants';
 
@@ -14,7 +15,7 @@ import { attachmentsItems } from './constants';
 /**
  * @type {React.ComponentType<{
  *  items: Item[],
- *  item: Item,
+ *  item?: Item,
  *  maximum: number,
  *  getErrors: ()=> { min?: boolean, max?: boolean } | null,
  *  content: import('../../../models/types').GoodsOverCostLocal
@@ -42,12 +43,12 @@ const Content = ({
     else return attachment.name;
   }
   const errors = !typeItem ? false : getErrors();
-  const isCellPhone = typeItems.cellPhones.id === item.id;
+  const isCellPhone = typeItems.cellPhones.id === (item && item.id);
   const canAttachFile = [
     typeItems.valuablesAndWorksOfArt.id,
     typeItems.jewelry.id,
     typeItems.mobileContent.id,
-  ].includes(item.id);
+  ].includes(item && item.id);
   const { files } = content;
   return (
     <div className="moreitems">
@@ -110,20 +111,22 @@ const Content = ({
               disabled={!typeItem}
             />
             <small className="form-text d-block text-left total-value">
-              {`Maximo: ${
-                maximum > item.max
-                  ? Masknumbermoney.formatToMask(item.max)
+              {`Máximo: ${
+                maximum > (item && item.max)
+                  ? Masknumbermoney.formatToMask(item && item.max)
                   : Masknumbermoney.formatToMask(maximum)
-              }`}
+              } por artículo`}
             </small>
             {errors && errors.min && (
               <small className="form-text only-errors show">
-                Valor Asegurado del ítem {item.label} es inferior al permitido
+                Valor Asegurado del ítem {item && item.label} es inferior al
+                permitido
               </small>
             )}
             {errors && errors.max && (
               <small className="form-text only-errors show">
-                Valor Asegurado del ítem {item.label} es mayor al permitido
+                Valor Asegurado del ítem {item && item.label} es mayor al
+                permitido
               </small>
             )}
           </div>
@@ -168,6 +171,7 @@ const Content = ({
                 )}
               </div>
               <small>
+                <img className="mr-2" src={informative} />
                 Si no adjunta documentos, debe presentarlos el día del siniestro
               </small>
             </div>
