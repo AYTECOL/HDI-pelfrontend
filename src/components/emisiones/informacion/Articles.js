@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import positive from '../../../common/images/positive.svg';
 import caution from '../../../common/images/caution.svg';
 import warning from '../../../common/images/warning.svg';
@@ -8,6 +8,19 @@ import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumberm
 
 const formatToMask = (value) => {
   return Masknumbermoney.formatToMask(value);
+};
+
+/**
+ *
+ * @param {string[]} texts
+ * @returns
+ */
+const buildText = (texts) => {
+  const last = texts[texts.length - 1];
+  return (
+    !!texts.length &&
+    texts.slice(0, -1).join(', ') + (texts.length > 1 ? ' y ' : '') + last
+  );
 };
 
 export const Articles = ({
@@ -39,25 +52,45 @@ export const Articles = ({
    *  [key: string]: {
    *   label: string,
    *   state: boolean
+   *   required: boolean
    *  }
    * }}
    */
-  const invalids = items.reduce(
-    (acc, [{ id, label, required }, max, total]) => {
-      acc[id] = { label, state: required && !validateTotalItem(max, total) };
-      return acc;
-    },
-    {}
+  const invalids = useMemo(
+    () =>
+      items.reduce((acc, [{ id, label, required }, max, total]) => {
+        acc[id] = {
+          label,
+          state: required && !validateTotalItem(max, total),
+          required,
+        };
+        return acc;
+      }, {}),
+    [items]
   );
-  const isValid = (id) => !invalids[id].state;
-  const labels = Object.values(invalids)
-    .filter((value) => value.state)
-    .map(({ label }) => label.toLowerCase());
 
-  const last = labels[labels.length - 1];
-  const text =
-    !!labels.length &&
-    labels.slice(0, -1).join(', ') + (labels.length > 1 ? ' y ' : '') + last;
+  const invalidsValues = useMemo(() => Object.values(invalids), [invalids]);
+  const isValid = (id) => !invalids[id].state;
+
+  const invalidsLabels = useMemo(
+    () =>
+      invalidsValues
+        .filter((value) => value.state)
+        .map(({ label }) => label.toLowerCase()),
+    [invalidsValues]
+  );
+
+  const validsLabels = useMemo(
+    () =>
+      invalidsValues
+        .filter(({ required, state }) => required && !state)
+        .map(({ label }) => label.toLowerCase()),
+    [invalidsValues]
+  );
+
+  const invalidText = buildText(invalidsLabels);
+  const validText = !invalidsLabels.length && buildText(validsLabels);
+
   return (
     <>
       <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
@@ -74,21 +107,33 @@ export const Articles = ({
               const item = itemsSelected.find((item) => item.id === id);
               const maxFormated = formatToMask(max);
               const totalFormated = formatToMask(total);
-              const title = `
+              const cautionTitle = `
                 Aun no incluyes el 100% de la relación
                 detallada de ${label}. Ten presente que
                 debes completar ${maxFormated} y tienes
                 ${totalFormated.replace(/\.$/g, '')} relacionados
               `;
+              const warnTitle = `
+                Aun no incluyes la relación detallada de ${label}. 
+                Ten presente que esta información es requerida para emitir la póliza.
+              `;
               const contentRequired =
                 required &&
                 ((isValid(id) && <img src={positive} />) || (
                   <>
-                    <Tooltip placement="bottom" component="span" title={title}>
+                    <Tooltip
+                      placement="bottom"
+                      component="span"
+                      title={cautionTitle}
+                    >
                       <img className="mr-2" src={caution} />
                     </Tooltip>
 
-                    <Tooltip placement="bottom" component="span" title={title}>
+                    <Tooltip
+                      placement="bottom"
+                      component="span"
+                      title={warnTitle}
+                    >
                       <img src={warning} />
                     </Tooltip>
                   </>
@@ -124,13 +169,13 @@ export const Articles = ({
           necesidad.{' '}
         </p>
       </div>
-      {text && (
+      {invalidText && (
         <div className="col col-12">
           <div className="alert warn w-100 d-flex mt-3">
             <img className="mr-3" src={caution} />
             <div>
               <span className="text mr-4">
-                Debes incluir la relación de {text}.
+                Debes incluir la relación de {invalidText}.
               </span>
               La descripción de los contenidos es necesaria para responder de
               forma efectiva
@@ -138,13 +183,13 @@ export const Articles = ({
           </div>
         </div>
       )}
-      {!invalid && (
+      {validText && (
         <div className="col col-12">
           <div className="alert success w-100 d-flex mt-3">
             <img className="mr-3" src={positive} />
             <div>
               <span className="text mr-4">
-                ¡Muy bien! ya incluiste la relación de contenidos móviles
+                ¡Muy bien! ya incluiste la relación de {validText}
               </span>
               Si no adjuntaste documentos, debes presentarlos el día del
               siniestro

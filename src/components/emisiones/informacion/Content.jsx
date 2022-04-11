@@ -50,6 +50,8 @@ const Content = ({
     typeItems.mobileContent.id,
   ].includes(item && item.id);
   const { files } = content;
+  const maxNumber = maximum > (item && item.max) ? item && item.max : maximum;
+  const max = Masknumbermoney.formatToMask(maxNumber);
   return (
     <div className="moreitems">
       <div className="row">
@@ -107,15 +109,17 @@ const Content = ({
               className="form-control"
               name="value"
               value={Masknumbermoney.formatToMask(content.value)}
-              onChange={handleChange}
+              onChange={({ target: { value } }) => {
+                let newValue = value;
+                let valueNumber = Masknumbermoney.formatToNumber(value);
+                if (valueNumber > maximum)
+                  newValue = Masknumbermoney.formatToMask(maximum);
+                handleChange({ newValue });
+              }}
               disabled={!typeItem}
             />
             <small className="form-text d-block text-left total-value">
-              {`Máximo: ${
-                maximum > (item && item.max)
-                  ? Masknumbermoney.formatToMask(item && item.max)
-                  : Masknumbermoney.formatToMask(maximum)
-              } por artículo`}
+              {`Máximo: ${maxNumber} por artículo`}
             </small>
             {errors && errors.min && (
               <small className="form-text only-errors show">
