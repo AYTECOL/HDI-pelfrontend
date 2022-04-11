@@ -448,16 +448,18 @@ class Index extends React.Component {
     };
   };
 
-  handleChange = (key) => (e) => {
-    const { contents: oldContents } = this.state;
-    const contents = [...oldContents];
-    let content = contents[key];
-    content[e.target.name] = e.target.value;
-    this.setState({
-      ...this.state,
-      contents: contents,
-    });
-  };
+  handleChange =
+    (key) =>
+    ({ value }) => {
+      const { contents: oldContents } = this.state;
+      const contents = [...oldContents];
+      let content = contents[key];
+      content.value = value;
+      this.setState({
+        ...this.state,
+        contents: contents,
+      });
+    };
 
   /**
    *
@@ -729,7 +731,11 @@ class Index extends React.Component {
                                 totalByType[item.id]
                               ) || `${content.type}` === `${item.id}`
                           )}
-                          handleChange={this.handleChange(key)}
+                          handleChange={({ value }) => {
+                            this.handleChange(key)({
+                              value: value,
+                            });
+                          }}
                           updateContent={this.updateContent(key)}
                           removeContent={this.removeContent(key)}
                           changeTextFile={this.changeTextFile(key)}
@@ -740,7 +746,7 @@ class Index extends React.Component {
                       );
                     })}
                     <div className="row justify-content-center">
-                      <div className="col-12 col-md-6">
+                      <div className="col-12 col-md-7">
                         <LastContentWarn
                           content={this.getLastContent()}
                           totalByType={totalByType}

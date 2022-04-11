@@ -25,7 +25,9 @@ export const ButtonsFooter = () => {
                   En mi calidad de intermediario, manifiesto que he verificado
                   la documentación e información entregada por el asegurado y/o
                   el tomador, encontrando que la misma corresponde a la realidad
-                  en cuanto a las características, cantidad y tipo de riesgo
+                  en cuanto a las características, cantidad y tipo de riesgo.
+                  Dando coherencia igualmente a la solicitud del cliente con los
+                  riesgos trasladados a la póliza.
                 </label>
               </div>
             </div>
