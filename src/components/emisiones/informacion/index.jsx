@@ -566,13 +566,13 @@ class Index extends React.Component {
           className="index-form emision informacion-adicioonal"
         >
           <div className="container">
-            <div className="row">
+            <div className="row custom-row">
               <div className="col col-sm-12 col-md-12 col-lg-12 title">
                 <h2>Cuéntanos más</h2>
               </div>
             </div>
 
-            <div className="row">
+            <div className="row custom-row">
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                 <div className="form-group">
                   <label htmlFor="pisonumero">
