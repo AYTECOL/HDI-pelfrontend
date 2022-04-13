@@ -145,8 +145,9 @@ export const Articles = ({
                       {label}
                     </td>
                     <td>{maxFormated}</td>
-                    <td>
-                      {totalFormated} {contentRequired}
+                    <td className="d-flex align-items-center">
+                      <div className="mr-2">{totalFormated}</div>
+                      {contentRequired}
                     </td>
                   </tr>
                 )
