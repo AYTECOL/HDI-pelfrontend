@@ -114,7 +114,7 @@ const Content = ({
                 let valueNumber = Masknumbermoney.formatToNumber(value);
                 if (valueNumber > maximum)
                   newValue = Masknumbermoney.formatToMask(maximum);
-                handleChange({ newValue });
+                handleChange({ value: newValue });
               }}
               disabled={!typeItem}
             />
@@ -174,7 +174,7 @@ const Content = ({
                   }
                 )}
               </div>
-              <small>
+              <small className="d-flex align-items-center mt-1">
                 <img className="mr-2" src={informative} />
                 Si no adjunta documentos, debe presentarlos el día del siniestro
               </small>
