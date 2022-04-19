@@ -1,0 +1,22 @@
+<svg id="Gem_Positive" data-name="Gem/Positive" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+  viewBox="0 0 24 24">
+  <g id="Gem_Background_Positive" data-name="Gem Background Positive">
+    <rect id="Gem_Background_Positive-2" data-name="Gem Background Positive" width="24" height="24" rx="12"
+      fill="none" />
+    <rect id="Gem_Background_Positive-3" data-name="Gem Background Positive" width="24" height="24" rx="12"
+      fill="none" />
+    <rect id="Gem_Background_Positive-4" data-name="Gem Background Positive" width="24" height="24" rx="12"
+      fill="none" />
+    <rect id="Gem_Background_Positive-5" data-name="Gem Background Positive" width="24" height="24" rx="12"
+      fill="#e1f2e6" />
+    <rect id="Gem_Background_Positive-6" data-name="Gem Background Positive" width="24" height="24" rx="12"
+      fill="none" />
+    <rect id="Gem_Background_Positive-7" data-name="Gem Background Positive" width="24" height="24" rx="12"
+      fill="none" />
+  </g>
+  <g id="Icon_System_Success_Alert_16px" data-name="Icon/System/Success Alert/16px" transform="translate(4.005 4.004)">
+    <path id="Combined_Shape" data-name="Combined Shape"
+      d="M2.345,13.647A7.991,7.991,0,1,1,8,15.991,7.942,7.942,0,0,1,2.345,13.647ZM1,8A7,7,0,1,0,8,1,7,7,0,0,0,1,8Zm2.4.8.7-.712,2.372,2.339L11.9,4.963l.71.707L6.481,11.836Z"
+      fill="#008040" />
+  </g>
+</svg>

@@ -6,9 +6,11 @@ import './styles.scss';
 const getTooltipTemplate = () =>
   '<div class="tooltip tooltip-help" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>';
 
-const reloadTooltipHelp = () => {
-  $('[data-toggle="tooltip-help"]').tooltip({
+const reloadTooltipHelp = (element, { title, placement }) => {
+  $(element).tooltip({
     template: getTooltipTemplate(),
+    title,
+    placement,
   });
 };
 
@@ -17,22 +19,26 @@ const reloadTooltipHelp = () => {
  * @param {{
  *  title: string;
  *  placement: 'top'| 'bottom'| 'left'| 'right';
+ *  component?: any;
  *  children?: React.ReactNode
  * } & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>} props
  */
 export const Tooltip = (props) => {
-  const { placement, title, children, ...rest } = props;
+  const elementRef = React.useRef(null);
+  const {
+    placement,
+    component: Component = 'div',
+    title,
+    children,
+    ...rest
+  } = props;
   React.useEffect(() => {
-    reloadTooltipHelp();
+    reloadTooltipHelp(elementRef.current, { title, placement });
   }, []);
+  console.log(title);
   return (
-    <div
-      {...rest}
-      data-toggle="tooltip-help"
-      data-placement={placement}
-      title={title}
-    >
+    <Component {...rest} data-toggle="tooltip-help" ref={elementRef}>
       {children}
-    </div>
+    </Component>
   );
 };

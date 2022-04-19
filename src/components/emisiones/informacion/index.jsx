@@ -20,6 +20,8 @@ import Content from './Content';
 import { typeItems } from '../../../common/typeItems';
 import UploadFile from '../../../services/UploadFile';
 import { BuiltMetersHousing } from './BuiltMetersHousing';
+import { Articles } from './Articles';
+import { LastContentWarn } from './LastContentWarn';
 
 // 10MB
 const maxFileSize = UploadFile.maxFileSize;
@@ -168,6 +170,7 @@ class Index extends React.Component {
             ...typeItems.jewelry,
             min: 1,
             maxTotal: inmuebles.inmueble_asegudado_joyasvalor,
+            required: true,
           });
           joyas = true;
         }
@@ -189,6 +192,7 @@ class Index extends React.Component {
           ...typeItems.mobileContent,
           min: 1,
           maxTotal: value_to_quotate > 20000000 ? 20000000 : value_to_quotate,
+          required: true,
         });
       }
     }
@@ -233,16 +237,31 @@ class Index extends React.Component {
     });
   };
 
-  addContent = () => {
+  getLastContent = () => {
+    const { contents } = this.state;
+    return contents[contents.length - 1];
+  };
+
+  addContent = ({ totalByType }) => {
     let total = this.state.totalContent + 1;
     const { contents } = this.state;
+    const last = this.getLastContent();
+    let nextType = '';
+    if (last && last.type) {
+      const item = this.getItem(last.type);
+      const limit = item.maxTotal;
+      const total = totalByType[last.type];
+      if (!this.validateTotalItem(limit, total)) {
+        nextType = last.type;
+      }
+    }
     this.setState({
       ...this.state,
       totalContent: total,
       contents: [
         ...contents,
         {
-          type: '',
+          type: nextType,
           caracte: '',
           value: '',
         },
@@ -318,39 +337,68 @@ class Index extends React.Component {
         cellPhones: total[cellPhones.id],
         mobileContent: total[mobileContent.id],
       },
+      totalByType: total,
     };
+  };
+
+  validateTotalItem = (max, current) => {
+    return current >= max - 999 && current <= max;
   };
 
   hasErrors() {
     const { inmuebles, quote_contenidomovil, contents } = this.state;
     const { total, error } = this.getTotal();
+    const {
+      fixedContent,
+      valuablesAndWorksOfArt,
+      jewelry,
+      cellPhones,
+      mobileContent,
+    } = typeItems;
     if (error) return true;
     if (
       inmuebles.contenido_asegudado === 1 &&
-      total.fixedContent !== 0 &&
-      inmuebles.contenido_asegudado_valor < total.fixedContent
+      (fixedContent.required || total.fixedContent) &&
+      !this.validateTotalItem(
+        inmuebles.contenido_asegudado_valor,
+        total.fixedContent
+      )
     )
       return true;
 
     if (
       inmuebles.inmueble_asegudado_obras === 1 &&
-      total.valuablesAndWorksOfArt !== 0 &&
-      inmuebles.inmueble_asegudado_obrasvalor < total.valuablesAndWorksOfArt
+      (valuablesAndWorksOfArt.required || total.valuablesAndWorksOfArt) &&
+      !this.validateTotalItem(
+        inmuebles.inmueble_asegudado_obrasvalor,
+        total.valuablesAndWorksOfArt
+      )
     )
       return true;
     if (
       inmuebles.inmueble_asegudado_joyas === 1 &&
-      total.jewelry !== 0 &&
-      inmuebles.inmueble_asegudado_joyasvalor < total.jewelry
+      (jewelry.required || total.jewelry) &&
+      !this.validateTotalItem(
+        inmuebles.inmueble_asegudado_joyasvalor,
+        total.jewelry
+      )
     )
       return true;
     if (
       inmuebles.inmueble_asegudado_telefonos === 1 &&
-      inmuebles.inmueble_asegudado_telefonosvalor < total.cellPhones
+      (cellPhones.required || total.cellPhones) &&
+      !this.validateTotalItem(
+        inmuebles.inmueble_asegudado_telefonosvalor,
+        total.cellPhones
+      )
     ) {
       return true;
     }
-    if (total.mobileContent > quote_contenidomovil) {
+    if (
+      quote_contenidomovil &&
+      (mobileContent.required || total.mobileContent) &&
+      !this.validateTotalItem(quote_contenidomovil, total.mobileContent)
+    ) {
       return true;
     }
     if (
@@ -388,27 +436,30 @@ class Index extends React.Component {
   }
 
   /**
-   * @param {string} id
+   * @param {string | number} id
    * @return {import('../../../models/types').Item}
    */
   getItem = (id) => {
     const { items } = this.state;
-    const item = { ...items.find((item) => String(item.id) === String(id)) };
+    const item = { ...items.find((item) => `${item.id}` === `${id}`) };
     return {
       ...item,
       max: item.maxTotal < item.max ? item.maxTotal : item.max,
     };
   };
 
-  handleChange = (key) => (e) => {
-    const { contents } = this.state;
-    let content = contents[key];
-    content[e.target.name] = e.target.value;
-    this.setState({
-      ...this.state,
-      contents,
-    });
-  };
+  handleChange =
+    (key) =>
+    ({ value }) => {
+      const { contents: oldContents } = this.state;
+      const contents = [...oldContents];
+      let content = contents[key];
+      content.value = value;
+      this.setState({
+        ...this.state,
+        contents: contents,
+      });
+    };
 
   /**
    *
@@ -474,7 +525,8 @@ class Index extends React.Component {
       quote_contenidomovil,
     } = this.state;
     const invalid = this.hasErrors();
-    const { total } = this.getTotal();
+    const { total, totalByType } = this.getTotal();
+    const itemsMap = new Map(items.map((item) => [`${item.id}`, item]));
     const {
       contenido_asegudado_valor,
       inmueble_asegudado_obrasvalor,
@@ -506,6 +558,7 @@ class Index extends React.Component {
         value: quote_contenidomovil,
       },
     };
+
     return (
       <React.Fragment>
         <form
@@ -513,13 +566,13 @@ class Index extends React.Component {
           className="index-form emision informacion-adicioonal"
         >
           <div className="container">
-            <div className="row">
+            <div className="row custom-row">
               <div className="col col-sm-12 col-md-12 col-lg-12 title">
                 <h2>Cuéntanos más</h2>
               </div>
             </div>
 
-            <div className="row">
+            <div className="row custom-row">
               <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
                 <div className="form-group">
                   <label htmlFor="pisonumero">
@@ -613,109 +666,38 @@ class Index extends React.Component {
                   </h4>
                 </div>
                 <div className="col-12">
-                  <div className="row row-full justify-content-center">
-                    <div className="col-auto">
+                  <div className="row justify-content-center">
+                    <div className="col-6 ">
                       <p>
-                        <b>Contenidos</b>: $ 12.000.000
+                        <b> • Contenidos Fijos</b>: $ 12.000.000
+                      </p>
+                      <p>
+                        <b> • Objetos de valor y obras de Arte:</b> $ 2.000.000
                       </p>
                     </div>
-                    <div className="col-auto">
+                    <div className="col-6">
                       <p>
-                        <b>Joyas</b>: $ 2.000.000
+                        <b> • Joyas</b>: Requiere relación detallada para todos
                       </p>
-                    </div>
-                    <div className="col-auto">
                       <p>
-                        <b>Teléfonos Móviles:</b> Requiere relación detallada
+                        <b> • Contenidos Móviles:</b> Requiere relación
+                        detallada para todos
+                      </p>
+                      <p>
+                        <b> • Teléfonos Móviles:</b> Requiere relación detallada
                         para todos
                       </p>
                     </div>
-                    <div className="col-auto">
-                      <p>
-                        <b>Objetos de valor y obras de Arte:</b> $ 2.000.000
-                      </p>
-                    </div>
-                    <div className="col-auto">
-                      <p>
-                        <b>Contenidos Móviles:</b> $ 2.000.000
-                      </p>
-                    </div>
-                    {celulares === true && (
-                      <div className="col col-sm-12 col-md-12 col-lg-12">
-                        <p>
-                          Recuerda que, para emitir la póliza, debes relacionar
-                          las características y el número IMEI de cada teléfono
-                          móvil.
-                        </p>
-                      </div>
-                    )}
                   </div>
                 </div>
-                <div className="col col-12 col-sm-12 col-md-10 col-lg-8">
-                  <table className="table table-sm mt-4">
-                    <thead>
-                      <tr>
-                        <th scope="col">Tipo de articulo</th>
-                        <th scope="col">Valor total máximo</th>
-                        <th scope="col">Valor total</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[
-                        [
-                          typeItems.fixedContent,
-                          contenido_asegudado_valor,
-                          total.fixedContent,
-                        ],
-                        [
-                          typeItems.jewelry,
-                          inmueble_asegudado_joyasvalor,
-                          total.jewelry,
-                        ],
-                        [
-                          typeItems.cellPhones,
-                          inmueble_asegudado_telefonosvalor,
-                          total.cellPhones,
-                        ],
-                        [
-                          typeItems.valuablesAndWorksOfArt,
-                          inmueble_asegudado_obrasvalor,
-                          total.valuablesAndWorksOfArt,
-                        ],
-                        [
-                          typeItems.mobileContent,
-                          quote_contenidomovil,
-                          total.mobileContent,
-                        ],
-                      ].map(
-                        ([{ label, id }, max, total]) =>
-                          items.find((item) => item.id === id) && (
-                            <tr key={id} className="h6 font-weight-normal">
-                              <td className="h6 font-weight-normal font-italic">
-                                {label}
-                              </td>
-                              <td>{this.formatToMask(max)}</td>
-                              <td>{this.formatToMask(total)}</td>
-                            </tr>
-                          )
-                      )}
-                    </tbody>
-                  </table>
-                  <div className="row row-full">
-                    <div className="col-auto"></div>
-                    <div className="col-auto"></div>
-                    <div className="col-auto"></div>
-                    <div className="col-auto"></div>
-                    <div className="col-auto"></div>
-                  </div>
-                </div>
-                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                  <p className="text-center mt-3">
-                    Es importante conocer este tipo de artículos, esto nos
-                    permite al momento del siniestro responder de forma efectiva
-                    de acuerdo a la necesidad.{' '}
-                  </p>
-                </div>
+                <Articles
+                  inmuebles={inmuebles}
+                  total={total}
+                  quote_contenidomovil={quote_contenidomovil}
+                  items={items}
+                  invalid={invalid}
+                  validateTotalItem={this.validateTotalItem}
+                />
                 <div className="wrapper-more-items">
                   <div
                     className={
@@ -742,17 +724,37 @@ class Index extends React.Component {
                         <Content
                           key={key}
                           content={content}
-                          items={items}
-                          handleChange={this.handleChange(key)}
+                          items={items.filter(
+                            (item) =>
+                              !this.validateTotalItem(
+                                item.maxTotal,
+                                totalByType[item.id]
+                              ) || `${content.type}` === `${item.id}`
+                          )}
+                          handleChange={({ value }) => {
+                            this.handleChange(key)({
+                              value: value,
+                            });
+                          }}
                           updateContent={this.updateContent(key)}
                           removeContent={this.removeContent(key)}
                           changeTextFile={this.changeTextFile(key)}
-                          item={this.getItem(content.type)}
+                          item={itemsMap.get(`${content.type}`)}
                           maximum={maximum}
                           getErrors={() => this.getErrors(content, maximum)}
                         />
                       );
                     })}
+                    <div className="row justify-content-center">
+                      <div className="col-12 col-md-7">
+                        <LastContentWarn
+                          content={this.getLastContent()}
+                          totalByType={totalByType}
+                          validateTotalItem={this.validateTotalItem}
+                          getItem={this.getItem}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
@@ -764,7 +766,7 @@ class Index extends React.Component {
                           'more-items ' +
                           (contents.length !== 0 ? 'active' : '')
                         }
-                        onClick={this.addContent}
+                        onClick={() => this.addContent({ totalByType })}
                       >
                         <button type="button" className="more-btn">
                           +

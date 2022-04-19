@@ -90,9 +90,11 @@
     margin-bottom: 0;
   }
 
-  .row {
+  .custom-row {
     max-width: 614px;
+  }
 
+  .row {
     &.select-item {
       min-height: 127px;
     }
@@ -119,52 +121,74 @@
   }
 }
 
-#root .informacion-adicioonal .wrapper-more-items {
-  display: block;
-  width: 100%;
-  padding: 0;
-  margin-top: 20px;
-
-  .more-items {
-    max-width: 100%;
-    width: 90%;
-    margin: 0 auto;
-    padding: 40px 0 100px;
-
-    &::after {
-      display: none !important;
+#root .informacion-adicioonal {
+  .alert {
+    background: #fff;
+    border: 1px solid #c0bfc0;
+    border-radius: 3px;
+    &.warn {
+      border-left: #b85d00 solid 5px;
+      .text {
+        color: #b85d00;
+      }
     }
+    &.success {
+      border-left: #00b85d solid 5px;
+      .text {
+        color: #00b85d;
+      }
+    }
+    .text {
+      font-weight: bold;
+    }
+  }
+  .wrapper-more-items {
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin-top: 20px;
 
-    .trash {
-      display: block;
-      margin: 40px auto 0;
-      width: 30px;
+    .more-items {
+      max-width: 100%;
+      width: 90%;
+      margin: 0 auto;
+      padding: 40px 0 100px;
 
-      &::before {
+      &::after {
         display: none !important;
       }
 
-      &::after {
-        background-size: 14px auto;
-        background-position: center;
+      .trash {
+        display: block;
+        margin: 40px auto 0;
+        width: 30px;
+
+        &::before {
+          display: none !important;
+        }
+
+        &::after {
+          background-size: 14px auto;
+          background-position: center;
+        }
       }
-    }
 
-    .row {
-      max-width: 100%;
-      flex: 1;
+      .row {
+        max-width: 100%;
+        flex: 1;
 
-      .sarlaft {
-        background-color: transparent;
-        margin: 0;
-        padding: 0;
-        margin-top: 16px;
+        .sarlaft {
+          background-color: transparent;
+          margin: 0;
+          padding: 0;
+          margin-top: 16px;
 
-        span {
-          font-style: normal;
-          font-weight: normal;
-          font-size: 10px;
-          line-height: 11px;
+          span {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 10px;
+            line-height: 11px;
+          }
         }
       }
     }
