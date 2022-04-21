@@ -191,7 +191,7 @@ class Index extends React.Component {
         items.push({
           ...typeItems.mobileContent,
           min: 1,
-          maxTotal: value_to_quotate > 20000000 ? 20000000 : value_to_quotate,
+          maxTotal: value_to_quotate,
           required: true,
         });
       }
