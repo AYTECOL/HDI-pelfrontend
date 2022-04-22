@@ -107,6 +107,7 @@ export const Articles = ({
               const item = itemsSelected.find((item) => item.id === id);
               const maxFormated = formatToMask(max);
               const totalFormated = formatToMask(total);
+              console.log(total);
               const cautionTitle = `
                 Aun no incluyes el 100% de la relación
                 detallada de ${label}. Ten presente que
