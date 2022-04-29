@@ -36,3 +36,6 @@ export const typeItems = {
     required: true,
   },
 };
+
+export const getTypeItem = (id) =>
+  Object.values(typeItems).find((item) => +item.id === +id);
