@@ -25,6 +25,7 @@ import Summary from '../../../cotizaciones/cotizacion/summary/summary';
 import { roles } from '../../identificacion/constants';
 import { someRole } from '../../utils';
 import Cities from '../../../../services/Cities';
+import { getTypeItem } from '../../../../common/typeItems';
 
 class Index extends Component {
   constructor(props) {
@@ -483,55 +484,52 @@ class Index extends Component {
                     }
                   >
                     <div className="wrapper-content">
-                      {this.state.contents.map((item, key) => (
-                        <div className="row" key={key}>
-                          <div className="col col-sm-6 col-md-3">
-                            <p>
-                              <span>Tipo de contenido</span>
-                            </p>
-                            <p>
-                              {parseInt(item.type) === 0 && 'Contenidos'}
-                              {parseInt(item.type) === 1 &&
-                                'Objetos de valor y obras de Arte'}
-                              {parseInt(item.type) === 2 && 'Joyas'}
-                              {parseInt(item.type) === 3 && 'Celulares'}
-                            </p>
+                      {this.state.contents.map((item, key) => {
+                        const type = getTypeItem(item.type);
+                        return (
+                          <div className="row" key={key}>
+                            <div className="col col-sm-6 col-md-3">
+                              <p>
+                                <span>Tipo de contenido</span>
+                              </p>
+                              <p>{(type && type.label) || ''}</p>
+                            </div>
+                            <div className="col col-sm-6 col-md-3">
+                              <p>
+                                <span>IMEI y características</span>
+                              </p>
+                              <p>{item.caracte}</p>
+                            </div>
+                            <div className="col col-sm-6 col-md-3">
+                              <p>
+                                <span>Valor</span>
+                              </p>
+                              <p>{Masknumbermoney.formatToMask(item.value)}</p>
+                            </div>
+                            <div className="col col-sm-6 col-md-3">
+                              {item.files &&
+                                Object.keys(item.files).map((key) => {
+                                  /**
+                                   * @type {import("../../../../models/types").Attachment | undefined}
+                                   */
+                                  const file = item.files[key];
+                                  return (
+                                    file && (
+                                      <div key={key} className="p-1">
+                                        <button
+                                          type="button"
+                                          className="btn btn-download w-100 text-truncate m-0"
+                                        >
+                                          {file.name}
+                                        </button>
+                                      </div>
+                                    )
+                                  );
+                                })}
+                            </div>
                           </div>
-                          <div className="col col-sm-6 col-md-3">
-                            <p>
-                              <span>IMEI y características</span>
-                            </p>
-                            <p>{item.caracte}</p>
-                          </div>
-                          <div className="col col-sm-6 col-md-3">
-                            <p>
-                              <span>Valor</span>
-                            </p>
-                            <p>{Masknumbermoney.formatToMask(item.value)}</p>
-                          </div>
-                          <div className="col col-sm-6 col-md-3">
-                            {item.files &&
-                              Object.keys(item.files).map((key) => {
-                                /**
-                                 * @type {import("../../../../models/types").Attachment | undefined}
-                                 */
-                                const file = item.files[key];
-                                return (
-                                  file && (
-                                    <div key={key} className="p-1">
-                                      <button
-                                        type="button"
-                                        className="btn btn-download w-100 text-truncate m-0"
-                                      >
-                                        {file.name}
-                                      </button>
-                                    </div>
-                                  )
-                                );
-                              })}
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
