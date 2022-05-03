@@ -7,7 +7,7 @@ const getTooltipTemplate = () =>
   '<div class="tooltip tooltip-help" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>';
 
 const reloadTooltipHelp = (element, { title, placement }) => {
-  $(element).tooltip({
+  return $(element).tooltip({
     template: getTooltipTemplate(),
     title,
     placement,
@@ -33,9 +33,14 @@ export const Tooltip = (props) => {
     ...rest
   } = props;
   React.useEffect(() => {
-    reloadTooltipHelp(elementRef.current, { title, placement });
-  }, []);
-  console.log(title);
+    const tooltip = reloadTooltipHelp(elementRef.current, {
+      title,
+      placement,
+    });
+    return () => {
+      tooltip.tooltip('dispose');
+    };
+  }, [title, placement]);
   return (
     <Component {...rest} data-toggle="tooltip-help" ref={elementRef}>
       {children}
