@@ -88,7 +88,7 @@ const Content = ({
               value={content.caracte}
               onChange={updateContent}
               disabled={!typeItem}
-              maxlength="400"
+              maxLength={400}
             />
             <small className="form-text d-block text-left">
               Ej: Marca, referencia, {isCellPhone && 'Numero IMEI,'} color...
@@ -112,14 +112,13 @@ const Content = ({
               onChange={({ target: { value } }) => {
                 let newValue = value;
                 let valueNumber = Masknumbermoney.formatToNumber(value);
-                if (valueNumber > maximum)
-                  newValue = Masknumbermoney.formatToMask(maximum);
+                if (valueNumber > maxNumber) newValue = max;
                 handleChange({ value: newValue });
               }}
               disabled={!typeItem}
             />
             <small className="form-text d-block text-left total-value">
-              {`Máximo: ${maxNumber} por artículo`}
+              {`Máximo: ${max} por artículo`}
             </small>
             {errors && errors.min && (
               <small className="form-text only-errors show">

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import positive from '../../../common/images/positive.svg';
 import caution from '../../../common/images/caution.svg';
 import warning from '../../../common/images/warning.svg';
-import { typeItems } from '../../../common/typeItems';
+import { isItemRequired, typeItems } from '../../../common/typeItems';
 import { Tooltip } from '../../Tooltip';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 
@@ -53,16 +53,22 @@ export const Articles = ({
    *   label: string,
    *   state: boolean
    *   required: boolean
+   *   total: number,
+   *   max: number
    *  }
    * }}
    */
   const invalids = useMemo(
     () =>
-      items.reduce((acc, [{ id, label, required }, max, total]) => {
+      items.reduce((acc, [item, max, total]) => {
+        const { id, label, required } = item;
+        const isRequired = isItemRequired(required, { max, total });
         acc[id] = {
           label,
-          state: required && !validateTotalItem(max, total),
-          required,
+          state: !validateTotalItem(max, total, item),
+          required: isRequired,
+          total,
+          max,
         };
         return acc;
       }, {}),
@@ -83,7 +89,10 @@ export const Articles = ({
   const validsLabels = useMemo(
     () =>
       invalidsValues
-        .filter(({ required, state }) => required && !state)
+        .filter(
+          ({ required, state, total, max }) =>
+            isItemRequired(required, { total, max }) && !state
+        )
         .map(({ label }) => label.toLowerCase()),
     [invalidsValues]
   );
@@ -118,7 +127,7 @@ export const Articles = ({
                 Ten presente que esta información es requerida para emitir la póliza.
               `;
               const contentRequired =
-                required &&
+                isItemRequired(required, { max, total }) &&
                 ((isValid(id) && <img src={positive} />) || (
                   <>
                     <Tooltip
