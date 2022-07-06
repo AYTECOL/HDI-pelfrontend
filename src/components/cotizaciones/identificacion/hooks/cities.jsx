@@ -24,7 +24,7 @@ export const CitiesProvider = ({ children }) => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [promise]);
 
   return (
     <CitiesContext.Provider

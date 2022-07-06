@@ -174,7 +174,7 @@ const Content = ({
                 )}
               </div>
               <small className="d-flex align-items-center mt-1">
-                <img className="mr-2" src={informative} />
+                <img className="mr-2" src={informative} alt="informative" />
                 Si no adjunta documentos, debe presentarlos el día del siniestro
               </small>
             </div>

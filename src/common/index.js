@@ -84,7 +84,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
     case 3017:
       return { min: 900000 };
     // Valor objetos de valor y obras de Arte
-    case 9687:
+    case 9687: {
       const common = {
         min: 900000,
       };
@@ -107,6 +107,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
           };
       }
       return { ...common };
+    }
     default:
       return null;
   }

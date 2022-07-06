@@ -1,4 +1,3 @@
-import React from 'react';
 import Helpers from './Helpers';
 
 it('test toCapitalize', () => {

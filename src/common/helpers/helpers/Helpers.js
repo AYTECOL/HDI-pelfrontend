@@ -308,7 +308,7 @@ class Helpers {
     if (null == obj || 'object' != typeof obj) return obj;
     var copy = obj.constructor();
     for (var attr in obj) {
-      if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+      if (Object.hasOwnProperty.call(obj, attr)) copy[attr] = obj[attr];
     }
     return copy;
   }
@@ -339,7 +339,8 @@ class Helpers {
     if (obj instanceof Object) {
       copy = {};
       for (var attr in obj) {
-        if (obj.hasOwnProperty(attr)) copy[attr] = Helpers.clone(obj[attr]);
+        if (Object.hasOwnProperty.call(obj, attr))
+          copy[attr] = Helpers.clone(obj[attr]);
       }
       return copy;
     }

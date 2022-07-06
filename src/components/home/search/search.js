@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 const Search = (props) => {
-  const [textSearch, useTextSearch] = useState([]);
+  const [textSearch, setTextSearch] = useState([]);
 
   const onChange = ({ target }) => {
     const { handleChange } = props;
     handleChange(target.value);
-    useTextSearch(target.value);
+    setTextSearch(target.value);
   };
 
   return (

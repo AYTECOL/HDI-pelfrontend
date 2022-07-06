@@ -24,29 +24,39 @@ const buildText = (texts) => {
 };
 
 export const Articles = ({
-  inmuebles: {
-    contenido_asegudado_valor,
-    inmueble_asegudado_obrasvalor,
-    inmueble_asegudado_joyasvalor,
-    inmueble_asegudado_telefonosvalor,
-  },
+  inmuebles,
   total,
   quote_contenidomovil,
   items: itemsSelected,
   invalid,
   validateTotalItem,
 }) => {
-  const items = [
-    [typeItems.fixedContent, contenido_asegudado_valor, total.fixedContent],
-    [typeItems.jewelry, inmueble_asegudado_joyasvalor, total.jewelry],
-    [typeItems.cellPhones, inmueble_asegudado_telefonosvalor, total.cellPhones],
-    [
-      typeItems.valuablesAndWorksOfArt,
-      inmueble_asegudado_obrasvalor,
-      total.valuablesAndWorksOfArt,
+  const items = useMemo(
+    () => [
+      [
+        typeItems.fixedContent,
+        inmuebles.contenido_asegudado_valor,
+        total.fixedContent,
+      ],
+      [
+        typeItems.jewelry,
+        inmuebles.inmueble_asegudado_joyasvalor,
+        total.jewelry,
+      ],
+      [
+        typeItems.cellPhones,
+        inmuebles.inmueble_asegudado_telefonosvalor,
+        total.cellPhones,
+      ],
+      [
+        typeItems.valuablesAndWorksOfArt,
+        inmuebles.inmueble_asegudado_obrasvalor,
+        total.valuablesAndWorksOfArt,
+      ],
+      [typeItems.mobileContent, quote_contenidomovil, total.mobileContent],
     ],
-    [typeItems.mobileContent, quote_contenidomovil, total.mobileContent],
-  ];
+    [inmuebles, quote_contenidomovil, total]
+  );
   /**
    * @type {{
    *  [key: string]: {
@@ -72,7 +82,7 @@ export const Articles = ({
         };
         return acc;
       }, {}),
-    [items]
+    [items, validateTotalItem]
   );
 
   const invalidsValues = useMemo(() => Object.values(invalids), [invalids]);
@@ -128,14 +138,14 @@ export const Articles = ({
               `;
               const contentRequired =
                 isItemRequired(required, { max, total }) &&
-                ((isValid(id) && <img src={positive} />) || (
+                ((isValid(id) && <img src={positive} alt="positive" />) || (
                   <>
                     <Tooltip
                       placement="bottom"
                       component="span"
                       title={cautionTitle}
                     >
-                      <img className="mr-2" src={caution} />
+                      <img className="mr-2" src={caution} alt="caution" />
                     </Tooltip>
 
                     <Tooltip
@@ -143,7 +153,7 @@ export const Articles = ({
                       component="span"
                       title={warnTitle}
                     >
-                      <img src={warning} />
+                      <img src={warning} alt="warning" />
                     </Tooltip>
                   </>
                 ));
@@ -182,7 +192,7 @@ export const Articles = ({
       {invalidText && (
         <div className="col col-12">
           <div className="alert warn w-100 d-flex mt-3">
-            <img className="mr-3" src={caution} />
+            <img className="mr-3" src={caution} alt="caution" />
             <div>
               <span className="text mr-4">
                 Debes incluir la relación de {invalidText}.
@@ -196,7 +206,7 @@ export const Articles = ({
       {validText && (
         <div className="col col-12">
           <div className="alert success w-100 d-flex mt-3">
-            <img className="mr-3" src={positive} />
+            <img className="mr-3" src={positive} alt="positive" />
             <div>
               <span className="text mr-4">
                 ¡Muy bien! ya incluiste la relación de {validText}
