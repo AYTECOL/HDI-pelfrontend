@@ -2,6 +2,7 @@ import React from 'react';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import styles from './LastContentWarn.module.scss';
 import caution from '../../../../common/images/caution.svg';
+import { isItemRequired } from '../../../../common/typeItems';
 
 /**
  *
@@ -20,7 +21,12 @@ export const LastContentWarn = ({
   const item = getItem(content.type);
   const limit = item.maxTotal;
   const total = totalByType[content.type];
-  if (!limit || !item.required || validateTotalItem(limit, total)) return null;
+  if (
+    !limit ||
+    !isItemRequired(item.required, total) ||
+    validateTotalItem(limit, total)
+  )
+    return null;
   return (
     <div className={styles.root}>
       <img className="mr-2" src={caution} />

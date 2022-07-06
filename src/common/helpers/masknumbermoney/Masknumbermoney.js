@@ -43,7 +43,7 @@ class Masknumbermoney {
    * @param {string} v
    * @param {*} arg
    */
-  static formatToNumber(v, arg) {
+  static formatToNumber(v, arg = {}) {
     if (v === 'N/A') return 0;
     return SimpleMaskMoney.formatToNumber(v, { ...Args, ...arg });
   }
