@@ -17,7 +17,7 @@ import QuoteIussedById from '../../../services/QuoteIussedById';
 import Helpers from '../../../common/helpers/helpers/Helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
-import { typeItems } from '../../../common/typeItems';
+import { isItemRequired, typeItems } from '../../../common/typeItems';
 import UploadFile from '../../../services/UploadFile';
 import { BuiltMetersHousing } from './BuiltMetersHousing';
 import { Articles } from './Articles';
@@ -341,9 +341,14 @@ class Index extends React.Component {
     };
   };
 
-  validateTotalItem = (max, current) => {
-    return current >= max - 999 && current <= max;
-  };
+  validateTotalItem(max, current, item) {
+    const isRequired = !!(
+      item && isItemRequired(item.required, { max, total: current })
+    );
+    if (!isRequired && !current) return true;
+    const valid = current >= max - 999 && current <= max;
+    return valid;
+  }
 
   hasErrors() {
     const { inmuebles, quote_contenidomovil, contents } = this.state;
@@ -358,46 +363,49 @@ class Index extends React.Component {
     if (error) return true;
     if (
       inmuebles.contenido_asegudado === 1 &&
-      (fixedContent.required || total.fixedContent) &&
       !this.validateTotalItem(
         inmuebles.contenido_asegudado_valor,
-        total.fixedContent
+        total.fixedContent,
+        fixedContent
       )
     )
       return true;
 
     if (
       inmuebles.inmueble_asegudado_obras === 1 &&
-      (valuablesAndWorksOfArt.required || total.valuablesAndWorksOfArt) &&
       !this.validateTotalItem(
         inmuebles.inmueble_asegudado_obrasvalor,
-        total.valuablesAndWorksOfArt
+        total.valuablesAndWorksOfArt,
+        valuablesAndWorksOfArt
       )
     )
       return true;
     if (
       inmuebles.inmueble_asegudado_joyas === 1 &&
-      (jewelry.required || total.jewelry) &&
       !this.validateTotalItem(
         inmuebles.inmueble_asegudado_joyasvalor,
-        total.jewelry
+        total.jewelry,
+        jewelry
       )
     )
       return true;
     if (
       inmuebles.inmueble_asegudado_telefonos === 1 &&
-      (cellPhones.required || total.cellPhones) &&
       !this.validateTotalItem(
         inmuebles.inmueble_asegudado_telefonosvalor,
-        total.cellPhones
+        total.cellPhones,
+        cellPhones
       )
     ) {
       return true;
     }
     if (
       quote_contenidomovil &&
-      (mobileContent.required || total.mobileContent) &&
-      !this.validateTotalItem(quote_contenidomovil, total.mobileContent)
+      !this.validateTotalItem(
+        quote_contenidomovil,
+        total.mobileContent,
+        mobileContent
+      )
     ) {
       return true;
     }
@@ -512,7 +520,6 @@ class Index extends React.Component {
       area,
       utilizado,
       contenidos,
-      celulares,
       contents,
       items,
       errorPhone,
@@ -728,7 +735,8 @@ class Index extends React.Component {
                             (item) =>
                               !this.validateTotalItem(
                                 item.maxTotal,
-                                totalByType[item.id]
+                                totalByType[item.id],
+                                item
                               ) || `${content.type}` === `${item.id}`
                           )}
                           handleChange={({ value }) => {

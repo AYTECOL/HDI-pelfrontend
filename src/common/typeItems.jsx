@@ -1,5 +1,22 @@
+// @ts-check
+
 /**
- * @typedef {{ id: number; label: string; max: number; required?: boolean }} TypeItem
+ * @typedef {{
+ *  total: number,
+ *  max: number,
+ * }} RequiredParam
+ */
+
+/**
+ * @typedef {boolean | ((total: RequiredParam) => boolean)} Required
+ */
+
+/**
+ * @typedef {{ id: number; label: string; max: number; required?: Required }} TypeItem
+ */
+
+/**
+ * @type {Record<string, TypeItem>}
  */
 export const typeItems = {
   /**
@@ -9,6 +26,9 @@ export const typeItems = {
     id: 0,
     label: 'Contenido Fijo',
     max: 50000000,
+    required({ max }) {
+      return max > 1200000;
+    },
   },
   /**
    * @description "Objetos de valor y obras de Arte"
@@ -35,6 +55,17 @@ export const typeItems = {
     max: 20000000,
     required: true,
   },
+};
+
+/**
+ *
+ * @param {Required} required
+ * @param {RequiredParam} params
+ */
+export const isItemRequired = (required, params) => {
+  if (!required) return true;
+  if (typeof required === 'function') return required(params);
+  return required;
 };
 
 export const getTypeItem = (id) =>
