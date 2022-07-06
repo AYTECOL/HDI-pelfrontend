@@ -3,10 +3,10 @@ import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumb
 import './summary.scss';
 import { withRouter } from 'react-router-dom';
 
-const summary = (props) => {
-  const [CountCoverages, useCountCoverages] = useState(0);
-  const [CountAssists, useCountAssits] = useState(0);
-  const [TotalPrima, useTotalPrima] = useState('');
+const Summary = (props) => {
+  const [CountCoverages, setCountCoverages] = useState(0);
+  const [CountAssists, setCountAssits] = useState(0);
+  const [TotalPrima, setTotalPrima] = useState('');
 
   useEffect(() => {
     getData();
@@ -16,10 +16,12 @@ const summary = (props) => {
     try {
       let plan = props.plan[0];
       let total = plan.prospect;
-      useCountCoverages(plan['coverages'].filter(validateCheck).length);
-      useCountAssits(constValidateAssists(plan['assists'][0]['values']));
-      useTotalPrima(Masknumbermoney.formatToMask(total));
-    } catch (e) {}
+      setCountCoverages(plan['coverages'].filter(validateCheck).length);
+      setCountAssits(constValidateAssists(plan['assists'][0]['values']));
+      setTotalPrima(Masknumbermoney.formatToMask(total));
+    } catch (e) {
+      //
+    }
   };
   const validateCheck = (array) => {
     return array.checked === true;
@@ -65,4 +67,4 @@ const summary = (props) => {
   );
 };
 
-export default withRouter(summary);
+export default withRouter(Summary);

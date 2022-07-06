@@ -69,9 +69,9 @@ class Cards extends Component {
     });
   }
 
-  getInspectionPolicy() {
-    return new Promise(async (resolve) => {
-      let inspect = await Cards.getDataFromInspectionPolicy();
+  async getInspectionPolicy() {
+    let inspect = await Cards.getDataFromInspectionPolicy();
+    return new Promise((resolve) => {
       if (inspect !== false) {
         this.setState(
           {

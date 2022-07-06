@@ -29,7 +29,7 @@ export const LastContentWarn = ({
     return null;
   return (
     <div className={styles.root}>
-      <img className="mr-2" src={caution} />
+      <img className="mr-2" src={caution} alt="caution" />
       Debes agregar más contenidos hasta que completes{' '}
       {Masknumbermoney.formatToMask(limit)}
     </div>

@@ -86,7 +86,7 @@ class Counter extends Component {
       }
       const value = inmueble[OtherQuestions.nameModelValue] || [];
       const errorsCount = OtherQuestions.unansweredQuestions(value);
-      if (!!errorsCount) {
+      if (errorsCount) {
         errors += errorsCount;
       }
       if (inmueble.inmuebleasegudadoobras === 1) {
