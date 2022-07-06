@@ -334,7 +334,7 @@ export default class Persona extends Component {
             if (lastPhone) {
               const tipoContacto = lastPhone.tipoContacto.codigo;
               person.telefono = lastPhone.textoContacto;
-              person.tipodetelefono = !!Object.values(phoneTypes).find(
+              person.tipodetelefono = Object.values(phoneTypes).some(
                 (type) => String(type) === String(tipoContacto)
               )
                 ? tipoContacto
@@ -364,20 +364,20 @@ export default class Persona extends Component {
           null
         );
         person.direccion = direcciones;
-        if (!!lastDireccion) {
+        if (lastDireccion) {
           const { departamento, ciudad } = lastDireccion;
           if (!person.ciudad) person.address = lastDireccion['textoDireccion'];
-          if (!!ciudad) {
+          if (ciudad) {
             if (!person.ciudad) person.ciudad = ciudad['nombre'];
             if (!person.city_code) person.city_code = ciudad['codigo'];
           }
-          if (!!departamento) {
+          if (departamento) {
             if (!person.departamento)
               person.departamento = departamento['nombre'];
             if (!person.department_code)
               person.department_code = departamento['codigo'];
           }
-          if (!!lastDireccion['tipoDireccion']) {
+          if (lastDireccion['tipoDireccion']) {
             if (!person.adresstype)
               person.adresstype = lastDireccion['tipoDireccion']['codigo'];
           }
@@ -683,7 +683,7 @@ export default class Persona extends Component {
     }
     if (empty(code)) errors.push('code');
     const rolesWithPhone = [roles.taker, roles.insured, roles.beneficiary];
-    if (!!rolesWithPhone.find((role) => String(role) === String(typePerson))) {
+    if (rolesWithPhone.find((role) => String(role) === String(typePerson))) {
       let telefonoHasError = false;
       if (tipodetelefono === phoneTypes.mobilePhone) {
         if (Helpers.isMobilePhone(telefono)) {

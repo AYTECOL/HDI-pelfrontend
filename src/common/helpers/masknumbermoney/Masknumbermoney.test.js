@@ -1,4 +1,3 @@
-import React from 'react';
 import Masknumbermoney from './Masknumbermoney';
 
 it('test formatToMask', () => {

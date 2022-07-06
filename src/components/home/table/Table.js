@@ -16,8 +16,8 @@ import PdfEndosoHogar from '../../../services/PdfEndosoHogar';
  *  @typedef {{ type_person: string, description: string, code: number }} IdentificationType
  */
 const Table = (props) => {
-  const [quotesItems, useQuotesItems] = useState([]);
-  const [pageOfItems, usePageOfItems] = useState([]);
+  const [quotesItems, setQuotesItems] = useState([]);
+  const [pageOfItems, setPageOfItems] = useState([]);
   /**
    * @type {[IdentificationType[], React.Dispatch<React.SetStateAction<IdentificationType[]>>]}
    */
@@ -36,7 +36,7 @@ const Table = (props) => {
   });
   const initialData = (dataProps) => {
     // const dataTemp = [...dataProps];
-    useQuotesItems(dataProps);
+    setQuotesItems(dataProps);
   };
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const Table = (props) => {
   });
 
   const onChangePage = (pageOfItems) => {
-    usePageOfItems(pageOfItems);
+    setPageOfItems(pageOfItems);
   };
 
   const getRowById = (id) => async (e) => {
