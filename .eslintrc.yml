@@ -8,12 +8,9 @@ extends:
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
-parserOptions:
-  ecmaFeatures:
-    jsx: true
-  ecmaVersion: latest
-  sourceType: module
 
-plugins: ['prettier', 'sonarjs']
+plugins:
+  - prettier
+  # - sonarjs
 
 rules: { 'prettier/prettier': 'warn' }

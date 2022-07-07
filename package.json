@@ -22,7 +22,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "^4.0.3",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "serverless-plugin-resource-tagging": "^1.1.1",
@@ -67,10 +67,9 @@
     "enzyme": "^3.10.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-sonarjs": "^0.13.0",
     "jest-sonar-reporter": "^2.0.0",
     "prettier": "^2.7.1",
-    "react-test-renderer": "^16.8.6",
-    "typescript": "^4.7.4"
+    "react-error-overlay": "^6.0.9",
+    "react-test-renderer": "^16.8.6"
   }
 }

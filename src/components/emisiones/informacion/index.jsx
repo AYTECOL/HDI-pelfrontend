@@ -17,7 +17,11 @@ import QuoteIussedById from '../../../services/QuoteIussedById';
 import Helpers from '../../../common/helpers/helpers/Helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
-import { isItemRequired, typeItems } from '../../../common/typeItems';
+import {
+  isItemRequired,
+  itemsRequiredSince,
+  typeItems,
+} from '../../../common/typeItems';
 import UploadFile from '../../../services/UploadFile';
 import { BuiltMetersHousing } from './BuiltMetersHousing';
 import { Articles } from './Articles';
@@ -676,10 +680,16 @@ class Index extends React.Component {
                   <div className="row justify-content-center">
                     <div className="col-6 ">
                       <p>
-                        <b> • Contenidos Fijos</b>: $ 12.000.000
+                        <b> • Contenidos Fijos</b>:{' '}
+                        {Masknumbermoney.formatToMask(
+                          itemsRequiredSince.fixedContent
+                        )}
                       </p>
                       <p>
-                        <b> • Objetos de valor y obras de Arte:</b> $ 2.000.000
+                        <b> • Objetos de valor y obras de Arte:</b>{' '}
+                        {Masknumbermoney.formatToMask(
+                          itemsRequiredSince.valuablesAndWorksOfArt
+                        )}
                       </p>
                     </div>
                     <div className="col-6">
