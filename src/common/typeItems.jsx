@@ -8,12 +8,17 @@
  */
 
 /**
- * @typedef {boolean | ((total: RequiredParam) => boolean)} Required
+ * @typedef {import("../models/types").ItemRequired} ItemRequired
  */
 
 /**
- * @typedef {{ id: number; label: string; max: number; required?: Required }} TypeItem
+ * @typedef {{ id: number; label: string; max: number; required?: ItemRequired }} TypeItem
  */
+
+export const itemsRequiredSince = {
+  fixedContent: 12000000,
+  valuablesAndWorksOfArt: 2000000,
+};
 
 /**
  * @type {Record<string, TypeItem>}
@@ -27,7 +32,7 @@ export const typeItems = {
     label: 'Contenido Fijo',
     max: 50000000,
     required({ max }) {
-      return max > 1200000;
+      return max >= itemsRequiredSince.fixedContent;
     },
   },
   /**
@@ -37,6 +42,9 @@ export const typeItems = {
     id: 1,
     label: 'Objetos de valor y obras de Arte',
     max: 20000000,
+    required({ max }) {
+      return max >= itemsRequiredSince.valuablesAndWorksOfArt;
+    },
   },
   /**
    * @description "Joyas"
@@ -59,7 +67,7 @@ export const typeItems = {
 
 /**
  *
- * @param {Required} required
+ * @param {ItemRequired} required
  * @param {RequiredParam} params
  */
 export const isItemRequired = (required, params) => {
