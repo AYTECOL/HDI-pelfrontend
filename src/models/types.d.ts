@@ -24,11 +24,13 @@ export interface GoodsOverCostLocal extends GoodsOverCostBase {
   files?: AttachmentsLocal;
 }
 
+export type ItemRequired = boolean | ((total: RequiredParam) => boolean);
+
 export interface Item {
   label: string;
   id: string | number;
   min: number;
   max: number;
   maxTotal: number;
-  required?: boolean;
+  required?: ItemRequired;
 }

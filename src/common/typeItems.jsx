@@ -1,5 +1,27 @@
+// @ts-check
+
 /**
- * @typedef {{ id: number; label: string; max: number; required?: boolean }} TypeItem
+ * @typedef {{
+ *  total: number,
+ *  max: number,
+ * }} RequiredParam
+ */
+
+/**
+ * @typedef {import("../models/types").ItemRequired} ItemRequired
+ */
+
+/**
+ * @typedef {{ id: number; label: string; max: number; required?: ItemRequired }} TypeItem
+ */
+
+export const itemsRequiredSince = {
+  fixedContent: 12000000,
+  valuablesAndWorksOfArt: 2000000,
+};
+
+/**
+ * @type {Record<string, TypeItem>}
  */
 export const typeItems = {
   /**
@@ -9,6 +31,9 @@ export const typeItems = {
     id: 0,
     label: 'Contenido Fijo',
     max: 50000000,
+    required({ max }) {
+      return max >= itemsRequiredSince.fixedContent;
+    },
   },
   /**
    * @description "Objetos de valor y obras de Arte"
@@ -17,6 +42,9 @@ export const typeItems = {
     id: 1,
     label: 'Objetos de valor y obras de Arte',
     max: 20000000,
+    required({ max }) {
+      return max >= itemsRequiredSince.valuablesAndWorksOfArt;
+    },
   },
   /**
    * @description "Joyas"
@@ -35,6 +63,17 @@ export const typeItems = {
     max: 20000000,
     required: true,
   },
+};
+
+/**
+ *
+ * @param {ItemRequired} required
+ * @param {RequiredParam} params
+ */
+export const isItemRequired = (required, params) => {
+  if (!required) return true;
+  if (typeof required === 'function') return required(params);
+  return required;
 };
 
 export const getTypeItem = (id) =>

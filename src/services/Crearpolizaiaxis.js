@@ -387,7 +387,9 @@ class Crearpolizaiaxis {
             severidad === 'ERROR'
           )
             return e.response;
-        } catch (error) {}
+        } catch (error) {
+          //
+        }
       }
       throw e;
     });

@@ -1,16 +1,16 @@
 env:
   browser: true
-  es2021: true
 extends:
   - eslint:recommended
   - plugin:prettier/recommended
-  - plugin:sonarjs/recommended
-parserOptions:
-  ecmaFeatures:
-    jsx: true
-  ecmaVersion: latest
-  sourceType: module
+  # - plugin:sonarjs/recommended
+  - react-app
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
 
-plugins: ['prettier', 'sonarjs']
+plugins:
+  - prettier
+  # - sonarjs
 
-rules: {}
+rules: { 'prettier/prettier': 'warn' }

@@ -31,7 +31,9 @@ class Links extends Component {
         a.click();
         document.body.removeChild(a);
       }
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   getPdf = async () => {

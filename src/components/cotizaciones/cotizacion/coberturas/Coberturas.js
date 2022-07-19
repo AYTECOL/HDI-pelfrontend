@@ -6,7 +6,12 @@ import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../actions';
-import { getRulesByCode, getTotalCoverage, getValue, stateCoverage } from '../../../../common';
+import {
+  getRulesByCode,
+  getTotalCoverage,
+  getValue,
+  stateCoverage,
+} from '../../../../common';
 import MobileContents from '../../inmueble/forms/MobileContents';
 import RateNotCalculated from '../../../RateNotCalculated';
 import clsx from 'clsx';
@@ -486,6 +491,13 @@ class Coberturas extends Component {
     }
   };
 
+  static getCoverageByCode(plan, code) {
+    const coverages = plan.coverages;
+    for (const item of coverages)
+      if (item.values)
+        for (const value of item.values) if (value.code === code) return item;
+  }
+
   /**
    * @param {PlanSelectedInfoItem} plan
    * @param {import('../../../../services/QuoteIussedById').CoverageValue} planValue
@@ -521,14 +533,8 @@ class Coberturas extends Component {
          * todo Merge method with static method are equals
          * @param code code Of coverage that you want find
          */
-        function getCoverageByCode(code) {
-          const coverages = plan.coverages;
-          for (const item of coverages)
-            if (item.values)
-              for (const value of item.values)
-                if (value.code === code) return item;
-        }
-        const coverage = getCoverageByCode(9667);
+
+        const coverage = this.getCoverageByCode(plan, 9667);
         if (coverage && coverage.values) {
           for (let i = 0; i < coverage.values.length; i++) {
             if (coverage.values[i].id === planValue.id) {
