@@ -52,13 +52,13 @@ class Asistencias extends Component {
     }
     return status;
   }
-/**
- * return all assists in true or false
- * @param {Number} key
- * @param {boolean} isChecked
- * @returns {Array}
- */
-  changeCheckAssistsByKey(key,isChecked) {
+  /**
+   * return all assists in true or false
+   * @param {Number} key
+   * @param {boolean} isChecked
+   * @returns {Array}
+   */
+  changeCheckAssistsByKey(key, isChecked) {
     const { indexPlan, plans } = this.props;
     let newPlans = [...plans];
     for (const assist of newPlans[indexPlan].assists) {
@@ -77,15 +77,17 @@ class Asistencias extends Component {
     let { plans } = this.props;
     let error1 = false;
     let error2 = false;
-    const {assists: assistsParent} = plans[index];
-    const codeSubAssists = parseInt(assistsParent[key].values[k].assists[i].code);
+    const { assists: assistsParent } = plans[index];
+    const codeSubAssists = parseInt(
+      assistsParent[key].values[k].assists[i].code
+    );
     if (typeof parent !== 'undefined') {
       check = assistsParent[key].values[k].checked;
       assistsParent[key].values[k].checked = !check;
       if (!check === false) plans = this.changeCheckAssistsByKey(0, false);
     } else {
       check = assistsParent[key].values[k].assists[i].checked;
-      if ( codeSubAssists === 9695) {
+      if (codeSubAssists === 9695) {
         if (assistsParent[key].values[k].checked === false) {
           error1 = true;
           error2 = false;
@@ -99,12 +101,10 @@ class Asistencias extends Component {
           error2 = true;
         } else {
           if (codeSubAssists === 9697 && !check) {
-            plans = this.changeCheckAssistsByKey(0,true);
-          }else{
+            plans = this.changeCheckAssistsByKey(0, true);
+          } else {
             assistsParent[key].values[k].assists[i].checked = !check;
           }
-          
-          
         }
       }
     }
