@@ -31,9 +31,7 @@ export const typeItems = {
     id: 0,
     label: 'Contenido Fijo',
     max: 50000000,
-    required({ max }) {
-      return max >= itemsRequiredSince.fixedContent;
-    },
+    required: false,
   },
   /**
    * @description "Objetos de valor y obras de Arte"
@@ -42,9 +40,7 @@ export const typeItems = {
     id: 1,
     label: 'Objetos de valor y obras de Arte',
     max: 20000000,
-    required({ max }) {
-      return max >= itemsRequiredSince.valuablesAndWorksOfArt;
-    },
+    required: false,
   },
   /**
    * @description "Joyas"
