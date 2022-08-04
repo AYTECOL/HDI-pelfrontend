@@ -52,14 +52,19 @@ class Asistencias extends Component {
     }
     return status;
   }
-
-  unCheckAssistsNextsByKey(key) {
+  /**
+   * return all assists in true or false
+   * @param {Number} key
+   * @param {boolean} isChecked
+   * @returns {Array}
+   */
+  changeCheckAssistsByKey(key, isChecked) {
     const { indexPlan, plans } = this.props;
     let newPlans = [...plans];
     for (const assist of newPlans[indexPlan].assists) {
       for (let j = 0; j < assist.values.length; j++) {
         for (let k = 0; k < assist.values[j].assists.length; k++) {
-          if (k >= key) assist.values[j].assists[k].checked = false;
+          if (k >= key) assist.values[j].assists[k].checked = isChecked;
         }
       }
     }
@@ -72,27 +77,34 @@ class Asistencias extends Component {
     let { plans } = this.props;
     let error1 = false;
     let error2 = false;
-    const plan = plans[index];
+    const { assists: assistsParent } = plans[index];
+    const codeSubAssists = parseInt(
+      assistsParent[key].values[k].assists[i].code
+    );
     if (typeof parent !== 'undefined') {
-      check = plan.assists[key].values[k].checked;
-      plan.assists[key].values[k].checked = !check;
-      if (!check === false) plans = this.unCheckAssistsNextsByKey(0);
+      check = assistsParent[key].values[k].checked;
+      assistsParent[key].values[k].checked = !check;
+      if (!check === false) plans = this.changeCheckAssistsByKey(0, false);
     } else {
-      check = plan.assists[key].values[k].assists[i].checked;
-      if (parseInt(plan.assists[key].values[k].assists[i].code) === 9695) {
-        if (plan.assists[key].values[k].checked === false) {
+      check = assistsParent[key].values[k].assists[i].checked;
+      if (codeSubAssists === 9695) {
+        if (assistsParent[key].values[k].checked === false) {
           error1 = true;
           error2 = false;
         } else {
-          plan.assists[key].values[k].assists[i].checked = !check;
-          if (!check === false) plans = this.unCheckAssistsNextsByKey(i);
+          assistsParent[key].values[k].assists[i].checked = !check;
+          if (!check === false) plans = this.changeCheckAssistsByKey(i, false);
         }
       } else {
         if (this.isCheckedAssistsByCode(9695) === false) {
           error1 = false;
           error2 = true;
         } else {
-          plan.assists[key].values[k].assists[i].checked = !check;
+          if (codeSubAssists === 9697 && !check) {
+            plans = this.changeCheckAssistsByKey(0, true);
+          } else {
+            assistsParent[key].values[k].assists[i].checked = !check;
+          }
         }
       }
     }
