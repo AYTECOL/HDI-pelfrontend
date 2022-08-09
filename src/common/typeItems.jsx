@@ -67,9 +67,9 @@ export const typeItems = {
  * @param {RequiredParam} params
  */
 export const isItemRequired = (required, params) => {
-  if (!required) return true;
+  if (typeof required === 'boolean') return required;
   if (typeof required === 'function') return required(params);
-  return required;
+  return false;
 };
 
 export const getTypeItem = (id) =>
