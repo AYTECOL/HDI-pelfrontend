@@ -743,11 +743,13 @@ class Index extends React.Component {
                           content={content}
                           items={items.filter(
                             (item) =>
+                              !totalByType[item.id] ||
                               !this.validateTotalItem(
                                 item.maxTotal,
                                 totalByType[item.id],
                                 item
-                              ) || `${content.type}` === `${item.id}`
+                              ) ||
+                              `${content.type}` === `${item.id}`
                           )}
                           handleChange={({ value }) => {
                             this.handleChange(key)({
