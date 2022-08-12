@@ -349,7 +349,7 @@ class Index extends React.Component {
     const isRequired = !!(
       item && isItemRequired(item.required, { max, total: current })
     );
-    if (!isRequired && !current) return true;
+    if (!isRequired) return true;
     const valid = current >= max - 999 && current <= max;
     return valid;
   }
