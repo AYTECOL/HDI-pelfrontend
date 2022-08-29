@@ -39,7 +39,7 @@ export default class Checkboxes extends Component {
                     type="checkbox"
                     name="tomado"
                     id="tomado"
-                    value="2"
+                    value="1"
                     checked={person['role'].indexOf(1) !== -1}
                     onChange={this.changeRole(1)}
                     disabled={
@@ -65,7 +65,7 @@ export default class Checkboxes extends Component {
                 type="checkbox"
                 name="asegurado"
                 id="asegurado"
-                value="1"
+                value="2"
                 checked={person['role'].indexOf(2) !== -1}
                 onChange={this.changeRole(2)}
                 disabled={typeof this.props.disabledAll !== 'undefined'}
