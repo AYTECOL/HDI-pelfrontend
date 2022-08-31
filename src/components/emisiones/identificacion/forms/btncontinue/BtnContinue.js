@@ -16,7 +16,6 @@ import ValidatePersonIdentity from '../../../../../components/ValidatePersonIden
 
 const UrlServicePerson = UrlPerson;
 const Baseurl = '/validarIdentidad';
-const BaseurlOnerous = '/validarOneroso';
 class BtnContinue extends PureComponent {
   constructor(props) {
     super(props);
@@ -60,7 +59,6 @@ class BtnContinue extends PureComponent {
     let additional = [];
     let newPersons = [];
     let validatePersons = [];
-    let validateOnerous;
     for (let i in persons) {
       let person = persons[i];
       if (typeof person.object !== 'undefined' && person.object !== '') {
