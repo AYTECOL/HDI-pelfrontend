@@ -349,7 +349,7 @@ class Index extends React.Component {
     const isRequired = !!(
       item && isItemRequired(item.required, { max, total: current })
     );
-    if (!isRequired && !current) return true;
+    if (!isRequired) return true;
     const valid = current >= max - 999 && current <= max;
     return valid;
   }
@@ -743,11 +743,13 @@ class Index extends React.Component {
                           content={content}
                           items={items.filter(
                             (item) =>
+                              !totalByType[item.id] ||
                               !this.validateTotalItem(
                                 item.maxTotal,
                                 totalByType[item.id],
                                 item
-                              ) || `${content.type}` === `${item.id}`
+                              ) ||
+                              `${content.type}` === `${item.id}`
                           )}
                           handleChange={({ value }) => {
                             this.handleChange(key)({

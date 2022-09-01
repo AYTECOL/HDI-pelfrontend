@@ -31,9 +31,7 @@ export const typeItems = {
     id: 0,
     label: 'Contenido Fijo',
     max: 50000000,
-    required({ max }) {
-      return max >= itemsRequiredSince.fixedContent;
-    },
+    required: false,
   },
   /**
    * @description "Objetos de valor y obras de Arte"
@@ -42,9 +40,7 @@ export const typeItems = {
     id: 1,
     label: 'Objetos de valor y obras de Arte',
     max: 20000000,
-    required({ max }) {
-      return max >= itemsRequiredSince.valuablesAndWorksOfArt;
-    },
+    required: false,
   },
   /**
    * @description "Joyas"
@@ -71,9 +67,9 @@ export const typeItems = {
  * @param {RequiredParam} params
  */
 export const isItemRequired = (required, params) => {
-  if (!required) return true;
+  if (typeof required === 'boolean') return required;
   if (typeof required === 'function') return required(params);
-  return required;
+  return false;
 };
 
 export const getTypeItem = (id) =>
