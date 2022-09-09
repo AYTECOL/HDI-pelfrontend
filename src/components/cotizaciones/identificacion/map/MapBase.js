@@ -139,12 +139,12 @@ class MapBase extends Component {
         isMarkerShown: true,
       });
       Helpers.removeClass(this.elementError, 'error');
-      store.dispatch(
+      /* store.dispatch(
         saveIdentificationValue({
           name: 'address',
           value: response,
         })
-      );
+      ); */
     });
   };
 
