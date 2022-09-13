@@ -4,7 +4,7 @@ import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
 def ARTIFACT_VERSION = "1.${BUILD_NUMBER}";
 node('linux') {
      stage('Preparation') {
-      git credentialsId: 'intl_gituser', url: 'https://bitbucket-latam.aws.lmig.com/scm/rt/pelhfrontend.git', branch: 'master'
+      checkout scm
       sh 'pwd'
       sh 'ls'
    }

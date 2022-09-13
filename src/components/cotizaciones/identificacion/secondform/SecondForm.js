@@ -4,7 +4,7 @@ import store from '../../../../store';
 import Name from '../forms/name/Name';
 import Lastname from '../forms/lastname/Lastname';
 import Razonsocial from '../forms/razonsocial/Razonsocial';
-import Adress from '../forms/adress/Adress';
+import Address from '../forms/address/Address';
 import Addressadditional from '../forms/addressadditional/Addressadditional';
 import AutoCompleteCities from '../forms/autocompletecities/AutocompleteCities';
 import Map from '../map/Map.js';
@@ -120,7 +120,7 @@ class SecondForm extends Component {
             />
           </div>
           <div className="col col-12 p-0">
-            <Adress />
+            <Address />
           </div>
         </div>
 
@@ -129,7 +129,6 @@ class SecondForm extends Component {
             <Addressadditional />
           </div>
         </div>
-
         <Map />
       </div>
     );
