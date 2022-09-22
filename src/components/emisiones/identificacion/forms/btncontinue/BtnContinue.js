@@ -16,7 +16,6 @@ import ValidatePersonIdentity from '../../../../../components/ValidatePersonIden
 
 const UrlServicePerson = UrlPerson;
 const Baseurl = '/validarIdentidad';
-const BaseurlOnerous = '/validarOneroso';
 class BtnContinue extends PureComponent {
   constructor(props) {
     super(props);
@@ -60,16 +59,12 @@ class BtnContinue extends PureComponent {
     let additional = [];
     let newPersons = [];
     let validatePersons = [];
-    let validateOnerous;
-    for (let i = 0; i < persons.length; i++) {
+    for (let i in persons) {
       let person = persons[i];
-      if (
-        typeof persons[i].object !== 'undefined' &&
-        persons[i].object !== ''
-      ) {
+      if (typeof person.object !== 'undefined' && person.object !== '') {
         person = Persona.extractDataFromIaxis(
-          persons[i].object,
-          persons[i]['code'],
+          person.object,
+          person['code'],
           person
         );
       }
@@ -77,52 +72,51 @@ class BtnContinue extends PureComponent {
     }
     persons = newPersons;
     const { personalAccidents, exequiasParticipation } = fieldsNames;
-
-    for (let i = 0; i < persons.length; i++) {
-      let location = persons[i]['ciudad'];
+    const sarlaftDocument = 'sarlaft_document_url';
+    for (let i in persons) {
+      let location = persons['ciudad'];
+      const person = persons[i];
       let dataUser = {
         person:
-          typeof persons[i].person === 'undefined'
-            ? persons[i].object
-            : persons[i].person,
-        first_name: persons[i]['name'],
-        second_name: persons[i]['secondname'],
-        first_last_name: persons[i]['lastname'],
-        second_last_name: persons[i]['secondlastname'],
-        document_type: persons[i]['code'],
-        document: persons[i]['value'],
-        gender: persons[i]['genero'],
-        birthdate: persons[i]['fechadenacimiento'],
-        phone_type: persons[i]['tipodetelefono'],
-        phone: persons[i]['telefono'],
-        email: persons[i]['email'],
+          typeof person.person === 'undefined' ? person.object : person.person,
+        first_name: person['name'],
+        second_name: person['secondname'],
+        first_last_name: person['lastname'],
+        second_last_name: person['secondlastname'],
+        document_type: person['code'],
+        document: person['value'],
+        gender: person['genero'],
+        birthdate: person['fechadenacimiento'],
+        phone_type: person['tipodetelefono'],
+        phone: person['telefono'],
+        email: person['email'],
         location: location,
-        address_type: persons[i]['adresstype'],
-        address: persons[i]['address'],
-        sarlaft_document_url: persons[i]['sarlaft_document_url'],
-        role: persons[i]['role'],
-        businessname: persons[i]['businessname'],
-        fechadecontitucion: persons[i]['fechadecontitucion'],
-        city_code: persons[i]['city_code'],
-        department_code: persons[i]['department_code'],
-        ciudad: persons[i]['city'],
-        departamento: persons[i]['departamento'],
-        [personalAccidents]: persons[i][personalAccidents],
-        [exequiasParticipation]: persons[i][exequiasParticipation],
+        address_type: person['adresstype'],
+        address: person['address'],
+        sarlaftDocumentUrl: person['sarlaft_document_url'],
+        role: person['role'],
+        businessname: person['businessname'],
+        fechadecontitucion: person['fechadecontitucion'],
+        city_code: person['city_code'],
+        department_code: person['department_code'],
+        ciudad: person['city'],
+        departamento: person['departamento'],
+        [personalAccidents]: person[personalAccidents],
+        [exequiasParticipation]: person[exequiasParticipation],
       };
-      if (typeof persons[i]['sarlaft'] !== 'undefined')
-        dataUser['sarlaft_document_url'] = persons[i]['sarlaft'];
-      if (typeof persons[i]['sarlaft_document_url'] !== 'undefined')
-        dataUser['sarlaft_document_url'] = persons[i]['sarlaft_document_url'];
-      if (typeof persons[i]['sarlfalt_url'] !== 'undefined')
-        dataUser['sarlaft_document_url'] = persons[i]['sarlfalt_url'];
+      if (typeof person['sarlaft'] !== 'undefined')
+        dataUser[sarlaftDocument] = person['sarlaft'];
+      if (typeof person[sarlaftDocument] !== 'undefined')
+        dataUser[sarlaftDocument] = person[sarlaftDocument];
+      if (typeof person['sarlfalt_url'] !== 'undefined')
+        dataUser[sarlaftDocument] = person['sarlfalt_url'];
       for (let j in dataUser)
         if (dataUser[j] === '""' || dataUser[j] === '') dataUser[j] = ' ';
       if (dataUser.role.indexOf(5) > -1 || dataUser.role.indexOf(6) > -1) {
         additional.push(dataUser);
       }
-      for (let j = 0; j < persons[i]['role'].length; j++) {
-        if (persons[i]['role'][j] === 1) {
+      for (let j in person['role']) {
+        if (person['role'][j] === 1) {
           dataUser['code_sarlaft'] = 120;
           takers = dataUser;
           validatePersons.push(
@@ -139,71 +133,11 @@ class BtnContinue extends PureComponent {
         } else if (persons[i]['role'][j] === 2) {
           dataUser['code_sarlaft'] = 120;
           insured.push(dataUser);
-
-          validatePersons.push(
-            this.validateData(
-              dataUser.document_type,
-              +dataUser.document_type === 37
-                ? dataUser.document.substring(0, dataUser.document.length - 1)
-                : dataUser.document,
-              +dataUser.document_type === 37
-                ? dataUser.businessname
-                : dataUser.first_last_name
-            )
-          );
         } else if (persons[i]['role'][j] === 3) {
           dataUser['code_sarlaft'] = 120;
           benefists.push(dataUser);
-          validatePersons.push(
-            this.validateData(
-              dataUser.document_type,
-              +dataUser.document_type === 37
-                ? dataUser.document.substring(0, dataUser.document.length - 1)
-                : dataUser.document,
-              +dataUser.document_type === 37
-                ? dataUser.businessname
-                : dataUser.first_last_name
-            )
-          );
         } else if (persons[i]['role'][j] === 4) {
-          try {
-            validateOnerous = { nitConsulta: dataUser.document };
-            let responseValidateOnerous = await Service.post(
-              BaseurlOnerous,
-              validateOnerous,
-              UrlServicePerson,
-              undefined,
-              {
-                Authorization: 'Bearer ' + token,
-              }
-            );
-            if (responseValidateOnerous.results[0][1][1].length > 0) {
-              dataUser.clausulas =
-                responseValidateOnerous.results[0][1][1][0].clausulas;
-            }
-          } catch (err) {
-            Loading.toggle(false);
-            this.setState({ errorValidatePerson: true });
-            this.setState({
-              tittle: 'Ups, lo sentimos',
-              message: `Tenemos un problema técnico en este momento`,
-              buttonRetry: true,
-              subtittle:
-                'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios',
-            });
-            return;
-          }
           onerous.push(dataUser);
-
-          validatePersons.push(
-            this.validateData(
-              dataUser.document_type,
-              +dataUser.document_type === 37
-                ? dataUser.document.substring(0, dataUser.document.length - 1)
-                : dataUser.document,
-              dataUser.businessname
-            )
-          );
         }
       }
     }
