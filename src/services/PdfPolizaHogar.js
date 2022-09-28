@@ -10,7 +10,8 @@ class PdfPolizaHogar {
     let user = await ConsultaPersonas.getUser();
     const name = user.nombreUsuario.trim();
     try {
-      const authHeader = authHeader.generateAuthCode();
+      let authHeader = new AuthHeader();
+      authHeader = authHeader.generateAuthCode();
       authHeader['pelhauthorization'] =
         user !== null ? user['accessToken'] : '';
       return await Api.get(
