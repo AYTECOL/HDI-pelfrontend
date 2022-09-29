@@ -669,6 +669,7 @@ export default class Persona extends Component {
       ciudad,
       adresstype,
     } = person;
+    const isTakerRole = role.some((r) => r === 1);
     const address = String(person.address);
     const tipodetelefono = String(person.tipodetelefono);
     const telefono = String(person.telefono);
@@ -700,7 +701,7 @@ export default class Persona extends Component {
       errors.push(fieldsNames.email);
 
     if (
-      (typePerson <= 3 &&
+      (isTakerRole &&
         !sarlfaltActive &&
         !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
@@ -810,6 +811,7 @@ export default class Persona extends Component {
     const participationPercentages =
       this.isActived(fieldsNames.personalAccidents) ||
       this.isActived(fieldsNames.exequiasParticipation);
+    const isTakerRole = this.state.person?.role.some((r) => r === 1);
     return (
       <React.Fragment>
         <CitiesProvider>
@@ -1521,7 +1523,8 @@ export default class Persona extends Component {
                         />
                       )}
                     </div>
-                    {typePerson <= 3 &&
+                    {typePerson === 1 &&
+                      isTakerRole &&
                       this.state.person.sarlfaltActive === false &&
                       typeof this.props.disabledAll === 'undefined' && (
                         <div className={'row sarlaft'}>

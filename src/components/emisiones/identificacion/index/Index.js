@@ -24,6 +24,11 @@ import {
 import { roles } from '../constants';
 import { fieldsNames } from '../popups/persona/constants';
 
+const ROLES_KEY = {
+  IS_TAKER: 1,
+  IS_INSURED: 2,
+  IS_BENEFICIARY: 3,
+};
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -227,8 +232,6 @@ class Index extends Component {
 
   isDisabled() {
     let persons = this.state.persons;
-    let status = [];
-    let asegurado = false;
     for (const participationValue of participationValues) {
       const haveRole = persons.some((person) =>
         isRoleParticipation(participationValue, person.role)
@@ -245,37 +248,30 @@ class Index extends Component {
         }
       }
     }
-    for (let i = 0; i < persons.length; i++) {
-      const rolesPerson = persons[i].role || [];
+    let countTaker = 0,
+      countInsured = 0,
+      countBeneficiary = 0;
+    for (const person of persons) {
+      const { role, sarlfalt_url, sarlfaltActive } = person;
+      const rolesPerson = role || [];
       if (
         rolesPerson.some((role) =>
           PopUpPersona.fieldActive(fieldsNames.address, role)
         ) &&
-        !isValidDirection(persons[i].address)
+        !isValidDirection(person.address)
       )
         return true;
-      for (let j = 0; j < persons[i].role.length; j++) {
-        if (
-          persons[i].role[j] === 1 ||
-          persons[i].role[j] === 2 ||
-          persons[i].role[j] === 3 ||
-          persons[i].role[j] === 4
-        ) {
-          if (
-            (typeof persons[i].sarlfalt_url !== 'undefined' &&
-              persons[i].sarlfalt_url !== '') ||
-            persons[i].role[j] === 4 ||
-            persons[i].sarlfaltActive
-          ) {
-            status.push(i);
-            if (persons[i].role[j] === 2) {
-              asegurado = true;
-            }
-          }
-        }
-      }
+      const isTaker = person?.role.some((r) => r === ROLES_KEY.IS_TAKER); // IS TAKER
+      const isInsured = person?.role.some((r) => r === ROLES_KEY.IS_INSURED); // IS INSURED
+      const isBeneficiary = person?.role.some(
+        (r) => r === ROLES_KEY.IS_BENEFICIARY
+      ); // IS BENEFICIARY
+      if (isTaker && !(sarlfaltActive || sarlfalt_url)) return true;
+      if (isTaker) countTaker += 1;
+      if (isBeneficiary) countBeneficiary += 1;
+      if (isInsured) countInsured += 1;
     }
-    return status.length < 3 || asegurado === false;
+    return !(countTaker >= 1 && countInsured >= 1 && countBeneficiary >= 1);
   }
 
   /**
