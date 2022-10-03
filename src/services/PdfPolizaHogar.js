@@ -8,14 +8,14 @@ let _index = 0;
 class PdfPolizaHogar {
   static async get(id) {
     let user = await ConsultaPersonas.getUser();
-    let nombreintermediario = user.nombreUsuario.trim();
+    const name = user.nombreUsuario.trim();
     try {
       let authHeader = new AuthHeader();
       authHeader = authHeader.generateAuthCode();
       authHeader['pelhauthorization'] =
         user !== null ? user['accessToken'] : '';
       return await Api.get(
-        `${BaseUrl}${id}/${nombreintermediario.replace(/ /g, ';')}`,
+        `${BaseUrl}${id}?name=${name}`,
         undefined,
         authHeader,
         true
