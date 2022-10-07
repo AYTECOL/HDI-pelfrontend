@@ -73,6 +73,10 @@ const saveProspect = (data) => {
   return { type: 'SAVE_PROSPECT', data: data };
 };
 
+const setExceptionSarlaft = (data) => {
+  return { type: 'SET_EXCEPTION_SARLAFT', data: data };
+};
+
 // Tercer formulario
 const indexPlanSelected = (index) => {
   return { type: 'INDEX_PLAN_SELECTED', data: index };
@@ -147,4 +151,5 @@ export {
   resetStore,
   saveAttachedFile as attachedFile,
   setPropertyValidation,
+  setExceptionSarlaft,
 };

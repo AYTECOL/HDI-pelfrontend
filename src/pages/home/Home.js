@@ -1,17 +1,13 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
-import Counter from '../../services/Counter';
-import Loading from '../../components/globals/loading/Loading';
-import Table from '../../components/home/table/Table';
+import Counter from 'services/Counter';
+import Loading from 'components/globals/loading/Loading';
+import Table from 'components/home/table/Table';
 import './Home.scss';
-import Search from '../../components/home/search/search';
-import Quotes from '../../services/GetQuote';
+import Search from 'components/home/search/search';
+import Quotes from 'services/GetQuote';
 import MomentJs from 'moment';
-import {
-  STEP_EMITTED,
-  STEP_ISSUE,
-  STEP_QUOTATION,
-} from '../../common/constants/quotesStates';
+import { STEP_EMITTED, STEP_ISSUE, STEP_QUOTATION } from 'common/constants';
 
 class Home extends PureComponent {
   state = {
@@ -80,7 +76,7 @@ class Home extends PureComponent {
   };
 
   /**
-   * @param {import("../../services/GetQuote").PolicyRequest[]} dataArray
+   * @param {import("services/GetQuote").PolicyRequest[]} dataArray
    */
   formatData = (dataArray) => {
     /**

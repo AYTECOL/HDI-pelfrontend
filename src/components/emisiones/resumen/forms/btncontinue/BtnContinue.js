@@ -1,22 +1,18 @@
 import React, { Component, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
-import { UrlSite } from '../../../../../config';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
-import PolicyService from '../../../../../services/Policy';
-import Loading from '../../../../globals/loading/Loading';
-import store from '../../../../../store';
-import {
-  NextStep,
-  saveIdentificationValue,
-  saveAttachedFile,
-} from '../../../../../actions';
-import SaveIdentifications from '../../../../../services/Quote';
-import Crearpolizaiaxis from '../../../../../services/Crearpolizaiaxis';
-import QuoteIussedById from '../../../../../services/QuoteIussedById';
-import IssuedCounter from '../../../../../services/IssuedCounter';
-import AttachPolicyDocuments from '../../../../../services/AttachPolicyDocuments';
-import Identifications from '../../../../../services/GetQuote';
+import { UrlSite } from 'config';
+import Helpers from 'common/helpers/helpers/Helpers';
+import PolicyService from 'services/Policy';
+import Loading from 'components/globals/loading/Loading';
+import store from 'store';
+import { NextStep, saveIdentificationValue, saveAttachedFile } from 'actions';
+import SaveIdentifications from 'services/Quote';
+import Crearpolizaiaxis from 'services/Crearpolizaiaxis';
+import QuoteIussedById from 'services/QuoteIussedById';
+import IssuedCounter from 'services/IssuedCounter';
+import AttachPolicyDocuments from 'services/AttachPolicyDocuments';
+import Identifications from 'services/GetQuote';
 
 class BtnContinue extends Component {
   constructor(props) {
@@ -49,6 +45,7 @@ class BtnContinue extends Component {
     const { match, history } = this.props;
     const { params } = match;
     const { id } = params;
+    const exceptionSarlaft = store.getState().exceptionSarlaft;
     Loading.toggle(true);
     try {
       this.setState({
@@ -85,6 +82,19 @@ class BtnContinue extends Component {
           numeroPoliza.currentValue.toString();
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo =
           numeroPoliza.currentValue.toString();
+        if (exceptionSarlaft) {
+          const questionSarlaft = {
+            pregunta: {
+              codigo: '7906',
+            },
+            respuesta: {
+              valor: '7',
+            },
+          };
+          result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+            questionSarlaft
+          );
+        }
 
         let send = await Crearpolizaiaxis.save(result);
         let attachedFile = false;

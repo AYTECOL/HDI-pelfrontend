@@ -702,6 +702,7 @@ export default class Persona extends Component {
 
     if (
       (isTakerRole &&
+        !this.props.exceptionSarlaft &&
         !sarlfaltActive &&
         !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
@@ -1523,7 +1524,8 @@ export default class Persona extends Component {
                         />
                       )}
                     </div>
-                    {typePerson === 1 &&
+                    {!this.props.exceptionSarlaft &&
+                      typePerson === 1 &&
                       isTakerRole &&
                       this.state.person.sarlfaltActive === false &&
                       typeof this.props.disabledAll === 'undefined' && (
