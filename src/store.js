@@ -87,6 +87,7 @@ const initialState = {
   loadingPlansPerspective: {},
   originalStore: {},
   attachedFile: false,
+  exceptionSarlaft: false,
 };
 
 initialState.originalStore = initialState;
@@ -257,6 +258,11 @@ const reducer = (state = initialState, action) => {
   } else if (action.type === 'RESET_STORE') {
     return {
       ...state.originalStore,
+    };
+  } else if (action.type === 'SET_EXCEPTION_SARLAFT') {
+    return {
+      ...state,
+      exceptionSarlaft: action.data,
     };
   }
   return state;
