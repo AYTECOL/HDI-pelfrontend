@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Counter from 'services/Counter';
 import Loading from 'components/globals/loading/Loading';
@@ -7,141 +7,129 @@ import './Home.scss';
 import Search from 'components/home/search/search';
 import Quotes from 'services/GetQuote';
 import MomentJs from 'moment';
-import { STEP_EMITTED, STEP_ISSUE, STEP_QUOTATION } from 'common/constants';
+import {
+  STEP_EMITTED,
+  STEP_ISSUE,
+  STEP_QUOTATION,
+  STATUS_POLICIES,
+  VALIDITY_QUOTES_DAYS,
+} from 'common/constants';
 
-class Home extends PureComponent {
-  state = {
-    search: '',
-    originalQuoteData: [],
-    quotesData: [],
-    parameterDays: 30,
-    orderParameter: 'ASC',
-    statesQuotes: [],
-  };
-  componentDidMount = () => {
-    Loading.toggle(true);
-    this.quotesDataApi();
-  };
-  orderByArray = (typeFilter) => {
-    let quotesItems = this.state.quotesData;
-    let arrayOrder;
-    if (typeFilter === 'date') {
-      if (this.state.orderParameter === 'ASC') {
-        arrayOrder = quotesItems.sort((a, b) => {
-          return new Date(a.create_data) - new Date(b.create_data);
-        });
-        this.setState({ orderParameter: 'DESC' });
-      } else {
-        arrayOrder = quotesItems.sort((a, b) => {
-          return new Date(b.create_data) - new Date(a.create_data);
-        });
-        this.setState({ orderParameter: 'ASC' });
-      }
-    }
-    if (typeFilter === 'quoteId') {
-      if (this.state.orderParameter === 'ASC') {
-        arrayOrder = quotesItems.sort((a, b) => {
-          return parseInt(a.quoteId) - parseInt(b.quoteId);
-        });
-        this.setState({ orderParameter: 'DESC' });
-      } else {
-        arrayOrder = quotesItems.sort((a, b) => {
-          return parseInt(b.quoteId) - parseInt(a.quoteId);
-        });
-        this.setState({ orderParameter: 'ASC' });
-      }
-    }
-
-    this.setState({ quotesData: [...arrayOrder] });
-  };
-  formatDate = (startDate) => {
-    let endDate = MomentJs.utc();
-    startDate = MomentJs.utc(startDate);
-    let duration = MomentJs.duration(endDate.diff(startDate));
-    return (
-      parseInt(this.state.parameterDays) - parseInt(duration['_data']['days'])
-    );
-  };
-  formatStatesQuotes = (step) => {
-    let stringState = '';
-    if (step === 1 || step === 2 || step === 3) {
-      stringState = 'Cotización';
-    } else if (step === 4 || step === 5 || step === 6) {
-      stringState = 'Proceso de emisión';
-    } else if (step === 7) {
-      stringState = 'Póliza emitida';
-    }
-
-    return stringState;
-  };
+const Home = (props) => {
+  const [quotesData, setQuotesData] = useState([]);
+  const [filter, setFilter] = useState({
+    orderBy: {
+      type: 'DESC',
+      key: null,
+    },
+    all: false,
+    search: null,
+  });
+  const [stepTable, setStepTable] = useState(STEP_QUOTATION);
+  const [statesQuotes, setStatesQuotes] = useState({});
 
   /**
    * @param {import("services/GetQuote").PolicyRequest[]} dataArray
    */
-  formatData = (dataArray) => {
+  const formatDataQuotations = (dataArray) => {
     /**
      *
      * @param {string} text
      */
     const cleanQuotes = (text) => text.replace('""', '');
-    const dataFormat = dataArray.map((item) => ({
-      quoteId: item.quoteId,
-      create_at: MomentJs(item.create_at).format('L'),
-      hour_at: MomentJs(item.create_at).format('LT'),
-      name: cleanQuotes(item.business_name) || `${item.name} ${item.last_name}`,
-      address: item.address,
-      document_number: item.document_number,
-      document_type: item.document_type,
-      validity: this.formatDate(item.create_at),
-      create_data: item.create_at,
-      stateQuote: this.formatStatesQuotes(item.step),
-      step: item.step,
-      pdf_info: item.pdf_info,
-    }));
-    this.setState((prevState) => ({
-      statesQuotes: {
-        ...prevState.statesQuotes,
-        quotation: dataArray.filter(
-          (data) => data.step === 1 || data.step === 2 || data.step === 3
-        ).length,
-      },
-    }));
-    this.setState((prevState) => ({
-      statesQuotes: {
-        ...prevState.statesQuotes,
-        issue: dataArray.filter(
-          (data) => data.step === 4 || data.step === 5 || data.step === 6
-        ).length,
-      },
-    }));
-    this.setState((prevState) => ({
-      statesQuotes: {
-        ...prevState.statesQuotes,
-        emitted: dataArray.filter((data) => data.step === 7).length,
-      },
-    }));
+    let quotation = 0,
+      issue = 0,
+      emitted = 0;
+    let dataFormat = dataArray.map((item) => {
+      const quote = {
+        quoteId: item.quoteId,
+        create_at: MomentJs(item.create_at).format('L'),
+        hour_at: MomentJs(item.create_at).format('LT'),
+        name:
+          cleanQuotes(item.business_name) || `${item.name} ${item.last_name}`,
+        address: item.address,
+        document_number: item.document_number,
+        document_type: item.document_type,
+        validity: getValidity(item.create_at),
+        create_data: item.create_at,
+        stateQuote: getStateQuotes(item.step),
+        step: item.step,
+        pdf_info: item.pdf_info,
+      };
+      if (quote.stateQuote === STATUS_POLICIES.QUOTATION) quotation += 1;
+      if (quote.stateQuote === STATUS_POLICIES.PROCESS_EMIT) issue += 1;
+      if (quote.stateQuote === STATUS_POLICIES.POLICY_EMIT) emitted += +1;
+      return quote;
+    });
+    setStatesQuotes({ ...statesQuotes, quotation, issue, emitted });
     return dataFormat;
   };
 
-  filterByAny = (event) => {
-    const dataElements = this.state.originalQuoteData;
-    this.transformData(dataElements, event);
+  const getValidity = (startDate) => {
+    const endDate = MomentJs.utc();
+    startDate = MomentJs.utc(startDate).hour(0);
+    const days = startDate.diff(endDate, 'days');
+    return VALIDITY_QUOTES_DAYS - Math.abs(days);
   };
-  onClickStateQuote = (stateQuote) => {
-    let dataArrayState = this.state.originalQuoteData;
-    let dataFortmated = dataArrayState.filter((data) =>
-      stateQuote.includes(data.step)
-    );
-
-    this.setState({ quotesData: [...dataFortmated] });
+  const getStateQuotes = (step) => {
+    let stringState = '';
+    if (STEP_QUOTATION.includes(step)) {
+      stringState = STATUS_POLICIES.QUOTATION;
+    } else if (STEP_ISSUE.includes(step)) {
+      stringState = STATUS_POLICIES.PROCESS_EMIT;
+    } else if (STEP_EMITTED.includes(step)) {
+      stringState = STATUS_POLICIES.POLICY_EMIT;
+    }
+    return stringState;
   };
-  transformData = (quotes = null, search = '') => {
-    // const { orderBy, order: orderAsc } = this.state;
-    const quotesTable = quotes ? quotes : this.state.quotesData;
+  const getNumber = async () => {
+    const { history } = props;
+    Loading.toggle(true);
+    let number = await Counter.get();
+    if ('currentValue' in number) {
+      number = number.currentValue.toString();
+      history.push(`/cotizacion/1/${number}`);
+    }
+    setTimeout(Loading.toggle(false), 500);
+  };
 
-    let quotesFiltered = quotesTable.slice();
+  useEffect(() => {
+    async function getQuotes() {
+      let arrayItems = await Quotes.get();
+      const result = formatDataQuotations(arrayItems);
+      setQuotesData(result);
+      Loading.toggle(false);
+    }
+    getQuotes();
+  }, []);
+
+  const quoteFilters = useMemo(() => {
+    const { orderBy, search, all } = filter;
+    let filterQuotes = quotesData;
+    if (orderBy.type === 'ASC') {
+      const filterType = orderBy?.key === 'date' ? 'create_data' : 'quoteId';
+      const result = quotesData.sort((a, b) => {
+        const condition =
+          orderBy?.key === 'date'
+            ? new Date(a[filterType]) - new Date(b[filterType])
+            : parseInt(a[filterType]) - parseInt(b[filterType]);
+        return condition;
+      });
+      filterQuotes = [...result];
+    } else if (orderBy.type === 'DESC') {
+      const filterType = orderBy?.key === 'date' ? 'create_data' : 'quoteId';
+      const result = quotesData.sort((a, b) => {
+        const condition =
+          orderBy?.key === 'date'
+            ? new Date(b[filterType]) - new Date(a[filterType])
+            : parseInt(b[filterType]) - parseInt(a[filterType]);
+        return condition;
+      });
+      filterQuotes = [...result];
+    }
+
     if (search) {
-      quotesFiltered = quotesTable.filter(
+      const result = filterQuotes.filter(
         (quoteItem) =>
           (quoteItem.name &&
             quoteItem.name.toLowerCase().includes(search.toLowerCase())) ||
@@ -152,97 +140,72 @@ class Home extends PureComponent {
               .toLowerCase()
               .includes(search.toLowerCase()))
       );
+
+      filterQuotes = [...result];
     }
 
-    const quotesTransformed = quotesFiltered.map((quote) => ({
-      ...quote,
-    }));
-    // const dataSorted = sortAscArray(productsTransformed, orderBy);
-    // if (orderAsc !== 'desc') {
-    //   dataSorted.reverse();
-    // }
-    if (quotesTransformed.length > 0) {
-      this.setState({ quotesData: [...quotesTransformed] });
-    } else {
-      this.setState({ quotesData: [] });
-    }
-  };
+    filterQuotes = [
+      ...filterQuotes.filter(({ step }) => stepTable.includes(step)),
+    ];
 
-  getNumber = async () => {
-    const { history } = this.props;
-    Loading.toggle(true);
-    let number = await Counter.get();
-    if (typeof number.currentValue !== 'undefined') {
-      number = number.currentValue.toString();
-      history.push(`/cotizacion/1/${number}`);
-    }
-    setTimeout(Loading.toggle(false), 500);
-  };
+    if (all) return filterQuotes;
+    return filterQuotes.filter(({ validity }) => validity > 0);
+  }, [quotesData, filter, stepTable]);
 
-  quotesDataApi = async () => {
-    const currentState = this;
-    let { quotesData } = currentState.state;
-    let arrayItems = await Quotes.get();
-    arrayItems = this.formatData(arrayItems);
-    quotesData = arrayItems;
-
-    currentState.setState({ quotesData, originalQuoteData: quotesData }, () =>
-      Loading.toggle(false)
-    );
-  };
-  getAllData = (event) => {
-    this.setState({ quotesData: this.state.originalQuoteData });
-  };
-
-  render() {
-    return (
-      <div className="home">
-        <div className="container">
-          <div className="row">
-            <div className="col col-sm-12 col-md-12 col-lg-12 title">
-              <h2>Mis Negocios en línea</h2>
-              <button
-                type="button"
-                className="btn btn-primary btn-home"
-                onClick={this.getNumber}
-              >
-                Nueva cotización
-              </button>
-            </div>
+  return (
+    <div className="home">
+      <div className="container">
+        <div className="row">
+          <div className="col col-sm-12 col-md-12 col-lg-12 title">
+            <h2>Mis Negocios en línea</h2>
+            <button
+              type="button"
+              className="btn btn-primary btn-home"
+              onClick={getNumber}
+            >
+              Nueva cotización
+            </button>
           </div>
-          <div className="top-bar">
-            <ul className="menus">
-              <li onClick={(event) => this.onClickStateQuote(STEP_QUOTATION)}>
-                <p>Cotizaciones</p>{' '}
-                <span>{this.state.statesQuotes.quotation}</span>
-              </li>
-              <li onClick={(event) => this.onClickStateQuote(STEP_ISSUE)}>
-                <p>Proceso de emisión</p>{' '}
-                <span>{this.state.statesQuotes.issue}</span>
-              </li>
-              <li onClick={(event) => this.onClickStateQuote(STEP_EMITTED)}>
-                <p>Pólizas emitidas</p>{' '}
-                <span>{this.state.statesQuotes.emitted}</span>
-              </li>
-            </ul>
-            <Search
-              placeholder="Busca por Nombre, Id, dirección ..."
-              handleChange={this.filterByAny}
-            />
-          </div>
-          <div className="tabs row">
-            <ul>
-              <li onClick={(event) => this.getAllData()}>Ver todo</li>
-            </ul>
-          </div>
-          <Table
-            quotesData={this.state.quotesData}
-            handleChange={this.orderByArray}
+        </div>
+        <div className="top-bar">
+          <ul className="menus">
+            <li onClick={() => setStepTable(STEP_QUOTATION)}>
+              <p>Cotizaciones</p> <span>{statesQuotes.quotation}</span>
+            </li>
+            <li onClick={() => setStepTable(STEP_ISSUE)}>
+              <p>Proceso de emisión</p> <span>{statesQuotes.issue}</span>
+            </li>
+            <li onClick={() => setStepTable(STEP_EMITTED)}>
+              <p>Pólizas emitidas</p> <span>{statesQuotes.emitted}</span>
+            </li>
+          </ul>
+          <Search
+            placeholder="Busca por Nombre, Id, dirección ..."
+            handleChange={(value) => setFilter({ ...filter, search: value })}
           />
         </div>
+        <div className="tabs row">
+          <ul>
+            <li onClick={() => setFilter({ ...filter, all: !filter.all })}>
+              {filter.all ? 'Ver menos resultados' : 'Ver mas resultados'}
+            </li>
+          </ul>
+        </div>
+        <Table
+          quotesData={quoteFilters}
+          handleChange={(key) =>
+            setFilter({
+              ...filter,
+              orderBy: {
+                key,
+                type: filter.orderBy.type === 'DESC' ? 'ASC' : 'DESC',
+              },
+            })
+          }
+          filter={filter}
+        />
       </div>
-    );
-  }
-}
-
+    </div>
+  );
+};
 export default withRouter(Home);

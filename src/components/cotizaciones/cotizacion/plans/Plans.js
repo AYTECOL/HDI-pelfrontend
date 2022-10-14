@@ -6,7 +6,7 @@ import {
   AllPlans as AllPlansCreator,
   indexPlanSelected,
   setLoadingPlanPerspective,
-} from '../../../../actions';
+} from '../../../../store/actions';
 import Sticky from '../../../../common/helpers/sticky/Sticky';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Loading from '../../../globals/loading/Loading';

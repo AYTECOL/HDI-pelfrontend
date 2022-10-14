@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import store from '../../../../../store';
-import { saveInmuebleValue } from '../../../../../actions';
+import { saveInmuebleValue } from '../../../../../store/actions';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
 import Allfloors from '../../../../../services/Allfloors';
 

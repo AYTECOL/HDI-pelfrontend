@@ -15,7 +15,7 @@ import './Index.scss';
 import {
   saveInmuebleValue,
   typeInmueble as typeInmuebleAction,
-} from '../../../../actions';
+} from '../../../../store/actions';
 import Loading from '../../../globals/loading/Loading';
 
 class Index extends Component {

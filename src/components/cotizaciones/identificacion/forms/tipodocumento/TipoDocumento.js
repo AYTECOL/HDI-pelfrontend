@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 
 import store from '../../../../../store';
-import { saveIdentificationValue, updateTypeDoc } from '../../../../../actions';
+import { saveIdentificationValue, updateTypeDoc } from '../../../../../store/actions';
 import Identifications from '../../../../../services/Identifications';
 import Loading from '../../../../globals/loading/Loading';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';

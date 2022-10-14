@@ -7,7 +7,7 @@ import Resumen from '../../components/emisiones/resumen/index/Index';
 import { withRouter } from 'react-router-dom';
 import Helpers from '../../common/helpers/helpers/Helpers';
 import store from '../../store';
-import { saveCotizacionNumber } from '../../actions';
+import { saveCotizacionNumber } from '../../store/actions';
 
 class Emision extends Component {
   render() {

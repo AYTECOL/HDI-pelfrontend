@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 
 import store from '../../../../../store';
-import { mapShow, saveIdentificationValue } from '../../../../../actions';
+import { mapShow, saveIdentificationValue } from '../../../../../store/actions';
 import Help from '../../../../../common/icons/help';
 import {
   isValidDirection,

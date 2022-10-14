@@ -5,7 +5,7 @@ import {
   restoreCotizacion,
   restoreCotizacionRisk,
   saveProspect,
-} from '../../../actions';
+} from '../../../store/actions';
 import ValorationById from '../../../services/ValorationById';
 
 class Helpers {
