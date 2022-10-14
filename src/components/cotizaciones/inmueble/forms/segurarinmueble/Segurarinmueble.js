@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import clsx from 'clsx';
 
 import store from '../../../../../store';
-import { saveInmuebleValue } from '../../../../../actions';
+import { saveInmuebleValue } from '../../../../../store/actions';
 
 import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';

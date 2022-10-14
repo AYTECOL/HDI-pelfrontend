@@ -5,7 +5,7 @@ import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumb
 import store from '../../../../store';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import Plans from '../plans/Plans';
-import { AllPlans as AllPlansCreator } from '../../../../actions';
+import { AllPlans as AllPlansCreator } from '../../../../store/actions';
 import {
   getRulesByCode,
   getTotalCoverage,

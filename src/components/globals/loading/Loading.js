@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import './Loading.scss';
 import { ReactComponent as LoadingSvg } from './Loading.svg';
 import store from '../../../store';
-import { setLoading } from '../../../actions';
+import { setLoading } from '../../../store/actions';
 
 class Loading extends Component {
   static toggle(status) {

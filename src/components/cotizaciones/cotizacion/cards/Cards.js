@@ -5,7 +5,7 @@ import store from '../../../../store';
 import AllInsurableLimits from '../../../../services/AllInsurableLimits';
 import MobileContents from '../../inmueble/forms/MobileContents';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
-import { saveInmuebleValue } from '../../../../actions';
+import { saveInmuebleValue } from '../../../../store/actions';
 import InspectionPolicy from '../../../../services/InspectionPolicy';
 import AllBuildYears from '../../../../services/AllBuildYears';
 import Plans from '../plans/Plans';

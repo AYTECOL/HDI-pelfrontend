@@ -17,3 +17,11 @@ export const COD_COVERAGES_INSURED = {
   ACCIDENTS_PERSON: 716,
   OBSEQUIES: 774,
 };
+
+export const STATUS_POLICIES = {
+  QUOTATION: 'Cotización',
+  PROCESS_EMIT: 'Proceso de emisión',
+  POLICY_EMIT: 'Póliza emitida',
+};
+
+export const VALIDITY_QUOTES_DAYS = 30;
