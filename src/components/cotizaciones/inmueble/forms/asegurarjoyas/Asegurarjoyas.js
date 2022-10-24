@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../store/actions';
 import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 import { Tooltip } from '../../../../Tooltip';
 import Help from '../../../../../common/icons/help';
 import clsx from 'clsx';

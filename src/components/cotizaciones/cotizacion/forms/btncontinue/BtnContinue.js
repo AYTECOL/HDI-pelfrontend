@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 import { UrlSite } from '../../../../../config';
 import NewPlanSelected from '../../../../../services/NewPlanSelected';
 import store from '../../../../../store';

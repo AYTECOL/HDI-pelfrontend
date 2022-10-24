@@ -5,7 +5,7 @@ import Identificacion from '../../components/emisiones/identificacion/index/Inde
 import Informacion from '../../components/emisiones/informacion';
 import Resumen from '../../components/emisiones/resumen/index/Index';
 import { withRouter } from 'react-router-dom';
-import Helpers from '../../common/helpers/helpers/Helpers';
+import Helpers from '../../common/helpers/helpers';
 import store from '../../store';
 import { saveCotizacionNumber } from '../../store/actions';
 

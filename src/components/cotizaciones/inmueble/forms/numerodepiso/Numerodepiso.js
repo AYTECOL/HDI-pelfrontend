@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../store/actions';
 import AllFloors from '../../../../../services/Allfloors';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class Numerodepiso extends Component {
   constructor(props) {

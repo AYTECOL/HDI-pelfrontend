@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../store/actions';
 import BuildYears from '../../../../../services/AllBuildYears';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class Anoconstruccion extends Component {
   constructor(props) {

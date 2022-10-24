@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import CreateOrUpdateValoration from '../../../../../services/CreateOrUpdateValoration';
 import SaveIdentifications from '../../../../../services/Quote';
 import { NextStep, setPropertyValidation } from '../../../../../store/actions';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 // Components
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from '../asegurarcontenidos/Asegurarcontenidos';

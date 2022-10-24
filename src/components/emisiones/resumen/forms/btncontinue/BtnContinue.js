@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 import { UrlSite } from 'config';
-import Helpers from 'common/helpers/helpers/Helpers';
+import Helpers from 'common/helpers/helpers';
 import PolicyService from 'services/Policy';
 import Loading from 'components/globals/loading/Loading';
 import store from 'store';

@@ -6,7 +6,7 @@ import Identificacion from '../../components/cotizaciones/identificacion/index/I
 import Inmueble from '../../components/cotizaciones/inmueble/index/Index';
 import CotizacionForm from '../../components/cotizaciones/cotizacion/index/Index';
 import Validaridentificacion from '../../components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
-import Helpers from '../../common/helpers/helpers/Helpers';
+import Helpers from '../../common/helpers/helpers';
 import store from '../../store';
 import { saveCotizacionNumber } from '../../store/actions';
 

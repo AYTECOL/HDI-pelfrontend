@@ -1,4 +1,4 @@
-import Helpers from '../common/helpers/helpers/Helpers';
+import Helpers from '../common/helpers/helpers';
 
 const Default = {
   build_materials: [

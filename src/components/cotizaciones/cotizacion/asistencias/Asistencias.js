@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Asistencias.scss';
 import Plans from '../plans/Plans';
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 import { connect } from 'react-redux';
 import { AllPlans } from '../../../../store/actions';
 
