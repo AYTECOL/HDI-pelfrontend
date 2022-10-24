@@ -5,7 +5,7 @@ import {
   continueButtonDisable,
   saveIdentificationValue,
 } from '../../../../../store/actions';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class NumeroIdentificacion extends Component {
   constructor(props) {

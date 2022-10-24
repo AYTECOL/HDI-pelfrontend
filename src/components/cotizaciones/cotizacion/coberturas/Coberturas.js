@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import store from '../../../../store';
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 import Plans from '../plans/Plans';
 import { AllPlans as AllPlansCreator } from '../../../../store/actions';
 import {

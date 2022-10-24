@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import store from '../../../../../store';
 import Loading from '../../../../globals/loading/Loading';
 import BtnContinue from '../btncontinue/BtnContinue';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class Links extends Component {
   constructor(props) {

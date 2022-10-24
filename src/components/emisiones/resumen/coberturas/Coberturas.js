@@ -5,7 +5,7 @@ import store from '../../../../store';
 import Plans from '../../../cotizaciones/cotizacion/plans/Plans';
 import './Coberturas.scss';
 import check from '../../../../common/images/check-img.png';
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 import { getRulesByCode, stateCoverage } from '../../../../common';
 
 class Coberturas extends Component {

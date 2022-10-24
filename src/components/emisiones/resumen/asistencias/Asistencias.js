@@ -4,7 +4,7 @@ import store from '../../../../store';
 import './Asistencias.scss';
 import Plans from '../../../cotizaciones/cotizacion/plans/Plans';
 import check from '../../../../common/images/check-img.png';
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 
 class Asistencias extends Component {
   constructor(props) {

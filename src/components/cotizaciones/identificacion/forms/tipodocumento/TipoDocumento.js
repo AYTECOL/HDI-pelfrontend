@@ -5,7 +5,7 @@ import store from '../../../../../store';
 import { saveIdentificationValue, updateTypeDoc } from '../../../../../store/actions';
 import Identifications from '../../../../../services/Identifications';
 import Loading from '../../../../globals/loading/Loading';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class TipoDocumento extends Component {
   _isMounted = false;

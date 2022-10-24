@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { withCities } from '../../hooks/cities';
 import store from '../../../../../store';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class AutocompleteCities extends Component {
   _isMounted = false;

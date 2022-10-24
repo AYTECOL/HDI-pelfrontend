@@ -1,5 +1,5 @@
 import Api from './Api';
-import Helpers from '../common/helpers/helpers/Helpers';
+import Helpers from '../common/helpers/helpers';
 import AuthHeader from './AuthHeader';
 const BaseUrl = '/all-properties-zones';
 
