@@ -81,27 +81,27 @@ export default class Persona extends Component {
     )
       this.state.person = this.props.persons[this.props.item];
     this.state.person.tipodetelefono = phoneTypes.mobilePhone;
-    for (let i = 0; i < this.state.fields.length; i++) {
-      let key = this.state.fields[i];
-      if (typeof this.state.person[key] === 'undefined') {
-        if (key === 'role') {
-          this.state.person[key] = [];
-        } else if (key === 'sarlfaltActive') {
-          this.state.person[key] = false;
-        } else if (key === 'code') {
-          this.state.person[key] = this.state.typePerson === 4 ? '37' : '36';
+    for (const field of this.state.fields) {
+      if (typeof this.state.person[field] === 'undefined') {
+        if (field === 'role') {
+          this.state.person[field] = [];
+        } else if (field === 'sarlfaltActive') {
+          this.state.person[field] = false;
+        } else if (field === 'code') {
+          this.state.person[field] = this.state.typePerson === 4 ? '37' : '36';
         } else {
-          this.state.person[key] = '';
+          this.state.person[field] = '';
         }
-        this.state.person[key + 'Disabled'] = false;
-        this.state.person[key + 'Error'] = false;
-      } else if (this.state.person[key] === null) {
-        this.state.person[key] = '';
+        this.state.person[field + 'Disabled'] = false;
+        this.state.person[field + 'Error'] = false;
+      } else if (this.state.person === null) {
+        this.state.person[field] = '';
       }
     }
-    for (let i = 0; i < this.props.persons.length; i++) {
-      if (typeof this.props.persons[i]['role'] !== 'undefined') {
-        if (this.props.persons[i]['role'].indexOf(1) !== -1)
+
+    for (const itemPerson of this.props.persons) {
+      if (typeof itemPerson['role'] !== 'undefined') {
+        if (itemPerson['role'].indexOf(1) !== -1)
           this.state.exitsTomador = true;
       }
     }
@@ -633,10 +633,10 @@ export default class Persona extends Component {
     });
   };
 
-  saveFile = async ({ person, typePerson }) => {
+  saveFile = async ({ person }) => {
     if (
-      typePerson === roles.taker &&
-      typeof person.sarlfalt_url === 'undefined'
+      person.code === 36 &&
+      !(person.sarlfalt_url || person.habeas_data_url)
     ) {
       const newPerson = { ...person };
       Loading.toggle(true);
@@ -685,7 +685,8 @@ export default class Persona extends Component {
       ciudad,
       adresstype,
     } = person;
-    const isTakerRole = role.some((r) => r === 1);
+
+    const isTakerRole = role.some((r) => r === roles.taker);
     const address = String(person.address);
     const tipodetelefono = String(person.tipodetelefono);
     const telefono = String(person.telefono);
@@ -715,27 +716,28 @@ export default class Persona extends Component {
       Helpers.validationEmail(email) === false
     )
       errors.push(fieldsNames.email);
-
+    // validations for sarlaft file
     if (
       (isTakerRole &&
-        !this.props.exceptionSarlaft &&
         !sarlfaltActive &&
         !habeas_data &&
         !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
       errorFile
-    )
-      errors.push('sarlfalt');
+    ) {
+      errors.push('file');
+    }
 
+    //Validation for habeas data file
     if (
-      (isTakerRole &&
-        !sarlfaltActive &&
-        !habeasDataActive &&
+      (!habeasDataActive &&
+        !sarlaft &&
         !String(habeas_data_url || '').trim() &&
         !habeas_data) ||
       errorFile
-    )
-      errors.push('habeas_data');
+    ) {
+      errors.push('file');
+    }
 
     if (typePerson === 4 || nit) {
       if (empty(businessname)) errors.push('businessname');
@@ -806,7 +808,7 @@ export default class Persona extends Component {
         if (valid && saveData) {
           const state = this.state;
           let { person } = state;
-          let newPerson = await this.saveFile({ person, typePerson });
+          let newPerson = await this.saveFile({ person });
           if (typeof newPerson.code === 'undefined')
             newPerson.code = typePerson !== 4 ? '36' : '37';
           if (state.typePerson === 4) newPerson.role.push(4);
@@ -839,7 +841,18 @@ export default class Persona extends Component {
     const participationPercentages =
       this.isActived(fieldsNames.personalAccidents) ||
       this.isActived(fieldsNames.exequiasParticipation);
-    const isTakerRole = this.state.person?.role.some((r) => r === 1);
+    const isRequiredFileSarlaftTaker = this.state.person?.role.some(
+      (r) =>
+        r === roles.taker &&
+        !(this.state.person?.sarlfaltActive || this.props.exceptionSarlaft)
+    );
+    const isShowUploadFile = this.state.person?.role.some(
+      (r) =>
+        (r === roles.taker && !this.state.person?.sarlfaltActive) ||
+        r === roles.insured ||
+        r === roles.beneficiary
+    );
+
     return (
       <React.Fragment>
         <CitiesProvider>
@@ -1551,23 +1564,16 @@ export default class Persona extends Component {
                         />
                       )}
                     </div>
-                    {isTakerRole &&
-                      typeof this.props.disabledAll === 'undefined' &&
-                      !this.state.person.sarlfaltActive && (
+                    {isShowUploadFile &&
+                      typeof this.props.disabledAll === 'undefined' && (
                         <UploadFiles
                           person={this.state.person}
                           showDefaultTextFile={this.state.showDefaultTextFile}
                           textFile={this.state.textFile}
                           changeTextFile={this.changeTextFile}
                           errorFile={this.state.errorFile}
-                          typeFile={
-                            this.person?.sarlfaltActive &&
-                            !this.props.exceptionSarlaft
-                          }
-                          isError={
-                            hasErrorAddClass('sarlaft') ||
-                            hasErrorAddClass('habeas_data')
-                          }
+                          typeFile={isRequiredFileSarlaftTaker}
+                          isError={hasErrorAddClass('file')}
                         />
                       )}
                     {typeof this.props.disabledAll === 'undefined' && (
