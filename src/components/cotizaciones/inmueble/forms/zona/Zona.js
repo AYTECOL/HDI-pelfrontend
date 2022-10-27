@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import { saveInmuebleValue } from '../../../../../actions';
+import { saveInmuebleValue } from '../../../../../store/actions';
 import './Zona.scss';
 import AllPropertiesZones from '../../../../../services/AllPropertiesZones';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';

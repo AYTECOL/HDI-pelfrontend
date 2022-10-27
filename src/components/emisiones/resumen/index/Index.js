@@ -15,7 +15,7 @@ import QuoteIussedById from '../../../../services/QuoteIussedById';
 import {
   AllPlans as AllPlansCreator,
   indexPlanSelected,
-} from '../../../../actions';
+} from '../../../../store/actions';
 import AllPropertiesZones from '../../../../services/AllPropertiesZones';
 import AllBuildMaterial from '../../../../services/AllBuildMaterial';
 import AllBuildYears from '../../../../services/AllBuildYears';

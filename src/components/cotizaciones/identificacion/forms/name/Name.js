@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import store from '../../../../../store';
-import { saveIdentificationValue } from '../../../../../actions';
+import { saveIdentificationValue } from '../../../../../store/actions';
 
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
 
