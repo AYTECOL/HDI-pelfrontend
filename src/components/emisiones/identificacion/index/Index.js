@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 //Helpers
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 //Component
 import BtnContinue from '../forms/btncontinue/BtnContinue';
 import PopUpDelete from '../popups/delete/Delete';
-import PopUpPersona from '../popups/persona/Persona';
+import PopUpPersona from '../popups/persona/person';
 import Card from '../card/Card';
 import './Index.scss';
 import { withRouter } from 'react-router-dom';

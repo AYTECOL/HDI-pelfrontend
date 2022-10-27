@@ -62,6 +62,7 @@ const Home = (props) => {
       return quote;
     });
     setStatesQuotes({ ...statesQuotes, quotation, issue, emitted });
+
     return dataFormat;
   };
 
@@ -95,6 +96,7 @@ const Home = (props) => {
 
   useEffect(() => {
     async function getQuotes() {
+      Loading.toggle(true);
       let arrayItems = await Quotes.get();
       const result = formatDataQuotations(arrayItems);
       setQuotesData(result);

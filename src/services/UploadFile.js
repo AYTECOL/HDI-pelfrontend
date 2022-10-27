@@ -15,7 +15,7 @@ class UploadFile {
 
   /**
    *
-   * @param {"Sarlaft"| "Docs"} name
+   * @param {"Sarlaft"| "Docs"| "Habeas_Data"} name
    * @param {File} file
    * @return {Promise<{ location: string }>}
    */

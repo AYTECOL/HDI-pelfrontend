@@ -8,7 +8,7 @@ import PdfPolizaHogar from '../../services/PdfPolizaHogar';
 import Counter from '../../services/Counter';
 import store from '../../store';
 import { resetStore } from '../../store/actions';
-import Helpers from '../../common/helpers/helpers/Helpers';
+import Helpers from '../../common/helpers/helpers';
 
 class PolizaEmitida extends Component {
   state = {

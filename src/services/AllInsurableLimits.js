@@ -2,7 +2,7 @@ import Api from './Api';
 import Store from '../store';
 import AuthHeader from './AuthHeader';
 import { saveAllInsurableLimits } from '../store/actions';
-import Helpers from '../common/helpers/helpers/Helpers';
+import Helpers from '../common/helpers/helpers';
 import { typeItems } from '../common/typeItems';
 
 const BaseUrl = '/all-insurable-limits';

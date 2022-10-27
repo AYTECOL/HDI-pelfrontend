@@ -12,7 +12,7 @@ import Plans from '../plans/Plans';
 import Coberturas from '../coberturas/Coberturas';
 import { IDS_COVERAGE_VALUES } from '../../../../common';
 import { getItems } from './getItems';
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 class Cards extends Component {
   constructor(props) {
     super(props);

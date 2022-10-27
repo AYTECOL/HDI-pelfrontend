@@ -2,21 +2,19 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import MomentJs from 'moment';
 import DatePicker from 'react-datepicker';
-
-import './Persona.scss';
-import Loading from '../../../../../components/globals/loading/Loading';
-import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
-import TypeDocuments from '../../../../cotizaciones/identificacion/forms/tipodocumento/TipoDocumento';
-import Validaridentificacion from '../../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
-import AutocompleteCities from '../../../../cotizaciones/identificacion/forms/autocompletecities/AutocompleteCities';
-import UploadFile from '../../../../../services/UploadFile';
+import './person.scss';
+import Loading from 'components/globals/loading/Loading';
+import ConsultaPersonas from 'services/ConsultaPersonas';
+import TypeDocuments from 'components/cotizaciones/identificacion/forms/tipodocumento/TipoDocumento';
+import Validaridentificacion from 'components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
+import AutocompleteCities from 'components/cotizaciones/identificacion/forms/autocompletecities/AutocompleteCities';
+import { CitiesProvider } from 'components/cotizaciones/identificacion/hooks/cities';
+import UploadFiles from './uploadFiles';
+import UploadFile from 'services/UploadFile';
 import CheckBoxes from './Checkboxes';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
-import NumeroIdentificacion from '../../../../cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion';
-import {
-  isValidDirection,
-  validationMessages,
-} from '../../../../../common/validations';
+import Helpers from 'common/helpers/helpers';
+import NumeroIdentificacion from 'components/cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion';
+import { isValidDirection, validationMessages } from 'common/validations';
 import { roles } from '../../constants';
 import { fieldsNames } from './constants';
 import ParticipationPercentages from './ParticipationPercentages';
@@ -27,8 +25,6 @@ import {
   rolesParticipations,
   isRoleParticipation,
 } from './ParticipationPercentages/utils';
-import { CitiesProvider } from '../../../../cotizaciones/identificacion/hooks/cities';
-
 const maxFileSize = UploadFile.maxFileSize;
 
 const phoneTypes = {
@@ -76,7 +72,7 @@ export default class Persona extends Component {
         fieldsNames.address,
         fieldsNames.personalAccidents,
         fieldsNames.exequiasParticipation,
-        'sarlaft',
+        'file',
       ],
     };
     if (
@@ -85,27 +81,27 @@ export default class Persona extends Component {
     )
       this.state.person = this.props.persons[this.props.item];
     this.state.person.tipodetelefono = phoneTypes.mobilePhone;
-    for (let i = 0; i < this.state.fields.length; i++) {
-      let key = this.state.fields[i];
-      if (typeof this.state.person[key] === 'undefined') {
-        if (key === 'role') {
-          this.state.person[key] = [];
-        } else if (key === 'sarlfaltActive') {
-          this.state.person[key] = false;
-        } else if (key === 'code') {
-          this.state.person[key] = this.state.typePerson === 4 ? '37' : '36';
+    for (const field of this.state.fields) {
+      if (typeof this.state.person[field] === 'undefined') {
+        if (field === 'role') {
+          this.state.person[field] = [];
+        } else if (field === 'sarlfaltActive') {
+          this.state.person[field] = false;
+        } else if (field === 'code') {
+          this.state.person[field] = this.state.typePerson === 4 ? '37' : '36';
         } else {
-          this.state.person[key] = '';
+          this.state.person[field] = '';
         }
-        this.state.person[key + 'Disabled'] = false;
-        this.state.person[key + 'Error'] = false;
-      } else if (this.state.person[key] === null) {
-        this.state.person[key] = '';
+        this.state.person[field + 'Disabled'] = false;
+        this.state.person[field + 'Error'] = false;
+      } else if (this.state.person === null) {
+        this.state.person[field] = '';
       }
     }
-    for (let i = 0; i < this.props.persons.length; i++) {
-      if (typeof this.props.persons[i]['role'] !== 'undefined') {
-        if (this.props.persons[i]['role'].indexOf(1) !== -1)
+
+    for (const itemPerson of this.props.persons) {
+      if (typeof itemPerson['role'] !== 'undefined') {
+        if (itemPerson['role'].indexOf(1) !== -1)
           this.state.exitsTomador = true;
       }
     }
@@ -457,7 +453,7 @@ export default class Persona extends Component {
     return rolesPerson.some((role) => Persona.fieldActive(field, role));
   };
 
-  changeTextFile = (e) => {
+  changeTextFile = (e, showSarlaft) => {
     let name = '';
     let status = true;
     let errorFile = null;
@@ -465,10 +461,15 @@ export default class Persona extends Component {
     person.sarlaft = undefined;
     person.sarlaft_document_url = undefined;
     person.sarlfalt_url = undefined;
+
+    person.habeas_data_document_url = undefined;
+    person.habeas_data = undefined;
+    person.habeas_data_url = undefined;
+
     /**
      * @type {File}
      */
-    const file = e.target.files[0];
+    const file = e.target.files[0] || person?.habeas_data;
     let validFile = Helpers.validateFile(file);
     if (!file) {
       errorFile = 'Este campo es requerido';
@@ -479,9 +480,13 @@ export default class Persona extends Component {
     } else {
       name = file.name;
       status = false;
-      person.sarlaft = file;
-      person.sarlaft_document_url = person.sarlaft;
-      person.sarlfalt_url = undefined;
+      if (showSarlaft) {
+        person.sarlaft = file;
+        person.sarlaft_document_url = person.sarlaft;
+      } else {
+        person.habeas_data = file;
+        person.habeas_data_document_url = person.habeas_data;
+      }
     }
     this.setState(
       {
@@ -490,10 +495,9 @@ export default class Persona extends Component {
         errorFile,
         showDefaultTextFile: status,
         person: person,
-        sarlfalt_url: undefined,
       },
       () => {
-        this.validateAll('sarlaft');
+        this.validateAll();
       }
     );
   };
@@ -629,20 +633,29 @@ export default class Persona extends Component {
     });
   };
 
-  saveFile = async ({ person, typePerson }) => {
-    if (typePerson <= 3 && typeof person.sarlfalt_url === 'undefined') {
+  saveFile = async ({ person }) => {
+    if (
+      person.code === 36 &&
+      !(person.sarlfalt_url || person.habeas_data_url)
+    ) {
       const newPerson = { ...person };
       Loading.toggle(true);
-      const file = await UploadFile.upload('Sarlaft', person.sarlaft).catch(
-        (e) => {
-          console.log(e);
-        }
-      );
+      const fileValue = person?.sarlaft || person?.habeas_data;
+      const prefix = person?.sarlaft ? 'Sarlaft' : 'Habeas_Data';
+      const file = await UploadFile.upload(prefix, fileValue).catch((e) => {
+        console.log(e);
+      });
       Loading.toggle(false);
       if (file && typeof file['location'] !== 'undefined') {
-        newPerson.sarlaft = file['location'];
-        newPerson.sarlaft_document_url = file['location'];
-        newPerson.sarlfalt_url = file['location'];
+        if (prefix === 'Sarlaft') {
+          newPerson.sarlaft = file['location'];
+          newPerson.sarlaft_document_url = file['location'];
+          newPerson.sarlfalt_url = file['location'];
+        } else {
+          newPerson.habeas_data = file['location'];
+          newPerson.habeas_data_document_url = file['location'];
+          newPerson.habeas_data_url = file['location'];
+        }
       }
       return newPerson;
     }
@@ -665,11 +678,15 @@ export default class Persona extends Component {
       role,
       lastname,
       name,
+      habeasDataActive,
+      habeas_data_url,
+      habeas_data,
       businessname,
       ciudad,
       adresstype,
     } = person;
-    const isTakerRole = role.some((r) => r === 1);
+
+    const isTakerRole = role.some((r) => r === roles.taker);
     const address = String(person.address);
     const tipodetelefono = String(person.tipodetelefono);
     const telefono = String(person.telefono);
@@ -699,17 +716,29 @@ export default class Persona extends Component {
       Helpers.validationEmail(email) === false
     )
       errors.push(fieldsNames.email);
-
+    // validations for sarlaft file
     if (
       (isTakerRole &&
-        !this.props.exceptionSarlaft &&
         !sarlfaltActive &&
+        !habeas_data &&
         !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
       errorFile
     ) {
-      errors.push('sarlfalt');
+      errors.push('file');
     }
+
+    //Validation for habeas data file
+    if (
+      (!habeasDataActive &&
+        !sarlaft &&
+        !String(habeas_data_url || '').trim() &&
+        !habeas_data) ||
+      errorFile
+    ) {
+      errors.push('file');
+    }
+
     if (typePerson === 4 || nit) {
       if (empty(businessname)) errors.push('businessname');
     } else {
@@ -779,7 +808,7 @@ export default class Persona extends Component {
         if (valid && saveData) {
           const state = this.state;
           let { person } = state;
-          let newPerson = await this.saveFile({ person, typePerson });
+          let newPerson = await this.saveFile({ person });
           if (typeof newPerson.code === 'undefined')
             newPerson.code = typePerson !== 4 ? '36' : '37';
           if (state.typePerson === 4) newPerson.role.push(4);
@@ -812,7 +841,18 @@ export default class Persona extends Component {
     const participationPercentages =
       this.isActived(fieldsNames.personalAccidents) ||
       this.isActived(fieldsNames.exequiasParticipation);
-    const isTakerRole = this.state.person?.role.some((r) => r === 1);
+    const isRequiredFileSarlaftTaker = this.state.person?.role.some(
+      (r) =>
+        r === roles.taker &&
+        !(this.state.person?.sarlfaltActive || this.props.exceptionSarlaft)
+    );
+    const isShowUploadFile = this.state.person?.role.some(
+      (r) =>
+        (r === roles.taker && !this.state.person?.sarlfaltActive) ||
+        r === roles.insured ||
+        r === roles.beneficiary
+    );
+
     return (
       <React.Fragment>
         <CitiesProvider>
@@ -1524,70 +1564,18 @@ export default class Persona extends Component {
                         />
                       )}
                     </div>
-                    {!this.props.exceptionSarlaft &&
-                      typePerson === 1 &&
-                      isTakerRole &&
-                      this.state.person.sarlfaltActive === false &&
+                    {isShowUploadFile &&
                       typeof this.props.disabledAll === 'undefined' && (
-                        <div className={'row sarlaft'}>
-                          <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
-                            <div
-                              className={classNames(
-                                'sarlaft form-group',
-                                hasErrorAddClass('sarlaft')
-                              )}
-                            >
-                              <label htmlFor={fieldsNames.address}>
-                                Es necesario el sarlaft
-                              </label>
-                              <span>Adjunta el Sarlaft diligenciado</span>
-                              <input
-                                type="file"
-                                className="form-control"
-                                name="sarlaft"
-                                onChange={this.changeTextFile}
-                                accept={
-                                  Helpers.fileFormats.join(', ') +
-                                  ', .docx, .doc'
-                                }
-                              />
-                              {this.state.showDefaultTextFile ? (
-                                <p>
-                                  Arrastre archivos para adjuntar, o{' '}
-                                  <b>buscar</b>
-                                </p>
-                              ) : (
-                                <p>{this.state.textFile}</p>
-                              )}
-                              <span>
-                                Formatos permitidos PDF, PNG, GIF, JPG
-                              </span>
-                              {typeof this.state.person.sarlfalt_url !==
-                                'undefined' && (
-                                <React.Fragment>
-                                  <br />
-                                  <span>
-                                    <a href={this.state.person.sarlfalt_url}>
-                                      {this.state.person.sarlfalt_url
-                                        .split('/')
-                                        .slice(-1)}
-                                    </a>
-                                  </span>
-                                </React.Fragment>
-                              )}
-                              <br />
-                              {this.state.errorFile && (
-                                <div className="animated shake">
-                                  <span className="error-file">
-                                    {this.state.errorFile}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
+                        <UploadFiles
+                          person={this.state.person}
+                          showDefaultTextFile={this.state.showDefaultTextFile}
+                          textFile={this.state.textFile}
+                          changeTextFile={this.changeTextFile}
+                          errorFile={this.state.errorFile}
+                          typeFile={isRequiredFileSarlaftTaker}
+                          isError={hasErrorAddClass('file')}
+                        />
                       )}
-
                     {typeof this.props.disabledAll === 'undefined' && (
                       <div className="row">
                         <div className="col">

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Persona.scss';
+import './person.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default class Checkboxes extends Component {

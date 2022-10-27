@@ -1,6 +1,6 @@
 import Api from './Api';
 import AuthHeader from './AuthHeader';
-import Helpers from '../common/helpers/helpers/Helpers';
+import Helpers from '../common/helpers/helpers';
 
 const BaseUrl = '/all-build-years';
 

@@ -1,4 +1,4 @@
-import Helpers from './Helpers';
+import Helpers from '.';
 
 it('test toCapitalize', () => {
   expect(typeof Helpers.toCapitalize('test words')).toBe('string');

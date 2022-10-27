@@ -7,7 +7,7 @@ import './Map.scss';
 import store from '../../../../store';
 import { setAddresMap, saveIdentificationValue } from '../../../../store/actions';
 import GetAddresInfo from '../../../../services/AddresCoordenates';
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 import { withCities } from '../hooks/cities';
 import Marker from './Marker';
 
