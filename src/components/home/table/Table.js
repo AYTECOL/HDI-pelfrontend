@@ -185,7 +185,7 @@ const Table = (props) => {
                   <p>{item.stateQuote}</p>
                 </div>
                 <div className="col">
-                  {item.step !== 7 && (
+                  {item.step !== 7 && item.validity > 0 && (
                     <button
                       onClick={getRowById(item.quoteId)}
                       className="btn btn-default"
