@@ -22,7 +22,6 @@ const Home = (props) => {
       type: 'DESC',
       key: null,
     },
-    all: false,
     search: null,
   });
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
@@ -147,8 +146,6 @@ const Home = (props) => {
     filterQuotes = [
       ...filterQuotes.filter(({ step }) => stepTable.includes(step)),
     ];
-
-    if (all) return filterQuotes;
     return filterQuotes.filter(({ validity }) => validity > 0);
   }, [quotesData, filter, stepTable]);
 
@@ -183,13 +180,6 @@ const Home = (props) => {
             placeholder="Busca por Nombre, Id, dirección ..."
             handleChange={(value) => setFilter({ ...filter, search: value })}
           />
-        </div>
-        <div className="tabs row">
-          <ul>
-            <li onClick={() => setFilter({ ...filter, all: !filter.all })}>
-              {filter.all ? 'Ver menos resultados' : 'Ver mas resultados'}
-            </li>
-          </ul>
         </div>
         <Table
           quotesData={quoteFilters}
