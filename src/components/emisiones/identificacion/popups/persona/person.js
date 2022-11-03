@@ -75,27 +75,28 @@ export default class Persona extends Component {
         'file',
       ],
     };
+    let person = this.state.person;
     if (
       this.props.item !== -1 &&
       typeof this.props.persons[this.props.item] !== 'undefined'
     )
-      this.state.person = this.props.persons[this.props.item];
-    this.state.person.tipodetelefono = phoneTypes.mobilePhone;
+      person = this.props.persons[this.props.item];
+    person.tipodetelefono = phoneTypes.mobilePhone;
     for (const field of this.state.fields) {
-      if (typeof this.state.person[field] === 'undefined') {
+      if (typeof person[field] === 'undefined') {
         if (field === 'role') {
-          this.state.person[field] = [];
+          person[field] = [];
         } else if (field === 'sarlfaltActive') {
-          this.state.person[field] = false;
+          person[field] = false;
         } else if (field === 'code') {
-          this.state.person[field] = this.state.typePerson === 4 ? '37' : '36';
+          person[field] = this.state.typePerson === 4 ? '37' : '36';
         } else {
-          this.state.person[field] = '';
+          person[field] = '';
         }
-        this.state.person[field + 'Disabled'] = false;
-        this.state.person[field + 'Error'] = false;
-      } else if (this.state.person === null) {
-        this.state.person[field] = '';
+        person[field + 'Disabled'] = false;
+        person[field + 'Error'] = false;
+      } else if (person === null) {
+        person[field] = '';
       }
     }
 
@@ -109,39 +110,38 @@ export default class Persona extends Component {
     this.state.total = this.getTotal();
 
     if (typeof this.props.disabledAll !== 'undefined') {
-      for (let i in this.state.person) {
-        this.state.person[i + 'Disabled'] = true;
+      for (let i in person) {
+        person[i + 'Disabled'] = true;
       }
     }
 
     if (
-      typeof this.state.person !== 'undefined' &&
-      typeof this.state.person['city_code'] === 'undefined' &&
-      typeof this.state.person['department_code'] === 'undefined'
+      typeof person !== 'undefined' &&
+      typeof person['city_code'] === 'undefined' &&
+      typeof person['department_code'] === 'undefined'
     ) {
-      this.state.person['city_code'] = 0;
-      this.state.person['department_code'] = 0;
+      person['city_code'] = 0;
+      person['department_code'] = 0;
     }
 
-    if (
-      typePerson !== 4 &&
-      typePerson !== 2 &&
-      String(this.state.person.code) === '37'
-    ) {
+    if (typePerson !== 4 && typePerson !== 2 && String(person.code) === '37') {
       this.state.nit = true;
     }
-    if (typeof this.state.person.sarlfalt_url !== 'string') {
-      this.state.person.sarlfalt_url = '';
-    }
 
+    person.sarlfalt_url =
+      person?.sarlaft_document_url !== ' '
+        ? person?.sarlaft_document_url
+        : undefined;
+    person.habeas_data_url = person?.habeas_data_document_url || undefined;
     if (
-      typeof this.state.person.object !== 'undefined' ||
-      typeof this.state.person.person !== 'undefined'
+      typeof person.object !== 'undefined' ||
+      typeof person.person !== 'undefined'
     ) {
       this.state.hideLoader = true;
     } else {
       this.state.hideLoader = undefined;
     }
+    this.state.person = person;
   }
 
   getTotal() {
@@ -634,10 +634,7 @@ export default class Persona extends Component {
   };
 
   saveFile = async ({ person }) => {
-    if (
-      person.code === 36 &&
-      !(person.sarlfalt_url || person.habeas_data_url)
-    ) {
+    if (!(person.sarlfalt_url || person.habeas_data_url)) {
       const newPerson = { ...person };
       Loading.toggle(true);
       const fileValue = person?.sarlaft || person?.habeas_data;
@@ -686,7 +683,7 @@ export default class Persona extends Component {
       adresstype,
     } = person;
 
-    const isTakerRole = role.some((r) => r === roles.taker);
+    const isPersonNatural = +code !== 37;
     const address = String(person.address);
     const tipodetelefono = String(person.tipodetelefono);
     const telefono = String(person.telefono);
@@ -716,11 +713,23 @@ export default class Persona extends Component {
       Helpers.validationEmail(email) === false
     )
       errors.push(fieldsNames.email);
-    // validations for sarlaft file
+    // validations for sarlaft file person natural
     if (
-      (isTakerRole &&
+      (!this.props.exceptionSarlaft &&
+        isPersonNatural &&
         !sarlfaltActive &&
         !habeas_data &&
+        !String(sarlfalt_url || '').trim() &&
+        !sarlaft) ||
+      errorFile
+    ) {
+      errors.push('file');
+    }
+    // validations for sarlaft file person legal
+    if (
+      (!this.props.exceptionSarlaft &&
+        !isPersonNatural &&
+        !sarlfaltActive &&
         !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
       errorFile
@@ -730,7 +739,8 @@ export default class Persona extends Component {
 
     //Validation for habeas data file
     if (
-      (!habeasDataActive &&
+      (isPersonNatural &&
+        !habeasDataActive &&
         !sarlaft &&
         !String(habeas_data_url || '').trim() &&
         !habeas_data) ||
@@ -841,18 +851,13 @@ export default class Persona extends Component {
     const participationPercentages =
       this.isActived(fieldsNames.personalAccidents) ||
       this.isActived(fieldsNames.exequiasParticipation);
-    const isRequiredFileSarlaftTaker = this.state.person?.role.some(
-      (r) =>
-        r === roles.taker &&
-        !(this.state.person?.sarlfaltActive || this.props.exceptionSarlaft)
-    );
-    const isShowUploadFile = this.state.person?.role.some(
-      (r) =>
-        (r === roles.taker && !this.state.person?.sarlfaltActive) ||
-        r === roles.insured ||
-        r === roles.beneficiary
-    );
-
+    const isRequiredFileHabeasData =
+      +this.state.person?.code !== 37 && this.props.exceptionSarlaft;
+    const isShowUploadFile =
+      +this.state.person?.code !== 37 ||
+      (+this.state.person?.code === 37 &&
+        !this.props.exceptionSarlaft &&
+        !this.state.person?.sarlfaltActive);
     return (
       <React.Fragment>
         <CitiesProvider>
@@ -1572,7 +1577,7 @@ export default class Persona extends Component {
                           textFile={this.state.textFile}
                           changeTextFile={this.changeTextFile}
                           errorFile={this.state.errorFile}
-                          typeFile={isRequiredFileSarlaftTaker}
+                          typeFile={isRequiredFileHabeasData}
                           isError={hasErrorAddClass('file')}
                         />
                       )}

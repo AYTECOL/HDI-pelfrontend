@@ -23,16 +23,16 @@ const UploadFiles = ({
       <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
         <div className={classNames('sarlaft form-group', isError)}>
           <label htmlFor={fieldsNames.address}>
-            Es necesario el {typeFile ? 'sarlaft' : 'Habeas Data'}{' '}
+            Es necesario el {!typeFile ? 'sarlaft' : 'Habeas Data'}{' '}
           </label>
           <span>
-            Adjunta el {typeFile ? 'sarlaft' : 'Habeas Data'} diligenciado
+            Adjunta el {!typeFile ? 'sarlaft' : 'Habeas Data'} diligenciado
           </span>
           <input
             type="file"
             className="form-control"
-            name={typeFile ? 'sarlaft' : 'habeasData'}
-            onChange={(e) => changeTextFile(e, typeFile)}
+            name={!typeFile ? 'sarlaft' : 'habeasData'}
+            onChange={(e) => changeTextFile(e, !typeFile)}
             accept={Helpers.fileFormats.join(', ') + ', .docx, .doc'}
           />
           {showDefaultTextFile ? (
