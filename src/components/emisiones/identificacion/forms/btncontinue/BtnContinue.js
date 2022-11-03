@@ -73,6 +73,7 @@ class BtnContinue extends PureComponent {
     persons = newPersons;
     const { personalAccidents, exequiasParticipation } = fieldsNames;
     const sarlaftDocument = 'sarlaft_document_url';
+    const habeasDataDocument = 'habeas_data_document_url';
     for (let i in persons) {
       let location = persons['ciudad'];
       const person = persons[i];
@@ -94,6 +95,7 @@ class BtnContinue extends PureComponent {
         address_type: person['adresstype'],
         address: person['address'],
         sarlaftDocumentUrl: person['sarlaft_document_url'],
+        habeasDataDocumentUrl: person['habeas_data_document_url'],
         role: person['role'],
         businessname: person['businessname'],
         fechadecontitucion: person['fechadecontitucion'],
@@ -104,20 +106,33 @@ class BtnContinue extends PureComponent {
         [personalAccidents]: person[personalAccidents],
         [exequiasParticipation]: person[exequiasParticipation],
       };
+      // sarlaft file
       if (typeof person['sarlaft'] !== 'undefined')
         dataUser[sarlaftDocument] = person['sarlaft'];
       if (typeof person[sarlaftDocument] !== 'undefined')
         dataUser[sarlaftDocument] = person[sarlaftDocument];
       if (typeof person['sarlfalt_url'] !== 'undefined')
         dataUser[sarlaftDocument] = person['sarlfalt_url'];
+      // sarlaft file
+      // habeas data file
+      if (typeof person['habeas_data'] !== 'undefined')
+        dataUser[habeasDataDocument] = person['habeas_data'];
+      if (typeof person[habeasDataDocument] !== 'undefined')
+        dataUser[habeasDataDocument] = person[habeasDataDocument];
+      if (typeof person['habeas_data_url'] !== 'undefined')
+        dataUser[habeasDataDocument] = person['habeas_data_url'];
+      // habeas data file
       for (let j in dataUser)
         if (dataUser[j] === '""' || dataUser[j] === '') dataUser[j] = ' ';
       if (dataUser.role.indexOf(5) > -1 || dataUser.role.indexOf(6) > -1) {
         additional.push(dataUser);
       }
       for (let j in person['role']) {
+        const isHabeasData =
+          dataUser[habeasDataDocument] !== undefined ? true : false;
+        dataUser[isHabeasData ? 'code_habeas_data' : 'code_sarlaft'] =
+          isHabeasData ? 20 : 120;
         if (person['role'][j] === 1) {
-          dataUser['code_sarlaft'] = 120;
           takers = dataUser;
           validatePersons.push(
             this.validateData(
@@ -131,10 +146,8 @@ class BtnContinue extends PureComponent {
             )
           );
         } else if (persons[i]['role'][j] === 2) {
-          dataUser['code_sarlaft'] = 120;
           insured.push(dataUser);
         } else if (persons[i]['role'][j] === 3) {
-          dataUser['code_sarlaft'] = 120;
           benefists.push(dataUser);
         } else if (persons[i]['role'][j] === 4) {
           onerous.push(dataUser);
@@ -179,6 +192,7 @@ class BtnContinue extends PureComponent {
         return;
       }
     }
+
     let quouteId = this.props.match.params.id;
     await QuoteIussed.get({
       id: quouteId,
