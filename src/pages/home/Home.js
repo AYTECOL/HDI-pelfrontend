@@ -22,6 +22,7 @@ const Home = (props) => {
       type: 'DESC',
       key: null,
     },
+    all: false,
     search: null,
   });
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
@@ -55,8 +56,13 @@ const Home = (props) => {
         step: item.step,
         pdf_info: item.pdf_info,
       };
-      if (quote.stateQuote === STATUS_POLICIES.QUOTATION) quotation += 1;
-      if (quote.stateQuote === STATUS_POLICIES.PROCESS_EMIT) issue += 1;
+      if (quote.stateQuote === STATUS_POLICIES.QUOTATION && quote.validity > 0)
+        quotation += 1;
+      if (
+        quote.stateQuote === STATUS_POLICIES.PROCESS_EMIT &&
+        quote.validity > 0
+      )
+        issue += 1;
       if (quote.stateQuote === STATUS_POLICIES.POLICY_EMIT) emitted += +1;
       return quote;
     });
@@ -148,6 +154,15 @@ const Home = (props) => {
     filterQuotes = [
       ...filterQuotes.filter(({ step }) => stepTable.includes(step)),
     ];
+
+    if (all) {
+      return [
+        ...filterQuotes.filter(
+          ({ validity, step }) => step !== 7 && validity > 0
+        ),
+        ...filterQuotes.filter(({ step }) => step === 7),
+      ];
+    }
     return filterQuotes.filter(({ validity }) => validity > 0);
   }, [quotesData, filter, stepTable]);
 
@@ -182,6 +197,13 @@ const Home = (props) => {
             placeholder="Busca por Nombre, Id, dirección ..."
             handleChange={(value) => setFilter({ ...filter, search: value })}
           />
+        </div>
+        <div className="tabs row">
+          <ul>
+            <li onClick={() => setFilter({ ...filter, all: !filter.all })}>
+              Ver todo
+            </li>
+          </ul>
         </div>
         <Table
           quotesData={quoteFilters}
