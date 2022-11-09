@@ -19,6 +19,7 @@ node('linux'){
 			env.REACT_APP_ACCESS_TOKEN = "https://1nau6bhuq2.execute-api.us-east-1.amazonaws.com/prod"
 			env.REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://x6gjtt3ye5.execute-api.us-east-1.amazonaws.com/prod"
 			env.REACT_APP_CREARPOLIZAIAXIS = "https://x6gjtt3ye5.execute-api.us-east-1.amazonaws.com/prod"
+            env.GENERATE_SOURCEMAP=false
          }
     	 sh 'printenv'
 	}    
