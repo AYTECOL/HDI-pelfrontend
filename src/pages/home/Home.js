@@ -153,15 +153,12 @@ const Home = (props) => {
       ...filterQuotes.filter(({ step }) => stepTable.includes(step)),
     ];
 
-    if (all) {
-      return [
-        ...filterQuotes.filter(
-          ({ validity, step }) => step !== 7 && validity > 0
-        ),
-        ...filterQuotes.filter(({ step }) => step === 7),
-      ];
-    }
-    return filterQuotes.filter(({ validity }) => validity > 0);
+    return [
+      ...filterQuotes.filter(
+        ({ validity, step }) => step !== 7 && validity > 0
+      ),
+      ...filterQuotes.filter(({ step }) => step === 7),
+    ];
   }, [quotesData, filter, stepTable]);
 
   return (
@@ -198,9 +195,7 @@ const Home = (props) => {
         </div>
         <div className="tabs row">
           <ul>
-            <li onClick={() => setFilter({ ...filter, all: !filter.all })}>
-              Ver todo
-            </li>
+            <li>Ver todo</li>
           </ul>
         </div>
         <Table
