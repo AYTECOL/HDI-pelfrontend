@@ -741,6 +741,7 @@ export default class Persona extends Component {
     if (
       (isPersonNatural &&
         !habeasDataActive &&
+        !sarlfaltActive &&
         !sarlaft &&
         !String(habeas_data_url || '').trim() &&
         !habeas_data) ||
@@ -854,7 +855,7 @@ export default class Persona extends Component {
     const isRequiredFileHabeasData =
       +this.state.person?.code !== 37 && this.props.exceptionSarlaft;
     const isShowUploadFile =
-      +this.state.person?.code !== 37 ||
+      (+this.state.person?.code !== 37 && !this.state.person?.sarlfaltActive) ||
       (+this.state.person?.code === 37 &&
         !this.props.exceptionSarlaft &&
         !this.state.person?.sarlfaltActive);
