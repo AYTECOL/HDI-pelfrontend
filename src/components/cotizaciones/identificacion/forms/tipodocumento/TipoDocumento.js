@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 
 import store from '../../../../../store';
-import { saveIdentificationValue, updateTypeDoc } from '../../../../../store/actions';
+import {
+  saveIdentificationValue,
+  updateTypeDoc,
+} from '../../../../../store/actions';
 import Identifications from '../../../../../services/Identifications';
 import Loading from '../../../../globals/loading/Loading';
 import Helpers from '../../../../../common/helpers/helpers';
@@ -26,6 +29,10 @@ class TipoDocumento extends Component {
     }
   }
 
+  static getTypeDocuments() {
+    return this.state.options.identifications;
+  }
+
   componentDidMount() {
     this._isMounted = true;
     Loading.toggle(true);
@@ -44,6 +51,7 @@ class TipoDocumento extends Component {
     if (typeof this.props.hideLoader === 'undefined') {
       Loading.toggle(false);
     }
+    this.props.sendIdentifications(this.state.options.identifications);
   }
 
   validateEmpty = (e) => {
@@ -69,9 +77,14 @@ class TipoDocumento extends Component {
     }
   };
 
+  getIdentifications() {
+    return this.state.options.identifications;
+  }
+
   render() {
     const { disabled, value, onChange } = this.props;
     const { error, options } = this.state;
+    const { identifications } = options;
     return (
       <div className={'form-group input-select ' + error}>
         <label htmlFor="doc-type">Tipo de identificación</label>
@@ -83,7 +96,7 @@ class TipoDocumento extends Component {
           value={value}
           onChange={onChange || this.validateEmpty}
         >
-          {options.identifications.map((option) => (
+          {identifications.map((option) => (
             <option
               key={option.code}
               value={option.code}
