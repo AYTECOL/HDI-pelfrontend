@@ -44,11 +44,13 @@ export default class Persona extends Component {
       exitsTomador: false,
       typePerson: this.props.typePerson,
       nit: false,
+      identifications: [],
       personExists: false,
       userRestricted: false,
       ok: 0,
       total: 9,
       errorFile: null,
+      countFiles: 1,
       person: {},
       fields: [
         'role',
@@ -394,10 +396,11 @@ export default class Persona extends Component {
     if (typeof personObject.person !== 'undefined')
       personObject.object = personObject.person;
     if (typeof personObject.object !== 'undefined' && this.props.item !== -1)
-      this.validateDoc({ person: personObject.person }, () => {
+      this.validateDoc({ person: personObject.person }, async () => {
         let person = this.state.person;
         person.codeDisabled = true;
         person.valueDisabled = true;
+
         this.setState(
           {
             ...this.state,
@@ -478,7 +481,15 @@ export default class Persona extends Component {
     } else if (file.size >= maxFileSize) {
       errorFile = UploadFile.messageLimit;
     } else {
-      name = file.name;
+      const keyFile = this.props.exceptionSarlaft ? 'HABEASDATA' : 'SARLAFT';
+
+      const { abbreviation } = this.state.identifications.find(
+        (type) => type.code === +person.code
+      );
+      const fileName = `${keyFile}-${abbreviation}-${person.value}-${
+        this.state.countFiles
+      }.${file.name.split('.').pop()}`;
+      name = fileName;
       status = false;
       if (showSarlaft) {
         person.sarlaft = file;
@@ -495,6 +506,7 @@ export default class Persona extends Component {
         errorFile,
         showDefaultTextFile: status,
         person: person,
+        countFiles: this.state.countFiles + 1,
       },
       () => {
         this.validateAll();
@@ -639,7 +651,11 @@ export default class Persona extends Component {
       Loading.toggle(true);
       const fileValue = person?.sarlaft || person?.habeas_data;
       const prefix = person?.sarlaft ? 'Sarlaft' : 'Habeas_Data';
-      const file = await UploadFile.upload(prefix, fileValue).catch((e) => {
+      const file = await UploadFile.upload(
+        prefix,
+        fileValue,
+        this.state.textFile || null
+      ).catch((e) => {
         console.log(e);
       });
       Loading.toggle(false);
@@ -922,6 +938,9 @@ export default class Persona extends Component {
                           <TypeDocuments
                             disabled={
                               this.state.person.codeDisabled || typePerson === 4
+                            }
+                            sendIdentifications={(identifications) =>
+                              this.setState({ ...this.state, identifications })
                             }
                             hideLoader={this.state.hideLoader}
                             value={this.state.person.code}
