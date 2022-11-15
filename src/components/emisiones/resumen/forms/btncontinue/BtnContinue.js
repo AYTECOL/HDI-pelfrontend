@@ -1,22 +1,22 @@
 import React, { Component, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
-import { UrlSite } from '../../../../../config';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
-import PolicyService from '../../../../../services/Policy';
-import Loading from '../../../../globals/loading/Loading';
-import store from '../../../../../store';
+import { UrlSite } from 'config';
+import Helpers from 'common/helpers/helpers/Helpers';
+import PolicyService from 'services/Policy';
+import Loading from 'components/globals/loading/Loading';
+import store from 'store';
 import {
   NextStep,
   saveIdentificationValue,
   saveAttachedFile,
-} from '../../../../../actions';
-import SaveIdentifications from '../../../../../services/Quote';
-import Crearpolizaiaxis from '../../../../../services/Crearpolizaiaxis';
-import QuoteIussedById from '../../../../../services/QuoteIussedById';
-import IssuedCounter from '../../../../../services/IssuedCounter';
-import AttachPolicyDocuments from '../../../../../services/AttachPolicyDocuments';
-import Identifications from '../../../../../services/GetQuote';
+} from 'store/actions';
+import SaveIdentifications from 'services/Quote';
+import Crearpolizaiaxis from 'services/Crearpolizaiaxis';
+import QuoteIussedById from 'services/QuoteIussedById';
+import IssuedCounter from 'services/IssuedCounter';
+import AttachPolicyDocuments from 'services/AttachPolicyDocuments';
+import Identifications from 'services/GetQuote';
 
 class BtnContinue extends Component {
   constructor(props) {

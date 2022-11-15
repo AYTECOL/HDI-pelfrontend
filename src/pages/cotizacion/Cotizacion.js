@@ -8,7 +8,7 @@ import CotizacionForm from '../../components/cotizaciones/cotizacion/index/Index
 import Validaridentificacion from '../../components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
 import Helpers from '../../common/helpers/helpers/Helpers';
 import store from '../../store';
-import { saveCotizacionNumber } from '../../actions';
+import { saveCotizacionNumber } from '../../store/actions';
 
 class Cotizacion extends Component {
   render() {

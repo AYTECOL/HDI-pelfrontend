@@ -6,7 +6,7 @@ import Helpers from '../../../../../common/helpers/helpers/Helpers';
 //Services
 import QuoteIussed from '../../../../../services/QuoteIussed';
 import store from '../../../../../store';
-import { NextStep } from '../../../../../actions';
+import { NextStep } from '../../../../../store/actions';
 import SaveIdentifications from '../../../../../services/Quote';
 import Loading from '../../../../globals/loading/Loading';
 import Persona from '../../popups/persona/Persona';

@@ -4,7 +4,7 @@ import './Asistencias.scss';
 import Plans from '../plans/Plans';
 import Helpers from '../../../../common/helpers/helpers/Helpers';
 import { connect } from 'react-redux';
-import { AllPlans } from '../../../../actions';
+import { AllPlans } from '../../../../store/actions';
 
 class Asistencias extends Component {
   constructor(props) {

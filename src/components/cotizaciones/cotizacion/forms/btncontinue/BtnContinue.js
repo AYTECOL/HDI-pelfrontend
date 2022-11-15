@@ -11,7 +11,7 @@ import store from '../../../../../store';
 import CreateOrUpdateValoration from '../../../../../services/CreateOrUpdateValoration';
 import Loading from '../../../../globals/loading/Loading';
 import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
-import { NextStep, resetStore, saveProspect } from '../../../../../actions';
+import { NextStep, resetStore, saveProspect } from '../../../../../store/actions';
 import SaveIdentifications from '../../../../../services/Quote';
 import Links from '../links/Links';
 import './btncontinue.scss';

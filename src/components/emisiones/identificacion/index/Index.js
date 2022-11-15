@@ -9,7 +9,8 @@ import Card from '../card/Card';
 
 import './Index.scss';
 import { withRouter } from 'react-router-dom';
-import store from '../../../../store';
+import store from 'store';
+import { setExceptionSarlaft } from 'store/actions';
 import Validaridentificacion from '../../../cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
 import QuoteIussedById from '../../../../services/QuoteIussedById';
 import Loading from '../../../globals/loading/Loading';
