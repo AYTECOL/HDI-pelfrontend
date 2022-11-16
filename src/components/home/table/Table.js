@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Table.scss';
 import store from '../../../store';
-import { restoreCotizacion } from '../../../actions';
+import { restoreCotizacion } from '../../../store/actions';
 import PdfPolizaHogar from '../../../services/PdfPolizaHogar';
 import GetQuote from '../../../services/GetQuote';
 import Identifications from '../../../services/Identifications';
@@ -107,7 +107,6 @@ const Table = (props) => {
   };
   const onClickOrdeArray = (typeFilter) => {
     const { handleChange } = props;
-
     handleChange(typeFilter);
   };
   return (
@@ -150,65 +149,62 @@ const Table = (props) => {
           );
           return (
             <div>
-              {item.validity > 0 && (
-                <div className="row body" key={item.quoteId}>
-                  <div className="col">
-                    <p>{item.quoteId}</p>
-                  </div>
-                  <div className="col">
-                    <p>
-                      {item.create_at} <span>{item.hour_at}</span>
-                    </p>
-                  </div>
-                  <div className="col">
-                    <p>{item.name}</p>
-                  </div>
-                  <div className="col">
-                    <p>
-                      {item.document_number}
-                      <span>
-                        {(identificationType &&
-                          identificationType.description) ||
-                          'Cédula de ciudadanía'}
-                      </span>
-                    </p>
-                  </div>
-                  <div className="col">
-                    <p>
-                      <p>
-                        {item.address ||
-                          (item.pdf_info && item.pdf_info.addressHome)}
-                      </p>
-                    </p>
-                  </div>
-                  <div className="col">
-                    <p>{item.validity} días</p>
-                  </div>
-                  <div className="col">
-                    <p>{item.stateQuote}</p>
-                  </div>
-                  <div className="col">
-                    {item.step !== 7 && (
-                      <button
-                        onClick={getRowById(item.quoteId)}
-                        className="btn btn-default"
-                      >
-                        {' '}
-                        Retomar
-                      </button>
-                    )}
-                    {item.step === 7 && (
-                      <button
-                        onClick={getPdf(item.quoteId)}
-                        className="btn btn-default"
-                      >
-                        {' '}
-                        Descargar PDF
-                      </button>
-                    )}
-                  </div>
+              <div className="row body" key={item.quoteId}>
+                <div className="col">
+                  <p>{item.quoteId}</p>
                 </div>
-              )}
+                <div className="col">
+                  <p>
+                    {item.create_at} <span>{item.hour_at}</span>
+                  </p>
+                </div>
+                <div className="col">
+                  <p>{item.name}</p>
+                </div>
+                <div className="col">
+                  <p>
+                    {item.document_number}
+                    <span>
+                      {(identificationType && identificationType.description) ||
+                        'Cédula de ciudadanía'}
+                    </span>
+                  </p>
+                </div>
+                <div className="col">
+                  <p>
+                    <p>
+                      {item.address ||
+                        (item.pdf_info && item.pdf_info.addressHome)}
+                    </p>
+                  </p>
+                </div>
+                <div className="col">
+                  <p>{item.validity} días</p>
+                </div>
+                <div className="col">
+                  <p>{item.stateQuote}</p>
+                </div>
+                <div className="col">
+                  {item.step !== 7 && item.validity > 0 && (
+                    <button
+                      onClick={getRowById(item.quoteId)}
+                      className="btn btn-default"
+                    >
+                      {' '}
+                      Retomar
+                    </button>
+                  )}
+                  {item.step === 7 && (
+                    <button
+                      onClick={getPdf(item.quoteId)}
+                      className="btn btn-default"
+                    >
+                      {' '}
+                      Descargar PDF
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           );
         })}

@@ -7,7 +7,7 @@ import store from '../../../../store';
 import {
   AllPlans as AllPlansCreator,
   indexPlanSelected,
-} from '../../../../actions';
+} from '../../../../store/actions';
 //Components
 import Coberturas from '../coberturas/Coberturas';
 import Asistencias from '../asistencias/Asistencias';

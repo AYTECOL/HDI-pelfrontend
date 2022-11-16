@@ -7,7 +7,7 @@ import PdfEndosoHogar from '../../services/PdfEndosoHogar';
 import PdfPolizaHogar from '../../services/PdfPolizaHogar';
 import Counter from '../../services/Counter';
 import store from '../../store';
-import { resetStore } from '../../actions';
+import { resetStore } from '../../store/actions';
 import Helpers from '../../common/helpers/helpers/Helpers';
 
 class PolizaEmitida extends Component {

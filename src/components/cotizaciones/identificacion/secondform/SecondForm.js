@@ -11,7 +11,7 @@ import Map from '../map/Map.js';
 import {
   saveDescriptionCity,
   saveIdentificationValue,
-} from '../../../../actions';
+} from '../../../../store/actions';
 
 class SecondForm extends Component {
   constructor(props) {

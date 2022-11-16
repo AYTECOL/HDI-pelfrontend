@@ -1,7 +1,7 @@
 import Api from './Api';
 import Store from '../store';
 import AuthHeader from './AuthHeader';
-import { saveAllInsurableLimits } from '../actions';
+import { saveAllInsurableLimits } from '../store/actions';
 import Helpers from '../common/helpers/helpers/Helpers';
 import { typeItems } from '../common/typeItems';
 

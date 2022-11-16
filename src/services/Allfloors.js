@@ -1,7 +1,7 @@
 import Api from './Api';
 import Store from '../store';
 import AuthHeader from './AuthHeader';
-import { saveAllfloors } from '../actions';
+import { saveAllfloors } from '../store/actions';
 import Helpers from '../common/helpers/helpers/Helpers';
 
 const BaseUrl = '/all-floors';

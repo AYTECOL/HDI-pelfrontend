@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 
 import store from '../../../../../store';
-import { saveInmuebleValue } from '../../../../../actions';
+import { saveInmuebleValue } from '../../../../../store/actions';
 
 import { connect } from 'react-redux';
 import questions from './questions';

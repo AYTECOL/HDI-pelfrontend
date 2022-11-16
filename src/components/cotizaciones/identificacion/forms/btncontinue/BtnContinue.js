@@ -7,7 +7,7 @@ import {
   nextStepIndentification,
   resetStore,
   saveIdentificationValue,
-} from '../../../../../actions';
+} from '../../../../../store/actions';
 import Loading from '../../../../../components/globals/loading/Loading';
 import SaveIdentifications from '../../../../../services/Quote';
 // Components

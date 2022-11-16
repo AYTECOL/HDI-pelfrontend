@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import store from '../../../../../store';
-import { saveInmuebleValue } from '../../../../../actions';
+import { saveInmuebleValue } from '../../../../../store/actions';
 import Helpers from '../../../../../common/helpers/helpers/Helpers';
 
 class Conjuntocerrado extends Component {

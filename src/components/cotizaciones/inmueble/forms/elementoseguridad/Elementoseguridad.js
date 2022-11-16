@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import store from '../../../../../store';
-import { saveInmuebleValueSeguridad } from '../../../../../actions';
+import { saveInmuebleValueSeguridad } from '../../../../../store/actions';
 
 import './Elementoseguridad.scss';
 import AllSecurity from '../../../../../services/AllSecurity';
