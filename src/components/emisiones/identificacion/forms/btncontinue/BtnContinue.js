@@ -107,20 +107,19 @@ class BtnContinue extends PureComponent {
         [exequiasParticipation]: person[exequiasParticipation],
       };
       // sarlaft file
-      if (typeof person['sarlaft'] !== 'undefined')
-        dataUser[sarlaftDocument] = person['sarlaft'];
-      if (typeof person[sarlaftDocument] !== 'undefined')
-        dataUser[sarlaftDocument] = person[sarlaftDocument];
-      if (typeof person['sarlfalt_url'] !== 'undefined')
-        dataUser[sarlaftDocument] = person['sarlfalt_url'];
+      dataUser[sarlaftDocument] =
+        person?.['sarlaft'] ||
+        person?.[sarlaftDocument] ||
+        person?.['sarlfalt_url'] ||
+        null;
       // sarlaft file
       // habeas data file
-      if (typeof person['habeas_data'] !== 'undefined')
-        dataUser[habeasDataDocument] = person['habeas_data'];
-      if (typeof person[habeasDataDocument] !== 'undefined')
-        dataUser[habeasDataDocument] = person[habeasDataDocument];
-      if (typeof person['habeas_data_url'] !== 'undefined')
-        dataUser[habeasDataDocument] = person['habeas_data_url'];
+
+      dataUser[habeasDataDocument] =
+        person?.['habeas_data'] ||
+        person?.[habeasDataDocument] ||
+        person?.['habeas_data_url'] ||
+        null;
       // habeas data file
       for (let j in dataUser)
         if (dataUser[j] === '""' || dataUser[j] === '') dataUser[j] = ' ';

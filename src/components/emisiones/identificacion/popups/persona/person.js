@@ -700,6 +700,7 @@ export default class Persona extends Component {
     } = person;
 
     const isPersonNatural = +code !== 37;
+    const isTaker = role.some((rol) => +rol === 1);
     const address = String(person.address);
     const tipodetelefono = String(person.tipodetelefono);
     const telefono = String(person.telefono);
@@ -733,6 +734,7 @@ export default class Persona extends Component {
     if (
       (!this.props.exceptionSarlaft &&
         isPersonNatural &&
+        isTaker &&
         !sarlfaltActive &&
         !habeas_data &&
         !String(sarlfalt_url || '').trim() &&
@@ -745,6 +747,7 @@ export default class Persona extends Component {
     if (
       (!this.props.exceptionSarlaft &&
         !isPersonNatural &&
+        isTaker &&
         !sarlfaltActive &&
         !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
@@ -758,6 +761,7 @@ export default class Persona extends Component {
       (isPersonNatural &&
         !habeasDataActive &&
         !sarlfaltActive &&
+        this.props.exceptionSarlaft &&
         !sarlaft &&
         !String(habeas_data_url || '').trim() &&
         !habeas_data) ||
@@ -868,13 +872,12 @@ export default class Persona extends Component {
     const participationPercentages =
       this.isActived(fieldsNames.personalAccidents) ||
       this.isActived(fieldsNames.exequiasParticipation);
+    const isTaker = this.state.person?.role.some((rol) => +rol === 1);
     const isRequiredFileHabeasData =
       +this.state.person?.code !== 37 && this.props.exceptionSarlaft;
-    const isShowUploadFile =
-      (+this.state.person?.code !== 37 && !this.state.person?.sarlfaltActive) ||
-      (+this.state.person?.code === 37 &&
-        !this.props.exceptionSarlaft &&
-        !this.state.person?.sarlfaltActive);
+    const isShowUploadFile = isRequiredFileHabeasData
+      ? +this.state.person?.code !== 37 && !this.state.person?.sarlfaltActive
+      : !this.state.person?.sarlfaltActive && isTaker;
     return (
       <React.Fragment>
         <CitiesProvider>
