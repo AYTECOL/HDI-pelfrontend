@@ -761,7 +761,6 @@ export default class Persona extends Component {
       (isPersonNatural &&
         !habeasDataActive &&
         !sarlfaltActive &&
-        this.props.exceptionSarlaft &&
         !sarlaft &&
         !String(habeas_data_url || '').trim() &&
         !habeas_data) ||
@@ -864,20 +863,21 @@ export default class Persona extends Component {
     }
   };
   render() {
-    const { persons, item } = this.props;
-    const { typePerson } = this.state;
+    const { persons, item, exceptionSarlaft } = this.props;
+    const { typePerson, person } = this.state;
     const errors = this.getErrors();
     const hasErrorAddClass = (field) =>
       errors.find((error) => field === error) && 'error ';
     const participationPercentages =
       this.isActived(fieldsNames.personalAccidents) ||
       this.isActived(fieldsNames.exequiasParticipation);
-    const isTaker = this.state.person?.role.some((rol) => +rol === 1);
-    const isRequiredFileHabeasData =
-      +this.state.person?.code !== 37 && this.props.exceptionSarlaft;
+    const isTaker = person?.role.some((rol) => +rol === 1);
+    let isRequiredFileHabeasData = true;
+    if (isTaker && !exceptionSarlaft) isRequiredFileHabeasData = false;
+
     const isShowUploadFile = isRequiredFileHabeasData
-      ? +this.state.person?.code !== 37 && !this.state.person?.sarlfaltActive
-      : !this.state.person?.sarlfaltActive && isTaker;
+      ? +person?.code !== 37 && !person?.sarlfaltActive
+      : !person?.sarlfaltActive;
     return (
       <React.Fragment>
         <CitiesProvider>
