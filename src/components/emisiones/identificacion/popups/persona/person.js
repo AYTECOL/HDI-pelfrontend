@@ -481,7 +481,9 @@ export default class Persona extends Component {
     } else if (file.size >= maxFileSize) {
       errorFile = UploadFile.messageLimit;
     } else {
-      const keyFile = this.props.exceptionSarlaft ? 'HABEASDATA' : 'SARLAFT';
+      const isTaker = person?.role.some((rol) => +rol === 1);
+      const keyFile =
+        !this.props.exceptionSarlaft && isTaker ? 'SARLAFT' : 'HABEASDATA';
 
       const { abbreviation } = this.state.identifications.find(
         (type) => type.code === +person.code
