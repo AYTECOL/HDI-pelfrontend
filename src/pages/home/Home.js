@@ -22,7 +22,6 @@ const Home = (props) => {
       type: 'DESC',
       key: null,
     },
-    all: false,
     search: null,
   });
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
@@ -55,6 +54,13 @@ const Home = (props) => {
         stateQuote: getStateQuotes(item.step),
         step: item.step,
         pdf_info: item.pdf_info,
+        emissionId: item.policy?.emissionId || null,
+        emitedDate: item.policy?.emitedDate
+          ? MomentJs(item.policy.emitedDate).format('L')
+          : null,
+        hourEmitedDate: item.policy?.emitedDate
+          ? MomentJs(item.policy?.emitedDate).format('LT')
+          : null,
       };
       if (quote.stateQuote === STATUS_POLICIES.QUOTATION && quote.validity > 0)
         quotation += 1;
@@ -110,7 +116,7 @@ const Home = (props) => {
   }, []);
 
   const quoteFilters = useMemo(() => {
-    const { orderBy, search, all } = filter;
+    const { orderBy, search } = filter;
     let filterQuotes = quotesData;
     if (orderBy.type === 'ASC') {
       const filterType = orderBy?.key === 'date' ? 'create_data' : 'quoteId';
@@ -153,7 +159,6 @@ const Home = (props) => {
     filterQuotes = [
       ...filterQuotes.filter(({ step }) => stepTable.includes(step)),
     ];
-
     return [
       ...filterQuotes.filter(
         ({ validity, step }) => step !== 7 && validity > 0
@@ -179,13 +184,32 @@ const Home = (props) => {
         </div>
         <div className="top-bar">
           <ul className="menus">
-            <li onClick={() => setStepTable(STEP_QUOTATION)}>
+            <li
+              onClick={() => setStepTable(STEP_QUOTATION)}
+              className={
+                stepTable.includes(STEP_QUOTATION[0])
+                  ? 'active_item_dashboard'
+                  : ''
+              }
+            >
               <p>Cotizaciones</p> <span>{statesQuotes.quotation}</span>
             </li>
-            <li onClick={() => setStepTable(STEP_ISSUE)}>
+            <li
+              onClick={() => setStepTable(STEP_ISSUE)}
+              className={
+                stepTable.includes(STEP_ISSUE[0]) ? 'active_item_dashboard' : ''
+              }
+            >
               <p>Proceso de emisión</p> <span>{statesQuotes.issue}</span>
             </li>
-            <li onClick={() => setStepTable(STEP_EMITTED)}>
+            <li
+              onClick={() => setStepTable(STEP_EMITTED)}
+              className={
+                stepTable.includes(STEP_EMITTED[0])
+                  ? 'active_item_dashboard'
+                  : ''
+              }
+            >
               <p>Pólizas emitidas</p> <span>{statesQuotes.emitted}</span>
             </li>
           </ul>
@@ -193,11 +217,6 @@ const Home = (props) => {
             placeholder="Busca por Nombre, Id, dirección ..."
             handleChange={(value) => setFilter({ ...filter, search: value })}
           />
-        </div>
-        <div className="tabs row">
-          <ul>
-            <li>Ver todo</li>
-          </ul>
         </div>
         <Table
           quotesData={quoteFilters}

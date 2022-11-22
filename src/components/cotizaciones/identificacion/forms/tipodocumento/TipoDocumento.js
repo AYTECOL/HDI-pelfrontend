@@ -51,7 +51,8 @@ class TipoDocumento extends Component {
     if (typeof this.props.hideLoader === 'undefined') {
       Loading.toggle(false);
     }
-    this.props.sendIdentifications(this.state.options.identifications);
+    if (this.props?.sendIdentifications)
+      this.props.sendIdentifications(this.state.options.identifications);
   }
 
   validateEmpty = (e) => {
