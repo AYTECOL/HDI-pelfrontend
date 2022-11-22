@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import store from '../../../../../store';
 import { saveIdentificationValue } from '../../../../../store/actions';
 import Helpers from '../../../../../common/helpers/helpers';
-
 class Razonsocial extends Component {
   constructor(props) {
     super(props);

@@ -67,7 +67,6 @@ const Home = (props) => {
       return quote;
     });
     setStatesQuotes({ ...statesQuotes, quotation, issue, emitted });
-
     return dataFormat;
   };
 
