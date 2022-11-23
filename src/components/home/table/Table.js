@@ -11,6 +11,9 @@ import Pagination from '../../../common/helpers/Pagination/Pagination';
 import Loading from '../../../components/globals/loading/Loading';
 import QuoteIussedById from '../../../services/QuoteIussedById';
 import PdfEndosoHogar from '../../../services/PdfEndosoHogar';
+import Quotes from 'services/GetQuote';
+import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
+import Helpers from 'common/helpers/helpers';
 
 /**
  *  @typedef {{ type_person: string, description: string, code: number }} IdentificationType
@@ -18,6 +21,8 @@ import PdfEndosoHogar from '../../../services/PdfEndosoHogar';
 const Table = (props) => {
   const [quotesItems, setQuotesItems] = useState([]);
   const [pageOfItems, setPageOfItems] = useState([]);
+  const [loadingPlans, setLoadingPlans] = useState(false);
+  const [plans, setPlans] = useState(new Map());
   /**
    * @type {[IdentificationType[], React.Dispatch<React.SetStateAction<IdentificationType[]>>]}
    */
@@ -109,18 +114,31 @@ const Table = (props) => {
     const { handleChange } = props;
     handleChange(typeFilter);
   };
+  useEffect(() => {
+    async function getPlanSelected() {
+      setLoadingPlans(true);
+      const ids = pageOfItems.map(({ quoteId }) => quoteId);
+      const { plans: newPlans } = await Quotes.getPlanSelected(ids);
+      setPlans(new Map(newPlans.map((plan) => [plan.id, plan])));
+    }
+    if (pageOfItems.length)
+      getPlanSelected().finally(() => setLoadingPlans(false));
+  }, [pageOfItems]);
+
+  const isEmitted = pageOfItems.some((item) => item.step === 7);
   return (
     <div className="table-solicitudes">
       <div className="wrapper">
         <div className="row row-header">
           <div className="col">
             <span onClick={(event) => onClickOrdeArray('quoteId')}>
-              N. de solicitud<i className="tagTable">&#8597;</i>
+              {isEmitted ? 'No. de póliza' : 'N. de solicitud'}{' '}
+              <i className="tagTable">&#8597;</i>
             </span>
           </div>
           <div className="col">
             <span onClick={(event) => onClickOrdeArray('date')}>
-              Fecha
+              {isEmitted ? 'Fecha de emisión' : 'Fecha'}{' '}
               <i className="tagTable">&#8597;</i>
             </span>
           </div>
@@ -134,58 +152,87 @@ const Table = (props) => {
             <span>Dirección</span>
           </div>
           <div className="col">
-            <span>Validez</span>
+            <span>{isEmitted ? 'Fecha de inicio de vigencia' : 'Validez'}</span>
           </div>
           <div className="col">
-            <span>Estado</span>
+            <span>Prima total</span>
           </div>
           <div className="col">
             <span>Acción</span>
           </div>
         </div>
         {pageOfItems.map((item) => {
+          const {
+            quoteId,
+            create_at,
+            hour_at,
+            name,
+            document_number,
+            document_type,
+            address,
+            pdf_info,
+            validity,
+            step,
+            emissionId,
+            emitedDate,
+            hourEmitedDate,
+          } = item;
           const identificationType = (identificationTypes || []).find(
-            ({ code }) => String(item.document_type) === String(code)
+            ({ code }) => String(document_type) === String(code)
           );
+          const plan = plans.get(quoteId);
           return (
             <div>
-              <div className="row body" key={item.quoteId}>
+              <div className="row body" key={quoteId}>
                 <div className="col">
-                  <p>{item.quoteId}</p>
+                  <p>{isEmitted ? emissionId : quoteId}</p>
                 </div>
                 <div className="col">
                   <p>
-                    {item.create_at} <span>{item.hour_at}</span>
+                    {isEmitted ? emitedDate : create_at}
+                    <span>{isEmitted ? hourEmitedDate : hour_at}</span>
                   </p>
                 </div>
                 <div className="col">
-                  <p>{item.name}</p>
+                  <p>{name}</p>
                 </div>
                 <div className="col">
                   <p>
-                    {item.document_number}
+                    {document_number}
                     <span>
                       {(identificationType && identificationType.description) ||
                         'Cédula de ciudadanía'}
                     </span>
                   </p>
                 </div>
-                <div className="col">
+                <div className="col col-address">
                   <p>
-                    <p>
-                      {item.address ||
-                        (item.pdf_info && item.pdf_info.addressHome)}
-                    </p>
+                    {address?.toLowerCase() || ''}
+                    <br />
+                    {Helpers.capitalize(pdf_info?.department)}-
+                    {Helpers.capitalize(pdf_info?.city)}
                   </p>
                 </div>
                 <div className="col">
-                  <p>{item.validity} días</p>
+                  <p>{validity} días</p>
+                </div>
+                <div className="col col-address">
+                  {loadingPlans ? (
+                    <div className="d-block text-center mt-1">
+                      <div className="spinner-border tab-loading" role="status">
+                        <span className="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <p>
+                      {Masknumbermoney.formatToMask(plan?.prospect || 0)}
+                      <br />
+                      <span>Plan {Helpers.capitalize(plan?.name || '')}</span>
+                    </p>
+                  )}
                 </div>
                 <div className="col">
-                  <p>{item.stateQuote}</p>
-                </div>
-                <div className="col">
-                  {item.step !== 7 && item.validity > 0 && (
+                  {step !== 7 && validity > 0 && (
                     <button
                       onClick={getRowById(item.quoteId)}
                       className="btn btn-default"
@@ -194,7 +241,7 @@ const Table = (props) => {
                       Retomar
                     </button>
                   )}
-                  {item.step === 7 && (
+                  {step === 7 && (
                     <button
                       onClick={getPdf(item.quoteId)}
                       className="btn btn-default"
