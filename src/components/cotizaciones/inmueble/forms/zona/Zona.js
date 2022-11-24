@@ -4,7 +4,7 @@ import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../store/actions';
 import './Zona.scss';
 import AllPropertiesZones from '../../../../../services/AllPropertiesZones';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 import { connect } from 'react-redux';
 
 class Zona extends Component {

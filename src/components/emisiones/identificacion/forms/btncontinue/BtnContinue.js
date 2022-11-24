@@ -2,14 +2,14 @@ import React, { PureComponent, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 import { UrlSite, UrlPerson } from '../../../../../config';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 //Services
 import QuoteIussed from '../../../../../services/QuoteIussed';
 import store from '../../../../../store';
 import { NextStep } from '../../../../../store/actions';
 import SaveIdentifications from '../../../../../services/Quote';
 import Loading from '../../../../globals/loading/Loading';
-import Persona from '../../popups/persona/Persona';
+import Persona from '../../popups/persona/person';
 import { fieldsNames } from '../../popups/persona/constants';
 import Service from '../../../../../services/Api';
 import ValidatePersonIdentity from '../../../../../components/ValidatePersonIdentity';
@@ -73,6 +73,7 @@ class BtnContinue extends PureComponent {
     persons = newPersons;
     const { personalAccidents, exequiasParticipation } = fieldsNames;
     const sarlaftDocument = 'sarlaft_document_url';
+    const habeasDataDocument = 'habeas_data_document_url';
     for (let i in persons) {
       let location = persons['ciudad'];
       const person = persons[i];
@@ -94,6 +95,7 @@ class BtnContinue extends PureComponent {
         address_type: person['adresstype'],
         address: person['address'],
         sarlaftDocumentUrl: person['sarlaft_document_url'],
+        habeasDataDocumentUrl: person['habeas_data_document_url'],
         role: person['role'],
         businessname: person['businessname'],
         fechadecontitucion: person['fechadecontitucion'],
@@ -104,20 +106,32 @@ class BtnContinue extends PureComponent {
         [personalAccidents]: person[personalAccidents],
         [exequiasParticipation]: person[exequiasParticipation],
       };
-      if (typeof person['sarlaft'] !== 'undefined')
-        dataUser[sarlaftDocument] = person['sarlaft'];
-      if (typeof person[sarlaftDocument] !== 'undefined')
-        dataUser[sarlaftDocument] = person[sarlaftDocument];
-      if (typeof person['sarlfalt_url'] !== 'undefined')
-        dataUser[sarlaftDocument] = person['sarlfalt_url'];
+      // sarlaft file
+      dataUser[sarlaftDocument] =
+        person?.['sarlaft'] ||
+        person?.[sarlaftDocument] ||
+        person?.['sarlfalt_url'] ||
+        null;
+      // sarlaft file
+      // habeas data file
+
+      dataUser[habeasDataDocument] =
+        person?.['habeas_data'] ||
+        person?.[habeasDataDocument] ||
+        person?.['habeas_data_url'] ||
+        null;
+      // habeas data file
       for (let j in dataUser)
         if (dataUser[j] === '""' || dataUser[j] === '') dataUser[j] = ' ';
       if (dataUser.role.indexOf(5) > -1 || dataUser.role.indexOf(6) > -1) {
         additional.push(dataUser);
       }
       for (let j in person['role']) {
+        const isHabeasData =
+          dataUser[habeasDataDocument] !== undefined ? true : false;
+        dataUser[isHabeasData ? 'code_habeas_data' : 'code_sarlaft'] =
+          isHabeasData ? 20 : 120;
         if (person['role'][j] === 1) {
-          dataUser['code_sarlaft'] = 120;
           takers = dataUser;
           validatePersons.push(
             this.validateData(
@@ -131,10 +145,8 @@ class BtnContinue extends PureComponent {
             )
           );
         } else if (persons[i]['role'][j] === 2) {
-          dataUser['code_sarlaft'] = 120;
           insured.push(dataUser);
         } else if (persons[i]['role'][j] === 3) {
-          dataUser['code_sarlaft'] = 120;
           benefists.push(dataUser);
         } else if (persons[i]['role'][j] === 4) {
           onerous.push(dataUser);
@@ -179,6 +191,7 @@ class BtnContinue extends PureComponent {
         return;
       }
     }
+
     let quouteId = this.props.match.params.id;
     await QuoteIussed.get({
       id: quouteId,

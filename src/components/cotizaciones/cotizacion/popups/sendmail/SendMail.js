@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './SendMail.scss';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class SendMail extends Component {
   constructor(props) {

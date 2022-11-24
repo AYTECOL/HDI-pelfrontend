@@ -15,11 +15,11 @@ class UploadFile {
 
   /**
    *
-   * @param {"Sarlaft"| "Docs"} name
+   * @param {"Sarlaft"| "Docs"| "Habeas_Data"} name
    * @param {File} file
    * @return {Promise<{ location: string }>}
    */
-  static async upload(name, file) {
+  static async upload(name, file, customName = null) {
     const headers = await AuthHeader.getHeaders();
     /**
      * @type {{ url: string, key: string }}
@@ -27,7 +27,7 @@ class UploadFile {
     const res = await Axios.post(
       `${UrlService}/signed_url_attach_document`,
       {
-        [name]: file.name,
+        [name]: customName || file.name,
       },
       { headers }
     ).then(({ data }) => data);

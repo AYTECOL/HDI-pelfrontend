@@ -29,7 +29,7 @@ const Home = (props) => {
   const [statesQuotes, setStatesQuotes] = useState({});
 
   /**
-   * @param {import("../../services/GetQuote").PolicyRequest[]} dataArray
+   * @param {import("services/GetQuote").PolicyRequest[]} dataArray
    */
   const formatDataQuotations = (dataArray) => {
     /**
@@ -100,6 +100,7 @@ const Home = (props) => {
 
   useEffect(() => {
     async function getQuotes() {
+      Loading.toggle(true);
       let arrayItems = await Quotes.get();
       const result = formatDataQuotations(arrayItems);
       setQuotesData(result);

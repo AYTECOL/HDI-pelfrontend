@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../store/actions';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 import Allfloors from '../../../../../services/Allfloors';
 
 class Ubicadopiso extends Component {

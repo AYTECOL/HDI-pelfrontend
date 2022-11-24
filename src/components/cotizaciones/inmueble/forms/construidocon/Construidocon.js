@@ -5,7 +5,7 @@ import { saveInmuebleValue } from '../../../../../store/actions';
 
 import './Construidocon.scss';
 import AllBuildMaterial from '../../../../../services/AllBuildMaterial';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 import { connect } from 'react-redux';
 
 class Construidocon extends Component {

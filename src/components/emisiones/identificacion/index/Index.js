@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 //Helpers
-import Helpers from '../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../common/helpers/helpers';
 //Component
 import BtnContinue from '../forms/btncontinue/BtnContinue';
 import PopUpDelete from '../popups/delete/Delete';
-import PopUpPersona from '../popups/persona/Persona';
+import PopUpPersona from '../popups/persona/person';
 import Card from '../card/Card';
-
 import './Index.scss';
 import { withRouter } from 'react-router-dom';
 import store from 'store';
@@ -16,6 +15,11 @@ import QuoteIussedById from '../../../../services/QuoteIussedById';
 import Loading from '../../../globals/loading/Loading';
 import { isValidDirection } from '../../../../common/validations';
 import {
+  LIMITS_EXCEPTIONS_SARLAFT,
+  ROLES_KEY,
+  COD_COVERAGES_INSURED,
+} from '../../../../common/constants';
+import {
   isRoleParticipation,
   getTotalParticipationPercentage,
   isTotalValid,
@@ -24,7 +28,6 @@ import {
 } from '../popups/persona/ParticipationPercentages/utils';
 import { roles } from '../constants';
 import { fieldsNames } from '../popups/persona/constants';
-
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +38,7 @@ class Index extends Component {
       showPopUpEntidad: false,
       cotizacion: {},
       persons: [],
+      exceptionSarlaft: false,
       itemSelected: null,
       typePerson: 1,
       hasAccident: false,
@@ -80,6 +84,7 @@ class Index extends Component {
   async getData() {
     Loading.toggle(true);
     let quote = await QuoteIussedById.get(this.props.match.params.id);
+    this.exceptionSarlaft(quote);
     let persons = [];
     let hasExequias = false;
     let hasAccident = false;
@@ -228,8 +233,6 @@ class Index extends Component {
 
   isDisabled() {
     let persons = this.state.persons;
-    let status = [];
-    let asegurado = false;
     for (const participationValue of participationValues) {
       const haveRole = persons.some((person) =>
         isRoleParticipation(participationValue, person.role)
@@ -246,37 +249,35 @@ class Index extends Component {
         }
       }
     }
-    for (let i = 0; i < persons.length; i++) {
-      const rolesPerson = persons[i].role || [];
+    let countTaker = 0,
+      countInsured = 0,
+      countBeneficiary = 0;
+    for (const person of persons) {
+      const { role, sarlfalt_url, sarlfaltActive } = person;
+      const rolesPerson = role || [];
       if (
         rolesPerson.some((role) =>
           PopUpPersona.fieldActive(fieldsNames.address, role)
         ) &&
-        !isValidDirection(persons[i].address)
+        !isValidDirection(person.address)
       )
         return true;
-      for (let j = 0; j < persons[i].role.length; j++) {
-        if (
-          persons[i].role[j] === 1 ||
-          persons[i].role[j] === 2 ||
-          persons[i].role[j] === 3 ||
-          persons[i].role[j] === 4
-        ) {
-          if (
-            (typeof persons[i].sarlfalt_url !== 'undefined' &&
-              persons[i].sarlfalt_url !== '') ||
-            persons[i].role[j] === 4 ||
-            persons[i].sarlfaltActive
-          ) {
-            status.push(i);
-            if (persons[i].role[j] === 2) {
-              asegurado = true;
-            }
-          }
-        }
-      }
+      const isTaker = person?.role.some((r) => r === ROLES_KEY.IS_TAKER); // IS TAKER
+      const isInsured = person?.role.some((r) => r === ROLES_KEY.IS_INSURED); // IS INSURED
+      const isBeneficiary = person?.role.some(
+        (r) => r === ROLES_KEY.IS_BENEFICIARY
+      ); // IS BENEFICIARY
+      if (
+        isTaker &&
+        !(sarlfaltActive || sarlfalt_url) &&
+        !this.state.exceptionSarlaft
+      )
+        return true;
+      if (isTaker) countTaker += 1;
+      if (isBeneficiary) countBeneficiary += 1;
+      if (isInsured) countInsured += 1;
     }
-    return status.length < 3 || asegurado === false;
+    return !(countTaker >= 1 && countInsured >= 1 && countBeneficiary >= 1);
   }
 
   /**
@@ -333,6 +334,61 @@ class Index extends Component {
       this.showAnyPopup('showPopUpPersona');
     }, 100);
   }
+
+  exceptionSarlaft = async (quote) => {
+    let isException = false;
+    if (
+      quote &&
+      'risk_valoration_info' in quote &&
+      'plan_selected_info' in quote
+    ) {
+      const { Item: itemRisk } = quote.risk_valoration_info;
+      const { coverages } = quote.plan_selected_info?.Item;
+      if (itemRisk) {
+        const { total_premium_policy } = itemRisk;
+        let valueInsured = 0;
+        [
+          'inmueble_asegudado_joyasvalor',
+          'inmueble_asegudado_obrasvalor',
+          'inmueble_asegudado_telefonosvalor',
+          'inmueble_asegudadovalor',
+          'inmueble_mobile_contents_value',
+          'contenido_asegudado_valor',
+        ].forEach((key) => {
+          if (itemRisk[key] && itemRisk[key] > 0) {
+            valueInsured += itemRisk[key];
+          }
+        });
+        const coveragesResult = coverages.filter(
+          ({ code_content, checked }) =>
+            (code_content === COD_COVERAGES_INSURED.ACCIDENTS_PERSON ||
+              code_content === COD_COVERAGES_INSURED.OBSEQUIES) &&
+            checked
+        );
+
+        if (coveragesResult.length) {
+          coveragesResult.forEach(({ values }) => {
+            valueInsured += values[0]?.value || 0;
+          });
+        }
+
+        if (
+          total_premium_policy &&
+          total_premium_policy <= LIMITS_EXCEPTIONS_SARLAFT.LIMIT_PRIMA &&
+          valueInsured <= LIMITS_EXCEPTIONS_SARLAFT.LIMIT_VALUE_INSURED
+        )
+          isException = true;
+      }
+    }
+
+    if (isException) {
+      store.dispatch(setExceptionSarlaft(isException));
+      this.setState({
+        ...this.state,
+        exceptionSarlaft: isException,
+      });
+    }
+  };
 
   render() {
     const {
@@ -424,6 +480,7 @@ class Index extends Component {
         )}
         {showPopUpPersona === true && (
           <PopUpPersona
+            exceptionSarlaft={this.state.exceptionSarlaft}
             toggle={this.togglePopUpPersona}
             persons={persons}
             item={itemSelected}

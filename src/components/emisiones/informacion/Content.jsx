@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
-import Helpers from '../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../common/helpers/helpers';
 import informative from '../../../common/images/informative.svg';
 import { typeItems } from '../../../common/typeItems';
 import { attachmentsItems } from './constants';

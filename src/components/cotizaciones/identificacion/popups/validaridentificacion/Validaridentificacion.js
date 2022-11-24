@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Validaridentificacion.scss';
 import icono from '../../../../../common/images/icon.png';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 
 class Validaridentificacion extends Component {
   static toggle(status) {

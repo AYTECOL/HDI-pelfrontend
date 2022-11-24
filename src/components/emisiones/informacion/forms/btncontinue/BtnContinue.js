@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 import { UrlSite } from '../../../../../config';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 import CreateOrUpdateMoreInfo from '../../../../../services/CreateOrUpdateMoreInfo';
 import UploadFile from '../../../../../services/UploadFile';
 import store from '../../../../../store';

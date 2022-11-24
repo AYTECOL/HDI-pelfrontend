@@ -11,10 +11,10 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import es from 'react-datepicker/node_modules/date-fns/esm/locale/es/index';
 
-import PopUpPersona from '../identificacion/popups/persona/Persona';
+import PopUpPersona from '../identificacion/popups/persona/person';
 import Loading from '../../globals/loading/Loading';
 import QuoteIussedById from '../../../services/QuoteIussedById';
-import Helpers from '../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../common/helpers/helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
 import {

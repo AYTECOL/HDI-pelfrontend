@@ -151,4 +151,5 @@ export {
   resetStore,
   saveAttachedFile as attachedFile,
   setPropertyValidation,
+  setExceptionSarlaft,
 };

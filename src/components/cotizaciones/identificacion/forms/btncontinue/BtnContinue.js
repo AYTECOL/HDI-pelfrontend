@@ -17,7 +17,7 @@ import RazonSocial from '../razonsocial/Razonsocial';
 // Services
 import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
 import { UrlSite } from '../../../../../config';
-import Helpers from '../../../../../common/helpers/helpers/Helpers';
+import Helpers from '../../../../../common/helpers/helpers';
 import NumeroIdentificacion from '../numeroidentificacion/NumeroIdentificacion';
 import TipoDocumento from '../tipodocumento/TipoDocumento';
 import Validaridentificacion from '../../popups/validaridentificacion/Validaridentificacion';

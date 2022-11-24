@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 import { UrlSite } from 'config';
-import Helpers from 'common/helpers/helpers/Helpers';
+import Helpers from 'common/helpers/helpers';
 import PolicyService from 'services/Policy';
 import Loading from 'components/globals/loading/Loading';
 import store from 'store';
@@ -49,6 +49,7 @@ class BtnContinue extends Component {
     const { match, history } = this.props;
     const { params } = match;
     const { id } = params;
+    const exceptionSarlaft = store.getState().exceptionSarlaft;
     Loading.toggle(true);
     try {
       this.setState({
@@ -85,6 +86,19 @@ class BtnContinue extends Component {
           numeroPoliza.currentValue.toString();
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo =
           numeroPoliza.currentValue.toString();
+        if (exceptionSarlaft) {
+          const questionSarlaft = {
+            pregunta: {
+              codigo: '7906',
+            },
+            respuesta: {
+              valor: '7',
+            },
+          };
+          result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+            questionSarlaft
+          );
+        }
 
         let send = await Crearpolizaiaxis.save(result);
         let attachedFile = false;
