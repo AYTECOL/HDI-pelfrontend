@@ -14,6 +14,8 @@ import PdfEndosoHogar from '../../../services/PdfEndosoHogar';
 import Quotes from 'services/GetQuote';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from 'common/helpers/helpers';
+import MomentJs from 'moment';
+import { MONTHS } from 'common/constants';
 
 /**
  *  @typedef {{ type_person: string, description: string, code: number }} IdentificationType
@@ -23,6 +25,7 @@ const Table = (props) => {
   const [pageOfItems, setPageOfItems] = useState([]);
   const [loadingPlans, setLoadingPlans] = useState(false);
   const [plans, setPlans] = useState(new Map());
+  const [moreInfo, setMoreInfo] = useState(new Map());
   /**
    * @type {[IdentificationType[], React.Dispatch<React.SetStateAction<IdentificationType[]>>]}
    */
@@ -114,18 +117,28 @@ const Table = (props) => {
     const { handleChange } = props;
     handleChange(typeFilter);
   };
+  const isEmitted = pageOfItems.some((item) => item.step === 7);
   useEffect(() => {
     async function getPlanSelected() {
       setLoadingPlans(true);
       const ids = pageOfItems.map(({ quoteId }) => quoteId);
       const { plans: newPlans } = await Quotes.getPlanSelected(ids);
       setPlans(new Map(newPlans.map((plan) => [plan.id, plan])));
+      if (isEmitted) {
+        const { moreInfo: newMoreInfo } = await Quotes.getMoreInfoPolicies(ids);
+        setMoreInfo(new Map(newMoreInfo.map((more) => [more.id, more])));
+      }
     }
     if (pageOfItems.length)
       getPlanSelected().finally(() => setLoadingPlans(false));
   }, [pageOfItems]);
 
-  const isEmitted = pageOfItems.some((item) => item.step === 7);
+  const getStartDateValidityPolicy = (date) => {
+    const dateString = date.replace('º', '').split(' ');
+    dateString[1] = (MONTHS.indexOf(dateString[1]) + 1).toString();
+    return new Date(`${dateString[1]} ${dateString[2]} ${dateString[3]}`);
+  };
+
   return (
     <div className="table-solicitudes">
       <div className="wrapper">
@@ -181,6 +194,10 @@ const Table = (props) => {
             ({ code }) => String(document_type) === String(code)
           );
           const plan = plans.get(quoteId);
+          const info = moreInfo.get(quoteId);
+          const validityDate = getStartDateValidityPolicy(
+            info?.start_policy_date || ''
+          );
           return (
             <div>
               <div className="row body" key={quoteId}>
@@ -209,12 +226,29 @@ const Table = (props) => {
                   <p>
                     {address?.toLowerCase() || ''}
                     <br />
-                    {Helpers.capitalize(pdf_info?.department)}-
-                    {Helpers.capitalize(pdf_info?.city)}
+                    <span>
+                      {Helpers.capitalize(pdf_info?.department || '')}-
+                      {Helpers.capitalize(pdf_info?.city || '')}
+                    </span>
                   </p>
                 </div>
                 <div className="col">
-                  <p>{validity} días</p>
+                  {isEmitted ? (
+                    loadingPlans ? (
+                      <div className="d-block text-center mt-1">
+                        <div
+                          className="spinner-border tab-loading"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <p>{MomentJs(validityDate).format('L')}</p>
+                    )
+                  ) : (
+                    <p>{validity} días</p>
+                  )}
                 </div>
                 <div className="col col-address">
                   {loadingPlans ? (
