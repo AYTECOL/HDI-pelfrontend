@@ -25,3 +25,18 @@ export const STATUS_POLICIES = {
 };
 
 export const VALIDITY_QUOTES_DAYS = 30;
+
+export const MONTHS = [
+  'enero',
+  'febrero',
+  'marzo',
+  'abril',
+  'mayo',
+  'junio',
+  'julio',
+  'agosto',
+  'septiembre',
+  'octubre',
+  'noviembre',
+  'diciembre',
+];
