@@ -14,7 +14,7 @@ const UploadFiles = ({
 }) => {
   let fileUrl;
   if (sarlfalt_url) {
-    fileUrl = sarlfalt_url;
+    fileUrl = sarlfalt_url || undefined;
   } else {
     fileUrl = habeas_data_url || undefined;
   }

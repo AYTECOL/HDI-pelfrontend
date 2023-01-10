@@ -28,6 +28,11 @@ class Helpers {
     return false;
   }
 
+  static capitalize = (value) => {
+    if (!value) return '';
+    return `${value.charAt(0)}${value.slice(1).toLowerCase()}`;
+  };
+
   static disabled(selector) {
     let el = document.querySelector(selector);
     let className = 'disabled';

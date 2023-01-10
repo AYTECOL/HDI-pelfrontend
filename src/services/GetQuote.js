@@ -3,6 +3,8 @@ import Helpers from '../common/helpers/helpers';
 import AccessToken from '../services/AccessToken';
 import AuthHeader from './AuthHeader';
 const Url = '/quote-all-quotes/';
+const url_plan_selected = '/quotes-plan-selected';
+const url_more_info_policies = '/quotes-more-info';
 
 class GetQuote {
   static async get() {
@@ -62,6 +64,36 @@ class GetQuote {
     } catch (e) {
       return e;
     }
+  }
+
+  static async getPlanSelected(quoteIds) {
+    // TODO intercept request
+    let authHeader = new AuthHeader();
+    authHeader = authHeader.generateAuthCode();
+    return await Api.post(
+      url_plan_selected,
+      {
+        quotes: quoteIds,
+      },
+      undefined,
+      undefined,
+      authHeader
+    );
+  }
+
+  static async getMoreInfoPolicies(quoteIds) {
+    // TODO intercept request
+    let authHeader = new AuthHeader();
+    authHeader = authHeader.generateAuthCode();
+    return await Api.post(
+      url_more_info_policies,
+      {
+        quotes: quoteIds,
+      },
+      undefined,
+      undefined,
+      authHeader
+    );
   }
 }
 
