@@ -121,6 +121,12 @@ resources:
           Path: "/"
           ManagedPolicyArns:
             - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          PermissionsBoundary: 
+            Fn::Join:
+              - ""
+              - - "arn:aws:iam::"
+                - Ref: AWS::AccountId
+                - ":policy/cloud-services/pb-lm-troux-uid-access"
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
