@@ -1,5 +1,5 @@
 service: poliza-express-hogar
-
+custom: ${file(./env/${opt:stage, 'dev'}.yml)}
 plugins:
   - serverless-plugin-resource-tagging
   - '@silvermine/serverless-plugin-cloudfront-lambda-edge'
@@ -7,27 +7,26 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'dev'}
+  stage: ${self:custom.default_stage}
   region: us-east-1
-  account: { Ref: "AWS::AccountId" }
   tags: ${file(./tags.yml)}
   stackTags: ${file(./tags.yml)}
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-        - s3:PutObject
-        - s3:PutObjectAcl
-        - s3:GetObject
-        - s3:GetObjectAcl
-      Resource:
-        - "arn:aws:s3:::${self:custom.s3Bucket}/*"
-        - "arn:aws:s3:::${self:custom.s3Bucket}"
-
-custom: ${file(./env/${self:provider.stage, 'dev'}.yml)}
+  iam:
+    role:
+      stataments:
+        - Effect: 'Allow'
+          Action:
+            - s3:PutObject
+            - s3:PutObjectAcl
+            - s3:GetObject
+            - s3:GetObjectAcl
+          Resource:
+            - 'arn:aws:s3:::${self:custom.s3Bucket}/*'
+            - 'arn:aws:s3:::${self:custom.s3Bucket}'
 
 package:
   include:
-   - handler.js
+    - handler.js
   exclude:
     - node_modules/**
 
@@ -65,10 +64,13 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+                  {
+                    'Fn::GetAtt':
+                      [WebsiteOriginAccessIdentity, S3CanonicalUserId],
+                  }
               Action:
-                - "s3:GetObject"
-                - "s3:PutObject"
+                - 's3:GetObject'
+                - 's3:PutObject'
               Resource: arn:aws:s3:::${self:custom.s3Bucket}/*
     PdfS3Bucket:
       Type: AWS::S3::Bucket
@@ -95,38 +97,58 @@ resources:
               Effect: Allow
               Principal:
                 CanonicalUser:
-                  {"Fn::GetAtt": [ WebsiteOriginAccessIdentity , S3CanonicalUserId ]}
+                  {
+                    'Fn::GetAtt':
+                      [WebsiteOriginAccessIdentity, S3CanonicalUserId],
+                  }
               Action:
-                - "s3:*"
+                - 's3:*'
               Resource: arn:aws:s3:::${self:custom.s3BucketPDF}/*
+            - Sid: LambdaBackend
+              Effect: Allow
+              Principal: '*'
+              Action:
+                - 's3:*'
+              Resource: 
+                - arn:aws:s3:::${self:custom.s3BucketPDF}
+                - arn:aws:s3:::${self:custom.s3BucketPDF}/*
+              Condition:
+                StringEquals:
+                  aws:PrincipalArn:
+                    Fn::Join:
+                      - ''
+                      - - 'arn:aws:iam::'
+                        - Ref: AWS::AccountId
+                        - ':role/libertyhome-${self:custom.default_stage}-${self:provider.region}-lambdaRole'
+
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
       Properties:
         CloudFrontOriginAccessIdentityConfig:
           Comment: 'CloudFrontOriginAccessIdentity for ${self:service}-${self:provider.stage}'
     LambdaIAMRole:
-        Type: "AWS::IAM::Role"
-        Properties:
-          AssumeRolePolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              - Sid: "AllowLambdaServiceToAssumeRole"
-                Effect: "Allow"
-                Action:
-                  - "sts:AssumeRole"
-                Principal:
-                  Service:
-                    - "lambda.amazonaws.com"
-                    - "edgelambda.amazonaws.com"
-          Path: "/"
-          ManagedPolicyArns:
-            - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-          PermissionsBoundary: 
-            Fn::Join:
-              - ""
-              - - "arn:aws:iam::"
-                - Ref: AWS::AccountId
-                - ":policy/cloud-services/pb-lm-troux-uid-access"
+      Type: 'AWS::IAM::Role'
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Sid: 'AllowLambdaServiceToAssumeRole'
+              Effect: 'Allow'
+              Action:
+                - 'sts:AssumeRole'
+              Principal:
+                Service:
+                  - 'lambda.amazonaws.com'
+                  - 'edgelambda.amazonaws.com'
+        Path: '/'
+        ManagedPolicyArns:
+          - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        PermissionsBoundary:
+          Fn::Join:
+            - ''
+            - - 'arn:aws:iam::'
+              - Ref: AWS::AccountId
+              - ':policy/cloud-services/pb-lm-troux-uid-access'
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -135,7 +157,17 @@ resources:
             - DomainName: ${self:custom.s3Bucket}.s3.amazonaws.com
               Id: WebApp
               S3OriginConfig:
-                OriginAccessIdentity: { "Fn::Join" : ["",["origin-access-identity/cloudfront/", {Ref: WebsiteOriginAccessIdentity } ] ] }
+                OriginAccessIdentity:
+                  {
+                    'Fn::Join':
+                      [
+                        '',
+                        [
+                          'origin-access-identity/cloudfront/',
+                          { Ref: WebsiteOriginAccessIdentity },
+                        ],
+                      ],
+                  }
           Enabled: 'true'
           Aliases: ${self:custom.Aliases}
           DefaultRootObject: index.html
@@ -164,13 +196,13 @@ resources:
             SslSupportMethod: sni-only
           WebACLId: ${self:custom.WebACLId}
           Logging:
-             Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
-             IncludeCookies: true
-             Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
-          HttpVersion: http2  
+            Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
+            IncludeCookies: true
+            Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
+          HttpVersion: http2
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:
-        'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+        'Fn::GetAtt': [WebAppCloudFrontDistribution, DomainName]
     cloudfrontId:
       Value: !Ref WebAppCloudFrontDistribution
