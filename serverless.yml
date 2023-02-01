@@ -7,7 +7,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${self:custom.default_stage}
+  stage: ${opt:stage, 'dev'}
   region: us-east-1
   tags: ${file(./tags.yml)}
   stackTags: ${file(./tags.yml)}
