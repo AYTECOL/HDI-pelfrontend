@@ -108,7 +108,8 @@ resources:
               Effect: Allow
               Principal: '*'
               Action:
-                - 's3:*'
+                - 's3:GetObject'
+                - 's3:PutObject'
               Resource: 
                 - arn:aws:s3:::${self:custom.s3BucketPDF}
                 - arn:aws:s3:::${self:custom.s3BucketPDF}/*
@@ -119,7 +120,7 @@ resources:
                       - ''
                       - - 'arn:aws:iam::'
                         - Ref: AWS::AccountId
-                        - ':role/libertyhome-${self:custom.default_stage}-${self:provider.region}-lambdaRole'
+                        - ':role/libertyhome-${self:provider.stage}-${self:provider.region}-lambdaRole'
 
     WebsiteOriginAccessIdentity:
       Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
