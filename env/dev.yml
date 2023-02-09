@@ -1,4 +1,3 @@
-default_stage: dev
 s3Bucket: poliza-express-hogar-dev
 s3BucketPDF: poliza-express-hogar-pdf-dev
 WebACLId: arn:aws:wafv2:us-east-1:710809157942:global/webacl/aws-cloudfront-webacl-internal-block-dev-v1/394b3e48-b5bb-414e-96c2-0b926f59205f
