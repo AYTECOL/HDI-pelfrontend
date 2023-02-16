@@ -50,6 +50,7 @@ class BtnContinue extends Component {
     const { params } = match;
     const { id } = params;
     const exceptionSarlaft = store.getState().exceptionSarlaft;
+    const mapOptions = store.getState().mapOptions;
     Loading.toggle(true);
     try {
       this.setState({
@@ -97,6 +98,34 @@ class BtnContinue extends Component {
           };
           result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
             questionSarlaft
+          );
+        }
+        if (
+          mapOptions &&
+          'longitude' in mapOptions &&
+          'latitude' in mapOptions
+        ) {
+          const questionMapOptionsLongitude = {
+            pregunta: {
+              codigo: '5815',
+            },
+            respuesta: {
+              valor: `${mapOptions.longitude}`,
+            },
+          };
+          const questionMapOptionsLatitude = {
+            pregunta: {
+              codigo: '5816',
+            },
+            respuesta: {
+              valor: `${mapOptions.latitude}`,
+            },
+          };
+          result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+            questionMapOptionsLongitude
+          );
+          result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+            questionMapOptionsLatitude
           );
         }
 
