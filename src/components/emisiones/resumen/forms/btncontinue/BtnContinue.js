@@ -50,7 +50,7 @@ class BtnContinue extends Component {
     const { params } = match;
     const { id } = params;
     const exceptionSarlaft = store.getState().exceptionSarlaft;
-    const mapOptions = store.getState().mapOptions;
+    const mapOptions = store.getState().mapsOptions;
     Loading.toggle(true);
     try {
       this.setState({
