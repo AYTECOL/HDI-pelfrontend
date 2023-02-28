@@ -107,7 +107,7 @@ class BtnContinue extends Component {
         ) {
           const questionMapOptionsLongitude = {
             pregunta: {
-              codigo: '5815',
+              codigo: '7836',
             },
             respuesta: {
               valor: `${mapOptions.longitude}`,
@@ -115,7 +115,7 @@ class BtnContinue extends Component {
           };
           const questionMapOptionsLatitude = {
             pregunta: {
-              codigo: '5816',
+              codigo: '7837',
             },
             respuesta: {
               valor: `${mapOptions.latitude}`,
