@@ -123,7 +123,7 @@ const Table = (props) => {
       setLoadingPlans(true);
       const ids = pageOfItems.map(({ quoteId }) => quoteId);
       const { plans: newPlans } = await Quotes.getPlanSelected(ids);
-      setPlans(new Map(newPlans.map((plan) => [plan.id, plan])));
+      setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
       if (isEmitted) {
         const { moreInfo: newMoreInfo } = await Quotes.getMoreInfoPolicies(ids);
         setMoreInfo(new Map(newMoreInfo.map((more) => [more.id, more])));
