@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import store from '../../../../../store';
 import { mapShow, saveIdentificationValue } from '../../../../../store/actions';
-import Help from '../../../../../common/icons/help';
+import Help from '../../../../globals/icons/help';
 import {
   isValidDirection,
   validationMessages,

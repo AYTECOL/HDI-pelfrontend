@@ -211,7 +211,7 @@ $error: #dd133c;
       vertical-align: middle;
       margin-right: 8px;
       display: inline-block;
-      background-image: url('../../../../../common/images/upload.png');
+      background-image: url('../../../../../assets/images/upload.png');
       background-position: center;
       background-repeat: no-repeat;
       background-size: 100% auto;
@@ -224,7 +224,7 @@ $error: #dd133c;
   }
   p.photo {
     &::before {
-      background-image: url('../../../../../common/images/photo-camera.png');
+      background-image: url('../../../../../assets/images/photo-camera.png');
     }
   }
 }

@@ -54,11 +54,12 @@ input,
 textarea,
 button,
 label {
-  font-family: 'Roboto', serif;
+  font-family: 'roboto regular', serif;
 }
 
 html,
 body {
+  font-family: 'roboto regular';
   background: #f2f2f2;
 }
 
@@ -122,7 +123,7 @@ body {
 
 .back-icon {
   display: inline-block;
-  background-image: url('../../common/images/icon_back.png');
+  background-image: url('../images/icon_back.png');
   background-size: 100% auto;
   background-position: center;
   width: 22px;
@@ -373,7 +374,7 @@ $color-primary: #28a3af;
         display: block;
         width: 15px;
         height: 8px;
-        background-image: url('../../common/images/arrow_down.png');
+        background-image: url('../images/arrow_down.png');
         background-size: 100% auto;
         background-position: center;
         background-repeat: no-repeat;
@@ -469,7 +470,7 @@ $color-primary: #28a3af;
 
     .close {
       padding: 24px;
-      background-image: url('../../common/images/icon_close.png');
+      background-image: url('../images/icon_close.png');
       background-position: center;
       background-repeat: no-repeat;
       background-size: 15px 15px;
@@ -551,42 +552,42 @@ $color-primary: #28a3af;
       }
 
       i {
-        background-image: url('../../common/images/home-icon-hover.png');
+        background-image: url('../images/home-icon-hover.png');
 
         &.userperson {
-          background-image: url('../../common/images/user-icon-hover.png');
+          background-image: url('../images/user-icon-hover.png');
         }
 
         &.summer {
-          background-image: url('../../common/images/summer-hover.png');
+          background-image: url('../images/summer-hover.png');
         }
 
         &.home-pay {
-          background-image: url('../../common/images/rent-home-hover.png');
+          background-image: url('../images/rent-home-hover.png');
         }
 
         &.concreto {
-          background-image: url('../../common/images/concreto-hover.png');
+          background-image: url('../images/concreto-hover.png');
         }
 
         &.ladrillo {
-          background-image: url('../../common/images/build-hover.png');
+          background-image: url('../images/build-hover.png');
         }
 
         &.aceror {
-          background-image: url('../../common/images/ladrillo-hover.png');
+          background-image: url('../images/ladrillo-hover.png');
         }
 
         &.bahareque {
-          background-image: url('../../common/images/cho-hover.png');
+          background-image: url('../images/cho-hover.png');
         }
 
         &.madera {
-          background-image: url('../../common/images/cam-hover.png');
+          background-image: url('../images/cam-hover.png');
         }
 
         &.adobe {
-          background-image: url('../../common/images/house-hover.png');
+          background-image: url('../images/house-hover.png');
         }
       }
     }
@@ -597,7 +598,7 @@ $color-primary: #28a3af;
       margin: 0 auto;
       transition: all 0.3s ease;
       transform: scale(1);
-      background-image: url('../../common/images/home-icon.png');
+      background-image: url('../images/home-icon.png');
       margin-bottom: 10px;
       background-size: auto 100%;
       width: 35px;
@@ -612,39 +613,39 @@ $color-primary: #28a3af;
       &.userperson {
         width: 30px;
         height: 30px;
-        background-image: url('../../common/images/user-icon.png');
+        background-image: url('../images/user-icon.png');
       }
 
       &.summer {
-        background-image: url('../../common/images/summer.png');
+        background-image: url('../images/summer.png');
       }
 
       &.home-pay {
-        background-image: url('../../common/images/rent-home.png');
+        background-image: url('../images/rent-home.png');
       }
 
       &.concreto {
-        background-image: url('../../common/images/concreto.png');
+        background-image: url('../images/concreto.png');
       }
 
       &.ladrillo {
-        background-image: url('../../common/images/build.png');
+        background-image: url('../images/build.png');
       }
 
       &.aceror {
-        background-image: url('../../common/images/ladrillo.png');
+        background-image: url('../images/ladrillo.png');
       }
 
       &.bahareque {
-        background-image: url('../../common/images/cho.png');
+        background-image: url('../images/cho.png');
       }
 
       &.madera {
-        background-image: url('../../common/images/cam.png');
+        background-image: url('../images/cam.png');
       }
 
       &.adobe {
-        background-image: url('../../common/images/house.png');
+        background-image: url('../images/house.png');
       }
     }
 
@@ -849,7 +850,7 @@ $color-primary: #28a3af;
 }
 
 .form-control.pickerDate {
-  background-image: url('../../common/images/calendar-pciker.png');
+  background-image: url('../images/calendar-pciker.png');
   background-size: 22px auto;
   background-position: 97% center;
   background-repeat: no-repeat;
