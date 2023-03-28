@@ -5,7 +5,7 @@ import { saveInmuebleValue } from '../../../../../store/actions';
 import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from '../../../../../common/helpers/helpers';
 import { Tooltip } from '../../../../Tooltip';
-import Help from '../../../../../common/icons/help';
+import Help from '../../../../globals/icons/help';
 
 class Asegurartelefonos extends Component {
   static nameModel = 'inmuebleasegudadotelefonos';

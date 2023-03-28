@@ -28,11 +28,11 @@
 
       i {
         &.home-icon {
-          background-image: url('../../../../common/images/home-icon-hover.png');
+          background-image: url('../../../../assets/images/home-icon-hover.png');
         }
 
         &.apartamento-icon {
-          background-image: url('../../../../common/images/apartamento-icon-hover.png');
+          background-image: url('../../../../assets/images/apartamento-icon-hover.png');
         }
       }
     }
@@ -52,13 +52,13 @@
       transform: scale(1);
 
       &.home-icon {
-        background-image: url('../../../../common/images/home-icon.png');
+        background-image: url('../../../../assets/images/home-icon.png');
       }
 
       &.apartamento-icon {
         width: 29px;
         height: 36px;
-        background-image: url('../../../../common/images/apartamento-icon.png');
+        background-image: url('../../../../assets/images/apartamento-icon.png');
       }
     }
 
@@ -141,7 +141,7 @@
       right: 0;
       bottom: 0;
       margin: auto;
-      background-image: url('../../../../common/images/check.svg');
+      background-image: url('../../../../assets/images/check.svg');
       background-size: 100% auto;
       background-repeat: no-repeat;
       background-position: center;

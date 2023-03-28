@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import positive from '../../../common/images/positive.svg';
-import caution from '../../../common/images/caution.svg';
-import warning from '../../../common/images/warning.svg';
-import { isItemRequired, typeItems } from '../../../common/typeItems';
+import positive from 'assets/images/positive.svg';
+import caution from 'assets/images/caution.svg';
+import warning from 'assets/images/warning.svg';
+import { isItemRequired, typeItems } from 'common/typeItems';
 import { Tooltip } from '../../Tooltip';
-import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
+import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 
 const formatToMask = (value) => {
   return Masknumbermoney.formatToMask(value);

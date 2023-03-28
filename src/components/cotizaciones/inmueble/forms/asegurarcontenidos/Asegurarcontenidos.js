@@ -4,7 +4,7 @@ import store from '../../../../../store';
 import { saveInmuebleValue } from '../../../../../store/actions';
 import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from '../../../../../common/helpers/helpers';
-import Help from '../../../../../common/icons/help';
+import Help from '../../../../globals/icons/help';
 import { Tooltip } from '../../../../Tooltip';
 import MobileContents from '../MobileContents';
 

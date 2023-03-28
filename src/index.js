@@ -5,7 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 
 import 'assets/scss/reset.scss';
-import './common/fonts/stylesheet.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'jquery';
 import 'bootstrap/dist/js/bootstrap.js';

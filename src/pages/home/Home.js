@@ -13,7 +13,7 @@ import {
   STEP_QUOTATION,
   STATUS_POLICIES,
   VALIDITY_QUOTES_DAYS,
-} from 'common/constants';
+} from 'assets/constants';
 
 const Home = (props) => {
   const [quotesData, setQuotesData] = useState([]);

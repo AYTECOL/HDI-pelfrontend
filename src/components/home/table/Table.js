@@ -15,7 +15,7 @@ import Quotes from 'services/GetQuote';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from 'common/helpers/helpers';
 import MomentJs from 'moment';
-import { MONTHS } from 'common/constants';
+import { MONTHS } from 'assets/constants';
 
 /**
  *  @typedef {{ type_person: string, description: string, code: number }} IdentificationType

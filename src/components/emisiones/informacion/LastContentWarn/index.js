@@ -1,8 +1,8 @@
 import React from 'react';
-import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
+import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import styles from './LastContentWarn.module.scss';
-import caution from '../../../../common/images/caution.svg';
-import { isItemRequired } from '../../../../common/typeItems';
+import caution from 'assets/images/caution.svg';
+import { isItemRequired } from 'common/typeItems';
 
 /**
  *

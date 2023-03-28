@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Delete.scss';
-import icono from '../../../../../common/images/trashtrash.png';
+import icono from 'assets/images/trashtrash.png';
 
 export default class Delete extends Component {
   render() {

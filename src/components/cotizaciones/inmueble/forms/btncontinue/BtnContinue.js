@@ -20,7 +20,7 @@ import OtherQuestions from '../OtherQuestions';
 import PropertyNotAllowed from '../../../../PropertyNotAllowed';
 import clsx from 'clsx';
 import ModalAlert from 'components/globals/Modal';
-import { OPTIONS_TYPES_RISK } from 'common/constants';
+import { OPTIONS_TYPES_RISK } from 'assets/constants';
 
 class BtnContinue extends Component {
   constructor(props) {
