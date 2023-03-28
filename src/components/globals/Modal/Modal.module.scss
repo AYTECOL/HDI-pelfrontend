@@ -1,0 +1,40 @@
+@import '../../../assets/scss/variables.scss';
+
+.modal {
+    border: none;
+    padding: 124px 0;
+}
+.modalHeader {
+  margin-top: 10px !important;
+  margin-right: 10px !important;
+  button {
+    background-color: $lsc-color-white;
+    border: none;
+    cursor: pointer;
+  }
+}
+.modalMessageWarning {
+  text-align: center;
+  img {
+    margin-bottom: 1rem;
+  }
+  p {
+    font-size: 26px;
+    font-family: $font-roboto-medium;
+    color: $lsc-color-secondary-blue;
+  }
+  span {
+    font-size: 14px;
+    color: $lsc-color-gray-secondary;
+  }
+}
+.modalFooter {
+  margin: 0 auto;
+  background: $lsc-color-white !important;
+  button {
+    border: none;
+    border-radius: 3px;
+    border-color: #06748c !important;
+    border-bottom: 1px !important;
+  }
+}

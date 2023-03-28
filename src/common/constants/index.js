@@ -6,6 +6,10 @@ export const LIMITS_EXCEPTIONS_SARLAFT = {
   LIMIT_PRIMA: 6960000,
   LIMIT_VALUE_INSURED: 156600000,
 };
+export const OPTIONS_TYPES_RISK = {
+  HOUSE: 1,
+  APARTMENT: 2,
+};
 
 export const ROLES_KEY = {
   IS_TAKER: 1,
