@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import withRouter from 'react-router/withRouter';
 
 const ValidatePersonIdentity = withRouter(
@@ -16,7 +16,7 @@ const ValidatePersonIdentity = withRouter(
     const route = '/';
 
     return (
-      <div className={classNames('modal d-flex', !open && 'hide')}>
+      <div className={clsx('modal d-flex', !open && 'hide')}>
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -41,7 +41,7 @@ const ValidatePersonIdentity = withRouter(
                 </a>
                 <button
                   type="button"
-                  className={classNames('btn btn-primary', !button && 'hide')}
+                  className={clsx('btn btn-primary', !button && 'hide')}
                   onClick={onRetry}
                 >
                   Reintentar
