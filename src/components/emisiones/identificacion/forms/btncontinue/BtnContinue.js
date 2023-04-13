@@ -2,17 +2,17 @@ import React, { PureComponent, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 import { UrlSite, UrlPerson } from '../../../../../config';
-import Helpers from '../../../../../common/helpers/helpers';
+import Helpers from 'common/helpers/helpers';
 //Services
-import QuoteIussed from '../../../../../services/QuoteIussed';
-import store from '../../../../../store';
-import { NextStep } from '../../../../../store/actions';
-import SaveIdentifications from '../../../../../services/Quote';
-import Loading from '../../../../globals/loading/Loading';
+import QuoteIussed from 'services/QuoteIussed';
+import store from 'store';
+import { NextStep } from 'store/actions';
+import QuoteService from 'services/Quote';
+import Loading from 'components/globals/loading/Loading';
 import Persona from '../../popups/persona/person';
 import { fieldsNames } from '../../popups/persona/constants';
-import Service from '../../../../../services/Api';
-import ValidatePersonIdentity from '../../../../../components/ValidatePersonIdentity';
+import Service from 'services/Api';
+import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 
 const UrlServicePerson = UrlPerson;
 const Baseurl = '/validarIdentidad';
@@ -34,7 +34,7 @@ class BtnContinue extends PureComponent {
   }
   goBack = async () => {
     store.dispatch(NextStep(3));
-    await SaveIdentifications.save();
+    await QuoteService.save();
     this.props.history.push(
       UrlSite + '/cotizacion/3/' + this.props.match.params.id
     );
@@ -204,13 +204,13 @@ class BtnContinue extends PureComponent {
     });
     if (typeof total !== 'undefined') {
       store.dispatch(NextStep(5));
-      await SaveIdentifications.save();
+      await QuoteService.save();
       this.props.history.push(
         UrlSite + '/emision/2/' + this.props.match.params.id
       );
     } else {
       store.dispatch(NextStep(4));
-      await SaveIdentifications.save();
+      await QuoteService.save();
       Helpers.goToHome(this.props.history);
     }
     Loading.toggle(false);
