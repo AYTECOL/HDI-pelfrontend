@@ -3,10 +3,10 @@ import React, { Component, Fragment } from 'react';
 import store from '../../../../../store';
 import { withRouter } from 'react-router-dom';
 
-import CreateOrUpdateValoration from '../../../../../services/CreateOrUpdateValoration';
-import SaveIdentifications from '../../../../../services/Quote';
-import { NextStep, setPropertyValidation } from '../../../../../store/actions';
-import Helpers from '../../../../../common/helpers/helpers';
+import CreateOrUpdateValoration from 'services/CreateOrUpdateValoration';
+import QuoteService from 'services/Quote';
+import { NextStep, setPropertyValidation } from 'store/actions';
+import Helpers from 'common/helpers/helpers';
 // Components
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from '../asegurarcontenidos/Asegurarcontenidos';
@@ -34,7 +34,7 @@ class BtnContinue extends Component {
 
   saveService = async () => {
     Loading.toggle(true);
-    await SaveIdentifications.save();
+    await QuoteService.save();
     await CreateOrUpdateValoration.save();
     Helpers.goToHome(this.props.history);
   };
@@ -42,7 +42,7 @@ class BtnContinue extends Component {
   goBack = async () => {
     Loading.toggle(true);
     store.dispatch(NextStep(1));
-    await SaveIdentifications.save();
+    await QuoteService.save();
     await CreateOrUpdateValoration.save();
     this.props.history.push(
       UrlSite + '/cotizacion/1/' + this.props.match.params.id
@@ -212,7 +212,7 @@ class BtnContinue extends Component {
       store.dispatch(NextStep(3));
       const {
         quote_created: { infoGeocodingSig },
-      } = await SaveIdentifications.save();
+      } = await QuoteService.save();
       const NotInsured =
         infoGeocodingSig &&
         infoGeocodingSig.features[0]?.attributes.AMENAZA_INUNDACION ===

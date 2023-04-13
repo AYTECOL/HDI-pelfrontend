@@ -5,16 +5,20 @@ import AccessTokenGeocoding from './AccessTokenProd';
 import SigService from './SigServices';
 import AuthHeader from './AuthHeader';
 const Url = '/quote';
-
-class IdentificationsCities {
+class QuoteService {
   static async save() {
     let storeState = Store.getState();
     let accessToken = await AccessTokenGeocoding.get();
-    let infoGeocoding = await SigService.LongitudeAndLatitude(
+    const jobId = await SigService.LongitudeAndLatitude(
       accessToken.access_token,
       storeState.mapsOptions.latitude,
       storeState.mapsOptions.longitude
     );
+    const infoGeocoding = await SigService.sigConsumer(
+      accessToken.access_token,
+      jobId
+    );
+
     const {
       accessToken: _a,
       refer: _b,
@@ -57,7 +61,7 @@ class IdentificationsCities {
         emissionId: emissionId,
         emitedDate: emitedDate,
       },
-      infoGeocodingSig: infoGeocoding.value,
+      infoGeocodingSig: infoGeocoding,
       attachedFile,
     };
     for (let i in data) if (data[i] === '') data[i] = '""';
@@ -69,4 +73,4 @@ class IdentificationsCities {
   }
 }
 
-export default IdentificationsCities;
+export default QuoteService;
