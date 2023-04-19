@@ -22,13 +22,13 @@ import {
   itemsRequiredSince,
   typeItems,
 } from '../../../common/typeItems';
-import UploadFile from '../../../services/UploadFile';
+import UploadFileService from '../../../services/UploadFile';
 import { BuiltMetersHousing } from './BuiltMetersHousing';
 import { Articles } from './Articles';
 import { LastContentWarn } from './LastContentWarn';
 
 // 10MB
-const maxFileSize = UploadFile.maxFileSize;
+const maxFileSize = UploadFileService.maxFileSize;
 
 class Index extends React.Component {
   constructor(props) {
@@ -505,7 +505,7 @@ class Index extends React.Component {
         doc = null;
         errorFile = 'Formato no permitido';
       } else if (file.size >= maxFileSize) {
-        errorFile = UploadFile.messageLimit;
+        errorFile = UploadFileService.messageLimit;
       } else {
         doc = file;
       }

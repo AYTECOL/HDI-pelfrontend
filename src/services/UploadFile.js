@@ -4,22 +4,23 @@ import { UrlService } from '../config';
 import AuthHeader from './AuthHeader';
 
 const oneMB = 1.049e6;
-class UploadFile {
+class UploadFileService {
   // 10MB
   static maxFileSize = 10 * oneMB;
   static get messageLimit() {
     return `El documento que desea adjuntar, supera el límite máximo permitido de ${(
-      UploadFile.maxFileSize / oneMB
+      UploadFileService.maxFileSize / oneMB
     ).toFixed(0)}MB`;
   }
 
   /**
-   *
-   * @param {"Sarlaft"| "Docs"| "Habeas_Data"} name
+   * @typedef {'SARLAFT'| 'HABEAS_DATA' | 'CERL' | 'DOCS'} types
+   * @param {types | null} key
    * @param {File} file
+   * @param {string | null} customName
    * @return {Promise<{ location: string }>}
    */
-  static async upload(name, file, customName = null) {
+  static async upload(key, file, customName = null) {
     const headers = await AuthHeader.getHeaders();
     /**
      * @type {{ url: string, key: string }}
@@ -27,7 +28,7 @@ class UploadFile {
     const res = await Axios.post(
       `${UrlService}/signed_url_attach_document`,
       {
-        [name]: customName || file.name,
+        [key]: customName || file.name,
       },
       { headers }
     ).then(({ data }) => data);
@@ -37,4 +38,4 @@ class UploadFile {
   }
 }
 
-export default UploadFile;
+export default UploadFileService;
