@@ -10,13 +10,13 @@ import Validaridentificacion from 'components/cotizaciones/identificacion/popups
 import AutocompleteCities from 'components/cotizaciones/identificacion/forms/autocompletecities/AutocompleteCities';
 import { CitiesProvider } from 'components/cotizaciones/identificacion/hooks/cities';
 import UploadFiles from './uploadFiles';
-import UploadFile from 'services/UploadFile';
+import UploadFileService from 'services/UploadFile';
 import CheckBoxes from './Checkboxes';
 import Helpers from 'common/helpers/helpers';
 import NumeroIdentificacion from 'components/cotizaciones/identificacion/forms/numeroidentificacion/NumeroIdentificacion';
 import { isValidDirection, validationMessages } from 'common/validations';
 import { roles } from '../../constants';
-import { fieldsNames } from './constants';
+import { TYPES_FILES, fieldsNames } from './constants';
 import ParticipationPercentages from './ParticipationPercentages';
 import { DateInput } from './DateInput';
 import {
@@ -25,7 +25,8 @@ import {
   rolesParticipations,
   isRoleParticipation,
 } from './ParticipationPercentages/utils';
-const maxFileSize = UploadFile.maxFileSize;
+import { error } from 'jquery';
+const maxFileSize = UploadFileService.maxFileSize;
 
 const phoneTypes = {
   mobilePhone: '6',
@@ -39,7 +40,8 @@ export default class Persona extends Component {
     super(props);
     this.state = {
       showDefaultTextFile: true,
-      textFile: '',
+      textFile: null,
+      textFileCertificate: null,
       genero: 0,
       exitsTomador: false,
       typePerson: this.props.typePerson,
@@ -50,6 +52,7 @@ export default class Persona extends Component {
       ok: 0,
       total: 9,
       errorFile: null,
+      errorFileCertificate: null,
       countFiles: 1,
       person: {},
       fields: [
@@ -74,7 +77,6 @@ export default class Persona extends Component {
         fieldsNames.address,
         fieldsNames.personalAccidents,
         fieldsNames.exequiasParticipation,
-        'file',
       ],
     };
     let person = this.state.person;
@@ -456,18 +458,11 @@ export default class Persona extends Component {
     return rolesPerson.some((role) => Persona.fieldActive(field, role));
   };
 
-  changeTextFile = (e, showSarlaft) => {
-    let name = '';
+  onChangeFile = (e, typeFile) => {
+    let fileName = null;
     let status = true;
     let errorFile = null;
     let person = this.state.person;
-    person.sarlaft = undefined;
-    person.sarlaft_document_url = undefined;
-    person.sarlfalt_url = undefined;
-
-    person.habeas_data_document_url = undefined;
-    person.habeas_data = undefined;
-    person.habeas_data_url = undefined;
 
     /**
      * @type {File}
@@ -479,41 +474,57 @@ export default class Persona extends Component {
     } else if (!validFile) {
       errorFile = 'Formato no permitido';
     } else if (file.size >= maxFileSize) {
-      errorFile = UploadFile.messageLimit;
+      errorFile = UploadFileService.messageLimit;
     } else {
-      const isTaker = person?.role.some((rol) => +rol === 1);
-      const keyFile =
-        !this.props.exceptionSarlaft && isTaker ? 'SARLAFT' : 'HABEASDATA';
-
+      let keyFile = null;
+      if (TYPES_FILES.SARLAFT === typeFile) {
+        keyFile = TYPES_FILES.SARLAFT;
+        person.sarlaft = file;
+      } else if (TYPES_FILES.HABEAS_DATA === typeFile) {
+        keyFile = TYPES_FILES.HABEAS_DATA;
+        person.habeas_data = file;
+      } else if (TYPES_FILES.CERL === typeFile) {
+        keyFile = TYPES_FILES.CERL;
+        person.cerl = file;
+      }
       const { abbreviation } = this.state.identifications.find(
         (type) => type.code === +person.code
       );
-      const fileName = `${keyFile}-${abbreviation}-${person.value}-${
+      fileName = `${keyFile}-${abbreviation}-${person.value}-${
         this.state.countFiles
       }.${file.name.split('.').pop()}`;
-      name = fileName;
       status = false;
-      if (showSarlaft) {
-        person.sarlaft = file;
-        person.sarlaft_document_url = person.sarlaft;
-      } else {
-        person.habeas_data = file;
-        person.habeas_data_document_url = person.habeas_data;
-      }
     }
-    this.setState(
-      {
-        ...this.state,
-        textFile: name,
-        errorFile,
-        showDefaultTextFile: status,
-        person: person,
-        countFiles: this.state.countFiles + 1,
-      },
-      () => {
-        this.validateAll();
-      }
-    );
+
+    if (typeFile === TYPES_FILES.CERL) {
+      this.setState(
+        {
+          ...this.state,
+          textFileCertificate: fileName,
+          errorFileCertificate: errorFile,
+          showDefaultTextFile: status,
+          person: person,
+          countFiles: this.state.countFiles + 1,
+        },
+        () => {
+          this.validateAll(null, false, false, typeFile);
+        }
+      );
+    } else {
+      this.setState(
+        {
+          ...this.state,
+          textFile: fileName,
+          errorFile,
+          showDefaultTextFile: status,
+          person: person,
+          countFiles: this.state.countFiles + 1,
+        },
+        () => {
+          this.validateAll(null, false, false, typeFile);
+        }
+      );
+    }
   };
 
   generoChange = (index) => () => {
@@ -570,18 +581,18 @@ export default class Persona extends Component {
         return;
       }
       Loading.toggle(true);
-      let persona = null;
+      let responsePerson = null;
       if (typeof e.person === 'undefined') {
-        persona = await ConsultaPersonas.get(
+        responsePerson = await ConsultaPersonas.get(
           this.state.person.code,
           this.state.person.value
         );
       } else {
-        persona = e.person;
+        responsePerson = e.person;
       }
       if (
-        persona !== null &&
-        persona.consultarPersonaRs.personaRestringida === true
+        responsePerson !== null &&
+        responsePerson.consultarPersonaRs.personaRestringida === true
       ) {
         this.setState(
           {
@@ -596,14 +607,16 @@ export default class Persona extends Component {
         );
       } else {
         let person = this.state.person;
-        person = Persona.extractDataFromIaxis(persona, code, person);
-        person.person = persona;
+        console.log('response person ', responsePerson);
+        person = Persona.extractDataFromIaxis(responsePerson, code, person);
+        person.person = responsePerson;
         this.setState(
           {
             ...this.state,
             person: person,
             userRestricted: false,
-            personExists: true,
+            personExists:
+              responsePerson.consultarPersonaRs.personaEncontradaIAXIS,
           },
           () => {
             Loading.toggle(false);
@@ -648,31 +661,55 @@ export default class Persona extends Component {
   };
 
   saveFile = async ({ person }) => {
-    if (!(person.sarlfalt_url || person.habeas_data_url)) {
-      const newPerson = { ...person };
+    if (!(person.sarlfalt_url || person.habeas_data_url || person.cerl_url)) {
       Loading.toggle(true);
-      const fileValue = person?.sarlaft || person?.habeas_data;
-      const prefix = person?.sarlaft ? 'Sarlaft' : 'Habeas_Data';
-      const file = await UploadFile.upload(
-        prefix,
-        fileValue,
-        this.state.textFile || null
-      ).catch((e) => {
-        console.log(e);
-      });
-      Loading.toggle(false);
-      if (file && typeof file['location'] !== 'undefined') {
-        if (prefix === 'Sarlaft') {
-          newPerson.sarlaft = file['location'];
-          newPerson.sarlaft_document_url = file['location'];
-          newPerson.sarlfalt_url = file['location'];
-        } else {
-          newPerson.habeas_data = file['location'];
-          newPerson.habeas_data_document_url = file['location'];
-          newPerson.habeas_data_url = file['location'];
+      const files = [];
+      if (person?.sarlaft) {
+        files.push({
+          name: this.state.textFile,
+          type: TYPES_FILES.SARLAFT,
+          fileValue: person.sarlaft,
+        });
+      } else if (person?.habeas_data) {
+        files.push({
+          name: this.state.textFile,
+          type: TYPES_FILES.HABEAS_DATA,
+          fileValue: person.habeas_data,
+        });
+      }
+      if (person?.cerl) {
+        files.push({
+          name: this.state.textFileCertificate,
+          type: TYPES_FILES.CERL,
+          fileValue: person.cerl,
+        });
+      }
+      for (const fileValues of files) {
+        const file = await UploadFileService.upload(
+          fileValues.type,
+          fileValues.fileValue,
+          fileValues.name || null
+        ).catch((e) => {
+          console.log(e);
+        });
+        if (file && typeof file['location'] !== 'undefined') {
+          if (TYPES_FILES.SARLAFT === fileValues.type) {
+            person.sarlaft = file['location'];
+            person.sarlfalt_url = file['location'];
+            person.sarlaft_document_url = file['location'];
+          } else if (TYPES_FILES.HABEAS_DATA === fileValues.type) {
+            person.habeas_data = file['location'];
+            person.habeas_data_url = file['location'];
+            person.habeas_data_document_url = file['location'];
+          } else {
+            person.cerl = file['location'];
+            person.cerl_url = file['location'];
+            person.cerl_document_url = file['location'];
+          }
         }
       }
-      return newPerson;
+      Loading.toggle(false);
+      return person;
     }
     return person;
   };
@@ -685,7 +722,6 @@ export default class Persona extends Component {
       code,
       sarlfaltActive,
       email,
-      sarlfalt_url,
       sarlaft,
       genero,
       fechadenacimiento,
@@ -694,7 +730,7 @@ export default class Persona extends Component {
       lastname,
       name,
       habeasDataActive,
-      habeas_data_url,
+      cerl,
       habeas_data,
       businessname,
       ciudad,
@@ -739,11 +775,10 @@ export default class Persona extends Component {
         isTaker &&
         !sarlfaltActive &&
         !habeas_data &&
-        !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
       errorFile
     ) {
-      errors.push('file');
+      errors.push(TYPES_FILES.SARLAFT);
     }
     // validations for sarlaft file person legal
     if (
@@ -751,11 +786,10 @@ export default class Persona extends Component {
         !isPersonNatural &&
         isTaker &&
         !sarlfaltActive &&
-        !String(sarlfalt_url || '').trim() &&
         !sarlaft) ||
       errorFile
     ) {
-      errors.push('file');
+      errors.push(TYPES_FILES.SARLAFT);
     }
 
     //Validation for habeas data file
@@ -764,11 +798,14 @@ export default class Persona extends Component {
         !habeasDataActive &&
         !sarlfaltActive &&
         !sarlaft &&
-        !String(habeas_data_url || '').trim() &&
         !habeas_data) ||
       errorFile
     ) {
-      errors.push('file');
+      errors.push(TYPES_FILES.HABEAS_DATA);
+    }
+
+    if ((!isPersonNatural && !cerl && !this.state.personExists) || errorFile) {
+      errors.push(TYPES_FILES.CERL);
     }
 
     if (typePerson === 4 || nit) {
@@ -826,7 +863,12 @@ export default class Persona extends Component {
     return !this.getErrors().length;
   }
 
-  async validateAll(name = null, printErrors = false, saveData = false) {
+  async validateAll(
+    name = null,
+    printErrors = false,
+    saveData = false,
+    typeFile = null
+  ) {
     try {
       if (typeof this.props.updatePerson !== 'undefined') {
         if (typeof printErrors === 'undefined') printErrors = false;
@@ -880,6 +922,8 @@ export default class Persona extends Component {
     const isShowUploadFile = isRequiredFileHabeasData
       ? +person?.code !== 37 && !person?.sarlfaltActive
       : !person?.sarlfaltActive;
+    const isShowUploadFilecerticate =
+      +person?.code === 37 && !this.state.personExists;
     return (
       <React.Fragment>
         <CitiesProvider>
@@ -1600,10 +1644,30 @@ export default class Persona extends Component {
                           person={this.state.person}
                           showDefaultTextFile={this.state.showDefaultTextFile}
                           textFile={this.state.textFile}
-                          changeTextFile={this.changeTextFile}
+                          onChangeFile={this.onChangeFile}
                           errorFile={this.state.errorFile}
-                          typeFile={isRequiredFileHabeasData}
-                          isError={hasErrorAddClass('file')}
+                          typeFile={
+                            isRequiredFileHabeasData
+                              ? TYPES_FILES.HABEAS_DATA
+                              : TYPES_FILES.SARLAFT
+                          }
+                          isError={hasErrorAddClass(
+                            isRequiredFileHabeasData
+                              ? TYPES_FILES.HABEAS_DATA
+                              : TYPES_FILES.SARLAFT
+                          )}
+                        />
+                      )}
+                    {isShowUploadFilecerticate &&
+                      typeof this.props.disabledAll === 'undefined' && (
+                        <UploadFiles
+                          person={this.state.person}
+                          showDefaultTextFile={this.state.showDefaultTextFile}
+                          onChangeFile={this.onChangeFile}
+                          textFile={this.state.textFileCertificate}
+                          errorFile={this.state.errorFileCertificate}
+                          typeFile={TYPES_FILES.CERL}
+                          isError={hasErrorAddClass(TYPES_FILES.CERL)}
                         />
                       )}
                     {typeof this.props.disabledAll === 'undefined' && (

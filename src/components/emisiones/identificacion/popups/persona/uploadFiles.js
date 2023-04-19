@@ -1,41 +1,41 @@
 import React from 'react';
 import classNames from 'classnames';
 import Helpers from 'common/helpers/helpers';
-import { fieldsNames } from './constants';
+import { fieldsNames, TYPES_FILES, TYPES_FILES_LABEL } from './constants';
 
 const UploadFiles = ({
-  person: { sarlfalt_url, habeas_data_url },
+  person: {
+    sarlfalt_url: sarlaft,
+    habeas_data_url: habeasData,
+    cerl_url: cerl,
+  },
   showDefaultTextFile,
   isError,
   textFile,
   errorFile,
-  typeFile,
-  changeTextFile,
+  onChangeFile,
+  typeFile = TYPES_FILES.SARLAFT,
 }) => {
-  let fileUrl;
-  if (sarlfalt_url) {
-    fileUrl = sarlfalt_url || undefined;
-  } else {
-    fileUrl = habeas_data_url || undefined;
-  }
+  const fileUrl = sarlaft || habeasData || cerl || undefined;
+  console.log('fileUrl', fileUrl);
+  const nameLabel = TYPES_FILES_LABEL?.[typeFile]?.name || '';
+  const id = TYPES_FILES_LABEL?.[typeFile].id || 'defaultFile';
   return (
     <div className={'row sarlaft'}>
       <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
         <div className={classNames('sarlaft form-group', isError)}>
           <label htmlFor={fieldsNames.address}>
-            Es necesario el {!typeFile ? 'sarlaft' : 'Habeas Data'}{' '}
+            Es necesario el {nameLabel || ''}{' '}
           </label>
-          <span>
-            Adjunta el {!typeFile ? 'sarlaft' : 'Habeas Data'} diligenciado
-          </span>
+          <span>{TYPES_FILES_LABEL?.[typeFile]?.description || ''}</span>
           <input
             type="file"
             className="form-control"
-            name={!typeFile ? 'sarlaft' : 'habeasData'}
-            onChange={(e) => changeTextFile(e, !typeFile)}
+            name={id || 'defaultFile'}
+            onChange={(e) => onChangeFile(e, typeFile)}
             accept={Helpers.fileFormats.join(', ') + ', .docx, .doc'}
           />
-          {showDefaultTextFile ? (
+          {!textFile ? (
             <p>
               Arrastre archivos para adjuntar, o <b>buscar</b>
             </p>
@@ -47,7 +47,9 @@ const UploadFiles = ({
             <React.Fragment>
               <br />
               <span>
-                <a href={fileUrl}>{fileUrl.split('/').slice(-1)}</a>
+                <a href={fileUrl}>
+                  {fileUrl ? fileUrl?.split('/').slice(-1) : ''}
+                </a>
               </span>
             </React.Fragment>
           )}

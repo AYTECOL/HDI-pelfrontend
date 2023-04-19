@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { UrlSite } from '../../../../../config';
 import Helpers from 'common/helpers/helpers';
 import CreateOrUpdateMoreInfo from 'services/CreateOrUpdateMoreInfo';
-import UploadFile from 'services/UploadFile';
+import UploadFileService from 'services/UploadFile';
 import store from 'store';
 import { NextStep } from 'store/actions';
 import QuoteService from 'services/Quote';
@@ -45,7 +45,7 @@ class BtnContinue extends Component {
             const { file } = files[code];
             if (file instanceof File) {
               try {
-                let url = await UploadFile.upload('Docs', file);
+                let url = await UploadFileService.upload('Docs', file);
                 /**
                  * @type {import('../../../../../models/types').Attachment}
                  */
