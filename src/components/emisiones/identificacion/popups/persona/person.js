@@ -923,7 +923,7 @@ export default class Persona extends Component {
       ? +person?.code !== 37 && !person?.sarlfaltActive
       : !person?.sarlfaltActive;
     const isShowUploadFilecerticate =
-      +person?.code === 37 && !this.state.personExists;
+      +person?.code === 37 && !this.state.personExists && isTaker;
     return (
       <React.Fragment>
         <CitiesProvider>
