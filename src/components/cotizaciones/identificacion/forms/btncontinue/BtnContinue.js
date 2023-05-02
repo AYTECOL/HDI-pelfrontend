@@ -1,21 +1,21 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 
-import store from '../../../../../store';
+import store from 'store';
 import {
   NextStep,
   nextStepIndentification,
   resetStore,
   saveIdentificationValue,
-} from '../../../../../store/actions';
+} from 'store/actions';
 import Loading from '../../../../../components/globals/loading/Loading';
-import SaveIdentifications from '../../../../../services/Quote';
+import QuoteService from 'services/Quote';
 // Components
 import Name from '../name/Name';
 import LastName from '../lastname/Lastname';
 import RazonSocial from '../razonsocial/Razonsocial';
 // Services
-import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
+import ConsultaPersonas from 'services/ConsultaPersonas';
 import { UrlSite } from '../../../../../config';
 import Helpers from '../../../../../common/helpers/helpers';
 import NumeroIdentificacion from '../numeroidentificacion/NumeroIdentificacion';
@@ -39,7 +39,7 @@ class BtnContinue extends Component {
     if (stateFormIdentificacion === 1) {
       Loading.toggle(true);
       store.dispatch(NextStep(2));
-      await SaveIdentifications.save();
+      await QuoteService.save();
       this.props.history.push(
         UrlSite + '/cotizacion/2/' + this.props.match.params.id
       );
@@ -139,7 +139,7 @@ class BtnContinue extends Component {
 
   saveAndExit = async () => {
     Loading.toggle(true);
-    await SaveIdentifications.save();
+    await QuoteService.save();
     store.dispatch(resetStore());
     Helpers.goToHome(this.props.history);
   };

@@ -4,15 +4,15 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
 
-import Helpers from '../../../../../common/helpers/helpers';
+import Helpers from 'common/helpers/helpers';
 import { UrlSite } from '../../../../../config';
-import NewPlanSelected from '../../../../../services/NewPlanSelected';
-import store from '../../../../../store';
-import CreateOrUpdateValoration from '../../../../../services/CreateOrUpdateValoration';
-import Loading from '../../../../globals/loading/Loading';
-import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
-import { NextStep, resetStore, saveProspect } from '../../../../../store/actions';
-import SaveIdentifications from '../../../../../services/Quote';
+import NewPlanSelected from 'services/NewPlanSelected';
+import store from 'store';
+import CreateOrUpdateValoration from 'services/CreateOrUpdateValoration';
+import Loading from 'components/globals/loading/Loading';
+import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
+import { NextStep, resetStore, saveProspect } from 'store/actions';
+import QuoteService from 'services/Quote';
 import Links from '../links/Links';
 import './btncontinue.scss';
 import Coberturas from '../../coberturas/Coberturas';
@@ -107,7 +107,7 @@ class BtnContinue extends Component {
       await Links.pdf(this, false);
 
       store.dispatch(NextStep(4));
-      await SaveIdentifications.save();
+      await QuoteService.save();
       await CreateOrUpdateValoration.save();
       await NewPlanSelected.get(plan);
       this.props.history.push(
@@ -133,7 +133,7 @@ class BtnContinue extends Component {
   goBack = async () => {
     Loading.toggle(true);
     store.dispatch(NextStep(2));
-    await SaveIdentifications.save();
+    await QuoteService.save();
     await CreateOrUpdateValoration.save();
     store.dispatch(resetStore());
     this.props.history.push(

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import store from '../../../../../store';
 import { saveIdentificationValue } from '../../../../../store/actions';
-import Help from '../../../../../common/icons/help';
+import Help from '../../../../globals/icons/help';
 import { Tooltip } from '../../../../Tooltip';
 
 class Addressadditional extends Component {

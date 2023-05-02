@@ -3,10 +3,10 @@ import React, { Component, Fragment } from 'react';
 import store from '../../../../../store';
 import { withRouter } from 'react-router-dom';
 
-import CreateOrUpdateValoration from '../../../../../services/CreateOrUpdateValoration';
-import SaveIdentifications from '../../../../../services/Quote';
-import { NextStep, setPropertyValidation } from '../../../../../store/actions';
-import Helpers from '../../../../../common/helpers/helpers';
+import CreateOrUpdateValoration from 'services/CreateOrUpdateValoration';
+import QuoteService from 'services/Quote';
+import { NextStep, setPropertyValidation } from 'store/actions';
+import Helpers from 'common/helpers/helpers';
 // Components
 import Segurarinmueble from '../segurarinmueble/Segurarinmueble';
 import Asegurarcontenidos from '../asegurarcontenidos/Asegurarcontenidos';
@@ -18,19 +18,23 @@ import { UrlSite } from '../../../../../config';
 import Loading from '../../../../globals/loading/Loading';
 import OtherQuestions from '../OtherQuestions';
 import PropertyNotAllowed from '../../../../PropertyNotAllowed';
+import clsx from 'clsx';
+import ModalAlert from 'components/globals/Modal';
+import { OPTIONS_TYPES_RISK } from 'assets/constants';
 
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
     this.state = {
       disabled: false,
+      notContinueQuotation: false,
       propertyNotAllowed: false,
     };
   }
 
   saveService = async () => {
     Loading.toggle(true);
-    await SaveIdentifications.save();
+    await QuoteService.save();
     await CreateOrUpdateValoration.save();
     Helpers.goToHome(this.props.history);
   };
@@ -38,7 +42,7 @@ class BtnContinue extends Component {
   goBack = async () => {
     Loading.toggle(true);
     store.dispatch(NextStep(1));
-    await SaveIdentifications.save();
+    await QuoteService.save();
     await CreateOrUpdateValoration.save();
     this.props.history.push(
       UrlSite + '/cotizacion/1/' + this.props.match.params.id
@@ -206,11 +210,27 @@ class BtnContinue extends Component {
     } else {
       Loading.toggle(true);
       store.dispatch(NextStep(3));
-      await SaveIdentifications.save();
-      await CreateOrUpdateValoration.save();
-      this.props.history.push(
-        UrlSite + '/cotizacion/3/' + storeState.cotizacion.number
-      );
+      const {
+        quote_created: { infoGeocodingSig },
+      } = await QuoteService.save();
+      const NotInsured =
+        infoGeocodingSig &&
+        infoGeocodingSig.features[0]?.attributes.AMENAZA_INUNDACION ===
+          'NO ASEGURABLE';
+      if (
+        (OPTIONS_TYPES_RISK.HOUSE === inmueble.type_risk && NotInsured) ||
+        (OPTIONS_TYPES_RISK.APARTMENT === inmueble.type_risk &&
+          NotInsured &&
+          +inmueble.pisonumero === 1)
+      ) {
+        this.setState({ ...this.state, notContinueQuotation: true });
+        Loading.toggle(false);
+      } else {
+        await CreateOrUpdateValoration.save();
+        this.props.history.push(
+          UrlSite + '/cotizacion/3/' + storeState.cotizacion.number
+        );
+      }
     }
   };
 
@@ -234,10 +254,11 @@ class BtnContinue extends Component {
           type="button"
           disabled={this.state.disabled}
           onClick={this.saveServiceContinue}
-          className={
-            'btn btn-primary ' +
-            (this.state.disabled === true ? 'disabled' : '')
-          }
+          className={clsx(
+            'btn btn-primary',
+            (this.state.disabled || this.state.notContinueQuotation) &&
+              'disabled'
+          )}
         >
           Continuar
         </button>
@@ -246,6 +267,24 @@ class BtnContinue extends Component {
           onClose={() => {
             this.setState({ propertyNotAllowed: false });
           }}
+        />
+        <ModalAlert
+          type="warning"
+          show={this.state.notContinueQuotation}
+          message={
+            <>
+              Lo sentimos, no podemos entregar <br />
+              la cotización en este momento
+              <br />
+              <span>
+                La ubicación del riesgo está restringida por{' '}
+                <strong>innundación</strong>{' '}
+              </span>
+            </>
+          }
+          handleClose={() =>
+            this.setState({ ...this.state, notContinueQuotation: false })
+          }
         />
       </Fragment>
     );

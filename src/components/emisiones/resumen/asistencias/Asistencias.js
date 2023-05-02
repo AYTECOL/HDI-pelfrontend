@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import store from '../../../../store';
+import store from 'store';
 import './Asistencias.scss';
 import Plans from '../../../cotizaciones/cotizacion/plans/Plans';
-import check from '../../../../common/images/check-img.png';
-import Helpers from '../../../../common/helpers/helpers';
+import check from 'assets/images/check-img.png';
+import Helpers from 'common/helpers/helpers';
 
 class Asistencias extends Component {
   constructor(props) {

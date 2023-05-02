@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    commit-message:
+      prefix: "npm nonprod"
+      prefix-development: "npm dev"
+      include: "scope"
+    open-pull-requests-limit: 10
+    target-branch: "nonprod"
+    reviewers:
+      - "David-Restrepo_lmig"
+    versioning-strategy: increase-if-necessary

@@ -18,7 +18,7 @@ import {
   LIMITS_EXCEPTIONS_SARLAFT,
   ROLES_KEY,
   COD_COVERAGES_INSURED,
-} from '../../../../common/constants';
+} from 'assets/constants';
 import {
   isRoleParticipation,
   getTotalParticipationPercentage,

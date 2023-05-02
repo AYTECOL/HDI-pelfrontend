@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './ErrorNetwork.scss';
 
-import ImageError from '../../common/images/error.png';
+import ImageError from 'assets/images/error.png';
 
 class ErrorNetwork extends Component {
   constructor(props) {

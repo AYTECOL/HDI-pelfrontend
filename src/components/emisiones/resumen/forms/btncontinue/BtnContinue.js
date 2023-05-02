@@ -11,7 +11,7 @@ import {
   saveIdentificationValue,
   saveAttachedFile,
 } from 'store/actions';
-import SaveIdentifications from 'services/Quote';
+import QuoteService from 'services/Quote';
 import Crearpolizaiaxis from 'services/Crearpolizaiaxis';
 import QuoteIussedById from 'services/QuoteIussedById';
 import IssuedCounter from 'services/IssuedCounter';
@@ -163,7 +163,7 @@ class BtnContinue extends Component {
       }
 
       store.dispatch(NextStep(7));
-      await SaveIdentifications.save();
+      await QuoteService.save();
       history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);
 
       Loading.toggle(false);

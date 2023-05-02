@@ -2,13 +2,13 @@ import React, { Component, Fragment } from 'react';
 
 import { withRouter } from 'react-router-dom';
 import { UrlSite } from '../../../../../config';
-import Helpers from '../../../../../common/helpers/helpers';
-import CreateOrUpdateMoreInfo from '../../../../../services/CreateOrUpdateMoreInfo';
-import UploadFile from '../../../../../services/UploadFile';
-import store from '../../../../../store';
-import { NextStep } from '../../../../../store/actions';
-import SaveIdentifications from '../../../../../services/Quote';
-import Loading from '../../../../globals/loading/Loading';
+import Helpers from 'common/helpers/helpers';
+import CreateOrUpdateMoreInfo from 'services/CreateOrUpdateMoreInfo';
+import UploadFile from 'services/UploadFile';
+import store from 'store';
+import { NextStep } from 'store/actions';
+import QuoteService from 'services/Quote';
+import Loading from 'components/globals/loading/Loading';
 import { attachmentsItems } from '../../constants';
 
 class BtnContinue extends Component {
@@ -119,11 +119,11 @@ class BtnContinue extends Component {
     if (typeof total !== 'undefined') {
       if (status === true) {
         store.dispatch(NextStep(6));
-        await SaveIdentifications.save();
+        await QuoteService.save();
         history.push(UrlSite + '/emision/3/' + match.params.id);
       }
     } else {
-      await SaveIdentifications.save();
+      await QuoteService.save();
       Helpers.goToHome(history);
     }
     Loading.toggle(false);

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Header.scss';
-import logo from '../../../common/images/logo.png';
+import logo from 'assets/images/logo.png';
 import { withRouter } from 'react-router-dom';
-import ConsultaPersonas from '../../../services/ConsultaPersonas';
+import ConsultaPersonas from 'services/ConsultaPersonas';
 
 class Header extends Component {
   constructor(props) {

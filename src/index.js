@@ -4,12 +4,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 
-import './common/scss/reset.scss';
-import './common/fonts/stylesheet.css';
+import 'assets/scss/reset.scss';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'jquery';
 import 'bootstrap/dist/js/bootstrap.js';
-import './common/scss/index.scss';
+import 'assets/scss/index.scss';
 
 import store from './store';
 import App from './App';
