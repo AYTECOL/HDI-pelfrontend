@@ -15,6 +15,7 @@ export const ROLES_KEY = {
   IS_TAKER: 1,
   IS_INSURED: 2,
   IS_BENEFICIARY: 3,
+  IS_ONEROUS: 4,
 };
 
 export const COD_COVERAGES_INSURED = {
