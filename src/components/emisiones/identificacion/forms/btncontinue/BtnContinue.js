@@ -13,6 +13,7 @@ import Persona from '../../popups/persona/person';
 import { fieldsNames } from '../../popups/persona/constants';
 import Service from 'services/Api';
 import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
+import { ROLES_KEY } from 'assets/constants';
 
 const UrlServicePerson = UrlPerson;
 const Baseurl = '/validarIdentidad';
@@ -54,7 +55,7 @@ class BtnContinue extends PureComponent {
     let persons = this.props.persons;
     let takers = {};
     let insured = [];
-    let benefists = [];
+    let beneficiaries = [];
     let onerous = [];
     let additional = [];
     let newPersons = [];
@@ -72,8 +73,6 @@ class BtnContinue extends PureComponent {
     }
     persons = newPersons;
     const { personalAccidents, exequiasParticipation } = fieldsNames;
-    const sarlaftDocument = 'sarlaft_document_url';
-    const habeasDataDocument = 'habeas_data_document_url';
     for (let i in persons) {
       let location = persons['ciudad'];
       const person = persons[i];
@@ -94,8 +93,6 @@ class BtnContinue extends PureComponent {
         location: location,
         address_type: person['adresstype'],
         address: person['address'],
-        sarlaftDocumentUrl: person['sarlaft_document_url'],
-        habeasDataDocumentUrl: person['habeas_data_document_url'],
         role: person['role'],
         businessname: person['businessname'],
         fechadecontitucion: person['fechadecontitucion'],
@@ -107,31 +104,33 @@ class BtnContinue extends PureComponent {
         [exequiasParticipation]: person[exequiasParticipation],
       };
       // sarlaft file
-      dataUser[sarlaftDocument] =
+      dataUser['sarlaft_document_url'] =
         person?.['sarlaft'] ||
-        person?.[sarlaftDocument] ||
+        person?.['sarlaft_document_url'] ||
         person?.['sarlfalt_url'] ||
         null;
       // sarlaft file
       // habeas data file
-
-      dataUser[habeasDataDocument] =
+      dataUser['habeas_data_document_url'] =
         person?.['habeas_data'] ||
-        person?.[habeasDataDocument] ||
+        person?.['habeas_data_document_url'] ||
         person?.['habeas_data_url'] ||
         null;
       // habeas data file
+      // certificate file
+      dataUser['cerl_document_url'] =
+        person?.['cerl'] ||
+        person?.['cerl_document_url'] ||
+        person?.['cerl_url'] ||
+        null;
+      // certificate  file
       for (let j in dataUser)
         if (dataUser[j] === '""' || dataUser[j] === '') dataUser[j] = ' ';
       if (dataUser.role.indexOf(5) > -1 || dataUser.role.indexOf(6) > -1) {
         additional.push(dataUser);
       }
       for (let j in person['role']) {
-        const isHabeasData =
-          dataUser[habeasDataDocument] !== undefined ? true : false;
-        dataUser[isHabeasData ? 'code_habeas_data' : 'code_sarlaft'] =
-          isHabeasData ? 20 : 120;
-        if (person['role'][j] === 1) {
+        if (person['role'][j] === ROLES_KEY.IS_TAKER) {
           takers = dataUser;
           validatePersons.push(
             this.validateData(
@@ -144,11 +143,11 @@ class BtnContinue extends PureComponent {
                 : dataUser.first_last_name
             )
           );
-        } else if (persons[i]['role'][j] === 2) {
+        } else if (persons[i]['role'][j] === ROLES_KEY.IS_INSURED) {
           insured.push(dataUser);
-        } else if (persons[i]['role'][j] === 3) {
-          benefists.push(dataUser);
-        } else if (persons[i]['role'][j] === 4) {
+        } else if (persons[i]['role'][j] === ROLES_KEY.IS_BENEFICIARY) {
+          beneficiaries.push(dataUser);
+        } else if (persons[i]['role'][j] === ROLES_KEY.IS_ONEROUS) {
           onerous.push(dataUser);
         }
       }
@@ -198,7 +197,7 @@ class BtnContinue extends PureComponent {
       risk_valoration: quouteId,
       taker: takers,
       insured: insured,
-      benefist: benefists,
+      benefist: beneficiaries,
       onerous: onerous,
       persons_aditionals: additional,
     });
