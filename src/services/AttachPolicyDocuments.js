@@ -79,6 +79,7 @@ class AttachPolicyDocuments {
           {
             codigo: archivo.codigo,
             nombre: archivo.nombre,
+            categoria: archivo.codigo,
             fileKey: signedUrlAttachDocument.key,
           },
           { codigoProducto, infoRequest, numeroPoliza }
