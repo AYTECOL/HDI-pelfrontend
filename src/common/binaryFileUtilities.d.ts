@@ -6,7 +6,7 @@ declare type AdjuntarDocumentosPolizaBase = {
 declare type FicheroDescripcion = {
   codigo: string | number;
   nombre: string;
-  categoria?: string;
+  categoria?: string | number;
 };
 declare type CodigoProducto = {
   codigo: string | number;
