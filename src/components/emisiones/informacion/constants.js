@@ -38,3 +38,8 @@ export const attachmentsItems = [
     icon: 'photo',
   },
 ];
+
+export const TYPES_VALUE_CONTENT = {
+  INSURED: 'INSURED',
+  REAL_VALUE: 'REAL_VALUE',
+};

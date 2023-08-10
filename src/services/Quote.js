@@ -1,23 +1,17 @@
 import Api from './Api';
 import Store from '../store';
 import ConsultaPersonas from './ConsultaPersonas';
-import AccessTokenGeocoding from './AccessTokenProd';
 import SigService from './SigServices';
 import AuthHeader from './AuthHeader';
 const Url = '/quote';
 class QuoteService {
   static async save() {
     let storeState = Store.getState();
-    let accessToken = await AccessTokenGeocoding.get();
     const jobId = await SigService.LongitudeAndLatitude(
-      accessToken.access_token,
       storeState.mapsOptions.latitude,
       storeState.mapsOptions.longitude
     );
-    const infoGeocoding = await SigService.sigConsumer(
-      accessToken.access_token,
-      jobId
-    );
+    const infoGeocoding = await SigService.sigConsumer(jobId);
 
     const {
       accessToken: _a,
