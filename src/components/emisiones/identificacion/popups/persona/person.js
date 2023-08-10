@@ -149,14 +149,14 @@ export default class Persona extends Component {
   }
 
   getTotal() {
-    const { typePerson } = this.state;
-    if (typePerson === 1 || typePerson === 3 || typePerson === 2) {
+    const { typePerson, exitsTomador } = this.state;
+    if ((typePerson === 1 && !exitsTomador) || typePerson === 3 || typePerson === 2) {
       return 15;
     } else if (typePerson === 7) {
       return 3;
     } else if (typePerson === 4) {
       return 4;
-    } else if (typePerson === 5 || typePerson === 6) {
+    } else if (typePerson === 5 || typePerson === 6 || (typePerson === 1 && exitsTomador)) {
       /**
        * @type {{ role: number[] }}
        */
@@ -490,9 +490,8 @@ export default class Persona extends Component {
       const { abbreviation } = this.state.identifications.find(
         (type) => type.code === +person.code
       );
-      fileName = `${keyFile}-${abbreviation}-${person.value}-${
-        this.state.countFiles
-      }.${file.name.split('.').pop()}`;
+      fileName = `${keyFile}-${abbreviation}-${person.value}-${this.state.countFiles
+        }.${file.name.split('.').pop()}`;
       status = false;
     }
 
@@ -737,7 +736,9 @@ export default class Persona extends Component {
       adresstype,
     } = person;
 
+
     const isPersonNatural = +code !== 37;
+
     const isTaker = role.some((rol) => +rol === 1);
     const address = String(person.address);
     const tipodetelefono = String(person.tipodetelefono);
@@ -804,7 +805,7 @@ export default class Persona extends Component {
       errors.push(TYPES_FILES.HABEAS_DATA);
     }
 
-    if ((!isPersonNatural && !cerl && !this.state.personExists) || errorFile) {
+    if ((!isPersonNatural && !cerl && !this.state.personExists && !this.state.exitsTomador) || (errorFile && !this.state.exitsTomador)) {
       errors.push(TYPES_FILES.CERL);
     }
 
