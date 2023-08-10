@@ -7,7 +7,7 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 class SigService {
-  static async LongitudeAndLatitude(tokenAcceess, lon, lan) {
+  static async LongitudeAndLatitude(lon, lan) {
     const user = await ConsultaPersonas.getUser();
     let tries = 3;
     let response = null;
@@ -17,7 +17,7 @@ class SigService {
     while (tries >= 0) {
       try {
         response = await Api.get(
-          URL_LONGITUDE_LATITUDE + '/' + tokenAcceess + '/' + lan + '/' + lon,
+          URL_LONGITUDE_LATITUDE + '/' + lan + '/' + lon,
           undefined,
           authHeader
         );
@@ -32,7 +32,7 @@ class SigService {
     }
     return response;
   }
-  static async sigConsumer(tokenAcceess, jobId) {
+  static async sigConsumer(jobId) {
     const user = await ConsultaPersonas.getUser();
     let tries = 5;
     let response = null;
@@ -42,7 +42,7 @@ class SigService {
     while (tries >= 0) {
       try {
         response = await Api.get(
-          URL_CONSUMER + '/' + tokenAcceess + '/' + jobId,
+          URL_CONSUMER + '/' + jobId,
           undefined,
           authHeader
         );
