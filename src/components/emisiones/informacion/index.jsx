@@ -26,6 +26,7 @@ import UploadFileService from '../../../services/UploadFile';
 import { BuiltMetersHousing } from './BuiltMetersHousing';
 import { Articles } from './Articles';
 import { LastContentWarn } from './LastContentWarn';
+import { TYPES_VALUE_CONTENT } from './constants';
 
 // 10MB
 const maxFileSize = UploadFileService.maxFileSize;
@@ -268,6 +269,7 @@ class Index extends React.Component {
           type: nextType,
           caracte: '',
           value: '',
+          real_value: '',
         },
       ],
     });
@@ -432,17 +434,22 @@ class Index extends React.Component {
 
   getErrors(content, maximum) {
     /**
-     * @type {{min?:boolean, max?:boolean, empty?: boolean} | null}
+     * @type {{min?:boolean, max?:boolean, empty?: boolean, maxRealValue: boolean, minRealValue: boolean} | null}
      */
     let errors = null;
     const value = this.formatToNumber(content.value);
+    const realValue = this.formatToNumber(content.real_value);
     const contentType = content.type;
     const item = this.getItem(contentType);
     const min = value < item.min;
     const max = value > (maximum >= item.max ? item.max : maximum);
+    const minRealValue = realValue < item.min;
+    const maxRealValue = realValue > (maximum >= item.max ? item.max : maximum);
     const empty = !value;
     if (min) errors = { ...errors, min };
     if (max) errors = { ...errors, max };
+    if (minRealValue) errors = { ...errors, minRealValue };
+    if (maxRealValue) errors = { ...errors, maxRealValue };
     if (empty) errors = { ...errors, empty };
     return errors;
   }
@@ -462,11 +469,16 @@ class Index extends React.Component {
 
   handleChange =
     (key) =>
-    ({ value }) => {
+    ({ value, type }) => {
       const { contents: oldContents } = this.state;
       const contents = [...oldContents];
       let content = contents[key];
-      content.value = value;
+      if (type === TYPES_VALUE_CONTENT.REAL_VALUE) {
+        content.real_value = value;
+      } else {
+        content.value = value;
+      }
+
       this.setState({
         ...this.state,
         contents: contents,
@@ -751,9 +763,10 @@ class Index extends React.Component {
                               ) ||
                               `${content.type}` === `${item.id}`
                           )}
-                          handleChange={({ value }) => {
+                          handleChange={({ value, type }) => {
                             this.handleChange(key)({
                               value: value,
+                              type,
                             });
                           }}
                           updateContent={this.updateContent(key)}
