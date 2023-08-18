@@ -166,7 +166,7 @@ export default class Persona extends Component {
       const selectedRoleFields = participationValues.filter((key) => {
         const rolesParticipation = rolesParticipations[key] || [];
         return rolesParticipation.some((roleParticipation) =>
-          roles.some((role) => role === roleParticipation)
+          roles?.some((role) => role === roleParticipation)
         );
       }).length;
       return totalFields + selectedRoleFields;
