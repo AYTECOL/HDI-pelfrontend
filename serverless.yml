@@ -35,6 +35,7 @@ functions:
     name: ${self:service}-${self:provider.stage}-lambdaEdge
     handler: handler.infr
     role: { 'Fn::GetAtt': [LambdaIAMRole, Arn] }
+    runtime: nodejs16.x
     MemorySize: 256
     timeout: 29
     lambdaAtEdge:
