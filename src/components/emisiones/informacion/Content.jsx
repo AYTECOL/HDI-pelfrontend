@@ -153,7 +153,7 @@ const Content = ({
               onChange={({ target: { value } }) => {
                 let newValue = value;
                 let valueNumber = Masknumbermoney.formatToNumber(value);
-                if (valueNumber > maxNumber) newValue = max;
+                if (valueNumber > maxNumber) newValue = content?.value || 0;
                 handleChange({
                   value: newValue,
                   type: TYPES_VALUE_CONTENT.REAL_VALUE,
@@ -162,7 +162,9 @@ const Content = ({
               disabled={!typeItem}
             />
             <small className="form-text d-block text-left total-value">
-              {`Máximo: ${max} por artículo`}
+              {`Máximo: ${Masknumbermoney.formatToMask(
+                content?.value || 0
+              )} por artículo`}
             </small>
             {errors && errors.minRealValue && (
               <small className="form-text only-errors show">
