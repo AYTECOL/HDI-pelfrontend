@@ -443,8 +443,8 @@ class Index extends React.Component {
     const item = this.getItem(contentType);
     const min = value < item.min;
     const max = value > (maximum >= item.max ? item.max : maximum);
-    const minRealValue = realValue < item.min;
-    const maxRealValue = realValue > (maximum >= item.max ? item.max : maximum);
+    const minRealValue = realValue <= 0;
+    const maxRealValue = realValue > value;
     const empty = !value;
     if (min) errors = { ...errors, min };
     if (max) errors = { ...errors, max };
