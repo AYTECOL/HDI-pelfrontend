@@ -6,7 +6,7 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs16.x
+  runtime: nodejs18.x
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   tags: ${file(./tags.yml)}
@@ -35,7 +35,7 @@ functions:
     name: ${self:service}-${self:provider.stage}-lambdaEdge
     handler: handler.infr
     role: { 'Fn::GetAtt': [LambdaIAMRole, Arn] }
-    runtime: nodejs16.x
+    runtime: nodejs18.x
     MemorySize: 256
     timeout: 29
     lambdaAtEdge:
