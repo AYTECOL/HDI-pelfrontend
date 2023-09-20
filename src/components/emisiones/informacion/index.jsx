@@ -444,12 +444,10 @@ class Index extends React.Component {
     const min = value < item.min;
     const max = value > (maximum >= item.max ? item.max : maximum);
     const minRealValue = realValue <= 0;
-    const maxRealValue = realValue > value;
     const empty = !value;
     if (min) errors = { ...errors, min };
     if (max) errors = { ...errors, max };
     if (minRealValue) errors = { ...errors, minRealValue };
-    if (maxRealValue) errors = { ...errors, maxRealValue };
     if (empty) errors = { ...errors, empty };
     return errors;
   }
