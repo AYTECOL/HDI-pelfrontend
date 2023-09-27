@@ -8,8 +8,8 @@ class QuoteService {
   static async save() {
     let storeState = Store.getState();
     const jobId = await SigService.LongitudeAndLatitude(
-      storeState.mapsOptions.latitude,
-      storeState.mapsOptions.longitude
+      storeState.mapsOptions.longitude,
+      storeState.mapsOptions.latitude
     );
     const infoGeocoding = await SigService.sigConsumer(jobId);
 

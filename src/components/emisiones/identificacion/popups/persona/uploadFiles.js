@@ -17,7 +17,6 @@ const UploadFiles = ({
   typeFile = TYPES_FILES.SARLAFT,
 }) => {
   const fileUrl = sarlaft || habeasData || cerl || undefined;
-  console.log('fileUrl', fileUrl);
   const nameLabel = TYPES_FILES_LABEL?.[typeFile]?.name || '';
   const id = TYPES_FILES_LABEL?.[typeFile].id || 'defaultFile';
   return (
