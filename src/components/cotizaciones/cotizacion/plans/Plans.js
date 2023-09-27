@@ -40,7 +40,7 @@ class Index extends Component {
             planSelected: plan,
             quotateId: id,
           }).catch((e) => {
-            console.log(e);
+            console.error(e);
           });
         }
       }

@@ -7,7 +7,7 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 class SigService {
-  static async LongitudeAndLatitude(tokenAcceess, lon, lan) {
+  static async LongitudeAndLatitude(lon, lan) {
     const user = await ConsultaPersonas.getUser();
     let tries = 3;
     let response = null;
@@ -17,7 +17,7 @@ class SigService {
     while (tries >= 0) {
       try {
         response = await Api.get(
-          URL_LONGITUDE_LATITUDE + '/' + tokenAcceess + '/' + lan + '/' + lon,
+          `${URL_LONGITUDE_LATITUDE}/${lon}/${lan}`,
           undefined,
           authHeader
         );
@@ -26,13 +26,13 @@ class SigService {
         response = jobId;
         break;
       } catch (error) {
-        console.log('error in service SIG: ', error);
+        console.error(error);
         tries--;
       }
     }
     return response;
   }
-  static async sigConsumer(tokenAcceess, jobId) {
+  static async sigConsumer(jobId) {
     const user = await ConsultaPersonas.getUser();
     let tries = 5;
     let response = null;
@@ -42,7 +42,7 @@ class SigService {
     while (tries >= 0) {
       try {
         response = await Api.get(
-          URL_CONSUMER + '/' + tokenAcceess + '/' + jobId,
+          `${URL_CONSUMER}/${jobId}`,
           undefined,
           authHeader
         );
@@ -51,7 +51,7 @@ class SigService {
         response = value;
         break;
       } catch (error) {
-        console.log('error in service SIG: ', error);
+        console.error('error in service SIG: ', error);
         await sleep(5000);
         tries--;
       }

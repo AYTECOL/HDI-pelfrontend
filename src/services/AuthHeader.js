@@ -19,7 +19,7 @@ class AuthHeader {
         Authorization: 'Bearer ' + this.token,
       };
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return {
         Authorization: 'Bearer ',
       };

@@ -25,7 +25,6 @@ import {
   rolesParticipations,
   isRoleParticipation,
 } from './ParticipationPercentages/utils';
-import { error } from 'jquery';
 const maxFileSize = UploadFileService.maxFileSize;
 
 const phoneTypes = {
@@ -150,13 +149,21 @@ export default class Persona extends Component {
 
   getTotal() {
     const { typePerson, exitsTomador } = this.state;
-    if ((typePerson === 1 && !exitsTomador) || typePerson === 3 || typePerson === 2) {
+    if (
+      (typePerson === 1 && !exitsTomador) ||
+      typePerson === 3 ||
+      typePerson === 2
+    ) {
       return 15;
     } else if (typePerson === 7) {
       return 3;
     } else if (typePerson === 4) {
       return 4;
-    } else if (typePerson === 5 || typePerson === 6 || (typePerson === 1 && exitsTomador)) {
+    } else if (
+      typePerson === 5 ||
+      typePerson === 6 ||
+      (typePerson === 1 && exitsTomador)
+    ) {
       /**
        * @type {{ role: number[] }}
        */
@@ -385,6 +392,7 @@ export default class Persona extends Component {
 
         person.sarlfaltActive =
           consultarPersonaRs['informacionSARLAFT']['vigente'];
+        person.habeasDataActive = consultarPersonaRs['habeasData']['completed'];
         person.sarlfaltActiveDisabled = true;
       }
     }
@@ -490,8 +498,9 @@ export default class Persona extends Component {
       const { abbreviation } = this.state.identifications.find(
         (type) => type.code === +person.code
       );
-      fileName = `${keyFile}-${abbreviation}-${person.value}-${this.state.countFiles
-        }.${file.name.split('.').pop()}`;
+      fileName = `${keyFile}-${abbreviation}-${person.value}-${
+        this.state.countFiles
+      }.${file.name.split('.').pop()}`;
       status = false;
     }
 
@@ -606,7 +615,6 @@ export default class Persona extends Component {
         );
       } else {
         let person = this.state.person;
-        console.log('response person ', responsePerson);
         person = Persona.extractDataFromIaxis(responsePerson, code, person);
         person.person = responsePerson;
         this.setState(
@@ -689,7 +697,7 @@ export default class Persona extends Component {
           fileValues.fileValue,
           fileValues.name || null
         ).catch((e) => {
-          console.log(e);
+          console.error(e);
         });
         if (file && typeof file['location'] !== 'undefined') {
           if (TYPES_FILES.SARLAFT === fileValues.type) {
@@ -735,7 +743,6 @@ export default class Persona extends Component {
       ciudad,
       adresstype,
     } = person;
-
 
     const isPersonNatural = +code !== 37;
 
@@ -805,7 +812,13 @@ export default class Persona extends Component {
       errors.push(TYPES_FILES.HABEAS_DATA);
     }
 
-    if ((!isPersonNatural && !cerl && !this.state.personExists && !this.state.exitsTomador) || (errorFile && !this.state.exitsTomador)) {
+    if (
+      (!isPersonNatural &&
+        !cerl &&
+        !this.state.personExists &&
+        !this.state.exitsTomador) ||
+      (errorFile && !this.state.exitsTomador)
+    ) {
       errors.push(TYPES_FILES.CERL);
     }
 
@@ -921,7 +934,9 @@ export default class Persona extends Component {
     if (isTaker && !exceptionSarlaft) isRequiredFileHabeasData = false;
 
     const isShowUploadFile = isRequiredFileHabeasData
-      ? +person?.code !== 37 && !person?.sarlfaltActive
+      ? +person?.code !== 37 &&
+        !person?.sarlfaltActive &&
+        !person?.habeasDataActive
       : !person?.sarlfaltActive;
     const isShowUploadFilecerticate =
       +person?.code === 37 && !this.state.personExists && isTaker;
