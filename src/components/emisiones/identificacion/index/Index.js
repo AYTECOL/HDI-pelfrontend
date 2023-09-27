@@ -371,7 +371,6 @@ class Index extends Component {
             valueInsured += values[0]?.value || 0;
           });
         }
-
         if (
           total_premium_policy &&
           total_premium_policy <= LIMITS_EXCEPTIONS_SARLAFT.LIMIT_PRIMA &&
