@@ -172,11 +172,6 @@ const Content = ({
                 permitido
               </small>
             )}
-            {errors && errors.maxRealValue && (
-              <small className="form-text only-errors show">
-                Valor real del ítem {item && item.label} es mayor al permitido
-              </small>
-            )}
           </div>
         </div>
         {canAttachFile && (
