@@ -151,11 +151,8 @@ const Content = ({
               name="value"
               value={Masknumbermoney.formatToMask(content.real_value)}
               onChange={({ target: { value } }) => {
-                let newValue = value;
-                let valueNumber = Masknumbermoney.formatToNumber(value);
-                if (valueNumber > maxNumber) newValue = content?.value || 0;
-                handleChange({
-                  value: newValue,
+              handleChange({
+                  value,
                   type: TYPES_VALUE_CONTENT.REAL_VALUE,
                 });
               }}
