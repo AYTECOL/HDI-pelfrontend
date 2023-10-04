@@ -158,11 +158,6 @@ const Content = ({
               }}
               disabled={!typeItem}
             />
-            <small className="form-text d-block text-left total-value">
-              {`Máximo: ${Masknumbermoney.formatToMask(
-                content?.value || 0
-              )} por artículo`}
-            </small>
             {errors && errors.minRealValue && (
               <small className="form-text only-errors show">
                 Valor real del ítem {item && item.label} es inferior al
