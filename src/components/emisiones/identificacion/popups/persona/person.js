@@ -389,13 +389,17 @@ export default class Persona extends Component {
               person.adresstype = lastDireccion['tipoDireccion']['codigo'];
           }
         }
-
-        person.sarlfaltActive =
-          consultarPersonaRs['informacionSARLAFT']['vigente'];
-        person.habeasDataActive = consultarPersonaRs['habeasData']['completed'];
-        person.sarlfaltActiveDisabled = true;
       }
     }
+    if ('vigente' in consultarPersonaRs['informacionSARLAFT']) {
+      person.sarlfaltActive =
+        consultarPersonaRs['informacionSARLAFT']['vigente'];
+      person.sarlfaltActiveDisabled = true;
+    }
+    if ('completed' in consultarPersonaRs['habeasData']) {
+      person.habeasDataActive = consultarPersonaRs['habeasData']['completed'];
+    }
+
     return person;
   }
 
