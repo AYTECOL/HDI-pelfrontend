@@ -188,7 +188,7 @@ class Coberturas extends Component {
         return getValue(value, rules);
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
     return rules.min || 0;
   }
