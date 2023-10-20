@@ -5,7 +5,7 @@ exports.infr = (event, context, callback) => {
     return callback(new Error('Records not available'));
   }
   const headers = response.headers;
-  const api_endpoint = 'https://*.execute-api.us-east-1.amazonaws.com https://*.libertymutual.com https://*.s3.amazonaws.com';
+  const api_endpoint = 'https://*.execute-api.us-east-1.amazonaws.com https://*.libertymutual.com https://*.s3.us-east-1.amazonaws.com';
 
   const analytics =
     'https://www.googletagmanager.com https://www.google-analytics.com https://*.qualtrics.com';
