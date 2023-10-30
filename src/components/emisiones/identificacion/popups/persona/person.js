@@ -391,13 +391,22 @@ export default class Persona extends Component {
         }
       }
     }
-    if ('vigente' in consultarPersonaRs['informacionSARLAFT']) {
+
+    if (
+      'informacionSARLAFT' in consultarPersonaRs &&
+      'vigente' in consultarPersonaRs['informacionSARLAFT']
+    ) {
       person.sarlfaltActive =
-        consultarPersonaRs['informacionSARLAFT']['vigente'];
+        consultarPersonaRs['informacionSARLAFT']?.['vigente'] || false;
       person.sarlfaltActiveDisabled = true;
     }
-    if ('completed' in consultarPersonaRs['habeasData']) {
-      person.habeasDataActive = consultarPersonaRs['habeasData']['completed'];
+    
+    if (
+      'habeasData' in consultarPersonaRs &&
+      'completed' in consultarPersonaRs['habeasData']
+    ) {
+      person.habeasDataActive =
+        consultarPersonaRs['habeasData']?.['completed'] || false;
     }
 
     return person;
