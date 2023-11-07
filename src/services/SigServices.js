@@ -17,7 +17,7 @@ class SigService {
     while (tries >= 0) {
       try {
         response = await Api.get(
-          URL_LONGITUDE_LATITUDE + '/' + lan + '/' + lon,
+          `${URL_LONGITUDE_LATITUDE}/${lon}/${lan}`,
           undefined,
           authHeader
         );
@@ -26,7 +26,7 @@ class SigService {
         response = jobId;
         break;
       } catch (error) {
-        console.log('error in service SIG: ', error);
+        console.error(error);
         tries--;
       }
     }
@@ -42,7 +42,7 @@ class SigService {
     while (tries >= 0) {
       try {
         response = await Api.get(
-          URL_CONSUMER + '/' + jobId,
+          `${URL_CONSUMER}/${jobId}`,
           undefined,
           authHeader
         );
@@ -51,7 +51,7 @@ class SigService {
         response = value;
         break;
       } catch (error) {
-        console.log('error in service SIG: ', error);
+        console.error('error in service SIG: ', error);
         await sleep(5000);
         tries--;
       }

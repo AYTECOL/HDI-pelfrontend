@@ -23,7 +23,6 @@ class Api {
         if (this.status >= 200 && this.status < 300) {
           resolve(xhr.response);
         } else {
-          console.log(xhr.response);
           let response;
           try {
             response = JSON.parse(xhr.response);
@@ -38,7 +37,6 @@ class Api {
         }
       };
       xhr.onerror = function () {
-        console.log(xhr.response);
         reject({
           status: this.status,
           statusText: xhr.statusText,

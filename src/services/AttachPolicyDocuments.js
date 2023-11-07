@@ -89,7 +89,7 @@ class AttachPolicyDocuments {
         return Axios.post(url, body, { headers });
       })
     ).catch((e) => {
-      console.log(e);
+      console.error(e);
       return null;
     });
   }
