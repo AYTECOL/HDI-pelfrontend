@@ -7,6 +7,7 @@ interface GoodsOverCostBase {
   caracte: string;
   type: string;
   value: string;
+  real_value: string;
   typeCode: number;
 }
 

@@ -5,7 +5,7 @@ import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from 'common/helpers/helpers';
 import informative from 'assets/images/informative.svg';
 import { typeItems } from 'common/typeItems';
-import { attachmentsItems } from './constants';
+import { TYPES_VALUE_CONTENT, attachmentsItems } from './constants';
 
 /**
  * @typedef {import('../../../models/types').Attachment} Attachment
@@ -99,7 +99,7 @@ const Content = ({
         <div
           className={classNames(
             'col no-padding-right',
-            !canAttachFile && 'col-4'
+            !canAttachFile && 'col'
           )}
         >
           <div className={'name form-group ' + (errors ? 'error' : '')}>
@@ -113,7 +113,10 @@ const Content = ({
                 let newValue = value;
                 let valueNumber = Masknumbermoney.formatToNumber(value);
                 if (valueNumber > maxNumber) newValue = max;
-                handleChange({ value: newValue });
+                handleChange({
+                  value: newValue,
+                  type: TYPES_VALUE_CONTENT.INSURED,
+                });
               }}
               disabled={!typeItem}
             />
@@ -134,8 +137,37 @@ const Content = ({
             )}
           </div>
         </div>
+        <div
+          className={classNames(
+            'col no-padding-right',
+            !canAttachFile && 'col'
+          )}
+        >
+          <div className={'name form-group ' + (errors ? 'error' : '')}>
+            <label htmlFor="name">Valor real</label>
+            <input
+              type="text"
+              className="form-control"
+              name="value"
+              value={Masknumbermoney.formatToMask(content.real_value)}
+              onChange={({ target: { value } }) => {
+              handleChange({
+                  value,
+                  type: TYPES_VALUE_CONTENT.REAL_VALUE,
+                });
+              }}
+              disabled={!typeItem}
+            />
+            {errors && errors.minRealValue && (
+              <small className="form-text only-errors show">
+                Valor real del ítem {item && item.label} es inferior al
+                permitido
+              </small>
+            )}
+          </div>
+        </div>
         {canAttachFile && (
-          <div className="col-4 no-padding-right">
+          <div className="col no-padding-right">
             <div className="form-group">
               <label>Factura o avaluo y fotografía</label>
               <div className="row">
