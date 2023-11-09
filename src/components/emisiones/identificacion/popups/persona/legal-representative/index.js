@@ -1,0 +1,214 @@
+import './styles.scss';
+// components
+import TypeDocuments from 'components/cotizaciones/identificacion/forms/tipodocumento/TipoDocumento';
+// form libs
+import { useForm, FormProvider, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+// utils libs
+import classNames from 'classnames';
+import { useEffect } from 'react';
+import Input from 'components/basics/input/input';
+import { DEFAULT_VALUE_TYPE_DOCUMENT } from 'assets/constants';
+import ConsultaPersonas from 'services/ConsultaPersonas';
+import Loading from 'components/globals/loading/Loading';
+import Helpers from 'common/helpers/helpers';
+import Validaridentificacion from 'components/cotizaciones/identificacion/popups/validaridentificacion/Validaridentificacion';
+const schema = yup
+  .object()
+  .shape({
+    typeDocument: yup.string().required(),
+    document: yup
+      .string()
+      .required(
+        'Falta información requerida para el Tomador. Por favor revise el campo Identificación'
+      )
+      .matches(/^[0-9]+$/, 'Debe ser un número'),
+    name: yup
+      .string()
+      .required(
+        ' Falta información requerida para el Tomador. Por favor revise el campo Primer nombre'
+      ),
+    secondName: yup.string(),
+    lastName: yup
+      .string()
+      .required(
+        '   Falta información requerida para el Tomador. Por favor revise el campo Primer apellido'
+      ),
+    secondLastName: yup.string(),
+  })
+  .required();
+
+const LegalRepresentative = ({
+  disabledAll = false,
+  hasErrorAddClass = () => {},
+  onChangeLegalRepresentative = () => {},
+  updateLegalRepresentative = () => {},
+  handleChangeIsRestricted = () => {},
+  LegalRepresentative = {},
+  isLegalRepresentativeBeneficiary,
+}) => {
+  const methods = useForm({
+    mode: 'all',
+    defaultValues: {
+      typeDocument:
+        LegalRepresentative?.typeDocument || DEFAULT_VALUE_TYPE_DOCUMENT,
+      document: LegalRepresentative?.document || '',
+      name: LegalRepresentative?.name || '',
+      secondName: LegalRepresentative?.secondName || '',
+      lastName: LegalRepresentative?.lastName || '',
+      secondLastName: LegalRepresentative?.secondLastName || '',
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const {
+    getValues,
+    setValue,
+    watch,
+    trigger,
+    reset,
+    formState: { errors },
+  } = methods;
+
+  useEffect(() => {
+    // initial errors in form
+    trigger();
+  }, [trigger]);
+
+  const { typeDocument, document, lastName, name, secondLastName, secondName } =
+    watch();
+
+  useEffect(() => {
+    // if form is valid, update data in component parent
+    updateLegalRepresentative(getValues());
+  }, [typeDocument, document, lastName, name, secondLastName, secondName]);
+
+  const handlerOnBlurCustom = async (e) => {
+    try {
+      const { typeDocument, document } = getValues();
+      if (typeDocument && document) {
+        const responseIaxis = await ConsultaPersonas.get(
+          typeDocument,
+          document
+        );
+        const { data, restricted } = Helpers.getDataBasicPersonIaxis(
+          responseIaxis,
+          typeDocument
+        );
+        if (restricted) {
+          handleChangeIsRestricted();
+          Validaridentificacion.toggle(true);
+        } else {
+          reset({
+            ...data,
+            typeDocument,
+            document,
+          });
+          trigger();
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      Loading.toggle(false);
+    }
+  };
+
+  return (
+    <FormProvider {...methods}>
+      <div className="row fields-row legal-representative">
+        <div className={'col-12 no-padding-right mb-4 '}>
+          <h1>Datos del Representante Legal</h1>
+          <p>
+            El <strong>Representante Legal </strong> es{' '}
+            <strong> Beneficiario Final </strong>
+          </p>
+          <div className={classNames('no-icon form-group answer-select')}>
+            <ul className="select-item">
+              <li
+                className={classNames(
+                  isLegalRepresentativeBeneficiary && 'active'
+                )}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (disabledAll) return;
+                  onChangeLegalRepresentative();
+                }}
+              >
+                SI
+              </li>
+              <li
+                className={classNames(
+                  !isLegalRepresentativeBeneficiary && 'active'
+                )}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (disabledAll) return;
+                  onChangeLegalRepresentative();
+                }}
+              >
+                No
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+          <Controller
+            name="typeDocument"
+            control={methods.control}
+            render={({ field }) => (
+              <TypeDocuments
+                notJuridicOption={true}
+                onChange={(e) => {
+                  setValue('typeDocument', e.target.value);
+                  trigger('typeDocument');
+                  /* handlerOnBlurCustom(e); */
+                }}
+                disabled={disabledAll}
+                value={field.value}
+                error={errors?.typeDocument?.message}
+              />
+            )}
+          />
+        </div>
+
+        <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+          <Input
+            disabled={disabledAll}
+            label="Identificación"
+            name="document"
+            onBlurCustom={handlerOnBlurCustom}
+          />
+        </div>
+        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+          <Input label="Primer nombre" name="name" disabled={disabledAll} />
+        </div>
+        <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+          <Input
+            label="Segundo nombre"
+            name="secondName"
+            disabled={disabledAll}
+          />
+        </div>
+
+        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
+          <Input
+            label={'Primer apellido'}
+            name="lastName"
+            disabled={disabledAll}
+          />
+        </div>
+        <div className="col col-12 col-sm-12 col-md-6 col-lg-6">
+          <Input
+            label="Segundo apellido"
+            name="secondLastName"
+            disabled={disabledAll}
+          />
+        </div>
+      </div>
+    </FormProvider>
+  );
+};
+
+export default LegalRepresentative;

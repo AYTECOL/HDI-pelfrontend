@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import Helpers from 'common/helpers/helpers';
 import { fieldsNames, TYPES_FILES, TYPES_FILES_LABEL } from './constants';
@@ -16,8 +16,19 @@ const UploadFiles = ({
   onChangeFile,
   typeFile = TYPES_FILES.SARLAFT,
 }) => {
-  const fileUrl = sarlaft || habeasData || cerl || undefined;
-  console.log('fileUrl', fileUrl);
+  const fileUrl = useMemo(() => {
+    switch (typeFile) {
+      case TYPES_FILES.SARLAFT:
+        return sarlaft;
+      case TYPES_FILES.HABEAS_DATA:
+        return habeasData;
+      case TYPES_FILES.CERL:
+        return cerl;
+      default:
+        return undefined;
+    }
+  }, [cerl, habeasData, sarlaft, typeFile]);
+
   const nameLabel = TYPES_FILES_LABEL?.[typeFile]?.name || '';
   const id = TYPES_FILES_LABEL?.[typeFile].id || 'defaultFile';
   return (

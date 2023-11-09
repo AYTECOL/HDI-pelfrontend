@@ -77,6 +77,10 @@ const setExceptionSarlaft = (data) => {
   return { type: actionsTypes.SET_EXCEPTION_SARLAFT, data: data };
 };
 
+const setGeneralSetIdentifications = (data) => {
+  return { type: actionsTypes.GENERAL_SET_IDENTIFICATIONS, data: data };
+};
+
 // Tercer formulario
 const indexPlanSelected = (index) => {
   return { type: actionsTypes.INDEX_PLAN_SELECTED, data: index };
@@ -152,4 +156,5 @@ export {
   saveAttachedFile as attachedFile,
   setPropertyValidation,
   setExceptionSarlaft,
+  setGeneralSetIdentifications,
 };

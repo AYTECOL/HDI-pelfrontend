@@ -12,6 +12,9 @@ import Emision from './pages/emision/Emision';
 import NotFound from './pages/notfound/NotFound';
 import ErrorNetwork from './pages/errornetwork/ErrorNetwork';
 import ConsultaPersonas from './services/ConsultaPersonas';
+import Identifications from 'services/Identifications';
+import store from 'store';
+import { setGeneralSetIdentifications } from 'store/actions';
 
 class App extends Component {
   _isMounted = false;
@@ -26,6 +29,13 @@ class App extends Component {
   componentDidMount() {
     this._isMounted = true;
     this.getUser();
+    this.getResources();
+  }
+
+  async getResources() {
+    // get types and labels for types of documents
+    let data = await Identifications.get();
+    store.dispatch(setGeneralSetIdentifications(data?.identifications || []));
   }
 
   componentWillUnmount() {

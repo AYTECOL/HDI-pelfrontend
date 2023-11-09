@@ -7,6 +7,7 @@ import {
   saveProspect,
 } from '../../../store/actions';
 import ValorationById from '../../../services/ValorationById';
+import { DEFAULT_VALUE_TYPE_DOCUMENT } from 'assets/constants';
 
 class Helpers {
   static toCapitalize(str) {
@@ -351,6 +352,38 @@ class Helpers {
     }
 
     throw new Error("Unable to copy obj! Its type isn't supported.");
+  }
+
+  static getDataBasicPersonIaxis({ consultarPersonaRs }, typeDocument) {
+    const { persona, personaRestringida } = consultarPersonaRs;
+    if (+typeDocument === DEFAULT_VALUE_TYPE_DOCUMENT) {
+      return {
+        data: {
+          typeDocument: persona?.tipoDocumento?.codigo || '',
+          document: persona?.numeroDocumento || '',
+          name: persona?.personaNatural?.primerNombre || '',
+          secondName: persona?.personaNatural?.segundoNombre || '',
+          lastName: persona?.personaNatural?.primerApellido || '',
+          secondLastName: persona?.personaNatural?.segundoApellido || '',
+        },
+        restricted: personaRestringida || false,
+      };
+    } else {
+      return {
+        data: {
+          typeDocument: persona?.tipoDocumento?.codigo || '',
+          document: persona?.numeroDocumento || '',
+          reasonSocialName: persona?.personaJuridica?.razonSocial || '',
+        },
+        restricted: personaRestringida || false,
+      };
+    }
+  }
+
+  static formatNumberUnit(number) {
+    const options2 = { style: 'unit' };
+    const format = new Intl.NumberFormat(options2);
+    return format.format(+number);
   }
 }
 
