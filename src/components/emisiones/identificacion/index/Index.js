@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import React, { Component } from 'react';
 //Helpers
 import Helpers from '../../../../common/helpers/helpers';
@@ -38,6 +39,9 @@ class Index extends Component {
       showPopUpEntidad: false,
       cotizacion: {},
       persons: [],
+      beneficiariesFinal: [],
+      legalRepresentative: null,
+      isLegalRepresentativeBeneficiary: false,
       exceptionSarlaft: false,
       itemSelected: null,
       typePerson: 1,
@@ -88,6 +92,11 @@ class Index extends Component {
     let persons = [];
     let hasExequias = false;
     let hasAccident = false;
+    // ----------Legal representative & beneficiaries variables-------------------------
+    let beneficiariesFinal = [];
+    let legalRepresentative = null;
+    let isLegalRepresentativeBeneficiary = false;
+    // ----------------------------------------------------------------
     if (typeof quote.plan_selected_info.Item !== 'undefined') {
       const { coverages } = quote.plan_selected_info.Item;
       for (let i = 0; i < coverages.length; i++) {
@@ -163,6 +172,23 @@ class Index extends Component {
         persons[i]['department'] = persons[i]['departamento'];
         persons[i]['city'] = persons[i]['ciudad'];
       }
+      // upload info legal representative and beneficiaries
+      beneficiariesFinal =
+        items.beneficiariesFinal.length > 0 ? items.beneficiariesFinal : [];
+      legalRepresentative = items?.legalRepresentative || null;
+      isLegalRepresentativeBeneficiary = beneficiariesFinal.some(
+        (beneficiary) =>
+          beneficiary.document === legalRepresentative?.document &&
+          beneficiary.document_type === legalRepresentative?.document_type
+      );
+      if (isLegalRepresentativeBeneficiary) {
+        beneficiariesFinal = beneficiariesFinal.filter(
+          (beneficiary) =>
+            beneficiary.document !== legalRepresentative?.document ||
+            beneficiary.document_type !== legalRepresentative?.document_type
+        );
+      }
+      // ----------------------------------------------------------------
     }
 
     if (persons.length === 0) {
@@ -175,6 +201,9 @@ class Index extends Component {
       this.setState({
         ...this.state,
         persons: persons,
+        beneficiariesFinal: beneficiariesFinal,
+        legalRepresentative: legalRepresentative,
+        isLegalRepresentativeBeneficiary: isLegalRepresentativeBeneficiary,
         hasAccident: hasAccident,
         hasExequias: hasExequias,
       });
@@ -219,16 +248,25 @@ class Index extends Component {
 
   removeItem = () => {
     let persons = this.state.persons;
-    let newPerson = [];
-    for (let i = 0; i < persons.length; i++)
-      if (i !== this.state.itemSelected) newPerson.push(persons[i]);
-    this.setState({
-      ...this.state,
-      persons: newPerson,
-    });
-    setTimeout(() => {
-      this.showAnyPopup('showPopUpDelete');
-    }, 100);
+    const person = persons[this.state.itemSelected];
+    persons.splice(this.state.itemSelected, 1);
+    const isTaker = person?.role.some((r) => r === ROLES_KEY.IS_TAKER); // IS TAKER
+    if (isTaker) {
+      this.setState({
+        ...this.state,
+        persons: persons,
+        beneficiariesFinal: [],
+        legalRepresentative: null,
+        isLegalRepresentativeBeneficiary: false,
+        showPopUpDelete: false,
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        persons: persons,
+        showPopUpDelete: false,
+      });
+    }
   };
 
   isDisabled() {
@@ -467,7 +505,12 @@ class Index extends Component {
 
           <div className="row">
             <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-              <BtnContinue persons={persons} inactiveBtn={this.isDisabled()} />
+              <BtnContinue
+                persons={persons}
+                beneficiariesFinal={this.state.beneficiariesFinal}
+                legalRepresentative={this.state.legalRepresentative}
+                inactiveBtn={this.isDisabled()}
+              />
             </div>
           </div>
         </div>
@@ -487,6 +530,29 @@ class Index extends Component {
             hasAccident={hasAccident}
             typePerson={typePerson}
             updatePerson={this.updatePerson}
+            updateBeneficiaries={(beneficiariesFinal) => {
+              this.setState({
+                ...this.state,
+                beneficiariesFinal: beneficiariesFinal,
+              });
+            }}
+            legalRepresentative={this.state.legalRepresentative}
+            beneficiariesFinal={this.state.beneficiariesFinal}
+            isLegalRepresentativeBeneficiary={
+              this.state.isLegalRepresentativeBeneficiary
+            }
+            updateIsLegalRepresentativeBeneficiary={(isLegalRepresentative) => {
+              this.setState({
+                ...this.state,
+                isLegalRepresentativeBeneficiary: isLegalRepresentative,
+              });
+            }}
+            updateLegalRepresentative={(legalRepresentative) => {
+              this.setState({
+                ...this.state,
+                legalRepresentative: legalRepresentative,
+              });
+            }}
           />
         )}
         <Validaridentificacion />

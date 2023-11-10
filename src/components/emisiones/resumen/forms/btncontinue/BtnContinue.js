@@ -16,7 +16,7 @@ import Crearpolizaiaxis from 'services/Crearpolizaiaxis';
 import QuoteIussedById from 'services/QuoteIussedById';
 import IssuedCounter from 'services/IssuedCounter';
 import AttachPolicyDocuments from 'services/AttachPolicyDocuments';
-import Identifications from 'services/GetQuote';
+import GetQuoteService from 'services/GetQuote';
 
 class BtnContinue extends Component {
   constructor(props) {
@@ -58,7 +58,7 @@ class BtnContinue extends Component {
         continueButtonDisable: true,
       });
       let data = await QuoteIussedById.get(this.props.match.params.id);
-      let cotizacion = await Identifications.getById(
+      let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
       cotizacion = cotizacion.identification;
@@ -82,7 +82,7 @@ class BtnContinue extends Component {
         dataSend['id'] = id;
         let result = await PolicyService.emit(id, dataSend);
         result = result.policyReq;
-
+        await PolicyService.emitSarlaftJuridicPerson(data);
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroPoliza =
           numeroPoliza.currentValue.toString();
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo =
@@ -168,6 +168,7 @@ class BtnContinue extends Component {
 
       Loading.toggle(false);
     } catch (e) {
+      console.error('NEXT STEP: ', e);
       this.setState({
         ...this.state,
         continueButtonDisable: false,

@@ -192,7 +192,7 @@ class BtnContinue extends PureComponent {
     }
 
     let quouteId = this.props.match.params.id;
-    await QuoteIussed.get({
+    await QuoteIussed.post({
       id: quouteId,
       risk_valoration: quouteId,
       taker: takers,
@@ -200,6 +200,8 @@ class BtnContinue extends PureComponent {
       benefist: beneficiaries,
       onerous: onerous,
       persons_aditionals: additional,
+      beneficiariesFinal: this.props.beneficiariesFinal,
+      legalRepresentative: this.props.legalRepresentative,
     });
     if (typeof total !== 'undefined') {
       store.dispatch(NextStep(5));

@@ -19,6 +19,7 @@ export interface PolicyRequest {
   intntermediate: Intntermediate;
   longitude: number;
   infoGeocodingSig: InfoGeocodingSig;
+  plan_selected_info: object;
   latitude: number;
   person: ResConsultarPersonaRs;
 }
