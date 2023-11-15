@@ -1,84 +1,80 @@
 library ('utils@master') _
-
+ 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
 def BRANCH_SONAR = scm.branches[0].name.replace("*/", "")
 def NAME_SONAR = "poliza-express-hogar-front"
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
-        
+def customWorkerImages = ['node=artifactory-emea.aws.lmig.com/pod-templates-latam/node:18.17.1']
+ 
 node('linux'){
-
-	stage("Env Variables") {
-    	script {
-        	env.BUCKET_NAME = "poliza-express-hogar-uat" 
-			env.REACT_APP_DOMAIN = "https://j1a5b5xwgk.execute-api.us-east-1.amazonaws.com/nonprod"
-			env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
-			env.REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
-			env.REACT_APP_PDF_SARLAFT = "https://www.libertyseguros.co/zona-de-cliente/condicionados-y-documentos?category=62"
-			env.REACT_APP_PERSON = "https://ts9bfuham7.execute-api.us-east-1.amazonaws.com/nonprod"
-			env.REACT_APP_ACCESS_TOKEN = "https://puij6mfjg7.execute-api.us-east-1.amazonaws.com/nonprod"
-			env.REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://ts9bfuham7.execute-api.us-east-1.amazonaws.com/nonprod"
-			env.REACT_APP_CREARPOLIZAIAXIS = "https://ts9bfuham7.execute-api.us-east-1.amazonaws.com/nonprod"
-			env.GENERATE_SOURCEMAP=false
-         }
-    	 sh 'printenv'
-	}    
-
-	stage('Git Checkout'){
-		checkout scm
-        
-	}
-
-    stage('cloudfront') {
-    	deployToNonProd{
-        	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-				sh 'npm install'
-				sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
-                dir('dist/poliza-express-hogar-nonprod'){
-                	sh 'pwd'
-                    sh 'ls'
-                   //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
+    container('node'){
+        stage("Env Variables") {
+            script {
+                env.BUCKET_NAME = "poliza-express-hogar-uat"
+                env.REACT_APP_DOMAIN = "https://j1a5b5xwgk.execute-api.us-east-1.amazonaws.com/nonprod"
+                env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
+                env.REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
+                env.REACT_APP_PDF_SARLAFT = "https://www.libertyseguros.co/zona-de-cliente/condicionados-y-documentos?category=62"
+                env.REACT_APP_PERSON = "https://ts9bfuham7.execute-api.us-east-1.amazonaws.com/nonprod"
+                env.REACT_APP_ACCESS_TOKEN = "https://puij6mfjg7.execute-api.us-east-1.amazonaws.com/nonprod"
+                env.REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://ts9bfuham7.execute-api.us-east-1.amazonaws.com/nonprod"
+                env.REACT_APP_CREARPOLIZAIAXIS = "https://ts9bfuham7.execute-api.us-east-1.amazonaws.com/nonprod"
+                env.GENERATE_SOURCEMAP=false
+            }
+            sh 'printenv'
+        }    
+   
+        stage('Git Checkout'){
+            checkout scm
+        }
+   
+        stage('cloudfront') {
+            deployToNonProd{
+                withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+                    sh 'npm install'
+                    sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
+                    dir('dist/poliza-express-hogar-nonprod'){
+                        sh 'pwd'
+                        sh 'ls'
+                    //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
+                    }
                 }
             }
         }
-    }
-
-    stage('nonprod Deploy') {
-        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh """
-                ls -ltr
-
-                npm run build
-                ls -ltr
-            """
-			dir('build') {
-                  sh 'pwd'
-                  sh 'ls'
-                  sh 'aws s3 rm s3://poliza-express-hogar-nonprod --recursive' // Clean bucket
-                  sh 'aws s3 sync .  s3://poliza-express-hogar-nonprod' // Sync bucket
+   
+        stage('nonprod Deploy') {
+            withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
+                sh """
+                    ls -ltr
+   
+                    npm run build
+                    ls -ltr
+                """
+                dir('build') {
+                    sh 'pwd'
+                    sh 'ls'
+                    sh 'aws s3 rm s3://poliza-express-hogar-nonprod --recursive' // Clean bucket
+                    sh 'aws s3 sync .  s3://poliza-express-hogar-nonprod' // Sync bucket
+                }
+                sh 'aws cloudfront create-invalidation --distribution-id E29UJTXEFLRNQZ --paths "/*"'
             }
-            sh 'aws cloudfront create-invalidation --distribution-id E29UJTXEFLRNQZ --paths "/*"'
         }
-		
+   
+        stage('Test sonarqube'){
+            withSonarQubeEnv('sonarqube') {
+                sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
+            }
+        }  
+   
+        stage('Completion Email'){
+        mail to: 'carlos.unate@libertycolombia.com', from: 'noreply-cdp@libertymutual.com',
+                    subject: "nonpro Infra Deployment: ${env.JOB_NAME}",
+                    body: "Despliegue realizado validar ambiente nonprod en: http://poliza-express-hogar Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
+        }
+        stage('Testing'){
+            // sh 'curl -X POST http://cunate:a763ac28c58d391b70a382539a8ae7dd@10.142.137.77:8080/job/Katalon-suite-eHome/build?token=SOMESECURITYTOKEN'
+        }
     }
-
-	stage('Test sonarqube'){
-		withSonarQubeEnv('sonarqube') {
-        	sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
-	 	}
-	}	
-
-	stage('Completion Email'){
-		    
-	 mail to: 'carlos.unate@libertycolombia.com', from: 'noreply-cdp@libertymutual.com',
-                subject: "nonpro Infra Deployment: ${env.JOB_NAME}", 
-                body: "Despliegue realizado validar ambiente nonprod en: http://poliza-express-hogar Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
-	
-	}
-	stage('Testing'){
-		  
-		// sh 'curl -X POST http://cunate:a763ac28c58d391b70a382539a8ae7dd@10.142.137.77:8080/job/Katalon-suite-eHome/build?token=SOMESECURITYTOKEN'
-    
-	}
- }
+}
