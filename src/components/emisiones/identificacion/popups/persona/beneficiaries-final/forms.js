@@ -10,6 +10,9 @@ import { useForm, FormProvider, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import {
   DEFAULT_VALUE_TYPE_DOCUMENT,
+  REGEX_ALPHANUMERIC,
+  REGEX_ONLY_NUMBERS,
+  TYPES_DOCUMENTS,
   TYPE_DOCUMENT_IS_JURIDIC,
 } from 'assets/constants';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -27,7 +30,25 @@ const schemaNaturalBeneficiary = yup.object().shape({
     .required(
       'Falta información requerida para el Tomador. Por favor revise el campo Identificación'
     )
-    .matches(/^[0-9]+$/, 'Debe ser un número'),
+    .test(
+      'alphanumericOrNumeric',
+      'Por favor revise el campo Identificación',
+      (value, context) => {
+        if (!value) return true;
+        let regex = null;
+        const { typeDocument } = context.parent;
+        switch (typeDocument.toString()) {
+          case TYPES_DOCUMENTS.PASSPORT:
+          case TYPES_DOCUMENTS.DIPLOMATIC_CARD:
+            regex = REGEX_ALPHANUMERIC;
+            break;
+          default:
+            regex = REGEX_ONLY_NUMBERS;
+            break;
+        }
+        return regex.test(value);
+      }
+    ),
   name: yup
     .string()
     .required(
@@ -49,7 +70,26 @@ const schemaLegalBeneficiary = yup.object().shape({
     .required(
       'Falta información requerida para el Tomador. Por favor revise el campo Identificación'
     )
-    .matches(/^[0-9]+$/, 'Debe ser un número'),
+    .test(
+      'alphanumericOrNumeric',
+      'Por favor revise el campo Identificación',
+      (value, context) => {
+        if (!value) return true;
+        let regex = null;
+        const { typeDocument } = context.parent;
+        console.log(typeDocument);
+        switch (typeDocument.toString()) {
+          case TYPES_DOCUMENTS.PASSPORT:
+          case TYPES_DOCUMENTS.DIPLOMATIC_CARD:
+            regex = REGEX_ALPHANUMERIC;
+            break;
+          default:
+            regex = REGEX_ONLY_NUMBERS;
+            break;
+        }
+        return regex.test(value);
+      }
+    ),
   reasonSocialName: yup
     .string()
     .required(
@@ -253,7 +293,8 @@ const BeneficiariesFinalForm = ({
                                 setSchema(schemaNaturalBeneficiary);
                               }
                               setValue('typeDocument', value);
-
+                              trigger('typeDocument');
+                              trigger('document');
                               handlerOnBlurCustom();
                             }}
                             value={field.value}

@@ -9,7 +9,12 @@ import * as yup from 'yup';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import Input from 'components/basics/input/input';
-import { DEFAULT_VALUE_TYPE_DOCUMENT } from 'assets/constants';
+import {
+  DEFAULT_VALUE_TYPE_DOCUMENT,
+  REGEX_ALPHANUMERIC,
+  REGEX_ONLY_NUMBERS,
+  TYPES_DOCUMENTS,
+} from 'assets/constants';
 import ConsultaPersonas from 'services/ConsultaPersonas';
 import Loading from 'components/globals/loading/Loading';
 import Helpers from 'common/helpers/helpers';
@@ -23,7 +28,26 @@ const schema = yup
       .required(
         'Falta información requerida para el Tomador. Por favor revise el campo Identificación'
       )
-      .matches(/^[0-9]+$/, 'Debe ser un número'),
+      .test(
+        'alphanumericOrNumeric',
+        'Por favor revise el campo Identificación',
+        (value, context) => {
+          if (!value) return true;
+          let regex = null;
+          const { typeDocument } = context.parent;
+          console.log(typeDocument);
+          switch (typeDocument.toString()) {
+            case TYPES_DOCUMENTS.PASSPORT:
+            case TYPES_DOCUMENTS.DIPLOMATIC_CARD:
+              regex = REGEX_ALPHANUMERIC;
+              break;
+            default:
+              regex = REGEX_ONLY_NUMBERS;
+              break;
+          }
+          return regex.test(value);
+        }
+      ),
     name: yup
       .string()
       .required(
@@ -163,6 +187,7 @@ const LegalRepresentative = ({
                 onChange={(e) => {
                   setValue('typeDocument', e.target.value);
                   trigger('typeDocument');
+                  trigger('document');
                   /* handlerOnBlurCustom(e); */
                 }}
                 disabled={disabledAll}

@@ -28,9 +28,18 @@ node('linux'){
        sh 'unzip -o pelhfrontend.zip'
    }
 
+    stage('udpate version nodejs & install node modules and serverless') {
+                    sh 'npm install -g n'
+                    sh 'n 16'
+                    sh 'hash -r'
+                    sh 'node --version'
+                    sh 'npm install'
+                    sh 'npm install -g serverless@3'
+                    sh 'serverless --version'	   
+    }
+
     stage('cloudfront') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh 'npm install'
             sh "sls deploy -v --force --stage prod"
             dir('dist/poliza-express-hogar'){
                 sh 'pwd'
