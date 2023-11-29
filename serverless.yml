@@ -150,6 +150,7 @@ resources:
             - - 'arn:aws:iam::'
               - Ref: AWS::AccountId
               - ':policy/cloud-services/pb-lm-troux-uid-access'
+
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
       Properties:
@@ -201,6 +202,7 @@ resources:
             IncludeCookies: true
             Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
           HttpVersion: http2
+          
   Outputs:
     WebAppCloudFrontDistributionOutput:
       Value:

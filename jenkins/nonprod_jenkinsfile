@@ -1,12 +1,13 @@
 library ('utils@master') _
-
+ 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
 def BRANCH_SONAR = scm.branches[0].name.replace("*/", "")
 def NAME_SONAR = "poliza-express-hogar-front"
 //def  = "intl-latam-poliza-backend-jenks"
 //def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
-        
+def customWorkerImages = ['node=artifactory-emea.aws.lmig.com/pod-templates-latam/node:18.17.1']
+ 
 node('linux'){
 
 	stage("Env Variables") {
@@ -43,16 +44,11 @@ node('linux'){
     	deployToNonProd{
         	withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
 				sh "sls deploy -v --force --stage ${env.APPENV.replace('_', '')}"
-                dir('dist/poliza-express-hogar-nonprod'){
-                	sh 'pwd'
-                    sh 'ls'
-                   //aws cloudfront create-invalidation --distribution-id E1KRJBQ8DHRAGO --paths "/*"    
-                }
             }
-        }
+        }	
     }
 
-    stage('nonprod Deploy') {
+	stage('nonprod Deploy') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
             sh """
                 ls -ltr
@@ -68,25 +64,17 @@ node('linux'){
             }
             sh 'aws cloudfront create-invalidation --distribution-id E29UJTXEFLRNQZ --paths "/*"'
         }
-		
-    }
-
+	}
+   
 	stage('Test sonarqube'){
 		withSonarQubeEnv('sonarqube') {
-        	sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
-	 	}
-	}	
-
+			sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
+		}
+	}  
+   
 	stage('Completion Email'){
-		    
-	 mail to: 'carlos.unate@libertycolombia.com', from: 'noreply-cdp@libertymutual.com',
-                subject: "nonpro Infra Deployment: ${env.JOB_NAME}", 
-                body: "Despliegue realizado validar ambiente nonprod en: http://poliza-express-hogar Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
-	
+	mail to: 'carlos.unate@libertycolombia.com', from: 'noreply-cdp@libertymutual.com',
+				subject: "nonpro Infra Deployment: ${env.JOB_NAME}",
+				body: "Despliegue realizado validar ambiente nonprod en: http://poliza-express-hogar Job Failed - \"${env.JOB_NAME}\" build: ${env.BUILD_NUMBER}\n\nView the log at:\n ${env.BUILD_URL}\n\nBlue Ocean:\n${env.RUN_DISPLAY_URL}"
 	}
-	stage('Testing'){
-		  
-		// sh 'curl -X POST http://cunate:a763ac28c58d391b70a382539a8ae7dd@10.142.137.77:8080/job/Katalon-suite-eHome/build?token=SOMESECURITYTOKEN'
-    
-	}
- }
+}

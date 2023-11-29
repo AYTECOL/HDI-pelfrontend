@@ -399,13 +399,22 @@ export default class Persona extends Component {
         }
       }
     }
-    if ('vigente' in consultarPersonaRs['informacionSARLAFT']) {
+
+    if (
+      'informacionSARLAFT' in consultarPersonaRs &&
+      'vigente' in consultarPersonaRs['informacionSARLAFT']
+    ) {
       person.sarlfaltActive =
-        consultarPersonaRs['informacionSARLAFT']['vigente'];
+        consultarPersonaRs['informacionSARLAFT']?.['vigente'] || false;
       person.sarlfaltActiveDisabled = true;
     }
-    if ('completed' in consultarPersonaRs['habeasData']) {
-      person.habeasDataActive = consultarPersonaRs['habeasData']['completed'];
+    
+    if (
+      'habeasData' in consultarPersonaRs &&
+      'completed' in consultarPersonaRs['habeasData']
+    ) {
+      person.habeasDataActive =
+        consultarPersonaRs['habeasData']?.['completed'] || false;
     }
 
     return person;
@@ -973,7 +982,6 @@ export default class Persona extends Component {
     });
   };
   handleDeleteBeneficiaryFinal = (index) => {
-    console.log('index delete beneficiary', index);
     const { beneficiariesFinal } = this.state;
     beneficiariesFinal.splice(index, 1);
     this.setState({
@@ -1793,7 +1801,6 @@ export default class Persona extends Component {
                             this.handleNewBeneficiaryFinal
                           }
                           handleUpdatedBeneficiaryData={(data, index) => {
-                            console.log(data, index);
                             let { beneficiariesFinal } = this.state;
                             beneficiariesFinal[index] = data;
                             this.setState({
