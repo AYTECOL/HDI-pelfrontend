@@ -77,7 +77,6 @@ const schemaLegalBeneficiary = yup.object().shape({
         if (!value) return true;
         let regex = null;
         const { typeDocument } = context.parent;
-        console.log(typeDocument);
         switch (typeDocument.toString()) {
           case TYPES_DOCUMENTS.PASSPORT:
           case TYPES_DOCUMENTS.DIPLOMATIC_CARD:
@@ -147,8 +146,6 @@ const BeneficiariesFinalForm = ({
   }, [schema, trigger]);
 
   const { errors } = formState;
-
-  console.log('errors', errors);
 
   const handlerOnBlurCustom = async (e) => {
     try {

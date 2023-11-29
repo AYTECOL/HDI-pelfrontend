@@ -35,7 +35,6 @@ const schema = yup
           if (!value) return true;
           let regex = null;
           const { typeDocument } = context.parent;
-          console.log(typeDocument);
           switch (typeDocument.toString()) {
             case TYPES_DOCUMENTS.PASSPORT:
             case TYPES_DOCUMENTS.DIPLOMATIC_CARD:
