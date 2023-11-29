@@ -982,7 +982,6 @@ export default class Persona extends Component {
     });
   };
   handleDeleteBeneficiaryFinal = (index) => {
-    console.log('index delete beneficiary', index);
     const { beneficiariesFinal } = this.state;
     beneficiariesFinal.splice(index, 1);
     this.setState({
@@ -1802,7 +1801,6 @@ export default class Persona extends Component {
                             this.handleNewBeneficiaryFinal
                           }
                           handleUpdatedBeneficiaryData={(data, index) => {
-                            console.log(data, index);
                             let { beneficiariesFinal } = this.state;
                             beneficiariesFinal[index] = data;
                             this.setState({
