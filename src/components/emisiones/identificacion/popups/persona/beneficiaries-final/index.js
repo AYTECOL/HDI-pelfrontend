@@ -2,14 +2,15 @@ import Alerts from './alerts';
 import BeneficiariesFinalForm from './forms';
 import './styles.scss';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const BeneficiariesFinalPage = ({
-  disabledAll = false,
-  beneficiariesFinal = [],
-  isLegalRepresentativeBeneficiary = false,
-  handleDeleteBeneficiaryFinal = () => {},
-  handleNewBeneficiaryFinal = () => {},
-  handleUpdatedBeneficiaryData = () => {},
+  disabledAll,
+  beneficiariesFinal,
+  isLegalRepresentativeBeneficiary,
+  handleDeleteBeneficiaryFinal,
+  handleNewBeneficiaryFinal,
+  handleUpdatedBeneficiaryData,
 }) => {
   const maxBeneficiaries = isLegalRepresentativeBeneficiary ? 9 : 10;
 
@@ -36,18 +37,10 @@ const BeneficiariesFinalPage = ({
           index={index}
         />
       ))}
-      {!disabledAll && (
+      {!disabledAll && beneficiariesFinal.length < maxBeneficiaries && (
         <div className="row fields-row  legal-representative mt-4">
           <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right mt-2">
-            <div
-              className="more-items"
-              onClick={(e) => {
-                e.preventDefault();
-                if (beneficiariesFinal.length < maxBeneficiaries) {
-                  handleNewBeneficiaryFinal();
-                }
-              }}
-            >
+            <div className="more-items" onClick={handleNewBeneficiaryFinal}>
               <button type="button" className="more-btn">
                 +
               </button>
@@ -60,4 +53,21 @@ const BeneficiariesFinalPage = ({
   );
 };
 
+BeneficiariesFinalPage.propTypes = {
+  disabledAll: PropTypes.bool,
+  beneficiariesFinal: PropTypes.array,
+  isLegalRepresentativeBeneficiary: PropTypes.bool,
+  handleDeleteBeneficiaryFinal: PropTypes.func,
+  handleNewBeneficiaryFinal: PropTypes.func,
+  handleUpdatedBeneficiaryData: PropTypes.func,
+};
+
+BeneficiariesFinalPage.defaultProps = {
+  disabledAll: false,
+  beneficiariesFinal: [],
+  isLegalRepresentativeBeneficiary: false,
+  handleDeleteBeneficiaryFinal: () => {},
+  handleNewBeneficiaryFinal: () => {},
+  handleUpdatedBeneficiaryData: () => {},
+};
 export default BeneficiariesFinalPage;
