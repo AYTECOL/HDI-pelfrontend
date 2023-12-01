@@ -122,6 +122,10 @@ const LegalRepresentative = ({
         if (restricted) {
           handleChangeIsRestricted();
           Validaridentificacion.toggle(true);
+          reset({
+            typeDocument,
+          });
+          trigger();
         } else {
           reset({
             ...data,

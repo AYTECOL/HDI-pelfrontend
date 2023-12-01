@@ -408,7 +408,7 @@ export default class Persona extends Component {
         consultarPersonaRs['informacionSARLAFT']?.['vigente'] || false;
       person.sarlfaltActiveDisabled = true;
     }
-    
+
     if (
       'habeasData' in consultarPersonaRs &&
       'completed' in consultarPersonaRs['habeasData']

@@ -101,7 +101,6 @@ const BeneficiariesFinalForm = ({
   beneficiary,
   index,
   handleDeleteBeneficiaryFinal,
-  handleChangeIsRestricted,
   handleUpdatedBeneficiaryData,
   isLegalRepresentativeBeneficiary,
 }) => {
@@ -160,8 +159,11 @@ const BeneficiariesFinalForm = ({
           typeDocument
         );
         if (restricted) {
-          handleChangeIsRestricted();
           Validaridentificacion.toggle(true);
+          reset({
+            typeDocument,
+          });
+          trigger();
         } else {
           reset({
             ...data,
@@ -379,7 +381,6 @@ BeneficiariesFinalForm.propTypes = {
   beneficiary: PropTypes.object,
   index: PropTypes.number,
   handleDeleteBeneficiaryFinal: PropTypes.func,
-  handleChangeIsRestricted: PropTypes.func,
   handleUpdatedBeneficiaryData: PropTypes.func,
   isLegalRepresentativeBeneficiary: PropTypes.bool,
   disabledAll: PropTypes.bool,
@@ -389,7 +390,6 @@ BeneficiariesFinalForm.defaultProps = {
   beneficiary: {},
   index: 0,
   handleDeleteBeneficiaryFinal: () => {},
-  handleChangeIsRestricted: () => {},
   handleUpdatedBeneficiaryData: () => {},
   isLegalRepresentativeBeneficiary: false,
   disabledAll: false,
