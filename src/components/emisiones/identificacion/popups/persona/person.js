@@ -582,6 +582,7 @@ export default class Persona extends Component {
   changeValue = (e) => {
     let v = e.target.value;
     let n = e.target.name;
+    if (n === 'email') v = v.toLowerCase();
     let nit = this.state.nit;
     let newPerson = this.state.person;
     newPerson[n] = v;
