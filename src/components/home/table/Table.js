@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Table.scss';
-import store from '../../../store';
+import store from 'store';
 import { restoreCotizacion } from '../../../store/actions';
 import PdfPolizaHogar from '../../../services/PdfPolizaHogar';
 import GetQuote from '../../../services/GetQuote';
@@ -26,19 +26,8 @@ const Table = (props) => {
   const [loadingPlans, setLoadingPlans] = useState(false);
   const [plans, setPlans] = useState(new Map());
   const [moreInfo, setMoreInfo] = useState(new Map());
-  /**
-   * @type {[IdentificationType[], React.Dispatch<React.SetStateAction<IdentificationType[]>>]}
-   */
-  const [identificationTypes, setIdentificationTypes] = useState([]);
+  const identificationTypes = store.getState().identifications;
 
-  useEffect(() => {
-    Identifications.get()
-      .then(({ identifications }) => identifications)
-      .catch(() => [])
-      .then((data) => {
-        setIdentificationTypes(data);
-      });
-  }, []);
   useEffect(() => {
     initialData(props.quotesData);
   });
@@ -174,7 +163,7 @@ const Table = (props) => {
             <span>Acción</span>
           </div>
         </div>
-        {pageOfItems.map((item) => {
+        {pageOfItems.map((item, index) => {
           const {
             quoteId,
             create_at,
@@ -199,7 +188,7 @@ const Table = (props) => {
             info?.start_policy_date || ''
           );
           return (
-            <div>
+            <div key={`page-items-${index}`}>
               <div className="row body" key={quoteId}>
                 <div className="col">
                   <p>{isEmitted ? emissionId : quoteId}</p>

@@ -31,6 +31,15 @@ export const STATUS_POLICIES = {
 
 export const VALIDITY_QUOTES_DAYS = 30;
 
+export const DEFAULT_VALUE_TYPE_DOCUMENT = 36;
+export const TYPE_DOCUMENT_IS_JURIDIC = 37;
+export const REGEX_ONLY_NUMBERS = /^[0-9]+$/;
+export const REGEX_ALPHANUMERIC = /^[a-zA-Z0-9]+$/;
+export const TYPES_DOCUMENTS = {
+  PASSPORT: '40',
+  DIPLOMATIC_CARD: '44',
+};
+
 export const MONTHS = [
   'enero',
   'febrero',

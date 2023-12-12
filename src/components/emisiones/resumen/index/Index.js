@@ -41,6 +41,9 @@ class Index extends Component {
       cotizacion: {},
       adressHome: '',
       persons: [],
+      beneficiariesFinal: [],
+      isLegalRepresentativeBeneficiary: false,
+      legalRepresentative: null,
       contents: [],
       itemSelected: null,
       newSecurity: [],
@@ -102,6 +105,23 @@ class Index extends Component {
     /**
      * @type {import("../../../../services/QuoteIussedById").PersonAditional[]}
      */
+    // upload info legal representative and beneficiaries
+    let beneficiariesFinal =
+      items.beneficiariesFinal.length > 0 ? items.beneficiariesFinal : [];
+    const legalRepresentative = items?.legalRepresentative || null;
+    const isLegalRepresentativeBeneficiary = beneficiariesFinal.some(
+      (beneficiary) =>
+        beneficiary.document === legalRepresentative?.document &&
+        beneficiary.document_type === legalRepresentative?.document_type
+    );
+    if (isLegalRepresentativeBeneficiary) {
+      beneficiariesFinal = beneficiariesFinal.filter(
+        (beneficiary) =>
+          beneficiary.document !== legalRepresentative?.document ||
+          beneficiary.document_type !== legalRepresentative?.document_type
+      );
+    }
+    // ----------------------------------------------------------------
     const persons = [];
     if (typeof items !== 'undefined') {
       if (items.taker.length !== 0) {
@@ -242,6 +262,9 @@ class Index extends Component {
       plans: plansLoader,
       persons: persons,
       inmueble: inmueble,
+      beneficiariesFinal: beneficiariesFinal,
+      legalRepresentative: legalRepresentative,
+      isLegalRepresentativeBeneficiary: isLegalRepresentativeBeneficiary,
       contents: data['contents'],
       newSecurity: newSecurity,
       city: (city && city.city) || '',
@@ -540,6 +563,11 @@ class Index extends Component {
         </div>
         {this.state.showPopUpPersona === true && (
           <PopUpPersona
+            legalRepresentative={this.state.legalRepresentative}
+            beneficiariesFinal={this.state.beneficiariesFinal}
+            isLegalRepresentativeBeneficiary={
+              this.state.isLegalRepresentativeBeneficiary
+            }
             toggle={this.togglePopUpPersona}
             persons={this.state.persons}
             item={this.state.itemSelected}

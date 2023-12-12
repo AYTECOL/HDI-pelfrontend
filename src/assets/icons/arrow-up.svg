@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="8.839" viewBox="0 0 16 8.839">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Icon_System_Chevron_Down" d="M8,6.912.962,0,0,.98,8,8.839,16,.98,15.039,0Z" fill="#1a1446"/>
+    </clipPath>
+  </defs>
+  <g id="Grupo_18937" data-name="Grupo 18937" transform="translate(16 8.839) rotate(180)">
+    <path id="Icon_System_Chevron_Down-2" data-name="Icon_System_Chevron_Down" d="M8,6.912.962,0,0,.98,8,8.839,16,.98,15.039,0Z" fill="#1a1446"/>
+    <g id="Enmascarar_grupo_1" data-name="Enmascarar grupo 1" clip-path="url(#clip-path)">
+      <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue" transform="translate(-42.577 -44.241)">
+        <rect id="Rectangle_Copy_3" data-name="Rectangle Copy 3" width="102.389" height="98.334" fill="#1a1446"/>
+      </g>
+    </g>
+  </g>
+</svg>

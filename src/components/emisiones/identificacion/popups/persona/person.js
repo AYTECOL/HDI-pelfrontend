@@ -25,6 +25,9 @@ import {
   rolesParticipations,
   isRoleParticipation,
 } from './ParticipationPercentages/utils';
+import LegalRepresentative from './legal-representative';
+import BeneficiariesFinalPage from './beneficiaries-final';
+import { TYPE_DOCUMENT_IS_JURIDIC } from 'assets/constants';
 const maxFileSize = UploadFileService.maxFileSize;
 
 const phoneTypes = {
@@ -54,6 +57,10 @@ export default class Persona extends Component {
       errorFileCertificate: null,
       countFiles: 1,
       person: {},
+      isLegalRepresentativeBeneficiary:
+        this.props?.isLegalRepresentativeBeneficiary || false,
+      LegalRepresentative: this.props?.legalRepresentative || null,
+      beneficiariesFinal: this.props?.beneficiariesFinal || [],
       fields: [
         'role',
         'code',
@@ -136,6 +143,7 @@ export default class Persona extends Component {
         ? person?.sarlaft_document_url
         : undefined;
     person.habeas_data_url = person?.habeas_data_document_url || undefined;
+    person.cerl_url = person?.cerl_document_url || undefined;
     if (
       typeof person.object !== 'undefined' ||
       typeof person.person !== 'undefined'
@@ -400,6 +408,7 @@ export default class Persona extends Component {
         consultarPersonaRs['informacionSARLAFT']?.['vigente'] || false;
       person.sarlfaltActiveDisabled = true;
     }
+    
     if (
       'habeasData' in consultarPersonaRs &&
       'completed' in consultarPersonaRs['habeasData']
@@ -680,23 +689,23 @@ export default class Persona extends Component {
   };
 
   saveFile = async ({ person }) => {
-    if (!(person.sarlfalt_url || person.habeas_data_url || person.cerl_url)) {
+    if (!(person.sarlfalt_url || person.habeas_data_url) || !person.cerl_url) {
       Loading.toggle(true);
       const files = [];
-      if (person?.sarlaft) {
+      if (person?.sarlaft && !person?.sarlfalt_url) {
         files.push({
           name: this.state.textFile,
           type: TYPES_FILES.SARLAFT,
           fileValue: person.sarlaft,
         });
-      } else if (person?.habeas_data) {
+      } else if (person?.habeas_data && !person?.habeas_data_url) {
         files.push({
           name: this.state.textFile,
           type: TYPES_FILES.HABEAS_DATA,
           fileValue: person.habeas_data,
         });
       }
-      if (person?.cerl) {
+      if (person?.cerl && !person?.cerl_url) {
         files.push({
           name: this.state.textFileCertificate,
           type: TYPES_FILES.CERL,
@@ -735,7 +744,16 @@ export default class Persona extends Component {
 
   getErrors() {
     const errors = [];
-    const { typePerson, nit, person, errorFile } = this.state;
+    const {
+      typePerson,
+      nit,
+      person,
+      errorFile,
+      LegalRepresentative,
+      beneficiariesFinal,
+      isLegalRepresentativeBeneficiary,
+      personExists,
+    } = this.state;
     const {
       value: documentfield,
       code,
@@ -757,6 +775,7 @@ export default class Persona extends Component {
     } = person;
 
     const isPersonNatural = +code !== 37;
+    const isJuridicPerson = +code === 37;
 
     const isTaker = role.some((rol) => +rol === 1);
     const address = String(person.address);
@@ -825,7 +844,7 @@ export default class Persona extends Component {
     }
 
     if (
-      (!isPersonNatural &&
+      (isTaker &&
         !cerl &&
         !this.state.personExists &&
         !this.state.exitsTomador) ||
@@ -882,11 +901,17 @@ export default class Persona extends Component {
           errors.push(participationValue);
       }
     });
+    // valid infomation, if legal representative is required and beneficiales final is required
+    if (isTaker && isJuridicPerson && !personExists) {
+      if (!LegalRepresentative) errors.push('LegalRepresentative');
+      if (
+        !isLegalRepresentativeBeneficiary &&
+        beneficiariesFinal.length === 0
+      ) {
+        errors.push('beneficiariesFinal');
+      }
+    }
     return errors;
-  }
-
-  hasValidForm() {
-    return !this.getErrors().length;
   }
 
   async validateAll(
@@ -913,6 +938,22 @@ export default class Persona extends Component {
             newPerson.code = typePerson !== 4 ? '36' : '37';
           if (state.typePerson === 4) newPerson.role.push(4);
           this.props.updatePerson(newPerson);
+          if (this.state.beneficiariesFinal.length > 0) {
+            const data = this.state.beneficiariesFinal;
+            if (this.state.isLegalRepresentativeBeneficiary)
+              data.push(this.state.LegalRepresentative);
+            this.props.updateBeneficiaries(data);
+          }
+          if (this.state.LegalRepresentative) {
+            this.props.updateLegalRepresentative(
+              this.state.LegalRepresentative
+            );
+          }
+          if (this.state.isLegalRepresentativeBeneficiary) {
+            this.props.updateIsLegalRepresentativeBeneficiary(
+              this.state.isLegalRepresentativeBeneficiary
+            );
+          }
         } else {
           this.setState({
             ...this.state,
@@ -932,12 +973,33 @@ export default class Persona extends Component {
       return false;
     }
   };
+  handleNewBeneficiaryFinal = (e) => {
+    const { beneficiariesFinal } = this.state;
+    beneficiariesFinal.push({});
+    this.setState({
+      ...this.state,
+      beneficiariesFinal,
+    });
+  };
+  handleDeleteBeneficiaryFinal = (index) => {
+    const { beneficiariesFinal } = this.state;
+    beneficiariesFinal.splice(index, 1);
+    this.setState({
+      ...this.state,
+      beneficiariesFinal,
+    });
+  };
+
+  hasErrorAddClass = (field) => {
+    const errors = this.getErrors();
+    return errors.find((error) => field === error) && 'error ';
+  };
+
   render() {
     const { persons, item, exceptionSarlaft } = this.props;
     const { typePerson, person } = this.state;
     const errors = this.getErrors();
-    const hasErrorAddClass = (field) =>
-      errors.find((error) => field === error) && 'error ';
+
     const participationPercentages =
       this.isActived(fieldsNames.personalAccidents) ||
       this.isActived(fieldsNames.exequiasParticipation);
@@ -952,6 +1014,10 @@ export default class Persona extends Component {
       : !person?.sarlfaltActive;
     const isShowUploadFilecerticate =
       +person?.code === 37 && !this.state.personExists && isTaker;
+    const isShowLegalRepresentativeAndBeneficiaries =
+      isTaker &&
+      +this.state.person.code === TYPE_DOCUMENT_IS_JURIDIC &&
+      !this.state.personExists;
     return (
       <React.Fragment>
         <CitiesProvider>
@@ -1029,7 +1095,7 @@ export default class Persona extends Component {
                           <div
                             className={classNames(
                               'value form-group ',
-                              hasErrorAddClass('documentfield')
+                              this.hasErrorAddClass('documentfield')
                             )}
                           >
                             <label htmlFor="value">Identificación</label>
@@ -1065,7 +1131,7 @@ export default class Persona extends Component {
                           <div
                             className={classNames(
                               'name form-group ',
-                              hasErrorAddClass('name')
+                              this.hasErrorAddClass('name')
                             )}
                           >
                             <label htmlFor="name">
@@ -1094,7 +1160,7 @@ export default class Persona extends Component {
                           <div
                             className={classNames(
                               'name form-group ',
-                              hasErrorAddClass('telefono')
+                              this.hasErrorAddClass('telefono')
                             )}
                           >
                             <label htmlFor="telefono">
@@ -1123,7 +1189,7 @@ export default class Persona extends Component {
                           <div
                             className={classNames(
                               'email form-group ',
-                              hasErrorAddClass(fieldsNames.email)
+                              this.hasErrorAddClass(fieldsNames.email)
                             )}
                           >
                             <label htmlFor={fieldsNames.email}>
@@ -1158,7 +1224,7 @@ export default class Persona extends Component {
                             <div
                               className={classNames(
                                 'name form-group ',
-                                hasErrorAddClass('businessname')
+                                this.hasErrorAddClass('businessname')
                               )}
                             >
                               <label htmlFor="name">Razón social</label>
@@ -1192,7 +1258,7 @@ export default class Persona extends Component {
                                 <div
                                   className={classNames(
                                     'name form-group ',
-                                    hasErrorAddClass('name')
+                                    this.hasErrorAddClass('name')
                                   )}
                                 >
                                   <label htmlFor="name">Primer nombre</label>
@@ -1219,7 +1285,7 @@ export default class Persona extends Component {
                                 <div
                                   className={classNames(
                                     'pisonumero form-group ',
-                                    hasErrorAddClass('secondname')
+                                    this.hasErrorAddClass('secondname')
                                   )}
                                 >
                                   <label htmlFor="pisonumero">
@@ -1251,7 +1317,7 @@ export default class Persona extends Component {
                                 <div
                                   className={classNames(
                                     'pisonumero form-group ',
-                                    hasErrorAddClass('lastname')
+                                    this.hasErrorAddClass('lastname')
                                   )}
                                 >
                                   <label htmlFor="pisonumero">
@@ -1282,7 +1348,7 @@ export default class Persona extends Component {
                                 <div
                                   className={classNames(
                                     'pisonumero form-group ',
-                                    hasErrorAddClass('secondlastname')
+                                    this.hasErrorAddClass('secondlastname')
                                   )}
                                 >
                                   <label htmlFor="pisonumero">
@@ -1324,7 +1390,7 @@ export default class Persona extends Component {
                           <div
                             className={classNames(
                               'generofield no-icon form-group',
-                              hasErrorAddClass('genero')
+                              this.hasErrorAddClass('genero')
                             )}
                           >
                             <label htmlFor="doc-type-value">Genero</label>
@@ -1361,7 +1427,7 @@ export default class Persona extends Component {
                           <DateInput
                             person={this.state.person}
                             changeDates={this.changeDates}
-                            hasErrorAddClass={hasErrorAddClass}
+                            hasErrorAddClass={this.hasErrorAddClass}
                             isActived={this.isActived}
                           />
                         </div>
@@ -1375,7 +1441,7 @@ export default class Persona extends Component {
                               <div
                                 className={classNames(
                                   'pisonumero form-group input-select',
-                                  hasErrorAddClass('tipodetelefono')
+                                  this.hasErrorAddClass('tipodetelefono')
                                 )}
                               >
                                 <label htmlFor="tipodetelefono">
@@ -1412,7 +1478,7 @@ export default class Persona extends Component {
                               <div
                                 className={classNames(
                                   'pisonumero form-group ',
-                                  hasErrorAddClass('telefono')
+                                  this.hasErrorAddClass('telefono')
                                 )}
                               >
                                 <label htmlFor="telefono">Teléfono</label>
@@ -1443,7 +1509,7 @@ export default class Persona extends Component {
                             <div
                               className={classNames(
                                 'businessname form-group ',
-                                hasErrorAddClass('businessname')
+                                this.hasErrorAddClass('businessname')
                               )}
                             >
                               <label htmlFor="businessname">Razon social</label>
@@ -1478,7 +1544,7 @@ export default class Persona extends Component {
                               <div
                                 className={classNames(
                                   'fechadecontitucion form-group ',
-                                  hasErrorAddClass(
+                                  this.hasErrorAddClass(
                                     fieldsNames.fechadecontitucion
                                   )
                                 )}
@@ -1523,7 +1589,7 @@ export default class Persona extends Component {
                               <div
                                 className={classNames(
                                   'email form-group ',
-                                  hasErrorAddClass(fieldsNames.email)
+                                  this.hasErrorAddClass(fieldsNames.email)
                                 )}
                               >
                                 <label htmlFor={fieldsNames.email}>
@@ -1555,7 +1621,7 @@ export default class Persona extends Component {
                               <div
                                 className={classNames(
                                   'pisonumero form-group',
-                                  hasErrorAddClass('ciudad')
+                                  this.hasErrorAddClass('ciudad')
                                 )}
                               >
                                 <AutocompleteCities
@@ -1575,7 +1641,7 @@ export default class Persona extends Component {
                               <div
                                 className={classNames(
                                   'pisonumero form-group input-select',
-                                  hasErrorAddClass(fieldsNames.adresstype)
+                                  this.hasErrorAddClass(fieldsNames.adresstype)
                                 )}
                               >
                                 <label htmlFor={fieldsNames.adresstype}>
@@ -1616,7 +1682,7 @@ export default class Persona extends Component {
                               <div
                                 className={classNames(
                                   'pisonumero form-group',
-                                  hasErrorAddClass(fieldsNames.address)
+                                  this.hasErrorAddClass(fieldsNames.address)
                                 )}
                               >
                                 <label htmlFor={fieldsNames.address}>
@@ -1666,6 +1732,7 @@ export default class Persona extends Component {
                         />
                       )}
                     </div>
+
                     {isShowUploadFile &&
                       typeof this.props.disabledAll === 'undefined' && (
                         <UploadFiles
@@ -1679,7 +1746,7 @@ export default class Persona extends Component {
                               ? TYPES_FILES.HABEAS_DATA
                               : TYPES_FILES.SARLAFT
                           }
-                          isError={hasErrorAddClass(
+                          isError={this.hasErrorAddClass(
                             isRequiredFileHabeasData
                               ? TYPES_FILES.HABEAS_DATA
                               : TYPES_FILES.SARLAFT
@@ -1695,9 +1762,61 @@ export default class Persona extends Component {
                           textFile={this.state.textFileCertificate}
                           errorFile={this.state.errorFileCertificate}
                           typeFile={TYPES_FILES.CERL}
-                          isError={hasErrorAddClass(TYPES_FILES.CERL)}
+                          isError={this.hasErrorAddClass(TYPES_FILES.CERL)}
                         />
                       )}
+                    {isShowLegalRepresentativeAndBeneficiaries && (
+                      <>
+                        <LegalRepresentative
+                          disabledAll={this.props.disabledAll}
+                          LegalRepresentative={this.state.LegalRepresentative}
+                          onChangeLegalRepresentative={() =>
+                            this.setState({
+                              ...this.state,
+                              isLegalRepresentativeBeneficiary:
+                                !this.state.isLegalRepresentativeBeneficiary,
+                            })
+                          }
+                          handleChangeIsRestricted={() => {
+                            this.setState({
+                              ...this.state,
+                              userRestricted: !this.userRestricted,
+                            });
+                          }}
+                          isLegalRepresentativeBeneficiary={
+                            this.state.isLegalRepresentativeBeneficiary
+                          }
+                          updateLegalRepresentative={(data) =>
+                            this.setState({
+                              ...this.state,
+                              LegalRepresentative: data,
+                            })
+                          }
+                        />
+
+                        <BeneficiariesFinalPage
+                          disabledAll={this.props.disabledAll}
+                          beneficiariesFinal={this.state.beneficiariesFinal}
+                          handleNewBeneficiaryFinal={
+                            this.handleNewBeneficiaryFinal
+                          }
+                          handleUpdatedBeneficiaryData={(data, index) => {
+                            let { beneficiariesFinal } = this.state;
+                            beneficiariesFinal[index] = data;
+                            this.setState({
+                              ...this.state,
+                              beneficiariesFinal,
+                            });
+                          }}
+                          isLegalRepresentativeBeneficiary={
+                            this.state.isLegalRepresentativeBeneficiary
+                          }
+                          handleDeleteBeneficiaryFinal={
+                            this.handleDeleteBeneficiaryFinal
+                          }
+                        />
+                      </>
+                    )}
                     {typeof this.props.disabledAll === 'undefined' && (
                       <div className="row">
                         <div className="col">

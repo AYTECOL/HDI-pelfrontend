@@ -87,6 +87,7 @@ const initialState = {
   originalStore: {},
   attachedFile: false,
   exceptionSarlaft: false,
+  identifications: {},
 };
 
 initialState.originalStore = initialState;
@@ -265,6 +266,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         exceptionSarlaft: action.data,
+      };
+    case actionsTypes.GENERAL_SET_IDENTIFICATIONS:
+      return {
+        ...state,
+        identifications: action.data,
       };
 
     default:

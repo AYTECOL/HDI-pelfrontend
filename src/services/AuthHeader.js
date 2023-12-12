@@ -26,8 +26,4 @@ class AuthHeader {
     }
   }
 }
-// test code
-// let header = new AuthHeader()
-// console.log(header.generateAuthCode())
-
 export default AuthHeader;

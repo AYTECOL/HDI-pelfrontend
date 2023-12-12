@@ -170,6 +170,8 @@ interface QuoteIussedInfoItem {
   benefist: Taker[];
   onerous: Taker[];
   taker: Taker;
+  beneficiariesFinal: any[];
+  legalRepresentative: any;
 }
 
 export interface Taker {

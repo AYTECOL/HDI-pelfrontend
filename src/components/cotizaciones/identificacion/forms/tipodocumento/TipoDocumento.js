@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 
-import store from '../../../../../store';
+import store from 'store';
 import {
   saveIdentificationValue,
+  setGeneralSetIdentifications,
   updateTypeDoc,
 } from '../../../../../store/actions';
 import Identifications from '../../../../../services/Identifications';
@@ -44,10 +45,17 @@ class TipoDocumento extends Component {
   }
 
   async getOptions() {
+    let data = await Identifications.get();
+    if (this.props.notJuridicOption) {
+      data.identifications = data.identifications.filter(
+        (item) => item.type_person !== 'Jurídica'
+      );
+    }
     this.setState({
       ...this.state,
-      options: await Identifications.get(),
+      options: data,
     });
+    store.dispatch(setGeneralSetIdentifications(data?.identifications || []));
     if (typeof this.props.hideLoader === 'undefined') {
       Loading.toggle(false);
     }
