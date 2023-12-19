@@ -582,6 +582,13 @@ export default class Persona extends Component {
   changeValue = (e) => {
     let v = e.target.value;
     let n = e.target.name;
+    if (n === 'email') {
+      v = v.toLowerCase();
+      const error = Helpers.validationEmailErros(v);
+      if (error) {
+        sessionStorage.setItem('errorEmail', error);
+      }
+    }
     let nit = this.state.nit;
     let newPerson = this.state.person;
     newPerson[n] = v;
@@ -1609,9 +1616,14 @@ export default class Persona extends Component {
                                   onChange={this.changeValue}
                                 />
                                 <small className="form-text only-errors">
-                                  Falta información requerida para el Tomador.
-                                  Por favor revise el campo Correo electrónico
+                                  {sessionStorage.getItem('errorEmail')}
                                 </small>
+                                {this.state.person.email === '' && (
+                                  <small className="form-text only-errors">
+                                    Falta información requerida para el Tomador.
+                                    Por favor revise el campo Correo electrónico
+                                  </small>
+                                )}
                               </div>
                             </div>
                           )}
