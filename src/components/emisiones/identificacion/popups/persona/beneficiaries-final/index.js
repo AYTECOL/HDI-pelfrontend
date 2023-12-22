@@ -24,7 +24,7 @@ const BeneficiariesFinalPage = ({
           <Alerts />
         </div>
       </div>
-      {beneficiariesFinal.map((beneficiary, index) => (
+      {beneficiariesFinal?.map((beneficiary, index) => (
         <BeneficiariesFinalForm
           disabledAll={disabledAll}
           isLegalRepresentativeBeneficiary={isLegalRepresentativeBeneficiary}
