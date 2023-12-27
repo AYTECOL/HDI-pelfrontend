@@ -408,7 +408,7 @@ export default class Persona extends Component {
         consultarPersonaRs['informacionSARLAFT']?.['vigente'] || false;
       person.sarlfaltActiveDisabled = true;
     }
-    
+
     if (
       'habeasData' in consultarPersonaRs &&
       'completed' in consultarPersonaRs['habeasData']
@@ -580,29 +580,60 @@ export default class Persona extends Component {
   };
 
   changeValue = (e) => {
-    let v = e.target.value;
-    let n = e.target.name;
-    if (n === 'email') {
-      v = v.toLowerCase();
-      const error = Helpers.validationEmailErros(v);
-      if (error) {
-        sessionStorage.setItem('errorEmail', error);
-      }
-    }
-    let nit = this.state.nit;
-    let newPerson = this.state.person;
-    newPerson[n] = v;
-    if (n === 'code') nit = parseInt(v) === 37;
+    const { value: v, name: n } = e.target;
+
+    // Actualizar inmediatamente el estado con el valor ingresado
     this.setState(
-      {
-        ...this.state,
-        person: newPerson,
-        nit: nit,
-      },
+      (prevState) => ({
+        ...prevState,
+        person: { ...prevState.person, [n]: v },
+        nit: n === 'code' ? parseInt(v) === 37 : prevState.nit,
+      }),
       () => {
         this.validateAll(n);
       }
     );
+
+    if (n === 'email') {
+      // Flag para verificar si se presionó otra tecla después de la mayúscula
+      let keyPressed = false;
+
+      // Función onKeyDown para detectar si se presiona otra tecla
+      const onKeyDown = (event) => {
+        if (!keyPressed && event.key.length === 1) {
+          keyPressed = true;
+
+          // Actualizar visualmente el input con la conversión a minúsculas
+          this.setState((prevState) => ({
+            ...prevState,
+            person: { ...prevState.person, [n]: v.toLowerCase() },
+          }));
+        }
+      };
+
+      // Agregar el evento onKeyDown
+      document.addEventListener('keydown', onKeyDown);
+
+      // Función onBlur para limpiar eventos después del onBlur
+      const onBlur = () => {
+        // Actualizar visualmente el input con la conversión a minúsculas si no se presionó otra tecla
+        if (!keyPressed) {
+          this.setState((prevState) => ({
+            ...prevState,
+            person: { ...prevState.person, [n]: v.toLowerCase() },
+          }));
+        }
+
+        document.removeEventListener('keydown', onKeyDown);
+        input.removeEventListener('blur', onBlur);
+      };
+
+      // Obtener la referencia al input
+      const input = e.target;
+
+      // Agregar el evento onBlur directamente al input
+      input.addEventListener('blur', onBlur);
+    }
   };
 
   validateDoc = async (e, callback) => {
@@ -814,6 +845,14 @@ export default class Persona extends Component {
       Helpers.validationEmail(email) === false
     )
       errors.push(fieldsNames.email);
+    if (
+      this.isActived(fieldsNames.email) &&
+      Helpers.validationEmailErros(email) !== ' '
+    ) {
+      const error = Helpers.validationEmailErros(email);
+      sessionStorage.setItem('errorEmail', error);
+    }
+
     // validations for sarlaft file person natural
     if (
       (!this.props.exceptionSarlaft &&
@@ -935,6 +974,7 @@ export default class Persona extends Component {
         const total = this.getTotal();
 
         const errors = this.getErrors();
+
         const valid = !errors.length;
         if (valid) msj4 = false;
         if (valid && saveData) {
@@ -1610,18 +1650,27 @@ export default class Persona extends Component {
                                       ? 'disabled'
                                       : '')
                                   }
+                                  placeholder="Correo electrónico"
                                   disabled={this.state.person.emailDisabled}
                                   name={fieldsNames.email}
                                   value={this.state.person.email}
                                   onChange={this.changeValue}
                                 />
-                                <small className="form-text only-errors">
-                                  {sessionStorage.getItem('errorEmail')}
+                                <small
+                                  style={{ textAlign: 'left' }}
+                                  className="form-text"
+                                >
+                                  Ejemplo: nombre@mail.com
                                 </small>
+                                {this.state.person.email !== '' && (
+                                  <small className="form-text only-errors">
+                                    {sessionStorage.getItem('errorEmail')}
+                                  </small>
+                                )}
+
                                 {this.state.person.email === '' && (
                                   <small className="form-text only-errors">
-                                    Falta información requerida para el Tomador.
-                                    Por favor revise el campo Correo electrónico
+                                    Este campo es requerido
                                   </small>
                                 )}
                               </div>

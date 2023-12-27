@@ -228,11 +228,10 @@ class Helpers {
     if (value.startsWith('.')) {
       return false;
     }
-    // // Validación de no tener dos puntos consecutivos (..)
-    // if (value.includes('..')) {
-
-    //   return 'No se permiten dos puntos consecutivos (..)';
-    // }
+    // Validación de no tener dos puntos consecutivos (..)
+    if (value.includes('..')) {
+      return false;
+    }
 
     // // Validación de no tener un punto ó - antes del @
     if (
@@ -360,7 +359,7 @@ class Helpers {
     // return re.test(value);
 
     if (
-      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/\=?^_`{|}-]+@([A-Za-z0-9.-]+)+[A-Za-z]{2,}$/.test(
+      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/\=?^_`{|}-]+@([A-Za-z0-9-]+\.)*[A-Za-z]{2,}$/.test(
         value
       )
     ) {
