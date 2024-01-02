@@ -218,7 +218,7 @@ class Helpers {
     // return re.test(value);
 
     if (
-      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/\=?^_`{|}-]+@([A-Za-z0-9.-]+)+[A-Za-z]{2,}$/.test(
+      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/=?^_`{|}-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}$/.test(
         value
       )
     ) {
@@ -266,8 +266,16 @@ class Helpers {
     if (afterAt && afterAt.length > 255) {
       return false;
     }
+    if (
+      afterAt.charAt(0) === '.' ||
+      afterAt.charAt(afterAt.length - 1) === '-' ||
+      afterAt.charAt(afterAt.length - 1) === '.'
+    ) {
+      return false;
+    }
     if (afterAt) {
       const domain = afterAt.split('.')[0];
+
       if (
         domain &&
         (domain.charAt(0) === '-' || domain.charAt(domain.length - 1) === '.')
@@ -359,7 +367,7 @@ class Helpers {
     // return re.test(value);
 
     if (
-      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/\=?^_`{|}-]+@([A-Za-z0-9-]+\.)*[A-Za-z]{2,}$/.test(
+      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/=?^_`{|}-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}$/.test(
         value
       )
     ) {
@@ -406,6 +414,14 @@ class Helpers {
     const afterAt = value.split('@')[1];
     if (afterAt && afterAt.length > 255) {
       return 'Después del @ no puede tener más de 255 caracteres';
+    }
+    if (
+      afterAt &&
+      (afterAt.charAt(0) === '.' ||
+        afterAt.charAt(afterAt.length - 1) === '-' ||
+        afterAt.charAt(afterAt.length - 1) === '.')
+    ) {
+      return 'El dominio no puede comenzar con "-" ni terminar con "." o terminar con "-"';
     }
     if (afterAt) {
       const domain = afterAt.split('.')[0];

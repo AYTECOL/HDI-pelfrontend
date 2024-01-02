@@ -580,60 +580,29 @@ export default class Persona extends Component {
   };
 
   changeValue = (e) => {
-    const { value: v, name: n } = e.target;
-
-    // Actualizar inmediatamente el estado con el valor ingresado
+    let v = e.target.value;
+    let n = e.target.name;
+    if (n === 'email') {
+      v = v.toLowerCase();
+      const error = Helpers.validationEmailErros(v);
+      if (error) {
+        sessionStorage.setItem('errorEmail', error);
+      }
+    }
+    let nit = this.state.nit;
+    let newPerson = this.state.person;
+    newPerson[n] = v;
+    if (n === 'code') nit = parseInt(v) === 37;
     this.setState(
-      (prevState) => ({
-        ...prevState,
-        person: { ...prevState.person, [n]: v },
-        nit: n === 'code' ? parseInt(v) === 37 : prevState.nit,
-      }),
+      {
+        ...this.state,
+        person: newPerson,
+        nit: nit,
+      },
       () => {
         this.validateAll(n);
       }
     );
-
-    if (n === 'email') {
-      // Flag para verificar si se presionó otra tecla después de la mayúscula
-      let keyPressed = false;
-
-      // Función onKeyDown para detectar si se presiona otra tecla
-      const onKeyDown = (event) => {
-        if (!keyPressed && event.key.length === 1) {
-          keyPressed = true;
-
-          // Actualizar visualmente el input con la conversión a minúsculas
-          this.setState((prevState) => ({
-            ...prevState,
-            person: { ...prevState.person, [n]: v.toLowerCase() },
-          }));
-        }
-      };
-
-      // Agregar el evento onKeyDown
-      document.addEventListener('keydown', onKeyDown);
-
-      // Función onBlur para limpiar eventos después del onBlur
-      const onBlur = () => {
-        // Actualizar visualmente el input con la conversión a minúsculas si no se presionó otra tecla
-        if (!keyPressed) {
-          this.setState((prevState) => ({
-            ...prevState,
-            person: { ...prevState.person, [n]: v.toLowerCase() },
-          }));
-        }
-
-        document.removeEventListener('keydown', onKeyDown);
-        input.removeEventListener('blur', onBlur);
-      };
-
-      // Obtener la referencia al input
-      const input = e.target;
-
-      // Agregar el evento onBlur directamente al input
-      input.addEventListener('blur', onBlur);
-    }
   };
 
   validateDoc = async (e, callback) => {
