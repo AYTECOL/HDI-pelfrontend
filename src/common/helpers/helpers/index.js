@@ -211,9 +211,302 @@ class Helpers {
   }
 
   static validationEmail(email) {
-    var re =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+    let value = String(email).toLowerCase();
+
+    // var re =
+    //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // return re.test(value);
+
+    if (
+      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/=?^_`{|}-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}$/.test(
+        value
+      )
+    ) {
+      return false;
+    }
+
+    if (value.startsWith('.')) {
+      return false;
+    }
+    // Validación de no tener dos puntos consecutivos (..)
+    if (value.includes('..')) {
+      return false;
+    }
+
+    // // Validación de no tener un punto ó - antes del @
+    if (
+      (value.indexOf('@') > 0 &&
+        value
+          .substring(value.indexOf('@') - 1, value.indexOf('@'))
+          .includes('.')) ||
+      (value.indexOf('@') > 0 &&
+        value
+          .substring(value.indexOf('@') - 1, value.indexOf('@'))
+          .includes('-'))
+    ) {
+      if (
+        (value.includes('@outlook') || value.includes('@hotmail')) &&
+        value.indexOf('@') > 0 &&
+        value
+          .substring(value.indexOf('@') - 1, value.indexOf('@'))
+          .includes('-')
+      ) {
+        return true;
+      }
+      if (value.includes('@outlook') || value.includes('@hotmail')) {
+        return false;
+      }
+
+      return false;
+    }
+    if (value.includes('ñ') || value.includes('Ñ')) {
+      return false;
+    }
+    const afterAt = value.split('@')[1];
+    if (afterAt && afterAt.length > 255) {
+      return false;
+    }
+    if (
+      afterAt.charAt(0) === '.' ||
+      afterAt.charAt(afterAt.length - 1) === '-' ||
+      afterAt.charAt(afterAt.length - 1) === '.'
+    ) {
+      return false;
+    }
+    if (afterAt) {
+      const domain = afterAt.split('.')[0];
+
+      if (
+        domain &&
+        (domain.charAt(0) === '-' || domain.charAt(domain.length - 1) === '.')
+      ) {
+        return false;
+      }
+    }
+    // Validación de dominio con al menos 2 caracteres
+    if (afterAt) {
+      const domain = afterAt.split('.')[1];
+      if (domain !== undefined) {
+        if (domain.length < 2) {
+          return false;
+        }
+      }
+    }
+
+    const parts = value.split('@');
+    if (parts.length !== 2 || parts[0].length > 64) {
+      return false;
+    }
+
+    const beforeAt = value.split('@')[0];
+    // Validación para Outlook/Hotmail
+    if (value.includes('@outlook') || value.includes('@hotmail')) {
+      // Debe iniciar con letra 'Outlook/Hotmail debe iniciar con letra y no permite iniciar con mayusculas'
+      if (!/^[a-z]/.test(beforeAt)) {
+        return false;
+      }
+      // No permite caracteres especiales a excepción de 'Outlook/Hotmail no permite caracteres especiales, excepto _, . y -'
+      if (!/^[a-zA-Z0-9_.-]+$/.test(beforeAt)) {
+        return false;
+      }
+      // No permite 'Outlook/Hotmail no permite terminar con punto'
+      if (beforeAt.endsWith('.')) {
+        return false;
+      }
+    }
+
+    // Validación para Yahoo
+    if (value.includes('@yahoo')) {
+      // Debe iniciar con letra 'Yahoo debe iniciar con letra y no permite iniciar con mayusculas'
+      if (!/^[a-z]/.test(beforeAt)) {
+        return false;
+      }
+      // No permite caracteres especiales a excepción de guión bajo y punto 'Yahoo no permite caracteres especiales, excepto _ y .'
+      if (!/^[a-zA-Z0-9_.]+$/.test(beforeAt)) {
+        return false;
+      }
+      // Debe terminar con letra o número 'Yahoo debe terminar con letra o número'
+      if (!/[a-zA-Z0-9]$/.test(beforeAt)) {
+        return false;
+      }
+      // No permite más de un punto o guion bajo seguidos 'Yahoo no permite más de un punto o guion bajo seguidos'
+      if (beforeAt.includes('..') || beforeAt.includes('__')) {
+        return false;
+      }
+    }
+
+    // Validación para Gmail
+    if (value.includes('@gmail')) {
+      // 'Gmail debe comenzar con letra o número y no permite iniciar con mayusculas'
+      if (!/^[a-z0-9]/.test(beforeAt.charAt(0))) {
+        return false;
+      }
+      // 'Gmail no permite caracteres especiales, excepto punto'
+      if (!/^[a-zA-Z0-9.]+$/.test(beforeAt)) {
+        return false;
+      }
+      // 'Gmail no permite iniciar con punto'
+      if (beforeAt.charAt(0) === '.') {
+        return false;
+      }
+      // No permite puntos al final 'Gmail no permite terminar con punto'
+      if (beforeAt.endsWith('.')) {
+        return false;
+      }
+      // No permite guion bajo en ninguna posición 'Gmail no permite guion bajo en ninguna posición'
+      if (beforeAt.includes('_')) {
+        return false;
+      }
+    }
+  }
+  static validationEmailErros(email) {
+    let value = String(email).toLowerCase();
+
+    // var re =
+    //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    // return re.test(value);
+
+    if (
+      !/^[A-Za-z0-9.~!ñÑ#$%&'()*+/=?^_`{|}-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}$/.test(
+        value
+      )
+    ) {
+      return 'Ingresa el @ o caracteres válidos “!”,“#”,“$”,“%”,“&”,“”,“’”,“*”,“+”,“-”,“/”,“=“,”?”,“^”,“_”,“`”,“{“,“|”,“}”';
+    }
+
+    if (value.startsWith('.')) {
+      return 'El primer carácter no puede ser un punto (.)';
+    }
+    // Validación de no tener dos puntos consecutivos (..)
+    if (value.includes('..')) {
+      return 'No se permiten dos puntos consecutivos (..)';
+    }
+
+    // // Validación de no tener un punto ó - antes del @
+    if (
+      (value.indexOf('@') > 0 &&
+        value
+          .substring(value.indexOf('@') - 1, value.indexOf('@'))
+          .includes('.')) ||
+      (value.indexOf('@') > 0 &&
+        value
+          .substring(value.indexOf('@') - 1, value.indexOf('@'))
+          .includes('-'))
+    ) {
+      if (
+        (value.includes('@outlook') || value.includes('@hotmail')) &&
+        value.indexOf('@') > 0 &&
+        value
+          .substring(value.indexOf('@') - 1, value.indexOf('@'))
+          .includes('-')
+      ) {
+        return true;
+      }
+      if (value.includes('@outlook') || value.includes('@hotmail')) {
+        return 'Outlook/Hotmail no permite un punto antes del @';
+      }
+
+      return 'No se permite un punto ó un - antes del @';
+    }
+    if (value.includes('ñ') || value.includes('Ñ')) {
+      return 'No se permite la tecla ñ';
+    }
+    const afterAt = value.split('@')[1];
+    if (afterAt && afterAt.length > 255) {
+      return 'Después del @ no puede tener más de 255 caracteres';
+    }
+    if (
+      afterAt &&
+      (afterAt.charAt(0) === '.' ||
+        afterAt.charAt(afterAt.length - 1) === '-' ||
+        afterAt.charAt(afterAt.length - 1) === '.')
+    ) {
+      return 'El dominio no puede comenzar con "-" ni terminar con "." o terminar con "-"';
+    }
+    if (afterAt) {
+      const domain = afterAt.split('.')[0];
+      if (
+        domain &&
+        (domain.charAt(0) === '-' || domain.charAt(domain.length - 1) === '.')
+      ) {
+        return 'El dominio no puede comenzar con "-" ni terminar con "." o terminar con "-"';
+      }
+    }
+    // Validación de dominio con al menos 2 caracteres
+    if (afterAt) {
+      const domain = afterAt.split('.')[1];
+      if (domain !== undefined) {
+        if (domain.length < 2) {
+          return 'El dominio debe tener al menos 2 caracteres';
+        }
+      }
+    }
+
+    const parts = value.split('@');
+    if (parts.length !== 2 || parts[0].length > 64) {
+      return 'El correo electrónico debe tener maximo 64 caracteres antes del @';
+    }
+
+    const beforeAt = value.split('@')[0];
+    // Validación para Outlook/Hotmail
+    if (value.includes('@outlook') || value.includes('@hotmail')) {
+      if (beforeAt.endsWith('.')) {
+        return 'Outlook/Hotmail no permite terminar con punto';
+      }
+      // Debe iniciar con letra 'Outlook/Hotmail debe iniciar con letra y no permite iniciar con mayusculas'
+      if (!/^[a-z]/.test(beforeAt)) {
+        return 'Outlook/Hotmail debe iniciar con letra y no permite iniciar con mayusculas';
+      }
+      // // No permite caracteres especiales a excepción de 'Outlook/Hotmail no permite caracteres especiales, excepto _, . y -'
+      if (!/^[a-zA-Z0-9_.-]+$/.test(beforeAt)) {
+        return 'Outlook/Hotmail no permite caracteres especiales, excepto _, . y -';
+      }
+      // No permite 'Outlook/Hotmail no permite terminar con punto'
+    }
+
+    // Validación para Yahoo
+    if (value.includes('@yahoo')) {
+      // Debe iniciar con letra 'Yahoo debe iniciar con letra y no permite iniciar con mayusculas'
+      if (!/^[a-z]/.test(beforeAt)) {
+        return 'Yahoo debe iniciar con letra y no permite iniciar con mayusculas';
+      }
+      // No permite caracteres especiales a excepción de guión bajo y punto 'Yahoo no permite caracteres especiales, excepto _ y .'
+      if (!/^[a-zA-Z0-9_.]+$/.test(beforeAt)) {
+        return 'Yahoo no permite caracteres especiales, excepto _ y .';
+      }
+      // Debe terminar con letra o número 'Yahoo debe terminar con letra o número'
+      if (!/[a-zA-Z0-9]$/.test(beforeAt)) {
+        return 'Yahoo debe terminar con letra o número';
+      }
+      // No permite más de un punto o guion bajo seguidos 'Yahoo no permite más de un punto o guion bajo seguidos'
+      if (beforeAt.includes('..') || beforeAt.includes('__')) {
+        return 'Yahoo no permite más de un punto o guion bajo seguidos';
+      }
+    }
+
+    // Validación para Gmail
+    if (value.includes('@gmail')) {
+      // 'Gmail debe comenzar con letra o número y no permite iniciar con mayusculas'
+      if (!/^[a-z0-9]/.test(beforeAt.charAt(0))) {
+        return 'Gmail debe comenzar con letra o número y no permite iniciar con mayusculas';
+      }
+      // 'Gmail no permite caracteres especiales, excepto punto'
+      if (!/^[a-zA-Z0-9.]+$/.test(beforeAt)) {
+        return 'Gmail no permite caracteres especiales, excepto punto';
+      }
+      // 'Gmail no permite iniciar con punto'
+      if (beforeAt.charAt(0) === '.') {
+        return 'Gmail no permite iniciar con punto';
+      }
+      // No permite puntos al final 'Gmail no permite terminar con punto'
+      if (beforeAt.endsWith('.')) {
+        return 'Gmail no permite terminar con punto';
+      }
+      // No permite guion bajo en ninguna posición 'Gmail no permite guion bajo en ninguna posición'
+      if (beforeAt.includes('_')) {
+        return 'Gmail no permite guion bajo en ninguna posición';
+      }
+    }
   }
 
   static isMobilePhone(value) {
