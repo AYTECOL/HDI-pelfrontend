@@ -23,12 +23,6 @@ export const COD_COVERAGES_INSURED = {
   OBSEQUIES: 774,
 };
 
-export const STATUS_POLICIES = {
-  QUOTATION: 'Cotización',
-  PROCESS_EMIT: 'Proceso de emisión',
-  POLICY_EMIT: 'Póliza emitida',
-};
-
 export const VALIDITY_QUOTES_DAYS = 30;
 
 export const DEFAULT_VALUE_TYPE_DOCUMENT = 36;
@@ -54,3 +48,9 @@ export const MONTHS = [
   'noviembre',
   'diciembre',
 ];
+
+export const STATUS = {
+  EMITTED: 'EMITTED',
+  QUOTATION: 'QUOTATION',
+  PROCESS_IN_EMISSION: 'PROCESS_IN_EMISSION',
+};

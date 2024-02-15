@@ -2,6 +2,7 @@ import Api from './Api';
 import Helpers from '../common/helpers/helpers';
 import AccessToken from '../services/AccessToken';
 import AuthHeader from './AuthHeader';
+import { STATUS } from 'assets/constants';
 const Url = '/quote-all-quotes/';
 const url_plan_selected = '/quotes-plan-selected';
 const url_more_info_policies = '/quotes-more-info';
@@ -10,15 +11,21 @@ class GetQuote {
   static async get() {
     let queryString = window.location.search.replace('?', '').split('&');
     await AccessToken.get(queryString[0].replace('refer=', ''));
-    const accessToken = localStorage.getItem('JaccessToken') || '';
+    const intermediateCode = localStorage.getItem('intermediateCode') || '';
     let authHeader = new AuthHeader();
     authHeader = authHeader.generateAuthCode();
-    let items = await Api.get(`${Url}${accessToken}`, undefined, authHeader);
-    if (typeof items.quotations === 'undefined') {
-      return [];
-    } else {
-      return Helpers.orderArray(items.quotations, 'quoteId', true).reverse();
+    const quotations = [];
+    const status = Object.values(STATUS);
+    for (const state of status) {
+      let items = await Api.get(
+        `${Url}${intermediateCode}/${state}`,
+        undefined,
+        authHeader
+      );
+      if (items.quotations.length > 0) quotations.push(...items.quotations);
     }
+
+    return Helpers.orderArray(quotations, 'quoteId', true).reverse();
   }
 
   static async getById(id) {
