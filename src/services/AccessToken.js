@@ -15,7 +15,7 @@ class AccessToken {
       let reponse = await Api.post(Url, data, BaseUrl);
       if (typeof reponse['accessToken'] !== 'undefined') {
         const { agente, accessToken } = reponse;
-        localStorage.setItem('JaccessToken', agente);
+        localStorage.setItem('intermediateCode', agente);
         localStorage.setItem('serviceToken', accessToken);
         return reponse;
       } else {
