@@ -14,6 +14,7 @@ import {
   STATUS,
   VALIDITY_QUOTES_DAYS,
 } from 'assets/constants';
+import store from 'store';
 
 const Home = (props) => {
   const [quotesData, setQuotesData] = useState([]);
@@ -26,6 +27,7 @@ const Home = (props) => {
   });
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
   const [statesQuotes, setStatesQuotes] = useState({});
+  const { agente: intermediateCode } = store.getState().auth;
 
   /**
    * @param {import("services/GetQuote").PolicyRequest[]} dataArray
@@ -94,13 +96,13 @@ const Home = (props) => {
   useEffect(() => {
     async function getQuotes() {
       Loading.toggle(true);
-      let arrayItems = await Quotes.get();
+      let arrayItems = await Quotes.get(intermediateCode);
       const result = formatDataQuotations(arrayItems);
       setQuotesData(result);
       Loading.toggle(false);
     }
-    getQuotes();
-  }, []);
+    if (intermediateCode) getQuotes();
+  }, [intermediateCode]);
 
   const quoteFilters = useMemo(() => {
     const { orderBy, search } = filter;

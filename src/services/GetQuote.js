@@ -1,6 +1,6 @@
 import Api from './Api';
 import Helpers from '../common/helpers/helpers';
-import AccessToken from '../services/AccessToken';
+/* import AccessToken from '../services/AccessToken'; */
 import AuthHeader from './AuthHeader';
 import { STATUS } from 'assets/constants';
 const Url = '/quote-all-quotes/';
@@ -8,10 +8,9 @@ const url_plan_selected = '/quotes-plan-selected';
 const url_more_info_policies = '/quotes-more-info';
 
 class GetQuote {
-  static async get() {
-    let queryString = window.location.search.replace('?', '').split('&');
-    await AccessToken.get(queryString[0].replace('refer=', ''));
-    const intermediateCode = localStorage.getItem('intermediateCode') || '';
+  static async get(intermediateCode) {
+    /* let queryString = window.location.search.replace('?', '').split('&');
+    await AccessToken.get(queryString[0].replace('refer=', '')); */
     let authHeader = new AuthHeader();
     authHeader = authHeader.generateAuthCode();
     const quotations = [];
@@ -22,7 +21,7 @@ class GetQuote {
         undefined,
         authHeader
       );
-      if (items.quotations.length > 0) quotations.push(...items.quotations);
+      if (items.quotations?.length > 0) quotations.push(...items.quotations);
     }
 
     return Helpers.orderArray(quotations, 'quoteId', true).reverse();
