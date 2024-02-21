@@ -142,7 +142,8 @@ class Helpers {
   }
 
   static goToHome(history) {
-    history.push(UrlSite + '/');
+    history.replace(UrlSite + '/');
+    window.location.reload();
   }
 
   static goToError() {

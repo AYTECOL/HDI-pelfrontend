@@ -15,6 +15,7 @@ import ConsultaPersonas from './services/ConsultaPersonas';
 import Identifications from 'services/Identifications';
 import store from 'store';
 import { setGeneralSetIdentifications } from 'store/actions';
+import AccessToken from 'services/AccessToken';
 
 class App extends Component {
   _isMounted = false;
@@ -30,12 +31,19 @@ class App extends Component {
     this._isMounted = true;
     this.getUser();
     this.getResources();
+    this.authentication();
   }
 
   async getResources() {
     // get types and labels for types of documents
     let data = await Identifications.get();
     store.dispatch(setGeneralSetIdentifications(data?.identifications || []));
+  }
+
+  async authentication() {
+    let queryString = window.location.search.replace('?', '').split('&');
+    if (queryString !== '')
+      await AccessToken.get(queryString[0].replace('refer=', ''));
   }
 
   componentWillUnmount() {

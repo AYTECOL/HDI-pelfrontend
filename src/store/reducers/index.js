@@ -88,6 +88,7 @@ const initialState = {
   attachedFile: false,
   exceptionSarlaft: false,
   identifications: {},
+  auth: {},
 };
 
 initialState.originalStore = initialState;
@@ -271,6 +272,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         identifications: action.data,
+      };
+    case actionsTypes.SET_AUTH_USER:
+      return {
+        ...state,
+        auth: action.data,
       };
 
     default:
