@@ -11,9 +11,10 @@ import {
   STEP_EMITTED,
   STEP_ISSUE,
   STEP_QUOTATION,
-  STATUS_POLICIES,
+  STATUS,
   VALIDITY_QUOTES_DAYS,
 } from 'assets/constants';
+import store from 'store';
 
 const Home = (props) => {
   const [quotesData, setQuotesData] = useState([]);
@@ -26,6 +27,7 @@ const Home = (props) => {
   });
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
   const [statesQuotes, setStatesQuotes] = useState({});
+  const { agente: intermediateCode } = store.getState().auth;
 
   /**
    * @param {import("services/GetQuote").PolicyRequest[]} dataArray
@@ -51,7 +53,7 @@ const Home = (props) => {
         document_type: item.document_type,
         validity: getValidity(item.create_at),
         create_data: item.create_at,
-        stateQuote: getStateQuotes(item.step),
+        stateQuote: item.status,
         step: item.step,
         pdf_info: item.pdf_info,
         emissionId: item.policy?.emissionId || null,
@@ -62,14 +64,11 @@ const Home = (props) => {
           ? MomentJs(item.policy?.emitedDate).format('LT')
           : null,
       };
-      if (quote.stateQuote === STATUS_POLICIES.QUOTATION && quote.validity > 0)
+      if (quote.stateQuote === STATUS.QUOTATION && quote.validity > 0)
         quotation += 1;
-      if (
-        quote.stateQuote === STATUS_POLICIES.PROCESS_EMIT &&
-        quote.validity > 0
-      )
+      if (quote.stateQuote === STATUS.PROCESS_IN_EMISSION && quote.validity > 0)
         issue += 1;
-      if (quote.stateQuote === STATUS_POLICIES.POLICY_EMIT) emitted += +1;
+      if (quote.stateQuote === STATUS.EMITTED) emitted += +1;
       return quote;
     });
     setStatesQuotes({ ...statesQuotes, quotation, issue, emitted });
@@ -82,17 +81,7 @@ const Home = (props) => {
     const days = startDate.diff(endDate, 'days');
     return VALIDITY_QUOTES_DAYS - Math.abs(days);
   };
-  const getStateQuotes = (step) => {
-    let stringState = '';
-    if (STEP_QUOTATION.includes(step)) {
-      stringState = STATUS_POLICIES.QUOTATION;
-    } else if (STEP_ISSUE.includes(step)) {
-      stringState = STATUS_POLICIES.PROCESS_EMIT;
-    } else if (STEP_EMITTED.includes(step)) {
-      stringState = STATUS_POLICIES.POLICY_EMIT;
-    }
-    return stringState;
-  };
+
   const getNumber = async () => {
     const { history } = props;
     Loading.toggle(true);
@@ -107,13 +96,13 @@ const Home = (props) => {
   useEffect(() => {
     async function getQuotes() {
       Loading.toggle(true);
-      let arrayItems = await Quotes.get();
+      let arrayItems = await Quotes.get(intermediateCode);
       const result = formatDataQuotations(arrayItems);
       setQuotesData(result);
       Loading.toggle(false);
     }
-    getQuotes();
-  }, []);
+    if (intermediateCode) getQuotes();
+  }, [intermediateCode]);
 
   const quoteFilters = useMemo(() => {
     const { orderBy, search } = filter;

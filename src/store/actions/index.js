@@ -81,6 +81,14 @@ const setGeneralSetIdentifications = (data) => {
   return { type: actionsTypes.GENERAL_SET_IDENTIFICATIONS, data: data };
 };
 
+// action authentication
+const setAuthUser = (data) => {
+  return {
+    type: actionsTypes.SET_AUTH_USER,
+    data: data,
+  };
+};
+
 // Tercer formulario
 const indexPlanSelected = (index) => {
   return { type: actionsTypes.INDEX_PLAN_SELECTED, data: index };
@@ -157,4 +165,5 @@ export {
   setPropertyValidation,
   setExceptionSarlaft,
   setGeneralSetIdentifications,
+  setAuthUser,
 };

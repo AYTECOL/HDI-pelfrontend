@@ -20,6 +20,7 @@ export interface PolicyRequest {
   longitude: number;
   infoGeocodingSig: InfoGeocodingSig;
   plan_selected_info: object;
+  status: string;
   latitude: number;
   person: ResConsultarPersonaRs;
 }
