@@ -149,6 +149,9 @@ class BtnContinue extends PureComponent {
           beneficiaries.push(dataUser);
         } else if (persons[i]['role'][j] === ROLES_KEY.IS_ONEROUS) {
           onerous.push(dataUser);
+          onerous.forEach(objeto => {
+            objeto.email = ""; // Establecer el email como un string vacío
+        });
         }
       }
     }
