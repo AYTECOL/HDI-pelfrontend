@@ -1,3 +1,4 @@
+bucketDeployment: libertyhome-dev-serverlessdeploymentbucket-hdi
 s3Bucket: poliza-express-hogar-hdi-dev
 s3BucketPDF: poliza-express-hogar-pdf-hdi-dev
 WebACLId: arn:aws:wafv2:us-east-1:533267354531:global/webacl/co-hdi-aws-cloudfront-webacl-dev-external-block-v1/816f8825-9c30-4045-ac9f-1ca1298d3982
