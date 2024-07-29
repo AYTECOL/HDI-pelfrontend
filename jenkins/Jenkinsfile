@@ -35,7 +35,7 @@ pipeline {
                     HOME = "${env.WORKSPACE}"
                 }
                 steps{
-                checkout scm dev
+                    checkout scm
                 }
         }
 
