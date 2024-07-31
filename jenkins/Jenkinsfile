@@ -81,10 +81,12 @@ pipeline {
                     ls -ltr
                 """
                 dir('build') {
-                    sh 'pwd'
-                    sh 'ls'
-                    sh 'aws s3 rm s3://poliza-express-hogar-hdi-dev --recursive' // Clean bucket
-                    sh 'aws s3 sync .  s3://poliza-express-hogar-hdi-dev' // Sync bucket
+			deployToDev{
+	                    sh 'pwd'
+	                    sh 'ls'
+	                    sh 'aws s3 rm s3://poliza-express-hogar-hdi-dev --recursive' // Clean bucket
+	                    sh 'aws s3 sync .  s3://poliza-express-hogar-hdi-dev' // Sync bucket
+			}
                 }
                 //sh 'aws cloudfront create-invalidation --distribution-id ${WebAppCloudFrontDistribution} --paths "/*"'
             }
