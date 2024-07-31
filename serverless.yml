@@ -40,10 +40,10 @@ functions:
     runtime: nodejs18.x
     MemorySize: 256
     timeout: 29
-    lambdaAtEdge:
+    #lambdaAtEdge:
       #distribution: 'WebAppCloudFrontDistribution'
-      eventType: origin-response
-      includeBody: false
+      #eventType: origin-response
+      #includeBody: false
 
 resources:
   Resources:
