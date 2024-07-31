@@ -40,7 +40,7 @@ node('linux'){
 
     stage('cloudfront') {
         withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh "sls deploy -v --force --stage prod"
+            sh "sls deploy --stage prod --verbose"
             dir('dist/poliza-express-hogar'){
                 sh 'pwd'
                 sh 'ls'
