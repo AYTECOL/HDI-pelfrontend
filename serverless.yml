@@ -41,7 +41,7 @@ functions:
     MemorySize: 256
     timeout: 29
     lambdaAtEdge:
-      distribution: 'WebAppCloudFrontDistribution'
+      #distribution: 'WebAppCloudFrontDistribution'
       eventType: origin-response
       includeBody: false
 
