@@ -107,7 +107,7 @@ class Index extends Component {
      */
     // upload info legal representative and beneficiaries
     let beneficiariesFinal =
-      items.beneficiariesFinal.length > 0 ? items.beneficiariesFinal : [];
+      items?.beneficiariesFinal?.length > 0 ? items.beneficiariesFinal : [];
     const legalRepresentative = items?.legalRepresentative || null;
     const isLegalRepresentativeBeneficiary = beneficiariesFinal.some(
       (beneficiary) =>

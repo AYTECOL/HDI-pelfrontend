@@ -28,7 +28,7 @@
     "react-scripts": "^4.0.3",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "sass": "^1.69.5",
+    "sass": "^1.64.2",
     "serverless-plugin-resource-tagging": "^1.1.1",
     "simple-mask-money": "^3.0.1",
     "validator": "^13.7.0",

@@ -174,7 +174,7 @@ class Index extends Component {
       }
       // upload info legal representative and beneficiaries
       beneficiariesFinal =
-        items.beneficiariesFinal.length > 0 ? items.beneficiariesFinal : [];
+        items?.beneficiariesFinal?.length > 0 ? items.beneficiariesFinal : [];
       legalRepresentative = items?.legalRepresentative || null;
       isLegalRepresentativeBeneficiary = beneficiariesFinal.some(
         (beneficiary) =>
@@ -182,7 +182,7 @@ class Index extends Component {
           beneficiary.document_type === legalRepresentative?.document_type
       );
       if (isLegalRepresentativeBeneficiary) {
-        beneficiariesFinal = beneficiariesFinal.filter(
+        beneficiariesFinal = beneficiariesFinal?.filter(
           (beneficiary) =>
             beneficiary.document !== legalRepresentative?.document ||
             beneficiary.document_type !== legalRepresentative?.document_type
