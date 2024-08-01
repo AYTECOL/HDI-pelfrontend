@@ -86,9 +86,9 @@ pipeline {
 	                    sh 'ls'
 	                    sh 'aws s3 rm s3://poliza-express-hogar-hdi-dev --recursive' // Clean bucket
 	                    sh 'aws s3 sync .  s3://poliza-express-hogar-hdi-dev' // Sync bucket
+			    sh 'aws cloudfront create-invalidation --distribution-id E3JFYMYSJ7N8SG --paths "/*"'
 			}
                 }
-                sh 'aws cloudfront create-invalidation --distribution-id E3JFYMYSJ7N8SG --paths "/*"'
             }
             
         }
