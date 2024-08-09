@@ -152,10 +152,12 @@ class MapBase extends Component {
     const { googleMapURL } = this.props;
     const { zoom, markerPosition, isMarkerShown } = this.state;
     return (
+      
       <GoogleMapReact
         bootstrapURLKeys={{
-          client: googleMapURL,
+          client: ,
         }}
+        bootstrapURLKeys={{ key: "AIzaSyCN484G-lXv6PJ6MmFaOaYkr3zQV31W3ps" }}
         defaultZoom={zoom}
         defaultCenter={markerPosition}
         center={markerPosition}
