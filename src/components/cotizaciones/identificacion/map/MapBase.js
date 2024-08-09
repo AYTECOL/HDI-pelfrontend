@@ -154,9 +154,9 @@ class MapBase extends Component {
     return (
       
       <GoogleMapReact
-        bootstrapURLKeys={{
+        /*bootstrapURLKeys={{
           client: ,
-        }}
+        }}*/
         bootstrapURLKeys={{ key: "AIzaSyCN484G-lXv6PJ6MmFaOaYkr3zQV31W3ps" }}
         defaultZoom={zoom}
         defaultCenter={markerPosition}
