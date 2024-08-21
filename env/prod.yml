@@ -1,6 +1,6 @@
 s3Bucket: poliza-express-hogar
 s3BucketPDF: poliza-express-hogar-pdf-prod
-WebACLId: arn:aws:wafv2:us-east-1:626569123605:global/webacl/aws-cloudfront-webacl-external-block-v1/ba2373cc-0596-4725-b214-7aaeb3143c6c
-AcmCertificateArn: arn:aws:acm:us-east-1:626569123605:certificate/38597742-833f-4356-9a6d-8357c61e5159
+WebACLId: arn:aws:wafv2:us-east-1:590184135173:global/webacl/co-hdi-aws-cloudfront-webacl-prod-external-block-v1/4a867b03-9a22-4c10-8335-c53b900f6865
+AcmCertificateArn: arn:aws:acm:us-east-1:590184135173:certificate/f22d6fe6-dfeb-49d8-9baa-2d437f1c8017
 Aliases:
-  - hogar.libertyseguros.co
+  - hogar.hdiseguros.com.co
