@@ -1,5 +1,5 @@
 bucketDeployment: libertyhome-prod-serverlessdeploymentbucket-hdi
-s3Bucket: poliza-express-hogar
+s3Bucket: poliza-express-hogar-hdi
 s3BucketPDF: poliza-express-hogar-pdf-prod
 WebACLId: arn:aws:wafv2:us-east-1:590184135173:global/webacl/co-hdi-aws-cloudfront-webacl-prod-external-block-v1/4a867b03-9a22-4c10-8335-c53b900f6865
 AcmCertificateArn: arn:aws:acm:us-east-1:590184135173:certificate/f22d6fe6-dfeb-49d8-9baa-2d437f1c8017
