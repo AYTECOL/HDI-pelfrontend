@@ -136,7 +136,6 @@ class Segurarinmueble extends Component {
   render() {
     const { errorValue } = this.state;
     const content = Segurarinmueble.getContent();
-    console.log(content);
     const maximumPerItem = content.tooltip;
     const name = content.name;
     return (

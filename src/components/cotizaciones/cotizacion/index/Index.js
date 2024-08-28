@@ -29,6 +29,7 @@ class Index extends Component {
       retryLimitReached: false,
       showButtonReturn: false,
       currentDateTime: '',
+      updateCards: false,
     };
   }
 
@@ -51,10 +52,12 @@ class Index extends Component {
       this.setState({
         openLimitsModal: true,
         code: limits?.code,
+        updateCards: false,
       });
     } else if (limits.length > 0) {
       this.setState({
         openLimitsModal: false,
+        updateCards: true,
       });
     }
   }
@@ -69,6 +72,7 @@ class Index extends Component {
           retryCount: newRetryCount,
           retryLimitReached,
           showButtonReturn: retryLimitReached,
+          updateCards: true,
         };
       },
       async () => {
@@ -96,7 +100,7 @@ class Index extends Component {
               </div>
             </div>
 
-            <Cards />
+            <Cards updateCards={this.state.updateCards} />
 
             <Plans />
 
