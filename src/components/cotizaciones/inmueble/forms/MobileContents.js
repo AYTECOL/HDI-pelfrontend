@@ -29,7 +29,7 @@ class MobileContents extends Component {
       description: name = '',
       min_value: min = 0,
       max_value: max = 0,
-      maximumPerItem,
+      tooltip,
     } = {
       ...(state && state.allInsurableLimits[5]),
     };
@@ -37,7 +37,7 @@ class MobileContents extends Component {
       name,
       min,
       max,
-      maximumPerItem,
+      tooltip,
     };
   };
 
@@ -132,7 +132,7 @@ class MobileContents extends Component {
 
   render() {
     const content = MobileContents.getContent();
-    const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+    const maximumPerItem = content.tooltip;
     const { active, errorValue } = this.state;
     return (
       <div className="row">
@@ -155,7 +155,7 @@ class MobileContents extends Component {
                   <Tooltip
                     className="mt-1"
                     placement="left"
-                    title={`El valor máximo por cada artículo móvil es de ${maximumPerItem}`}
+                    title={`${maximumPerItem}`}
                   >
                     <Help className={'ml-auto icon-primary'} />
                   </Tooltip>

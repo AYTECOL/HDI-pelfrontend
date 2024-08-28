@@ -1,60 +1,14 @@
-import Api from './Api';
 import Store from '../store';
 import AuthHeader from './AuthHeader';
 import { saveAllInsurableLimits } from '../store/actions';
 import Helpers from '../common/helpers/helpers';
-import { typeItems } from '../common/typeItems';
+import Axios from 'axios';
+import { UrlService } from '../config';
 
 const BaseUrl = '/all-insurable-limits';
-const Default = () => ({
-  limits: [
-    {
-      insurable_limit_id: '2',
-      description: 'Contenidos',
-      min_value: 10000000,
-      max_value: 1000000000,
-      maximumPerItem: typeItems.fixedContent.max,
-    },
-    {
-      insurable_limit_id: '1',
-      description: 'Inmueble',
-      min_value: 20000000,
-      max_value: 4000000000,
-    },
-    {
-      insurable_limit_id: '6',
-      description: 'Teléfonos móviles',
-      min_value: 1500000,
-      max_value: 10000000,
-      maximumPerItem: typeItems.cellPhones.max,
-    },
-    {
-      insurable_limit_id: '5',
-      description: 'Contenidos móviles',
-      min_value: 1500000,
-      max_value: 50000000,
-      maximumPerItem: typeItems.mobileContent.max,
-    },
-    {
-      insurable_limit_id: '4',
-      description: 'Joyas',
-      min_value: 1500000,
-      max_value: 50000000,
-      maximumPerItem: typeItems.jewelry.max,
-    },
-    {
-      insurable_limit_id: '3',
-      description: 'Objetos de valor y obras de Arte',
-      min_value: 1500000,
-      max_value: 100000000,
-      maximumPerItem: typeItems.valuablesAndWorksOfArt.max,
-    },
-  ],
-  status: 200,
-});
 
 class AllInsurableLimits {
-  static async get() {
+  static async get(id) {
     let data = {};
     let allInsurableLimits = [];
     let storeState = Store.getState();
@@ -63,12 +17,24 @@ class AllInsurableLimits {
         // TODO interceptor or request
         let authHeader = new AuthHeader();
         authHeader = authHeader.generateAuthCode();
-        data = await Api.get(BaseUrl, undefined, authHeader);
+        // const url = `${UrlService.replace(
+        //   /['"]+/g,
+        //   ''
+        // ).trim()}${BaseUrl.trim()}/${id ?? storeState.cotizacion.number}`;
+        const url =
+          UrlService + BaseUrl + '/' + (id ?? storeState.cotizacion.number);
+        data = await Axios.get(url, { headers: authHeader })
+          .then(({ data }) => data)
+          .catch((error) => {
+            throw error;
+          });
+        //data = await Api.get(BaseUrl, undefined, authHeader);
       } catch (e) {
-        data = Default();
-      }
-      if (!data.limits || !data.limits.length) {
-        data = Default();
+        console.log('🎉 error desde el servicio', JSON.stringify(e));
+        const { status } = e?.response || {};
+        return {
+          code: status || 400,
+        };
       }
       allInsurableLimits = Helpers.orderArray(
         data.limits,
@@ -83,7 +49,7 @@ class AllInsurableLimits {
       allInsurableLimits = newData;
       Store.dispatch(saveAllInsurableLimits(allInsurableLimits));
     } else {
-      allInsurableLimits = storeState.limits;
+      allInsurableLimits = storeState.allInsurableLimits;
     }
     return allInsurableLimits;
   }

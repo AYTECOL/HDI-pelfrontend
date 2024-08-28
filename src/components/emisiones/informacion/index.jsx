@@ -17,6 +17,7 @@ import QuoteIussedById from '../../../services/QuoteIussedById';
 import Helpers from '../../../common/helpers/helpers';
 import Masknumbermoney from '../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Content from './Content';
+import Store from '../../../store';
 import {
   isItemRequired,
   itemsRequiredSince,
@@ -27,6 +28,7 @@ import { BuiltMetersHousing } from './BuiltMetersHousing';
 import { Articles } from './Articles';
 import { LastContentWarn } from './LastContentWarn';
 import { TYPES_VALUE_CONTENT } from './constants';
+import AllInsurableLimits from 'services/AllInsurableLimits';
 
 // 10MB
 const maxFileSize = UploadFileService.maxFileSize;
@@ -67,6 +69,7 @@ class Index extends React.Component {
       showPopUpPersona: false,
       errorPhone: false,
       items: [],
+      openLimitsModal: false,
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
@@ -83,6 +86,24 @@ class Index extends React.Component {
   componentDidMount() {
     this.getData();
     Helpers.fieldNumeric();
+    this.getAllInsurableLimits();
+  }
+
+  async getAllInsurableLimits() {
+    const limits = await AllInsurableLimits.get(
+      Store.getState().cotizacion.number
+    );
+
+    if (!limits || limits.code) {
+      this.setState({
+        openLimitsModal: true,
+        code: limits?.code,
+      });
+    } else if (limits.length > 0) {
+      this.setState({
+        openLimitsModal: false,
+      });
+    }
   }
 
   async getData() {
@@ -153,12 +174,17 @@ class Index extends React.Component {
      * @type {import('../../../models/types').Item[]}
      */
     const items = [];
+    const itemsMax = Store.getState().allInsurableLimits;
     if (typeof inmuebles !== 'undefined') {
       if (inmuebles.contenido_asegudado === 1) {
         contenidos = true;
         items.push({
           ...typeItems.fixedContent,
           min: 1,
+          max:
+            itemsMax.find(
+              (currentItem) => currentItem?.insurable_limit_id == '2'
+            )?.maximumPerItem || typeItems.fixedContent.max,
           maxTotal: inmuebles.contenido_asegudado_valor,
         });
 
@@ -166,6 +192,10 @@ class Index extends React.Component {
           items.push({
             ...typeItems.valuablesAndWorksOfArt,
             min: 1,
+            max:
+              itemsMax.find(
+                (currentItem) => currentItem?.insurable_limit_id == '3'
+              )?.maximumPerItem || typeItems.valuablesAndWorksOfArt.max,
             maxTotal: inmuebles.inmueble_asegudado_obrasvalor,
           });
           obras = true;
@@ -174,6 +204,10 @@ class Index extends React.Component {
           items.push({
             ...typeItems.jewelry,
             min: 1,
+            max:
+              itemsMax.find(
+                (currentItem) => currentItem?.insurable_limit_id == '4'
+              )?.maximumPerItem || typeItems.jewelry.max,
             maxTotal: inmuebles.inmueble_asegudado_joyasvalor,
             required: true,
           });
@@ -183,6 +217,10 @@ class Index extends React.Component {
           items.push({
             ...typeItems.cellPhones,
             min: 899999,
+            max:
+              itemsMax.find(
+                (currentItem) => currentItem?.insurable_limit_id == '6'
+              )?.maximumPerItem || typeItems.cellPhones.max,
             maxTotal: inmuebles.inmueble_asegudado_telefonosvalor,
           });
           celulares = true;
@@ -196,6 +234,10 @@ class Index extends React.Component {
         items.push({
           ...typeItems.mobileContent,
           min: 1,
+          max:
+            itemsMax.find(
+              (currentItem) => currentItem?.insurable_limit_id == '5'
+            )?.maximumPerItem || typeItems.mobileContent.max,
           maxTotal: value_to_quotate,
           required: true,
         });

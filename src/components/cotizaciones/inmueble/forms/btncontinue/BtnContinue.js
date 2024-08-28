@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 
 import CreateOrUpdateValoration from 'services/CreateOrUpdateValoration';
 import QuoteService from 'services/Quote';
+import AllInsurableLimits from 'services/AllInsurableLimits';
 import { NextStep, setPropertyValidation } from 'store/actions';
 import Helpers from 'common/helpers/helpers';
 // Components
@@ -213,6 +214,7 @@ class BtnContinue extends Component {
       const {
         quote_created: { infoGeocodingSig },
       } = await QuoteService.save();
+
       const NotInsured =
         infoGeocodingSig &&
         infoGeocodingSig.features[0]?.attributes.AMENAZA_INUNDACION ===

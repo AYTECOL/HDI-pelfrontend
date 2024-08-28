@@ -9,8 +9,10 @@ class Api {
       if (typeof formData === 'undefined') formData = false;
       if (typeof overrideBase === 'undefined') {
         url = UrlService + url;
+        // url = `${UrlService.replace(/['"]+/g, '').trim()}${url.trim()}`;
       } else {
         url = overrideBase + url;
+        // url = `${overrideBase.replace(/['"]+/g, '').trim()}${url.trim()}`;
       }
       xhr.open(method, url);
       if (formData === false)
