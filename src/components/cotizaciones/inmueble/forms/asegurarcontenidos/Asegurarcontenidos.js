@@ -30,7 +30,7 @@ class Asegurarcontenidos extends Component {
       description: name = '',
       min_value: min = 0,
       max_value: max = 0,
-      maximumPerItem,
+      tooltip,
     } = {
       ...(state && state.allInsurableLimits[2]),
     };
@@ -38,7 +38,7 @@ class Asegurarcontenidos extends Component {
       name,
       min,
       max,
-      maximumPerItem,
+      tooltip,
     };
   };
 
@@ -173,7 +173,7 @@ class Asegurarcontenidos extends Component {
     const content = Asegurarcontenidos.getContent();
     const min = Masknumbermoney.formatToMask(content.min);
     const max = Masknumbermoney.formatToMask(content.max);
-    const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+    const maximumPerItem = content.tooltip;
     const { error, active, errorValue, value } = this.state;
     return (
       <div className="row">
@@ -222,12 +222,10 @@ class Asegurarcontenidos extends Component {
                   className="flex-fill"
                   htmlFor={Asegurarcontenidos.nameModelValue}
                 >
-                  Valor de {content.name}
+                  {content.name}
                 </label>
-                <Tooltip
-                  placement="left"
-                  title={`El valor máximo por cada artículo es de ${maximumPerItem}`}
-                >
+
+                <Tooltip placement="left" title={`${maximumPerItem}`}>
                   <Help className={'ml-auto icon-primary'} />
                 </Tooltip>
               </div>
