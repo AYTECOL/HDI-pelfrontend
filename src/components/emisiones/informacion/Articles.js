@@ -16,6 +16,17 @@ const formatToMask = (value) => {
  * @returns
  */
 const buildText = (texts) => {
+  // Organizar el array según el orden específico
+  texts.sort((a, b) => {
+    let orden = [
+      'contenido movil',
+      'joyas',
+      'celulares',
+      'objetos de valor y obras de arte',
+    ];
+    return orden.indexOf(a) - orden.indexOf(b);
+  });
+
   const last = texts[texts.length - 1];
   return (
     !!texts.length &&

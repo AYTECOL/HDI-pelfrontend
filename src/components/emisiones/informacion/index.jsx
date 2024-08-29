@@ -696,10 +696,7 @@ class Index extends React.Component {
                         )}
                       </p>
                       <p>
-                        <b> • Objetos de valor y obras de Arte:</b>{' '}
-                        {Masknumbermoney.formatToMask(
-                          itemsRequiredSince.valuablesAndWorksOfArt
-                        )}
+                        <b> • Objetos de valor y obras de Arte:</b> Requiere relación detallada para todos
                       </p>
                     </div>
                     <div className="col-6">

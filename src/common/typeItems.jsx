@@ -40,7 +40,7 @@ export const typeItems = {
     id: 1,
     label: 'Objetos de valor y obras de Arte',
     max: 20000000,
-    required: false,
+    required: true,
   },
   /**
    * @description "Joyas"
