@@ -110,6 +110,23 @@ class NumeroIdentificacion extends Component {
     );
   }
 
+  handlePaste(event) {
+    event.preventDefault();
+    const pastedText = event.clipboardData.getData('text');
+    const textWithoutSpaces = pastedText.replace(/\s+/g, '');
+    const inputElement = document.getElementById('doc-type-value');
+    if (inputElement) {
+      inputElement.value += textWithoutSpaces;
+    }
+    document.getElementById('doc-type-value').blur();
+  }
+
+  handleKeyPress = (event) => {
+    if (event.key === ' ') {
+      event.preventDefault();
+    }
+  };
+
   render() {
     return (
       <div className={'form-group ' + (this.state.error ? 'error' : '')}>
@@ -123,6 +140,8 @@ class NumeroIdentificacion extends Component {
           placeholder="Ingresa la identificación"
           onBlur={this.validateEmpty}
           onChange={this.validateEmpty}
+          onKeyPress={this.handleKeyPress}
+          onPaste={this.handlePaste}
         />
         <small className="form-text only-errors">
           El número de Identificación ingresado, no corresponde con el tipo de

@@ -62,6 +62,42 @@ class Cards extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.updateCards !== this.props.updateCards) {
+      if (this.props.updateCards) {
+        this.validateAllItems();
+      }
+    }
+  }
+
+  validateAllItems = async () => {
+    let attempts = 0;
+    let allInsurableLimits = store.getState().allInsurableLimits;
+
+    while (attempts < 3) {
+      if (allInsurableLimits && allInsurableLimits.length > 0) {
+        const items = this.state.items.map((item, index) => {
+          const error = item.parent.validateField(item.value);
+          return { ...item, errorValue: error };
+        });
+
+        this.setState({ items });
+        return;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      allInsurableLimits = store.getState().allInsurableLimits;
+      attempts += 1;
+    }
+
+    const items = this.state.items.map((item, index) => {
+      const error = item.parent.validateField(item.value);
+      return { ...item, errorValue: error };
+    });
+
+    this.setState({ items });
+  };
+
   async getAllBuildYears() {
     this.setState({
       ...this.state,
