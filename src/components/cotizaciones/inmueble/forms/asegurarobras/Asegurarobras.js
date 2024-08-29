@@ -30,6 +30,7 @@ class Asegurarobras extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[3]),
     };
@@ -38,6 +39,7 @@ class Asegurarobras extends Component {
       min,
       max,
       tooltip,
+      title_desc,
     };
   };
 
@@ -133,6 +135,7 @@ class Asegurarobras extends Component {
   render() {
     const content = Asegurarobras.getContent();
     const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     return (
       <div className="row">
         <div className="col col-12 col-md-6">
@@ -143,9 +146,7 @@ class Asegurarobras extends Component {
               this.state.error
             }
           >
-            <label htmlFor={Asegurarobras.nameModel}>
-              ¿Adicionalmente deseas asegurar {Asegurarobras.name()}?{' '}
-            </label>
+            <label htmlFor={Asegurarobras.nameModel}>{title_desc}</label>
             <ul className="select-item" id={Asegurarobras.nameModel}>
               <li
                 className={this.state.active === 1 ? 'active' : ''}
