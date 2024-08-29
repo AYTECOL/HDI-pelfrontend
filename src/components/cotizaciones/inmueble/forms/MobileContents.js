@@ -30,6 +30,7 @@ class MobileContents extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[5]),
     };
@@ -38,6 +39,7 @@ class MobileContents extends Component {
       min,
       max,
       tooltip,
+      title_desc,
     };
   };
 
@@ -133,15 +135,14 @@ class MobileContents extends Component {
   render() {
     const content = MobileContents.getContent();
     const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     const { active, errorValue } = this.state;
     return (
       <div className="row">
         <div className="col col-12 p-0">
           <div className="row">
             <div className="col col-12 col-md-6 form-group mb-0">
-              <label htmlFor={MobileContents.nameModel}>
-                ¿Adicionalmente deseas asegurar {MobileContents.name()}?{' '}
-              </label>
+              <label htmlFor={MobileContents.nameModel}>{title_desc}</label>
             </div>
             {active === 1 && (
               <div className="col col-12 col-md-6 p-0 d-flex align-items-end">

@@ -32,6 +32,7 @@ class Segurarinmueble extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[1]),
     };
@@ -40,6 +41,7 @@ class Segurarinmueble extends Component {
       min,
       max,
       tooltip,
+      title_desc,
     };
   };
 
@@ -138,6 +140,7 @@ class Segurarinmueble extends Component {
     const content = Segurarinmueble.getContent();
     const maximumPerItem = content.tooltip;
     const name = content.name;
+    const title_desc = content.title_desc;
     return (
       <div className="row">
         <div className="col col-12 col-md-6">
@@ -148,9 +151,7 @@ class Segurarinmueble extends Component {
               this.state.error
             }
           >
-            <label htmlFor={Segurarinmueble.nameModel}>
-              ¿Deseas asegurar {Segurarinmueble.name()}?{' '}
-            </label>
+            <label htmlFor={Segurarinmueble.nameModel}>{title_desc} </label>
 
             <ul className="select-item" id={Segurarinmueble.nameModel}>
               <li

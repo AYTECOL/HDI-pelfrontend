@@ -30,6 +30,7 @@ class Asegurartelefonos extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[6]),
     };
@@ -38,6 +39,7 @@ class Asegurartelefonos extends Component {
       min,
       max,
       tooltip,
+      title_desc,
     };
   };
 
@@ -134,6 +136,7 @@ class Asegurartelefonos extends Component {
     const { active } = this.state;
     const content = Asegurartelefonos.getContent();
     const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     return (
       <div className="row">
         <div className="col col-12 p-0">
@@ -147,7 +150,7 @@ class Asegurartelefonos extends Component {
                 }
               >
                 <label htmlFor={Asegurartelefonos.nameModel}>
-                  ¿Adicionalmente deseas asegurar {Asegurartelefonos.name()}?{' '}
+                  {title_desc}
                 </label>
               </div>
             </div>
