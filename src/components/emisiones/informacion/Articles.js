@@ -2,9 +2,10 @@ import React, { useMemo } from 'react';
 import positive from 'assets/images/positive.svg';
 import caution from 'assets/images/caution.svg';
 import warning from 'assets/images/warning.svg';
-import { isItemRequired, typeItems } from 'common/typeItems';
+import { isItemRequired } from 'common/typeItems';
 import { Tooltip } from '../../Tooltip';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
+import Store from '../../../store';
 
 const formatToMask = (value) => {
   return Masknumbermoney.formatToMask(value);
@@ -42,29 +43,35 @@ export const Articles = ({
   invalid,
   validateTotalItem,
 }) => {
+  const estate = Store.getState().estate;
+
   const items = useMemo(
     () => [
       [
-        typeItems.fixedContent,
+        estate.find((type) => type.id == 0),
         inmuebles.contenido_asegudado_valor,
         total.fixedContent,
       ],
       [
-        typeItems.jewelry,
+        estate.find((type) => type.id == 2),
         inmuebles.inmueble_asegudado_joyasvalor,
         total.jewelry,
       ],
       [
-        typeItems.cellPhones,
+        estate.find((type) => type.id == 3),
         inmuebles.inmueble_asegudado_telefonosvalor,
         total.cellPhones,
       ],
       [
-        typeItems.valuablesAndWorksOfArt,
+        estate.find((type) => type.id == 1),
         inmuebles.inmueble_asegudado_obrasvalor,
         total.valuablesAndWorksOfArt,
       ],
-      [typeItems.mobileContent, quote_contenidomovil, total.mobileContent],
+      [
+        estate.find((type) => type.id == 4),
+        quote_contenidomovil,
+        total.mobileContent,
+      ],
     ],
     [inmuebles, quote_contenidomovil, total]
   );

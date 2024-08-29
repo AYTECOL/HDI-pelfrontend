@@ -167,7 +167,6 @@ class Cards extends Component {
   }
 
   async getLimitsEstate() {
-    console.log('🎉','entróooo');
     await AllInsurableLimits.get();
     await GetEstate.get();
   }

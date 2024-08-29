@@ -7,6 +7,7 @@ import Links from '../forms/links/Links';
 import Plans from '../plans/Plans';
 import Loading from '../../../globals/loading/Loading';
 import AllInsurableLimits from '../../../../services/AllInsurableLimits';
+import GetEstate from 'services/GetEstate';
 import moment from 'moment';
 import 'moment/locale/es'; // Importa el idioma español para moment.js
 
@@ -40,13 +41,14 @@ class Index extends Component {
     const currentDateTime = moment().format('DD/MMM/YYYY HH:mm:ss');
     this.setState({ currentDateTime });
 
-    await this.getAllInsurableLimits();
+    await this.getLimitsEstate();
   }
 
-  async getAllInsurableLimits() {
+  async getLimitsEstate() {
     const limits = await AllInsurableLimits.get(
       Store.getState().cotizacion.number
     );
+    await GetEstate.get();
 
     if (!limits || limits.code) {
       this.setState({
@@ -77,7 +79,7 @@ class Index extends Component {
       },
       async () => {
         if (!this.state.retryLimitReached) {
-          await this.getAllInsurableLimits();
+          await this.getLimitsEstate();
         } else {
           console.log('Límite de reintentos alcanzado');
         }

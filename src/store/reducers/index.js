@@ -217,7 +217,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         allInsurableLimits: action.data,
       };
-      case actionsTypes.SAVE_ESTATE:
+    case actionsTypes.SAVE_ESTATE:
       return {
         ...state,
         estate: action.data,
