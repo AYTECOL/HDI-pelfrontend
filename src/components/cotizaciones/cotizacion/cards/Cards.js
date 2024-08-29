@@ -13,6 +13,7 @@ import Coberturas from '../coberturas/Coberturas';
 import { IDS_COVERAGE_VALUES } from '../../../../common';
 import { getItems } from './getItems';
 import Helpers from '../../../../common/helpers/helpers';
+import GetEstate from 'services/GetEstate';
 class Cards extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +34,7 @@ class Cards extends Component {
       item.inactiveAdd = false;
     }
     this.state.items[0].active = false;
-    this.getAllInsurableLimits();
+    this.getLimitsEstate();
     this.getAllBuildYears();
   }
 
@@ -165,8 +166,10 @@ class Cards extends Component {
     this.unsubscribe();
   }
 
-  async getAllInsurableLimits() {
+  async getLimitsEstate() {
+    console.log('🎉','entróooo');
     await AllInsurableLimits.get();
+    await GetEstate.get();
   }
 
   getItemsActive(items) {

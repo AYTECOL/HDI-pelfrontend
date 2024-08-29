@@ -81,6 +81,7 @@ const initialState = {
   // Dada Services
   Allfloors: [],
   allInsurableLimits: [],
+  estate: {},
   AllPlans: [],
   validPlans: true,
   loadingPlansPerspective: {},
@@ -215,6 +216,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allInsurableLimits: action.data,
+      };
+      case actionsTypes.SAVE_ESTATE:
+      return {
+        ...state,
+        estate: action.data,
       };
     case actionsTypes.SAVE_ALL_PLANS:
       return {

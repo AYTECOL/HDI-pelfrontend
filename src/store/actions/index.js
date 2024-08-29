@@ -140,6 +140,10 @@ const resetStore = () => {
   return { type: actionsTypes.RESET_STORE };
 };
 
+const saveEstate = (data) => {
+  return { type: actionsTypes.SAVE_ESTATE, data: data };
+};
+
 export {
   nextStepIndentification,
   saveIdentificationValue,
@@ -166,4 +170,5 @@ export {
   setExceptionSarlaft,
   setGeneralSetIdentifications,
   setAuthUser,
+  saveEstate,
 };
