@@ -48,7 +48,7 @@ class Index extends Component {
     const limits = await AllInsurableLimits.get(
       Store.getState().cotizacion.number
     );
-    await GetEstate.get();
+    await GetEstate.get(Store.getState().cotizacion.number);
 
     if (!limits || limits.code) {
       this.setState({

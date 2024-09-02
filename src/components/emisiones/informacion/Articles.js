@@ -41,34 +41,34 @@ export const Articles = ({
   quote_contenidomovil,
   items: itemsSelected,
   invalid,
+  individual_estate,
   validateTotalItem,
 }) => {
-  const estate = Store.getState().estate;
 
   const items = useMemo(
     () => [
       [
-        estate.find((type) => type.id == 0),
+        individual_estate.find((type) => type.id == 0),
         inmuebles.contenido_asegudado_valor,
         total.fixedContent,
       ],
       [
-        estate.find((type) => type.id == 2),
+        individual_estate.find((type) => type.id == 2),
         inmuebles.inmueble_asegudado_joyasvalor,
         total.jewelry,
       ],
       [
-        estate.find((type) => type.id == 3),
+        individual_estate.find((type) => type.id == 3),
         inmuebles.inmueble_asegudado_telefonosvalor,
         total.cellPhones,
       ],
       [
-        estate.find((type) => type.id == 1),
+        individual_estate.find((type) => type.id == 1),
         inmuebles.inmueble_asegudado_obrasvalor,
         total.valuablesAndWorksOfArt,
       ],
       [
-        estate.find((type) => type.id == 4),
+        individual_estate.find((type) => type.id == 4),
         quote_contenidomovil,
         total.mobileContent,
       ],

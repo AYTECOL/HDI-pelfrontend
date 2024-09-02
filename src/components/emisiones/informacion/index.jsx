@@ -85,16 +85,16 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
+    this.getLimitsEstate();
     this.getData();
     Helpers.fieldNumeric();
-    this.getLimitsEstate();
   }
 
   async getLimitsEstate() {
     const limits = await AllInsurableLimits.get(
       Store.getState().cotizacion.number
     );
-    await GetEstate.get();
+    await GetEstate.get(Store.getState().cotizacion.number);
 
     if (!limits || limits.code) {
       this.setState({
@@ -177,40 +177,30 @@ class Index extends React.Component {
      */
     const items = [];
     const estate = Store.getState().estate;
-    const itemsMax = Store.getState().allInsurableLimits;
     if (typeof inmuebles !== 'undefined') {
       if (inmuebles.contenido_asegudado === 1) {
         contenidos = true;
         items.push({
-          ...estate.find((type) => type.id == 0),
+          ...estate?.find((type) => type.id === 0),
           min: 1,
-          max:
-            itemsMax.find(
-              (currentItem) => currentItem?.insurable_limit_id == '2'
-            )?.maximumPerItem || estate.find((type) => type.id == 0).max,
+          max: estate?.find((type) => type.id === 0)?.max,
           maxTotal: inmuebles.contenido_asegudado_valor,
         });
 
         if (inmuebles.inmueble_asegudado_obras === 1) {
           items.push({
-            ...estate.find((type) => type.id == 1),
+            ...estate?.find((type) => type?.id === 1),
             min: 1,
-            max:
-              itemsMax.find(
-                (currentItem) => currentItem?.insurable_limit_id == '3'
-              )?.maximumPerItem || estate.find((type) => type.id == 1).max,
+            max: estate?.find((type) => type?.id === 1)?.max,
             maxTotal: inmuebles.inmueble_asegudado_obrasvalor,
           });
           obras = true;
         }
         if (inmuebles.inmueble_asegudado_joyas === 1) {
           items.push({
-            ...estate.find((type) => type.id == 2),
+            ...estate?.find((type) => type.id === 2),
             min: 1,
-            max:
-              itemsMax.find(
-                (currentItem) => currentItem?.insurable_limit_id == '4'
-              )?.maximumPerItem || estate.find((type) => type.id == 2).max,
+            max: estate?.find((type) => type.id === 2)?.max,
             maxTotal: inmuebles.inmueble_asegudado_joyasvalor,
             required: true,
           });
@@ -218,12 +208,9 @@ class Index extends React.Component {
         }
         if (inmuebles.inmueble_asegudado_telefonos === 1) {
           items.push({
-            ...estate.find((type) => type.id == 3),
+            ...estate?.find((type) => type.id === 3),
             min: 899999,
-            max:
-              itemsMax.find(
-                (currentItem) => currentItem?.insurable_limit_id == '6'
-              )?.maximumPerItem || estate.find((type) => type.id == 3).max,
+            max: estate?.find((type) => type.id === 3)?.max,
             maxTotal: inmuebles.inmueble_asegudado_telefonosvalor,
           });
           celulares = true;
@@ -235,12 +222,9 @@ class Index extends React.Component {
       ) {
         contenidoMovil = true;
         items.push({
-          ...estate.find((type) => type.id == 4),
+          ...estate?.find((type) => type.id == 4),
           min: 1,
-          max:
-            itemsMax.find(
-              (currentItem) => currentItem?.insurable_limit_id == '5'
-            )?.maximumPerItem || estate.find((type) => type.id == 4).max,
+          max: estate?.find((type) => type.id === 4)?.max,
           maxTotal: value_to_quotate,
           required: true,
         });
@@ -740,11 +724,12 @@ class Index extends React.Component {
                           itemsRequiredSince.fixedContent
                         )}
                       </p>
-                      <p>
-                        <b> • Objetos de valor y obras de Arte:</b> Requiere relación detallada para todos
-                      </p>
                     </div>
                     <div className="col-6">
+                      <p>
+                        <b> • Objetos de valor y obras de Arte:</b> Requiere
+                        relación detallada para todos
+                      </p>
                       <p>
                         <b> • Joyas</b>: Requiere relación detallada para todos
                       </p>
@@ -765,6 +750,7 @@ class Index extends React.Component {
                   quote_contenidomovil={quote_contenidomovil}
                   items={items}
                   invalid={invalid}
+                  individual_estate={Store.getState().estate}
                   validateTotalItem={this.validateTotalItem}
                 />
                 <div className="wrapper-more-items">

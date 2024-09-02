@@ -167,8 +167,8 @@ class Cards extends Component {
   }
 
   async getLimitsEstate() {
-    await AllInsurableLimits.get();
-    await GetEstate.get();
+    await AllInsurableLimits.get(store.getState().cotizacion.number);
+    await GetEstate.get(store.getState().cotizacion.number);
   }
 
   getItemsActive(items) {

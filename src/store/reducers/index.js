@@ -81,7 +81,7 @@ const initialState = {
   // Dada Services
   Allfloors: [],
   allInsurableLimits: [],
-  estate: {},
+  estate: [],
   AllPlans: [],
   validPlans: true,
   loadingPlansPerspective: {},
