@@ -31,6 +31,7 @@ class Asegurartelefonos extends Component {
       max_value: max = 0,
       tooltip,
       title_card,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[6]),
     };
@@ -40,6 +41,7 @@ class Asegurartelefonos extends Component {
       max,
       tooltip,
       title_card,
+      title_desc,
     };
   };
 
