@@ -31,6 +31,8 @@ import { TYPES_VALUE_CONTENT } from './constants';
 import AllInsurableLimits from 'services/AllInsurableLimits';
 import GetEstate from 'services/GetEstate';
 
+import ModalLimitsPlanError from '../../modal/ModalLimitsPlanError';
+
 // 10MB
 const maxFileSize = UploadFileService.maxFileSize;
 
@@ -71,6 +73,13 @@ class Index extends React.Component {
       errorPhone: false,
       items: [],
       openLimitsModal: false,
+      code: 0,
+      stepCotizacion: Store.getState().cotizacion.state,
+      numberCotizacion: Store.getState().cotizacion.number,
+      retryCount: 0,
+      retryLimitReached: false,
+      showButtonReturn: false,
+      currentDateTime: '',
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
@@ -95,17 +104,40 @@ class Index extends React.Component {
       Store.getState().cotizacion.number
     );
 
-    if (!limits || limits.code) {
+    let estate_data = await GetEstate.get(Store.getState().cotizacion.number);
+    if (!limits || limits.code || !estate_data || estate_data.code) {
       this.setState({
         openLimitsModal: true,
-        code: limits?.code,
+        code: limits?.code || estate_data?.code,
       });
-    } else if (limits.length > 0) {
+    } else if (limits.length > 0 && estate_data.length > 0) {
       this.setState({
         openLimitsModal: false,
       });
     }
   }
+
+  handleRetry = () => {
+    this.setState(
+      (prevState) => {
+        const newRetryCount = prevState.retryCount + 1;
+        const retryLimitReached = newRetryCount >= 3;
+
+        return {
+          retryCount: newRetryCount,
+          retryLimitReached,
+          showButtonReturn: retryLimitReached,
+        };
+      },
+      async () => {
+        if (!this.state.retryLimitReached) {
+          await this.getLimitsEstate();
+        } else {
+          console.log('Límite de reintentos alcanzado');
+        }
+      }
+    );
+  };
 
   async getData() {
     Loading.toggle(true);
@@ -951,6 +983,15 @@ class Index extends React.Component {
             updatePerson={this.updatePerson}
           />
         )}
+        <ModalLimitsPlanError
+          open={this.state.openLimitsModal}
+          onRetry={this.handleRetry}
+          code={this.state.code}
+          stepCotizacion={this.state.stepCotizacion}
+          numberCotizacion={this.state.numberCotizacion}
+          showButtonReturn={this.state.showButtonReturn}
+          currentDateTime={this.state.currentDateTime}
+        />
       </React.Fragment>
     );
   }

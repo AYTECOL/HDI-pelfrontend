@@ -28,10 +28,9 @@ class GetEstate {
             throw error;
           });
       } catch (e) {
-        const { data } = e?.response?.data || {};
+        const { status } = e?.response || {};
         return {
-          code: data?.statusCode || 400,
-          error: data?.error || '',
+          code: status || 400,
         };
       }
       estate = data;

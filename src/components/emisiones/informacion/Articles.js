@@ -141,6 +141,7 @@ export const Articles = ({
           <tbody>
             {items &&
               items.length > 0 &&
+              items.every((subArray) => subArray[0] !== undefined) &&
               items.map(([{ label, id, required }, max, total]) => {
                 const item = itemsSelected.find((item) => item.id === id);
                 const maxFormated = formatToMask(max);
