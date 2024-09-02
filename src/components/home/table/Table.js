@@ -5,6 +5,7 @@ import store from 'store';
 import { restoreCotizacion } from '../../../store/actions';
 import PdfPolizaHogar from '../../../services/PdfPolizaHogar';
 import GetQuote from '../../../services/GetQuote';
+import GetEstate from '../../../services/GetEstate';
 import Identifications from '../../../services/Identifications';
 import { UrlSite } from '../../../config';
 import Pagination from '../../../common/helpers/Pagination/Pagination';
@@ -46,6 +47,7 @@ const Table = (props) => {
 
   const getRowById = (id) => async (e) => {
     const { history } = props;
+    await GetEstate.get(id);
     let cotizacion = await GetQuote.getById(id);
     if (typeof cotizacion.identification !== 'undefined') {
       if (cotizacion.state <= 3) {

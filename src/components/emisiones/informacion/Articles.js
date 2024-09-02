@@ -20,10 +20,10 @@ const buildText = (texts) => {
   // Organizar el array según el orden específico
   texts.sort((a, b) => {
     let orden = [
-      'contenido movil',
       'joyas',
       'celulares',
       'objetos de valor y obras de arte',
+      'contenido movil',
     ];
     return orden.indexOf(a) - orden.indexOf(b);
   });
@@ -44,7 +44,6 @@ export const Articles = ({
   individual_estate,
   validateTotalItem,
 }) => {
-
   const items = useMemo(
     () => [
       [
@@ -86,9 +85,9 @@ export const Articles = ({
    *  }
    * }}
    */
-  const invalids = useMemo(
-    () =>
-      items.reduce((acc, [item, max, total]) => {
+  const invalids = useMemo(() => {
+    return items.reduce((acc, [item, max, total]) => {
+      if (individual_estate.length > 0) {
         const { id, label, required } = item;
         const isRequired = isItemRequired(required, { max, total });
         acc[id] = {
@@ -98,10 +97,10 @@ export const Articles = ({
           total,
           max,
         };
-        return acc;
-      }, {}),
-    [items, validateTotalItem]
-  );
+      }
+      return acc;
+    }, {});
+  }, [items, validateTotalItem, individual_estate]);
 
   const invalidsValues = useMemo(() => Object.values(invalids), [invalids]);
   const isValid = (id) => !invalids[id].state;
@@ -140,56 +139,58 @@ export const Articles = ({
             </tr>
           </thead>
           <tbody>
-            {items.map(([{ label, id, required }, max, total]) => {
-              const item = itemsSelected.find((item) => item.id === id);
-              const maxFormated = formatToMask(max);
-              const totalFormated = formatToMask(total);
-              const cautionTitle = `
-                Aun no incluyes el 100% de la relación
-                detallada de ${label}. Ten presente que
-                debes completar ${maxFormated} y tienes
-                ${totalFormated.replace(/\.$/g, '')} relacionados
-              `;
-              const warnTitle = `
-                Aun no incluyes la relación detallada de ${label}. 
-                Ten presente que esta información es requerida para emitir la póliza.
-              `;
-              const contentRequired =
-                isItemRequired(required, { max, total }) &&
-                ((isValid(id) && <img src={positive} alt="positive" />) || (
-                  <>
-                    <Tooltip
-                      placement="bottom"
-                      component="span"
-                      title={cautionTitle}
-                    >
-                      <img className="mr-2" src={caution} alt="caution" />
-                    </Tooltip>
+            {items &&
+              items.length > 0 &&
+              items.map(([{ label, id, required }, max, total]) => {
+                const item = itemsSelected.find((item) => item.id === id);
+                const maxFormated = formatToMask(max);
+                const totalFormated = formatToMask(total);
+                const cautionTitle = `
+                    Aun no incluyes el 100% de la relación
+                    detallada de ${label}. Ten presente que
+                    debes completar ${maxFormated} y tienes
+                    ${totalFormated.replace(/\.$/g, '')} relacionados
+                  `;
+                const warnTitle = `
+                    Aun no incluyes la relación detallada de ${label}. 
+                    Ten presente que esta información es requerida para emitir la póliza.
+                  `;
+                const contentRequired =
+                  isItemRequired(required, { max, total }) &&
+                  ((isValid(id) && <img src={positive} alt="positive" />) || (
+                    <>
+                      <Tooltip
+                        placement="bottom"
+                        component="span"
+                        title={cautionTitle}
+                      >
+                        <img className="mr-2" src={caution} alt="caution" />
+                      </Tooltip>
 
-                    <Tooltip
-                      placement="bottom"
-                      component="span"
-                      title={warnTitle}
-                    >
-                      <img src={warning} alt="warning" />
-                    </Tooltip>
-                  </>
-                ));
-              return (
-                item && (
-                  <tr key={id} className="h6 font-weight-normal">
-                    <td className="h6 font-weight-normal font-italic">
-                      {label}
-                    </td>
-                    <td>{maxFormated}</td>
-                    <td className="d-flex align-items-center">
-                      <div className="mr-2">{totalFormated}</div>
-                      {contentRequired}
-                    </td>
-                  </tr>
-                )
-              );
-            })}
+                      <Tooltip
+                        placement="bottom"
+                        component="span"
+                        title={warnTitle}
+                      >
+                        <img src={warning} alt="warning" />
+                      </Tooltip>
+                    </>
+                  ));
+                return (
+                  item && (
+                    <tr key={id} className="h6 font-weight-normal">
+                      <td className="h6 font-weight-normal font-italic">
+                        {label}
+                      </td>
+                      <td>{maxFormated}</td>
+                      <td className="d-flex align-items-center">
+                        <div className="mr-2">{totalFormated}</div>
+                        {contentRequired}
+                      </td>
+                    </tr>
+                  )
+                );
+              })}
           </tbody>
         </table>
         <div className="row row-full">

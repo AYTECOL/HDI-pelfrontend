@@ -94,7 +94,6 @@ class Index extends React.Component {
     const limits = await AllInsurableLimits.get(
       Store.getState().cotizacion.number
     );
-    await GetEstate.get(Store.getState().cotizacion.number);
 
     if (!limits || limits.code) {
       this.setState({
@@ -115,6 +114,7 @@ class Index extends React.Component {
      * @type {import('../../../services/QuoteIussedById').QuoteIussed | import('../../../services/QuoteIussedById').MoreInfoItem & { contents?: import('../../../models/types').GoodsOverCost[]}}
      */
     let data = await QuoteIussedById.get(params.id);
+    await GetEstate.get(Store.getState().cotizacion.number);
     let inmuebles = data.risk_valoration_info.Item;
     let persons = this.state.persons;
     const plan_selected_info = data.plan_selected_info.Item;
@@ -241,6 +241,7 @@ class Index extends React.Component {
       celulares,
       contenidoMovil,
       items,
+      estate,
     });
     Loading.toggle(false);
   }
@@ -724,12 +725,12 @@ class Index extends React.Component {
                           itemsRequiredSince.fixedContent
                         )}
                       </p>
-                    </div>
-                    <div className="col-6">
                       <p>
                         <b> • Objetos de valor y obras de Arte:</b> Requiere
                         relación detallada para todos
                       </p>
+                    </div>
+                    <div className="col-6">
                       <p>
                         <b> • Joyas</b>: Requiere relación detallada para todos
                       </p>
