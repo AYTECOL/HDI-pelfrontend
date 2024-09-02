@@ -30,7 +30,7 @@ class MobileContents extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
-      title_desc,
+      title_card,
     } = {
       ...(state && state.allInsurableLimits[5]),
     };
@@ -39,10 +39,17 @@ class MobileContents extends Component {
       min,
       max,
       tooltip,
-      title_desc,
+      title_card,
     };
   };
 
+  static name_card() {
+    try {
+      return MobileContents.getContent().title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return MobileContents.getContent().name;
