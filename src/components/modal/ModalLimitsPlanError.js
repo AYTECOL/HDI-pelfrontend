@@ -15,8 +15,19 @@ const ErrorLimitsPlansModal = withRouter(
     showButtonReturn,
     currentDateTime,
     history,
+    location,
   }) => {
+    const pathSegments = location.pathname.split('/');
+    let process = pathSegments[1];
+    if (process === 'emision') {
+      process = 'emisión';
+    }
     const route = '/';
+
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
     return (
       <div className={classNames('modal d-flex', !open && 'hide')}>
         <div className="modal-dialog" role="document">
@@ -25,7 +36,7 @@ const ErrorLimitsPlansModal = withRouter(
               <img src={WarningIcon} alt="warning_icon" />
               <h5 className="modal-title">Ups, lo sentimos</h5>
               <p className="modal-subtitle">
-                No podemos continuar con la <strong>cotización</strong> en este
+                No podemos continuar con la <strong>{process}</strong> en este
                 momento debido a problemas técnicos.
               </p>
               <p className="modal-subtitle">
@@ -87,7 +98,7 @@ const ErrorLimitsPlansModal = withRouter(
                 <br />
                 <span>
                   Código de error: 1-{`${code}`} - Paso {`${stepCotizacion}`}:
-                  Cotización
+                  {capitalizeFirstLetter(process)}
                 </span>
                 <br />
                 <span>{currentDateTime}</span>
