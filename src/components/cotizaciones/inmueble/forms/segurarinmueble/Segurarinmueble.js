@@ -33,6 +33,7 @@ class Segurarinmueble extends Component {
       max_value: max = 0,
       tooltip,
       title_card,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[1]),
     };
@@ -42,6 +43,7 @@ class Segurarinmueble extends Component {
       max,
       tooltip,
       title_card,
+      title_desc,
     };
   };
 
@@ -158,7 +160,7 @@ class Segurarinmueble extends Component {
               this.state.error
             }
           >
-            <label htmlFor={Segurarinmueble.nameModel}>{title_desc} </label>
+            <label htmlFor={Segurarinmueble.nameModel}>{title_desc}</label>
 
             <ul className="select-item" id={Segurarinmueble.nameModel}>
               <li
