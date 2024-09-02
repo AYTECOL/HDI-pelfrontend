@@ -32,7 +32,7 @@ class Segurarinmueble extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
-      title_desc,
+      title_card,
     } = {
       ...(state && state.allInsurableLimits[1]),
     };
@@ -41,10 +41,17 @@ class Segurarinmueble extends Component {
       min,
       max,
       tooltip,
-      title_desc,
+      title_card,
     };
   };
 
+  static name_card() {
+    try {
+      return store.getState().allInsurableLimits[1].title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return store.getState().allInsurableLimits[1].description;

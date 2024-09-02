@@ -33,7 +33,7 @@ class Asegurarjoyas extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
-      title_desc,
+      title_card,
     } = {
       ...(state && state.allInsurableLimits[4]),
     };
@@ -42,10 +42,17 @@ class Asegurarjoyas extends Component {
       min,
       max,
       tooltip,
-      title_desc,
+      title_card,
     };
   };
 
+  static name_card() {
+    try {
+      return Asegurarjoyas.getContent().title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return Asegurarjoyas.getContent().name;

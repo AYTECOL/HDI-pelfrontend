@@ -30,7 +30,7 @@ class Asegurarobras extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
-      title_desc,
+      title_card,
     } = {
       ...(state && state.allInsurableLimits[3]),
     };
@@ -39,10 +39,17 @@ class Asegurarobras extends Component {
       min,
       max,
       tooltip,
-      title_desc,
+      title_card,
     };
   };
 
+  static name_card() {
+    try {
+      return Asegurarobras.getContent().title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return Asegurarobras.getContent().name;

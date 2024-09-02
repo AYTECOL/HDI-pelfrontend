@@ -332,7 +332,7 @@ class Cards extends Component {
                 }
               >
                 <div className={'image image-' + option.type}>&nbsp;</div>
-                <p>{option.parent.name()}</p>
+                <p>{option.parent.name_card()}</p>
                 <div className="wrapper-over">
                   <div
                     className={

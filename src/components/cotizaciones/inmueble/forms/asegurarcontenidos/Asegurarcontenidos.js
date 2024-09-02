@@ -31,7 +31,7 @@ class Asegurarcontenidos extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
-      title_desc,
+      title_card,
     } = {
       ...(state && state.allInsurableLimits[2]),
     };
@@ -40,9 +40,13 @@ class Asegurarcontenidos extends Component {
       min,
       max,
       tooltip,
-      title_desc,
+      title_card,
     };
   };
+
+  static name_card() {
+    return Asegurarcontenidos.getContent().title_card;
+  }
 
   static name() {
     return Asegurarcontenidos.getContent().name;
