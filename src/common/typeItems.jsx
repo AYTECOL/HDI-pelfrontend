@@ -12,7 +12,7 @@
  */
 
 /**
- * @typedef {{ id: number; label: string; max: number; required?: ItemRequired }} TypeItem
+ * @typedef {{ id: number; }} TypeItem
  */
 
 export const itemsRequiredSince = {
@@ -27,38 +27,23 @@ export const typeItems = {
   /**
    * @description "Contenido Fijo"
    **/
-  fixedContent: {
-    id: 0,
-    label: 'Contenido Fijo',
-    max: 50000000,
-    required: false,
-  },
+  fixedContent: { id: 0 },
   /**
    * @description "Objetos de valor y obras de Arte"
    **/
-  valuablesAndWorksOfArt: {
-    id: 1,
-    label: 'Objetos de valor y obras de Arte',
-    max: 20000000,
-    required: false,
-  },
+  valuablesAndWorksOfArt: { id: 1 },
   /**
    * @description "Joyas"
    **/
-  jewelry: { id: 2, label: 'Joyas', max: 20000000, required: true },
+  jewelry: { id: 2 },
   /**
    * @description "Celulares"
    **/
-  cellPhones: { id: 3, label: 'Celulares', max: 4000000, required: true },
+  cellPhones: { id: 3 },
   /**
    * @description "Contenido Movil"
    **/
-  mobileContent: {
-    id: 4,
-    label: 'Contenido Movil',
-    max: 20000000,
-    required: true,
-  },
+  mobileContent: { id: 4 },
 };
 
 /**

@@ -8,6 +8,7 @@ import Asegurarcontenidos from '../forms/asegurarcontenidos/Asegurarcontenidos';
 import Asegurarcontenidoadicional from '../asegurarcontenidoadicional/Asegurarcontenidoadicional';
 // Api
 import AllInsurableLimits from '../../../../services/AllInsurableLimits';
+import GetEstate from 'services/GetEstate';
 
 import OtherQuestions from '../forms/OtherQuestions';
 
@@ -37,13 +38,14 @@ class Valoreasegurar extends Component {
     const currentDateTime = moment().format('DD/MMM/YYYY HH:mm:ss');
     this.setState({ currentDateTime });
 
-    await this.getAllInsurableLimits();
+    await this.getLimitsEstate();
   }
 
-  async getAllInsurableLimits() {
+  async getLimitsEstate() {
     const limits = await AllInsurableLimits.get(
       Store.getState().cotizacion.number
     );
+    await GetEstate.get(Store.getState().cotizacion.number);
 
     if (!limits || limits.code) {
       this.setState({
@@ -71,7 +73,7 @@ class Valoreasegurar extends Component {
       },
       async () => {
         if (!this.state.retryLimitReached) {
-          await this.getAllInsurableLimits();
+          await this.getLimitsEstate();
         } else {
           console.log('Límite de reintentos alcanzado');
         }

@@ -29,6 +29,7 @@ import { Articles } from './Articles';
 import { LastContentWarn } from './LastContentWarn';
 import { TYPES_VALUE_CONTENT } from './constants';
 import AllInsurableLimits from 'services/AllInsurableLimits';
+import GetEstate from 'services/GetEstate';
 
 // 10MB
 const maxFileSize = UploadFileService.maxFileSize;
@@ -84,12 +85,12 @@ class Index extends React.Component {
   }
 
   componentDidMount() {
+    this.getLimitsEstate();
     this.getData();
     Helpers.fieldNumeric();
-    this.getAllInsurableLimits();
   }
 
-  async getAllInsurableLimits() {
+  async getLimitsEstate() {
     const limits = await AllInsurableLimits.get(
       Store.getState().cotizacion.number
     );
@@ -113,6 +114,7 @@ class Index extends React.Component {
      * @type {import('../../../services/QuoteIussedById').QuoteIussed | import('../../../services/QuoteIussedById').MoreInfoItem & { contents?: import('../../../models/types').GoodsOverCost[]}}
      */
     let data = await QuoteIussedById.get(params.id);
+    await GetEstate.get(Store.getState().cotizacion.number);
     let inmuebles = data.risk_valoration_info.Item;
     let persons = this.state.persons;
     const plan_selected_info = data.plan_selected_info.Item;
@@ -174,40 +176,31 @@ class Index extends React.Component {
      * @type {import('../../../models/types').Item[]}
      */
     const items = [];
-    const itemsMax = Store.getState().allInsurableLimits;
+    const estate = Store.getState().estate;
     if (typeof inmuebles !== 'undefined') {
       if (inmuebles.contenido_asegudado === 1) {
         contenidos = true;
         items.push({
-          ...typeItems.fixedContent,
+          ...estate?.find((type) => type.id === 0),
           min: 1,
-          max:
-            itemsMax.find(
-              (currentItem) => currentItem?.insurable_limit_id == '2'
-            )?.maximumPerItem || typeItems.fixedContent.max,
+          max: estate?.find((type) => type.id === 0)?.max,
           maxTotal: inmuebles.contenido_asegudado_valor,
         });
 
         if (inmuebles.inmueble_asegudado_obras === 1) {
           items.push({
-            ...typeItems.valuablesAndWorksOfArt,
+            ...estate?.find((type) => type?.id === 1),
             min: 1,
-            max:
-              itemsMax.find(
-                (currentItem) => currentItem?.insurable_limit_id == '3'
-              )?.maximumPerItem || typeItems.valuablesAndWorksOfArt.max,
+            max: estate?.find((type) => type?.id === 1)?.max,
             maxTotal: inmuebles.inmueble_asegudado_obrasvalor,
           });
           obras = true;
         }
         if (inmuebles.inmueble_asegudado_joyas === 1) {
           items.push({
-            ...typeItems.jewelry,
+            ...estate?.find((type) => type.id === 2),
             min: 1,
-            max:
-              itemsMax.find(
-                (currentItem) => currentItem?.insurable_limit_id == '4'
-              )?.maximumPerItem || typeItems.jewelry.max,
+            max: estate?.find((type) => type.id === 2)?.max,
             maxTotal: inmuebles.inmueble_asegudado_joyasvalor,
             required: true,
           });
@@ -215,12 +208,9 @@ class Index extends React.Component {
         }
         if (inmuebles.inmueble_asegudado_telefonos === 1) {
           items.push({
-            ...typeItems.cellPhones,
+            ...estate?.find((type) => type.id === 3),
             min: 899999,
-            max:
-              itemsMax.find(
-                (currentItem) => currentItem?.insurable_limit_id == '6'
-              )?.maximumPerItem || typeItems.cellPhones.max,
+            max: estate?.find((type) => type.id === 3)?.max,
             maxTotal: inmuebles.inmueble_asegudado_telefonosvalor,
           });
           celulares = true;
@@ -232,12 +222,9 @@ class Index extends React.Component {
       ) {
         contenidoMovil = true;
         items.push({
-          ...typeItems.mobileContent,
+          ...estate?.find((type) => type.id == 4),
           min: 1,
-          max:
-            itemsMax.find(
-              (currentItem) => currentItem?.insurable_limit_id == '5'
-            )?.maximumPerItem || typeItems.mobileContent.max,
+          max: estate?.find((type) => type.id === 4)?.max,
           maxTotal: value_to_quotate,
           required: true,
         });
@@ -254,6 +241,7 @@ class Index extends React.Component {
       celulares,
       contenidoMovil,
       items,
+      estate,
     });
     Loading.toggle(false);
   }
@@ -738,10 +726,8 @@ class Index extends React.Component {
                         )}
                       </p>
                       <p>
-                        <b> • Objetos de valor y obras de Arte:</b>{' '}
-                        {Masknumbermoney.formatToMask(
-                          itemsRequiredSince.valuablesAndWorksOfArt
-                        )}
+                        <b> • Objetos de valor y obras de Arte:</b> Requiere
+                        relación detallada para todos
                       </p>
                     </div>
                     <div className="col-6">
@@ -765,6 +751,7 @@ class Index extends React.Component {
                   quote_contenidomovil={quote_contenidomovil}
                   items={items}
                   invalid={invalid}
+                  individual_estate={Store.getState().estate}
                   validateTotalItem={this.validateTotalItem}
                 />
                 <div className="wrapper-more-items">
