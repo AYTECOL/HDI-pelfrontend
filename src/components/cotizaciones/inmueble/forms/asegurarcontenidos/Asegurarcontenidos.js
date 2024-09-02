@@ -32,6 +32,7 @@ class Asegurarcontenidos extends Component {
       max_value: max = 0,
       tooltip,
       title_card,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[2]),
     };
@@ -41,6 +42,7 @@ class Asegurarcontenidos extends Component {
       max,
       tooltip,
       title_card,
+      title_desc,
     };
   };
 
@@ -190,7 +192,7 @@ class Asegurarcontenidos extends Component {
               Asegurarcontenidos.nameModel + ' no-icon form-group ' + error
             }
           >
-            <label htmlFor={Asegurarcontenidos.nameModel}>{title_desc} </label>
+            <label htmlFor={Asegurarcontenidos.nameModel}>{title_desc}</label>
             <ul className="select-item" id={Asegurarcontenidos.nameModel}>
               <li
                 className={active === 1 ? 'active' : ''}
