@@ -31,6 +31,7 @@ class Asegurarcontenidos extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
+      title_card,
     } = {
       ...(state && state.allInsurableLimits[2]),
     };
@@ -39,8 +40,13 @@ class Asegurarcontenidos extends Component {
       min,
       max,
       tooltip,
+      title_card,
     };
   };
+
+  static name_card() {
+    return Asegurarcontenidos.getContent().title_card;
+  }
 
   static name() {
     return Asegurarcontenidos.getContent().name;
@@ -174,6 +180,7 @@ class Asegurarcontenidos extends Component {
     const min = Masknumbermoney.formatToMask(content.min);
     const max = Masknumbermoney.formatToMask(content.max);
     const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     const { error, active, errorValue, value } = this.state;
     return (
       <div className="row">
@@ -183,9 +190,7 @@ class Asegurarcontenidos extends Component {
               Asegurarcontenidos.nameModel + ' no-icon form-group ' + error
             }
           >
-            <label htmlFor={Asegurarcontenidos.nameModel}>
-              ¿Deseas asegurar {content.name}?{' '}
-            </label>
+            <label htmlFor={Asegurarcontenidos.nameModel}>{title_desc} </label>
             <ul className="select-item" id={Asegurarcontenidos.nameModel}>
               <li
                 className={active === 1 ? 'active' : ''}

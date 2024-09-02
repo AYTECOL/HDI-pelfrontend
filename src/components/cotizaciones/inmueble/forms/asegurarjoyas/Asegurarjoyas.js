@@ -33,6 +33,7 @@ class Asegurarjoyas extends Component {
       min_value: min = 0,
       max_value: max = 0,
       tooltip,
+      title_card,
     } = {
       ...(state && state.allInsurableLimits[4]),
     };
@@ -41,9 +42,17 @@ class Asegurarjoyas extends Component {
       min,
       max,
       tooltip,
+      title_card,
     };
   };
 
+  static name_card() {
+    try {
+      return Asegurarjoyas.getContent().title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return Asegurarjoyas.getContent().name;
@@ -136,6 +145,7 @@ class Asegurarjoyas extends Component {
   render() {
     const content = Asegurarjoyas.getContent();
     const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     const { active, value, errorValue, error } = this.state;
     return (
       <div className="row">
@@ -147,9 +157,7 @@ class Asegurarjoyas extends Component {
               error
             )}
           >
-            <label htmlFor={Asegurarjoyas.nameModel}>
-              ¿Adicionalmente deseas {Asegurarjoyas.name()}?{' '}
-            </label>
+            <label htmlFor={Asegurarjoyas.nameModel}>{title_desc}</label>
             <ul className="select-item" id={Asegurarjoyas.nameModel}>
               {[
                 { label: 'Si', value: 1 },
