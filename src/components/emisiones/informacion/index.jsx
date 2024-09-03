@@ -30,6 +30,8 @@ import { LastContentWarn } from './LastContentWarn';
 import { TYPES_VALUE_CONTENT } from './constants';
 import AllInsurableLimits from 'services/AllInsurableLimits';
 import GetEstate from 'services/GetEstate';
+import moment from 'moment';
+import 'moment/locale/es';
 
 import ModalLimitsPlanError from '../../modal/ModalLimitsPlanError';
 
@@ -80,6 +82,7 @@ class Index extends React.Component {
       retryLimitReached: false,
       showButtonReturn: false,
       currentDateTime: '',
+      updateArticles: false,
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
@@ -93,8 +96,12 @@ class Index extends React.Component {
     return Masknumbermoney.formatToMask(value);
   }
 
-  componentDidMount() {
-    this.getLimitsEstate();
+  async componentDidMount() {
+    moment.locale('es');
+    const currentDateTime = moment().format('DD/MMM/YYYY HH:mm:ss');
+    this.setState({ currentDateTime });
+
+    await this.getLimitsEstate();
     this.getData();
     Helpers.fieldNumeric();
   }
@@ -109,10 +116,14 @@ class Index extends React.Component {
       this.setState({
         openLimitsModal: true,
         code: limits?.code || estate_data?.code,
+        updateArticles: false,
+        items: [],
       });
     } else if (limits.length > 0 && estate_data.length > 0) {
       this.setState({
         openLimitsModal: false,
+        updateArticles: true,
+        items: estate_data,
       });
     }
   }
@@ -127,6 +138,7 @@ class Index extends React.Component {
           retryCount: newRetryCount,
           retryLimitReached,
           showButtonReturn: retryLimitReached,
+          updateArticles: true,
         };
       },
       async () => {
@@ -757,10 +769,19 @@ class Index extends React.Component {
                           itemsRequiredSince.fixedContent
                         )}
                       </p>
-                      <p>
-                        <b> • Objetos de valor y obras de Arte:</b> Requiere
-                        relación detallada para todos
-                      </p>
+                      {Store.getState()?.estate[1]?.required ? (
+                        <p>
+                          <b> • Objetos de valor y obras de Arte:</b> Requiere
+                          relación detallada para todos
+                        </p>
+                      ) : (
+                        <p>
+                          <b> • Objetos de valor y obras de Arte:</b>{' '}
+                          {Masknumbermoney.formatToMask(
+                            itemsRequiredSince.valuablesAndWorksOfArt
+                          )}
+                        </p>
+                      )}
                     </div>
                     <div className="col-6">
                       <p>
@@ -785,6 +806,7 @@ class Index extends React.Component {
                   invalid={invalid}
                   individual_estate={Store.getState().estate}
                   validateTotalItem={this.validateTotalItem}
+                  updateArticles={this.state.updateArticles}
                 />
                 <div className="wrapper-more-items">
                   <div
@@ -987,7 +1009,6 @@ class Index extends React.Component {
           open={this.state.openLimitsModal}
           onRetry={this.handleRetry}
           code={this.state.code}
-          stepCotizacion={this.state.stepCotizacion}
           numberCotizacion={this.state.numberCotizacion}
           showButtonReturn={this.state.showButtonReturn}
           currentDateTime={this.state.currentDateTime}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import positive from 'assets/images/positive.svg';
 import caution from 'assets/images/caution.svg';
 import warning from 'assets/images/warning.svg';
@@ -43,37 +43,50 @@ export const Articles = ({
   invalid,
   individual_estate,
   validateTotalItem,
+  updateArticles,
 }) => {
-  const items = useMemo(
-    () => [
+  const [validItems, setValidItems] = useState([]);
+
+  const items = useMemo(() => {
+    return [
       [
-        individual_estate.find((type) => type.id == 0),
+        individual_estate.find((type) => type.id === 0),
         inmuebles.contenido_asegudado_valor,
         total.fixedContent,
       ],
       [
-        individual_estate.find((type) => type.id == 2),
+        individual_estate.find((type) => type.id === 2),
         inmuebles.inmueble_asegudado_joyasvalor,
         total.jewelry,
       ],
       [
-        individual_estate.find((type) => type.id == 3),
+        individual_estate.find((type) => type.id === 3),
         inmuebles.inmueble_asegudado_telefonosvalor,
         total.cellPhones,
       ],
       [
-        individual_estate.find((type) => type.id == 1),
+        individual_estate.find((type) => type.id === 1),
         inmuebles.inmueble_asegudado_obrasvalor,
         total.valuablesAndWorksOfArt,
       ],
       [
-        individual_estate.find((type) => type.id == 4),
+        individual_estate.find((type) => type.id === 4),
         quote_contenidomovil,
         total.mobileContent,
       ],
-    ],
-    [inmuebles, quote_contenidomovil, total]
-  );
+    ];
+  }, [individual_estate, inmuebles, quote_contenidomovil, total]);
+
+  useEffect(() => {
+    // Actualizamos validItems cuando items esté correctamente cargado
+    if (
+      items.every((subArray) => subArray[0] !== undefined) &&
+      updateArticles
+    ) {
+      setValidItems(items);
+    }
+  }, [items, updateArticles]);
+
   /**
    * @type {{
    *  [key: string]: {
@@ -87,7 +100,7 @@ export const Articles = ({
    */
   const invalids = useMemo(() => {
     return items.reduce((acc, [item, max, total]) => {
-      if (individual_estate.length > 0) {
+      if (item) {
         const { id, label, required } = item;
         const isRequired = isItemRequired(required, { max, total });
         acc[id] = {
@@ -100,7 +113,7 @@ export const Articles = ({
       }
       return acc;
     }, {});
-  }, [items, validateTotalItem, individual_estate]);
+  }, [items, validateTotalItem]);
 
   const invalidsValues = useMemo(() => Object.values(invalids), [invalids]);
   const isValid = (id) => !invalids[id].state;
@@ -139,59 +152,58 @@ export const Articles = ({
             </tr>
           </thead>
           <tbody>
-            {items &&
-              items.length > 0 &&
-              items.every((subArray) => subArray[0] !== undefined) &&
-              items.map(([{ label, id, required }, max, total]) => {
-                const item = itemsSelected.find((item) => item.id === id);
-                const maxFormated = formatToMask(max);
-                const totalFormated = formatToMask(total);
-                const cautionTitle = `
+            {validItems.map(([items, max, total]) => {
+              if (!items) return null;
+              const { id, label, required } = items;
+              const item = itemsSelected.find((item) => item.id === id);
+              const maxFormated = formatToMask(max);
+              const totalFormated = formatToMask(total);
+              const cautionTitle = `
                     Aun no incluyes el 100% de la relación
                     detallada de ${label}. Ten presente que
                     debes completar ${maxFormated} y tienes
                     ${totalFormated.replace(/\.$/g, '')} relacionados
                   `;
-                const warnTitle = `
+              const warnTitle = `
                     Aun no incluyes la relación detallada de ${label}. 
                     Ten presente que esta información es requerida para emitir la póliza.
                   `;
-                const contentRequired =
-                  isItemRequired(required, { max, total }) &&
-                  ((isValid(id) && <img src={positive} alt="positive" />) || (
-                    <>
-                      <Tooltip
-                        placement="bottom"
-                        component="span"
-                        title={cautionTitle}
-                      >
-                        <img className="mr-2" src={caution} alt="caution" />
-                      </Tooltip>
+              const contentRequired =
+                isItemRequired(required, { max, total }) &&
+                ((isValid(id) && <img src={positive} alt="positive" />) || (
+                  <>
+                    <Tooltip
+                      placement="bottom"
+                      component="span"
+                      title={cautionTitle}
+                    >
+                      <img className="mr-2" src={caution} alt="caution" />
+                    </Tooltip>
 
-                      <Tooltip
-                        placement="bottom"
-                        component="span"
-                        title={warnTitle}
-                      >
-                        <img src={warning} alt="warning" />
-                      </Tooltip>
-                    </>
-                  ));
-                return (
-                  item && (
-                    <tr key={id} className="h6 font-weight-normal">
-                      <td className="h6 font-weight-normal font-italic">
-                        {label}
-                      </td>
-                      <td>{maxFormated}</td>
-                      <td className="d-flex align-items-center">
-                        <div className="mr-2">{totalFormated}</div>
-                        {contentRequired}
-                      </td>
-                    </tr>
-                  )
-                );
-              })}
+                    <Tooltip
+                      placement="bottom"
+                      component="span"
+                      title={warnTitle}
+                    >
+                      <img src={warning} alt="warning" />
+                    </Tooltip>
+                  </>
+                ));
+              return (
+                item && (
+                  <tr key={id} className="h6 font-weight-normal">
+                    <td className="h6 font-weight-normal font-italic">
+                      {label}
+                    </td>
+                    <td>{maxFormated}</td>
+                    <td className="d-flex align-items-center">
+                      <div className="mr-2">{totalFormated}</div>
+                      {contentRequired}
+                    </td>
+                  </tr>
+                )
+              );
+            })}
           </tbody>
         </table>
         <div className="row row-full">
