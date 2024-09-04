@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import withRouter from 'react-router/withRouter';
 
 import WarningIcon from 'assets/icons/warning_icon.svg';
+import { EMAIL_SUPPORT } from 'common/constants';
 import './Modal.scss';
 
 const ErrorLimitsPlansModal = withRouter(
@@ -50,7 +51,7 @@ const ErrorLimitsPlansModal = withRouter(
               ) : (
                 <p className="modal-subtitle">
                   Reporta la falla en la mesa de ayuda al correo <br />{' '}
-                  <strong>soporte.aplicactivos@libertycolombia.com</strong>.
+                  <strong>{EMAIL_SUPPORT}</strong>.
                 </p>
               )}
 
@@ -103,7 +104,7 @@ const ErrorLimitsPlansModal = withRouter(
               <p className="modal-footer-text">
                 Para obtener información adicional, comunícate con la mesa de
                 ayuda al correo <br />
-                <strong>soporte.aplicactivos@libertycolombia.com</strong>
+                <strong>{EMAIL_SUPPORT}</strong>
                 <br />
                 <span>
                   Código de error: 1-{`${code}`} - Paso {`${step}`}:

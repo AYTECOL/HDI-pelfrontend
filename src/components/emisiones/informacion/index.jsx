@@ -83,6 +83,7 @@ class Index extends React.Component {
       showButtonReturn: false,
       currentDateTime: '',
       updateArticles: false,
+      typeItem: typeItems,
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
@@ -221,6 +222,21 @@ class Index extends React.Component {
      */
     const items = [];
     const estate = Store.getState().estate;
+
+    const keys = Object.keys(typeItems);
+    const typeItems2 = {};
+
+    estate.forEach((item, index) => {
+      typeItems2[keys[index]] = {
+        id: item.id,
+        label: item.label,
+        max: item.max,
+        required: item.required,
+      };
+    });
+
+    this.setState({ typeItem: typeItems2 });
+
     if (typeof inmuebles !== 'undefined') {
       if (inmuebles.contenido_asegudado === 1) {
         contenidos = true;
@@ -389,7 +405,7 @@ class Index extends React.Component {
       jewelry,
       cellPhones,
       mobileContent,
-    } = typeItems;
+    } = this.state.typeItem;
     const total = {
       [fixedContent.id]: 0,
       [valuablesAndWorksOfArt.id]: 0,
@@ -439,7 +455,7 @@ class Index extends React.Component {
       jewelry,
       cellPhones,
       mobileContent,
-    } = typeItems;
+    } = this.state.typeItem;
     if (error) return true;
     if (
       inmuebles.contenido_asegudado === 1 &&
