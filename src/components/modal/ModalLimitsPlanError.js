@@ -19,6 +19,7 @@ const ErrorLimitsPlansModal = withRouter(
   }) => {
     const pathSegments = location.pathname.split('/');
     let process = pathSegments[1];
+    let step = pathSegments[2];
     if (process === 'emision') {
       process = 'emisión';
     }
@@ -34,19 +35,27 @@ const ErrorLimitsPlansModal = withRouter(
           <div className="modal-content">
             <div className="modal-header">
               <img src={WarningIcon} alt="warning_icon" />
-              <h5 className="modal-title">Ups, lo sentimos</h5>
+              <h5 className="modal-title">¡Ups! Lo sentimos</h5>
               <p className="modal-subtitle">
                 No podemos continuar con la <strong>{process}</strong> en este
                 momento debido a problemas técnicos.
               </p>
-              <p className="modal-subtitle">
-                Por favor, intenta nuevamente a través del botón{' '}
-                <strong>Reintentar.</strong>
-                <br /> Si el error persiste, retoma la cotizacion en unos
-                minutos desde <strong>Mis negocios</strong>.
-              </p>
+              {!showButtonReturn ? (
+                <p className="modal-subtitle">
+                  Por favor, intenta nuevamente a través del botón{' '}
+                  <strong>Reintentar.</strong>
+                  <br /> Si el error persiste, retoma la {process} en unos
+                  minutos desde <strong>Mis negocios</strong>.
+                </p>
+              ) : (
+                <p className="modal-subtitle">
+                  Reporta la falla en la mesa de ayuda al correo <br />{' '}
+                  <strong>soporte.aplicactivos@libertycolombia.com</strong>.
+                </p>
+              )}
+
               <span>
-                Numero de cotizacion <strong>{`${numberCotizacion}`}</strong>
+                Numero de {process} <strong>{`${numberCotizacion}`}</strong>
               </span>
 
               <button
@@ -97,7 +106,7 @@ const ErrorLimitsPlansModal = withRouter(
                 <strong>soporte.aplicactivos@libertycolombia.com</strong>
                 <br />
                 <span>
-                  Código de error: 1-{`${code}`} - Paso {`${stepCotizacion}`}:
+                  Código de error: 1-{`${code}`} - Paso {`${step}`}:
                   {capitalizeFirstLetter(process)}
                 </span>
                 <br />
