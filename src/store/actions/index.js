@@ -101,6 +101,9 @@ const saveAllfloors = (data) => {
 const saveAllInsurableLimits = (data) => {
   return { type: actionsTypes.SAVE_ALL_INSURABLE_LIMITS, data: data };
 };
+const saveEstate = (data) => {
+  return { type: actionsTypes.SAVE_ESTATE, data: data };
+};
 const AllPlans = (data) => (dispatch) => {
   dispatch({ type: actionsTypes.SAVE_ALL_PLANS, data: data });
   return Promise.resolve();
@@ -157,6 +160,7 @@ export {
   restoreCotizacionRisk,
   saveAllfloors,
   saveAllInsurableLimits,
+  saveEstate,
   AllPlans,
   indexPlanSelected,
   saveProspect,
