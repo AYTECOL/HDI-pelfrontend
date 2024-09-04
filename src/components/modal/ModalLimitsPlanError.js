@@ -40,12 +40,20 @@ const ErrorLimitsPlansModal = withRouter(
                 No podemos continuar con la <strong>{process}</strong> en este
                 momento debido a problemas técnicos.
               </p>
-              <p className="modal-subtitle">
-                Por favor, intenta nuevamente a través del botón{' '}
-                <strong>Reintentar.</strong>
-                <br /> Si el error persiste, retoma la {process} en unos minutos
-                desde <strong>Mis negocios</strong>.
-              </p>
+              {!showButtonReturn ? (
+                <p className="modal-subtitle">
+                  Por favor, intenta nuevamente a través del botón{' '}
+                  <strong>Reintentar.</strong>
+                  <br /> Si el error persiste, retoma la {process} en unos
+                  minutos desde <strong>Mis negocios</strong>.
+                </p>
+              ) : (
+                <p className="modal-subtitle">
+                  Reporta la falla en la mesa de ayuda al correo <br />{' '}
+                  <strong>soporte.aplicactivos@libertycolombia.com</strong>.
+                </p>
+              )}
+
               <span>
                 Numero de {process} <strong>{`${numberCotizacion}`}</strong>
               </span>
