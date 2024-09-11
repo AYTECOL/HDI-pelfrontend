@@ -278,7 +278,7 @@ class Index extends React.Component {
       }
       if (
         inmuebles.distribution_of_insured_securities_split.valorAmparo
-          .valorAsegurado3044
+          .valorAsegurado3044 && inmuebles.inmueble_mobile_contents === 1
       ) {
         contenidoMovil = true;
         items.push({
