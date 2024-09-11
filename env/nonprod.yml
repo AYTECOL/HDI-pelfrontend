@@ -1,6 +1,7 @@
-s3Bucket: poliza-express-hogar-nonprod
-s3BucketPDF: poliza-express-hogar-pdf-nonprod
-WebACLId: arn:aws:wafv2:us-east-1:038612146925:global/webacl/aws-cloudfront-webacl-external-block-nonprod-v1/641edefd-03a5-45e5-9b91-565b5f67a3ec
-AcmCertificateArn: arn:aws:acm:us-east-1:038612146925:certificate/8ee09741-2365-4154-a78e-73e9ae532809
+bucketDeployment: libertyhome-nonprod-serverlessdeploymentbucket-hdi
+s3Bucket: poliza-express-hogar-hdi-nonprod
+s3BucketPDF: poliza-express-hogar-pdf-hdi-nonprod
+WebACLId: arn:aws:wafv2:us-east-1:381492177008:global/webacl/co-hdi-aws-cloudfront-webacl-nonprod-external-block-v1/1791579b-0626-43a3-9290-1e5b4cb29674
+AcmCertificateArn: arn:aws:acm:us-east-1:381492177008:certificate/8ef6e8bf-4633-41b4-a954-2fedb72a2bfc
 Aliases:
-  - hogar-uat.libertyseguros.co
+  - hogar-nonprod.hdiseguros.com.co

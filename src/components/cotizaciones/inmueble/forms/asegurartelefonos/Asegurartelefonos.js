@@ -29,7 +29,9 @@ class Asegurartelefonos extends Component {
       description: name = '',
       min_value: min = 0,
       max_value: max = 0,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[6]),
     };
@@ -37,10 +39,19 @@ class Asegurartelefonos extends Component {
       name,
       min,
       max,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     };
   };
 
+  static name_card() {
+    try {
+      return Asegurartelefonos.getContent().title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return Asegurartelefonos.getContent().name;
@@ -133,7 +144,8 @@ class Asegurartelefonos extends Component {
   render() {
     const { active } = this.state;
     const content = Asegurartelefonos.getContent();
-    const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+    const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     return (
       <div className="row">
         <div className="col col-12 p-0">
@@ -147,7 +159,7 @@ class Asegurartelefonos extends Component {
                 }
               >
                 <label htmlFor={Asegurartelefonos.nameModel}>
-                  ¿Adicionalmente deseas asegurar {Asegurartelefonos.name()}?{' '}
+                  {title_desc}
                 </label>
               </div>
             </div>
@@ -158,12 +170,12 @@ class Asegurartelefonos extends Component {
                     className="flex-fill"
                     htmlFor={Asegurartelefonos.nameModelValue}
                   >
-                    Valor de {Asegurartelefonos.name()}
+                    {Asegurartelefonos.name()}
                   </label>
                   <Tooltip
                     className="mb-1"
                     placement="left"
-                    title={`El valor máximo por cada teléfono móvil es de ${maximumPerItem}`}
+                    title={`${maximumPerItem}`}
                   >
                     <Help className={'ml-auto icon-primary'} />
                   </Tooltip>

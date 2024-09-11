@@ -213,6 +213,7 @@ class BtnContinue extends Component {
       const {
         quote_created: { infoGeocodingSig },
       } = await QuoteService.save();
+
       const NotInsured =
         infoGeocodingSig &&
         infoGeocodingSig.features[0]?.attributes.AMENAZA_INUNDACION ===

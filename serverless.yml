@@ -7,6 +7,8 @@ plugins:
 provider:
   name: aws
   runtime: nodejs18.x
+  deploymentBucket:
+    name: ${self:custom.bucketDeployment}
   stage: ${opt:stage, 'dev'}
   region: us-east-1
   tags: ${file(./tags.yml)}
@@ -38,10 +40,10 @@ functions:
     runtime: nodejs18.x
     MemorySize: 256
     timeout: 29
-    lambdaAtEdge:
-      distribution: 'WebAppCloudFrontDistribution'
-      eventType: origin-response
-      includeBody: false
+    #lambdaAtEdge:
+      #distribution: 'WebAppCloudFrontDistribution'
+      #eventType: origin-response
+      #includeBody: false
 
 resources:
   Resources:
@@ -49,7 +51,13 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.s3Bucket}
-        AccessControl: PublicRead
+        #AccessControl: PublicRead
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        AccessControl: Private
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
@@ -76,7 +84,13 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.s3BucketPDF}
-        AccessControl: PublicReadWrite
+        #AccessControl: PublicReadWrite
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+        AccessControl: Private
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
@@ -144,12 +158,12 @@ resources:
         Path: '/'
         ManagedPolicyArns:
           - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-        PermissionsBoundary:
-          Fn::Join:
-            - ''
-            - - 'arn:aws:iam::'
-              - Ref: AWS::AccountId
-              - ':policy/cloud-services/pb-lm-troux-uid-access'
+        #PermissionsBoundary:
+          #Fn::Join:
+            #- ''
+            #- - 'arn:aws:iam::'
+              #- Ref: AWS::AccountId
+              #- ':policy/cloud-services/pb-lm-troux-uid-access'
 
     WebAppCloudFrontDistribution:
       Type: AWS::CloudFront::Distribution
@@ -197,10 +211,10 @@ resources:
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
           WebACLId: ${self:custom.WebACLId}
-          Logging:
-            Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
-            IncludeCookies: true
-            Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
+          #Logging:
+            #Bucket: ${self:custom.s3Bucket}.s3.amazonaws.com
+            #IncludeCookies: true
+            #Prefix: intl-co-logging-cloudfront-${self:service}-${self:provider.stage}
           HttpVersion: http2
           
   Outputs:

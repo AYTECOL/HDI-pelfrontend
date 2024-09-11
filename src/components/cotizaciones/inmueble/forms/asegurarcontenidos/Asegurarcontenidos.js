@@ -30,7 +30,9 @@ class Asegurarcontenidos extends Component {
       description: name = '',
       min_value: min = 0,
       max_value: max = 0,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[2]),
     };
@@ -38,9 +40,15 @@ class Asegurarcontenidos extends Component {
       name,
       min,
       max,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     };
   };
+
+  static name_card() {
+    return Asegurarcontenidos.getContent().title_card;
+  }
 
   static name() {
     return Asegurarcontenidos.getContent().name;
@@ -173,7 +181,8 @@ class Asegurarcontenidos extends Component {
     const content = Asegurarcontenidos.getContent();
     const min = Masknumbermoney.formatToMask(content.min);
     const max = Masknumbermoney.formatToMask(content.max);
-    const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+    const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     const { error, active, errorValue, value } = this.state;
     return (
       <div className="row">
@@ -183,9 +192,7 @@ class Asegurarcontenidos extends Component {
               Asegurarcontenidos.nameModel + ' no-icon form-group ' + error
             }
           >
-            <label htmlFor={Asegurarcontenidos.nameModel}>
-              ¿Deseas asegurar {content.name}?{' '}
-            </label>
+            <label htmlFor={Asegurarcontenidos.nameModel}>{title_desc}</label>
             <ul className="select-item" id={Asegurarcontenidos.nameModel}>
               <li
                 className={active === 1 ? 'active' : ''}
@@ -222,12 +229,10 @@ class Asegurarcontenidos extends Component {
                   className="flex-fill"
                   htmlFor={Asegurarcontenidos.nameModelValue}
                 >
-                  Valor de {content.name}
+                  {content.name}
                 </label>
-                <Tooltip
-                  placement="left"
-                  title={`El valor máximo por cada artículo es de ${maximumPerItem}`}
-                >
+
+                <Tooltip placement="left" title={`${maximumPerItem}`}>
                   <Help className={'ml-auto icon-primary'} />
                 </Tooltip>
               </div>
