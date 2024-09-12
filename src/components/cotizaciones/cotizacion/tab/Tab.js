@@ -212,7 +212,10 @@ class Tab extends Component {
     const quotateId = this.props.match.params.id;
     const plansLoaded = this.planLoaded;
     this.planLoaded = true;
-    let plans = await AllPlans.get(type);
+    let plans = await AllPlans.get({
+      type,
+      quoteId: store.getState().cotizacion.number,
+    });
     let plan =
       !plansLoaded &&
       (await QuoteIussedById.get(quotateId).catch((e) => {
