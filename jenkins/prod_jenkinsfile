@@ -10,7 +10,7 @@ node('linux'){
 
 	stage("Env Variables") {
     	script {
-        	env.BUCKET_NAME = "poliza-express-hogar" 
+        	env.BUCKET_NAME = "poliza-express-hogar-hdi" 
 			env.REACT_APP_DOMAIN = "https://7uyuaer9db.execute-api.us-east-1.amazonaws.com/prod"
 			env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
 			env.REACT_APP_OFICINA = "https://oficinaenlinea.libertycolombia.com"
