@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
-    "axios": "^0.18.0",
+    "axios": "^0.28.1",
     "bootstrap": "^4.6.0",
     "clsx": "^1.1.1",
     "date-fns": "^1.30.1",
