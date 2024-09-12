@@ -13,7 +13,6 @@ import Coberturas from '../coberturas/Coberturas';
 import { IDS_COVERAGE_VALUES } from '../../../../common';
 import { getItems } from './getItems';
 import Helpers from '../../../../common/helpers/helpers';
-import GetEstate from 'services/GetEstate';
 class Cards extends Component {
   constructor(props) {
     super(props);
@@ -168,7 +167,6 @@ class Cards extends Component {
 
   async getLimitsEstate() {
     await AllInsurableLimits.get(store.getState().cotizacion.number);
-    await GetEstate.get(store.getState().cotizacion.number);
   }
 
   getItemsActive(items) {
