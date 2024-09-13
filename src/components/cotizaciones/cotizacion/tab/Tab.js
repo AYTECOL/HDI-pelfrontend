@@ -20,6 +20,8 @@ import { getRulesByCode, getValue } from '../../../../common';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import RateNotCalculated from '../../../RateNotCalculated';
 import { getItems } from '../../../cotizaciones/cotizacion/cards/getItems';
+import moment from 'moment';
+import ModalLimitsPlanError from '../../../../components/modal/ModalLimitsPlanError';
 
 class Tab extends Component {
   constructor(props) {
@@ -27,6 +29,9 @@ class Tab extends Component {
     this.state = {
       plans: [],
       errorRateCalculated: false,
+      retryCount: 0,
+      retryLimitReached: false,
+      showButtonReturn: false,
     };
     this.planLoaded = false;
   }
@@ -205,6 +210,32 @@ class Tab extends Component {
     });
   }
 
+  handleRetry = () => {
+    this.setState(
+      (prevState) => {
+        const newRetryCount = prevState.retryCount + 1;
+        const retryLimitReached = newRetryCount >= 4;
+
+        return {
+          retryCount: newRetryCount,
+          retryLimitReached,
+          showButtonReturn: retryLimitReached
+        };
+      },
+      async () => {
+        if (!this.state.retryLimitReached) {
+          this.getPlans(this.props.inmueble)
+          .then(() => {
+            this.setState({ errorRateCalculated: false });
+          })
+          .catch((e) => {
+            Loading.toggle(false);
+          });
+        }
+      }
+    );
+  };
+
   async getPlans(inmueble = null) {
     if (!this.isValid(inmueble)) return;
     Loading.toggle(true);
@@ -295,6 +326,11 @@ class Tab extends Component {
     const { indexPlan } = this.props;
     const { plans, errorRateCalculated } = this.state;
 
+    const stepCotizacion = store.getState().cotizacion.state;
+    const cotizacionNumber = store.getState().cotizacion.number;
+    moment.locale('es');
+    const currentDateTime = moment().format('DD/MMM/YYYY HH:mm:ss');
+
     const plan = !!(plans && plans[indexPlan]);
     return (
       <Fragment>
@@ -320,17 +356,15 @@ class Tab extends Component {
             </div>
           </Fragment>
         )}
-        <RateNotCalculated
+        <ModalLimitsPlanError
           open={errorRateCalculated}
-          onRetry={() => {
-            this.getPlans(this.props.inmueble)
-              .then(() => {
-                this.setState({ errorRateCalculated: false });
-              })
-              .catch((e) => {
-                Loading.toggle(false);
-              });
-          }}
+          onRetry={this.handleRetry}
+          code={500}  //TODO: cambiar según el servicio, por defecto 500
+          stepCotizacion={stepCotizacion}
+          numberCotizacion={cotizacionNumber}
+          showButtonReturn={this.state.showButtonReturn}
+          currentDateTime={currentDateTime}
+          firstCode={4}   //TODO: cambiar según el servicio, debería traer un 4, por defecto 5
         />
       </Fragment>
     );

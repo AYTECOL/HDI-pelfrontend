@@ -17,12 +17,16 @@ const ErrorLimitsPlansModal = withRouter(
     currentDateTime,
     history,
     location,
+    firstCode = 1
   }) => {
     const pathSegments = location.pathname.split('/');
     let process = pathSegments[1];
     let step = pathSegments[2];
     if (process === 'emision') {
       process = 'emisión';
+    }
+    if (process === 'cotizacion') {
+      process = 'cotización';
     }
     const route = '/';
 
@@ -107,7 +111,7 @@ const ErrorLimitsPlansModal = withRouter(
                 <strong>{EMAIL_SUPPORT}</strong>
                 <br />
                 <span>
-                  Código de error: 1-{`${code}`} - Paso {`${step}`}:
+                  Código de error: {`${firstCode}`}-{`${code}`} - Paso {`${step}`}:
                   {capitalizeFirstLetter(process)}
                 </span>
                 <br />

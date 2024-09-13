@@ -327,7 +327,7 @@ class Index extends Component {
     store.dispatch(AllPlansCreator(plansLoader));
     setTimeout(() => {
       Loading.toggle(false);
-    }, 3000);
+    }, 5000);
   }
 
   showAnyPopup(name, index, type) {
@@ -573,7 +573,7 @@ class Index extends Component {
                                 <p>
                                   <span>Tipo de contenido</span>
                                 </p>
-                                <p>{(type && type.label) || ''}</p>
+                                <p>{(type && item.nameType) || ''}</p>
                               </div>
                               <div className="col col-sm-6 col-md-3">
                                 <p>
