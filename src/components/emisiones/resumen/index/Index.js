@@ -327,7 +327,7 @@ class Index extends Component {
     store.dispatch(AllPlansCreator(plansLoader));
     setTimeout(() => {
       Loading.toggle(false);
-    }, 1500);
+    }, 3000);
   }
 
   showAnyPopup(name, index, type) {
