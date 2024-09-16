@@ -405,7 +405,7 @@ class Index extends React.Component {
       jewelry,
       cellPhones,
       mobileContent,
-    } = this.state.typeItem;
+    } = typeItems;
     const total = {
       [fixedContent.id]: 0,
       [valuablesAndWorksOfArt.id]: 0,
