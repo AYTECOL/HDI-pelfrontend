@@ -278,7 +278,8 @@ class Index extends React.Component {
       }
       if (
         inmuebles.distribution_of_insured_securities_split.valorAmparo
-          .valorAsegurado3044 && inmuebles.inmueble_mobile_contents === 1
+          .valorAsegurado3044 &&
+        inmuebles.inmueble_mobile_contents === 1
       ) {
         contenidoMovil = true;
         items.push({
@@ -779,38 +780,35 @@ class Index extends React.Component {
                 <div className="col-12">
                   <div className="row justify-content-center">
                     <div className="col-6 ">
-                      <p>
-                        <b> • Contenidos Fijos</b>:{' '}
-                        {Masknumbermoney.formatToMask(
-                          itemsRequiredSince.fixedContent
-                        )}
-                      </p>
-                      {Store.getState()?.estate[1]?.required ? (
-                        <p>
-                          <b> • Objetos de valor y obras de Arte:</b> Requiere
-                          relación detallada para todos
-                        </p>
-                      ) : (
-                        <p>
-                          <b> • Objetos de valor y obras de Arte:</b>{' '}
-                          {Masknumbermoney.formatToMask(
-                            itemsRequiredSince.valuablesAndWorksOfArt
-                          )}
-                        </p>
-                      )}
+                      {Store.getState()?.estate?.map((item, key) => {
+                        if (item.required) return null;
+                        return (
+                          <p key={key}>
+                            <b> • {item.label}:</b>{' '}
+                            {Masknumbermoney.formatToMask(item.max)}
+                          </p>
+                        );
+                      })}
                     </div>
                     <div className="col-6">
-                      <p>
-                        <b> • Joyas</b>: Requiere relación detallada para todos
-                      </p>
-                      <p>
-                        <b> • Contenidos Móviles:</b> Requiere relación
-                        detallada para todos
-                      </p>
-                      <p>
-                        <b> • Teléfonos Móviles:</b> Requiere relación detallada
-                        para todos
-                      </p>
+                      {Store.getState()?.estate?.map((item, key) => {
+                        if (!item.required) return null;
+                        return (
+                          <p key={key}>
+                            <b>
+                              {' '}
+                              •{' '}
+                              {`${
+                                item.label === 'Celulares'
+                                  ? 'Teléfonos Móviles'
+                                  : item.label
+                              }`}
+                              :
+                            </b>{' '}
+                            Requiere relación detallada para todos
+                          </p>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

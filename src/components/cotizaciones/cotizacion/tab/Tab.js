@@ -29,6 +29,7 @@ class Tab extends Component {
     this.state = {
       plans: [],
       errorRateCalculated: false,
+      typeError: 0,
       retryCount: 0,
       retryLimitReached: false,
       showButtonReturn: false,
@@ -179,8 +180,8 @@ class Tab extends Component {
 
   componentDidMount() {
     const { inmueble } = this.props;
-    this.getPlans(inmueble).catch(() => {
-      this.setState({ errorRateCalculated: true });
+    this.getPlans(inmueble).catch((e) => {
+      this.setState({ errorRateCalculated: true, typeError: 1 });
       Loading.toggle(false);
     });
   }
@@ -204,9 +205,9 @@ class Tab extends Component {
   }
 
   updateType(newInmueble) {
-    this.getPlans(newInmueble).catch(() => {
+    this.getPlans(newInmueble).catch((e) => {
       Loading.toggle(false);
-      this.setState({ errorRateCalculated: true });
+      this.setState({ errorRateCalculated: true, typeError: 2 });
     });
   }
 
@@ -219,18 +220,18 @@ class Tab extends Component {
         return {
           retryCount: newRetryCount,
           retryLimitReached,
-          showButtonReturn: retryLimitReached
+          showButtonReturn: retryLimitReached,
         };
       },
       async () => {
         if (!this.state.retryLimitReached) {
           this.getPlans(this.props.inmueble)
-          .then(() => {
-            this.setState({ errorRateCalculated: false });
-          })
-          .catch((e) => {
-            Loading.toggle(false);
-          });
+            .then(() => {
+              this.setState({ errorRateCalculated: false });
+            })
+            .catch((e) => {
+              Loading.toggle(false);
+            });
         }
       }
     );
@@ -324,7 +325,7 @@ class Tab extends Component {
 
   render() {
     const { indexPlan } = this.props;
-    const { plans, errorRateCalculated } = this.state;
+    const { plans, errorRateCalculated, typeError } = this.state;
 
     const stepCotizacion = store.getState().cotizacion.state;
     const cotizacionNumber = store.getState().cotizacion.number;
@@ -359,12 +360,12 @@ class Tab extends Component {
         <ModalLimitsPlanError
           open={errorRateCalculated}
           onRetry={this.handleRetry}
-          code={500}  //TODO: cambiar según el servicio, por defecto 500
+          code={500} //TODO: cambiar según el servicio, por defecto 500
           stepCotizacion={stepCotizacion}
           numberCotizacion={cotizacionNumber}
           showButtonReturn={this.state.showButtonReturn}
           currentDateTime={currentDateTime}
-          firstCode={4}   //TODO: cambiar según el servicio, debería traer un 4, por defecto 5
+          firstCode={typeError === 2 ? 3 : 4} //TODO: cambiar según el servicio, debería traer un 4, por defecto 5
         />
       </Fragment>
     );
