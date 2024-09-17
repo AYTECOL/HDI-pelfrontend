@@ -84,6 +84,7 @@ class Index extends React.Component {
       currentDateTime: '',
       updateArticles: false,
       typeItem: typeItems,
+      typeError: 0,
     };
     this.updatePerson = this.updatePerson.bind(this);
     this.toggleErrorPhone = this.toggleErrorPhone.bind(this);
@@ -119,6 +120,7 @@ class Index extends React.Component {
         code: limits?.code || estate_data?.code,
         updateArticles: false,
         items: [],
+        typeError: limits?.code ? 1 : 2,
       });
     } else if (limits.length > 0 && estate_data.length > 0) {
       this.setState({
@@ -885,13 +887,14 @@ class Index extends React.Component {
                           content={content}
                           items={items.filter(
                             (item) =>
-                              !totalByType[item.id] ||
-                              !this.validateTotalItem(
-                                item.maxTotal,
-                                totalByType[item.id],
-                                item
-                              ) ||
-                              `${content.type}` === `${item.id}`
+                              (!totalByType[item.id] ||
+                                !this.validateTotalItem(
+                                  item.maxTotal,
+                                  totalByType[item.id],
+                                  item
+                                ) ||
+                                `${content.type}` === `${item.id}`) &&
+                              limitInmuebles[item.id].value !== 0
                           )}
                           handleChange={({ value, type }) => {
                             this.handleChange(key)({
@@ -1061,6 +1064,7 @@ class Index extends React.Component {
           numberCotizacion={this.state.numberCotizacion}
           showButtonReturn={this.state.showButtonReturn}
           currentDateTime={this.state.currentDateTime}
+          firstCode={this.state.typeError}
         />
       </React.Fragment>
     );

@@ -158,6 +158,7 @@ export const Articles = ({
               const item = itemsSelected.find((item) => item.id === id);
               const maxFormated = formatToMask(max);
               const totalFormated = formatToMask(total);
+
               const cautionTitle = `
                     Aun no incluyes el 100% de la relación
                     detallada de ${label}. Ten presente que
@@ -190,7 +191,8 @@ export const Articles = ({
                   </>
                 ));
               return (
-                item && (
+                item &&
+                max !== 0 && (
                   <tr key={id} className="h6 font-weight-normal">
                     <td className="h6 font-weight-normal font-italic">
                       {label}
