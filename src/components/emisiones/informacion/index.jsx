@@ -278,7 +278,8 @@ class Index extends React.Component {
       }
       if (
         inmuebles.distribution_of_insured_securities_split.valorAmparo
-          .valorAsegurado3044 && inmuebles.inmueble_mobile_contents === 1
+          .valorAsegurado3044 &&
+        inmuebles.inmueble_mobile_contents === 1
       ) {
         contenidoMovil = true;
         items.push({
@@ -405,7 +406,7 @@ class Index extends React.Component {
       jewelry,
       cellPhones,
       mobileContent,
-    } = this.state.typeItem;
+    } = typeItems;
     const total = {
       [fixedContent.id]: 0,
       [valuablesAndWorksOfArt.id]: 0,
@@ -638,6 +639,7 @@ class Index extends React.Component {
     const invalid = this.hasErrors();
     const { total, totalByType } = this.getTotal();
     const itemsMap = new Map(items.map((item) => [`${item.id}`, item]));
+    const orderItemsColumB = [2, 4, 3];
     const {
       contenido_asegudado_valor,
       inmueble_asegudado_obrasvalor,
@@ -779,38 +781,69 @@ class Index extends React.Component {
                 <div className="col-12">
                   <div className="row justify-content-center">
                     <div className="col-6 ">
-                      <p>
-                        <b> • Contenidos Fijos</b>:{' '}
-                        {Masknumbermoney.formatToMask(
-                          itemsRequiredSince.fixedContent
-                        )}
-                      </p>
-                      {Store.getState()?.estate[1]?.required ? (
-                        <p>
-                          <b> • Objetos de valor y obras de Arte:</b> Requiere
-                          relación detallada para todos
-                        </p>
-                      ) : (
-                        <p>
-                          <b> • Objetos de valor y obras de Arte:</b>{' '}
-                          {Masknumbermoney.formatToMask(
-                            itemsRequiredSince.valuablesAndWorksOfArt
-                          )}
-                        </p>
-                      )}
+                      {Store.getState()?.estate?.map((item, key) => {
+                        if (item.required && item.id !== 1) return null;
+                        return item.required ? (
+                          <p key={key}>
+                            <b>
+                              {' '}
+                              •{' '}
+                              {`${
+                                item.label === 'Celulares'
+                                  ? 'Teléfonos Móviles'
+                                  : item.label
+                              }`}
+                              :
+                            </b>{' '}
+                            Requiere relación detallada para todos
+                          </p>
+                        ) : (
+                          <p key={key}>
+                            <b>
+                              {' '}
+                              •{' '}
+                              {`${
+                                item.label === 'Celulares'
+                                  ? 'Teléfonos Móviles'
+                                  : item.label
+                              }`}
+                              :
+                            </b>{' '}
+                            {Masknumbermoney.formatToMask(item.max)}
+                          </p>
+                        );
+                      })}
                     </div>
+
                     <div className="col-6">
-                      <p>
-                        <b> • Joyas</b>: Requiere relación detallada para todos
-                      </p>
-                      <p>
-                        <b> • Contenidos Móviles:</b> Requiere relación
-                        detallada para todos
-                      </p>
-                      <p>
-                        <b> • Teléfonos Móviles:</b> Requiere relación detallada
-                        para todos
-                      </p>
+                      {Store.getState()
+                        ?.estate.filter(
+                          (item) =>
+                            item.required && orderItemsColumB.includes(item.id)
+                        )
+                        .sort((a, b) => {
+                          return (
+                            orderItemsColumB.indexOf(a.id) -
+                            orderItemsColumB.indexOf(b.id)
+                          );
+                        })
+                        .map((item, key) => {
+                          return (
+                            <p key={key}>
+                              <b>
+                                {' '}
+                                •{' '}
+                                {`${
+                                  item.label === 'Celulares'
+                                    ? 'Teléfonos Móviles'
+                                    : item.label
+                                }`}
+                                :
+                              </b>{' '}
+                              Requiere relación detallada para todos
+                            </p>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>

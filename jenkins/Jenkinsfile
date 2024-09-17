@@ -14,7 +14,7 @@ pipeline {
             }
             steps{
                 script {
-                    env.BUCKET_NAME = "poliza-express-hogar-dev" 
+                    env.BUCKET_NAME = "poliza-express-hogar-hdi-dev" 
                     env.REACT_APP_DOMAIN = "https://xykxkwq12i.execute-api.us-east-1.amazonaws.com/dev" //dev-libertyhome 
                     env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
                     env.REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
