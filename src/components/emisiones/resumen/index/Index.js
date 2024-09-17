@@ -643,6 +643,7 @@ class Index extends Component {
           numberCotizacion={this.state.numberCotizacion}
           showButtonReturn={this.state.showButtonReturn}
           currentDateTime={this.state.currentDateTime}
+          firstCode={2}
         />
       </>
     );
