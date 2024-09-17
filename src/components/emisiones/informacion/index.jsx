@@ -639,6 +639,7 @@ class Index extends React.Component {
     const invalid = this.hasErrors();
     const { total, totalByType } = this.getTotal();
     const itemsMap = new Map(items.map((item) => [`${item.id}`, item]));
+    const orderItemsColumB = [2, 4, 3];
     const {
       contenido_asegudado_valor,
       inmueble_asegudado_obrasvalor,
@@ -781,19 +782,8 @@ class Index extends React.Component {
                   <div className="row justify-content-center">
                     <div className="col-6 ">
                       {Store.getState()?.estate?.map((item, key) => {
-                        if (item.required) return null;
-                        return (
-                          <p key={key}>
-                            <b> • {item.label}:</b>{' '}
-                            {Masknumbermoney.formatToMask(item.max)}
-                          </p>
-                        );
-                      })}
-                    </div>
-                    <div className="col-6">
-                      {Store.getState()?.estate?.map((item, key) => {
-                        if (!item.required) return null;
-                        return (
+                        if (item.required && item.id !== 1) return null;
+                        return item.required ? (
                           <p key={key}>
                             <b>
                               {' '}
@@ -807,8 +797,53 @@ class Index extends React.Component {
                             </b>{' '}
                             Requiere relación detallada para todos
                           </p>
+                        ) : (
+                          <p key={key}>
+                            <b>
+                              {' '}
+                              •{' '}
+                              {`${
+                                item.label === 'Celulares'
+                                  ? 'Teléfonos Móviles'
+                                  : item.label
+                              }`}
+                              :
+                            </b>{' '}
+                            {Masknumbermoney.formatToMask(item.max)}
+                          </p>
                         );
                       })}
+                    </div>
+
+                    <div className="col-6">
+                      {Store.getState()
+                        ?.estate.filter(
+                          (item) =>
+                            item.required && orderItemsColumB.includes(item.id)
+                        )
+                        .sort((a, b) => {
+                          return (
+                            orderItemsColumB.indexOf(a.id) -
+                            orderItemsColumB.indexOf(b.id)
+                          );
+                        })
+                        .map((item, key) => {
+                          return (
+                            <p key={key}>
+                              <b>
+                                {' '}
+                                •{' '}
+                                {`${
+                                  item.label === 'Celulares'
+                                    ? 'Teléfonos Móviles'
+                                    : item.label
+                                }`}
+                                :
+                              </b>{' '}
+                              Requiere relación detallada para todos
+                            </p>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
