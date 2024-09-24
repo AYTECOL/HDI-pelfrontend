@@ -358,12 +358,19 @@ class Cards extends Component {
                       onBlur={this.validateValue(key)}
                       onChange={this.validateValue(key)}
                     />
-                    <small className={'form-text'}>
-                      Mínimo.{' '}
-                      {Masknumbermoney.formatToMask(option.parent.min())} -
-                      Máximo.{' '}
-                      {Masknumbermoney.formatToMask(option.parent.max())}
-                    </small>
+                    <p className={'form-text'}>
+                      <small>Mínimo. </small>
+                      <small>
+                        {' '}
+                        {Masknumbermoney.formatToMask(
+                          option.parent.min()
+                        )} -{' '}
+                      </small>
+                      <small>Máximo. </small>
+                      <small>
+                        {Masknumbermoney.formatToMask(option.parent.max())}{' '}
+                      </small>
+                    </p>
                     <small
                       className={
                         'form-text only-errors ' +
