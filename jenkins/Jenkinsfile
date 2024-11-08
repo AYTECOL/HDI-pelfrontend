@@ -17,7 +17,7 @@ pipeline {
                     env.BUCKET_NAME = "poliza-express-hogar-dev" 
                     env.REACT_APP_DOMAIN = "https://xykxkwq12i.execute-api.us-east-1.amazonaws.com/dev" //dev-libertyhome 
                     env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
-                    env.REACT_APP_OFICINA = "https://oficinaenlineauat.libertycolombia.com"
+                    env.REACT_APP_OFICINA = "https://oficinaenlineadev.hdicolombia.com.co"
                     env.REACT_APP_PDF_SARLAFT = "https://www.libertyseguros.co/zona-de-cliente/condicionados-y-documentos?category=62"
                     env.REACT_APP_PERSON = "https://j2ey0j027c.execute-api.us-east-1.amazonaws.com/dev" // dev-andino-flex-touch-back-apigee
                     env.REACT_APP_ACCESS_TOKEN = "https://006tbpggm3.execute-api.us-east-1.amazonaws.com/dev" // dev-andino-flex-touch-back-tokenize
