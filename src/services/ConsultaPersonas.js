@@ -1,12 +1,13 @@
 // TODO authentication interceptor
 import Service from './Api';
-import { UrlPerson } from '../config';
+import { UrlPerson, UrlOficinaLinea } from '../config';
 import Base64 from '../common/helpers/base64/Base64';
 import AccessToken from './AccessToken';
 import Helpers from '../common/helpers/helpers';
 import Loading from '../components/globals/loading/Loading';
 
 const UrlServicePerson = UrlPerson;
+const UrlOficinaEnLinea = UrlOficinaLinea;
 const Baseurl = '/consultarpersona';
 
 /**
@@ -123,7 +124,7 @@ class ConsultaPersonas {
   static logout() {
     sessionStorage.removeItem(ConsultaPersonas.key);
     document.location.replace('/');
-    document.location.replace('https://oficinaenlinea.hdiseguros.com.co');
+    document.location.replace(UrlOficinaEnLinea);
   }
 }
 
