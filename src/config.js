@@ -10,3 +10,4 @@ export const UrlAccessToken = process.env.REACT_APP_ACCESS_TOKEN;
 export const UrlAttachPolicyDocuments =
   process.env.REACT_APP_ATTACH_POLICY_DOCUMENTS;
 export const UrlCrearpolizaiaxis = process.env.REACT_APP_CREARPOLIZAIAXIS;
+export const UrlOficinaLinea = process.env.REACT_APP_OFICINA;
