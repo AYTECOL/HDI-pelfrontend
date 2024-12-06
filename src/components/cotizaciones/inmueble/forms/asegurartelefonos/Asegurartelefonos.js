@@ -177,7 +177,7 @@ class Asegurartelefonos extends Component {
             <div className="col col-12 col-md-6">
               <ul className="select-item" id={Asegurartelefonos.nameModel}>
                 <li
-                  className={this.state.active === 1 ? 'active' : ''}
+                  className={`${this.state.active === 1 ? 'active ' : ''}Si`}
                   onClick={this.validateEmpty({
                     value: 1,
                     name: Asegurartelefonos.nameModel,
@@ -186,7 +186,7 @@ class Asegurartelefonos extends Component {
                   Si
                 </li>
                 <li
-                  className={this.state.active === 0 ? 'active' : ''}
+                  className={`${this.state.active === 0 ? 'active ' : ''}No`}
                   onClick={this.validateEmpty({
                     value: 0,
                     name: Asegurartelefonos.nameModel,
@@ -210,7 +210,9 @@ class Asegurartelefonos extends Component {
                     id="inmuebleasegudadotelefonosvalor"
                     type="text"
                     value={this.state.value}
-                    className={'form-control'}
+                    className={`form-control ${
+                      !this.state.value ? 'not-value' : ''
+                    }`}
                     placeholder=""
                     onBlur={this.validateValue}
                     onChange={this.validateValue}

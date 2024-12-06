@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Header.scss';
-import logo from 'assets/images/logo.png';
+import logo from 'assets/images/logo.svg';
 import { withRouter } from 'react-router-dom';
 import ConsultaPersonas from 'services/ConsultaPersonas';
 
@@ -37,7 +37,7 @@ class Header extends Component {
         <div className="header container">
           <div className="row">
             <div id="logo" className="col col-12 col-sm-12 col-md-4 col-lg-4">
-              <img src={logo} alt="" />
+              <img src={logo} alt="logo_hdi" title="logo_hdi" />
             </div>
             <div
               id="main-menu"

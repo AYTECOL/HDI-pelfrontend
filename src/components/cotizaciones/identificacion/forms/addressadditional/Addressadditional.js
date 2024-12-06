@@ -65,7 +65,9 @@ class Addressadditional extends Component {
           type="text"
           value={value}
           autoComplete="addressAdditional"
-          className="form-control text-truncate"
+          className={`form-control text-truncate ${
+            !this.state.value ? 'not-value' : ''
+          }`}
           onChange={this.validateEmpty}
           placeholder="Ingrese información como la torre, el apartamento, el nombre del conjunto, etc..."
         />

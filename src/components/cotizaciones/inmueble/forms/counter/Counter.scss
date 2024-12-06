@@ -1,3 +1,4 @@
+@import '../../../../../styles/varaibles.scss';
 .msj-total {
   p {
     font-style: normal;
@@ -5,6 +6,9 @@
     font-size: 12px;
     line-height: 19px;
     text-align: center;
-    color: #d43900;
+    color: $hdi-map-error-text;
+    &.success {
+      color: $hdi-description-color;
+    }
   }
 }

@@ -22,6 +22,8 @@ import clsx from 'clsx';
 import ModalAlert from 'components/globals/Modal';
 import { OPTIONS_TYPES_RISK } from 'assets/constants';
 
+import arrow_back from '../../../../../assets/images/icon-back.svg';
+
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
@@ -240,12 +242,12 @@ class BtnContinue extends Component {
       <Fragment>
         <div className={'return-button'}>
           <button className="btn btn-link" type="button" onClick={this.goBack}>
-            <i className="back-icon">&nbsp;</i>Volver
+            <i className="back-icon"><img src={arrow_back} alt="" /></i>Volver
           </button>
         </div>
         <button
           type="button"
-          className={'btn btn-default'}
+          className={'btn btn-default btn-default--two'}
           onClick={this.saveService}
         >
           Guardar y salir

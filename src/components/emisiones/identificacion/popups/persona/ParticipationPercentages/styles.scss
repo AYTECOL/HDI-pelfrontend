@@ -1,4 +1,6 @@
-$color-primary: #28a3af;
+@import '../../../../../../styles/varaibles.scss';
+
+$color-primary: $hdi-tab-color-border;
 
 .participation-percentages {
   input[type='range'] {
@@ -16,7 +18,7 @@ $color-primary: #28a3af;
       cursor: pointer;
     }
     &::-webkit-slider-runnable-track {
-      background: '#fff';
+      background: $hdi-filter-form-background-color;
     }
 
     &::-moz-range-track {

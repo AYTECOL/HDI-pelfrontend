@@ -18,6 +18,8 @@ import IssuedCounter from 'services/IssuedCounter';
 import AttachPolicyDocuments from 'services/AttachPolicyDocuments';
 import GetQuoteService from 'services/GetQuote';
 
+import arrow_back from '../../../../../assets/images/icon-back.svg';
+
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
@@ -184,19 +186,22 @@ class BtnContinue extends Component {
       <Fragment>
         <div className={'return-button'}>
           <button type="button" className="btn btn-link" onClick={this.goBack}>
-            <i className="back-icon">&nbsp;</i>Volver
+            <i className="back-icon">
+              <img src={arrow_back} alt="" />
+            </i>
+            Volver
           </button>
         </div>
         <button
           type="button"
-          className={'btn btn-default'}
+          className={'btn btn-default btn-default--two'}
           onClick={this.saveAndExit}
         >
           Guardar y salir
         </button>
         <button
           type="button"
-          className={'btn btn-primary'}
+          className={`btn ${disabled ? 'disabled' : 'btn-primary'}`}
           disabled={disabled}
           onClick={this.nextStep}
         >

@@ -29,6 +29,9 @@ import {
 } from '../popups/persona/ParticipationPercentages/utils';
 import { roles } from '../constants';
 import { fieldsNames } from '../popups/persona/constants';
+
+import add_icon from '../../../../assets/icons/add_icon.svg';
+
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -461,18 +464,14 @@ class Index extends Component {
           <div className="row">
             <div className="col wrapper-more-items">
               <div className="more-items" onClick={this.togglePopUpPersona(-1)}>
-                <button type="button" className="more-btn">
-                  +
-                </button>
+                <img src={add_icon} alt="" />
                 <p>Agregar persona</p>
               </div>
               <div
                 className="more-items"
                 onClick={this.togglePopUpPersona(-1, 4)}
               >
-                <button type="button" className="more-btn">
-                  +
-                </button>
+                <img src={add_icon} alt="" />
                 <p>Agregar beneficiario oneroso</p>
               </div>
             </div>
@@ -494,9 +493,7 @@ class Index extends Component {
                   className="more-items"
                   onClick={this.togglePopUpPersona(-1, 5)}
                 >
-                  <button type="button" className="more-btn">
-                    +
-                  </button>
+                  <img src={add_icon} alt="" />
                   <p>Si, agregar persona</p>
                 </div>
               </div>

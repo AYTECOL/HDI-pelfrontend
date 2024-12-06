@@ -56,7 +56,7 @@ export const ParticipationPercentages = (props) => {
                     <label>{label}</label>
                     <input
                       type="number"
-                      className="form-control"
+                      className={`form-control ${!value ? 'not-value' : ''}`}
                       name={name}
                       value={value}
                       onChange={onChange}

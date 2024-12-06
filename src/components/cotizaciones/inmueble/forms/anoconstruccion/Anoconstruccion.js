@@ -59,7 +59,10 @@ class Anoconstruccion extends Component {
           disabled={this.state.disabled ? 'disabled' : ''}
           name="anoconstruido"
           id="anoconstruido"
-          className={(this.state.disabled ? 'disabled ' : '') + 'form-control'}
+          className={
+            (this.state.disabled ? 'disabled ' : '') +
+            `form-control ${!value ? 'not-value' : ''}`
+          }
           value={value}
           onBlur={this.validateEmpty}
           onChange={this.validateEmpty}

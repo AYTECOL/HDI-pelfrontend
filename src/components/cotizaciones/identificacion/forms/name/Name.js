@@ -66,7 +66,7 @@ class Name extends Component {
           id="name"
           type="text"
           value={this.state.value}
-          className={'form-control'}
+          className={`form-control ${!this.state.value ? 'not-value' : ''}`}
           placeholder="Ingresa primer nombre"
           onChange={this.validateEmpty}
         />
