@@ -2,84 +2,92 @@ library ('utils@master') _
 
 def MAJOR_VERSION = "1"
 def ARTIFACT_VERSION = "${MAJOR_VERSION}.${BUILD_NUMBER}"
-def BRANCH_SONAR = scm.branches[0].name.replace("*/", "")
+def BRANCH_SONAR = scm.branches[0].name.replace("*/", "").replace("*/", "")
 def NAME_SONAR = "poliza-express-hogar-front"
-//def  = "intl-latam-poliza-backend-jenks"
-//def STACK_NAME_API = "intl-latam-poliza-apigateway-jenks"
-node('linux'){
-
-	stage("Env Variables") {
-    	script {
-        	env.BUCKET_NAME = "poliza-express-hogar-hdi" 
-			env.REACT_APP_DOMAIN = "https://7uyuaer9db.execute-api.us-east-1.amazonaws.com/prod"
+        
+pipeline {
+    agent {dockerfile { args '-v /usr/local/aws-cli/:/usr/local/aws-cli/  --add-host sonar.hdiseguros.com.co:172.19.0.101' }}
+    stages{
+        stage("Env Variables") {
+            environment {
+                    HOME = "${env.WORKSPACE}"
+            }
+            steps{
+                script {
+                    env.BUCKET_NAME = "poliza-express-hogar" 
+			env.REACT_APP_DOMAIN = "https://7n7fcw8gi1.execute-api.us-east-1.amazonaws.com/prod"
 			env.REACT_APP_KEY = "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
-			env.REACT_APP_OFICINA = "https://oficinaenlinea.libertycolombia.com"
+			env.REACT_APP_OFICINA = "https://oficinaenlinea.hdiseguros.com.co"
 			env.REACT_APP_PDF_SARLAFT = "https://www.libertyseguros.co/zona-de-cliente/condicionados-y-documentos?category=62"
-			env.REACT_APP_PERSON = "https://x6gjtt3ye5.execute-api.us-east-1.amazonaws.com/prod"
-			env.REACT_APP_ACCESS_TOKEN = "https://1nau6bhuq2.execute-api.us-east-1.amazonaws.com/prod"
-			env.REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://x6gjtt3ye5.execute-api.us-east-1.amazonaws.com/prod"
-			env.REACT_APP_CREARPOLIZAIAXIS = "https://x6gjtt3ye5.execute-api.us-east-1.amazonaws.com/prod"
-            env.GENERATE_SOURCEMAP=false
-         }
-    	 sh 'printenv'
-	}    
+			env.REACT_APP_PERSON = "https://n3g17kkitg.execute-api.us-east-1.amazonaws.com/prod"
+			env.REACT_APP_ACCESS_TOKEN = "https://6q8yu74p3e.execute-api.us-east-1.amazonaws.com/prod"
+			env.REACT_APP_ATTACH_POLICY_DOCUMENTS = "https://n3g17kkitg.execute-api.us-east-1.amazonaws.com/prod"
+			env.REACT_APP_CREARPOLIZAIAXIS = "https://n3g17kkitg.execute-api.us-east-1.amazonaws.com/prod"
+           		env.GENERATE_SOURCEMAP=false
+                }
+                sh 'printenv'
+            }
+            
+        }    
 
-   stage('Unzip Files'){
-       sh 'unzip -o pelhfrontend.zip'
-   }
+        stage('Git Checkout'){
+                environment {
+                    HOME = "${env.WORKSPACE}"
+                }
+                steps{
+                    checkout scm
+                }
+        }
 
-    stage('udpate version nodejs & install node modules and serverless') {
-                    sh 'npm install -g n'
-                    sh 'n 16'
-                    sh 'hash -r'
-                    sh 'node --version'
-                    sh 'npm install'
-                    sh 'npm install -g serverless@3'
-                    sh 'serverless --version'	   
-    }
+        stage('udpate version nodejs & install node modules and serverless') {
+            environment {
+                HOME = "${env.WORKSPACE}"
+            }
+            steps{
+                //sh 'npm install -g n'
+                //sh 'n 16'
+                sh 'hash -r'
+                sh 'node --version'
+                sh 'npm install'
+                //sh 'npm install -g serverless@3'
+                sh 'serverless --version'
+            }   
+        }
 
-    stage('cloudfront') {
-        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh "sls deploy --stage prod --verbose"
-            dir('dist/poliza-express-hogar'){
-                sh 'pwd'
-                sh 'ls'
+        stage('cloudfront') {
+            environment {
+                HOME = "${env.WORKSPACE}"
+            }
+            steps{
+                deployToProd{
+			sh "sls deploy --stage ${env.APPENV.replace('_', '')} --verbose"
+			sh "pwd"
+                }
             }
         }
-    }
 
-    stage('Build') {
-         sh 'npm --version'
-         sh 'aws --version'
-         sh 'echo $PATH'
-         sh 'sls --version'
-         sh 'pwd'
-         sh 'ls'
-         sh 'dir'
-    }
-    
-    stage('prod Deploy') {
-        withAWS(credentials:getAWSCredentialID(environment:"${env.APPENV}"), region:'us-east-1') {
-            sh """
-                ls -ltr
-
-                npm install
-                npm run-script build
-                ls -ltr
-            """
-            dir('build') {
-                  sh 'pwd'
-                  sh 'ls'
-                  sh 'aws s3 rm s3://poliza-express-hogar --recursive' // Clean bucket
-                  sh 'aws s3 sync .  s3://poliza-express-hogar' // Sync bucket
+        stage('Build') {
+            environment {
+                HOME = "${env.WORKSPACE}"
             }
-            sh 'aws cloudfront create-invalidation --distribution-id E34Q7LYXR9QKMW --paths "/*"'
+            steps{
+                sh """
+                    ls -ltr
+                    npm run build
+                    ls -ltr
+                """
+                dir('build') {
+			deployToProd{
+	                    sh 'pwd'
+	                    sh 'ls'
+	                    sh 'aws s3 rm s3://poliza-express-hogar-hdi --recursive' // Clean bucket
+	                    sh 'aws s3 sync .  s3://poliza-express-hogar-hdi' // Sync bucket
+			    sh 'aws cloudfront create-invalidation --distribution-id E1XIP37MI2MCJR --paths "/*"'
+			}
+                }
+            }
+            
         }
-    }
 
-    stage('Test sonarqube'){
-		withSonarQubeEnv('sonarqube') {
-        	sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
-	 	}
-	}
+    }    
  }
