@@ -8,6 +8,8 @@ import Plans from '../plans/Plans';
 import Loading from '../../../globals/loading/Loading';
 import './Index.scss';
 
+import icon_information from '../../../../assets/images/icon_information.svg';
+
 class Index extends Component {
   componentDidMount() {
     Loading.toggle(true);
@@ -50,7 +52,10 @@ class Index extends Component {
           <div className="row alert-contizacion">
             <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
               <p>
-                <i>i</i>No olvides diligenciar el SARLAFT, si aún no lo tienes
+                <i>
+                  <img src={icon_information} alt="" />
+                </i>
+                No olvides diligenciar el SARLAFT, si aún no lo tienes
                 descarga el formato{' '}
                 <a
                   href={UrlPdfSarlaft}

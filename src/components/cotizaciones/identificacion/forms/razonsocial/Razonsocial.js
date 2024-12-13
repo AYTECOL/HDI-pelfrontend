@@ -66,7 +66,7 @@ class Razonsocial extends Component {
           id="businessname"
           type="text"
           value={this.state.value}
-          className={'form-control'}
+          className={`form-control ${!this.state.value ? 'not-value' : ''}`}
           placeholder="Ingresa la razón social"
           onChange={this.validateEmpty}
         />

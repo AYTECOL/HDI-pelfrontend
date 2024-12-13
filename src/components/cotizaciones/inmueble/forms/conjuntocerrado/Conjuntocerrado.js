@@ -49,7 +49,7 @@ class Conjuntocerrado extends Component {
         <ul className="select-item" id="conjuntocerras">
           <li
             data="1"
-            className={this.state.active === 1 ? 'active' : ''}
+            className={`${this.state.active === 1 ? 'active ' : ''}list_two Si`}
             onClick={this.validateEmpty({
               data: 1,
               value: 1,
@@ -60,7 +60,7 @@ class Conjuntocerrado extends Component {
           </li>
           <li
             data="2"
-            className={this.state.active === 2 ? 'active' : ''}
+            className={`${this.state.active === 2 ? 'active ' : ''}list_two No`}
             onClick={this.validateEmpty({
               data: 2,
               value: 2,

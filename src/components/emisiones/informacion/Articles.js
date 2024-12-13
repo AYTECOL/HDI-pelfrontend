@@ -160,9 +160,7 @@ export const Articles = ({
               return (
                 item && (
                   <tr key={id} className="h6 font-weight-normal">
-                    <td className="h6 font-weight-normal font-italic">
-                      {label}
-                    </td>
+                    <td className="h6">{label}</td>
                     <td>{maxFormated}</td>
                     <td className="d-flex align-items-center">
                       <div className="mr-2">{totalFormated}</div>

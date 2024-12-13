@@ -2,6 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import withRouter from 'react-router/withRouter';
 
+import close_icon from 'assets/images/icon_close.svg';
+
 const RateNotCalculated = withRouter(({ open, onRetry, history }) => {
   const route = '/';
   return (
@@ -21,14 +23,14 @@ const RateNotCalculated = withRouter(({ open, onRetry, history }) => {
                 history.push(route);
               }}
             >
-              &nbsp;
+              <img src={close_icon} alt="" />
             </button>
           </div>
           <div className="modal-body">
             <div className="buttons">
               <a
                 href={route}
-                className="btn btn-secondary"
+                className="btn btn-secondary btn-secondary--two"
                 data-dismiss="modal"
               >
                 Mis negocios

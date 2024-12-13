@@ -1,6 +1,7 @@
+@import '../../../../styles/varaibles.scss';
 .style-div {
-  border-top: 1px solid #e6e6e6;
-  border-bottom: 1px solid #e6e6e6;
+  border-top: 1px solid $hdi-forms-select-color-background;
+  border-bottom: 1px solid $hdi-forms-select-color-background;
 }
 
 .text-fix {
@@ -22,7 +23,7 @@
   font-family: 'roboto regular', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 32px;
   line-height: 38px;
 }
 

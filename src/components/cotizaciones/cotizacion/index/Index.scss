@@ -1,7 +1,9 @@
+@import '../../../../styles/varaibles.scss';
+
 .tab-loading {
   width: 23px;
   height: 23px;
-  color: #28a3af;
+  color: $hdi-primary-green;
 }
 .contizacion-form {
   .container {
@@ -22,22 +24,23 @@
 
   .tabs {
     .item-tab {
-      background: #ffffff;
-      border: 1px solid #c0bfc0;
+      background: $hdi-filter-form-background-color;
+      border: 1px solid $hdi-circle-color;
       box-sizing: border-box;
       transition: all 0.3s ease;
       cursor: pointer;
       margin: 0 8px;
       padding: 7px 0 10px;
       position: relative;
+      border-radius: 3px 0px;
 
       span {
         font-style: normal;
         font-weight: bold;
-        font-size: 12px;
+        font-size: 16px;
         line-height: 14px;
         text-align: center;
-        color: #28a3af;
+        color: $hdi-primary-green;
       }
 
       p {
@@ -46,17 +49,16 @@
         font-size: 18px;
         line-height: 29px;
         text-align: center;
-        color: #565656;
+        color: $hdi-li-color-text;
         margin: 0;
       }
 
       &:hover,
       &.active {
-        $bg: #28a3af;
+        $bg: $hdi-primary-green;
         background: $bg;
         border: 1px solid $bg;
-        box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
-        border-radius: 3px 3px 0 0;
+        box-shadow: 2px 4px 16px $hdi-box-shadow;
 
         span,
         p,
@@ -93,8 +95,8 @@
 
 .first-content {
   padding: 24px 0 18px;
-  border-top: 1px solid #e6e6e6;
-  border-bottom: 1px solid #e6e6e6;
+  border-top: 1px solid $hdi-forms-select-color-background;
+  border-bottom: 1px solid $hdi-forms-select-color-background;
 
   p {
     margin: 0;
@@ -105,7 +107,7 @@
     font-weight: normal;
     font-size: 14px;
     line-height: 22px;
-    color: #28a3af;
+    color: $hdi-primary-green-dark;
     cursor: pointer;
 
     &::after {
@@ -126,28 +128,28 @@
     font-size: 14px;
     line-height: 16px;
     text-align: center;
-    color: #343741;
+    color: $hdi-modal-color-description;
 
     span {
       font-style: normal;
       font-weight: bold;
       font-size: 12px;
       line-height: 14px;
-      color: #343741;
+      color: $hdi-modal-color-description;
     }
   }
 }
 
 .wrapper-items {
-  background: #f0fbfc;
-  box-shadow: inset 0 6px 8px rgba(40, 163, 175, 0.32);
+  background: $hd-background-details-header;
+  box-shadow: 0px 0px 8px $hdi-box-shadow;
   padding: 24px 0;
 }
 
 .tabs-cotizaciones {
   background-color: white;
   padding: 32px 77px 25px;
-  box-shadow: 0 0 8px rgba(40, 163, 175, 0.32);
+  box-shadow: 0px 0px 8px $hdi-box-shadow;
   @media (max-width: 769px) {
     padding: 32px 15px 25px;
   }
@@ -167,20 +169,20 @@
     line-height: 29px;
 
     span {
-      background: #f0fbfc;
+      background: $hdi-navbar-green-background;
       border-radius: 6px;
       font-style: normal;
       font-weight: bold;
       font-size: 18px;
       line-height: 29px;
-      color: #28a3af;
+      color: $hdi-primary-green-dark;
       padding: 8px 10px;
       margin-right: 16px;
     }
   }
 
   .close-section {
-    color: #28a3af;
+    color: $hdi-primary-green-dark;
     cursor: pointer;
     font-weight: 400;
     transition: all 0.3s ease;
@@ -221,19 +223,18 @@
   .wrapper-box {
     transition: height 0.3s ease;
     overflow: hidden;
-
+    padding: 4px;
     .rowor {
       margin-bottom: 15px;
+      box-sizing: border-box;
 
       &:first-child {
         margin-top: 34px;
       }
 
       .row {
-        background: #ffffff;
-        border: 1px solid #99e5ea;
-        box-sizing: border-box;
-        box-shadow: 0 0 8px rgba(40, 163, 175, 0.32);
+        background: $hdi-filter-form-background-color;
+        box-shadow: 0px 0px 8px $hdi-box-shadow;
         border-radius: 3px;
         margin-bottom: 15px;
         text-align: left;
@@ -256,8 +257,7 @@
         }
 
         .form-control {
-          background: rgba(#ffffff, 0.5) !important;
-          border: 1px solid #c0bfc0 !important;
+          background: $hdi-forms-select-color-background !important;
         }
       }
     }
@@ -284,7 +284,7 @@
           font-weight: normal;
           font-size: 16px;
           line-height: 24px;
-          color: #343741;
+          color: $hdi-modal-color-description;
           margin: 0;
           max-width: 225px;
           vertical-align: middle;
@@ -310,8 +310,8 @@
         }
 
         select {
-          background: #ffffff;
-          border: 1px solid #c0bfc0;
+          background: $hdi-filter-form-background-color;
+          border: 1px solid $hdi-circle-color;
           box-sizing: border-box;
           border-radius: 3px;
           padding: 8px 25px 9px 5px;
@@ -322,7 +322,7 @@
     }
 
     .middle {
-      background: #f0fbfc;
+      background: $hd-background-details-header;
       min-width: 30.5%;
 
       .form-group {
@@ -336,31 +336,30 @@
           font-weight: bold;
           font-size: 12px;
           line-height: 14px;
-          color: #343741;
+          color: $hdi-modal-color-description;
           mix-blend-mode: normal;
           margin: 0;
         }
 
         .form-control {
           padding: 8px 11px 6px;
-          background: rgba(#ffffff, 1);
-          border: 1px solid #28a3af;
+          background: $hdi-filter-form-background-color !important;
           mix-blend-mode: normal;
           box-sizing: border-box;
           border-radius: 3px;
-
+          border: 1px solid $hdi-navbar-green;
           font-style: normal;
           font-weight: normal;
           font-size: 18px;
           line-height: 21px;
-          color: #343741;
+          color: $hdi-modal-color-description;
         }
       }
     }
 
     &.asistencias {
       .asistencia {
-        background: #f0fbfc;
+        background: $hd-background-details-header;
         padding: 28px;
 
         &.summary {
@@ -376,7 +375,7 @@
           font-weight: normal;
           font-size: 16px;
           line-height: 26px;
-          color: #343741;
+          color: $hdi-modal-color-description;
           @media (max-width: 769px) {
             font-size: 15px;
           }
@@ -387,7 +386,7 @@
           font-weight: normal;
           font-size: 12px;
           line-height: 14px;
-          color: #343741;
+          color: $hdi-modal-color-description;
           mix-blend-mode: normal;
           opacity: 0.75;
           margin-bottom: 20px;
@@ -454,6 +453,9 @@
   border-radius: 3px;
 
   p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-style: normal;
     font-weight: normal;
     font-size: 18px;
@@ -463,11 +465,7 @@
     margin: 0;
 
     i {
-      display: inline-block;
-      color: #037b86;
-      border: 1.5px solid #037b86;
-      border-radius: 100%;
-      padding: 4px 7px 0;
+      display: block;
       line-height: 1;
       font-size: 14px;
       font-weight: 600;
@@ -475,6 +473,7 @@
     }
 
     a {
+      margin-left: 8px;
       font-weight: bold;
       font-size: 18px;
       line-height: 22px;
@@ -499,7 +498,7 @@
 }
 
 .wrapper-tabs.js-is-sticky {
-  box-shadow: 0 0 8px rgba(40, 163, 175, 0.32);
+  box-shadow: 0 0 8px $hdi-box-shadow;
   z-index: 99;
   background-color: white;
   width: 100%;
@@ -509,8 +508,8 @@
 
   .item-tab {
     border: 0;
-    border-left: 1px solid #c0bfc0;
-    border-right: 1px solid #c0bfc0;
+    border-left: 1px solid $hdi-circle-color;
+    border-right: 1px solid $hdi-circle-color;
     margin-bottom: 10px;
     margin-top: 9px;
     padding: 0;

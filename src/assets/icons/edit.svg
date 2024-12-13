@@ -1,11 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16.808" height="16.8" viewBox="0 0 16.808 16.8">
-  <g id="Grupo_18936" data-name="Grupo 18936" transform="translate(-793.694 -22.1)">
-    <path id="Fill_1" data-name="Fill 1" d="M.65,6.353a.649.649,0,0,1-.628-.818L1.376.481A.651.651,0,0,1,2.464.189l3.7,3.7a.651.651,0,0,1-.292,1.088L.818,6.331a.7.7,0,0,1-.168.022Z" transform="translate(794.2 32.047)" fill="#1a1446" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-    <path id="Fill_5" data-name="Fill 5" d="M4.338,11.727a.649.649,0,0,1-.46-.19L.191,7.849a.651.651,0,0,1,0-.92L5.5,1.621l.92.919L1.569,7.389l2.769,2.769,6.01-6.01L7.119.92,8.04,0l3.687,3.688a.651.651,0,0,1,0,.92L4.8,11.537a.649.649,0,0,1-.46.19" transform="translate(795.561 25.313)" fill="#1a1446" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-    <path id="Fill_9" data-name="Fill 9" d="M.92,5.863,0,4.943,4.943,0l.921.92Z" transform="translate(797.926 28.851)" fill="#1a1446" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-    <path id="Fill_1-2" data-name="Fill 1" d="M.771,0,0,2.879l2.878-.772Z" transform="translate(795.769 33.952)" fill="#fff"/>
-    <path id="Fill_3" data-name="Fill 3" d="M0,.817.219,0l.6.6Z" transform="translate(795.667 36.116)" fill="#1a1446" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-    <path id="Fill_7" data-name="Fill 7" d="M4.339,7.511a.65.65,0,0,1-.46-.191L.191,3.634a.651.651,0,0,1,0-.92L2.714.191a.649.649,0,0,1,.919,0L7.321,3.878a.651.651,0,0,1,0,.92L4.8,7.32a.65.65,0,0,1-.46.191Z" transform="translate(802.489 22.6)" fill="#1a1446" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-    <path id="Fill_7-2" data-name="Fill 7" d="M0,1.6,2.769,4.373l1.6-1.605L1.6,0Z" transform="translate(804.059 24.169)" fill="#fff" stroke="rgba(0,0,0,0)" stroke-width="1"/>
+<svg id="Icon_Edit" data-name="Icon/Edit" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15.8" height="15.8" viewBox="0 0 15.8 15.8">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Icon_System_Edit" d="M.19,15.611a.654.654,0,0,1-.167-.628L1.376,9.928a.661.661,0,0,1,.242-.354l5.241-5.24.92.919L2.93,10.1l.945.944L8.669,6.251l.921.92-4.8,4.8.9.9,6.009-6.009L8.479,3.633a.652.652,0,0,1,0-.92L11,.191a.649.649,0,0,1,.919,0l3.688,3.686a.653.653,0,0,1,0,.921L13.1,7.3l-.018.019L6.224,14.183a.654.654,0,0,1-.354.24L.818,15.778A.7.7,0,0,1,.65,15.8.653.653,0,0,1,.19,15.611ZM9.859,3.173l2.769,2.769,1.6-1.6L11.462,1.57Z" transform="translate(4 4)" fill="#1a1446"/>
+    </clipPath>
+  </defs>
+  <g id="Grupo_4" data-name="Grupo 4" transform="translate(-4 -4)">
+    <path id="Icon_System_Edit-2" data-name="Icon_System_Edit" d="M.19,15.611a.654.654,0,0,1-.167-.628L1.376,9.928a.661.661,0,0,1,.242-.354l5.241-5.24.92.919L2.93,10.1l.945.944L8.669,6.251l.921.92-4.8,4.8.9.9,6.009-6.009L8.479,3.633a.652.652,0,0,1,0-.92L11,.191a.649.649,0,0,1,.919,0l3.688,3.686a.653.653,0,0,1,0,.921L13.1,7.3l-.018.019L6.224,14.183a.654.654,0,0,1-.354.24L.818,15.778A.7.7,0,0,1,.65,15.8.653.653,0,0,1,.19,15.611ZM9.859,3.173l2.769,2.769,1.6-1.6L11.462,1.57Z" transform="translate(4 4)" fill="#1a1446"/>
+    <g id="Enmascarar_grupo_4" data-name="Enmascarar grupo 4" clip-path="url(#clip-path)">
+      <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue" transform="translate(-38 -37)">
+        <rect id="Rectangle_Copy_3" data-name="Rectangle Copy 3" width="101" height="97" fill="#006729"/>
+      </g>
+    </g>
   </g>
 </svg>

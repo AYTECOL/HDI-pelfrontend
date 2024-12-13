@@ -44,7 +44,7 @@ class Valoreasegurar extends Component {
             </div>
           </div>
 
-          <div className="row justify-content-center">
+          <div className="row justify-content-center pb-8">
             <div className="col col-sm-12 col-md-12 col-lg-12">
               <Asegurarcontenidoadicional />
             </div>

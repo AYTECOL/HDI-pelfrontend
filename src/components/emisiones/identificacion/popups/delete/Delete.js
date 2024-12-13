@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './Delete.scss';
 import icono from 'assets/images/trashtrash.png';
 
+import close_icon from 'assets/images/icon_close.svg';
+
 export default class Delete extends Component {
   render() {
     return (
@@ -19,7 +21,7 @@ export default class Delete extends Component {
                 aria-label="Close"
                 onClick={this.props.toggle(0)}
               >
-                &nbsp;
+                <img src={close_icon} alt="" />
               </button>
             </div>
             <div className="modal-body">
@@ -31,7 +33,7 @@ export default class Delete extends Component {
               <div className="buttons">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary btn-secondary--two"
                   onClick={this.props.toggle(0)}
                 >
                   Cancelar

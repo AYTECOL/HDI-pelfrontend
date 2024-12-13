@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="56" height="56" viewBox="0 0 56 56">
+  <defs>
+    <filter id="Rectangle_Copy_3" x="0" y="0" width="56" height="56" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="gray" flood-opacity="0.694"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_5" data-name="Group 5" transform="translate(12 8)">
+    <g id="Group_2" data-name="Group 2">
+      <g transform="matrix(1, 0, 0, 1, -12, -8)" filter="url(#Rectangle_Copy_3)">
+        <rect id="Rectangle_Copy_3-2" data-name="Rectangle Copy 3" width="32" height="32" rx="3" transform="translate(12 8)" fill="#009c49"/>
+      </g>
+      <path id="Combined_Shape" data-name="Combined Shape" d="M5.25,12.75V7.5H0V6H5.25V0h1.5V6H12V7.5H6.75V12.75Z" transform="translate(10 10)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

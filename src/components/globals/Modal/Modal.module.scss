@@ -1,14 +1,15 @@
 @import '../../../assets/scss/variables.scss';
+@import '../../../styles/varaibles.scss';
 
 .modal {
-    border: none;
-    padding: 124px 0;
+  border: none;
+  padding: 124px 0;
 }
 .modalHeader {
   margin-top: 10px !important;
   margin-right: 10px !important;
   button {
-    background-color: $lsc-color-white;
+    background-color: $hdi-filter-form-background-color;
     border: none;
     cursor: pointer;
   }
@@ -25,12 +26,12 @@
   }
   span {
     font-size: 14px;
-    color: $lsc-color-gray-secondary;
+    color: $hdi-modal-color-description;
   }
 }
 .modalFooter {
   margin: 0 auto;
-  background: $lsc-color-white !important;
+  background: $hdi-filter-form-background-color !important;
   button {
     border: none;
     border-radius: 3px;

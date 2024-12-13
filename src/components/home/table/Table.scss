@@ -1,10 +1,12 @@
+@import '../../../styles/varaibles.scss';
+
 .table-solicitudes {
   .wrapper {
     background-color: white;
     margin-top: 23px;
     overflow: auto;
     white-space: pre-wrap;
-    box-shadow: 0 2px 6px rgba(192, 191, 192, 0.795488);
+    box-shadow: 0 2px 6px $hdi-box-shadow;
     border-radius: 3px;
     @media (max-width: 769px) {
       overflow: auto;
@@ -19,6 +21,12 @@
       flex-wrap: inherit;
     }
 
+    &:first-child() {
+      span {
+        border-left: none;
+      }
+    }
+
     span {
       font-style: normal;
       font-weight: bold;
@@ -29,6 +37,16 @@
       display: block;
       position: relative;
       padding: 36px 0;
+      &::after {
+        content: '';
+        width: 1px;
+        height: 80%;
+        background-color: #eeeeee;
+        position: absolute;
+        top: 10%;
+        right: 0;
+        transform: translate(-10%, 0);
+      }
     }
 
     .col {
@@ -109,14 +127,14 @@
             font-size: 12px;
             line-height: 14px;
             text-align: center;
-            color: #28a3af;
+            color: $hdi-tab-color-border;
           }
 
           &::after {
             content: '';
             width: 60%;
             height: 1px;
-            background-color: #28a3af;
+            background-color: $hdi-tab-color-border;
             left: 10px;
             display: block;
             top: 80%;
@@ -152,7 +170,7 @@
       font-weight: normal;
       font-size: 14px;
       line-height: 1;
-      color: #343741;
+      color: $hdi-modal-color-description;
       margin: 0;
       text-align: left;
       display: inline-block;
@@ -161,7 +179,7 @@
       span {
         display: block;
         font-size: 12px;
-        color: #808080;
+        color: $hdi-description-color-text;
         vertical-align: middle;
       }
     }
@@ -194,7 +212,6 @@
   }
 
   .pagination a:hover:not(.active) {
-    // background-color: #ddd;
     border-radius: 5px;
   }
 
@@ -209,7 +226,6 @@
   }
 }
 
-
 .col-address > p {
-    text-align: center !important;
+  text-align: center !important;
 }

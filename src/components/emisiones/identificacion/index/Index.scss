@@ -1,3 +1,5 @@
+@import '../../../../styles/varaibles.scss';
+
 .index-form.emision {
   .container {
     .row {
@@ -12,7 +14,9 @@
   }
 
   .wrapper-more-items {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .more-items {
       display: inline-block;
@@ -22,7 +26,7 @@
       &:first-child {
         &::after {
           content: '';
-          background-color: #c0bfc0;
+          background-color: $hdi-circle-color;
           width: 1px;
           height: 44px;
           display: inline-block;
@@ -42,7 +46,7 @@
 
     .item-select {
       padding: 24px 0 27px;
-      background: #ffffff;
+      background: $hdi-filter-form-background-color;
       box-shadow: 0 6px 24px rgba(52, 55, 65, 0.16);
       border-radius: 3px;
       margin-bottom: 10px;
@@ -53,8 +57,8 @@
 
       .icon-image {
         background-image: url('../../../../assets/images/user.png');
-        width: 60px;
-        height: 38px;
+        width: 33px;
+        height: 33px;
         background-size: 100% auto;
         margin-top: 5px;
         color: transparent;
@@ -81,8 +85,8 @@
 
             .viewDetails {
               padding: 9px;
-              background: #ffffff;
-              border: 1px solid #343741;
+              background: $hdi-filter-form-background-color;
+              border: 1px solid $hdi-modal-color-description;
               box-sizing: border-box;
               border-radius: 3px;
               width: 80%;
@@ -99,7 +103,7 @@
         font-weight: normal;
         font-size: 12px;
         line-height: 19px;
-        color: #808080;
+        color: $hdi-description-color-text;
       }
 
       .table-titles tr th {
@@ -111,7 +115,7 @@
         font-weight: normal;
         font-size: 16px;
         line-height: 26px;
-        color: #343741;
+        color: $hdi-modal-color-description;
         margin: 0;
       }
 
@@ -129,8 +133,8 @@
 
           &:before {
             content: '';
-            width: 24px;
-            height: 28px;
+            width: 16px;
+            height: 16px;
             background-image: url('../../../../assets/images/edit.png');
             display: inline-block;
             background-repeat: no-repeat;
@@ -155,12 +159,11 @@
       font-size: 20px;
       line-height: 26px;
       text-align: center;
-      color: #343741;
+      color: $hdi-modal-color-description;
       margin-bottom: 23px;
     }
 
     .more-items {
-      background: #f0fbfc;
       border-radius: 3px;
       max-width: 191px;
       margin: 0 auto;
@@ -174,7 +177,8 @@
         text-align: right;
         padding: 0;
         margin: 0;
-        color: #28a3af;
+        color: $hdi-primary-green-dark;
+        margin-bottom: 0 !important;
       }
     }
   }
@@ -196,7 +200,7 @@
     left: -17px;
     top: -8px;
     display: block;
-    background-color: #c0bfc0;
+    background-color: $hdi-circle-color;
     @media (max-width: 769px) {
       display: none;
     }

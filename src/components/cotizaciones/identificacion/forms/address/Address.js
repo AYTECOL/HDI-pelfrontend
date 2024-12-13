@@ -77,7 +77,8 @@ class Address extends Component {
           value={address}
           className={classNames(
             'form-control text-truncate',
-            disabled && 'disabled'
+            disabled && 'disabled',
+            !address ? 'not-value' : ''
           )}
           placeholder={`Ingresa la ${defaultLabel.toLowerCase()}`}
           autoComplete="address"

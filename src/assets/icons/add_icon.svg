@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="57" height="57" viewBox="0 0 57 57">
+  <defs>
+    <filter id="Rectangle_7" x="0" y="0" width="57" height="57" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-color="#ddd"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <path id="Mask" d="M7.349,0V7.349H0v1.3H7.349V16h1.3V8.651H16v-1.3H8.65V0Z" fill="#1a1446"/>
+    </clipPath>
+  </defs>
+  <g id="Grupo_29186" data-name="Grupo 29186" transform="translate(-5.5 -1.5)">
+    <g transform="matrix(1, 0, 0, 1, 5.5, 1.5)" filter="url(#Rectangle_7)">
+      <rect id="Rectangle_7-2" data-name="Rectangle 7" width="32" height="32" rx="3" transform="translate(10.5 8.5)" fill="#009c49" stroke="#009c49" stroke-width="1"/>
+    </g>
+    <g id="Icon_Plus" data-name="Icon/Plus" transform="translate(20 14)">
+      <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue" transform="translate(4 4)">
+        <path id="Mask-2" data-name="Mask" d="M7.349,0V7.349H0v1.3H7.349V16h1.3V8.651H16v-1.3H8.65V0Z" fill="#1a1446"/>
+        <g id="Color_Liberty_Blue-2" data-name="Color/Liberty Blue" clip-path="url(#clip-path)">
+          <g id="Color_Liberty_Blue-3" data-name="Color/Liberty Blue" transform="translate(-42 -39)">
+            <rect id="Rectangle_Copy_8" data-name="Rectangle Copy 8" width="101" height="97" fill="#fff"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

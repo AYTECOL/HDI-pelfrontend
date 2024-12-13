@@ -123,7 +123,11 @@ class Counter extends Component {
   render() {
     return (
       <div className={'msj-total mt-1'}>
-        <p className="error-label">
+        <p
+          className={`${
+            this.state.ok === this.state.total ? 'success ' : ''
+          }error-label`}
+        >
           Haz diligenciado {this.state.ok} de {this.state.total} campos
         </p>
       </div>

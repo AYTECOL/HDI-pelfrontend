@@ -29,10 +29,7 @@ class Index extends Component {
             <div className="row">
               <div className="col col-sm-12 col-md-12 col-lg-12 title">
                 <h2>Comencemos</h2>
-                <p>
-                  Ingresa la siguiente información, así sabremos si es viable
-                  continuar con el proceso de cotización
-                </p>
+                <p>Ingresa la siguiente información del cliente</p>
               </div>
             </div>
             <div className="row">

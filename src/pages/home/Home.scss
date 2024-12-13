@@ -1,3 +1,5 @@
+@import "../../styles/varaibles.scss";
+
 .home {
   padding-top: 122px;
   padding-bottom: 0;
@@ -20,7 +22,8 @@
       font-weight: normal;
       font-size: 40px;
       line-height: 48px;
-      color: #343741;
+      color: $hdi-primary-green;
+      font-family: hdipro-regular, sans-serif !important;
       @media (max-width: 769px) {
         font-size: 25px;
         margin-bottom: 15px;
@@ -42,7 +45,7 @@
       font-weight: normal;
       font-size: 16px;
       line-height: 29px;
-      color: #808080;
+      color: $hdi-description-color-text;
       padding: 0 16px;
       display: inline-block;
       cursor: pointer;
@@ -55,7 +58,7 @@
       }
       &:hover,
       &.active {
-        background: #99e5ea;
+        background: $hdi-border-file-attach;
         border-radius: 20.5px;
         color: #006675;
       }
@@ -66,7 +69,7 @@
     background-color: white;
     display: flex;
     margin-top: 32px;
-    box-shadow: 0 4px 32px rgba(192, 191, 192, 0.4);
+    box-shadow: 0 4px 32px $hdi-box-shadow;
     border-radius: 3px;
 
     @media (max-width: 769px) {
@@ -94,12 +97,12 @@
           font-weight: normal;
           font-size: 18px;
           line-height: 29px;
-          color: #808080;
+          color: $hdi-description-color-text;
           display: inline-block;
           margin-bottom: 0;
         }
 
-        @media (min-width: 992px) {
+        @media (max-width: 992px) {
           p {
             font-size: 15px;
           }
@@ -130,13 +133,13 @@
         }
 
         span {
-          background: #f0fbfc;
+          background: $hdi-navbar-green-background;
           border-radius: 6px;
           font-style: normal;
           font-weight: bold;
           font-size: 16px;
           line-height: 29px;
-          color: #28a3af;
+          color: $hdi-navbar-green;
           padding: 6px 8px;
           @media (max-width: 769px) {
             display: block;
@@ -154,7 +157,7 @@
           font-weight: bold;
           font-size: 18px;
           line-height: 29px;
-          border-bottom: 3px solid #28a3af ;
+          border-bottom: 3px solid $hdi-navbar-green ;
           @media (min-width: 992px) {
             font-size: 17px;
           }
@@ -223,7 +226,7 @@
         }
 
         select {
-          border-right: 1px solid #e6e6e6;
+          border-right: 1px solid $hdi-forms-select-color-background;
           border-radius: 3px 0 0 3px;
           @media (max-width: 769px) {
             background-color: white;
@@ -241,5 +244,5 @@
 
 
 .active_item_dashboard{
-  border-bottom: 3px solid #28a3af ;
+  border-bottom: 3px solid $hdi-navbar-green ;
 }

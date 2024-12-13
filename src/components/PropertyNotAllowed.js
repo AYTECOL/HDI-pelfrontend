@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import close_icon from 'assets/images/icon_close.svg';
+
 const PropertyNotAllowed = ({ open, onClose }) => {
   return (
     <div className={classNames('modal d-flex', !open && 'hide')}>
@@ -18,12 +20,16 @@ const PropertyNotAllowed = ({ open, onClose }) => {
               aria-label="Close"
               onClick={onClose}
             >
-              &nbsp;
+              <img src={close_icon} alt="" />
             </button>
           </div>
           <div className="modal-body">
             <div className="buttons">
-              <a href="/" className="btn btn-secondary" data-dismiss="modal">
+              <a
+                href="/"
+                className="btn btn-secondary btn-secondary--two "
+                data-dismiss="modal"
+              >
                 Mis negocios
               </a>
               <button

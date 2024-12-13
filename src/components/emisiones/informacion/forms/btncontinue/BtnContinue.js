@@ -11,6 +11,9 @@ import QuoteService from 'services/Quote';
 import Loading from 'components/globals/loading/Loading';
 import { attachmentsItems } from '../../constants';
 
+import arrow_back from '../../../../../assets/images/icon-back.svg';
+
+
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
@@ -134,12 +137,12 @@ class BtnContinue extends Component {
       <Fragment>
         <div className={'return-button'}>
           <button type="button" className="btn btn-link" onClick={this.goBack}>
-            <i className="back-icon">&nbsp;</i>Volver
+            <i className="back-icon"><img src={arrow_back} alt="" /></i>Volver
           </button>
         </div>
         <button
           type="button"
-          className={'btn btn-default'}
+          className={'btn btn-default btn-default--two'}
           onClick={this.nextStep(undefined)}
         >
           Guardar y salir

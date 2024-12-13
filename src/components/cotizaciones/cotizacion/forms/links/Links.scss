@@ -1,3 +1,4 @@
+@import '../../../../../styles/varaibles.scss';
 .link-item {
   display: inline-block;
   padding: 0 15px;
@@ -14,7 +15,7 @@
     font-weight: bold;
     font-size: 16px;
     line-height: 22px;
-    color: #343741;
+    color: $hdi-modal-color-description;
     margin: 0;
 
     &:hover {
@@ -28,10 +29,6 @@
     background-repeat: no-repeat;
     background-position: center;
     vertical-align: middle;
-  }
-
-  &:first-child {
-    //border-right: 1px solid #E6E6E6;
   }
 
   &.sendpdf {

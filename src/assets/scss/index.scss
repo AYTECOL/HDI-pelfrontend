@@ -1,5 +1,7 @@
-@import "~bootstrap/scss/bootstrap";
-@import "./variables.scss";
+@import '~bootstrap/scss/bootstrap';
+@import './variables.scss';
+@import '../../styles/varaibles.scss';
+@import './fonts';
 
 @font-face {
   font-family: 'roboto light';
@@ -39,27 +41,44 @@
   font-family: $font-roboto-regular;
 }
 
-html,
-a,
-i,
-li,
+textarea,
+span,
 p,
+li,
+ul,
+ol,
+b,
+small {
+  font-family: hdipro-regular, sans-serif !important;
+}
+
+label {
+  font-family: hdipro-bold, sans-serif;
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-input,
-textarea,
-button,
-label {
-  font-family: 'roboto regular', serif;
+a,
+button {
+  font-family: hdipro-medium, sans-serif !important;
+}
+
+h1,
+h2,
+h3 {
+  color: $hdi-primary-green;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html,
 body {
-  font-family: 'roboto regular';
   background: #f2f2f2;
 }
 
@@ -123,7 +142,6 @@ body {
 
 .back-icon {
   display: inline-block;
-  background-image: url('../images/icon_back.png');
   background-size: 100% auto;
   background-position: center;
   width: 22px;
@@ -137,11 +155,19 @@ body {
 
 // Forms
 $error-fields: #dd133c;
-$color-btn-primary: #99e5ea;
-$color-font-btn-primary: #404040;
-$color-primary: #28a3af;
+$color-btn-primary: $hdi-primary-green;
+$color-font-btn-primary: $hdi-filter-form-background-color;
+$color-primary: $hdi-description-color;
 .icon-primary {
   fill: $color-primary;
+}
+
+tbody {
+  tr {
+    td.h6 {
+      font-family: hdipro-italic, sans-serif !important;
+    }
+  }
 }
 
 .btn {
@@ -149,17 +175,26 @@ $color-primary: #28a3af;
   width: 200px;
   margin-top: 16px;
   background-color: transparent;
-  color: #404040;
+  color: $hdi-filter-form-background-color;
   font-size: 16px;
   font-weight: bold;
   font-style: normal;
-  border-radius: 3px;
   text-align: center;
-  border: 1px solid #343741;
   line-height: 1;
   margin-left: 8px;
   margin-right: 8px;
   transition: all 0.3s ease;
+  border-radius: 0 !important;
+  border: 1px solid $color-btn-primary !important;
+
+  &:focus {
+    background-color: $hdi-primary-color-active;
+    border: none;
+    box-shadow: none;
+    border: 1px solid $hdi-primary-color-active !important;
+    color: white !important;
+    font-weight: 100 !important;
+  }
 
   &:last-child {
     margin-right: 0;
@@ -171,13 +206,11 @@ $color-primary: #28a3af;
 
   &.btn-primary {
     background: $color-btn-primary;
-    border: 1px solid $color-btn-primary;
-    color: #404040;
     -webkit-appearance: inherit;
 
     &:active,
     &:hover {
-      $hover-color: lighten($color-btn-primary, 20%);
+      $hover-color: $hdi-primary-green-dark;
       background: $hover-color !important;
       border-color: $hover-color !important;
       color: $color-font-btn-primary !important;
@@ -188,7 +221,20 @@ $color-primary: #28a3af;
     }
   }
 
+  &.btn-secondary {
+    &--two {
+      color: #000000;
+
+      &:hover {
+        background-color: $hdi-primary-green-dark;
+        color: $hdi-filter-form-background-color;
+      }
+    }
+  }
+
   &.btn-link {
+    border: none !important;
+    color: $hdi-primary-green-dark !important;
     &,
     &:hover,
     &:active {
@@ -201,15 +247,19 @@ $color-primary: #28a3af;
   }
 
   &.btn-default {
+    border: 1px solid $hdi-primary-green;
     &:hover {
-      background: #e6e6e6 !important;
-      color: #404040 !important;
+      background: $hdi-primary-green-dark !important;
+      color: $hdi-filter-form-background-color !important;
+    }
+    &--two {
+      color: #000000;
     }
   }
 
   &.btn-download {
-    background: #28a3af;
-    border-color: #28a3af;
+    background: $hdi-description-color;
+    border-color: $hdi-description-color;
     border-radius: 3px;
     padding: 5px;
     color: white;
@@ -223,28 +273,27 @@ $color-primary: #28a3af;
   }
 
   &.btn-home {
-    $color-btn-home: #1a1446;
+    $color-btn-home: $hdi-navbar-green;
     border-color: $color-btn-home;
     background: $color-btn-home;
-    box-shadow: 0 2px 16px rgba(28, 22, 71, 0.370386);
-    border-radius: 3px;
     color: white;
 
     &:hover {
-      border-color: lighten($color-btn-home, 30% )!important;
-      background: lighten($color-btn-home, 30%)!important;
+      background: $hdi-primary-green-dark !important;
       color: white !important;
-      box-shadow: 0 4px 18px rgba(28, 22, 71, 0.4);
     }
   }
 
   &.disabled {
     cursor: not-allowed;
-
+    border: 1px solid $hdi-box-shadow !important;
+    background: $hdi-box-shadow !important;
+    color: $hdi-li-color-text;
     &,
     &:hover {
-      border-color: #e6e6e6 !important;
-      background: #e6e6e6 !important;
+      border: 1px solid $hdi-box-shadow !important;
+      background: $hdi-box-shadow !important;
+      color: $hdi-li-color-text !important;
     }
   }
 }
@@ -264,7 +313,7 @@ $color-primary: #28a3af;
 
     .form-control {
       border: 1px solid $error-fields !important;
-      background: #fff5f5;
+      background: $hdi-forms-select-color-background;
     }
 
     .only-errors {
@@ -316,15 +365,21 @@ $color-primary: #28a3af;
     margin-bottom: 8px;
   }
 
+  select[data-gtm-form-interact-field-id]:not(:placeholder-shown) {
+    background-color: $hdi-forms-select-color-background !important;
+  }
+  input[value=' ']:not(:placeholder-shown) {
+    background-color: $hdi-policy-card-background;
+  }
   .list-items,
   .form-control {
-    background: #f5f5f5;
+    background: $hdi-forms-select-color-background;
     border-radius: 3px;
     font-style: normal;
     font-weight: normal;
     line-height: 19px;
     font-size: 16px;
-    color: #565656;
+    color: $hdi-modal-color-description;
     border: 2px solid transparent;
     appearance: none;
     -moz-appearance: none;
@@ -332,9 +387,18 @@ $color-primary: #28a3af;
     padding: 16px 12px 14px;
     height: auto;
     outline: none;
+    cursor: pointer;
+
+    &.not-value {
+      background-color: $hdi-policy-card-background !important;
+    }
+
+    // &:not(:placeholder-shown) {
+    //   background-color: $hdi-forms-select-color-background; // Color de fondo cuando el input tiene valor
+    // }
 
     &:focus {
-      border: 2px solid #28a3af;
+      border: 2px solid $hdi-navbar-green;
       outline: none;
       box-shadow: none;
     }
@@ -343,12 +407,12 @@ $color-primary: #28a3af;
     &:-ms-input-placeholder, /* Internet Explorer 10-11 */
     &::-ms-input-placeholder {
       /* Microsoft Edge */
-      color: #565656;
+      color: $hdi-li-color-text;
     }
 
     &.disabled {
       cursor: not-allowed;
-      background: #e6e6e6;
+      background: $hdi-forms-select-color-background;
     }
   }
 
@@ -366,13 +430,13 @@ $color-primary: #28a3af;
 
   &.input-select {
     position: relative;
-
+    cursor: pointer;
     &,
     &.error {
       &::after {
         content: '';
         display: block;
-        width: 15px;
+        width: 24px;
         height: 8px;
         background-image: url('../images/arrow_down.png');
         background-size: 100% auto;
@@ -412,7 +476,7 @@ $color-primary: #28a3af;
 
         &.active,
         &:hover {
-          background: lighten(#f5f5f5, 10%)
+          background: lighten($hdi-policy-card-background, 10%);
         }
 
         &:last-child {
@@ -425,7 +489,7 @@ $color-primary: #28a3af;
 
 //Modals
 .modal {
-  background: rgba(26, 20, 70, 0.481544);
+  background: $hdi-modal-background;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -446,9 +510,9 @@ $color-primary: #28a3af;
     position: relative;
     max-width: 626px;
     border: 0;
-    background: #ffffff;
-    box-shadow: 0 4px 16px rgba(74, 74, 74, 0.642408);
-    border-radius: 3px;
+    background: $hdi-filter-form-background-color;
+    box-shadow: 0 4px 16px #4a4a4aa4;
+    border-radius: 5px;
     margin: auto;
   }
 
@@ -470,10 +534,6 @@ $color-primary: #28a3af;
 
     .close {
       padding: 24px;
-      background-image: url('../images/icon_close.png');
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: 15px 15px;
       position: absolute;
       right: 0;
       top: 0;
@@ -486,14 +546,14 @@ $color-primary: #28a3af;
       line-height: 29px;
       font-size: 24px;
       text-align: center;
-      color: #343741;
+      color: $hdi-primary-green;
       margin-bottom: 12px;
     }
   }
 
   .modal-footer {
     border: 0;
-    background: #f5f5f5;
+    background: $hdi-policy-card-background;
     padding: 28px 0 26px;
 
     p {
@@ -514,8 +574,8 @@ $color-primary: #28a3af;
 
 .cotizacion .container .grid-select {
   .select-item {
-    background: #ffffff;
-    box-shadow: 0 0 3px rgba(86, 86, 86, 0.404806);
+    background: $hdi-filter-form-background-color;
+    box-shadow: 0px 0px 3px #56565667;
     border-radius: 3px;
     text-align: center;
     padding: 24px 0;
@@ -523,7 +583,7 @@ $color-primary: #28a3af;
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid transparent;
-
+    font-family: hdipro-regular, sans-serif !important;
     &:hover {
       .tool-tip-hover {
         display: block !important;
@@ -542,54 +602,8 @@ $color-primary: #28a3af;
 
     &.active,
     &:hover {
-      background: #28a3af;
-      border: 1px solid #28a3af;
-      box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
+      background: $hdi-navbar-green-background;
       border-radius: 3px;
-
-      p {
-        color: white;
-      }
-
-      i {
-        background-image: url('../images/home-icon-hover.png');
-
-        &.userperson {
-          background-image: url('../images/user-icon-hover.png');
-        }
-
-        &.summer {
-          background-image: url('../images/summer-hover.png');
-        }
-
-        &.home-pay {
-          background-image: url('../images/rent-home-hover.png');
-        }
-
-        &.concreto {
-          background-image: url('../images/concreto-hover.png');
-        }
-
-        &.ladrillo {
-          background-image: url('../images/build-hover.png');
-        }
-
-        &.aceror {
-          background-image: url('../images/ladrillo-hover.png');
-        }
-
-        &.bahareque {
-          background-image: url('../images/cho-hover.png');
-        }
-
-        &.madera {
-          background-image: url('../images/cam-hover.png');
-        }
-
-        &.adobe {
-          background-image: url('../images/house-hover.png');
-        }
-      }
     }
 
     i {
@@ -657,7 +671,7 @@ $color-primary: #28a3af;
       font-weight: 300;
       font-size: 14px;
       line-height: 16px;
-      color: #565656;
+      color: $hdi-li-color-text;
       margin-bottom: 0;
 
       @media (max-width: 769px) {
@@ -694,7 +708,7 @@ $color-primary: #28a3af;
 
   &.info {
     background: #f0fbfc;
-    border: 1px solid #28a3af;
+    border: 1px solid $hdi-description-color;
     box-sizing: border-box;
     border-radius: 3px 3px 0 0;
     padding: 10px 9px 8px 31px;
@@ -750,7 +764,7 @@ $color-primary: #28a3af;
         font-weight: 600;
         font-size: 15px;
         border-radius: 100%;
-        background: #343741;
+        background: $hdi-modal-color-description;
         padding: 3px 7px;
         margin: 0 0 0 8px;
         display: block;
@@ -769,7 +783,7 @@ $color-primary: #28a3af;
       font-weight: normal;
       font-size: 14px;
       line-height: 19px;
-      color: #28a3af;
+      color: $hdi-description-color;
       display: inline-block;
       text-align: right;
       padding-right: 0;
@@ -781,7 +795,7 @@ $color-primary: #28a3af;
       position: absolute;
       right: -10px;
       top: 100%;
-      background: #343741;
+      background: $hdi-modal-color-description;
       box-shadow: 0 2px 11px rgba(52, 55, 65, 0.543733);
       border-radius: 6px;
       z-index: 12;
@@ -791,7 +805,7 @@ $color-primary: #28a3af;
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
-      color: #ffffff;
+      color: $hdi-filter-form-background-color;
       margin-top: 14px;
 
       &::after {
@@ -800,7 +814,7 @@ $color-primary: #28a3af;
         height: 0;
         border-left: 8px solid transparent;
         border-right: 8px solid transparent;
-        border-bottom: 8px solid #343741;
+        border-bottom: 8px solid $hdi-modal-color-description;
         position: absolute;
         top: -8px;
         right: 13px;
@@ -811,8 +825,8 @@ $color-primary: #28a3af;
   &.tool-tip-new {
     width: 100%;
     background: #f0fbfc;
-    border: 1px solid #28a3af;
-    box-shadow: 0 2px 12px rgba(3, 123, 134, 0.300781);
+    border: 1px solid $hdi-description-color;
+    box-shadow: 0 2px 12px $hdi-box-shadow;
     border-radius: 3px;
     margin-bottom: 22px;
     padding: 17px;
@@ -833,7 +847,7 @@ $color-primary: #28a3af;
 
       &::before {
         color: white;
-        border: 2px solid #ffffff;
+        border: 2px solid $hdi-filter-form-background-color;
         z-index: 2;
         font-size: 16px;
         font-weight: 400;
@@ -869,7 +883,7 @@ $color-primary: #28a3af;
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
-    color: #28a3af;
+    color: $hdi-description-color;
     margin: 0;
     padding: 0 74px;
     cursor: pointer;
@@ -897,7 +911,7 @@ $padding-aside: 36px;
     height: auto;
     padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #f5f5f5;
+    background-color: $hdi-policy-card-background;
     margin-bottom: 0;
   }
 
@@ -907,7 +921,7 @@ $padding-aside: 36px;
       font-weight: normal;
       line-height: 22px;
       font-size: 14px;
-      color: #808080;
+      color: $hdi-description-color-text;
       margin: 0;
 
       @media (max-width: 769px) {
@@ -915,7 +929,7 @@ $padding-aside: 36px;
       }
 
       span {
-        color: #28a3af;
+        color: $hdi-description-color;
       }
     }
   }
@@ -942,7 +956,7 @@ $padding-aside: 36px;
         font-weight: normal;
         line-height: 16px;
         font-size: 14px;
-        color: #c0bfc0;
+        color: $hdi-circle-color;
         padding: 0 25px;
         position: relative;
 
@@ -962,7 +976,7 @@ $padding-aside: 36px;
         }
 
         &.active {
-          color: #28a3af;
+          color: $hdi-primary-green-dark;
           font-weight: bold;
 
           &::before {
@@ -973,14 +987,15 @@ $padding-aside: 36px;
             left: 0;
             top: 100%;
             margin-top: $padding-aside;
-            background-color: #28a3af;
+            background-color: $hdi-navbar-green;
             @media (max-width: 769px) {
               display: none;
             }
           }
 
           span {
-            border: 1px solid #28a3af;
+            border: 1px solid $hdi-description-color;
+            color: $hdi-description-color;
           }
         }
 
@@ -988,7 +1003,7 @@ $padding-aside: 36px;
           border-radius: 100%;
           padding: 4px 9px;
           text-align: center;
-          border: 1px solid #c0bfc0;
+          border: 1px solid $hdi-circle-color;
           margin-right: 8px;
         }
       }
@@ -999,8 +1014,8 @@ $padding-aside: 36px;
 body #root .cotizacion .container .tool-tip-hover {
   position: absolute;
   z-index: 2;
-  background: #343741;
-  box-shadow: 0 2px 11px rgba(52, 55, 65, 0.543733);
+  background: $hdi-primary-color-active;
+  box-shadow: 0px 2px 11px #3437418b;
   padding: 15px;
   display: none;
   border-radius: 4px;
@@ -1011,7 +1026,7 @@ body #root .cotizacion .container .tool-tip-hover {
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid #343741;
+    border-bottom: 8px solid $hdi-primary-color-active;
     position: absolute;
     top: -8px;
     left: 47%;
@@ -1023,7 +1038,7 @@ body #root .cotizacion .container .tool-tip-hover {
     font-weight: normal;
     font-size: 14px;
     line-height: 22px;
-    color: #ffffff;
+    color: $hdi-filter-form-background-color;
     text-align: left;
     @media (max-width: 769px) {
       font-size: 12px;
@@ -1067,7 +1082,7 @@ body #root .cotizacion .container .tool-tip-hover {
 
   .react-datepicker__day--keyboard-selected,
   .react-datepicker__month-text--keyboard-selected {
-    background-color: #28a3af;
+    background-color: $hdi-description-color;
   }
   .msj-error {
     margin: 0 0 40px;
