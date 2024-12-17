@@ -20,6 +20,8 @@ import { getRulesByCode, getValue } from '../../../../common';
 import Masknumbermoney from '../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import RateNotCalculated from '../../../RateNotCalculated';
 import { getItems } from '../../../cotizaciones/cotizacion/cards/getItems';
+import moment from 'moment';
+import ModalLimitsPlanError from '../../../../components/modal/ModalLimitsPlanError';
 
 class Tab extends Component {
   constructor(props) {
@@ -27,6 +29,10 @@ class Tab extends Component {
     this.state = {
       plans: [],
       errorRateCalculated: false,
+      typeError: 0,
+      retryCount: 0,
+      retryLimitReached: false,
+      showButtonReturn: false,
     };
     this.planLoaded = false;
   }
@@ -174,8 +180,8 @@ class Tab extends Component {
 
   componentDidMount() {
     const { inmueble } = this.props;
-    this.getPlans(inmueble).catch(() => {
-      this.setState({ errorRateCalculated: true });
+    this.getPlans(inmueble).catch((e) => {
+      this.setState({ errorRateCalculated: true, typeError: 1 });
       Loading.toggle(false);
     });
   }
@@ -199,11 +205,37 @@ class Tab extends Component {
   }
 
   updateType(newInmueble) {
-    this.getPlans(newInmueble).catch(() => {
+    this.getPlans(newInmueble).catch((e) => {
       Loading.toggle(false);
-      this.setState({ errorRateCalculated: true });
+      this.setState({ errorRateCalculated: true, typeError: 2 });
     });
   }
+
+  handleRetry = () => {
+    this.setState(
+      (prevState) => {
+        const newRetryCount = prevState.retryCount + 1;
+        const retryLimitReached = newRetryCount >= 4;
+
+        return {
+          retryCount: newRetryCount,
+          retryLimitReached,
+          showButtonReturn: retryLimitReached,
+        };
+      },
+      async () => {
+        if (!this.state.retryLimitReached) {
+          this.getPlans(this.props.inmueble)
+            .then(() => {
+              this.setState({ errorRateCalculated: false });
+            })
+            .catch((e) => {
+              Loading.toggle(false);
+            });
+        }
+      }
+    );
+  };
 
   async getPlans(inmueble = null) {
     if (!this.isValid(inmueble)) return;
@@ -212,7 +244,10 @@ class Tab extends Component {
     const quotateId = this.props.match.params.id;
     const plansLoaded = this.planLoaded;
     this.planLoaded = true;
-    let plans = await AllPlans.get(type);
+    let plans = await AllPlans.get({
+      type,
+      quoteId: store.getState().cotizacion.number,
+    });
     let plan =
       !plansLoaded &&
       (await QuoteIussedById.get(quotateId).catch((e) => {
@@ -290,7 +325,12 @@ class Tab extends Component {
 
   render() {
     const { indexPlan } = this.props;
-    const { plans, errorRateCalculated } = this.state;
+    const { plans, errorRateCalculated, typeError } = this.state;
+
+    const stepCotizacion = store.getState().cotizacion.state;
+    const cotizacionNumber = store.getState().cotizacion.number;
+    moment.locale('es');
+    const currentDateTime = moment().format('DD/MMM/YYYY HH:mm:ss');
 
     const plan = !!(plans && plans[indexPlan]);
     return (
@@ -317,17 +357,15 @@ class Tab extends Component {
             </div>
           </Fragment>
         )}
-        <RateNotCalculated
+        <ModalLimitsPlanError
           open={errorRateCalculated}
-          onRetry={() => {
-            this.getPlans(this.props.inmueble)
-              .then(() => {
-                this.setState({ errorRateCalculated: false });
-              })
-              .catch((e) => {
-                Loading.toggle(false);
-              });
-          }}
+          onRetry={this.handleRetry}
+          code={500} //TODO: cambiar según el servicio, por defecto 500
+          stepCotizacion={stepCotizacion}
+          numberCotizacion={cotizacionNumber}
+          showButtonReturn={this.state.showButtonReturn}
+          currentDateTime={currentDateTime}
+          firstCode={typeError === 2 ? 3 : 4} //TODO: cambiar según el servicio, debería traer un 4, por defecto 5
         />
       </Fragment>
     );

@@ -26,6 +26,10 @@ import { roles } from '../../identificacion/constants';
 import { someRole } from '../../utils';
 import Cities from '../../../../services/Cities';
 import { getTypeItem } from '../../../../common/typeItems';
+import GetEstate from '../../../../services/GetEstate';
+import moment from 'moment';
+import 'moment/locale/es';
+import ModalLimitsPlanError from '../../../modal/ModalLimitsPlanError';
 
 class Index extends Component {
   constructor(props) {
@@ -52,6 +56,14 @@ class Index extends Component {
       },
       typePerson: 1,
       city: '',
+      openLimitsModal: false,
+      code: 0,
+      stepCotizacion: store.getState().cotizacion.state,
+      numberCotizacion: store.getState().cotizacion.number,
+      retryCount: 0,
+      retryLimitReached: false,
+      showButtonReturn: false,
+      currentDateTime: '',
     };
   }
 
@@ -70,8 +82,49 @@ class Index extends Component {
   }
 
   componentDidMount() {
+    moment.locale('es');
+    const currentDateTime = moment().format('DD/MMM/YYYY HH:mm:ss');
+    this.setState({ currentDateTime });
+
+    this.getLimitsEstate();
     this.getData();
   }
+
+  async getLimitsEstate() {
+    let estate_data = await GetEstate.get(store.getState().cotizacion.number);
+    if (!estate_data || estate_data.code) {
+      this.setState({
+        openLimitsModal: true,
+        code: estate_data?.code,
+      });
+    } else if (estate_data.length > 0) {
+      this.setState({
+        openLimitsModal: false,
+      });
+    }
+  }
+
+  handleRetry = () => {
+    this.setState(
+      (prevState) => {
+        const newRetryCount = prevState.retryCount + 1;
+        const retryLimitReached = newRetryCount >= 3;
+
+        return {
+          retryCount: newRetryCount,
+          retryLimitReached,
+          showButtonReturn: retryLimitReached,
+        };
+      },
+      async () => {
+        if (!this.state.retryLimitReached) {
+          await this.getLimitsEstate();
+        } else {
+          console.log('Límite de reintentos alcanzado');
+        }
+      }
+    );
+  };
 
   async getData() {
     Loading.toggle(true);
@@ -274,7 +327,7 @@ class Index extends Component {
     store.dispatch(AllPlansCreator(plansLoader));
     setTimeout(() => {
       Loading.toggle(false);
-    }, 1500);
+    }, 5000);
   }
 
   showAnyPopup(name, index, type) {
@@ -305,277 +358,294 @@ class Index extends Component {
 
   render() {
     return (
-      <form autoComplete="off" className="index-form emision">
-        <div className="container">
-          <div className="row">
-            <div className="col col-sm-12 col-md-12 col-lg-12 title">
-              <h2>Resumen de tu póliza</h2>
-              <p>
-                Eso es todo, valida y confirma la información del plan
-                seleccionado
-              </p>
-            </div>
-          </div>
-          <Card
-            persons={this.state.persons}
-            showView={true}
-            togglePopUpPersona={this.togglePopUpPersona}
-            togglePopUpDelete={this.togglePopUpDelete}
-          />
-          <div className="wrapper-items">
-            <div className="col subwrapper">
-              <div className="row">
-                <div className="col col-12 col-sm-12 col-md-5 col-lg-5 first-group">
-                  {this.state.inmueble.risk_type === 2 ? (
-                    <div className="icon apartamento">&nbsp;</div>
-                  ) : (
-                    <div className="icon home">&nbsp;</div>
-                  )}
-                  <div className="content-wrapper">
-                    <h4>{this.state.adressHome}</h4>
-                    <p>
-                      {this.state.inmueble.risk_type === 2
-                        ? 'Apartamento '
-                        : 'Casa '}
-                      / {this.state.city}{' '}
-                    </p>
-                    <span>
-                      {Masknumbermoney.formatToMask(
-                        this.state.inmueble.inmueble_asegudadovalor
-                      )}
-                    </span>
-                  </div>
-                </div>
-                <div className="col col-12 col-sm-12 col-md-7 no-margin second-group">
-                  <div className="row">
-                    <div className="col col-5 col-sm-5 col-md-3 gray-box first">
-                      <p>
-                        <b>Contenidos</b>
-                      </p>
-                      <p className="big-number">
-                        {this.state.inmueble.contenido_asegudado === 1
-                          ? Masknumbermoney.formatToMask(
-                              this.state.inmueble.contenido_asegudado_valor
-                            )
-                          : 'Ningúno'}
-                      </p>
-                    </div>
-                    <div className="col col-7 col-sm-7 col-md-9 no-padding">
-                      <div className="row">
-                        <div className="col col-12 col-sm-12 col-md-4">
-                          <p>
-                            <b>Número de pisos</b>
-                          </p>
-                          <p>{this.state.inmueble.floors_number}</p>
-                        </div>
-                        <div className="col col-12 col-sm-12 col-md-4">
-                          <p>
-                            <b>Ubicado en</b>
-                          </p>
-                          <p>Zona {this.state.inmueble.location_zone}</p>
-                        </div>
-                        <div className="col col-12 col-sm-12 col-md-4">
-                          <p>
-                            <b>Año</b>
-                          </p>
-                          <p>{this.state.inmueble.build_year}</p>
-                        </div>
-                        <div className="col col-12 col-sm-12 col-md-4">
-                          <p>
-                            <b>Ubicado en el piso</b>
-                          </p>
-                          <p>{this.state.inmueble.location_floor}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col col-5 col-sm-5 col-md-3 no-padding">
-                      <div className="row">
-                        {this.state.inmueble.inmueble_asegudado_obras === 1 && (
-                          <div className="col col-12 col-12 gray-box">
-                            <p>
-                              <b>Objetos de valor y obras de Arte</b>
-                            </p>
-                            <p className="big-number">
-                              {this.state.inmueble.inmueble_asegudado_obras ===
-                              1
-                                ? Masknumbermoney.formatToMask(
-                                    this.state.inmueble
-                                      .inmueble_asegudado_obrasvalor
-                                  )
-                                : 'Ningúno'}
-                            </p>
-                          </div>
-                        )}
-                        {this.state.inmueble.inmueble_asegudado_joyas === 1 && (
-                          <div className="col col-12 col-12 gray-box">
-                            <p>
-                              <b>Joyas</b>
-                            </p>
-                            <p className="big-number">
-                              {this.state.inmueble.inmueble_asegudado_joyas ===
-                              1
-                                ? Masknumbermoney.formatToMask(
-                                    this.state.inmueble
-                                      .inmueble_asegudado_joyasvalor
-                                  )
-                                : 'Ningúno'}
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="col col-7 col-sm-7 col-md-9 no-padding">
-                      <div className="row">
-                        <div className="col col-12 col-sm-12 col-md-4">
-                          <p>
-                            <b>Conjunto cerrado</b>
-                          </p>
-                          <p>
-                            {this.state.inmueble.cojunto_cerrado === 1
-                              ? 'Si'
-                              : 'No'}
-                          </p>
-                        </div>
-                        <div className="col col-12 col-sm-12 col-md-4">
-                          <p>
-                            <b>Seguridad</b>
-                          </p>
-                          <p>
-                            {this.state.newSecurity.map((item) => item + '\n')}
-                          </p>
-                        </div>
-                        <div className="col col-12 col-sm-12 col-md-4">
-                          <p>
-                            <b>Construido</b>
-                          </p>
-                          <p>
-                            {typeof this.state.inmueble.build_material !==
-                            'undefined'
-                              ? this.state.inmueble.build_material
-                              : ''}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <>
+        <form autoComplete="off" className="index-form emision">
+          <div className="container">
+            <div className="row">
+              <div className="col col-sm-12 col-md-12 col-lg-12 title">
+                <h2>Resumen de tu póliza</h2>
+                <p>
+                  Eso es todo, valida y confirma la información del plan
+                  seleccionado
+                </p>
               </div>
+            </div>
+            <Card
+              persons={this.state.persons}
+              showView={true}
+              togglePopUpPersona={this.togglePopUpPersona}
+              togglePopUpDelete={this.togglePopUpDelete}
+            />
+            <div className="wrapper-items">
+              <div className="col subwrapper">
+                <div className="row">
+                  <div className="col col-12 col-sm-12 col-md-5 col-lg-5 first-group">
+                    {this.state.inmueble.risk_type === 2 ? (
+                      <div className="icon apartamento">&nbsp;</div>
+                    ) : (
+                      <div className="icon home">&nbsp;</div>
+                    )}
+                    <div className="content-wrapper">
+                      <h4>{this.state.adressHome}</h4>
+                      <p>
+                        {this.state.inmueble.risk_type === 2
+                          ? 'Apartamento '
+                          : 'Casa '}
+                        / {this.state.city}{' '}
+                      </p>
+                      <span>
+                        {Masknumbermoney.formatToMask(
+                          this.state.inmueble.inmueble_asegudadovalor
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col col-12 col-sm-12 col-md-7 no-margin second-group">
+                    <div className="row">
+                      <div className="col col-5 col-sm-5 col-md-3 gray-box first">
+                        <p>
+                          <b>Contenidos</b>
+                        </p>
+                        <p className="big-number">
+                          {this.state.inmueble.contenido_asegudado === 1
+                            ? Masknumbermoney.formatToMask(
+                                this.state.inmueble.contenido_asegudado_valor
+                              )
+                            : 'Ningúno'}
+                        </p>
+                      </div>
+                      <div className="col col-7 col-sm-7 col-md-9 no-padding">
+                        <div className="row">
+                          <div className="col col-12 col-sm-12 col-md-4">
+                            <p>
+                              <b>Número de pisos</b>
+                            </p>
+                            <p>{this.state.inmueble.floors_number}</p>
+                          </div>
+                          <div className="col col-12 col-sm-12 col-md-4">
+                            <p>
+                              <b>Ubicado en</b>
+                            </p>
+                            <p>Zona {this.state.inmueble.location_zone}</p>
+                          </div>
+                          <div className="col col-12 col-sm-12 col-md-4">
+                            <p>
+                              <b>Año</b>
+                            </p>
+                            <p>{this.state.inmueble.build_year}</p>
+                          </div>
+                          <div className="col col-12 col-sm-12 col-md-4">
+                            <p>
+                              <b>Ubicado en el piso</b>
+                            </p>
+                            <p>{this.state.inmueble.location_floor}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-              {typeof this.state.plans !== 'undefined' && (
-                <React.Fragment>
-                  <Summary plan={this.state.plans} />
-                  <CoberturasSummary />
-                  <AsistenciasSummary />
-                </React.Fragment>
-              )}
+                    <div className="row">
+                      <div className="col col-5 col-sm-5 col-md-3 no-padding">
+                        <div className="row">
+                          {this.state.inmueble.inmueble_asegudado_obras ===
+                            1 && (
+                            <div className="col col-12 col-12 gray-box">
+                              <p>
+                                <b>Objetos de valor y obras de Arte</b>
+                              </p>
+                              <p className="big-number">
+                                {this.state.inmueble
+                                  .inmueble_asegudado_obras === 1
+                                  ? Masknumbermoney.formatToMask(
+                                      this.state.inmueble
+                                        .inmueble_asegudado_obrasvalor
+                                    )
+                                  : 'Ningúno'}
+                              </p>
+                            </div>
+                          )}
+                          {this.state.inmueble.inmueble_asegudado_joyas ===
+                            1 && (
+                            <div className="col col-12 col-12 gray-box">
+                              <p>
+                                <b>Joyas</b>
+                              </p>
+                              <p className="big-number">
+                                {this.state.inmueble
+                                  .inmueble_asegudado_joyas === 1
+                                  ? Masknumbermoney.formatToMask(
+                                      this.state.inmueble
+                                        .inmueble_asegudado_joyasvalor
+                                    )
+                                  : 'Ningúno'}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="col col-7 col-sm-7 col-md-9 no-padding">
+                        <div className="row">
+                          <div className="col col-12 col-sm-12 col-md-4">
+                            <p>
+                              <b>Conjunto cerrado</b>
+                            </p>
+                            <p>
+                              {this.state.inmueble.cojunto_cerrado === 1
+                                ? 'Si'
+                                : 'No'}
+                            </p>
+                          </div>
+                          <div className="col col-12 col-sm-12 col-md-4">
+                            <p>
+                              <b>Seguridad</b>
+                            </p>
+                            <p>
+                              {this.state.newSecurity.map(
+                                (item) => item + '\n'
+                              )}
+                            </p>
+                          </div>
+                          <div className="col col-12 col-sm-12 col-md-4">
+                            <p>
+                              <b>Construido</b>
+                            </p>
+                            <p>
+                              {typeof this.state.inmueble.build_material !==
+                              'undefined'
+                                ? this.state.inmueble.build_material
+                                : ''}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {typeof this.state.plans !== 'undefined' && (
+                  <React.Fragment>
+                    <Summary plan={this.state.plans} />
+                    <CoberturasSummary />
+                    <AsistenciasSummary />
+                  </React.Fragment>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="row content-relation">
-            <div className="col col-12">
-              <h3>Contenidos relacionados</h3>
-            </div>
-            <div className="col col-12">
-              <div className={'row row-max tabs-cotizaciones row_tab_3 3'}>
-                <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
-                  <div className="row" onClick={Helpers.toggleSlide(3)}>
-                    <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
-                      <h4>
-                        <span>{this.state.contents.length}</span>Items
-                      </h4>
+            <div className="row content-relation">
+              <div className="col col-12">
+                <h3>Contenidos relacionados</h3>
+              </div>
+              <div className="col col-12">
+                <div className={'row row-max tabs-cotizaciones row_tab_3 3'}>
+                  <div className="col col-12 col-sm-12 col-md-12 col-lg-12 no-padding">
+                    <div className="row" onClick={Helpers.toggleSlide(3)}>
+                      <div className="col col-12 col-sm-12 col-md-6 col-lg-6 text-left">
+                        <h4>
+                          <span>{this.state.contents.length}</span>Items
+                        </h4>
+                      </div>
+                      <div
+                        className={
+                          'col col-12 col-sm-12 col-md-6 col-lg-6 text-right ' +
+                          (this.state.contents.length === 0 ? 'hide' : '')
+                        }
+                      >
+                        <div className="close-section closeclose">
+                          Ocultar <i>&nbsp;</i>
+                        </div>
+                        <div className="close-section open">
+                          Ver <i>&nbsp;</i>
+                        </div>
+                      </div>
                     </div>
                     <div
                       className={
-                        'col col-12 col-sm-12 col-md-6 col-lg-6 text-right ' +
+                        'wrapper-box ' +
                         (this.state.contents.length === 0 ? 'hide' : '')
                       }
                     >
-                      <div className="close-section closeclose">
-                        Ocultar <i>&nbsp;</i>
+                      <div className="wrapper-content">
+                        {this.state.contents.map((item, key) => {
+                          const type = getTypeItem(item.type);
+                          return (
+                            <div className="row" key={key}>
+                              <div className="col col-sm-6 col-md-3">
+                                <p>
+                                  <span>Tipo de contenido</span>
+                                </p>
+                                <p>{(type && item.nameType) || ''}</p>
+                              </div>
+                              <div className="col col-sm-6 col-md-3">
+                                <p>
+                                  <span>IMEI y características</span>
+                                </p>
+                                <p>{item.caracte}</p>
+                              </div>
+                              <div className="col col-sm-6 col-md-3">
+                                <p>
+                                  <span>Valor</span>
+                                </p>
+                                <p>
+                                  {Masknumbermoney.formatToMask(item.value)}
+                                </p>
+                              </div>
+                              <div className="col col-sm-6 col-md-3">
+                                {item.files &&
+                                  Object.keys(item.files).map((key) => {
+                                    /**
+                                     * @type {import("../../../../models/types").Attachment | undefined}
+                                     */
+                                    const file = item.files[key];
+                                    return (
+                                      file && (
+                                        <div key={key} className="p-1">
+                                          <button
+                                            type="button"
+                                            className="btn btn-download w-100 text-truncate m-0"
+                                          >
+                                            {file.name}
+                                          </button>
+                                        </div>
+                                      )
+                                    );
+                                  })}
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
-                      <div className="close-section open">
-                        Ver <i>&nbsp;</i>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    className={
-                      'wrapper-box ' +
-                      (this.state.contents.length === 0 ? 'hide' : '')
-                    }
-                  >
-                    <div className="wrapper-content">
-                      {this.state.contents.map((item, key) => {
-                        const type = getTypeItem(item.type);
-                        return (
-                          <div className="row" key={key}>
-                            <div className="col col-sm-6 col-md-3">
-                              <p>
-                                <span>Tipo de contenido</span>
-                              </p>
-                              <p>{(type && type.label) || ''}</p>
-                            </div>
-                            <div className="col col-sm-6 col-md-3">
-                              <p>
-                                <span>IMEI y características</span>
-                              </p>
-                              <p>{item.caracte}</p>
-                            </div>
-                            <div className="col col-sm-6 col-md-3">
-                              <p>
-                                <span>Valor</span>
-                              </p>
-                              <p>{Masknumbermoney.formatToMask(item.value)}</p>
-                            </div>
-                            <div className="col col-sm-6 col-md-3">
-                              {item.files &&
-                                Object.keys(item.files).map((key) => {
-                                  /**
-                                   * @type {import("../../../../models/types").Attachment | undefined}
-                                   */
-                                  const file = item.files[key];
-                                  return (
-                                    file && (
-                                      <div key={key} className="p-1">
-                                        <button
-                                          type="button"
-                                          className="btn btn-download w-100 text-truncate m-0"
-                                        >
-                                          {file.name}
-                                        </button>
-                                      </div>
-                                    )
-                                  );
-                                })}
-                            </div>
-                          </div>
-                        );
-                      })}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <ButtonsFooter />
           </div>
-          <ButtonsFooter />
-        </div>
-        {this.state.showPopUpPersona === true && (
-          <PopUpPersona
-            legalRepresentative={this.state.legalRepresentative}
-            beneficiariesFinal={this.state.beneficiariesFinal}
-            isLegalRepresentativeBeneficiary={
-              this.state.isLegalRepresentativeBeneficiary
-            }
-            toggle={this.togglePopUpPersona}
-            persons={this.state.persons}
-            item={this.state.itemSelected}
-            disabledAll={true}
-            typePerson={this.state.typePerson}
-          />
-        )}
-      </form>
+          {this.state.showPopUpPersona === true && (
+            <PopUpPersona
+              legalRepresentative={this.state.legalRepresentative}
+              beneficiariesFinal={this.state.beneficiariesFinal}
+              isLegalRepresentativeBeneficiary={
+                this.state.isLegalRepresentativeBeneficiary
+              }
+              toggle={this.togglePopUpPersona}
+              persons={this.state.persons}
+              item={this.state.itemSelected}
+              disabledAll={true}
+              typePerson={this.state.typePerson}
+            />
+          )}
+        </form>
+        <ModalLimitsPlanError
+          open={this.state.openLimitsModal}
+          onRetry={this.handleRetry}
+          code={this.state.code}
+          numberCotizacion={this.state.numberCotizacion}
+          showButtonReturn={this.state.showButtonReturn}
+          currentDateTime={this.state.currentDateTime}
+          firstCode={2}
+        />
+      </>
     );
   }
 }
