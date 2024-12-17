@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Validaridentificacion.scss';
 import icono from 'assets/images/icon.png';
+import icono_close from 'assets/images/icon_close.svg';
 import Helpers from 'common/helpers/helpers';
 import {
   NUMBER_SUPPORT_ON_PREMISES,
@@ -37,7 +38,7 @@ class Validaridentificacion extends Component {
                 aria-label="Close"
                 onClick={this.hide}
               >
-                &nbsp;
+                <img src={icono_close} alt="" />
               </button>
             </div>
             <div className="modal-body">
@@ -50,7 +51,7 @@ class Validaridentificacion extends Component {
                 {typeof this.props.toggle === 'undefined' ? (
                   <a
                     href="/"
-                    className="btn btn-secondary"
+                    className="btn btn-secondary btn-secondary--two"
                     data-dismiss="modal"
                   >
                     Terminar
@@ -58,7 +59,7 @@ class Validaridentificacion extends Component {
                 ) : (
                   <button
                     type="button"
-                    className="btn btn-secondary"
+                    className="btn btn-secondary btn-secondary--two"
                     onClick={this.props.toggle(-2)}
                   >
                     Terminar

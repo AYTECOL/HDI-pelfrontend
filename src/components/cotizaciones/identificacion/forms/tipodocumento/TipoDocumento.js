@@ -101,7 +101,11 @@ class TipoDocumento extends Component {
           disabled={disabled === true}
           name="code"
           id="doc-type"
-          className={classNames(disabled && 'disabled', 'form-control')}
+          className={classNames(
+            disabled && 'disabled',
+            'form-control',
+            !value ? 'not-value' : ''
+          )}
           value={value}
           onChange={onChange || this.validateEmpty}
         >

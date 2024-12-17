@@ -24,6 +24,8 @@ import Validaridentificacion from '../../popups/validaridentificacion/Validaride
 import { withRouter } from 'react-router-dom';
 import { isValidDirection } from '../../../../../common/validations';
 
+import arrow_back from '../../../../../assets/images/icon-back.svg';
+
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
@@ -160,13 +162,17 @@ class BtnContinue extends Component {
             className="btn btn-link"
             onClick={this.saveAndExit}
           >
-            <i className="back-icon">&nbsp;</i>Volver
+            <i className="back-icon">
+              <img src={arrow_back} alt="" />
+            </i>
+            Volver
           </button>
         </div>
         <button
           type="button"
           className={
-            (stateFormIdentificacion !== 1 ? 'hide ' : '') + ' btn btn-default'
+            (stateFormIdentificacion !== 1 ? 'hide ' : '') +
+            ' btn btn-default btn-default--two'
           }
           onClick={this.saveAndExit}
         >

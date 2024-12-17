@@ -1,3 +1,5 @@
+@import '../../../../styles/varaibles.scss';
+
 .index-form {
   .container {
     background-color: white;
@@ -13,7 +15,7 @@
         font-weight: normal;
         line-height: 38px;
         font-size: 32px;
-        color: #343741;
+        color: $hdi-primary-green;
         margin-bottom: 9px;
       }
 
@@ -23,7 +25,7 @@
         line-height: 26px;
         font-size: 20px;
         text-align: center;
-        color: #565656;
+        color: $hdi-li-color-text;
         margin: 0 0 39px 0;
       }
     }
@@ -31,6 +33,9 @@
     .row {
       max-width: 583px;
       margin: 0 auto;
+      &.pb-8 {
+        padding-bottom: 72px;
+      }
     }
   }
 

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32.5" height="32.411" viewBox="0 0 32.5 32.411">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Mask" d="M11.381,14.6a4.863,4.863,0,0,0-9.725,0H0a6.518,6.518,0,0,1,13.036,0ZM2.776,3.731a3.742,3.742,0,1,1,3.742,3.73A3.741,3.741,0,0,1,2.776,3.731Zm1.657,0A2.086,2.086,0,1,0,6.518,1.651,2.084,2.084,0,0,0,4.433,3.731Z" fill="#006729"/>
+    </clipPath>
+  </defs>
+  <g id="Grupo_29180" data-name="Grupo 29180" transform="translate(0.25 0.25)">
+    <ellipse id="Oval" cx="16" cy="15.956" rx="16" ry="15.956" fill="#fff" stroke="#65a518" stroke-width="0.5"/>
+    <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue" transform="translate(9.482 8.658)">
+      <path id="Mask-2" data-name="Mask" d="M11.381,14.6a4.863,4.863,0,0,0-9.725,0H0a6.518,6.518,0,0,1,13.036,0ZM2.776,3.731a3.742,3.742,0,1,1,3.742,3.73A3.741,3.741,0,0,1,2.776,3.731Zm1.657,0A2.086,2.086,0,1,0,6.518,1.651,2.084,2.084,0,0,0,4.433,3.731Z" fill="#006729"/>
+      <g id="Color_Liberty_Blue-2" data-name="Color/Liberty Blue" clip-path="url(#clip-path)">
+        <g id="Color_Liberty_Blue-3" data-name="Color/Liberty Blue" transform="translate(-45.125 -45)">
+          <rect id="Rectangle_Copy" data-name="Rectangle Copy" width="101.281" height="97" fill="#006729"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,3 +1,5 @@
+@import '../../../../styles/varaibles.scss';
+
 .contizacion-form .container .row-boxes {
   max-width: 93%;
   margin: 0 auto 75px;
@@ -8,17 +10,15 @@
   }
 
   .box-col {
-    background: #ffffff;
-    border: 1px solid #99e5ea;
+    background: $hdi-filter-form-background-color;
+    box-shadow: 0px 0px 8px $hdi-box-shadow;
     box-sizing: border-box;
-    box-shadow: 0 0 8px rgba(40, 163, 175, 0.32);
     border-radius: 3px;
     text-align: center;
     height: 100%;
 
     .image {
-      width: 34px;
-      height: 34px;
+      height: 29px;
       display: inline-block;
       background-repeat: no-repeat;
       background-position: center;
@@ -28,30 +28,30 @@
       &.image-1 {
         background-image: url('../../../../assets/images/home.png');
         width: 44px;
-        height: 32px;
       }
 
       &.image-2 {
         background-image: url('../../../../assets/images/sillon.png');
+        width: 33px;
       }
 
       &.image-3 {
         background-image: url('../../../../assets/images/otro.png');
-        background-size: 90% auto;
+        width: 29px;
       }
 
       &.image-4 {
         background-image: url('../../../../assets/images/a.png');
-        background-size: auto 100%;
+        width: 27px;
       }
 
       &.image-5 {
         background-image: url('../../../../assets/images/phone.png');
-        background-size: auto 100%;
+        width: 17px;
       }
       &.image-6 {
         background-image: url('../../../../assets/images/mobile_contents.png');
-        background-size: auto 100%;
+        width: 35px;
       }
     }
 
@@ -63,7 +63,7 @@
       line-height: 19px;
       text-align: center;
 
-      color: #565656;
+      color: $hdi-li-color-text;
       max-width: 90%;
       margin-right: auto;
       margin-left: auto;
@@ -74,7 +74,7 @@
       font-size: 12px;
       line-height: 14px;
       text-align: center;
-      color: #037b86;
+      color: $hdi-description-color;
       margin: 7px 0 10px;
       display: block;
       cursor: pointer;
@@ -99,7 +99,7 @@
         font-weight: bold;
         font-size: 12px;
         line-height: 14px;
-        color: #343741;
+        color: $hdi-modal-color-description;
         mix-blend-mode: normal;
         margin-bottom: 4px;
         margin-top: 0;
@@ -125,9 +125,9 @@
     }
 
     &.active {
-      background: #f5f5f5;
-      border: 1px dashed #c0bfc0;
-      box-shadow: 0 0 3px rgba(86, 86, 86, 0.404806);
+      background: $hdi-policy-card-background;
+      border: 1px dashed $hdi-circle-color;
+      box-shadow: 0 0 3px $hdi-box-shadow;
       border-radius: 3px;
 
       .image {
@@ -145,9 +145,9 @@
         }
 
         .btntoggle {
-          background: #28a3af;
-          border: 1px solid #28a3af;
-          box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
+          background: $hdi-navbar-green;
+          border: 1px solid $hdi-navbar-green;
+          box-shadow: 0px 0px 8px $hdi-box-shadow;
           border-radius: 3px;
           height: 32px;
           width: 32px;

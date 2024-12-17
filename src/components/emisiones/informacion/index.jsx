@@ -35,6 +35,8 @@ import 'moment/locale/es';
 
 import ModalLimitsPlanError from '../../modal/ModalLimitsPlanError';
 
+import add_icon from '../../../assets/icons/add_icon.svg';
+
 // 10MB
 const maxFileSize = UploadFileService.maxFileSize;
 
@@ -924,7 +926,10 @@ class Index extends React.Component {
                   </div>
                 </div>
 
-                <div className="col col-12 col-sm-12 col-md-12 col-lg-12">
+                <div
+                  style={{ marginTop: '12px' }}
+                  className="col col-12 col-sm-12 col-md-12 col-lg-12"
+                >
                   <div className="row">
                     <div className="col col-sm-12 col-md-12 col-lg-12 text-center">
                       <div
@@ -934,9 +939,7 @@ class Index extends React.Component {
                         }
                         onClick={() => this.addContent({ totalByType })}
                       >
-                        <button type="button" className="more-btn">
-                          +
-                        </button>
+                        <img src={add_icon} alt="" />
                         <p>Agregar contenido</p>
                       </div>
                     </div>
@@ -1024,9 +1027,7 @@ class Index extends React.Component {
                           className="more-items"
                           onClick={this.togglePerson(-1, -1)}
                         >
-                          <button type="button" className="more-btn">
-                            +
-                          </button>
+                          <img src={add_icon} alt="" />
                           <p>Agregar persona</p>
                         </div>
                       </div>

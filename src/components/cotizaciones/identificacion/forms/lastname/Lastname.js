@@ -67,7 +67,7 @@ class Lastname extends Component {
           type="text"
           value={this.state.value}
           autoComplete="lastname"
-          className={'form-control'}
+          className={`form-control ${!this.state.value ? 'not-value' : ''}`}
           placeholder="Ingresa primer apellido"
           onBlur={this.validateEmpty}
           onChange={this.validateEmpty}

@@ -135,7 +135,7 @@ class NumeroIdentificacion extends Component {
           name="value"
           id="doc-type-value"
           type="text"
-          className={'form-control'}
+          className={`form-control ${!this.state.value ? 'not-value' : ''}`}
           value={this.state.value}
           placeholder="Ingresa la identificación"
           onBlur={this.validateEmpty}

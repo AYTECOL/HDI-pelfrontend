@@ -18,6 +18,8 @@ import Helpers from 'common/helpers/helpers';
 import MomentJs from 'moment';
 import { MONTHS } from 'assets/constants';
 
+import arrow from '../../../assets/images/arrow_down.svg';
+
 /**
  *  @typedef {{ type_person: string, description: string, code: number }} IdentificationType
  */
@@ -137,13 +139,15 @@ const Table = (props) => {
           <div className="col">
             <span onClick={(event) => onClickOrdeArray('quoteId')}>
               {isEmitted ? 'No. de póliza' : 'N. de solicitud'}{' '}
-              <i className="tagTable">&#8597;</i>
+              <i className="tagTable">
+                <img src={arrow} alt="" />
+              </i>
             </span>
           </div>
           <div className="col">
             <span onClick={(event) => onClickOrdeArray('date')}>
               {isEmitted ? 'Fecha de emisión' : 'Fecha'}{' '}
-              <i className="tagTable">&#8597;</i>
+              <img src={arrow} alt="" />
             </span>
           </div>
           <div className="col">
@@ -260,7 +264,7 @@ const Table = (props) => {
                   {step !== 7 && validity > 0 && (
                     <button
                       onClick={getRowById(item.quoteId)}
-                      className="btn btn-default"
+                      className="btn btn-default btn-default--two"
                     >
                       {' '}
                       Retomar
@@ -269,7 +273,7 @@ const Table = (props) => {
                   {step === 7 && (
                     <button
                       onClick={getPdf(item.quoteId)}
-                      className="btn btn-default"
+                      className="btn btn-default btn-default--two"
                     >
                       {' '}
                       Descargar PDF

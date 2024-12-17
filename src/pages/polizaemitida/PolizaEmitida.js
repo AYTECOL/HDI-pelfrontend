@@ -120,9 +120,10 @@ class PolizaEmitida extends Component {
             <div className="row">
               <div className="col col-sm-12 col-md-12 col-lg-12 title">
                 <h2>¡Póliza emitida!</h2>
-                <h3>Ahora podrás descargar la información de tu póliza</h3>
                 <p>
-                  Póliza <span>{this.state.emitedPolicy}</span>
+                  Tu póliza fue emitida con el número{' '}
+                  <span>{this.state.emitedPolicy}</span>, puede descargar el PDF
+                  acontinuación
                 </p>
                 <div className="image">&nbsp;</div>
               </div>
@@ -152,7 +153,7 @@ class PolizaEmitida extends Component {
                 <button
                   onClick={this.getNumber}
                   type="button"
-                  className={'btn btn-default'}
+                  className={'btn btn-default btn-default--two'}
                 >
                   Nueva cotización
                 </button>

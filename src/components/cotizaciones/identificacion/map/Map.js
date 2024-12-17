@@ -4,6 +4,8 @@ import MapBase from './MapBase';
 import { ApiKeyGoogle } from '../../../../config';
 import './Map.scss';
 
+import icon_error from '../../../../assets/images/error_icon_map.svg';
+
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -55,8 +57,11 @@ class Map extends Component {
         />
         <div className="error-info">
           <p>
-            <span>&nbsp;</span>No encontramos la dirección ingresada, valida en
-            el mapa si es la correcta y continua con el proceso
+            <span>
+              <img src={icon_error} alt="" />
+            </span>
+            No encontramos la dirección ingresada, valida en el mapa si es la
+            correcta y continua con el proceso
           </p>
         </div>
       </div>

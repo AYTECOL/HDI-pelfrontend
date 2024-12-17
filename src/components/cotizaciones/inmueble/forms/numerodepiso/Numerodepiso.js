@@ -59,7 +59,7 @@ class Numerodepiso extends Component {
         <select
           name="numerodepisos"
           id="numerodepisos"
-          className={'form-control '}
+          className={`form-control ${!value ? 'not-value' : ''}`}
           value={value}
           onBlur={this.validateEmpty}
           onChange={this.validateEmpty}

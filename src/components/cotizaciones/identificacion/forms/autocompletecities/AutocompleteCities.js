@@ -294,7 +294,8 @@ class AutocompleteCities extends Component {
           type="text"
           className={classNames(
             'form-control text-truncate',
-            !!disabled && 'disabled'
+            !!disabled && 'disabled',
+            !value ? 'not-value' : ''
           )}
           placeholder={`Ingresa la ${defaultLabel.toLowerCase()}`}
           value={value}

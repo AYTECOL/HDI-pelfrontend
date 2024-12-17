@@ -351,7 +351,9 @@ class Cards extends Component {
                     <label htmlFor="incendios">Valor</label>
                     <input
                       type="text"
-                      className={'form-control'}
+                      className={`form-control ${
+                        !option.value ? 'not-value' : ''
+                      }`}
                       name="incendios"
                       id="incendios"
                       value={option.value}

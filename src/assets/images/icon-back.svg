@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14.965" height="13.697" viewBox="0 0 14.965 13.697">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Mask" d="M12.4,7.1l1.3-1.16L7.74.388a1.645,1.645,0,0,0-2.121,0L0,5.94,1.241,7.1,5.793,2.5v12.46H7.74V2.5Z" transform="translate(0 13.697) rotate(-90)" fill="#00a3a8"/>
+    </clipPath>
+  </defs>
+  <g id="Icon_Right" data-name="Icon/Right" transform="translate(0 0)">
+    <g id="Grupo_3" data-name="Grupo 3" transform="translate(0)">
+      <path id="Mask-2" data-name="Mask" d="M12.4,7.1l1.3-1.16L7.74.388a1.645,1.645,0,0,0-2.121,0L0,5.94,1.241,7.1,5.793,2.5v12.46H7.74V2.5Z" transform="translate(0 13.697) rotate(-90)" fill="#00a3a8"/>
+      <g id="Enmascarar_grupo_3" data-name="Enmascarar grupo 3" clip-path="url(#clip-path)">
+        <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue" transform="translate(-48.866 -46.759)">
+          <rect id="Rectangle_Copy_4" data-name="Rectangle Copy 4" width="113.625" height="109.125" fill="#00a3a8"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

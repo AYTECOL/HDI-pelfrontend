@@ -1,5 +1,7 @@
+@import '../../../../styles/varaibles.scss';
+
 .wrapper-map {
-  border-top: 2px solid #28a3af;
+  border-top: 2px solid $hdi-navbar-green;
   margin: 0 21px 0;
   position: relative;
   height: 600px;
@@ -15,10 +17,10 @@
     right: 0;
     top: -2px;
 
-    background: #ffecdb;
-    border: 1px solid #ee7000;
+    background: $hdi-map-error-background;
+    border: 1px solid $hdi-map-error-border;
     box-sizing: border-box;
-    box-shadow: 0 2px 12px rgba(212, 57, 0, 0.3);
+    box-shadow: 0px 2px 12px #d439004d;
     border-radius: 3px;
 
     max-width: 781px;
@@ -32,7 +34,7 @@
       height: 0;
       border-left: 13px solid transparent;
       border-right: 13px solid transparent;
-      border-bottom: 13px solid #ee7000;
+      border-bottom: 13px solid $hdi-map-error-border;
       position: absolute;
       top: -13px;
       left: 0;
@@ -46,7 +48,7 @@
       height: 0;
       border-left: 11px solid transparent;
       border-right: 11px solid transparent;
-      border-bottom: 11px solid #ffecdb;
+      border-bottom: 11px solid $hdi-map-error-background;
       position: absolute;
       top: -11px;
       left: 0;
@@ -58,14 +60,16 @@
       margin: 0;
       font-style: normal;
       font-weight: normal;
-      font-size: 16px;
-      color: #d43900;
+      font-size: 15px;
+      color: $hdi-map-error-text;
       line-height: 26px;
 
       span {
-        display: block;
-        background: #d43900;
-        border: 1px solid #d43900;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $hdi-map-error-text;
+        border: 1px solid $hdi-map-error-text;
         box-sizing: border-box;
         color: white;
         position: absolute;
@@ -74,32 +78,12 @@
         width: 51px;
         height: 51px;
         text-align: center;
-
-        &::before {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          content: 'i';
-          display: block;
-          color: white;
-          border-radius: 100%;
-          border: 2px solid white;
-          padding: 2px 7px 2px;
-          line-height: 1;
-          font-size: 13px;
-          font-weight: 600;
-          margin: auto;
-          width: 20px;
-          height: 20px;
-        }
       }
     }
   }
 
   &.error {
-    border-top: 2px solid #ee7000;
+    border-top: 2px solid $hdi-map-error-border;
 
     .error-info {
       display: block;
@@ -125,26 +109,31 @@
     button {
       width: 32px !important;
       height: 32px !important;
-      background: #28a3af !important;
-      box-shadow: 0 4px 8px rgba(128, 128, 128, 0.695114) !important;
       border-radius: 3px;
       border: 0 !important;
       transform: scale(1);
       transition: all 0.3s ease;
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
 
       &::before {
-        content: '+';
-        color: white;
-        font-size: 27px;
-        line-height: 1;
+        content: '';
+        background-image: url('../../../../assets/images/plus_map_icon.svg');
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        /* color: white; */
         position: relative;
+        /* z-index: 1; */
+        display: block;
+        width: 52px;
+        height: 52px;
       }
 
       &:last-child {
         &::before {
-          content: '_';
-          font-size: 35px;
-          top: -14px;
+          background-image: url('../../../../assets/images/minus_map_icon.svg');
         }
       }
 

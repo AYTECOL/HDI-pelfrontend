@@ -37,7 +37,10 @@ const Input = React.forwardRef(
                 ref={ref}
                 type={type}
                 disabled={disabled}
-                className={classNames('form-control', disabled && 'disabled')}
+                className={classNames(
+                  `form-control ${!rest.value ? 'not-value' : ''}`,
+                  disabled && 'disabled'
+                )}
                 {...field}
                 {...rest}
               />

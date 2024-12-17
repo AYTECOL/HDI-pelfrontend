@@ -167,7 +167,10 @@ class Asegurarjoyas extends Component {
               ].map((item, index) => (
                 <li
                   key={index}
-                  className={clsx(item.value === active && 'active')}
+                  className={clsx(
+                    item.value === active && 'active',
+                    item.label
+                  )}
                   onClick={this.validateEmpty({
                     value: item.value,
                     name: Asegurarjoyas.nameModel,
@@ -204,7 +207,7 @@ class Asegurarjoyas extends Component {
                 id={Asegurarjoyas.nameModelValue}
                 type="text"
                 value={value}
-                className={'form-control'}
+                className={`form-control ${!value ? 'not-value' : ''}`}
                 placeholder=""
                 onBlur={this.validateValue}
                 onChange={this.validateValue}

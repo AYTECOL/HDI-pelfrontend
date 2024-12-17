@@ -1,3 +1,5 @@
+@import '../../../../../styles/varaibles.scss';
+
 .sendmail {
   .modal-subtitle {
     line-height: 25px;
@@ -24,18 +26,19 @@
     font-weight: normal;
     font-size: 14px;
     line-height: 19px;
-    color: #28a3af;
+    color: $hdi-primary-green-dark;
     cursor: pointer;
-
+    margin-bottom: 0 !important;
+    padding-bottom: 8px !important;
     &:hover {
       text-decoration: underline;
     }
   }
 
   button {
-    background: #28a3af;
-    border: 1px solid #28a3af;
-    box-shadow: 2px 4px 8px rgba(40, 163, 175, 0.400334);
+    background: $hdi-tab-color-border;
+    border: 1px solid $hdi-tab-color-border;
+    box-shadow: 2px 4px 8px $hdi-box-shadow;
     border-radius: 3px;
     height: 30px;
     width: 30px;

@@ -195,7 +195,7 @@ class Asegurarcontenidos extends Component {
             <label htmlFor={Asegurarcontenidos.nameModel}>{title_desc}</label>
             <ul className="select-item" id={Asegurarcontenidos.nameModel}>
               <li
-                className={active === 1 ? 'active' : ''}
+                className={`${active === 1 ? 'active ' : ''}Si`}
                 onClick={this.validateEmpty({
                   value: 1,
                   name: Asegurarcontenidos.nameModel,
@@ -204,7 +204,7 @@ class Asegurarcontenidos extends Component {
                 Si
               </li>
               <li
-                className={active === 0 ? 'active' : ''}
+                className={`${active === 0 ? 'active ' : ''}No`}
                 onClick={this.validateEmpty({
                   value: 0,
                   name: Asegurarcontenidos.nameModel,
@@ -240,7 +240,7 @@ class Asegurarcontenidos extends Component {
                 name={Asegurarcontenidos.nameModelValue}
                 id={Asegurarcontenidos.nameModelValue}
                 type="text"
-                className={'form-control'}
+                className={`form-control ${!value ? 'not-value' : ''}`}
                 value={value}
                 placeholder=""
                 onBlur={this.validateValue}

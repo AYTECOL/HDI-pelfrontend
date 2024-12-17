@@ -210,7 +210,9 @@ class Segurarinmueble extends Component {
                 name="value"
                 id={Segurarinmueble.nameModelValue}
                 type="text"
-                className={'form-control'}
+                className={`form-control ${
+                  !this.state.value ? 'not-value' : ''
+                }`}
                 placeholder=""
                 value={this.state.value}
                 onBlur={this.validateValue}

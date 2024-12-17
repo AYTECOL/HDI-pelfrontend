@@ -1,8 +1,10 @@
+@import '../../../../styles/varaibles.scss';
+
 .total-percentage {
   font-style: normal;
   font-size: 12px;
   line-height: 19px;
-  color: #808080;
+  color: $hdi-description-color-text;
   font-weight: 700 !important;
   &.error,
   .error {

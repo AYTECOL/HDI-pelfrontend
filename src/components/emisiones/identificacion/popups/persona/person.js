@@ -28,6 +28,9 @@ import {
 import LegalRepresentative from './legal-representative';
 import BeneficiariesFinalPage from './beneficiaries-final';
 import { TYPE_DOCUMENT_IS_JURIDIC } from 'assets/constants';
+
+import close_icon from 'assets/images/icon_close.svg';
+
 const maxFileSize = UploadFileService.maxFileSize;
 
 const phoneTypes = {
@@ -1054,7 +1057,7 @@ export default class Persona extends Component {
                     aria-label="Close"
                     onClick={this.props.toggle(0)}
                   >
-                    &nbsp;
+                    <img src={close_icon} alt="" />
                   </button>
                 </div>
                 <div
@@ -1076,7 +1079,7 @@ export default class Persona extends Component {
                     aria-label="Close"
                     onClick={this.props.toggle(0)}
                   >
-                    &nbsp;
+                    <img src={close_icon} alt="" />
                   </button>
                 </div>
                 <div className="modal-body">
@@ -1119,7 +1122,9 @@ export default class Persona extends Component {
                               type="text"
                               id="documentfield"
                               className={
-                                'form-control ' +
+                                `form-control ${
+                                  !this.state.person.value ? 'not-value' : ''
+                                }` +
                                 (this.state.person.valueDisabled
                                   ? 'disabled'
                                   : '')
@@ -1156,7 +1161,9 @@ export default class Persona extends Component {
                             <input
                               type="text"
                               className={
-                                'form-control ' +
+                                `form-control ${
+                                  !this.state.person.name ? 'not-value' : ''
+                                }` +
                                 (this.state.person.nameDisabled
                                   ? 'disabled'
                                   : '')
@@ -1281,7 +1288,11 @@ export default class Persona extends Component {
                                   <input
                                     type="text"
                                     className={
-                                      'form-control ' +
+                                      `form-control ${
+                                        !this.state.person.name
+                                          ? 'not-value'
+                                          : ''
+                                      }` +
                                       (this.state.person.nameDisabled
                                         ? 'disabled'
                                         : '')
@@ -1310,7 +1321,11 @@ export default class Persona extends Component {
                                   <input
                                     type="text"
                                     className={
-                                      'form-control ' +
+                                      `form-control ${
+                                        !this.state.person.secondname
+                                          ? 'not-value'
+                                          : ''
+                                      }` +
                                       (this.state.person.secondnameDisabled
                                         ? 'disabled'
                                         : '')
@@ -1342,7 +1357,11 @@ export default class Persona extends Component {
                                   <input
                                     type="text"
                                     className={
-                                      'form-control ' +
+                                      `form-control ${
+                                        !this.state.person.lastname
+                                          ? 'not-value'
+                                          : ''
+                                      }` +
                                       (this.state.person.lastnameDisabled
                                         ? 'disabled'
                                         : '')
@@ -1373,7 +1392,11 @@ export default class Persona extends Component {
                                   <input
                                     type="text"
                                     className={
-                                      'form-control ' +
+                                      `form-control ${
+                                        !this.state.person.secondlastname
+                                          ? 'not-value'
+                                          : ''
+                                      }` +
                                       (this.state.person.secondlastnameDisabled
                                         ? 'disabled'
                                         : '')
@@ -1412,17 +1435,21 @@ export default class Persona extends Component {
                             <label htmlFor="doc-type-value">Genero</label>
                             <ul className="select-item">
                               <li
-                                className={
-                                  this.state.person.genero === 1 ? 'active' : ''
-                                }
+                                className={`${
+                                  this.state.person.genero === 1
+                                    ? 'active '
+                                    : ''
+                                }Si`}
                                 onClick={this.generoChange(1)}
                               >
                                 Masculino
                               </li>
                               <li
-                                className={
-                                  this.state.person.genero === 2 ? 'active' : ''
-                                }
+                                className={`${
+                                  this.state.person.genero === 2
+                                    ? 'active '
+                                    : ''
+                                }No`}
                                 onClick={this.generoChange(2)}
                               >
                                 Femenino
@@ -1469,7 +1496,11 @@ export default class Persona extends Component {
                                   id="tipodetelefono"
                                   value={this.state.person.tipodetelefono}
                                   className={
-                                    'form-control ' +
+                                    `form-control ${
+                                      phoneTypes.mobilePhone !== 'Tfno. móvil'
+                                        ? 'not-value'
+                                        : ''
+                                    }` +
                                     (this.state.person.tipodetelefonoDisabled
                                       ? 'disabled'
                                       : '')
@@ -1501,7 +1532,11 @@ export default class Persona extends Component {
                                 <input
                                   type="text"
                                   className={
-                                    'number form-control ' +
+                                    `number form-control ${
+                                      !this.state.person.telefono
+                                        ? 'not-value'
+                                        : ''
+                                    }` +
                                     (this.state.person.telefonoDisabled
                                       ? 'disabled'
                                       : '')
@@ -1532,7 +1567,11 @@ export default class Persona extends Component {
                               <input
                                 type="text"
                                 className={
-                                  'form-control ' +
+                                  `form-control ${
+                                    !this.state.person.businessname
+                                      ? 'not-value'
+                                      : ''
+                                  }` +
                                   (this.state.person.businessnameDisabled
                                     ? 'disabled'
                                     : '')
@@ -1581,7 +1620,11 @@ export default class Persona extends Component {
                                     this.state.person.fechadecontitucionDisabled
                                   }
                                   className={
-                                    'form-control ' +
+                                    `form-control ${
+                                      !this.state.person.fechadecontitucion
+                                        ? 'not-value'
+                                        : ''
+                                    }` +
                                     (this.state.person
                                       .fechadecontitucionDisabled
                                       ? 'disabled'
@@ -1614,7 +1657,11 @@ export default class Persona extends Component {
                                 <input
                                   type="text"
                                   className={
-                                    'form-control ' +
+                                    `form-control ${
+                                      !this.state.person.email
+                                        ? 'not-value'
+                                        : ''
+                                    }` +
                                     (this.state.person.emailDisabled
                                       ? 'disabled'
                                       : '')
@@ -1683,7 +1730,11 @@ export default class Persona extends Component {
                                   name={fieldsNames.adresstype}
                                   id={fieldsNames.adresstype}
                                   className={
-                                    'form-control ' +
+                                    `form-control ${
+                                      !this.state.person.adresstype
+                                        ? 'not-value'
+                                        : ''
+                                    }` +
                                     (this.state.person.emailDisabled
                                       ? 'disabled'
                                       : '')
@@ -1721,7 +1772,11 @@ export default class Persona extends Component {
                                 <input
                                   type="text"
                                   className={
-                                    'form-control ' +
+                                    `form-control ${
+                                      !this.state.person.address
+                                        ? 'not-value'
+                                        : ''
+                                    }` +
                                     (this.state.person.addressDisabled
                                       ? 'disabled'
                                       : '')
@@ -1871,7 +1926,9 @@ export default class Persona extends Component {
                           </p>
                         )}
                         <button
-                          className="btn btn-primary"
+                          className={`btn ${
+                            errors.length ? 'disabled' : 'btn-primary'
+                          }`}
                           disabled={!!errors.length}
                           type="button"
                           onClick={() => {

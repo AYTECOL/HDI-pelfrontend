@@ -15,6 +15,8 @@ import Service from 'services/Api';
 import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 import { ROLES_KEY } from 'assets/constants';
 
+import arrow_back from '../../../../../assets/images/icon-back.svg';
+
 const UrlServicePerson = UrlPerson;
 const Baseurl = '/validarIdentidad';
 class BtnContinue extends PureComponent {
@@ -149,9 +151,9 @@ class BtnContinue extends PureComponent {
           beneficiaries.push(dataUser);
         } else if (persons[i]['role'][j] === ROLES_KEY.IS_ONEROUS) {
           onerous.push(dataUser);
-          onerous.forEach(objeto => {
-            objeto.email = ""; // Establecer el email como un string vacío
-        });
+          onerous.forEach((objeto) => {
+            objeto.email = ''; // Establecer el email como un string vacío
+          });
         }
       }
     }
@@ -234,12 +236,15 @@ class BtnContinue extends PureComponent {
       <Fragment>
         <div className={'return-button'}>
           <button type="button" className="btn btn-link" onClick={this.goBack}>
-            <i className="back-icon">&nbsp;</i>Volver
+            <i className="back-icon">
+              <img src={arrow_back} alt="" />
+            </i>
+            Volver
           </button>
         </div>
         <button
           type="button"
-          className={'btn btn-default'}
+          className={'btn btn-default btn-default--two'}
           onClick={this.nextStep(undefined)}
         >
           Guardar y salir

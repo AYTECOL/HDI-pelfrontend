@@ -1,3 +1,5 @@
+@import "../../styles/varaibles.scss";
+
 $positions: 'top', 'bottom', 'left', 'right';
 
 @each $position in $positions {
@@ -5,12 +7,13 @@ $positions: 'top', 'bottom', 'left', 'right';
     &.bs-tooltip-#{$position} {
       .arrow {
         &::before {
-          border-#{$position}-color: #1a1347 !important;
+          border-#{$position}-color: $hdi-primary-color-active !important;
         }
       }
     }
     .tooltip-inner {
-      background-color: #1a1347 !important;
+      background-color: $hdi-primary-color-active !important;
+      box-shadow: 0px 2px 11px #3437418b;
     }
   }
 }

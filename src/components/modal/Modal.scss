@@ -1,3 +1,5 @@
+@import '../../styles/varaibles.scss';
+
 .modal {
   .modal-dialog {
     .modal-content {
@@ -7,12 +9,12 @@
           margin-bottom: 16px;
         }
         p {
-          font-size: 15px;
+          font-size: 16px;
         }
         span {
           font-size: 12px;
           strong {
-            color: #7dc5ca;
+            color: $hdi-description-color;
           }
         }
       }
@@ -21,11 +23,11 @@
       .modal-footer {
         p {
           strong {
-            color: #7dc5ca;
+            color: $hdi-description-color;
           }
           span {
-            font-size: 10px;
-            color: #b4b4b4;
+            font-size: 12px;
+            color: $hdi-circle-color;
           }
         }
       }

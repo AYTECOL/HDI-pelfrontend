@@ -11,8 +11,20 @@ export const Help = (props) => (
     width="24"
     {...props}
   >
-    <path d="M0 0h24v24H0z" fill="none" />
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
+     <defs>
+    <clipPath id="clip-path">
+      <path id="Mask" d="M2.877,13.451V11.6H5.044v1.856Zm.035-3.139V9.478c0-.945.221-2.017,1.843-3.459A2.693,2.693,0,0,0,5.927,3.74a1.669,1.669,0,0,0-1.767-1.7c-1.162,0-1.808.606-2.029,1.9l-.086.5H0l.043-.637A3.951,3.951,0,0,1,4.177,0a3.648,3.648,0,0,1,3.9,3.721A4.661,4.661,0,0,1,6.11,7.561a2.457,2.457,0,0,0-1.1,2.026v.725Z" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <path id="Oval_2_Copy" data-name="Oval 2 Copy" d="M12,0A12,12,0,1,1,0,12,12,12,0,0,1,12,0Z" fill="#009c49"/>
+  <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue" transform="translate(7.797 4.998)">
+    <path id="Mask-2" data-name="Mask" d="M2.877,13.451V11.6H5.044v1.856Zm.035-3.139V9.478c0-.945.221-2.017,1.843-3.459A2.693,2.693,0,0,0,5.927,3.74a1.669,1.669,0,0,0-1.767-1.7c-1.162,0-1.808.606-2.029,1.9l-.086.5H0l.043-.637A3.951,3.951,0,0,1,4.177,0a3.648,3.648,0,0,1,3.9,3.721A4.661,4.661,0,0,1,6.11,7.561a2.457,2.457,0,0,0-1.1,2.026v.725Z" fill="#fff"/>
+    <g id="Color_Liberty_Blue-2" data-name="Color/Liberty Blue" clip-path="url(#clip-path)">
+      <g id="Color_Liberty_Blue-3" data-name="Color/Liberty Blue" transform="translate(-70.797 -66.498)">
+        <rect id="Rectangle_Copy_8" data-name="Rectangle Copy 8" width="151.5" height="145.5" fill="#fff"/>
+      </g>
+    </g>
+  </g>
   </svg>
 );
 

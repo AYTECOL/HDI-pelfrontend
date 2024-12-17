@@ -1,9 +1,10 @@
+@import '../../../styles/varaibles.scss';
+
 $padding-header: 16px;
 $padding-total: 30px;
 $padding-menu: $padding-total - $padding-header;
 header {
-  background-color: #ffffff;
-  padding: $padding-header 0;
+  background-color: $hdi-background-navbar;
 
   #logo {
     @media (max-width: 769px) {
@@ -12,8 +13,8 @@ header {
 
     img {
       // width: 100%;
-      height: auto;
-      max-width: 104.29px;
+      height: 100%;
+      max-width: 153px;
     }
   }
 
@@ -27,6 +28,7 @@ header {
       display: flex;
       justify-content: flex-end;
       margin: 0;
+      height: 100%;
       @media (max-width: 769px) {
         position: absolute;
         top: 0;
@@ -35,16 +37,23 @@ header {
       }
 
       li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
         a {
           font-weight: 400;
-          display: block;
+          display: flex;
           text-decoration: none;
-          color: #002855;
+          color: #333333;
           font-size: 14px;
           line-height: 16px;
           padding: $padding-menu 0 ($padding-menu - 6) 16px;
           position: relative;
           transition: all 0.3s ease;
+          height: 100%;
+          justify-content: center;
+          align-items: center;
           @media (max-width: 769px) {
             padding: 20px 5px 0 5px !important;
             text-align: center;
@@ -73,10 +82,9 @@ header {
             position: absolute;
             top: 100%;
             width: 100%;
-            background-color: #1a1446;
+            background-color: $hdi-navbar-green;
             display: none;
             left: 0;
-            margin-top: 13px;
 
             @media (max-width: 769px) {
               margin-top: 22px;
@@ -106,12 +114,12 @@ header {
             }
 
             &.icon1::before {
-              background-image: url('../../../assets/images/negosios.png');
+              background-image: url('../../../assets/icons/negocios.svg');
               background-size: 70% auto;
             }
 
             &.icon2::before {
-              background-image: url('../../../assets/images/icono-header2.png');
+              background-image: url('../../../assets/icons/icon_user.svg');
             }
 
             &.icon3 {
@@ -123,7 +131,7 @@ header {
 
               &::before {
                 background-size: 100% auto;
-                background-image: url('../../../assets/images/icono-header3.png');
+                background-image: url('../../../assets/icons/icon_logout.svg');
               }
             }
           }
@@ -150,7 +158,7 @@ header {
         }
 
         &:hover a {
-          color: #343741;
+          color: $hdi-modal-color-description;
           font-weight: bold;
 
           i {
@@ -175,7 +183,7 @@ header {
         &.logout {
           a {
             font-weight: bold;
-            padding-top: $padding-header + 5;
+            padding-top: 14px;
           }
         }
 
@@ -199,7 +207,10 @@ header {
             }
 
             i {
-              background-color: rgba(#fff, 0.5) !important;
+              background-color: rgba(
+                $hdi-filter-form-background-color,
+                0.5
+              ) !important;
               width: 34px !important;
               height: 34px !important;
               margin: 0 auto !important;

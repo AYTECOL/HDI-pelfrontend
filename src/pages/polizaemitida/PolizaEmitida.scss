@@ -1,3 +1,5 @@
+@import '../../styles/varaibles.scss';
+
 .cotizacion.exito {
   padding-top: 40px;
 }
@@ -8,15 +10,15 @@
     font-weight: normal;
     font-size: 32px;
     line-height: 38px;
-    color: #343741;
+    color: $hdi-primary-green;
   }
 
   h3 {
-    font-style: normal;
-    font-weight: 300;
+    font-family: hdipro-regular, sans-serif !important;
     font-size: 20px;
     line-height: 26px;
     text-align: center;
+    color: $hdi-description-color-text;
   }
 
   .title p {
@@ -27,10 +29,10 @@
     margin-top: 14px;
     display: block;
 
-    color: #808080;
+    color: $hdi-description-color-text;
 
     span {
-      color: #99e5ea;
+      color: $hdi-description-color;
     }
   }
 
@@ -41,7 +43,7 @@
   .image {
     background-image: url('../../assets/images/exito.jpg');
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
     width: 126%;
     height: 181px;

@@ -42,7 +42,9 @@ class Zona extends Component {
           {this.state.zonas.map((option, key) => (
             <li
               key={option.zoneCode}
-              className={+value === +option.zoneCode ? 'active' : ''}
+              className={`${
+                +value === +option.zoneCode ? 'active ' : ''
+              }zona_li ${option.answer}`}
               onClick={this.saveData({
                 value: +option.zoneCode,
                 name: 'zona',

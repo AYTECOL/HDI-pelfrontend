@@ -40,7 +40,8 @@ export const DateInput = (props) => {
         startDate={moment().subtract(18, 'years').toDate()}
         disabled={fechadenacimientoDisabled}
         className={
-          'form-control ' + (fechadenacimientoDisabled ? 'disabled' : '')
+          `form-control ${!fechadenacimiento ? 'not-value' : ''}` +
+          (fechadenacimientoDisabled ? 'disabled' : '')
         }
       />
       <small className="form-text only-errors">

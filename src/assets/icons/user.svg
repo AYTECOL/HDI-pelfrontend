@@ -1,28 +1,30 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="75" height="75" viewBox="0 0 75 75">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="42" viewBox="0 0 42 42">
   <defs>
-    <filter id="Oval" x="0" y="0" width="75" height="75" filterUnits="userSpaceOnUse">
-      <feOffset dy="10" input="SourceAlpha"/>
-      <feGaussianBlur stdDeviation="7" result="blur"/>
-      <feFlood flood-color="#28a3af" flood-opacity="0.522"/>
+    <filter id="Oval" x="0" y="0" width="42" height="42" filterUnits="userSpaceOnUse">
+      <feOffset dy="1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-color="#ddd"/>
       <feComposite operator="in" in2="blur"/>
       <feComposite in="SourceGraphic"/>
     </filter>
     <clipPath id="clip-path">
-      <path id="Mask" d="M11.349,14.6a4.849,4.849,0,1,0-9.7,0H0a6.5,6.5,0,1,1,13,0ZM2.768,3.731A3.731,3.731,0,1,1,6.5,7.461,3.736,3.736,0,0,1,2.768,3.731Zm1.652,0A2.08,2.08,0,1,0,6.5,1.651,2.081,2.081,0,0,0,4.421,3.731Z" fill="#1a1446"/>
+      <path id="Mask" d="M11.349,14.6a4.849,4.849,0,1,0-9.7,0H0a6.5,6.5,0,1,1,13,0ZM2.768,3.731A3.731,3.731,0,1,1,6.5,7.461,3.736,3.736,0,0,1,2.768,3.731Zm1.652,0A2.08,2.08,0,1,0,6.5,1.651,2.081,2.081,0,0,0,4.421,3.731Z" fill="#006729"/>
     </clipPath>
   </defs>
-  <g id="Group_7" data-name="Group 7" transform="translate(21 11)">
+  <g id="Group_7" data-name="Group 7" transform="translate(4.5 3.5)">
     <g id="Group_5" data-name="Group 5">
       <g id="Group_11_Copy" data-name="Group 11 Copy">
         <g id="Group_6_Copy_3" data-name="Group 6 Copy 3">
-          <g transform="matrix(1, 0, 0, 1, -21, -11)" filter="url(#Oval)">
-            <circle id="Oval-2" data-name="Oval" cx="16.5" cy="16.5" r="16.5" transform="translate(21 11)" fill="#28a3af"/>
+          <g transform="matrix(1, 0, 0, 1, -4.5, -3.5)" filter="url(#Oval)">
+            <circle id="Oval-2" data-name="Oval" cx="16.5" cy="16.5" r="16.5" transform="translate(4.5 3.5)" fill="#e5f5ec"/>
           </g>
-          <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue" transform="translate(10 9)">
-            <path id="Mask-2" data-name="Mask" d="M11.349,14.6a4.849,4.849,0,1,0-9.7,0H0a6.5,6.5,0,1,1,13,0ZM2.768,3.731A3.731,3.731,0,1,1,6.5,7.461,3.736,3.736,0,0,1,2.768,3.731Zm1.652,0A2.08,2.08,0,1,0,6.5,1.651,2.081,2.081,0,0,0,4.421,3.731Z" fill="#1a1446"/>
-            <g id="Color_Liberty_Blue-2" data-name="Color/Liberty Blue" clip-path="url(#clip-path)">
-              <g id="Color_Liberty_Blue-3" data-name="Color/Liberty Blue" transform="translate(-45 -45)">
-                <rect id="Rectangle_Copy_8" data-name="Rectangle Copy 8" width="101" height="97" fill="#fff"/>
+          <g id="Icon_Check" data-name="Icon/Check" transform="translate(10 9.202)">
+            <g id="Color_Liberty_Blue" data-name="Color/Liberty Blue">
+              <path id="Mask-2" data-name="Mask" d="M11.349,14.6a4.849,4.849,0,1,0-9.7,0H0a6.5,6.5,0,1,1,13,0ZM2.768,3.731A3.731,3.731,0,1,1,6.5,7.461,3.736,3.736,0,0,1,2.768,3.731Zm1.652,0A2.08,2.08,0,1,0,6.5,1.651,2.081,2.081,0,0,0,4.421,3.731Z" fill="#006729"/>
+              <g id="Color_Liberty_Blue-2" data-name="Color/Liberty Blue" clip-path="url(#clip-path)">
+                <g id="Color_Liberty_Blue-3" data-name="Color/Liberty Blue" transform="translate(-45 -45)">
+                  <rect id="Rectangle_Copy_8" data-name="Rectangle Copy 8" width="101" height="97" fill="#006729"/>
+                </g>
               </g>
             </g>
           </g>

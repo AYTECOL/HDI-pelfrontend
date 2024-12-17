@@ -105,13 +105,13 @@ class OtherQuestions extends Component {
                   {question.message}
                   <ul className={classNames('select-item', error && 'error')}>
                     <li
-                      className={classNames(active && 'active')}
+                      className={classNames(active && 'active', 'Si')}
                       onClick={() => this.setQuestion(question.id, true)}
                     >
                       Si
                     </li>
                     <li
-                      className={classNames(active === false && 'active')}
+                      className={classNames(active === false && 'active', 'No')}
                       onClick={() => this.setQuestion(question.id, false)}
                     >
                       No

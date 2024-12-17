@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './SendMail.scss';
 import Helpers from '../../../../../common/helpers/helpers';
 
+import add_icon from '../../../../../assets/icons/add_icon.svg';
+
 class SendMail extends Component {
   constructor(props) {
     super(props);
@@ -78,9 +80,7 @@ class SendMail extends Component {
                     </div>
                   ))}
                 <div className="more-items" onClick={this.moreItems}>
-                  <button type="button" className={'more-btn'}>
-                    +
-                  </button>
+                  <img src={add_icon} alt="" />
                   <p>Agregar otro correo</p>
                 </div>
               </div>

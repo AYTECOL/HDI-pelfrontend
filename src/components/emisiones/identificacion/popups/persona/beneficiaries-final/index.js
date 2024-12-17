@@ -4,6 +4,8 @@ import './styles.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import add_icon from '../../../../../../assets/icons/add_icon.svg';
+
 const BeneficiariesFinalPage = ({
   disabledAll,
   beneficiariesFinal,
@@ -41,9 +43,7 @@ const BeneficiariesFinalPage = ({
         <div className="row fields-row  legal-representative mt-4">
           <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right mt-2">
             <div className="more-items" onClick={handleNewBeneficiaryFinal}>
-              <button type="button" className="more-btn">
-                +
-              </button>
+              <img src={add_icon} alt="" />
               <p>Agregar Beneficiario Final</p>
             </div>
           </div>

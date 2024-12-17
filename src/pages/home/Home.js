@@ -161,7 +161,7 @@ const Home = (props) => {
       <div className="container">
         <div className="row">
           <div className="col col-sm-12 col-md-12 col-lg-12 title">
-            <h2>Mis Negocios en línea</h2>
+            <h2>Mis negocios en línea</h2>
             <button
               type="button"
               className="btn btn-primary btn-home"

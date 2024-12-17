@@ -1,15 +1,19 @@
+@import '../../../../../styles/varaibles.scss';
+
 .validaridentificacion {
   display: flex;
+  background-color: $hdi-modal-background !important;
 
   .icono {
-    background: rgba(#99e5ea, 0.2);
+    background: $hdi-filter-form-background-color;
     mix-blend-mode: normal;
     border-radius: 100%;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0 auto;
 
     img {
-      margin: 35px 30px 40px 20px;
       width: 100%;
       height: auto;
       max-width: 100px;
