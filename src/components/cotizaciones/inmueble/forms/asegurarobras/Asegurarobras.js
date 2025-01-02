@@ -29,7 +29,9 @@ class Asegurarobras extends Component {
       description: name = '',
       min_value: min = 0,
       max_value: max = 0,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[3]),
     };
@@ -37,10 +39,19 @@ class Asegurarobras extends Component {
       name,
       min,
       max,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     };
   };
 
+  static name_card() {
+    try {
+      return Asegurarobras.getContent().title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return Asegurarobras.getContent().name;
@@ -132,7 +143,8 @@ class Asegurarobras extends Component {
 
   render() {
     const content = Asegurarobras.getContent();
-    const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+    const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     return (
       <div className="row">
         <div className="col col-12 col-md-6">
@@ -143,9 +155,7 @@ class Asegurarobras extends Component {
               this.state.error
             }
           >
-            <label htmlFor={Asegurarobras.nameModel}>
-              ¿Adicionalmente deseas asegurar {Asegurarobras.name()}?{' '}
-            </label>
+            <label htmlFor={Asegurarobras.nameModel}>{title_desc}</label>
             <ul className="select-item" id={Asegurarobras.nameModel}>
               <li
                 className={`${this.state.active === 1 ? 'active ' : ''}Si`}
@@ -182,12 +192,9 @@ class Asegurarobras extends Component {
                   className="flex-fill"
                   htmlFor={Asegurarobras.nameModelValue}
                 >
-                  Valor de los {Asegurarobras.name()}
+                  {Asegurarobras.name()}
                 </label>
-                <Tooltip
-                  placement="left"
-                  title={`El valor máximo por cada artículo es de ${maximumPerItem}`}
-                >
+                <Tooltip placement="left" title={` ${maximumPerItem}`}>
                   <Help className={'ml-auto icon-primary'} />
                 </Tooltip>
               </div>

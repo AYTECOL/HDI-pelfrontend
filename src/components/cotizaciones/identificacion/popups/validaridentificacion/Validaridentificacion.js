@@ -3,6 +3,10 @@ import './Validaridentificacion.scss';
 import icono from 'assets/images/icon.png';
 import icono_close from 'assets/images/icon_close.svg';
 import Helpers from 'common/helpers/helpers';
+import {
+  NUMBER_SUPPORT_ON_PREMISES,
+  NUMBER_SUPPORT_NATIONAL,
+} from 'common/constants';
 
 class Validaridentificacion extends Component {
   static toggle(status) {
@@ -77,8 +81,8 @@ class Validaridentificacion extends Component {
             <div className="modal-footer">
               <p>
                 Para más información comunícate desde Bogotá a la línea{' '}
-                <span>307 7050</span> o desde cualquier lugar del país{' '}
-                <span>018000 113390</span>
+                <span>{NUMBER_SUPPORT_ON_PREMISES}</span> o desde cualquier
+                lugar del país <span>{NUMBER_SUPPORT_NATIONAL}</span>
               </p>
             </div>
           </div>

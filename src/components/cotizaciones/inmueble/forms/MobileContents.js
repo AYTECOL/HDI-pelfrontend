@@ -29,7 +29,9 @@ class MobileContents extends Component {
       description: name = '',
       min_value: min = 0,
       max_value: max = 0,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     } = {
       ...(state && state.allInsurableLimits[5]),
     };
@@ -37,10 +39,19 @@ class MobileContents extends Component {
       name,
       min,
       max,
-      maximumPerItem,
+      tooltip,
+      title_card,
+      title_desc,
     };
   };
 
+  static name_card() {
+    try {
+      return MobileContents.getContent().title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return MobileContents.getContent().name;
@@ -132,16 +143,15 @@ class MobileContents extends Component {
 
   render() {
     const content = MobileContents.getContent();
-    const maximumPerItem = Masknumbermoney.formatToMask(content.maximumPerItem);
+    const maximumPerItem = content.tooltip;
+    const title_desc = content.title_desc;
     const { active, errorValue } = this.state;
     return (
       <div className="row">
         <div className="col col-12 p-0">
           <div className="row">
             <div className="col col-12 col-md-6 form-group mb-0">
-              <label htmlFor={MobileContents.nameModel}>
-                ¿Adicionalmente deseas asegurar {MobileContents.name()}?{' '}
-              </label>
+              <label htmlFor={MobileContents.nameModel}>{title_desc}</label>
             </div>
             {active === 1 && (
               <div className="col col-12 col-md-6 p-0 d-flex align-items-end">
@@ -155,7 +165,7 @@ class MobileContents extends Component {
                   <Tooltip
                     className="mt-1"
                     placement="left"
-                    title={`El valor máximo por cada artículo móvil es de ${maximumPerItem}`}
+                    title={`${maximumPerItem}`}
                   >
                     <Help className={'ml-auto icon-primary'} />
                   </Tooltip>

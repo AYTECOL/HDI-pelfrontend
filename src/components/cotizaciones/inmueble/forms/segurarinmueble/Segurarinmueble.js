@@ -6,6 +6,8 @@ import { saveInmuebleValue } from '../../../../../store/actions';
 
 import Masknumbermoney from '../../../../../common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from '../../../../../common/helpers/helpers';
+import Help from '../../../../globals/icons/help';
+import { Tooltip } from '../../../../Tooltip';
 
 class Segurarinmueble extends Component {
   static nameModel = 'inmuebleasegudado';
@@ -23,6 +25,35 @@ class Segurarinmueble extends Component {
     };
   }
 
+  static getContent = () => {
+    const state = store.getState();
+    const {
+      description: name = '',
+      min_value: min = 0,
+      max_value: max = 0,
+      tooltip,
+      title_card,
+      title_desc,
+    } = {
+      ...(state && state.allInsurableLimits[1]),
+    };
+    return {
+      name,
+      min,
+      max,
+      tooltip,
+      title_card,
+      title_desc,
+    };
+  };
+
+  static name_card() {
+    try {
+      return store.getState().allInsurableLimits[1].title_card;
+    } catch (e) {
+      return '';
+    }
+  }
   static name() {
     try {
       return store.getState().allInsurableLimits[1].description;
@@ -115,6 +146,10 @@ class Segurarinmueble extends Component {
 
   render() {
     const { errorValue } = this.state;
+    const content = Segurarinmueble.getContent();
+    const maximumPerItem = content.tooltip;
+    const name = content.name;
+    const title_desc = content.title_desc;
     return (
       <div className="row">
         <div className="col col-12 col-md-6">
@@ -125,9 +160,8 @@ class Segurarinmueble extends Component {
               this.state.error
             }
           >
-            <label htmlFor={Segurarinmueble.nameModel}>
-              ¿Deseas asegurar {Segurarinmueble.name()}?{' '}
-            </label>
+            <label htmlFor={Segurarinmueble.nameModel}>{title_desc}</label>
+
             <ul className="select-item" id={Segurarinmueble.nameModel}>
               <li
                 className={this.state.active === 1 ? 'active' : ''}
@@ -159,9 +193,19 @@ class Segurarinmueble extends Component {
                 errorValue !== 0 && 'error'
               )}
             >
-              <label htmlFor={Segurarinmueble.nameModelValue}>
-                Valor del inmueble
-              </label>
+              <div className="d-flex">
+                <label
+                  className="flex-fill"
+                  htmlFor={Segurarinmueble.nameModelValue}
+                >
+                  {name}
+                </label>
+                {maximumPerItem && (
+                  <Tooltip placement="left" title={`${maximumPerItem}`}>
+                    <Help className={'ml-auto icon-primary'} />
+                  </Tooltip>
+                )}
+              </div>
               <input
                 name="value"
                 id={Segurarinmueble.nameModelValue}
