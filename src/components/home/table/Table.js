@@ -13,6 +13,7 @@ import Loading from '../../../components/globals/loading/Loading';
 import QuoteIussedById from '../../../services/QuoteIussedById';
 import PdfEndosoHogar from '../../../services/PdfEndosoHogar';
 import Quotes from 'services/GetQuote';
+import CreateAuditData from 'services/Audit';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from 'common/helpers/helpers';
 import MomentJs from 'moment';
@@ -30,6 +31,13 @@ const Table = (props) => {
   const [plans, setPlans] = useState(new Map());
   const [moreInfo, setMoreInfo] = useState(new Map());
   const identificationTypes = store.getState().identifications;
+  const {
+    agente: intermediateCode,
+    usuario,
+    Celular,
+    nombreUsuario,
+    Sucursal,
+  } = store.getState().auth || {};
 
   useEffect(() => {
     initialData(props.quotesData);
@@ -51,6 +59,19 @@ const Table = (props) => {
     const { history } = props;
     await GetEstate.get(id);
     let cotizacion = await GetQuote.getById(id);
+    let body = {
+      opcion: 'Dashboard link cotizaciones / retomar',
+      respuesta: [],
+      respuesta_identificación: [],
+      campo_filtro: '',
+      clave_broker: intermediateCode,
+      username: usuario,
+      celular: Celular,
+      nombreIntermediario: nombreUsuario,
+      sucursal: Sucursal,
+      identificacion: cotizacion.identification.value,
+    };
+    await CreateAuditData.createDataAudit(body);
     if (typeof cotizacion.identification !== 'undefined') {
       if (cotizacion.state <= 3) {
         history.push(`${UrlSite}/cotizacion/${cotizacion.state}/${id}`);
@@ -62,6 +83,7 @@ const Table = (props) => {
         );
       }
       store.dispatch(restoreCotizacion(cotizacion));
+      console.log('cotizacion', cotizacion);
     }
   };
   const getPdf = (id) => async (e) => {
@@ -115,11 +137,13 @@ const Table = (props) => {
     async function getPlanSelected() {
       setLoadingPlans(true);
       const ids = pageOfItems.map(({ quoteId }) => quoteId);
-      const { plans: newPlans } = await Quotes.getPlanSelected(ids);
-      setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
+
       if (isEmitted) {
         const { moreInfo: newMoreInfo } = await Quotes.getMoreInfoPolicies(ids);
         setMoreInfo(new Map(newMoreInfo.map((more) => [more.id, more])));
+      } else {
+        const { plans: newPlans } = await Quotes.getPlanSelected(ids);
+        setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
       }
     }
     if (pageOfItems.length)

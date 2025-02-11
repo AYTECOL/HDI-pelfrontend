@@ -1,4 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import {
+  setTabQuotation,
+  setTabInEmission,
+  setTabEmitted,
+} from '../../store/actions';
 import { withRouter } from 'react-router-dom';
 import Counter from 'services/Counter';
 import Loading from 'components/globals/loading/Loading';
@@ -6,6 +11,7 @@ import Table from 'components/home/table/Table';
 import './Home.scss';
 import Search from 'components/home/search/search';
 import Quotes from 'services/GetQuote';
+import CreateAuditData from 'services/Audit';
 import MomentJs from 'moment';
 import {
   STEP_EMITTED,
@@ -25,9 +31,18 @@ const Home = (props) => {
     },
     search: null,
   });
+
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
   const [statesQuotes, setStatesQuotes] = useState({});
-  const { agente: intermediateCode } = store.getState().auth;
+  const {
+    agente: intermediateCode,
+    usuario,
+    Celular,
+    nombreUsuario,
+    Sucursal,
+  } = store.getState().auth || {};
 
   /**
    * @param {import("services/GetQuote").PolicyRequest[]} dataArray
@@ -92,7 +107,6 @@ const Home = (props) => {
     }
     setTimeout(Loading.toggle(false), 500);
   };
-
   useEffect(() => {
     async function getQuotes() {
       Loading.toggle(true);
@@ -101,8 +115,8 @@ const Home = (props) => {
       setQuotesData(result);
       Loading.toggle(false);
     }
-    if (intermediateCode) getQuotes();
-  }, [intermediateCode]);
+    if (intermediateCode && filter.search === null) getQuotes();
+  }, [intermediateCode, filter.search]);
 
   const quoteFilters = useMemo(() => {
     const { orderBy, search } = filter;
@@ -128,7 +142,6 @@ const Home = (props) => {
       });
       filterQuotes = [...result];
     }
-
     if (search) {
       const result = filterQuotes.filter(
         (quoteItem) =>
@@ -148,13 +161,225 @@ const Home = (props) => {
     filterQuotes = [
       ...filterQuotes.filter(({ step }) => stepTable.includes(step)),
     ];
+
     return [
       ...filterQuotes.filter(
         ({ validity, step }) => step !== 7 && validity > 0
       ),
       ...filterQuotes.filter(({ step }) => step === 7),
     ];
-  }, [quotesData, filter, stepTable]);
+  }, [quotesData, filter.search, stepTable]);
+
+  useEffect(() => {
+    async function createAudit() {
+      if (quoteFilters.length > 0 && filter.search === null) {
+        let opcion = '';
+        let respuestaFiltro = [];
+        switch (stepTable) {
+          case STEP_QUOTATION:
+            opcion = 'Dashboard primer ingreso / dashboard proceso cotización';
+            respuestaFiltro = quoteFilters.map(
+              ({ quoteId, create_data, document_number, address }) => {
+                const result = {
+                  cotizacion: quoteId,
+                  fecha: create_data,
+                  identificacion: document_number,
+                  direccion: address,
+                };
+                return result;
+              }
+            );
+            break;
+          case STEP_ISSUE:
+            opcion = 'Dashboard link proceso de emision';
+            respuestaFiltro = quoteFilters.map(
+              ({ quoteId, create_data, document_number, address }) => {
+                const result = {
+                  cotizacion: quoteId,
+                  fecha: create_data,
+                  identificacion: document_number,
+                  direccion: address,
+                };
+                return result;
+              }
+            );
+            break;
+          case STEP_EMITTED:
+            opcion = 'Dashboard link polizas emitidas';
+            respuestaFiltro = quoteFilters.map(
+              ({
+                quoteId,
+                create_data,
+                document_number,
+                address,
+                emitedDate,
+                emissionId,
+              }) => {
+                const result = {
+                  cotizacion: quoteId,
+                  emissionId,
+                  fecha: create_data,
+                  identificacion: document_number,
+                  direccion: address,
+                  fechaInicioVigencia: emitedDate,
+                };
+                return result;
+              }
+            );
+            break;
+
+          default:
+            break;
+        }
+        let body = {
+          opcion: opcion,
+          respuesta: respuestaFiltro,
+          clave_broker: intermediateCode,
+          username: usuario,
+          celular: Celular,
+          nombreIntermediario: nombreUsuario,
+          sucursal: Sucursal,
+        };
+        await CreateAuditData.createDataAudit(body);
+      }
+    }
+    createAudit();
+  }, [quoteFilters]);
+
+  useEffect(() => {
+    async function getQuotes() {
+      Loading.toggle(true);
+      let arrayItems = await Quotes.get(intermediateCode);
+      const result = formatDataQuotations(arrayItems);
+      setQuotesData(result);
+      Loading.toggle(false);
+    }
+    if (searchTerm && quoteFilters.length > 0) {
+      const handler = setTimeout(async () => {
+        setFilter((prev) => ({ ...prev, search: searchTerm }));
+        let opcion = '';
+        let campo_filtro = '';
+        let respuestaFiltro = [];
+        let respuesta_identificación = [];
+        switch (stepTable) {
+          case STEP_QUOTATION:
+            opcion =
+              'Dashboard primer ingreso  (filtros : identificación , nombre, dirección )';
+            campo_filtro = `input search value: ${searchTerm}`;
+            respuestaFiltro = quoteFilters.map(
+              ({ quoteId, create_data, document_number, address }) => {
+                const result = {
+                  cotizacion: quoteId,
+                  fecha: create_data,
+                  identificacion: document_number,
+                  direccion: address,
+                };
+                return result;
+              }
+            );
+            if (searchTerm) {
+              respuesta_identificación = quoteFilters.map(
+                ({ document_number }) => {
+                  return document_number;
+                }
+              );
+            }
+            break;
+          case STEP_ISSUE:
+            opcion =
+              'Dashboard link proceso de emision (filtros : identificación , nombre, dirección )';
+            campo_filtro = `input search value: ${searchTerm}`;
+            respuestaFiltro = quoteFilters.map(
+              ({ quoteId, create_data, document_number, address }) => {
+                const result = {
+                  cotizacion: quoteId,
+                  fecha: create_data,
+                  identificacion: document_number,
+                  direccion: address,
+                };
+                return result;
+              }
+            );
+            if (searchTerm) {
+              respuesta_identificación = quoteFilters.map(
+                ({ document_number }) => {
+                  return document_number;
+                }
+              );
+            }
+            break;
+          case STEP_EMITTED:
+            opcion =
+              'Dashboard link polizas emitidas (filtros : identificación , nombre, dirección)';
+            campo_filtro = `input search value: ${searchTerm}`;
+            respuestaFiltro = quoteFilters.map(
+              ({
+                quoteId,
+                create_data,
+                document_number,
+                address,
+                emitedDate,
+                emissionId,
+              }) => {
+                const result = {
+                  cotizacion: quoteId,
+                  emissionId,
+                  fecha: create_data,
+                  identificacion: document_number,
+                  direccion: address,
+                  fechaInicioVigencia: emitedDate,
+                };
+                return result;
+              }
+            );
+            if (searchTerm) {
+              respuesta_identificación = quoteFilters.map(
+                ({ document_number }) => {
+                  return document_number;
+                }
+              );
+            }
+            break;
+
+          default:
+            break;
+        }
+        let body = {
+          opcion: opcion,
+          respuesta: respuestaFiltro,
+          respuesta_identificación: respuesta_identificación,
+          campo_filtro: campo_filtro,
+          clave_broker: intermediateCode,
+          username: usuario,
+          celular: Celular,
+          nombreIntermediario: nombreUsuario,
+          sucursal: Sucursal,
+        };
+        await CreateAuditData.createDataAudit(body);
+      }, 800); // Espera 500ms después de que el usuario deje de escribir
+      return () => clearTimeout(handler); // Limpia el timeout si el usuario sigue escribiendo
+    } else if (intermediateCode && filter.search) {
+      getQuotes();
+    } else if (!searchTerm) {
+      setQuotesData(quotesData);
+      setFilter({ ...filter, search: null });
+    }
+  }, [searchTerm, stepTable, filter.search]);
+
+  switch (stepTable) {
+    case STEP_QUOTATION:
+      store.dispatch(setTabQuotation(quoteFilters));
+      break;
+    case STEP_ISSUE:
+      store.dispatch(setTabInEmission(quoteFilters));
+      break;
+    case STEP_EMITTED:
+      store.dispatch(setTabEmitted(quoteFilters));
+      break;
+
+    default:
+      break;
+  }
 
   return (
     <div className="home">
@@ -204,7 +429,7 @@ const Home = (props) => {
           </ul>
           <Search
             placeholder="Busca por Nombre, Id, dirección ..."
-            handleChange={(value) => setFilter({ ...filter, search: value })}
+            handleChange={(value) => setSearchTerm(value)}
           />
         </div>
         <Table

@@ -81,6 +81,16 @@ const setGeneralSetIdentifications = (data) => {
   return { type: actionsTypes.GENERAL_SET_IDENTIFICATIONS, data: data };
 };
 
+const setTabQuotation = (data) => {
+  return { type: actionsTypes.SET_QUOTATION, data: data };
+};
+const setTabInEmission = (data) => {
+  return { type: actionsTypes.SET_INEMISSION, data: data };
+};
+const setTabEmitted = (data) => {
+  return { type: actionsTypes.SET_EMITED, data: data };
+};
+
 // action authentication
 const setAuthUser = (data) => {
   return {
@@ -170,4 +180,7 @@ export {
   setExceptionSarlaft,
   setGeneralSetIdentifications,
   setAuthUser,
+  setTabQuotation,
+  setTabInEmission,
+  setTabEmitted,
 };
