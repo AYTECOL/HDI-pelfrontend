@@ -38,7 +38,7 @@ class CreateAuditData {
       nombreIntermediario: data.nombreIntermediario ?? auth.nombreUsuario,
       sucursal: data.sucursal ?? auth.Sucursal,
       identificacion: data.identificacion ?? '0',
-      respuesta_identificación: data.respuesta_identificación ?? [],
+      respuesta_identificacion: data.respuesta_identificacion ?? [],
       cotizacion: data.cotizacion ? data.cotizacion : cotizacion.number,
       fecha_cotizacion: data.fecha_cotizacion ?? cotizacion.fecha_cotizacion,
       id_ciudad: data.id_ciudad,

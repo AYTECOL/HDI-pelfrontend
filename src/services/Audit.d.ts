@@ -10,7 +10,7 @@ export interface AuditRequest {
     nombreIntermediario: string,
     sucursal: string,
     identificacion?: string,
-    respuesta_identificación?: Array,
+    respuesta_identificacion?: Array,
     cotizacion?: string,
     cotizacion_fecha?: string,
     id_ciudad?: string,

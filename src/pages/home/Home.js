@@ -265,7 +265,7 @@ const Home = (props) => {
         let opcion = '';
         let campo_filtro = '';
         let respuestaFiltro = [];
-        let respuesta_identificación = [];
+        let respuesta_identificacion = [];
         switch (stepTable) {
           case STEP_QUOTATION:
             opcion =
@@ -283,7 +283,7 @@ const Home = (props) => {
               }
             );
             if (searchTerm) {
-              respuesta_identificación = quoteFilters.map(
+              respuesta_identificacion = quoteFilters.map(
                 ({ document_number }) => {
                   return document_number;
                 }
@@ -306,7 +306,7 @@ const Home = (props) => {
               }
             );
             if (searchTerm) {
-              respuesta_identificación = quoteFilters.map(
+              respuesta_identificacion = quoteFilters.map(
                 ({ document_number }) => {
                   return document_number;
                 }
@@ -338,7 +338,7 @@ const Home = (props) => {
               }
             );
             if (searchTerm) {
-              respuesta_identificación = quoteFilters.map(
+              respuesta_identificacion = quoteFilters.map(
                 ({ document_number }) => {
                   return document_number;
                 }
@@ -352,7 +352,7 @@ const Home = (props) => {
         let body = {
           opcion: opcion,
           respuesta: respuestaFiltro,
-          respuesta_identificación: respuesta_identificación,
+          respuesta_identificacion: respuesta_identificacion,
           campo_filtro: campo_filtro,
           clave_broker: intermediateCode,
           username: usuario,

@@ -70,7 +70,7 @@ const Table = (props) => {
     let body = {
       opcion: opcion,
       respuesta: [],
-      respuesta_identificación: [],
+      respuesta_identificacion: [],
       campo_filtro: '',
       clave_broker: intermediateCode,
       username: usuario,
