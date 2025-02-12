@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Table.scss';
 import store from 'store';
-import { restoreCotizacion } from '../../../store/actions';
+import {
+  restoreCotizacion,
+  setPlansEmmit,
+  setPlansQuot,
+} from '../../../store/actions';
 import PdfPolizaHogar from '../../../services/PdfPolizaHogar';
 import GetQuote from '../../../services/GetQuote';
 import GetEstate from '../../../services/GetEstate';
@@ -59,8 +63,12 @@ const Table = (props) => {
     const { history } = props;
     await GetEstate.get(id);
     let cotizacion = await GetQuote.getById(id);
+    let opcion =
+      cotizacion.state < 7 && cotizacion.state > 3
+        ? 'Dashboard link proceso emisión / retomar'
+        : 'Dashboard link cotizaciones / retomar';
     let body = {
-      opcion: 'Dashboard link cotizaciones / retomar',
+      opcion: opcion,
       respuesta: [],
       respuesta_identificación: [],
       campo_filtro: '',
@@ -70,6 +78,8 @@ const Table = (props) => {
       nombreIntermediario: nombreUsuario,
       sucursal: Sucursal,
       identificacion: cotizacion.identification.value,
+      cotizacion: cotizacion.number,
+      fecha_cotizacion: cotizacion.fecha_cotizacion,
     };
     await CreateAuditData.createDataAudit(body);
     if (typeof cotizacion.identification !== 'undefined') {
@@ -83,7 +93,6 @@ const Table = (props) => {
         );
       }
       store.dispatch(restoreCotizacion(cotizacion));
-      console.log('cotizacion', cotizacion);
     }
   };
   const getPdf = (id) => async (e) => {
@@ -140,9 +149,11 @@ const Table = (props) => {
 
       if (isEmitted) {
         const { moreInfo: newMoreInfo } = await Quotes.getMoreInfoPolicies(ids);
+        await store.dispatch(setPlansEmmit(newMoreInfo));
         setMoreInfo(new Map(newMoreInfo.map((more) => [more.id, more])));
       } else {
         const { plans: newPlans } = await Quotes.getPlanSelected(ids);
+        await store.dispatch(setPlansQuot(newPlans));
         setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
       }
     }

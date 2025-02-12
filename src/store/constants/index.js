@@ -31,3 +31,5 @@ export const SET_AUTH_USER = 'SET_AUTH_USER';
 export const SET_QUOTATION = 'SET_QUOTATION';
 export const SET_INEMISSION = 'SET_INEMISSION';
 export const SET_EMITED = 'SET_EMITED';
+export const SET_PLAN_EMITED = 'SET_PLAN_EMITED';
+export const SET_PLAN_QUOT = 'SET_PLAN_QUOT';

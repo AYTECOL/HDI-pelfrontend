@@ -75,7 +75,7 @@ class Valoreasegurar extends Component {
         if (!this.state.retryLimitReached) {
           await this.getLimitsEstate();
         } else {
-          console.log('Límite de reintentos alcanzado');
+          console.error('Límite de reintentos alcanzado');
         }
       }
     );

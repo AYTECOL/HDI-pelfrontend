@@ -9,6 +9,7 @@ import { UrlSite } from '../../../../../config';
 import NewPlanSelected from 'services/NewPlanSelected';
 import store from 'store';
 import CreateOrUpdateValoration from 'services/CreateOrUpdateValoration';
+import CreateAuditData from 'services/Audit';
 import Loading from 'components/globals/loading/Loading';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import { NextStep, resetStore, saveProspect } from 'store/actions';
@@ -87,6 +88,18 @@ class BtnContinue extends Component {
       let plan = this.planToSave();
       let dataStore = store.getState();
       let inspectType = dataStore.Inmueble.inspection_policies;
+      const { identification, number, fecha_cotizacion } = dataStore.cotizacion;
+      console.log('plan', plan);
+      let body = {
+        opcion: 'cotización / botón iniciar emisión',
+        identificacion: identification.value,
+        id_ciudad: identification.city,
+        id_departamento: identification.department,
+        riesgo: identification.address,
+        fecha_cotizacion: fecha_cotizacion,
+        cotizacion: number,
+        prima: plan.value,
+      };
       switch (inspectType) {
         case 'RF':
           this.setState({
@@ -112,6 +125,7 @@ class BtnContinue extends Component {
       await QuoteService.save();
       await CreateOrUpdateValoration.save();
       await NewPlanSelected.get(plan);
+      await CreateAuditData.createDataAudit(body);
       this.props.history.push(
         UrlSite + '/emision/1/' + this.props.match.params.id
       );

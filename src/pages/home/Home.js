@@ -36,6 +36,8 @@ const Home = (props) => {
 
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
   const [statesQuotes, setStatesQuotes] = useState({});
+  const [plansQuotsAndEmiss, setPlansQuotsAndEmiss] = useState(null);
+  const [plansEmiss, setPlansEmiss] = useState({});
   const {
     agente: intermediateCode,
     usuario,
@@ -43,6 +45,8 @@ const Home = (props) => {
     nombreUsuario,
     Sucursal,
   } = store.getState().auth || {};
+  const planQuotAndInEmiss = store.getState()?.planQuot;
+  const planEmiss = store.getState()?.planEmiss;
 
   /**
    * @param {import("services/GetQuote").PolicyRequest[]} dataArray
@@ -107,6 +111,7 @@ const Home = (props) => {
     }
     setTimeout(Loading.toggle(false), 500);
   };
+
   useEffect(() => {
     async function getQuotes() {
       Loading.toggle(true);
@@ -244,7 +249,7 @@ const Home = (props) => {
       }
     }
     createAudit();
-  }, [quoteFilters]);
+  }, [quoteFilters, planQuotAndInEmiss, planEmiss]);
 
   useEffect(() => {
     async function getQuotes() {
@@ -429,7 +434,9 @@ const Home = (props) => {
           </ul>
           <Search
             placeholder="Busca por Nombre, Id, dirección ..."
-            handleChange={(value) => setSearchTerm(value)}
+            handleChange={(value) => {
+              setSearchTerm(value);
+            }}
           />
         </div>
         <Table

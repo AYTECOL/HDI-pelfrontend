@@ -1,6 +1,7 @@
 import Api from './Api';
 import Helpers from '../common/helpers/helpers';
 /* import AccessToken from '../services/AccessToken'; */
+import Store from '../store';
 import AuthHeader from './AuthHeader';
 import { STATUS } from 'assets/constants';
 const Url = '/audit-register';
@@ -20,30 +21,31 @@ function getFormattedDate() {
 
 class CreateAuditData {
   static async createDataAudit(data) {
-    console.log(data);
+    const { cotizacion, auth } = Store.getState();
+
     // TODO intercept request
     let authHeader = new AuthHeader();
     authHeader = authHeader.generateAuthCode();
     let body = {
       id: Date.now(),
-      opcion: data.opcion,
-      respuesta: data.respuesta,
+      opcion: data.opcion ?? '',
+      respuesta: data.respuesta ?? [],
       campo_filtro: data.campo_filtro ?? '',
       fecha_ejecucion: getFormattedDate(),
-      clave_broker: data.clave_broker,
-      username: data.username,
-      celular: data.celular,
-      nombreIntermediario: data.nombreIntermediario,
-      sucursal: data.sucursal,
+      clave_broker: data.clave_broker ?? auth.agente,
+      username: data.username ?? auth.usuario,
+      celular: data.celular ?? auth.Celular,
+      nombreIntermediario: data.nombreIntermediario ?? auth.nombreUsuario,
+      sucursal: data.sucursal ?? auth.Sucursal,
       identificacion: data.identificacion ?? '0',
       respuesta_identificación: data.respuesta_identificación ?? [],
-      // cotizacion,
-      // cotizacion_fecha,
-      // id_ciudad,
-      // id_departamento,
-      // riesgo,
-      // prima,
-      // poliza,
+      cotizacion: data.cotizacion ? data.cotizacion : cotizacion.number,
+      fecha_cotizacion: data.fecha_cotizacion ?? cotizacion.fecha_cotizacion,
+      id_ciudad: data.id_ciudad,
+      id_departamento: data.id_departamento,
+      riesgo: data.riesgo,
+      prima: data.prima,
+      poliza: data.poliza,
     };
     return await Api.post(
       Url,

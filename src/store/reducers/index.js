@@ -299,6 +299,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         emited: action.data,
       };
+    case actionsTypes.SET_PLAN_QUOT:
+      return {
+        ...state,
+        planQuot: action.data,
+      };
+    case actionsTypes.SET_PLAN_EMITED:
+      return {
+        ...state,
+        planEmiss: action.data,
+      };
 
     default:
       return state;
