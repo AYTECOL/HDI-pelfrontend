@@ -10,6 +10,7 @@ import {
 import PdfPolizaHogar from '../../../services/PdfPolizaHogar';
 import GetQuote from '../../../services/GetQuote';
 import GetEstate from '../../../services/GetEstate';
+
 import Identifications from '../../../services/Identifications';
 import { UrlSite } from '../../../config';
 import Pagination from '../../../common/helpers/Pagination/Pagination';
@@ -100,6 +101,20 @@ const Table = (props) => {
     try {
       let a = document.createElement('a');
       let data = await QuoteIussedById.get(id);
+      console.log('data', data, id);
+      let body = {
+        respuesta: [],
+        respuesta_identificacion: [],
+        campo_filtro: '',
+        clave_broker: intermediateCode,
+        username: usuario,
+        celular: Celular,
+        nombreIntermediario: nombreUsuario,
+        sucursal: Sucursal,
+        identificacion: data.quote_iussed_info.Item.taker.document,
+        prima: data.plan_selected_info.Item.prospect,
+        cotizacion: data.plan_selected_info.Item.id,
+      };
       let endoso = false;
       if (typeof data.quote_iussed_info !== 'undefined') {
         if (
@@ -114,7 +129,8 @@ const Table = (props) => {
 
       if (endoso) {
         let pdfEndoso = await PdfEndosoHogar.get(id);
-
+        body.opcion = 'Dashboard link pólizas emitidas / descargar PDF endoso';
+        await CreateAuditData.createDataAudit(body);
         let a = document.createElement('a');
         a.style.display = 'none';
         document.body.appendChild(a);
@@ -124,6 +140,7 @@ const Table = (props) => {
         document.body.removeChild(a);
       }
       let pdf = await PdfPolizaHogar.get(id);
+      await CreateAuditData.createDataAudit(body);
       a = document.createElement('a');
       a.style.display = 'none';
       document.body.appendChild(a);

@@ -21,6 +21,7 @@ function getFormattedDate() {
 
 class CreateAuditData {
   static async createDataAudit(data) {
+    console.log('aqui');
     const { cotizacion, auth } = Store.getState();
 
     // TODO intercept request
@@ -39,7 +40,7 @@ class CreateAuditData {
       sucursal: data.sucursal ?? auth.Sucursal,
       identificacion: data.identificacion ?? '0',
       respuesta_identificacion: data.respuesta_identificacion ?? [],
-      cotizacion: data.cotizacion ? data.cotizacion : cotizacion.number,
+      cotizacion: data.cotizacion,
       fecha_cotizacion: data.fecha_cotizacion ?? cotizacion.fecha_cotizacion,
       id_ciudad: data.id_ciudad,
       id_departamento: data.id_departamento,
