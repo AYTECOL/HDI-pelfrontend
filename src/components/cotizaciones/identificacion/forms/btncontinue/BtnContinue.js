@@ -38,7 +38,7 @@ class BtnContinue extends Component {
   }
 
   nextStepIndex = async () => {
-    const { identification, stateFormIdentificacion, fecha_cotizacion, number } = this.props;
+    const { identification, stateFormIdentificacion, match } = this.props;
     if (stateFormIdentificacion === 1) {
       Loading.toggle(true);
       store.dispatch(NextStep(2));
@@ -48,12 +48,11 @@ class BtnContinue extends Component {
         id_ciudad: identification.city,
         id_departamento: identification.department,
         riesgo: identification.address,
-        fecha_cotizacion: fecha_cotizacion,
-        cotizacion: number
+        cotizacion: match.params.id,
       };
 
       await QuoteService.save();
-      await CreateAuditData.createDataAudit(body);
+      await CreateAuditData.createDataAudit(body, true);
       this.props.history.push(
         UrlSite + '/cotizacion/2/' + this.props.match.params.id
       );
@@ -159,6 +158,7 @@ class BtnContinue extends Component {
   };
 
   render() {
+    console.log('this.props', this.props);
     const { stateFormIdentificacion, continueButtonDisable } = this.props;
     const { loading } = this.state;
     const disabled = loading || continueButtonDisable;

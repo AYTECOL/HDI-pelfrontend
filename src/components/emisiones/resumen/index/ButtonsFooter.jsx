@@ -2,7 +2,7 @@ import React from 'react';
 //Component
 import BtnContinue from '../forms/btncontinue/BtnContinue';
 
-export const ButtonsFooter = () => {
+export const ButtonsFooter = ({ plan }) => {
   const [accept, setAccept] = React.useState(false);
   return (
     <div className="row">
@@ -35,7 +35,7 @@ export const ButtonsFooter = () => {
         </div>
       </div>
       <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
-        <BtnContinue continueButtonDisable={!accept} />
+        <BtnContinue continueButtonDisable={!accept} plan={plan} />
       </div>
     </div>
   );

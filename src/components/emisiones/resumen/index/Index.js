@@ -619,7 +619,7 @@ class Index extends Component {
                 </div>
               </div>
             </div>
-            <ButtonsFooter />
+            <ButtonsFooter plan={this.state.plans}/>
           </div>
           {this.state.showPopUpPersona === true && (
             <PopUpPersona

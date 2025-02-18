@@ -30,6 +30,7 @@ class BtnContinue extends Component {
       continueButtonDisable: false,
       stateFormIdentificacion: 0,
       cotizacionExclude: [],
+      plan: this.props.plan,
     };
   }
 
@@ -55,7 +56,6 @@ class BtnContinue extends Component {
     const { id } = params;
     const exceptionSarlaft = store.getState().exceptionSarlaft;
     const mapOptions = store.getState().mapsOptions;
-    const plans = store.getState().AllPlans;
     Loading.toggle(true);
     try {
       this.setState({
@@ -66,6 +66,8 @@ class BtnContinue extends Component {
       let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
+      console.log(cotizacion);
+      console.log(this.props.plan);
       let body = {
         opcion: 'emisión / éxito',
         identificacion: cotizacion.identification.value,
@@ -74,7 +76,7 @@ class BtnContinue extends Component {
         riesgo: cotizacion.identification.address,
         fecha_cotizacion: cotizacion.fecha_cotizacion,
         cotizacion: cotizacion.number,
-        prima: plans[0].prospect,
+        prima: this.props.plan[0].prospect,
       };
       cotizacion = cotizacion.identification;
 
@@ -197,6 +199,7 @@ class BtnContinue extends Component {
 
   render() {
     const { props, state } = this;
+    console.log('props', props);
     const disabled = props.continueButtonDisable || state.continueButtonDisable;
     return (
       <Fragment>

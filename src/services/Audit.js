@@ -20,7 +20,7 @@ function getFormattedDate() {
 }
 
 class CreateAuditData {
-  static async createDataAudit(data) {
+  static async createDataAudit(data, dateId = false) {
     console.log('aqui');
     const { cotizacion, auth } = Store.getState();
 
@@ -48,6 +48,9 @@ class CreateAuditData {
       prima: data.prima,
       poliza: data.poliza,
     };
+    if (dateId) {
+      body.fecha_cotizacion = getFormattedDate();
+    }
     return await Api.post(
       Url,
       {
