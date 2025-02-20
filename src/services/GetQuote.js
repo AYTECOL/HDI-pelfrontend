@@ -32,6 +32,7 @@ class GetQuote {
       let authHeader = new AuthHeader();
       authHeader = authHeader.generateAuthCode();
       let items = await Api.get('/quote/' + id, undefined, authHeader);
+      console.log('items', items);
       if (typeof items.quote !== 'undefined') {
         items = items.quote;
         for (let i in items) if (items[i] === '""') items[i] = '';
@@ -54,6 +55,7 @@ class GetQuote {
             emissionId: items.policy.emissionId,
             emitedDate: items.policy.emitedDate,
           },
+          fecha_cotizacion: items.create_at,
           mapsOptions: {
             longitude: items.longitude,
             latitude: items.latitude,

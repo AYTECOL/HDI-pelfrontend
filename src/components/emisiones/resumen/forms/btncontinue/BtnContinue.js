@@ -13,6 +13,8 @@ import {
 } from 'store/actions';
 import QuoteService from 'services/Quote';
 import Crearpolizaiaxis from 'services/Crearpolizaiaxis';
+import CreateAuditData from 'services/Audit';
+
 import QuoteIussedById from 'services/QuoteIussedById';
 import IssuedCounter from 'services/IssuedCounter';
 import AttachPolicyDocuments from 'services/AttachPolicyDocuments';
@@ -28,6 +30,7 @@ class BtnContinue extends Component {
       continueButtonDisable: false,
       stateFormIdentificacion: 0,
       cotizacionExclude: [],
+      plan: this.props.plan,
     };
   }
 
@@ -63,6 +66,18 @@ class BtnContinue extends Component {
       let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
+      console.log(cotizacion);
+      console.log(this.props.plan);
+      let body = {
+        opcion: 'emisión / éxito',
+        identificacion: cotizacion.identification.value,
+        id_ciudad: cotizacion.identification.city,
+        id_departamento: cotizacion.identification.department,
+        riesgo: cotizacion.identification.address,
+        fecha_cotizacion: cotizacion.fecha_cotizacion,
+        cotizacion: cotizacion.number,
+        prima: this.props.plan[0].prospect,
+      };
       cotizacion = cotizacion.identification;
 
       let numeroPoliza = {
@@ -165,6 +180,9 @@ class BtnContinue extends Component {
       }
 
       store.dispatch(NextStep(7));
+      body.poliza = numeroPoliza.currentValue;
+
+      await CreateAuditData.createDataAudit(body);
       await QuoteService.save();
       history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);
 
@@ -181,6 +199,7 @@ class BtnContinue extends Component {
 
   render() {
     const { props, state } = this;
+    console.log('props', props);
     const disabled = props.continueButtonDisable || state.continueButtonDisable;
     return (
       <Fragment>
