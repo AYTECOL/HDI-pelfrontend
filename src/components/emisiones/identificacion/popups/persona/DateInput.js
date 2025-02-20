@@ -36,8 +36,7 @@ export const DateInput = (props) => {
         showYearDropdown
         scrollableYearDropdown
         yearDropdownItemNumber={100}
-        maxDate={new Date()}
-        startDate={moment().subtract(18, 'years').toDate()}
+        maxDate={initialDate}
         disabled={fechadenacimientoDisabled}
         className={
           `form-control ${!fechadenacimiento ? 'not-value' : ''}` +
