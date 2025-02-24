@@ -101,6 +101,7 @@ const Table = (props) => {
     try {
       let a = document.createElement('a');
       let data = await QuoteIussedById.get(id);
+
       let body = {
         respuesta: [],
         respuesta_identificacion: [],
