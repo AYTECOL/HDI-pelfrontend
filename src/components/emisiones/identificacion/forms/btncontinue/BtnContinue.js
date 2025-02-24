@@ -8,6 +8,8 @@ import QuoteIussed from 'services/QuoteIussed';
 import store from 'store';
 import { NextStep } from 'store/actions';
 import QuoteService from 'services/Quote';
+import CreateAuditData from 'services/Audit';
+
 import Loading from 'components/globals/loading/Loading';
 import Persona from '../../popups/persona/person';
 import { fieldsNames } from '../../popups/persona/constants';
@@ -62,6 +64,17 @@ class BtnContinue extends PureComponent {
     let additional = [];
     let newPersons = [];
     let validatePersons = [];
+    const { identification, number, fecha_cotizacion } =
+      store.getState().cotizacion;
+    let body = {
+      opcion: 'emisión / información personal / continuar',
+      identificacion: identification.value,
+      id_ciudad: identification.city,
+      id_departamento: identification.department,
+      riesgo: identification.address,
+      fecha_cotizacion: fecha_cotizacion,
+      cotizacion: number,
+    };
     for (let i in persons) {
       let person = persons[i];
       if (typeof person.object !== 'undefined' && person.object !== '') {
@@ -210,6 +223,7 @@ class BtnContinue extends PureComponent {
     });
     if (typeof total !== 'undefined') {
       store.dispatch(NextStep(5));
+      await CreateAuditData.createDataAudit(body);
       await QuoteService.save();
       this.props.history.push(
         UrlSite + '/emision/2/' + this.props.match.params.id
