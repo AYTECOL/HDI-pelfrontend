@@ -9,7 +9,6 @@ const BaseUrl = UrlAccessToken;
 
 class AccessToken {
   static async get(refer) {
-    console.log('reder', refer);
     if (refer === '') return;
     store.dispatch(setAuthUser(null));
     refer = decodeURIComponent(refer.replace(/\+/g, '%20'));

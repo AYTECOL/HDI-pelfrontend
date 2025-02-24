@@ -67,10 +67,8 @@ class PolizaEmitida extends Component {
   };
 
   getPdfEndoso = async () => {
-    const { quote_iussed_info, emitedPolicy, plan_selected_info } =
-      this.state.data;
+    const { quote_iussed_info, plan_selected_info } = this.state.data;
     const { identification, fecha_cotizacion } = this.state.dataQuot;
-    console.log('state', this.state.dataQuot);
     let body = {
       opcion: 'emisión / éxito / Descargar PDFs Oneroso',
       identificacion: quote_iussed_info.Item.taker.document,
@@ -80,7 +78,7 @@ class PolizaEmitida extends Component {
       fecha_cotizacion: fecha_cotizacion,
       cotizacion: this.props.match.params.polizaId,
       prima: plan_selected_info.Item.prospect,
-      poliza: emitedPolicy,
+      poliza: this.state.emitedPolicy,
     };
     await CreateAuditData.createDataAudit(body);
     let pdfEndoso = await PdfEndosoHogar.get(this.state.quote);
@@ -96,10 +94,8 @@ class PolizaEmitida extends Component {
 
   getPdf = async () => {
     Loading.toggle(true);
-    const { quote_iussed_info, emitedPolicy, plan_selected_info } =
-      this.state.data;
+    const { quote_iussed_info, plan_selected_info } = this.state.data;
     const { identification, fecha_cotizacion } = this.state.dataQuot;
-    console.log('state', this.state.dataQuot);
     let body = {
       opcion: 'emisión / éxito / Descargar PDFs',
       identificacion: quote_iussed_info.Item.taker.document,
@@ -109,7 +105,7 @@ class PolizaEmitida extends Component {
       fecha_cotizacion: fecha_cotizacion,
       cotizacion: this.props.match.params.polizaId,
       prima: plan_selected_info.Item.prospect,
-      poliza: emitedPolicy,
+      poliza: this.state.emitedPolicy,
     };
     try {
       let a = document.createElement('a');
