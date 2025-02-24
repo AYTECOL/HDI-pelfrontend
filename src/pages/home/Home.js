@@ -126,6 +126,9 @@ const Home = (props) => {
   const quoteFilters = useMemo(() => {
     const { orderBy, search } = filter;
     let filterQuotes = quotesData;
+    if (!searchTerm) {
+      setFilter({ ...filter, search: null });
+    }
     if (orderBy.type === 'ASC') {
       const filterType = orderBy?.key === 'date' ? 'create_data' : 'quoteId';
       const result = quotesData.sort((a, b) => {
@@ -173,7 +176,7 @@ const Home = (props) => {
       ),
       ...filterQuotes.filter(({ step }) => step === 7),
     ];
-  }, [quotesData, filter.search, stepTable]);
+  }, [quotesData, filter.search, stepTable, searchTerm]);
 
   useEffect(() => {
     async function createAudit() {
@@ -366,7 +369,7 @@ const Home = (props) => {
     } else if (intermediateCode && filter.search) {
       getQuotes();
     } else if (!searchTerm) {
-      setQuotesData(quotesData);
+      getQuotes();
       setFilter({ ...filter, search: null });
     }
   }, [searchTerm, stepTable, filter.search]);

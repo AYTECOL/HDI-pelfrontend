@@ -89,7 +89,7 @@ class BtnContinue extends Component {
       let dataStore = store.getState();
       let inspectType = dataStore.Inmueble.inspection_policies;
       const { identification, number, fecha_cotizacion } = dataStore.cotizacion;
-      console.log('plan', plan);
+
       let body = {
         opcion: 'cotización / botón iniciar emisión',
         identificacion: identification.value,

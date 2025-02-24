@@ -66,8 +66,7 @@ class BtnContinue extends Component {
       let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
-      console.log(cotizacion);
-      console.log(this.props.plan);
+
       let body = {
         opcion: 'emisión / éxito',
         identificacion: cotizacion.identification.value,
