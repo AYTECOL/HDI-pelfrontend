@@ -91,6 +91,13 @@ const setTabEmitted = (data) => {
   return { type: actionsTypes.SET_EMITED, data: data };
 };
 
+const setPlansQuot = (data) => {
+  return { type: actionsTypes.SET_PLAN_QUOT, data: data };
+};
+const setPlansEmmit = (data) => {
+  return { type: actionsTypes.SET_PLAN_EMITED, data: data };
+};
+
 // action authentication
 const setAuthUser = (data) => {
   return {
@@ -183,4 +190,6 @@ export {
   setTabQuotation,
   setTabInEmission,
   setTabEmitted,
+  setPlansQuot,
+  setPlansEmmit,
 };

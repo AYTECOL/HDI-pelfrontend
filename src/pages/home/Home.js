@@ -36,6 +36,8 @@ const Home = (props) => {
 
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
   const [statesQuotes, setStatesQuotes] = useState({});
+  const [plansQuotsAndEmiss, setPlansQuotsAndEmiss] = useState(null);
+  const [plansEmiss, setPlansEmiss] = useState({});
   const {
     agente: intermediateCode,
     usuario,
@@ -43,6 +45,8 @@ const Home = (props) => {
     nombreUsuario,
     Sucursal,
   } = store.getState().auth || {};
+  const planQuotAndInEmiss = store.getState()?.planQuot;
+  const planEmiss = store.getState()?.planEmiss;
 
   /**
    * @param {import("services/GetQuote").PolicyRequest[]} dataArray
@@ -107,6 +111,7 @@ const Home = (props) => {
     }
     setTimeout(Loading.toggle(false), 500);
   };
+
   useEffect(() => {
     async function getQuotes() {
       Loading.toggle(true);
@@ -121,6 +126,9 @@ const Home = (props) => {
   const quoteFilters = useMemo(() => {
     const { orderBy, search } = filter;
     let filterQuotes = quotesData;
+    if (!searchTerm) {
+      setFilter({ ...filter, search: null });
+    }
     if (orderBy.type === 'ASC') {
       const filterType = orderBy?.key === 'date' ? 'create_data' : 'quoteId';
       const result = quotesData.sort((a, b) => {
@@ -168,7 +176,7 @@ const Home = (props) => {
       ),
       ...filterQuotes.filter(({ step }) => step === 7),
     ];
-  }, [quotesData, filter.search, stepTable]);
+  }, [quotesData, filter.search, stepTable, searchTerm]);
 
   useEffect(() => {
     async function createAudit() {
@@ -244,7 +252,7 @@ const Home = (props) => {
       }
     }
     createAudit();
-  }, [quoteFilters]);
+  }, [quoteFilters, planQuotAndInEmiss, planEmiss]);
 
   useEffect(() => {
     async function getQuotes() {
@@ -260,7 +268,7 @@ const Home = (props) => {
         let opcion = '';
         let campo_filtro = '';
         let respuestaFiltro = [];
-        let respuesta_identificación = [];
+        let respuesta_identificacion = [];
         switch (stepTable) {
           case STEP_QUOTATION:
             opcion =
@@ -278,7 +286,7 @@ const Home = (props) => {
               }
             );
             if (searchTerm) {
-              respuesta_identificación = quoteFilters.map(
+              respuesta_identificacion = quoteFilters.map(
                 ({ document_number }) => {
                   return document_number;
                 }
@@ -301,7 +309,7 @@ const Home = (props) => {
               }
             );
             if (searchTerm) {
-              respuesta_identificación = quoteFilters.map(
+              respuesta_identificacion = quoteFilters.map(
                 ({ document_number }) => {
                   return document_number;
                 }
@@ -333,7 +341,7 @@ const Home = (props) => {
               }
             );
             if (searchTerm) {
-              respuesta_identificación = quoteFilters.map(
+              respuesta_identificacion = quoteFilters.map(
                 ({ document_number }) => {
                   return document_number;
                 }
@@ -347,7 +355,7 @@ const Home = (props) => {
         let body = {
           opcion: opcion,
           respuesta: respuestaFiltro,
-          respuesta_identificación: respuesta_identificación,
+          respuesta_identificacion: respuesta_identificacion,
           campo_filtro: campo_filtro,
           clave_broker: intermediateCode,
           username: usuario,
@@ -361,7 +369,7 @@ const Home = (props) => {
     } else if (intermediateCode && filter.search) {
       getQuotes();
     } else if (!searchTerm) {
-      setQuotesData(quotesData);
+      getQuotes();
       setFilter({ ...filter, search: null });
     }
   }, [searchTerm, stepTable, filter.search]);
@@ -429,7 +437,9 @@ const Home = (props) => {
           </ul>
           <Search
             placeholder="Busca por Nombre, Id, dirección ..."
-            handleChange={(value) => setSearchTerm(value)}
+            handleChange={(value) => {
+              setSearchTerm(value);
+            }}
           />
         </div>
         <Table
