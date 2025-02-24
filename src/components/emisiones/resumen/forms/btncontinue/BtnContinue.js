@@ -66,6 +66,7 @@ class BtnContinue extends Component {
       let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
+
       let body = {
         opcion: 'emisión / éxito',
         identificacion: cotizacion.identification.value,
@@ -197,6 +198,7 @@ class BtnContinue extends Component {
 
   render() {
     const { props, state } = this;
+    console.log('props', props);
     const disabled = props.continueButtonDisable || state.continueButtonDisable;
     return (
       <Fragment>
