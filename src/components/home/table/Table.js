@@ -63,6 +63,7 @@ const Table = (props) => {
   const getRowById = (id) => async (e) => {
     const { history } = props;
     await GetEstate.get(id);
+
     let cotizacion = await GetQuote.getById(id);
     let opcion =
       cotizacion.state < 7 && cotizacion.state > 3
@@ -96,14 +97,16 @@ const Table = (props) => {
       store.dispatch(restoreCotizacion(cotizacion));
     }
   };
-  const getPdf = (id) => async (e) => {
+  const getPdf = (id, emissionId) => async (e) => {
     Loading.toggle(true);
+    console.log(id);
     try {
       let a = document.createElement('a');
       let data = await QuoteIussedById.get(id);
 
       let body = {
         respuesta: [],
+        opcion: 'Dashboard link pólizas emitidas / descargar PDF emisión',
         respuesta_identificacion: [],
         campo_filtro: '',
         clave_broker: intermediateCode,
@@ -114,6 +117,7 @@ const Table = (props) => {
         identificacion: data.quote_iussed_info.Item.taker.document,
         prima: data.plan_selected_info.Item.prospect,
         cotizacion: data.plan_selected_info.Item.id,
+        poliza: emissionId,
       };
       let endoso = false;
       if (typeof data.quote_iussed_info !== 'undefined') {
@@ -324,7 +328,7 @@ const Table = (props) => {
                   )}
                   {step === 7 && (
                     <button
-                      onClick={getPdf(item.quoteId)}
+                      onClick={getPdf(item.quoteId, emissionId)}
                       className="btn btn-default btn-default--two"
                     >
                       {' '}
