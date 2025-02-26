@@ -30,6 +30,7 @@ import GetEstate from '../../../../services/GetEstate';
 import moment from 'moment';
 import 'moment/locale/es';
 import ModalLimitsPlanError from '../../../modal/ModalLimitsPlanError';
+import QualtricsLoader from 'components/globals/QualtricsLoader/QualtricsLoader';
 
 class Index extends Component {
   constructor(props) {
@@ -359,6 +360,7 @@ class Index extends Component {
   render() {
     return (
       <>
+        <QualtricsLoader />
         <form autoComplete="off" className="index-form emision">
           <div className="container">
             <div className="row">
