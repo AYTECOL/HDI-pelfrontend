@@ -32,7 +32,15 @@ class App extends Component {
     this._isMounted = true;
     this.getUser();
     this.getResources();
-    this.authentication();
+    if (!sessionStorage.getItem('auditLogged')) {
+      this.authentication()
+        .then(() => {
+          sessionStorage.setItem('auditLogged', 'true');
+        })
+        .catch((error) => {
+          console.error('Error en authentication:', error);
+        });
+    }
   }
 
   async getResources() {
@@ -63,11 +71,7 @@ class App extends Component {
         authData = store.getState().auth;
         attempts++;
       }
-      if (localStorage.getItem('serviceToken')) {
-        console.log('hay token');
-      } else {
-        console.log('no hay token');
-      }
+
       if (authData && authData.agente) {
         // Actualiza el body con la información de auth
         body.clave_broker = authData.agente || '';
@@ -83,30 +87,28 @@ class App extends Component {
         );
       }
     } else {
-      if (!localStorage.getItem('serviceToken')) {
-        let attempts = 0;
-        let authData = store.getState().auth;
+      let attempts = 0;
+      let authData = store.getState().auth;
 
-        while ((!authData || !authData.agente) && attempts < 3) {
-          await new Promise((resolve) => setTimeout(resolve, 500)); // Espera 500ms
-          authData = store.getState().auth;
-          attempts++;
-        }
+      while ((!authData || !authData.agente) && attempts < 3) {
+        await new Promise((resolve) => setTimeout(resolve, 500)); // Espera 500ms
+        authData = store.getState().auth;
+        attempts++;
+      }
 
-        if (authData && authData.agente) {
-          // Actualiza el body con la información de auth
-          body.clave_broker = authData.agente || '';
-          body.username = authData.usuario || '';
-          body.celular = authData.Celular || '';
-          body.nombreIntermediario = authData.nombreUsuario || '';
-          body.sucursal = authData.Sucursal || '';
+      if (authData && authData.agente) {
+        // Actualiza el body con la información de auth
+        body.clave_broker = authData.agente || '';
+        body.username = authData.usuario || '';
+        body.celular = authData.Celular || '';
+        body.nombreIntermediario = authData.nombreUsuario || '';
+        body.sucursal = authData.Sucursal || '';
 
-          await CreateAuditData.createDataAudit(body);
-        } else {
-          console.error(
-            'La data de auth no está disponible después de 3 intentos'
-          );
-        }
+        await CreateAuditData.createDataAudit(body);
+      } else {
+        console.error(
+          'La data de auth no está disponible después de 3 intentos'
+        );
       }
     }
   }
