@@ -272,21 +272,37 @@ class Index extends Component {
     }
   };
 
+  hasDuplicates(array) {
+    const seen = new Set();
+    for (let element of array) {
+        if (seen.has(element)) {
+            return true;
+        }
+        seen.add(element);
+    }
+    return false;
+  }
+
   isDisabled() {
     let persons = this.state.persons;
+    let idBeneficiarios = [];
+    let errorDisabled = {
+      disabled: true,
+      duplicatedBeneficiary: false,
+    }
     for (const participationValue of participationValues) {
       const haveRole = persons.some((person) =>
         isRoleParticipation(participationValue, person.role)
       );
       if (haveRole) {
         if (!validateParticipationPercentage(persons, participationValue))
-          return true;
+          return errorDisabled;
         const total = getTotalParticipationPercentage(
           persons,
           participationValue
         );
         if (!isTotalValid(total)) {
-          return true;
+          return errorDisabled;
         }
       }
     }
@@ -302,23 +318,33 @@ class Index extends Component {
         ) &&
         !isValidDirection(person.address)
       )
-        return true;
+        return errorDisabled;
       const isTaker = person?.role.some((r) => r === ROLES_KEY.IS_TAKER); // IS TAKER
       const isInsured = person?.role.some((r) => r === ROLES_KEY.IS_INSURED); // IS INSURED
       const isBeneficiary = person?.role.some(
         (r) => r === ROLES_KEY.IS_BENEFICIARY
       ); // IS BENEFICIARY
+      const isOnoreus = person?.role.some(
+        (r) => r === ROLES_KEY.IS_ONEROUS
+      );
       if (
         isTaker &&
         !(sarlfaltActive || sarlfalt_url) &&
         !this.state.exceptionSarlaft
       )
-        return true;
+        return errorDisabled;
       if (isTaker) countTaker += 1;
       if (isBeneficiary) countBeneficiary += 1;
       if (isInsured) countInsured += 1;
+      if (isBeneficiary || isOnoreus) idBeneficiarios.push(person?.value);
+      if (isBeneficiary && isOnoreus) idBeneficiarios.push(person?.value);
     }
-    return !(countTaker >= 1 && countInsured >= 1 && countBeneficiary >= 1);
+    if (this.hasDuplicates(idBeneficiarios)) {
+      errorDisabled.duplicatedBeneficiary = true;
+      return errorDisabled;
+    }
+    errorDisabled.disabled = !(countTaker >= 1 && countInsured >= 1 && countBeneficiary >= 1);
+    return errorDisabled;
   }
 
   /**
@@ -500,13 +526,21 @@ class Index extends Component {
             </div>
           )}
 
+          {this.isDisabled().duplicatedBeneficiary && (
+            <div className="row justify-content-center">
+                <span className= "error_message">
+                  La identificación del beneficiario no puede ser igual a la del beneficiario oneroso
+                </span>
+            </div>
+          )}
+
           <div className="row">
             <div className="col col-12 col-sm-12 col-md-12 col-lg-12 form-action justify-content text-center">
               <BtnContinue
                 persons={persons}
                 beneficiariesFinal={this.state.beneficiariesFinal}
                 legalRepresentative={this.state.legalRepresentative}
-                inactiveBtn={this.isDisabled()}
+                inactiveBtn={this.isDisabled().disabled}
               />
             </div>
           </div>
