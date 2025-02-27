@@ -51,7 +51,6 @@ class App extends Component {
       nombreIntermediario: '',
       sucursal: '',
     };
-    console.log('queryString', queryString);
     if (queryString.length > 0 && queryString[0] !== '') {
       await AccessToken.get(queryString[0].replace('refer=', ''));
 
