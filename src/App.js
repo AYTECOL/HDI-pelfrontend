@@ -62,6 +62,7 @@ class App extends Component {
         authData = store.getState().auth;
         attempts++;
       }
+
       if (authData && authData.agente) {
         // Actualiza el body con la información de auth
         body.clave_broker = authData.agente || '';
@@ -77,7 +78,11 @@ class App extends Component {
         );
       }
     } else {
-      if (!localStorage.getItem('serviceToken')) {
+      console.log(
+        'No hay query string',
+        !sessionStorage.getItem('auditLogged')
+      );
+      if (!sessionStorage.getItem('auditLogged')) {
         let attempts = 0;
         let authData = store.getState().auth;
 
@@ -96,6 +101,7 @@ class App extends Component {
           body.sucursal = authData.Sucursal || '';
 
           await CreateAuditData.createDataAudit(body);
+          sessionStorage.setItem('auditLogged', 'true');
         } else {
           console.error(
             'La data de auth no está disponible después de 3 intentos'
