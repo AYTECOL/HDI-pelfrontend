@@ -46,7 +46,6 @@ class ConsultaPersonas {
       let dataRquest = await AccessToken.get(parameters['refer']);
       if (dataRquest !== null) {
         dataRquest['refer'] = parameters['refer'];
-        sessionStorage.clear();
         sessionStorage.setItem(
           ConsultaPersonas.key,
           Base64.encode(
@@ -79,7 +78,6 @@ class ConsultaPersonas {
         typeof data['refer'] !== 'undefined'
       ) {
         dataRquestVerify['refer'] = data['refer'];
-        sessionStorage.clear();
         sessionStorage.setItem(
           ConsultaPersonas.key,
           Base64.encode(

@@ -51,7 +51,6 @@ class App extends Component {
       nombreIntermediario: '',
       sucursal: '',
     };
-
     if (queryString.length > 0 && queryString[0] !== '') {
       await AccessToken.get(queryString[0].replace('refer=', ''));
 
@@ -79,28 +78,35 @@ class App extends Component {
         );
       }
     } else {
-      let attempts = 0;
-      let authData = store.getState().auth;
+      console.log(
+        'No hay query string',
+        !sessionStorage.getItem('auditLogged')
+      );
+      if (!sessionStorage.getItem('auditLogged')) {
+        let attempts = 0;
+        let authData = store.getState().auth;
 
-      while ((!authData || !authData.agente) && attempts < 3) {
-        await new Promise((resolve) => setTimeout(resolve, 500)); // Espera 500ms
-        authData = store.getState().auth;
-        attempts++;
-      }
+        while ((!authData || !authData.agente) && attempts < 3) {
+          await new Promise((resolve) => setTimeout(resolve, 500)); // Espera 500ms
+          authData = store.getState().auth;
+          attempts++;
+        }
 
-      if (authData && authData.agente) {
-        // Actualiza el body con la información de auth
-        body.clave_broker = authData.agente || '';
-        body.username = authData.usuario || '';
-        body.celular = authData.Celular || '';
-        body.nombreIntermediario = authData.nombreUsuario || '';
-        body.sucursal = authData.Sucursal || '';
+        if (authData && authData.agente) {
+          // Actualiza el body con la información de auth
+          body.clave_broker = authData.agente || '';
+          body.username = authData.usuario || '';
+          body.celular = authData.Celular || '';
+          body.nombreIntermediario = authData.nombreUsuario || '';
+          body.sucursal = authData.Sucursal || '';
 
-        await CreateAuditData.createDataAudit(body);
-      } else {
-        console.error(
-          'La data de auth no está disponible después de 3 intentos'
-        );
+          await CreateAuditData.createDataAudit(body);
+          sessionStorage.setItem('auditLogged', 'true');
+        } else {
+          console.error(
+            'La data de auth no está disponible después de 3 intentos'
+          );
+        }
       }
     }
   }

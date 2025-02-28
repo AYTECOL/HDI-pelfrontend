@@ -158,7 +158,6 @@ class BtnContinue extends Component {
   };
 
   render() {
-    console.log('this.props', this.props);
     const { stateFormIdentificacion, continueButtonDisable } = this.props;
     const { loading } = this.state;
     const disabled = loading || continueButtonDisable;
