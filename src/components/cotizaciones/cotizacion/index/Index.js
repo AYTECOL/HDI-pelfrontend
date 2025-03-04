@@ -18,6 +18,7 @@ import Store from '../../../../store';
 import './Index.scss';
 
 import icon_information from '../../../../assets/images/icon_information.svg';
+import QualtricsLoader from 'components/globals/QualtricsLoader/QualtricsLoader';
 
 class Index extends Component {
   constructor(props) {
@@ -90,6 +91,7 @@ class Index extends Component {
   render() {
     return (
       <>
+        <QualtricsLoader />
         <form autoComplete="off" className="index-form contizacion-form">
         <div className="container">
           <div className="row">
