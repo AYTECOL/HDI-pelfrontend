@@ -54,6 +54,7 @@ class GetQuote {
             emissionId: items.policy.emissionId,
             emitedDate: items.policy.emitedDate,
           },
+          fecha_cotizacion: items.create_at,
           mapsOptions: {
             longitude: items.longitude,
             latitude: items.latitude,

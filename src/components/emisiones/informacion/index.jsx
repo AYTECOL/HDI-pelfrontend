@@ -150,7 +150,7 @@ class Index extends React.Component {
         if (!this.state.retryLimitReached) {
           await this.getLimitsEstate();
         } else {
-          console.log('Límite de reintentos alcanzado');
+          console.error('Límite de reintentos alcanzado');
         }
       }
     );
@@ -562,21 +562,21 @@ class Index extends React.Component {
 
   handleChange =
     (key) =>
-    ({ value, type }) => {
-      const { contents: oldContents } = this.state;
-      const contents = [...oldContents];
-      let content = contents[key];
-      if (type === TYPES_VALUE_CONTENT.REAL_VALUE) {
-        content.real_value = value;
-      } else {
-        content.value = value;
-      }
+      ({ value, type }) => {
+        const { contents: oldContents } = this.state;
+        const contents = [...oldContents];
+        let content = contents[key];
+        if (type === TYPES_VALUE_CONTENT.REAL_VALUE) {
+          content.real_value = value;
+        } else {
+          content.value = value;
+        }
 
-      this.setState({
-        ...this.state,
-        contents: contents,
-      });
-    };
+        this.setState({
+          ...this.state,
+          contents: contents,
+        });
+      };
 
   /**
    *
@@ -584,45 +584,45 @@ class Index extends React.Component {
    */
   changeTextFile =
     (key) =>
-    /**
-     *
-     * @param {React.ChangeEvent<HTMLInputElement>} e
-     * @param {import('../../../models/types').TypeAttachments} type
-     */
-    async (e, type) => {
-      const { contents } = this.state;
-      const content = contents[key];
-
       /**
-       * @type {import('../../../models/types').AttachmentsLocal>}
+       *
+       * @param {React.ChangeEvent<HTMLInputElement>} e
+       * @param {import('../../../models/types').TypeAttachments} type
        */
-      const files = { ...content.files };
-      /**
-       * @type {FileList}
-       */
-      const [file] = e.target.files;
-      let validFile = Helpers.validateFile(file);
-      let doc = null;
-      let errorFile = null;
-      if (!file) {
-        errorFile = 'Este campo es requerido';
-      } else if (!validFile) {
-        doc = null;
-        errorFile = 'Formato no permitido';
-      } else if (file.size >= maxFileSize) {
-        errorFile = UploadFileService.messageLimit;
-      } else {
-        doc = file;
-      }
-      files[type] = { file: doc, errorFile };
+      async (e, type) => {
+        const { contents } = this.state;
+        const content = contents[key];
 
-      content.files = files;
+        /**
+         * @type {import('../../../models/types').AttachmentsLocal>}
+         */
+        const files = { ...content.files };
+        /**
+         * @type {FileList}
+         */
+        const [file] = e.target.files;
+        let validFile = Helpers.validateFile(file);
+        let doc = null;
+        let errorFile = null;
+        if (!file) {
+          errorFile = 'Este campo es requerido';
+        } else if (!validFile) {
+          doc = null;
+          errorFile = 'Formato no permitido';
+        } else if (file.size >= maxFileSize) {
+          errorFile = UploadFileService.messageLimit;
+        } else {
+          doc = file;
+        }
+        files[type] = { file: doc, errorFile };
 
-      this.setState({
-        ...this.state,
-        contents,
-      });
-    };
+        content.files = files;
+
+        this.setState({
+          ...this.state,
+          contents,
+        });
+      };
 
   render() {
     const {
@@ -792,11 +792,10 @@ class Index extends React.Component {
                             <b>
                               {' '}
                               •{' '}
-                              {`${
-                                item.label === 'Celulares'
+                              {`${item.label === 'Celulares'
                                   ? 'Teléfonos Móviles'
                                   : item.label
-                              }`}
+                                }`}
                               :
                             </b>{' '}
                             Requiere relación detallada para todos
@@ -806,11 +805,10 @@ class Index extends React.Component {
                             <b>
                               {' '}
                               •{' '}
-                              {`${
-                                item.label === 'Celulares'
+                              {`${item.label === 'Celulares'
                                   ? 'Teléfonos Móviles'
                                   : item.label
-                              }`}
+                                }`}
                               :
                             </b>{' '}
                             {Masknumbermoney.formatToMask(item.max)}
@@ -837,11 +835,10 @@ class Index extends React.Component {
                               <b>
                                 {' '}
                                 •{' '}
-                                {`${
-                                  item.label === 'Celulares'
+                                {`${item.label === 'Celulares'
                                     ? 'Teléfonos Móviles'
                                     : item.label
-                                }`}
+                                  }`}
                                 :
                               </b>{' '}
                               Requiere relación detallada para todos

@@ -10,6 +10,7 @@ import {
 } from 'store/actions';
 import Loading from '../../../../../components/globals/loading/Loading';
 import QuoteService from 'services/Quote';
+import CreateAuditData from 'services/Audit';
 // Components
 import Name from '../name/Name';
 import LastName from '../lastname/Lastname';
@@ -37,11 +38,21 @@ class BtnContinue extends Component {
   }
 
   nextStepIndex = async () => {
-    const { identification, stateFormIdentificacion } = this.props;
+    const { identification, stateFormIdentificacion, match } = this.props;
     if (stateFormIdentificacion === 1) {
       Loading.toggle(true);
       store.dispatch(NextStep(2));
+      let body = {
+        opcion: 'Identificación  / botón continuar',
+        identificacion: identification.value,
+        id_ciudad: identification.city,
+        id_departamento: identification.department,
+        riesgo: identification.address,
+        cotizacion: match.params.id,
+      };
+
       await QuoteService.save();
+      await CreateAuditData.createDataAudit(body, true);
       this.props.history.push(
         UrlSite + '/cotizacion/2/' + this.props.match.params.id
       );
