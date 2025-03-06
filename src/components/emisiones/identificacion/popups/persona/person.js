@@ -320,18 +320,37 @@ export default class Persona extends Component {
           person.contacto = [];
           person.tipoPersona = persona['tipoPersona'];
           if (!person.email) {
-            const lastEmail = contactos.reduce(
-              (previousValue, currentValue) =>
-                previousValue
+            const listEmail = contactos.filter(
+              ({ tipoContacto }) => +tipoContacto.codigo === 3
+            );
+            const lastEmail = listEmail.reduce(
+              (previousValue, currentValue) => {
+                if (previousValue) {
+                  const validEmail = Helpers.validationEmail(
+                    currentValue.textoContacto
+                  );
+                  if (
+                    +currentValue.tipoContacto.codigo === 3 &&
+                    validEmail &
+                      (currentValue.idContacto > previousValue.idContacto)
+                  ) {
+                    return currentValue;
+                  } else {
+                    return previousValue;
+                  }
+                }
+                return null;
+              }
+              /*  previousValue
                   ? currentValue.tipoContacto.codigo === 3 &&
                     Helpers.validationEmail(currentValue.textoContacto) &&
                     currentValue.idContacto > previousValue.idContacto
                     ? currentValue
                     : previousValue
                   : currentValue,
-              null
+              null */
             );
-            person.email = lastEmail && lastEmail.textoContacto;
+            person.email = (lastEmail && lastEmail.textoContacto) || '';
           }
           if (!person.telefono) {
             const codesPhone = [6];

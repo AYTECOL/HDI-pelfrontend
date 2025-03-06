@@ -508,6 +508,8 @@ class Helpers {
         return 'Gmail no permite guion bajo en ninguna posición';
       }
     }
+
+    return true;
   }
 
   static isMobilePhone(value) {
