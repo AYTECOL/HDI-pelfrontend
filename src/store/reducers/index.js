@@ -284,6 +284,31 @@ const reducer = (state = initialState, action) => {
         ...state,
         auth: action.data,
       };
+    case actionsTypes.SET_QUOTATION:
+      return {
+        ...state,
+        quotation: action.data,
+      };
+    case actionsTypes.SET_INEMISSION:
+      return {
+        ...state,
+        inemis: action.data,
+      };
+    case actionsTypes.SET_EMITED:
+      return {
+        ...state,
+        emited: action.data,
+      };
+    case actionsTypes.SET_PLAN_QUOT:
+      return {
+        ...state,
+        planQuot: action.data,
+      };
+    case actionsTypes.SET_PLAN_EMITED:
+      return {
+        ...state,
+        planEmiss: action.data,
+      };
 
     default:
       return state;

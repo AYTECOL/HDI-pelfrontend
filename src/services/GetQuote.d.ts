@@ -127,7 +127,7 @@ export interface Policy {}
 export default class GetQuote {
   static get(): Promise<PolicyRequest[]>;
   static async getById(id: string): Promise<PolicyRequest>;
-  static async getPlanSeleted(quotesIds: Array): Promise<Any>;
+  static async getPlanSelected(quotesIds: Array): Promise<Any>;
   static async getMoreInfoPolicies(quotesIds: Array): Promise<Any>;
 }
 

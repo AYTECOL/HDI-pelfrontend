@@ -3,6 +3,8 @@ import './PolizaEmitida.scss';
 import SendMail from '../../components/cotizaciones/cotizacion/popups/sendmail/SendMail';
 import Loading from '../../components/globals/loading/Loading';
 import QuoteIussedById from '../../services/QuoteIussedById';
+import GetQuote from 'services/GetQuote';
+import CreateAuditData from 'services/Audit';
 import PdfEndosoHogar from '../../services/PdfEndosoHogar';
 import PdfPolizaHogar from '../../services/PdfPolizaHogar';
 import Counter from '../../services/Counter';
@@ -14,13 +16,14 @@ class PolizaEmitida extends Component {
   state = {
     quote: this.props.match.params.polizaId,
     data: {},
+    dataQuot: {},
     emitedPolicy: 0,
   };
 
   async getData() {
     Loading.toggle(true);
     let data = await QuoteIussedById.get(this.state.quote);
-
+    let dataQuot = await GetQuote.getById(this.state.quote);
     let { params } = this.props.match;
     let { emmitedId: emitedPolicy } = params;
     let urlCodePage = parseInt(
@@ -48,6 +51,7 @@ class PolizaEmitida extends Component {
     this.setState((state) => ({
       ...state,
       data,
+      dataQuot,
       endoso,
       emitedPolicy,
     }));
@@ -63,8 +67,21 @@ class PolizaEmitida extends Component {
   };
 
   getPdfEndoso = async () => {
+    const { quote_iussed_info, plan_selected_info } = this.state.data;
+    const { identification, fecha_cotizacion } = this.state.dataQuot;
+    let body = {
+      opcion: 'emisión / éxito / Descargar PDFs Oneroso',
+      identificacion: quote_iussed_info.Item.taker.document,
+      id_ciudad: identification.city,
+      id_departamento: identification.department,
+      riesgo: identification.address,
+      fecha_cotizacion: fecha_cotizacion,
+      cotizacion: this.props.match.params.polizaId,
+      prima: plan_selected_info.Item.prospect,
+      poliza: this.state.emitedPolicy,
+    };
+    await CreateAuditData.createDataAudit(body);
     let pdfEndoso = await PdfEndosoHogar.get(this.state.quote);
-
     let a = document.createElement('a');
     a.style.display = 'none';
     document.body.appendChild(a);
@@ -77,9 +94,22 @@ class PolizaEmitida extends Component {
 
   getPdf = async () => {
     Loading.toggle(true);
+    const { quote_iussed_info, plan_selected_info } = this.state.data;
+    const { identification, fecha_cotizacion } = this.state.dataQuot;
+    let body = {
+      opcion: 'emisión / éxito / Descargar PDFs',
+      identificacion: quote_iussed_info.Item.taker.document,
+      id_ciudad: identification.city,
+      id_departamento: identification.department,
+      riesgo: identification.address,
+      fecha_cotizacion: fecha_cotizacion,
+      cotizacion: this.props.match.params.polizaId,
+      prima: plan_selected_info.Item.prospect,
+      poliza: this.state.emitedPolicy,
+    };
     try {
       let a = document.createElement('a');
-
+      await CreateAuditData.createDataAudit(body);
       let pdf = await PdfPolizaHogar.get(this.state.quote);
       a = document.createElement('a');
       a.style.display = 'none';

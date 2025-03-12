@@ -2,10 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Table.scss';
 import store from 'store';
-import { restoreCotizacion } from '../../../store/actions';
+import {
+  restoreCotizacion,
+  setPlansEmmit,
+  setPlansQuot,
+} from '../../../store/actions';
 import PdfPolizaHogar from '../../../services/PdfPolizaHogar';
 import GetQuote from '../../../services/GetQuote';
 import GetEstate from '../../../services/GetEstate';
+
 import Identifications from '../../../services/Identifications';
 import { UrlSite } from '../../../config';
 import Pagination from '../../../common/helpers/Pagination/Pagination';
@@ -13,6 +18,7 @@ import Loading from '../../../components/globals/loading/Loading';
 import QuoteIussedById from '../../../services/QuoteIussedById';
 import PdfEndosoHogar from '../../../services/PdfEndosoHogar';
 import Quotes from 'services/GetQuote';
+import CreateAuditData from 'services/Audit';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from 'common/helpers/helpers';
 import MomentJs from 'moment';
@@ -30,6 +36,13 @@ const Table = (props) => {
   const [plans, setPlans] = useState(new Map());
   const [moreInfo, setMoreInfo] = useState(new Map());
   const identificationTypes = store.getState().identifications;
+  const {
+    agente: intermediateCode,
+    usuario,
+    Celular,
+    nombreUsuario,
+    Sucursal,
+  } = store.getState().auth || {};
 
   useEffect(() => {
     initialData(props.quotesData);
@@ -50,7 +63,27 @@ const Table = (props) => {
   const getRowById = (id) => async (e) => {
     const { history } = props;
     await GetEstate.get(id);
+
     let cotizacion = await GetQuote.getById(id);
+    let opcion =
+      cotizacion.state < 7 && cotizacion.state > 3
+        ? 'Dashboard link proceso emisión / retomar'
+        : 'Dashboard link cotizaciones / retomar';
+    let body = {
+      opcion: opcion,
+      respuesta: [],
+      respuesta_identificacion: [],
+      campo_filtro: '',
+      clave_broker: intermediateCode,
+      username: usuario,
+      celular: Celular,
+      nombreIntermediario: nombreUsuario,
+      sucursal: Sucursal,
+      identificacion: cotizacion.identification.value,
+      cotizacion: cotizacion.number,
+      fecha_cotizacion: cotizacion.fecha_cotizacion,
+    };
+    await CreateAuditData.createDataAudit(body);
     if (typeof cotizacion.identification !== 'undefined') {
       if (cotizacion.state <= 3) {
         history.push(`${UrlSite}/cotizacion/${cotizacion.state}/${id}`);
@@ -64,11 +97,28 @@ const Table = (props) => {
       store.dispatch(restoreCotizacion(cotizacion));
     }
   };
-  const getPdf = (id) => async (e) => {
+  const getPdf = (id, emissionId) => async (e) => {
     Loading.toggle(true);
+    console.log(id);
     try {
       let a = document.createElement('a');
       let data = await QuoteIussedById.get(id);
+
+      let body = {
+        respuesta: [],
+        opcion: 'Dashboard link pólizas emitidas / descargar PDF emisión',
+        respuesta_identificacion: [],
+        campo_filtro: '',
+        clave_broker: intermediateCode,
+        username: usuario,
+        celular: Celular,
+        nombreIntermediario: nombreUsuario,
+        sucursal: Sucursal,
+        identificacion: data.quote_iussed_info.Item.taker.document,
+        prima: data.plan_selected_info.Item.prospect,
+        cotizacion: data.plan_selected_info.Item.id,
+        poliza: emissionId,
+      };
       let endoso = false;
       if (typeof data.quote_iussed_info !== 'undefined') {
         if (
@@ -83,7 +133,8 @@ const Table = (props) => {
 
       if (endoso) {
         let pdfEndoso = await PdfEndosoHogar.get(id);
-
+        body.opcion = 'Dashboard link pólizas emitidas / descargar PDF endoso';
+        await CreateAuditData.createDataAudit(body);
         let a = document.createElement('a');
         a.style.display = 'none';
         document.body.appendChild(a);
@@ -93,6 +144,7 @@ const Table = (props) => {
         document.body.removeChild(a);
       }
       let pdf = await PdfPolizaHogar.get(id);
+      await CreateAuditData.createDataAudit(body);
       a = document.createElement('a');
       a.style.display = 'none';
       document.body.appendChild(a);
@@ -115,11 +167,15 @@ const Table = (props) => {
     async function getPlanSelected() {
       setLoadingPlans(true);
       const ids = pageOfItems.map(({ quoteId }) => quoteId);
-      const { plans: newPlans } = await Quotes.getPlanSelected(ids);
-      setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
+
       if (isEmitted) {
         const { moreInfo: newMoreInfo } = await Quotes.getMoreInfoPolicies(ids);
+        await store.dispatch(setPlansEmmit(newMoreInfo));
         setMoreInfo(new Map(newMoreInfo.map((more) => [more.id, more])));
+      } else {
+        const { plans: newPlans } = await Quotes.getPlanSelected(ids);
+        await store.dispatch(setPlansQuot(newPlans));
+        setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
       }
     }
     if (pageOfItems.length)
@@ -272,7 +328,7 @@ const Table = (props) => {
                   )}
                   {step === 7 && (
                     <button
-                      onClick={getPdf(item.quoteId)}
+                      onClick={getPdf(item.quoteId, emissionId)}
                       className="btn btn-default btn-default--two"
                     >
                       {' '}

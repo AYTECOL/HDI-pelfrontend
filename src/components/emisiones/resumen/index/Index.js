@@ -30,6 +30,7 @@ import GetEstate from '../../../../services/GetEstate';
 import moment from 'moment';
 import 'moment/locale/es';
 import ModalLimitsPlanError from '../../../modal/ModalLimitsPlanError';
+import QualtricsLoader from 'components/globals/QualtricsLoader/QualtricsLoader';
 
 class Index extends Component {
   constructor(props) {
@@ -120,7 +121,7 @@ class Index extends Component {
         if (!this.state.retryLimitReached) {
           await this.getLimitsEstate();
         } else {
-          console.log('Límite de reintentos alcanzado');
+          console.error('Límite de reintentos alcanzado');
         }
       }
     );
@@ -359,6 +360,7 @@ class Index extends Component {
   render() {
     return (
       <>
+        <QualtricsLoader />
         <form autoComplete="off" className="index-form emision">
           <div className="container">
             <div className="row">
@@ -619,7 +621,7 @@ class Index extends Component {
                 </div>
               </div>
             </div>
-            <ButtonsFooter />
+            <ButtonsFooter plan={this.state.plans}/>
           </div>
           {this.state.showPopUpPersona === true && (
             <PopUpPersona

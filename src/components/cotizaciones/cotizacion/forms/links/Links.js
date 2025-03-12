@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import './Links.scss';
 import PrevPdfPolizaPrima from '../../../../../services/PrevPdfPolizaPrima';
+import CreateAuditData from 'services/Audit';
+
 import { withRouter } from 'react-router-dom';
 import store from '../../../../../store';
 import Loading from '../../../../globals/loading/Loading';
@@ -18,10 +20,22 @@ class Links extends Component {
     let storeState = store.getState();
     let plans = storeState.AllPlans;
     let index = storeState.indexPlan;
+    const { identification, number, fecha_cotizacion } = storeState.cotizacion;
     let plan = plans[index];
     plan = BtnContinue.toNumberCoverrange(plan);
+    let body = {
+      opcion: 'cotización / link generar cotización en PDF',
+      identificacion: identification.value,
+      id_ciudad: identification.city,
+      id_departamento: identification.department,
+      riesgo: identification.address,
+      fecha_cotizacion: fecha_cotizacion,
+      cotizacion: number,
+      prima: plan.value,
+    };
     try {
       let pdf = await PrevPdfPolizaPrima.get(plan, quote);
+      await CreateAuditData.createDataAudit(body);
       if (typeof pdf !== 'undefined' && download === true) {
         const a = document.createElement('a');
         a.style.display = 'none';

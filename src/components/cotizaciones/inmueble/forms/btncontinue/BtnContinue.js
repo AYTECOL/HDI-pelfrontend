@@ -5,6 +5,8 @@ import { withRouter } from 'react-router-dom';
 
 import CreateOrUpdateValoration from 'services/CreateOrUpdateValoration';
 import QuoteService from 'services/Quote';
+import CreateAuditData from 'services/Audit';
+
 import { NextStep, setPropertyValidation } from 'store/actions';
 import Helpers from 'common/helpers/helpers';
 // Components
@@ -215,7 +217,18 @@ class BtnContinue extends Component {
       const {
         quote_created: { infoGeocodingSig },
       } = await QuoteService.save();
-
+      const { identification, number, fecha_cotizacion } =
+        store.getState().cotizacion;
+      let body = {
+        opcion: 'descripción inmueble / botón continuar',
+        identificacion: identification.value,
+        id_ciudad: identification.city,
+        id_departamento: identification.department,
+        riesgo: identification.address,
+        fecha_cotizacion: fecha_cotizacion,
+        cotizacion: number,
+      };
+      await CreateAuditData.createDataAudit(body);
       const NotInsured =
         infoGeocodingSig &&
         infoGeocodingSig.features[0]?.attributes.AMENAZA_INUNDACION ===
@@ -243,7 +256,10 @@ class BtnContinue extends Component {
       <Fragment>
         <div className={'return-button'}>
           <button className="btn btn-link" type="button" onClick={this.goBack}>
-            <i className="back-icon"><img src={arrow_back} alt="" /></i>Volver
+            <i className="back-icon">
+              <img src={arrow_back} alt="" />
+            </i>
+            Volver
           </button>
         </div>
         <button

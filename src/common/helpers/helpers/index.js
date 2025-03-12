@@ -359,6 +359,7 @@ class Helpers {
         return false;
       }
     }
+    return true;
   }
   static validationEmailErros(email) {
     let value = String(email).toLowerCase();
