@@ -56,6 +56,7 @@ class BtnContinue extends Component {
     const { id } = params;
     const exceptionSarlaft = store.getState().exceptionSarlaft;
     const mapOptions = store.getState().mapsOptions;
+    const auth = store.getState().auth;
     Loading.toggle(true);
     try {
       this.setState({
@@ -103,6 +104,28 @@ class BtnContinue extends Component {
           numeroPoliza.currentValue.toString();
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo =
           numeroPoliza.currentValue.toString();
+        const newQuestionCotizacion = {
+          pregunta: {
+            codigo: '8907',
+          },
+          respuesta: {
+            valor: `${auth.usuario}`,
+          },
+        };
+        const newQuestionEmision = {
+          pregunta: {
+            codigo: '8908',
+          },
+          respuesta: {
+            valor: `${auth.usuario}`,
+          },
+        };
+        result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+          newQuestionCotizacion
+        );
+        result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+          newQuestionEmision
+        );
         if (exceptionSarlaft) {
           const questionSarlaft = {
             pregunta: {

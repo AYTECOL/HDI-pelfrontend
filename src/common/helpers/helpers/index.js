@@ -359,6 +359,7 @@ class Helpers {
         return false;
       }
     }
+    return true;
   }
   static validationEmailErros(email) {
     let value = String(email).toLowerCase();
@@ -508,8 +509,6 @@ class Helpers {
         return 'Gmail no permite guion bajo en ninguna posición';
       }
     }
-
-    return true;
   }
 
   static isMobilePhone(value) {
