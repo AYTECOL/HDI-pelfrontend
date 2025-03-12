@@ -13,6 +13,8 @@ import {
 } from 'store/actions';
 import QuoteService from 'services/Quote';
 import Crearpolizaiaxis from 'services/Crearpolizaiaxis';
+import CreateAuditData from 'services/Audit';
+
 import QuoteIussedById from 'services/QuoteIussedById';
 import IssuedCounter from 'services/IssuedCounter';
 import AttachPolicyDocuments from 'services/AttachPolicyDocuments';
@@ -28,6 +30,7 @@ class BtnContinue extends Component {
       continueButtonDisable: false,
       stateFormIdentificacion: 0,
       cotizacionExclude: [],
+      plan: this.props.plan,
     };
   }
 
@@ -53,6 +56,7 @@ class BtnContinue extends Component {
     const { id } = params;
     const exceptionSarlaft = store.getState().exceptionSarlaft;
     const mapOptions = store.getState().mapsOptions;
+    const auth = store.getState().auth;
     Loading.toggle(true);
     try {
       this.setState({
@@ -63,6 +67,17 @@ class BtnContinue extends Component {
       let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
+
+      let body = {
+        opcion: 'emisión / éxito',
+        identificacion: cotizacion.identification.value,
+        id_ciudad: cotizacion.identification.city,
+        id_departamento: cotizacion.identification.department,
+        riesgo: cotizacion.identification.address,
+        fecha_cotizacion: cotizacion.fecha_cotizacion,
+        cotizacion: cotizacion.number,
+        prima: this.props.plan[0].prospect,
+      };
       cotizacion = cotizacion.identification;
 
       let numeroPoliza = {
@@ -89,6 +104,23 @@ class BtnContinue extends Component {
           numeroPoliza.currentValue.toString();
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo =
           numeroPoliza.currentValue.toString();
+        const newQuestion = {
+          pregunta: {
+            codigo: '8907',
+          },
+          respuesta: {
+            valor: `${auth.usuario}`,
+          },
+          pregunta: {
+            codigo: '8908',
+          },
+          respuesta: {
+            valor: `${auth.usuario}`,
+          },
+        };
+        result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+          newQuestion
+        );
         if (exceptionSarlaft) {
           const questionSarlaft = {
             pregunta: {
@@ -165,6 +197,9 @@ class BtnContinue extends Component {
       }
 
       store.dispatch(NextStep(7));
+      body.poliza = numeroPoliza.currentValue;
+
+      await CreateAuditData.createDataAudit(body);
       await QuoteService.save();
       history.push(`${UrlSite}/exito/${id}/${numeroPoliza.currentValue}`);
 
