@@ -104,13 +104,15 @@ class BtnContinue extends Component {
           numeroPoliza.currentValue.toString();
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.datosGestion.numeroRecibo =
           numeroPoliza.currentValue.toString();
-        const newQuestion = {
+        const newQuestionCotizacion = {
           pregunta: {
             codigo: '8907',
           },
           respuesta: {
             valor: `${auth.usuario}`,
           },
+        };
+        const newQuestionEmision = {
           pregunta: {
             codigo: '8908',
           },
@@ -119,7 +121,10 @@ class BtnContinue extends Component {
           },
         };
         result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
-          newQuestion
+          newQuestionCotizacion
+        );
+        result.crearPolizaIAXISRq.poliza.datosPolizaHome.preguntaPoliza.push(
+          newQuestionEmision
         );
         if (exceptionSarlaft) {
           const questionSarlaft = {
