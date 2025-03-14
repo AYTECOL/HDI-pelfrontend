@@ -64,6 +64,7 @@ class GetQuote {
           },
           stateFormIdentificacion: 1,
           showMap: true,
+          userAuthCotiza: items.userAuthCotiza,
         };
       } else {
         return {};

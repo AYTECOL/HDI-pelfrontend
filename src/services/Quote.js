@@ -34,7 +34,7 @@ class QuoteService {
       emissionId,
       emitedDate,
     } = storeState.cotizacion.identification;
-    const { attachedFile } = storeState;
+    const { attachedFile, auth } = storeState;
     let data = {
       quoteId: storeState.cotizacion.number,
       document_type: parseInt(code),
@@ -57,6 +57,7 @@ class QuoteService {
       },
       infoGeocodingSig: infoGeocoding,
       attachedFile,
+      userAuthCotiza: auth.usuario,
     };
     for (let i in data) if (data[i] === '') data[i] = '""';
     // TODO intercept request
