@@ -67,7 +67,7 @@ class BtnContinue extends Component {
       let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
-      let userAuthCotiza = window.localStorage.getItem('userAuthCotiza');
+      let userAuthCotiza = window.localStorage.getItem('authUserCotiza');
 
       let body = {
         opcion: 'emisión / éxito',
