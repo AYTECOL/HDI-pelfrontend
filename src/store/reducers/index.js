@@ -284,6 +284,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         auth: action.data,
       };
+    case actionsTypes.SET_AUTH_USER_COTIZA:
+      return {
+        ...state,
+        authUserCotiza: action.data,
+      };
     case actionsTypes.SET_QUOTATION:
       return {
         ...state,
