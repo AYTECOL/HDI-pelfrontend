@@ -105,6 +105,13 @@ const setAuthUser = (data) => {
     data: data,
   };
 };
+// action authentication
+const setAuthUserCotiza = (data) => {
+  return {
+    type: actionsTypes.SET_AUTH_USER_COTIZA,
+    data: data,
+  };
+};
 
 // Tercer formulario
 const indexPlanSelected = (index) => {
@@ -192,4 +199,5 @@ export {
   setTabEmitted,
   setPlansQuot,
   setPlansEmmit,
+  setAuthUserCotiza,
 };
