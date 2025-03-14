@@ -67,6 +67,7 @@ class BtnContinue extends Component {
       let cotizacion = await GetQuoteService.getById(
         this.props.match.params.id
       );
+      let userAuthCotiza = cotizacion.userAuthCotiza;
 
       let body = {
         opcion: 'emisión / éxito',
@@ -109,7 +110,7 @@ class BtnContinue extends Component {
             codigo: '8907',
           },
           respuesta: {
-            valor: `${auth.usuario}`,
+            valor: `${userAuthCotiza}`,
           },
         };
         const newQuestionEmision = {
