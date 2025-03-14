@@ -122,7 +122,7 @@ class BtnContinue extends Component {
       await Links.pdf(this, false);
 
       store.dispatch(NextStep(4));
-      await QuoteService.save();
+      await QuoteService.save(true);
       await CreateOrUpdateValoration.save();
       await NewPlanSelected.get(plan);
       await CreateAuditData.createDataAudit(body);
