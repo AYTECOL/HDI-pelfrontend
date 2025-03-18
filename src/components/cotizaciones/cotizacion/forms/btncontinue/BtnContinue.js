@@ -12,7 +12,12 @@ import CreateOrUpdateValoration from 'services/CreateOrUpdateValoration';
 import CreateAuditData from 'services/Audit';
 import Loading from 'components/globals/loading/Loading';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
-import { NextStep, resetStore, saveProspect } from 'store/actions';
+import {
+  NextStep,
+  resetStore,
+  saveProspect,
+  setAuthUserCotiza,
+} from 'store/actions';
 import QuoteService from 'services/Quote';
 import Links from '../links/Links';
 import './btncontinue.scss';
@@ -122,7 +127,9 @@ class BtnContinue extends Component {
       await Links.pdf(this, false);
 
       store.dispatch(NextStep(4));
-      await QuoteService.save();
+      store.dispatch(setAuthUserCotiza(dataStore.auth.usuario));
+      window.localStorage.setItem('authUserCotiza', dataStore.auth.usuario);
+      await QuoteService.save(true);
       await CreateOrUpdateValoration.save();
       await NewPlanSelected.get(plan);
       await CreateAuditData.createDataAudit(body);

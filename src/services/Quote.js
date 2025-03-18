@@ -5,7 +5,7 @@ import SigService from './SigServices';
 import AuthHeader from './AuthHeader';
 const Url = '/quote';
 class QuoteService {
-  static async save() {
+  static async save(newCotizacion = false) {
     let storeState = Store.getState();
     const jobId = await SigService.LongitudeAndLatitude(
       storeState.mapsOptions.longitude,
@@ -34,7 +34,7 @@ class QuoteService {
       emissionId,
       emitedDate,
     } = storeState.cotizacion.identification;
-    const { attachedFile } = storeState;
+    const { attachedFile, auth } = storeState;
     let data = {
       quoteId: storeState.cotizacion.number,
       document_type: parseInt(code),
@@ -58,6 +58,9 @@ class QuoteService {
       infoGeocodingSig: infoGeocoding,
       attachedFile,
     };
+    if (newCotizacion) {
+      data.userAuthCotiza = auth.usuario;
+    }
     for (let i in data) if (data[i] === '') data[i] = '""';
     // TODO intercept request
     let authHeader = new AuthHeader();
