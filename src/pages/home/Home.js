@@ -35,6 +35,7 @@ const Home = (props) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const [stepTable, setStepTable] = useState(STEP_QUOTATION);
+  const [plans, setPlans] = useState(new Map());
   const [statesQuotes, setStatesQuotes] = useState({});
   const [plansQuotsAndEmiss, setPlansQuotsAndEmiss] = useState(null);
   const [plansEmiss, setPlansEmiss] = useState({});
@@ -118,6 +119,10 @@ const Home = (props) => {
       let arrayItems = await Quotes.get(intermediateCode);
       const result = formatDataQuotations(arrayItems);
       setQuotesData(result);
+      const ids = result.map(({ quoteId }) => quoteId);
+      const { plans: newPlans } = await Quotes.getPlanSelected(ids);
+
+      setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
       Loading.toggle(false);
     }
     if (intermediateCode && filter.search === null) getQuotes();
@@ -223,6 +228,7 @@ const Home = (props) => {
                 emitedDate,
                 emissionId,
               }) => {
+                const plan = plans.get(quoteId);
                 const result = {
                   cotizacion: quoteId,
                   emissionId,
@@ -230,6 +236,7 @@ const Home = (props) => {
                   identificacion: document_number,
                   direccion: address,
                   fechaInicioVigencia: emitedDate,
+                  prima: plan,
                 };
                 return result;
               }
