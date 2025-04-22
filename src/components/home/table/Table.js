@@ -44,9 +44,6 @@ const Table = (props) => {
     Sucursal,
   } = store.getState().auth || {};
 
-  useEffect(() => {
-    initialData(props.quotesData);
-  });
   const initialData = (dataProps) => {
     // const dataTemp = [...dataProps];
     setQuotesItems(dataProps);
@@ -99,7 +96,6 @@ const Table = (props) => {
   };
   const getPdf = (id, emissionId) => async (e) => {
     Loading.toggle(true);
-    console.log(id);
     try {
       let a = document.createElement('a');
       let data = await QuoteIussedById.get(id);
@@ -167,15 +163,13 @@ const Table = (props) => {
     async function getPlanSelected() {
       setLoadingPlans(true);
       const ids = pageOfItems.map(({ quoteId }) => quoteId);
-
+      const { plans: newPlans } = await Quotes.getPlanSelected(ids);
+      await store.dispatch(setPlansQuot(newPlans));
+      setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
       if (isEmitted) {
         const { moreInfo: newMoreInfo } = await Quotes.getMoreInfoPolicies(ids);
         await store.dispatch(setPlansEmmit(newMoreInfo));
         setMoreInfo(new Map(newMoreInfo.map((more) => [more.id, more])));
-      } else {
-        const { plans: newPlans } = await Quotes.getPlanSelected(ids);
-        await store.dispatch(setPlansQuot(newPlans));
-        setPlans(new Map(newPlans.map((plan) => [plan?.id || 0, plan])));
       }
     }
     if (pageOfItems.length)
