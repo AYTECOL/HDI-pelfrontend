@@ -39,7 +39,7 @@ pipeline {
                 }
         }
 
-        stage('udpate version nodejs & install node modules and serverless') {
+        stage('udpate version nodejs & install node modules') {
             environment {
                 HOME = "${env.WORKSPACE}"
             }
