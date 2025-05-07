@@ -39,32 +39,18 @@ pipeline {
                 }
         }
 
-        stage('udpate version nodejs & install node modules and serverless') {
+        stage('udpate version nodejs & install node modules') {
             environment {
                 HOME = "${env.WORKSPACE}"
             }
             steps{
-                //sh 'npm install -g n'
-                //sh 'n 16'
+                
                 sh 'hash -r'
                 sh 'node --version'
                 sh 'npm install'
-                //sh 'npm install -g serverless@3'
-                sh 'serverless --version'
             }   
         }
 
-        stage('cloudfront') {
-            environment {
-                HOME = "${env.WORKSPACE}"
-            }
-            steps{
-                deployToProd{
-			sh "sls deploy --stage ${env.APPENV.replace('_', '')} --verbose"
-			sh "pwd"
-                }
-            }
-        }
 
         stage('Build') {
             environment {
