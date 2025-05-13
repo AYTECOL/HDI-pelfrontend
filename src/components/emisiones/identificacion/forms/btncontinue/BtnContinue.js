@@ -224,7 +224,7 @@ class BtnContinue extends PureComponent {
     if (typeof total !== 'undefined') {
       store.dispatch(NextStep(5));
       await CreateAuditData.createDataAudit(body);
-      await QuoteService.save();
+      // await QuoteService.save();
       this.props.history.push(
         UrlSite + '/emision/2/' + this.props.match.params.id
       );
