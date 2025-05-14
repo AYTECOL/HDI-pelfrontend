@@ -129,7 +129,7 @@ class BtnContinue extends Component {
       store.dispatch(NextStep(4));
       store.dispatch(setAuthUserCotiza(dataStore.auth.usuario));
       window.localStorage.setItem('authUserCotiza', dataStore.auth.usuario);
-      await QuoteService.save(true);
+      // await QuoteService.save(true);
       await CreateOrUpdateValoration.save();
       await NewPlanSelected.get(plan);
       await CreateAuditData.createDataAudit(body);
