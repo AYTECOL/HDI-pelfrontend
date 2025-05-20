@@ -122,7 +122,7 @@ class BtnContinue extends Component {
     if (typeof total !== 'undefined') {
       if (status === true) {
         store.dispatch(NextStep(6));
-        await QuoteService.save();
+        // await QuoteService.save();
         history.push(UrlSite + '/emision/3/' + match.params.id);
       }
     } else {
