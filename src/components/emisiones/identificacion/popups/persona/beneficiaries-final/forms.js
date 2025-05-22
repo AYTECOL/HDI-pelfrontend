@@ -61,6 +61,21 @@ const schemaNaturalBeneficiary = yup.object().shape({
       'Falta información requerida para el Tomador. Por favor revise el campo Primer apellido'
     ),
   secondLastName: yup.string(),
+  sharesPercentage: yup
+      .number()
+      .transform((value) =>
+        value === '' || isNaN(value) ? undefined : Number(value)
+      )
+      .min(5, 'El porcentaje de acciones es menor al permitido')
+      .max(100, 'El porcentaje de acciones es mayor al permitido')
+      .test(
+      'max-2-decimals',
+      'Máximo 2 decimales permitidos',
+      value => Number.isFinite(value) && /^\d+(\.\d{1,2})?$/.test(value.toString())
+    )
+      .required(
+        'Falta información requerida para el Tomador. Por favor revise el campo porcentaje de acciones'
+      ),
 });
 
 const schemaLegalBeneficiary = yup.object().shape({
@@ -132,6 +147,7 @@ const BeneficiariesFinalForm = ({
         lastName: beneficiary?.lastName || '',
         secondLastName: beneficiary?.secondLastName || '',
         reasonSocialName: beneficiary?.reasonSocialName || '',
+        sharesPercentage: beneficiary?.sharesPercentage || '',
       },
       context: schema,
       resolver: (data, context, options) => {
@@ -189,6 +205,7 @@ const BeneficiariesFinalForm = ({
     document,
     typeDocument,
     reasonSocialName,
+    sharesPercentage
   } = data;
 
   useEffect(() => {
@@ -201,6 +218,7 @@ const BeneficiariesFinalForm = ({
     document,
     typeDocument,
     reasonSocialName,
+    sharesPercentage
   ]);
 
   const typeDocumentLabel = identifications.find(
@@ -347,6 +365,16 @@ const BeneficiariesFinalForm = ({
                             label="Segundo apellido"
                             name="secondLastName"
                             disabled={disabledAll}
+                          />
+                        </div>
+                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 shares">
+                          <Input
+                            label="Porcentaje de acciones"
+                            name="sharesPercentage"
+                            disabled={disabledAll}
+                            description="Mínimo 5%, máximo 100%"
+                            tooltip={true}
+                            percentage={true}
                           />
                         </div>
                       </>
