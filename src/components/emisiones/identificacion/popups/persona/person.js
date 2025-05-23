@@ -640,14 +640,11 @@ export default class Persona extends Component {
       }
       Loading.toggle(true);
       let responsePerson = null;
-      if (typeof e.person === 'undefined') {
-        responsePerson = await ConsultaPersonas.get(
-          this.state.person.code,
-          this.state.person.value
-        );
-      } else {
-        responsePerson = e.person;
-      }
+      responsePerson = await ConsultaPersonas.get(
+        this.state.person.code,
+        this.state.person.value
+      );
+      if(!responsePerson) responsePerson = e.person;
       if (
         responsePerson !== null &&
         responsePerson.consultarPersonaRs.personaRestringida === true
@@ -1017,7 +1014,6 @@ export default class Persona extends Component {
   handleNewBeneficiaryFinal = (e) => {
     const { beneficiariesFinal } = this.state;
     beneficiariesFinal.push({});
-    console.log('🎉 beneficiariesFinal',beneficiariesFinal);
     this.setState({
       ...this.state,
       beneficiariesFinal,

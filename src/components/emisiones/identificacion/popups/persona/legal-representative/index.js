@@ -66,6 +66,12 @@ const schema = yup
       )
       .min(5, 'El porcentaje de acciones es menor al permitido')
       .max(100, 'El porcentaje de acciones es mayor al permitido')
+      .test(
+        'max-2-decimals',
+        'Máximo 2 decimales permitidos',
+        (value) =>
+          Number.isFinite(value) && /^\d+(\.\d{1,2})?$/.test(value.toString())
+      )
       .required(
         'Falta información requerida para el Tomador. Por favor revise el campo porcentaje de acciones'
       ),
