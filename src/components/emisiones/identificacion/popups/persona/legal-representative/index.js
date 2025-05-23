@@ -59,6 +59,22 @@ const schema = yup
         '   Falta información requerida para el Tomador. Por favor revise el campo Primer apellido'
       ),
     secondLastName: yup.string(),
+    sharesPercentage: yup
+      .number()
+      .transform((value) =>
+        value === '' || isNaN(value) ? undefined : Number(value)
+      )
+      .min(5, 'El porcentaje de acciones es menor al permitido')
+      .max(100, 'El porcentaje de acciones es mayor al permitido')
+      .test(
+        'max-2-decimals',
+        'Máximo 2 decimales permitidos',
+        (value) =>
+          Number.isFinite(value) && /^\d+(\.\d{1,2})?$/.test(value.toString())
+      )
+      .required(
+        'Falta información requerida para el Tomador. Por favor revise el campo porcentaje de acciones'
+      ),
   })
   .required();
 
@@ -81,6 +97,7 @@ const LegalRepresentative = ({
       secondName: LegalRepresentative?.secondName || '',
       lastName: LegalRepresentative?.lastName || '',
       secondLastName: LegalRepresentative?.secondLastName || '',
+      sharesPercentage: LegalRepresentative?.sharesPercentage || '',
     },
     resolver: yupResolver(schema),
   });
@@ -99,13 +116,13 @@ const LegalRepresentative = ({
     trigger();
   }, [trigger]);
 
-  const { typeDocument, document, lastName, name, secondLastName, secondName } =
+  const { typeDocument, document, lastName, name, secondLastName, secondName, sharesPercentage } =
     watch();
 
   useEffect(() => {
     // if form is valid, update data in component parent
     updateLegalRepresentative(getValues());
-  }, [typeDocument, document, lastName, name, secondLastName, secondName]);
+  }, [typeDocument, document, lastName, name, secondLastName, secondName, sharesPercentage]);
 
   const handlerOnBlurCustom = async (e) => {
     try {
@@ -234,6 +251,18 @@ const LegalRepresentative = ({
             disabled={disabledAll}
           />
         </div>
+        {isLegalRepresentativeBeneficiary && (
+          <div className="col col-12 col-sm-12 col-md-6 col-lg-6 shares">
+            <Input
+              label="Porcentaje de acciones"
+              name="sharesPercentage"
+              disabled={disabledAll}
+              description="Mínimo 5%, máximo 100%"
+              tooltip={true}
+              percentage={true}
+            />
+          </div>
+        )}
       </div>
     </FormProvider>
   );
