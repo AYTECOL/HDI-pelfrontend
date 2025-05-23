@@ -978,8 +978,11 @@ export default class Persona extends Component {
           this.props.updatePerson(newPerson);
           if (this.state.beneficiariesFinal.length > 0) {
             const data = this.state.beneficiariesFinal;
-            if (this.state.isLegalRepresentativeBeneficiary)
-              data.push(this.state.LegalRepresentative);
+            this.props.updateBeneficiaries(data);
+          }
+          if (this.state.isLegalRepresentativeBeneficiary) {
+            const data = this.state.beneficiariesFinal;
+            data.push(this.state.LegalRepresentative);
             this.props.updateBeneficiaries(data);
           }
           if (this.state.LegalRepresentative) {
@@ -1014,6 +1017,7 @@ export default class Persona extends Component {
   handleNewBeneficiaryFinal = (e) => {
     const { beneficiariesFinal } = this.state;
     beneficiariesFinal.push({});
+    console.log('🎉 beneficiariesFinal',beneficiariesFinal);
     this.setState({
       ...this.state,
       beneficiariesFinal,
