@@ -222,7 +222,7 @@ class Cards extends Component {
 
     // Deshabilita los demas items
     if (newItems[index].type === 2 && newItems[index].active === true) {
-      for (let i = 1; i < 5; i++) newItems[i].active = newItems[index].active;
+      for (let i = 1; i < 6; i++) newItems[i].active = newItems[index].active;
     }
 
     // Habilita contenido si los demas items lo tienn
