@@ -3,12 +3,14 @@ import $ from 'jquery';
 
 import './styles.scss';
 
-const getTooltipTemplate = () =>
-  '<div class="tooltip tooltip-help" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>';
+const getTooltipTemplate = (wide) =>
+  `<div class="tooltip tooltip-help" role="tooltip"><div class="arrow"></div><div class="tooltip-inner ${
+    wide ? 'wide' : ''
+  }"></div></div>`;
 
-const reloadTooltipHelp = (element, { title, placement }) => {
+const reloadTooltipHelp = (element, { title, placement}, wide) => {
   return $(element).tooltip({
-    template: getTooltipTemplate(),
+    template: getTooltipTemplate(wide),
     title,
     placement,
   });
@@ -30,17 +32,22 @@ export const Tooltip = (props) => {
     component: Component = 'div',
     title,
     children,
+    wide = false,
     ...rest
   } = props;
   React.useEffect(() => {
-    const tooltip = reloadTooltipHelp(elementRef.current, {
-      title,
-      placement,
-    });
+    const tooltip = reloadTooltipHelp(
+      elementRef.current,
+      {
+        title,
+        placement,
+      },
+      wide
+    );
     return () => {
       tooltip.tooltip('dispose');
     };
-  }, [title, placement]);
+  }, [title, placement, wide]);
   return (
     <Component {...rest} data-toggle="tooltip-help" ref={elementRef}>
       {children}
