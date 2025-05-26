@@ -63,9 +63,10 @@ const schemaNaturalBeneficiary = yup.object().shape({
   secondLastName: yup.string(),
   sharesPercentage: yup
     .number()
-    .transform((value) =>
-      value === '' || isNaN(value) ? undefined : Number(value)
+    .typeError(
+      'Ingresa un número válido con máximo 2 decimales separados por punto (.)'
     )
+    .transform((value) => (isNaN(value) ? '' : Number(value)))
     .min(5, 'El porcentaje de acciones es menor al permitido')
     .max(100, 'El porcentaje de acciones es mayor al permitido')
     .test(
