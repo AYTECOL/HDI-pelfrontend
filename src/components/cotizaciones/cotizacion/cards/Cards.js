@@ -203,6 +203,24 @@ class Cards extends Component {
         name: newItems[index].parent.nameModelValue,
       })
     );
+
+    //Si se desactiva contenidos, se limpian los demás
+    if (newItems[index].type === 2 && newItems[index].active === true) {
+      for (let i = 1; i < 6; i++) {
+        store.dispatch(
+          saveInmuebleValue({
+            value: newItems[i].active === true ? 0 : 1,
+            name: newItems[i].parent.nameModel,
+          })
+        );
+        store.dispatch(
+          saveInmuebleValue({
+            value: '',
+            name: newItems[i].parent.nameModelValue,
+          })
+        );
+      }
+    }
     newItems[index].value = '';
     this.setState({
       ...this.state,
