@@ -111,7 +111,7 @@ pipeline {
                     sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
                 }
             }
-        } 
-    }
-*/    
+        }
+*/ 
+    } 
  }
