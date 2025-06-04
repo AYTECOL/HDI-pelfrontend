@@ -6,7 +6,8 @@ def BRANCH_SONAR = scm.branches[0].name.replace("*/", "").replace("*/", "")
 def NAME_SONAR = "poliza-express-hogar-front"
         
 pipeline {
-	agent{dockerfile {args '-v /usr/local/aws-cli/:/usr/local/aws-cli/  --add-host sonar.hdiseguros.com.co:172.19.0.101'}}
+	agent{dockerfile {args '-v /usr/local/aws-cli/:/usr/local/aws-cli/ -v /home/jenkins/sonar-scanner-3.2.0.1227-linux/:/home/jenkins/sonar-scanner-3.2.0.1227-linux/'}}
+
     stages{
         stage("Env Variables") {
             environment {
@@ -70,6 +71,14 @@ pipeline {
             }
         } */
 
+        stage('Sonarqube Report') {
+            steps {
+                withSonarQubeEnv('sonarqubeold') {
+                sh "/home/jenkins/sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.sources=src"
+                    }
+                }
+            }
+
         stage('Build') {
             environment {
                 HOME = "${env.WORKSPACE}"
@@ -92,7 +101,7 @@ pipeline {
             }
             
         }
-
+/*
         stage('Test sonarqube'){
             environment {
                 HOME = "${env.WORKSPACE}"
@@ -102,6 +111,7 @@ pipeline {
                     //sh "sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.branch.name=${BRANCH_SONAR} -Dsonar.sources=src"
                 }
             }
-        } 
+        }
+*/ 
     }    
  }
