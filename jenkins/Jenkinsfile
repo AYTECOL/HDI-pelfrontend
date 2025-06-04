@@ -97,7 +97,7 @@ pipeline {
         stage('Sonarqube Report') {
             steps {
                 withSonarQubeEnv('sonarqubeold') {
-                sh "/home/jenkins/sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.sources=functions,lib,util,env,.vscode,cloudformation"
+                sh "/home/jenkins/sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=${NAME_SONAR} -Dsonar.projectName=${NAME_SONAR} -Dsonar.projectVersion=${ARTIFACT_VERSION} -Dsonar.sources=src"
                     }
                 }
             }
