@@ -6,9 +6,7 @@ def BRANCH_SONAR = scm.branches[0].name.replace("*/", "").replace("*/", "")
 def NAME_SONAR = "poliza-express-hogar-front"
         
 pipeline {
-	agent{dockerfile {args '-v /usr/local/aws-cli/:/usr/local/aws-cli/ -v /home/jenkins/sonar-scanner-3.2.0.1227-linux/:/home/jenkins/sonar-scanner-3.2.0.1227-linux/  --add-host sonarold.hdiseguros.com.co:172.19.0.102'
-        }
-    }
+	agent{dockerfile {args '-v /usr/local/aws-cli/:/usr/local/aws-cli/ -v /home/jenkins/sonar-scanner-3.2.0.1227-linux/:/home/jenkins/sonar-scanner-3.2.0.1227-linux/'}}
     stages{
         stage("Env Variables") {
             environment {
@@ -98,7 +96,6 @@ pipeline {
         stage('sonarqube'){
             environment {
                 HOME = "${env.WORKSPACE}"
-               JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
             }
             steps{
                 withSonarQubeEnv('sonarqube') {
