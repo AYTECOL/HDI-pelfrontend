@@ -1,6 +1,6 @@
 # Use an existing image as a base
 #FROM node:16
-FROM jfrog.hdicolombia.com.co/pod-templates-latam/node22-java-openjdk-17:1.0
+FROM jfrog.hdicolombia.com.co/pod-templates-latam/node16-java-openjdk-11-serverless-3.39:1.0
 
 # Establecer la variable de entorno a no interactivo
 ENV DEBIAN_FRONTEND=noninteractive
