@@ -63,9 +63,10 @@ const schemaNaturalBeneficiary = yup.object().shape({
   secondLastName: yup.string(),
   sharesPercentage: yup
     .number()
-    .transform((value) =>
-      value === '' || isNaN(value) ? undefined : Number(value)
+    .typeError(
+      'Ingresa un número válido con máximo 2 decimales separados por punto (.)'
     )
+    .transform((value) => (isNaN(value) ? '' : Number(value)))
     .min(5, 'El porcentaje de acciones es menor al permitido')
     .max(100, 'El porcentaje de acciones es mayor al permitido')
     .test(
@@ -109,6 +110,23 @@ const schemaLegalBeneficiary = yup.object().shape({
     .string()
     .required(
       'Falta información requerida para el Tomador. Por favor revise el campo razón social'
+    ),
+  sharesPercentage: yup
+    .number()
+    .typeError(
+      'Ingresa un número válido con máximo 2 decimales separados por punto (.)'
+    )
+    .transform((value) => (isNaN(value) ? '' : Number(value)))
+    .min(5, 'El porcentaje de acciones es menor al permitido')
+    .max(100, 'El porcentaje de acciones es mayor al permitido')
+    .test(
+      'max-2-decimals',
+      'Máximo 2 decimales permitidos',
+      (value) =>
+        Number.isFinite(value) && /^\d+(\.\d{1,2})?$/.test(value.toString())
+    )
+    .required(
+      'Falta información requerida para el Tomador. Por favor revise el campo porcentaje de acciones'
     ),
 });
 
@@ -330,13 +348,25 @@ const BeneficiariesFinalForm = ({
                       />
                     </div>
                     {+typeDocument === TYPE_DOCUMENT_IS_JURIDIC ? (
-                      <div className="col col-12 col-sm-12  no-padding-right flex justify-content-start">
-                        <Input
-                          label="Razón social"
-                          name="reasonSocialName"
-                          disabled={disabledAll}
-                        />
-                      </div>
+                      <>
+                        <div className="col col-12 col-sm-12  no-padding-right flex justify-content-start">
+                          <Input
+                            label="Razón social"
+                            name="reasonSocialName"
+                            disabled={disabledAll}
+                          />
+                        </div>
+                        <div className="col col-12 col-sm-12 col-md-6 col-lg-6 mt-3 shares">
+                          <Input
+                            label="Porcentaje de acciones"
+                            name="sharesPercentage"
+                            disabled={disabledAll}
+                            description="Mínimo 5%, máximo 100%"
+                            tooltip={true}
+                            percentage={true}
+                          />
+                        </div>
+                      </>
                     ) : (
                       <>
                         <div className="col col-12 col-sm-12 col-md-6 col-lg-6 no-padding-right">
