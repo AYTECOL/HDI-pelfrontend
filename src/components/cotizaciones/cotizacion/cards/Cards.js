@@ -203,7 +203,6 @@ class Cards extends Component {
         name: newItems[index].parent.nameModelValue,
       })
     );
-
     //Si se desactiva contenidos, se limpian los demás
     if (newItems[index].type === 2 && newItems[index].active === true) {
       for (let i = 1; i < 6; i++) {
