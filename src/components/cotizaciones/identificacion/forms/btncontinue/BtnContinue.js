@@ -67,6 +67,7 @@ class BtnContinue extends Component {
       if (code === '37') value = value.replace('-', '', value);
       NumeroIdentificacion.toggleDisable(true);
       try {
+        console.log('🎉','ConsultaPersonas.get');
         let persona = await ConsultaPersonas.get(code, value);
         if (persona.consultarPersonaRs.personaRestringida === true) {
           NumeroIdentificacion.toggleDisable(false);

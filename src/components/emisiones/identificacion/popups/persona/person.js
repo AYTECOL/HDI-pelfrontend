@@ -313,6 +313,17 @@ export default class Persona extends Component {
         }
       }
     }
+
+   //Bloquear el cambio de nombres cuando la persona está encontrada en iAxis
+    console.log('🎉 personaEncontradaIAXIS',person);
+    if (person.person?.consultarPersonaRs?.personaEncontradaIAXIS) {
+      person.nameDisabled = true;
+      person.secondnameDisabled = true;
+      person.lastnameDisabled = true;
+      person.secondlastnameDisabled = true;
+      person.fechadenacimientoDisabled = true;
+    }
+
     if (typeof consultarPersonaRs !== 'undefined') {
       if (typeof persona !== 'undefined') {
         const contactos = persona['contacto'];
@@ -438,17 +449,21 @@ export default class Persona extends Component {
       person.habeasDataActive =
         consultarPersonaRs['habeasData']?.['completed'] || false;
     }
+    console.log('🎉 person.secondnameDisabled', person.secondnameDisabled);
 
     return person;
   }
 
   componentDidMount() {
+    console.log('🎉','mount');
     this._isMounted = true;
     Helpers.fieldNumeric();
     let personObject = this.state.person;
     if (typeof personObject.person !== 'undefined')
       personObject.object = personObject.person;
-    if (typeof personObject.object !== 'undefined' && this.props.item !== -1)
+  
+    if (typeof personObject.object !== 'undefined' && this.props.item !== -1){
+      console.log('🎉','21');
       this.validateDoc({ person: personObject.person }, async () => {
         let person = this.state.person;
         person.codeDisabled = true;
@@ -462,7 +477,7 @@ export default class Persona extends Component {
           () => this.validateAll()
         );
       });
-    else this.validateAll();
+    }else this.validateAll();
   }
 
   componentWillUnmount() {
@@ -628,6 +643,7 @@ export default class Persona extends Component {
   };
 
   validateDoc = async (e, callback) => {
+    console.log('🎉','validateDoc');
     if (this.state.person.value === '') return;
     if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
     let code = this.state.person.code;
@@ -640,6 +656,7 @@ export default class Persona extends Component {
       }
       Loading.toggle(true);
       let responsePerson = null;
+      console.log('🎉','validateDoc consultar');
       responsePerson = await ConsultaPersonas.get(
         this.state.person.code,
         this.state.person.value
@@ -661,6 +678,7 @@ export default class Persona extends Component {
           }
         );
       } else {
+        console.log('🎉','entra extractDataFromIaxis');
         let person = this.state.person;
         person = Persona.extractDataFromIaxis(responsePerson, code, person);
         person.person = responsePerson;
@@ -1308,13 +1326,10 @@ export default class Persona extends Component {
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.name
-                                          ? 'not-value'
+                                        this.state.person.nameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.nameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={this.state.person.nameDisabled}
                                     name="name"
@@ -1335,19 +1350,16 @@ export default class Persona extends Component {
                                   )}
                                 >
                                   <label htmlFor="pisonumero">
-                                    Segundo nombre
+                                    Segundo nombre1
                                   </label>
                                   <input
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.secondname
-                                          ? 'not-value'
+                                        this.state.person.secondnameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.secondnameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={
                                       this.state.person.secondnameDisabled
@@ -1377,13 +1389,10 @@ export default class Persona extends Component {
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.lastname
-                                          ? 'not-value'
+                                        this.state.person.lastnameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.lastnameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={
                                       this.state.person.lastnameDisabled
@@ -1412,13 +1421,10 @@ export default class Persona extends Component {
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.secondlastname
-                                          ? 'not-value'
+                                        this.state.person.secondlastnameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.secondlastnameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={
                                       this.state.person.secondlastnameDisabled
