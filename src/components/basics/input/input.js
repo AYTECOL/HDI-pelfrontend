@@ -27,7 +27,7 @@ const Input = React.forwardRef(
     const { control } = useFormContext();
 
     const tooltipTitle =
-      'Relacionar los beneficiarios finales con 5% o más del capital social, aporte, participación, o que posee control directa o indirectamente.';
+      'Debes incluir a los beneficiarios finales con 5% o más del capital social, aportes, participación, o que posean control directa o indirectamente.';
 
     return (
       <Controller
