@@ -457,7 +457,6 @@ export default class Persona extends Component {
     let personObject = this.state.person;
     if (typeof personObject.person !== 'undefined')
       personObject.object = personObject.person;
-  
     if (typeof personObject.object !== 'undefined' && this.props.item !== -1)
       this.validateDoc({ person: personObject.person }, async () => {
         let person = this.state.person;
