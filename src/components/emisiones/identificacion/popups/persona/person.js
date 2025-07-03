@@ -240,6 +240,7 @@ export default class Persona extends Component {
       if (typeof consultarPersonaRs !== 'undefined') {
         if (typeof persona !== 'undefined') {
           if (typeof persona['personaNatural'] !== 'undefined') {
+
             if (typeof person.genero === 'undefined' || person.genero === '') {
               person.genero = persona['personaNatural']['genero']['codigo'];
               person.genero = person.genero === null ? '' : person.genero;
@@ -308,20 +309,19 @@ export default class Persona extends Component {
                 person.fechadenacimiento !== null;
             }
 
+            //Bloquear el cambio de nombres cuando la persona ya está en iAxis
+            if (consultarPersonaRs.personaEncontradaIAXIS) {
+              person.nameDisabled = true;
+              person.secondnameDisabled = true;
+              person.lastnameDisabled = true;
+              person.secondlastnameDisabled = true;
+              person.fechadenacimientoDisabled = true;
+            }
+
             person.personaNatural = persona['personaNatural'];
           }
         }
       }
-    }
-
-   //Bloquear el cambio de nombres cuando la persona está encontrada en iAxis
-    console.log('🎉 personaEncontradaIAXIS',person);
-    if (person.person?.consultarPersonaRs?.personaEncontradaIAXIS) {
-      person.nameDisabled = true;
-      person.secondnameDisabled = true;
-      person.lastnameDisabled = true;
-      person.secondlastnameDisabled = true;
-      person.fechadenacimientoDisabled = true;
     }
 
     if (typeof consultarPersonaRs !== 'undefined') {
@@ -449,13 +449,11 @@ export default class Persona extends Component {
       person.habeasDataActive =
         consultarPersonaRs['habeasData']?.['completed'] || false;
     }
-    console.log('🎉 person.secondnameDisabled', person.secondnameDisabled);
 
     return person;
   }
 
   componentDidMount() {
-    console.log('🎉','mount');
     this._isMounted = true;
     Helpers.fieldNumeric();
     let personObject = this.state.person;
@@ -463,7 +461,6 @@ export default class Persona extends Component {
       personObject.object = personObject.person;
   
     if (typeof personObject.object !== 'undefined' && this.props.item !== -1){
-      console.log('🎉','21');
       this.validateDoc({ person: personObject.person }, async () => {
         let person = this.state.person;
         person.codeDisabled = true;
@@ -643,7 +640,6 @@ export default class Persona extends Component {
   };
 
   validateDoc = async (e, callback) => {
-    console.log('🎉','validateDoc');
     if (this.state.person.value === '') return;
     if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
     let code = this.state.person.code;
@@ -656,7 +652,6 @@ export default class Persona extends Component {
       }
       Loading.toggle(true);
       let responsePerson = null;
-      console.log('🎉','validateDoc consultar');
       responsePerson = await ConsultaPersonas.get(
         this.state.person.code,
         this.state.person.value
@@ -678,7 +673,6 @@ export default class Persona extends Component {
           }
         );
       } else {
-        console.log('🎉','entra extractDataFromIaxis');
         let person = this.state.person;
         person = Persona.extractDataFromIaxis(responsePerson, code, person);
         person.person = responsePerson;
@@ -1350,7 +1344,7 @@ export default class Persona extends Component {
                                   )}
                                 >
                                   <label htmlFor="pisonumero">
-                                    Segundo nombre1
+                                    Segundo nombre
                                   </label>
                                   <input
                                     type="text"
