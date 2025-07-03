@@ -136,12 +136,21 @@ class CreateOrUpdateValoration {
         },
       },
     };
-    const selectToVerify = ['build_year', 'floors_number', 'location_floor'];
-    for (let i in data) if (data[i] === '') data[i] = 0;
 
-    //For para volver a vacío y que no permita continuar con el select vacío al retomar
+    const selectToVerify = [
+      'build_year',
+      'location_zone',
+      'floors_number',
+      'location_floor',
+      'build_material',
+      'cojunto_cerrado',
+    ];
+
+    for (let i in data) if (data[i] == '') data[i] = 0;
+
+    //For para volver a vacío y que no permita continuar con el campo vacío al retomar
     for (let key of selectToVerify) {
-      if (data[key] === 0) {
+      if (data[key] == 0) {
         data[key] = '';
       }
     }
