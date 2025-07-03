@@ -240,7 +240,6 @@ export default class Persona extends Component {
       if (typeof consultarPersonaRs !== 'undefined') {
         if (typeof persona !== 'undefined') {
           if (typeof persona['personaNatural'] !== 'undefined') {
-
             if (typeof person.genero === 'undefined' || person.genero === '') {
               person.genero = persona['personaNatural']['genero']['codigo'];
               person.genero = person.genero === null ? '' : person.genero;
@@ -323,7 +322,6 @@ export default class Persona extends Component {
         }
       }
     }
-
     if (typeof consultarPersonaRs !== 'undefined') {
       if (typeof persona !== 'undefined') {
         const contactos = persona['contacto'];
@@ -460,7 +458,7 @@ export default class Persona extends Component {
     if (typeof personObject.person !== 'undefined')
       personObject.object = personObject.person;
   
-    if (typeof personObject.object !== 'undefined' && this.props.item !== -1){
+    if (typeof personObject.object !== 'undefined' && this.props.item !== -1)
       this.validateDoc({ person: personObject.person }, async () => {
         let person = this.state.person;
         person.codeDisabled = true;
@@ -474,7 +472,7 @@ export default class Persona extends Component {
           () => this.validateAll()
         );
       });
-    }else this.validateAll();
+    else this.validateAll();
   }
 
   componentWillUnmount() {
