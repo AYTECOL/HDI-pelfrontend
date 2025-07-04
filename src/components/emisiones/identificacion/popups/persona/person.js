@@ -308,6 +308,15 @@ export default class Persona extends Component {
                 person.fechadenacimiento !== null;
             }
 
+            //Bloquear el cambio de nombres cuando la persona ya está en iAxis
+            if (consultarPersonaRs.personaEncontradaIAXIS) {
+              person.nameDisabled = true;
+              person.secondnameDisabled = true;
+              person.lastnameDisabled = true;
+              person.secondlastnameDisabled = true;
+              person.fechadenacimientoDisabled = true;
+            }
+
             person.personaNatural = persona['personaNatural'];
           }
         }
