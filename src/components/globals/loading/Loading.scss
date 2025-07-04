@@ -50,7 +50,7 @@
   width: 100%;
   height: 100%;
   background-color: $hdi-modal-background;
-  z-index: 999999;
+  z-index: 99999999999;
   //display: none;
   .image,
   svg,
@@ -71,7 +71,7 @@
       position: fixed;
       top: 0;
       width: 100vw;
-      z-index: 2000;
+      z-index: 25000000000;
 
       &__icon {
         position: absolute;
