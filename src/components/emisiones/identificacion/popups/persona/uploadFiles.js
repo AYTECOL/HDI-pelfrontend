@@ -29,7 +29,7 @@ const UploadFiles = ({
     }
   }, [cerl, habeasData, sarlaft, typeFile]);
 
-  const verifyFileUrl = fileUrl && !Object.keys(fileUrl).length === 0;
+  const verifyFileUrl = typeof fileUrl === 'string' && fileUrl.trim() !== '';
 
   const nameLabel = TYPES_FILES_LABEL?.[typeFile]?.name || '';
   const id = TYPES_FILES_LABEL?.[typeFile].id || 'defaultFile';
@@ -61,7 +61,7 @@ const UploadFiles = ({
               <br />
               <span>
                 <a href={fileUrl}>
-                  {verifyFileUrl ? fileUrl?.split('/').slice(-1) : ''}
+                  {fileUrl?.split('/').slice(-1)}
                 </a>
               </span>
             </React.Fragment>
