@@ -29,6 +29,8 @@ const UploadFiles = ({
     }
   }, [cerl, habeasData, sarlaft, typeFile]);
 
+  const verifyFileUrl = typeof fileUrl === 'string' && fileUrl.trim() !== '';
+
   const nameLabel = TYPES_FILES_LABEL?.[typeFile]?.name || '';
   const id = TYPES_FILES_LABEL?.[typeFile].id || 'defaultFile';
   return (
@@ -54,12 +56,12 @@ const UploadFiles = ({
             <p>{textFile}</p>
           )}
           <span>Formatos permitidos PDF, PNG, GIF, JPG</span>
-          {fileUrl && (
+          {verifyFileUrl && (
             <React.Fragment>
               <br />
               <span>
                 <a href={fileUrl}>
-                  {fileUrl ? fileUrl?.split('/').slice(-1) : ''}
+                  {fileUrl?.split('/').slice(-1)}
                 </a>
               </span>
             </React.Fragment>
