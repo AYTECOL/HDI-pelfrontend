@@ -308,6 +308,15 @@ export default class Persona extends Component {
                 person.fechadenacimiento !== null;
             }
 
+            //Bloquear el cambio de nombres cuando la persona ya está en iAxis
+            if (consultarPersonaRs.personaEncontradaIAXIS) {
+              person.nameDisabled = true;
+              person.secondnameDisabled = true;
+              person.lastnameDisabled = true;
+              person.secondlastnameDisabled = true;
+              person.fechadenacimientoDisabled = true;
+            }
+
             person.personaNatural = persona['personaNatural'];
           }
         }
@@ -1308,13 +1317,10 @@ export default class Persona extends Component {
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.name
-                                          ? 'not-value'
+                                        this.state.person.nameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.nameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={this.state.person.nameDisabled}
                                     name="name"
@@ -1341,13 +1347,10 @@ export default class Persona extends Component {
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.secondname
-                                          ? 'not-value'
+                                        this.state.person.secondnameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.secondnameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={
                                       this.state.person.secondnameDisabled
@@ -1377,13 +1380,10 @@ export default class Persona extends Component {
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.lastname
-                                          ? 'not-value'
+                                        this.state.person.lastnameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.lastnameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={
                                       this.state.person.lastnameDisabled
@@ -1412,13 +1412,10 @@ export default class Persona extends Component {
                                     type="text"
                                     className={
                                       `form-control ${
-                                        !this.state.person.secondlastname
-                                          ? 'not-value'
+                                        this.state.person.secondlastnameDisabled
+                                          ? 'disabled'
                                           : ''
-                                      }` +
-                                      (this.state.person.secondlastnameDisabled
-                                        ? 'disabled'
-                                        : '')
+                                      }`
                                     }
                                     disabled={
                                       this.state.person.secondlastnameDisabled
