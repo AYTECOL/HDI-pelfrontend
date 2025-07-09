@@ -30,7 +30,6 @@ class AllInsurableLimits {
           });
         //data = await Api.get(BaseUrl, undefined, authHeader);
       } catch (e) {
-        console.log('🎉 error desde el servicio', JSON.stringify(e));
         const { status } = e?.response || {};
         return {
           code: status || 400,
