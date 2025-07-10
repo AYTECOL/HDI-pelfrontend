@@ -27,25 +27,27 @@ class Counter extends Component {
       let errors = 0;
       let inmueble = storeState.Inmueble;
       let total = 5 + questions.length;
-
-      if (inmueble.type_risk === 2) total++;
-
-      if (inmueble.type_risk === 2 && inmueble.pisonumero === '') errors++;
-      if (inmueble.cojuntocerrado === '') errors++;
-      if (inmueble.construidocon === '') errors++;
-      if (inmueble.anoconstruido === '') errors++;
-      if (inmueble.zona === '') errors++;
-      if (inmueble.numerodepisos === '') errors++;
+      
+      if (inmueble.type_risk === 2) {
+        total++;
+        if (inmueble.pisonumero == '' || inmueble.pisonumero == 0) errors++;
+      }
+      
+      if (inmueble.cojuntocerrado == '' || inmueble.cojuntocerrado == 0) errors++;
+      if (inmueble.construidocon == '' || inmueble.construidocon == 0) errors++;
+      if (inmueble.anoconstruido == '' || inmueble.anoconstruido == 0) errors++;
+      if (inmueble.zona == '' || inmueble.zona == 0) errors++;
+      if (inmueble.numerodepisos == '' || inmueble.numerodepisos == 0) errors++;
 
       if (inmueble.refuerzo === 1) {
         total++;
-        if (inmueble.anorefuerzo === '') errors++;
+        if (inmueble.anorefuerzo == '') errors++;
       }
 
       if (
         inmueble.inmuebleasegudado === 0 &&
         (inmueble.contenidoasegudado === 0 ||
-          inmueble.contenidoasegudado === '')
+          inmueble.contenidoasegudado == '')
       ) {
         total++;
         errors++;
