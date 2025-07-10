@@ -60,42 +60,42 @@ class BtnContinue extends Component {
     let errors = 0;
     let inmueble = storeState.Inmueble;
 
-    if (inmueble.type_risk === 2 && inmueble.pisonumero === '') {
+    if (inmueble.type_risk === 2 && (inmueble.pisonumero == '' || inmueble.pisonumero == 0)) {
       Helpers.addClass('.pisonumero', 'error');
       errors++;
     } else {
       Helpers.removeClass('.pisonumero', 'error');
     }
 
-    if (inmueble.numerodepisos === '') {
+    if (inmueble.numerodepisos == '' || inmueble.numerodepisos == 0) {
       Helpers.addClass('.numerodepisos', 'error');
       errors++;
     } else {
       Helpers.removeClass('.numerodepisos', 'error');
     }
 
-    if (inmueble.zona === '') {
+    if (inmueble.zona == '' || inmueble.zona == 0) {
       Helpers.addClass('.zona', 'error');
       errors++;
     } else {
       Helpers.removeClass('.zona', 'error');
     }
 
-    if (inmueble.anoconstruido === '') {
+    if (inmueble.anoconstruido == '' || inmueble.anoconstruido == 0) {
       Helpers.addClass('.anoconstruido', 'error');
       errors++;
     } else {
       Helpers.removeClass('.anoconstruido', 'error');
     }
 
-    if (inmueble.construidocon === '') {
+    if (inmueble.construidocon == '' || inmueble.construidocon == 0) {
       Helpers.addClass('.construidocon', 'error');
       errors++;
     } else {
       Helpers.removeClass('.construidocon', 'error');
     }
 
-    if (inmueble.cojuntocerrado === '') {
+    if (inmueble.cojuntocerrado == '' || inmueble.cojuntocerrado == 0) {
       Helpers.addClass('.cojuntocerrado', 'error');
       errors++;
     } else {
@@ -103,7 +103,7 @@ class BtnContinue extends Component {
     }
 
     if (inmueble.refuerzo === 1) {
-      if (inmueble.anorefuerzo === '') {
+      if (inmueble.anorefuerzo == '' || inmueble.anorefuerzo == 0) {
         Helpers.addClass('.anorefuerzo', 'error');
         errors++;
       } else {
@@ -113,7 +113,7 @@ class BtnContinue extends Component {
 
     if (
       inmueble.inmuebleasegudado === 0 &&
-      (inmueble.contenidoasegudado === 0 || inmueble.contenidoasegudado === '')
+      (inmueble.contenidoasegudado === 0 || inmueble.contenidoasegudado == '')
     ) {
       Helpers.addClass('.inmuebleasegudado', 'error');
       Helpers.addClass('.contenidoasegudado', 'error');

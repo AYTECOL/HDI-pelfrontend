@@ -136,7 +136,10 @@ class CreateOrUpdateValoration {
         },
       },
     };
-    for (let i in data) if (data[i] === '') data[i] = 0;
+
+    //For para poner 0 en los campos vacíos porque iAxis no soporta vacío
+    for (let i in data) if (data[i] == '') data[i] = 0;
+
     // TODO intercept request
     let authHeader = new AuthHeader();
     authHeader = authHeader.generateAuthCode();
