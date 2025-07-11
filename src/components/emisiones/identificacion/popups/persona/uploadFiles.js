@@ -61,7 +61,7 @@ const UploadFiles = ({
               <br />
               <span>
                 <a href={fileUrl}>
-                  {verifyFileUrl ? fileUrl?.split('/').slice(-1) : ''}
+                  {fileUrl?.split('/').slice(-1)}
                 </a>
               </span>
             </React.Fragment>
