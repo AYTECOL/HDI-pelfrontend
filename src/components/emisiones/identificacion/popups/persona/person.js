@@ -198,257 +198,395 @@ export default class Persona extends Component {
    * @param person
    * @returns {*}
    */
+  // static extractDataFromIaxis(resPersona, code, person) {
+  //   const consultarPersonaRs = resPersona['consultarPersonaRs'];
+  //   const persona = consultarPersonaRs && consultarPersonaRs.persona;
+  //   if (parseInt(code) === 37) {
+  //     if (typeof consultarPersonaRs !== 'undefined') {
+  //       if (typeof persona !== 'undefined') {
+  //         if (typeof persona['personaJuridica'] !== 'undefined') {
+  //           if (
+  //             typeof persona['personaJuridica']['razonSocial'] !== 'undefined'
+  //           ) {
+  //             person.businessname = persona['personaJuridica']['razonSocial'];
+  //             person.businessname =
+  //               person.businessname == null ? '' : person.businessname;
+  //             person.businessnameDisabled =
+  //               person.businessname !== '' && person.businessname !== null;
+  //           }
+  //           if (
+  //             typeof persona['personaJuridica']['fechaConstitucion'] !==
+  //             'undefined'
+  //           ) {
+  //             person.fechadecontitucion =
+  //               persona['personaJuridica']['fechaConstitucion'];
+  //             person.fechadecontitucion =
+  //               person.fechadecontitucion !== null
+  //                 ? person.fechadecontitucion.split('T')
+  //                 : '';
+  //             person.fechadecontitucion =
+  //               typeof person.fechadecontitucion[0] !== 'undefined'
+  //                 ? person.fechadecontitucion[0]
+  //                 : '';
+  //             person.fechadecontitucionDisabled =
+  //               person.fechadecontitucion !== '';
+  //           }
+  //           person.valueDisabled = true;
+  //           person.codeDisabled = true;
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     if (typeof consultarPersonaRs !== 'undefined') {
+  //       if (typeof persona !== 'undefined') {
+  //         if (typeof persona['personaNatural'] !== 'undefined') {
+  //           if (typeof person.genero === 'undefined' || person.genero === '') {
+  //             person.genero = persona['personaNatural']['genero']['codigo'];
+  //             person.genero = person.genero === null ? '' : person.genero;
+  //             person.generoDisabled =
+  //               person.genero !== '' && person.genero !== null;
+  //           }
+
+  //           if (typeof person.name === 'undefined' || person.name === '') {
+  //             person.name = persona['personaNatural']['primerNombre'];
+  //             person.name = person.name === null ? '' : person.name;
+  //             person.nameDisabled = person.name !== '' && person.name !== null;
+  //           }
+
+  //           if (
+  //             typeof person.secondname === 'undefined' ||
+  //             person.secondname === ''
+  //           ) {
+  //             person.secondname = persona['personaNatural']['segundoNombre'];
+  //             person.secondname =
+  //               person.secondname === null ? '' : person.secondname;
+  //             person.secondnameDisabled =
+  //               person.secondname !== '' && person.secondname !== null;
+  //           }
+
+  //           if (
+  //             typeof person.lastname === 'undefined' ||
+  //             person.lastname === ''
+  //           ) {
+  //             person.lastname = persona['personaNatural']['primerApellido'];
+  //             person.lastname = person.lastname === null ? '' : person.lastname;
+  //             person.lastnameDisabled =
+  //               person.lastname !== '' && person.lastname !== null;
+  //           }
+
+  //           if (
+  //             typeof person.secondlastname === 'undefined' ||
+  //             person.secondlastname === ''
+  //           ) {
+  //             person.secondlastname =
+  //               persona['personaNatural']['segundoApellido'];
+  //             person.secondlastname =
+  //               person.secondlastname === null ? '' : person.secondlastname;
+  //             person.secondlastnameDisabled =
+  //               person.secondlastname !== '' && person.secondlastname !== null;
+  //           }
+
+  //           person.valueDisabled = true;
+  //           person.codeDisabled = true;
+
+  //           if (
+  //             typeof person.fechadenacimiento === 'undefined' ||
+  //             person.fechadenacimiento === ''
+  //           ) {
+  //             person.fechadenacimiento =
+  //               persona['personaNatural']['fechaNacimiento'];
+  //             person.fechadenacimiento =
+  //               person.fechadenacimiento !== null
+  //                 ? person.fechadenacimiento.split('T')
+  //                 : '';
+  //             person.fechadenacimiento =
+  //               typeof person.fechadenacimiento[0] !== 'undefined'
+  //                 ? person.fechadenacimiento[0]
+  //                 : '';
+  //             person.fechadenacimientoDisabled =
+  //               person.fechadenacimiento !== '' &&
+  //               person.fechadenacimiento !== null;
+  //           }
+
+  //           //Bloquear el cambio de nombres cuando la persona ya está en iAxis
+  //           if (consultarPersonaRs.personaEncontradaIAXIS) {
+  //             person.nameDisabled = true;
+  //             person.secondnameDisabled = true;
+  //             person.lastnameDisabled = true;
+  //             person.secondlastnameDisabled = true;
+  //             person.fechadenacimientoDisabled = true;
+  //           }
+
+  //           person.personaNatural = persona['personaNatural'];
+  //         }
+  //       }
+  //     }
+  //   }
+  //   if (typeof consultarPersonaRs !== 'undefined') {
+  //     if (typeof persona !== 'undefined') {
+  //       const contactos = persona['contacto'];
+  //       if (typeof contactos !== 'undefined') {
+  //         person.contacto = [];
+  //         person.tipoPersona = persona['tipoPersona'];
+  //         if (!person.email) {
+  //           const listEmail = contactos.filter(
+  //             ({ tipoContacto }) => +tipoContacto.codigo === 3
+  //           );
+  //           const lastEmail = listEmail.reduce(
+  //             (previousValue, currentValue) => {
+  //               if (previousValue) {
+  //                 const validEmail = Helpers.validationEmail(
+  //                   currentValue.textoContacto
+  //                 );
+  //                 if (
+  //                   +currentValue.tipoContacto.codigo === 3 &&
+  //                   validEmail &
+  //                   (currentValue.idContacto > previousValue.idContacto)
+  //                 ) {
+  //                   return currentValue;
+  //                 } else {
+  //                   return previousValue;
+  //                 }
+  //               }
+  //               return null;
+  //             }
+  //             /*  previousValue
+  //                 ? currentValue.tipoContacto.codigo === 3 &&
+  //                   Helpers.validationEmail(currentValue.textoContacto) &&
+  //                   currentValue.idContacto > previousValue.idContacto
+  //                   ? currentValue
+  //                   : previousValue
+  //                 : currentValue,
+  //             null */
+  //           );
+  //           person.email = (lastEmail && lastEmail.textoContacto) || '';
+  //         }
+  //         if (!person.telefono) {
+  //           const codesPhone = [6];
+  //           const lastPhone = contactos.reduce((prevValue, contact) => {
+  //             const tipoContacto = contact.tipoContacto.codigo;
+  //             const isValidCode = codesPhone.find(
+  //               (value) => String(tipoContacto) === String(value)
+  //             );
+  //             if (!prevValue && isValidCode) return contact;
+  //             if (
+  //               isValidCode &&
+  //               contact.idContacto > prevValue.idContacto &&
+  //               Helpers.isNumber(contact.textoContacto)
+  //             )
+  //               return contact;
+  //             return prevValue;
+  //           }, null);
+  //           if (lastPhone) {
+  //             const tipoContacto = lastPhone.tipoContacto.codigo;
+  //             person.telefono = lastPhone.textoContacto;
+  //             person.tipodetelefono = Object.values(phoneTypes).some(
+  //               (type) => String(type) === String(tipoContacto)
+  //             )
+  //               ? tipoContacto
+  //               : phoneTypes.mobilePhone;
+  //           }
+  //         }
+  //         person.contacto = contactos.map((contacto) => {
+  //           const { tipoContacto, textoContacto } = contacto;
+  //           const tipoContactoCode = tipoContacto.codigo;
+  //           return {
+  //             tipoContacto: {
+  //               codigo: tipoContactoCode,
+  //             },
+  //             textoContacto,
+  //           };
+  //         });
+  //       }
+  //       const direcciones = persona.direccion || [];
+  //       const lastDireccion = direcciones.reduce(
+  //         (previousValue, direction) =>
+  //           previousValue
+  //             ? direction.idDireccion > previousValue.idDireccion &&
+  //               direction.textoDireccion
+  //               ? direction
+  //               : previousValue
+  //             : direction,
+  //         null
+  //       );
+  //       person.direccion = direcciones;
+  //       if (lastDireccion) {
+  //         const { departamento, ciudad } = lastDireccion;
+  //         if (!person.ciudad) person.address = lastDireccion['textoDireccion'];
+  //         if (ciudad) {
+  //           if (!person.ciudad) person.ciudad = ciudad['nombre'];
+  //           if (!person.city_code) person.city_code = ciudad['codigo'];
+  //         }
+  //         if (departamento) {
+  //           if (!person.departamento)
+  //             person.departamento = departamento['nombre'];
+  //           if (!person.department_code)
+  //             person.department_code = departamento['codigo'];
+  //         }
+  //         if (lastDireccion['tipoDireccion']) {
+  //           if (!person.adresstype)
+  //             person.adresstype = lastDireccion['tipoDireccion']['codigo'];
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   if (
+  //     'informacionSARLAFT' in consultarPersonaRs &&
+  //     'vigente' in consultarPersonaRs['informacionSARLAFT']
+  //   ) {
+  //     person.sarlfaltActive =
+  //       consultarPersonaRs['informacionSARLAFT']?.['vigente'] || false;
+  //     person.sarlfaltActiveDisabled = true;
+  //   }
+
+  //   if (
+  //     'habeasData' in consultarPersonaRs &&
+  //     'completed' in consultarPersonaRs['habeasData']
+  //   ) {
+  //     person.habeasDataActive =
+  //       consultarPersonaRs['habeasData']?.['completed'] || false;
+  //   }
+
+  //   return person;
+  // }
+
   static extractDataFromIaxis(resPersona, code, person) {
-    const consultarPersonaRs = resPersona['consultarPersonaRs'];
-    const persona = consultarPersonaRs && consultarPersonaRs.persona;
-    if (parseInt(code) === 37) {
-      if (typeof consultarPersonaRs !== 'undefined') {
-        if (typeof persona !== 'undefined') {
-          if (typeof persona['personaJuridica'] !== 'undefined') {
-            if (
-              typeof persona['personaJuridica']['razonSocial'] !== 'undefined'
-            ) {
-              person.businessname = persona['personaJuridica']['razonSocial'];
-              person.businessname =
-                person.businessname == null ? '' : person.businessname;
-              person.businessnameDisabled =
-                person.businessname !== '' && person.businessname !== null;
-            }
-            if (
-              typeof persona['personaJuridica']['fechaConstitucion'] !==
-              'undefined'
-            ) {
-              person.fechadecontitucion =
-                persona['personaJuridica']['fechaConstitucion'];
-              person.fechadecontitucion =
-                person.fechadecontitucion !== null
-                  ? person.fechadecontitucion.split('T')
-                  : '';
-              person.fechadecontitucion =
-                typeof person.fechadecontitucion[0] !== 'undefined'
-                  ? person.fechadecontitucion[0]
-                  : '';
-              person.fechadecontitucionDisabled =
-                person.fechadecontitucion !== '';
-            }
-            person.valueDisabled = true;
-            person.codeDisabled = true;
-          }
+    const consultarPersonaRs = resPersona?.consultarPersonaRs;
+    const persona = consultarPersonaRs && consultarPersonaRs?.persona;
+
+    // Creamos una nueva copia inmutable del objeto person
+    // Se clona el objeto para evitar mutaciones directas en el state
+    const updatedPerson = { ...person };
+
+    // Si es NIT (código 37) y hay info de persona jurídica
+    if (String(code) === '37') {
+      if (persona?.personaJuridica) {
+        const razonSocial = persona.personaJuridica.razonSocial || '';
+        updatedPerson.businessname = razonSocial;
+        updatedPerson.businessnameDisabled = razonSocial !== '';
+
+        // Fecha de constitución formateada
+        const fecha = persona.personaJuridica.fechaConstitucion;
+        if (fecha) {
+          const [onlyDate] = fecha.split('T');
+          updatedPerson.fechadecontitucion = onlyDate;
+          updatedPerson.fechadecontitucionDisabled = !!onlyDate;
         }
+
+        updatedPerson.valueDisabled = true;
+        updatedPerson.codeDisabled = true;
       }
     } else {
-      if (typeof consultarPersonaRs !== 'undefined') {
-        if (typeof persona !== 'undefined') {
-          if (typeof persona['personaNatural'] !== 'undefined') {
-            if (typeof person.genero === 'undefined' || person.genero === '') {
-              person.genero = persona['personaNatural']['genero']['codigo'];
-              person.genero = person.genero === null ? '' : person.genero;
-              person.generoDisabled =
-                person.genero !== '' && person.genero !== null;
-            }
-
-            if (typeof person.name === 'undefined' || person.name === '') {
-              person.name = persona['personaNatural']['primerNombre'];
-              person.name = person.name === null ? '' : person.name;
-              person.nameDisabled = person.name !== '' && person.name !== null;
-            }
-
-            if (
-              typeof person.secondname === 'undefined' ||
-              person.secondname === ''
-            ) {
-              person.secondname = persona['personaNatural']['segundoNombre'];
-              person.secondname =
-                person.secondname === null ? '' : person.secondname;
-              person.secondnameDisabled =
-                person.secondname !== '' && person.secondname !== null;
-            }
-
-            if (
-              typeof person.lastname === 'undefined' ||
-              person.lastname === ''
-            ) {
-              person.lastname = persona['personaNatural']['primerApellido'];
-              person.lastname = person.lastname === null ? '' : person.lastname;
-              person.lastnameDisabled =
-                person.lastname !== '' && person.lastname !== null;
-            }
-
-            if (
-              typeof person.secondlastname === 'undefined' ||
-              person.secondlastname === ''
-            ) {
-              person.secondlastname =
-                persona['personaNatural']['segundoApellido'];
-              person.secondlastname =
-                person.secondlastname === null ? '' : person.secondlastname;
-              person.secondlastnameDisabled =
-                person.secondlastname !== '' && person.secondlastname !== null;
-            }
-
-            person.valueDisabled = true;
-            person.codeDisabled = true;
-
-            if (
-              typeof person.fechadenacimiento === 'undefined' ||
-              person.fechadenacimiento === ''
-            ) {
-              person.fechadenacimiento =
-                persona['personaNatural']['fechaNacimiento'];
-              person.fechadenacimiento =
-                person.fechadenacimiento !== null
-                  ? person.fechadenacimiento.split('T')
-                  : '';
-              person.fechadenacimiento =
-                typeof person.fechadenacimiento[0] !== 'undefined'
-                  ? person.fechadenacimiento[0]
-                  : '';
-              person.fechadenacimientoDisabled =
-                person.fechadenacimiento !== '' &&
-                person.fechadenacimiento !== null;
-            }
-
-            //Bloquear el cambio de nombres cuando la persona ya está en iAxis
-            if (consultarPersonaRs.personaEncontradaIAXIS) {
-              person.nameDisabled = true;
-              person.secondnameDisabled = true;
-              person.lastnameDisabled = true;
-              person.secondlastnameDisabled = true;
-              person.fechadenacimientoDisabled = true;
-            }
-
-            person.personaNatural = persona['personaNatural'];
-          }
+      // Si es Persona natural
+      const natural = persona?.personaNatural;
+      if (natural) {
+        // Se llenan todos los campos si aún no están presentes
+        if (!updatedPerson.genero) {
+          updatedPerson.genero = natural.genero?.codigo || '';
+          updatedPerson.generoDisabled = !!updatedPerson.genero;
         }
-      }
-    }
-    if (typeof consultarPersonaRs !== 'undefined') {
-      if (typeof persona !== 'undefined') {
-        const contactos = persona['contacto'];
-        if (typeof contactos !== 'undefined') {
-          person.contacto = [];
-          person.tipoPersona = persona['tipoPersona'];
-          if (!person.email) {
-            const listEmail = contactos.filter(
-              ({ tipoContacto }) => +tipoContacto.codigo === 3
-            );
-            const lastEmail = listEmail.reduce(
-              (previousValue, currentValue) => {
-                if (previousValue) {
-                  const validEmail = Helpers.validationEmail(
-                    currentValue.textoContacto
-                  );
-                  if (
-                    +currentValue.tipoContacto.codigo === 3 &&
-                    validEmail &
-                    (currentValue.idContacto > previousValue.idContacto)
-                  ) {
-                    return currentValue;
-                  } else {
-                    return previousValue;
-                  }
-                }
-                return null;
-              }
-              /*  previousValue
-                  ? currentValue.tipoContacto.codigo === 3 &&
-                    Helpers.validationEmail(currentValue.textoContacto) &&
-                    currentValue.idContacto > previousValue.idContacto
-                    ? currentValue
-                    : previousValue
-                  : currentValue,
-              null */
-            );
-            person.email = (lastEmail && lastEmail.textoContacto) || '';
-          }
-          if (!person.telefono) {
-            const codesPhone = [6];
-            const lastPhone = contactos.reduce((prevValue, contact) => {
-              const tipoContacto = contact.tipoContacto.codigo;
-              const isValidCode = codesPhone.find(
-                (value) => String(tipoContacto) === String(value)
-              );
-              if (!prevValue && isValidCode) return contact;
-              if (
-                isValidCode &&
-                contact.idContacto > prevValue.idContacto &&
-                Helpers.isNumber(contact.textoContacto)
-              )
-                return contact;
-              return prevValue;
-            }, null);
-            if (lastPhone) {
-              const tipoContacto = lastPhone.tipoContacto.codigo;
-              person.telefono = lastPhone.textoContacto;
-              person.tipodetelefono = Object.values(phoneTypes).some(
-                (type) => String(type) === String(tipoContacto)
-              )
-                ? tipoContacto
-                : phoneTypes.mobilePhone;
-            }
-          }
-          person.contacto = contactos.map((contacto) => {
-            const { tipoContacto, textoContacto } = contacto;
-            const tipoContactoCode = tipoContacto.codigo;
-            return {
-              tipoContacto: {
-                codigo: tipoContactoCode,
-              },
-              textoContacto,
-            };
-          });
+
+        if (!updatedPerson.name) {
+          updatedPerson.name = natural.primerNombre || '';
+          updatedPerson.nameDisabled = !!updatedPerson.name;
         }
-        const direcciones = persona.direccion || [];
-        const lastDireccion = direcciones.reduce(
-          (previousValue, direction) =>
-            previousValue
-              ? direction.idDireccion > previousValue.idDireccion &&
-                direction.textoDireccion
-                ? direction
-                : previousValue
-              : direction,
-          null
-        );
-        person.direccion = direcciones;
-        if (lastDireccion) {
-          const { departamento, ciudad } = lastDireccion;
-          if (!person.ciudad) person.address = lastDireccion['textoDireccion'];
-          if (ciudad) {
-            if (!person.ciudad) person.ciudad = ciudad['nombre'];
-            if (!person.city_code) person.city_code = ciudad['codigo'];
-          }
-          if (departamento) {
-            if (!person.departamento)
-              person.departamento = departamento['nombre'];
-            if (!person.department_code)
-              person.department_code = departamento['codigo'];
-          }
-          if (lastDireccion['tipoDireccion']) {
-            if (!person.adresstype)
-              person.adresstype = lastDireccion['tipoDireccion']['codigo'];
-          }
+
+        if (!updatedPerson.secondname) {
+          updatedPerson.secondname = natural.segundoNombre || '';
+          updatedPerson.secondnameDisabled = !!updatedPerson.secondname;
         }
+
+        if (!updatedPerson.lastname) {
+          updatedPerson.lastname = natural.primerApellido || '';
+          updatedPerson.lastnameDisabled = !!updatedPerson.lastname;
+        }
+
+        if (!updatedPerson.secondlastname) {
+          updatedPerson.secondlastname = natural.segundoApellido || '';
+          updatedPerson.secondlastnameDisabled = !!updatedPerson.secondlastname;
+        }
+
+        if (!updatedPerson.fechadenacimiento) {
+          const fecha = natural.fechaNacimiento;
+          const [onlyDate] = (fecha || '').split('T');
+          updatedPerson.fechadenacimiento = onlyDate || '';
+          updatedPerson.fechadenacimientoDisabled = !!onlyDate;
+        }
+
+        // Si ya fue encontrada, se deshabilitan campos
+        if (consultarPersonaRs.personaEncontradaIAXIS) {
+          updatedPerson.nameDisabled = true;
+          updatedPerson.secondnameDisabled = true;
+          updatedPerson.lastnameDisabled = true;
+          updatedPerson.secondlastnameDisabled = true;
+          updatedPerson.fechadenacimientoDisabled = true;
+        }
+
+        updatedPerson.personaNatural = natural;
+        updatedPerson.valueDisabled = true;
+        updatedPerson.codeDisabled = true;
       }
     }
 
-    if (
-      'informacionSARLAFT' in consultarPersonaRs &&
-      'vigente' in consultarPersonaRs['informacionSARLAFT']
-    ) {
-      person.sarlfaltActive =
-        consultarPersonaRs['informacionSARLAFT']?.['vigente'] || false;
-      person.sarlfaltActiveDisabled = true;
+    // Contactos (teléfono, email, etc.)
+    const contactos = persona?.contacto || [];
+    updatedPerson.contacto = contactos.map(({ tipoContacto, textoContacto }) => ({
+      tipoContacto: { codigo: tipoContacto.codigo },
+      textoContacto,
+    }));
+
+    // Email y celular si no están definidos aún
+
+    if (!updatedPerson.email) {
+      const email = contactos.find(c => +c.tipoContacto.codigo === 3);
+      updatedPerson.email = email?.textoContacto || '';
     }
 
-    if (
-      'habeasData' in consultarPersonaRs &&
-      'completed' in consultarPersonaRs['habeasData']
-    ) {
-      person.habeasDataActive =
-        consultarPersonaRs['habeasData']?.['completed'] || false;
+    if (!updatedPerson.telefono) {
+      const celular = contactos.find(c =>
+        String(c.tipoContacto.codigo) === '6' && c.textoContacto
+      );
+      if (celular) {
+        updatedPerson.telefono = celular.textoContacto;
+        updatedPerson.tipodetelefono = '6';
+      }
     }
 
-    return person;
+    // Dirección
+    const direcciones = persona?.direccion || [];
+    updatedPerson.direccion = direcciones;
+
+    // Se toma la dirección con mayor id como la última registrada
+    const ultima = direcciones.reduce((prev, curr) =>
+      (curr?.idDireccion || 0) > (prev?.idDireccion || 0) ? curr : prev,
+      null
+    );
+
+    // Si hay dirección, se mapean sus campos
+    if (ultima) {
+      if (!updatedPerson.address) {
+        updatedPerson.address = ultima.textoDireccion || '';
+      }
+      updatedPerson.adresstype = ultima.tipoDireccion?.codigo || '';
+      updatedPerson.ciudad = ultima.ciudad?.nombre || '';
+      updatedPerson.city_code = ultima.ciudad?.codigo || '';
+      updatedPerson.departamento = ultima.departamento?.nombre || '';
+      updatedPerson.department_code = ultima.departamento?.codigo || '';
+    }
+
+    // SARLAFT
+    updatedPerson.sarlfaltActive =
+      consultarPersonaRs?.informacionSARLAFT?.vigente || false;
+    updatedPerson.sarlfaltActiveDisabled = true;
+
+    // Habeas Data
+    updatedPerson.habeasDataActive =
+      consultarPersonaRs?.habeasData?.completed || false;
+
+    updatedPerson.tipoPersona = persona?.tipoPersona || null;
+
+    return updatedPerson;
   }
 
   componentDidMount() {
@@ -635,77 +773,175 @@ export default class Persona extends Component {
     );
   };
 
+  // validateDoc = async (e, callback) => {
+  //   if (this.state.person.value === '') return;
+  //   const cleanValue = this.state.person.value
+  //     .replace(/\s+/g, '');
+  //   if (cleanValue === '') return;
+  //   if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
+  //   let code = this.state.person.code;
+  //   try {
+  //     if (
+  //       typeof e.target !== 'undefined' &&
+  //       e.target.parentNode.className.indexOf('error') !== -1
+  //     ) {
+  //       return;
+  //     }
+  //     Loading.toggle(true);
+  //     let responsePerson = null;
+  //     if (typeof e.person === 'undefined') {
+  //       responsePerson = await ConsultaPersonas.get(
+  //         this.state.person.code,
+  //         cleanValue
+  //       );
+  //     } else {
+  //       responsePerson = e.person;
+  //     }
+  //     if (
+  //       responsePerson !== null &&
+  //       responsePerson.consultarPersonaRs.personaRestringida === true
+  //     ) {
+  //       this.setState(
+  //         {
+  //           ...this.state,
+  //           userRestricted: true,
+  //         },
+  //         () => {
+  //           callback && callback();
+  //           Loading.toggle(false);
+  //           Validaridentificacion.toggle(true);
+  //         }
+  //       );
+  //     } else {
+  //       let person = this.state.person;
+  //       person = Persona.extractDataFromIaxis(responsePerson, code, person);
+  //       person.person = responsePerson;
+  //       this.setState(
+  //         {
+  //           ...this.state,
+  //           person: person,
+  //           userRestricted: false,
+  //           personExists:
+  //             responsePerson.consultarPersonaRs.personaEncontradaIAXIS,
+  //         },
+  //       () => {
+  //         Loading.toggle(false);
+  //         callback && callback();
+  //       }
+  //       );
+  //     }
+  //   } catch (e) {
+  //     if (this.state.personExists) {
+  //       let updatePerson = this.state.person;
+  //       for (let i in updatePerson) {
+  //         if (i.indexOf('Disabled') !== -1 || i.indexOf('Error') !== -1) {
+  //           updatePerson[i] = false;
+  //         } else {
+  //           if (i !== 'value' && i !== 'code' && i !== 'role')
+  //             updatePerson[i] = '';
+  //         }
+  //       }
+  //       this.setState(
+  //         {
+  //           ...this.state,
+  //           person: updatePerson,
+  //           userRestricted: false,
+  //         },
+  //         () => {
+  //           Loading.toggle(false);
+  //           callback && callback();
+  //         }
+  //       );
+  //     }
+  //     Loading.toggle(false);
+  //   }
+  // };
+
   validateDoc = async (e, callback) => {
-    if (this.state.person.value === '') return;
-    const cleanValue = this.state.person.value
-      .replace(/\s+/g, '');
-    if (cleanValue === '') return;
+    // Eliminamos espacios extra por si el usuario los ingresó
+    const personValue = this.state.person.value?.replace(/\s+/g, '') || '';
+
+    // Si no hay valor, o el tipo de persona no requiere validación, salimos
+    if (!personValue) return;
     if (this.state.typePerson === 5 || this.state.typePerson === 6) return;
-    let code = this.state.person.code;
+
+    // Se obtiene el código del documento
+    const code = parseInt(this.state.person.code || '0', 10);
+
     try {
+      // Si hay un error visual en el input, no continuamos
       if (
         typeof e.target !== 'undefined' &&
         e.target.parentNode.className.indexOf('error') !== -1
       ) {
         return;
       }
+
       Loading.toggle(true);
+
+      // Obtener datos desde servicio
       let responsePerson = null;
+
       if (typeof e.person === 'undefined') {
-        responsePerson = await ConsultaPersonas.get(
-          this.state.person.code,
-          cleanValue
-        );
+        responsePerson = await ConsultaPersonas.get(code, personValue);
       } else {
+        // Si ya viene la persona en el evento, la usamos directamente
         responsePerson = e.person;
       }
-      if (
-        responsePerson !== null &&
-        responsePerson.consultarPersonaRs.personaRestringida === true
-      ) {
+
+      const rs = responsePerson?.consultarPersonaRs;
+
+      if (rs?.personaRestringida === true) {
         this.setState(
-          {
-            ...this.state,
-            userRestricted: true,
-          },
+          { userRestricted: true },
           () => {
             callback && callback();
             Loading.toggle(false);
             Validaridentificacion.toggle(true);
           }
         );
-      } else {
-        let person = this.state.person;
-        person = Persona.extractDataFromIaxis(responsePerson, code, person);
-        person.person = responsePerson;
-        this.setState(
-          {
-            ...this.state,
-            person: person,
-            userRestricted: false,
-            personExists:
-              responsePerson.consultarPersonaRs.personaEncontradaIAXIS,
-          },
-          () => {
-            Loading.toggle(false);
-            callback && callback();
-          }
-        );
+        return;
       }
-    } catch (e) {
+
+      // Crear una nueva copia del estado person, Procesamos y estructuramos la data correctamente
+      const personCopy = Persona.extractDataFromIaxis(
+        responsePerson,
+        code,
+        { ...this.state.person } // nueva referencia, no mutamos el state
+      );
+
+      // Guardar referencia completa del objeto original recibido
+      personCopy.person = responsePerson;
+
+      // Actualizamos el estado con la nueva data
+      this.setState(
+        {
+          person: personCopy,
+          userRestricted: false,
+          personExists: !!rs?.personaEncontradaIAXIS,
+        },
+        () => {
+          Loading.toggle(false);
+          callback && callback();
+        }
+      );
+    } catch (error) {
+      console.error('Error en validateDoc:', error);
+
+      // Si ya existía persona, limpiamos sus campos para permitir editar nuevamente
       if (this.state.personExists) {
-        let updatePerson = this.state.person;
-        for (let i in updatePerson) {
-          if (i.indexOf('Disabled') !== -1 || i.indexOf('Error') !== -1) {
-            updatePerson[i] = false;
-          } else {
-            if (i !== 'value' && i !== 'code' && i !== 'role')
-              updatePerson[i] = '';
+        const updatePerson = { ...this.state.person };
+
+        for (const key in updatePerson) {
+          if (key.includes('Disabled') || key.includes('Error')) {
+            updatePerson[key] = false;
+          } else if (!['value', 'code', 'role'].includes(key)) {
+            updatePerson[key] = '';
           }
         }
+
         this.setState(
           {
-            ...this.state,
             person: updatePerson,
             userRestricted: false,
           },
@@ -714,8 +950,9 @@ export default class Persona extends Component {
             callback && callback();
           }
         );
+      } else {
+        Loading.toggle(false);
       }
-      Loading.toggle(false);
     }
   };
 
