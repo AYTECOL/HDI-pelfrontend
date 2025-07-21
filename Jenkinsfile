@@ -7,7 +7,7 @@ countryParams = envUtil.getCountryEnvDetails(env.JOB_NAME)
 pipeline {
   agent {
     docker { 
-      image 'jfrog.hdicolombia.com.co/pod-templates-latam/java11-node22-mvn3.9.x-pipeline2.0.x:latest'
+      image 'jfrog.hdicolombia.com.co/pod-templates-latam/java11-node16-mvn3.9.x-pipeline2.0.x:latest'
       args '''
         -v /usr/lib/jvm/java-17-amazon-corretto.x86_64:/usr/lib/jvm/java-17-amazon-corretto.x86_64 
         -v /usr/local/aws-cli/:/usr/local/aws-cli/ 
