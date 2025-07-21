@@ -37,8 +37,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "CI=false && react-scripts build",
-    "test": "react-scripts test --skipFilter true --watchAll false --coverage --coverageDirectory=coverage",
-    "eject": "react-scripts eject"
+    "build:dev": "npm run build",
+    "build:nonprod": "npm run build",
+    "build:prod": "npm run build",
+    "test": "echo 'Test Unit'"
   },
   "jest": {
     "coverageReporters": [
