@@ -36,10 +36,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false && react-scripts build",
-    "build:dev": "npm run build",
-    "build:nonprod": "npm run build",
-    "build:prod": "npm run build",
+    "prebuild": "CI=false && react-scripts build",
+    "build:dev": "npm run build:css && env-cmd -f env/dev.env npm run prebuild",
+    "build:nonprod": "npm run build:css && env-cmd -f env/nonprod.env npm run prebuild",
+    "build:prod": "npm run build:css && env-cmd -f env/prod.env npm run prebuild",
     "test": "echo 'Test Unit'"
   },
   "jest": {
