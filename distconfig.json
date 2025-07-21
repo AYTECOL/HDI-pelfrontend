@@ -1,70 +1,70 @@
 {
   "CallerReference": "2010-09-09",
   "OriginAccessIdentity": {
-    "Type" : "AWS::CloudFront::CloudFrontOriginAccessIdentity",
-    "Properties" : {
-        "CloudFrontOriginAccessIdentityConfig" : {
-            "Comment": "cloudfront de liberty hogar"
-        }
+    "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    "Properties": {
+      "CloudFrontOriginAccessIdentityConfig": {
+        "Comment": "cloudfront de liberty hogar"
+      }
     }
   },
-    "Origins": {
-        "Items":[
-        {
-            "OriginPath": "",
-            "S3OriginConfig":  {
-              "Fn::Join": [
-                  "",
-                  [
-                      "origin-access-identity/cloudfront/",
-                      {
-                          "Ref": "OriginAccessIdentity"
-                      }
-                  ]
-              ]
-          },
-            "Id": "WebApp",
-            "DomainName": "poliza-express-hogar-front.s3.amazonaws.com"
-        }
-        ],
-        "Quantity": 1
+  "Origins": {
+    "Items": [
+      {
+        "OriginPath": "",
+        "S3OriginConfig": {
+          "Fn::Join": [
+            "",
+            [
+              "origin-access-identity/cloudfront/",
+              {
+                "Ref": "OriginAccessIdentity"
+              }
+            ]
+          ]
+        },
+        "Id": "WebApp",
+        "DomainName": "poliza-express-hogar-front.s3.amazonaws.com"
+      }
+    ],
+    "Quantity": 1
+  },
+  "Enabled": true,
+  "Comment": "cloudfront de liberty hogar",
+  "DefaultRootObject": "index.html",
+  "Aliases": {
+    "Quantity": 1,
+    "Items": [
+      "hogar-uat.libertyseguros.co"
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "AllowedMethods": {
+      "Quantity": 2,
+      "Items": [
+        "DELETE",
+        "GET",
+        "OPTIONS",
+        "POST",
+        "PUT"
+      ]
     },
-    "Enabled": true,
-    "Comment": "cloudfront de liberty hogar",
-    "DefaultRootObject": "index.html",
-    "Aliases": {
-      "Quantity":1,
-        "Items": [
-          "hogar-uat.libertyseguros.co"
-        ]
-    },
-    "DefaultCacheBehavior": {
-      "AllowedMethods": {
-        "Quantity":2,
-        "Items": [
-          "DELETE", 
-          "GET", 
-          "OPTIONS", 
-          "POST", 
-          "PUT"
-        ] 
-      },
     "TargetOriginId": "WebApp",
-      "ForwardedValues": {
-        "QueryString": false,
-          "Cookies": {
-              "Forward": "none"
-          }
-      },
-      "TrustedSigners": {
-        "Enabled":false,
-        "Quantity": 0
-      },
-      "MinTTL": 1,
-      "ViewerProtocolPolicy": "allow-all"
+    "ForwardedValues": {
+      "QueryString": false,
+      "Cookies": {
+        "Forward": "none"
+      }
     },
-    "PriceClass": "PriceClass_200",
-    "ViewerCertificate": {
-      "CloudFrontDefaultCertificate": true
-    }
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "MinTTL": 1,
+    "ViewerProtocolPolicy": "allow-all"
+  },
+  "PriceClass": "PriceClass_200",
+  "ViewerCertificate": {
+    "CloudFrontDefaultCertificate": true
+  }
 }

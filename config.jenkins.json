@@ -1,0 +1,13 @@
+{
+  "AppName": "co-home-aws",
+  "Package": "build",
+  "dev": {
+    "bucketName": "poliza-express-hogar-hdi-dev"
+  },
+  "nonprod": {
+    "bucketName": "poliza-express-hogar-hdi-nonprod"
+  },
+  "prod": {
+    "bucketName": "poliza-express-hogar-hdi-prod"
+  }
+}
