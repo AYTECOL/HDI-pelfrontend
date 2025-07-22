@@ -8,6 +8,6 @@
     "bucketName": "poliza-express-hogar-hdi-nonprod"
   },
   "prod": {
-    "bucketName": "poliza-express-hogar-hdi-prod"
+    "bucketName": "poliza-express-hogar-hdi"
   }
 }
