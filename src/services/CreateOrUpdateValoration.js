@@ -55,40 +55,42 @@ class CreateOrUpdateValoration {
         parseInt(risks.inmuebleasegudado) === 0
           ? 0
           : Masknumbermoney.formatToNumber(risks.inmuebleasegudadovalor),
-
-      contenido_asegudado: risks.contenidoasegudado,
+      // if value contenidoasegudadovalor is 0 , select content should be 0 
+      contenido_asegudado: Masknumbermoney.formatToNumber(risks.contenidoasegudadovalor) == 0 ? 0 : 1,
       contenido_asegudado_valor:
         parseInt(risks.contenidoasegudado) === 0
           ? 0
           : Masknumbermoney.formatToNumber(risks.contenidoasegudadovalor),
-
-      inmueble_asegudado_joyas: risks.inmuebleasegudadojoyas,
+      // if value inmuebleasegudadojoyasvalor is 0 , select content should be 0 
+      inmueble_asegudado_joyas: Masknumbermoney.formatToNumber(risks.inmuebleasegudadojoyasvalor) == 0 ? 0 : 1 ,
       inmueble_asegudado_joyasvalor:
         parseInt(risks.inmuebleasegudadojoyas) === 0
           ? 0
           : Masknumbermoney.formatToNumber(risks.inmuebleasegudadojoyasvalor),
-      [MobileContents.nameModel]: risks[MobileContents.nameModel],
+      // if value MobileContents.nameModelValue is 0 , select content should be 0 
+      [MobileContents.nameModel]: Masknumbermoney.formatToNumber(risks[MobileContents.nameModelValue]) == 0 ? 0 : 1,
       [MobileContents.nameModelValue]:
         parseInt(risks[MobileContents.nameModelValue]) === 0
           ? 0
           : Masknumbermoney.formatToNumber(
-              risks[MobileContents.nameModelValue]
-            ),
+            risks[MobileContents.nameModelValue]
+          ),
       [OtherQuestions.nameModel]: risks[OtherQuestions.nameModel],
       [OtherQuestions.nameModelValue]: risks[OtherQuestions.nameModelValue],
-      inmueble_asegudado_obras: risks.inmuebleasegudadoobras,
+       // if value inmuebleasegudadoobrasvalor is 0 , select content should be 0 
+      inmueble_asegudado_obras: Masknumbermoney.formatToNumber(risks.inmuebleasegudadoobrasvalor) == 0 ? 0 : 1,
       inmueble_asegudado_obrasvalor:
         parseInt(risks.inmuebleasegudadoobras) === 0
           ? 0
           : Masknumbermoney.formatToNumber(risks.inmuebleasegudadoobrasvalor),
-
-      inmueble_asegudado_telefonos: risks.inmuebleasegudadotelefonos,
+      // if value inmuebleasegudadotelefonosvalor is 0 , select content should be 0 
+      inmueble_asegudado_telefonos: Masknumbermoney.formatToNumber(risks.inmuebleasegudadotelefonosvalor) == 0 ? 0 : 1,
       inmueble_asegudado_telefonosvalor:
         parseInt(risks.inmuebleasegudadotelefonos) === 0
           ? 0
           : Masknumbermoney.formatToNumber(
-              risks.inmuebleasegudadotelefonosvalor
-            ),
+            risks.inmuebleasegudadotelefonosvalor
+          ),
 
       inspection_policies:
         typeof risks.inspection_policies === 'undefined'
