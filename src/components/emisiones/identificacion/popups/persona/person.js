@@ -904,10 +904,11 @@ export default class Persona extends Component {
       }
 
       // Crear una nueva copia del estado person, Procesamos y estructuramos la data correctamente
+      const { person: copyPersonState } = this.state;
       const personCopy = Persona.extractDataFromIaxis(
         responsePerson,
         code,
-        { ...this.state.person } // nueva referencia, no mutamos el state
+        { ...copyPersonState } // nueva referencia, no mutamos el state
       );
 
       // Guardar referencia completa del objeto original recibido
@@ -930,7 +931,8 @@ export default class Persona extends Component {
 
       // Si ya existía persona, limpiamos sus campos para permitir editar nuevamente
       if (this.state.personExists) {
-        const updatePerson = { ...this.state.person };
+        const { person: copyPersonUpdate } = this.state;
+        const updatePerson = { ...copyPersonUpdate };
 
         for (const key in updatePerson) {
           if (key.includes('Disabled') || key.includes('Error')) {
