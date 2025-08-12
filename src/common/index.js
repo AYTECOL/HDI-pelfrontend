@@ -70,7 +70,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
         const values = (hurtoCalificado && hurtoCalificado.values) || [];
         const itemValue = values.find((element) => element.code === 9692);
         return {
-          ...(typeof itemValue.value_show === 'string' && {
+          ...(itemValue.value_show && typeof itemValue.value_show === 'string' && {
             max: Masknumbermoney.formatToNumber(itemValue.value_show),
           }),
           min: 10000000,
@@ -94,7 +94,7 @@ export const getRulesByCode = (code, coverages = undefined) => {
         );
         const values = (hurtoCalificado && hurtoCalificado.values) || [];
         const itemValue = values.find((element) => element.code === 3017);
-        const value = Masknumbermoney.formatToNumber(itemValue.value_show);
+        const value = Masknumbermoney.formatToNumber(itemValue?.value_show || 0);
         if (value)
           return {
             max: value,
