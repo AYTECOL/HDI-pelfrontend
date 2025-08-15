@@ -70,6 +70,15 @@ pipeline {
         }
       }
     }
+
+    stage('Testing E2E') {
+      steps {
+        script {
+          def stageRunTestingE2E = load 'shared-pipelines/utils/StageRunTestingE2E'
+          stageRunTestingE2E.run("co-hdi-acc-portales/job/${STAGE}/job/testing/job/co-gui-testing-selenium/", "master")
+        }
+      }
+    }
   }
 
   post {
