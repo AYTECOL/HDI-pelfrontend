@@ -84,21 +84,10 @@ pipeline {
   post {
     always {
       script {
+        notification(emails: "${params.Email}")
         cleanWs()
         deleteDir()
       }
     }
-    // success {
-    //   script {
-    //     notificationSuccess {
-
-    //     }
-    //   }
-    // }
-    // failure {
-    //   notificationError {
-          
-    //   }
-    // }
   }
 }
