@@ -19,7 +19,7 @@
     "react": "^16.8.4",
     "react-bootstrap": "^2.7.2",
     "react-bootstrap-icons": "^1.10.3",
-    "react-datepicker": "^8.6.0",
+    "react-datepicker": "^2.10.1",
     "react-dom": "^16.8.4",
     "react-hook-form": "^7.47.0",
     "react-redux": "^6.0.1",
@@ -37,7 +37,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "CI=false && react-scripts build",
+    "prebuild": "react-scripts build",
     "build:dev": "env-cmd -f env/dev.env npm run prebuild",
     "build:nonprod": "env-cmd -f env/nonprod.env npm run prebuild",
     "build:prod": "env-cmd -f env/prod.env npm run prebuild",
