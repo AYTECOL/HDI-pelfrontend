@@ -39,4 +39,4 @@ yarn-error.log*
 serverless.yml
 .serverless/
 .vscode/
-
+junit.xml
