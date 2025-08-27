@@ -43,6 +43,21 @@
     "build:prod": "env-cmd -f env/prod.env npm run prebuild",
     "test": "jest --config test/jest.config.js --coverage --ci --reporters=default --reporters=jest-junit"
   },
+  "jest": {
+    "coverageReporters": [
+      "text",
+      "html",
+      "json",
+      "clover",
+      "lcov"
+    ]
+  },
+  "jestSonar": {
+    "sonar56x": true,
+    "reportPath": "test/coverage",
+    "reportFile": "clover.xml",
+    "indent": 4
+  },
   "browserslist": {
     "production": [
       ">0.2%",
