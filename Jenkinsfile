@@ -7,7 +7,7 @@ countryParams = envUtil.getCountryEnvDetails(env.JOB_NAME)
 pipeline {
   agent {
     docker { 
-      image 'jfrog.hdicolombia.com.co/pod-templates-latam/java17-node14-mvn3.9.x-pipeline2.0.x:latest'
+      image 'jfrog.hdicolombia.com.co/pod-templates-latam/java17-node16-mvn3.9.x-pipeline2.0.x:latest'
       args '''
         -v /usr/local/aws-cli/:/usr/local/aws-cli/ 
         -v /home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/:/home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/
