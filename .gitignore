@@ -40,3 +40,4 @@ serverless.yml
 .serverless/
 .vscode/
 junit.xml
+package-lock.json

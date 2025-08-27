@@ -43,38 +43,6 @@ describe('Content Component', () => {
     expect(screen.getByText('Valor real')).toBeInTheDocument();
   });
 
-  //   it('should filter non-numeric characters from value input', () => {
-  //     console.log('🧪 Iniciando test: filtrado de caracteres no numéricos');
-
-  //     const { container } = render(<Content {...mockProps} />);
-
-  //     // Usar querySelector para encontrar el input específico
-  //     const valueInput = container.querySelector('input[name="value"]');
-  //     const inputValue = '1000abc123';
-  //     const expectedValue = '1000123';
-
-  //     console.log('🔍 Input actual:', valueInput.value);
-  //     console.log('🔍 Valor esperado:', expectedValue);
-
-  //     fireEvent.change(valueInput, { target: { value: inputValue } });
-
-  //     expect(mockProps.handleChange).toHaveBeenCalledWith({
-  //       value: '1000123',
-  //       type: 'INSURED',
-  //     });
-
-  //     console.log('✅ Test completado exitosamente');
-  //     console.log(
-  //       '📊 Verificando que handleChange fue llamado con los parámetros correctos'
-  //     );
-  //     expect(mockProps.handleChange).toHaveBeenCalledWith({
-  //       value: expectedValue,
-  //       type: 'INSURED',
-  //     });
-
-  //     console.log('�� Test PASÓ - handleChange fue llamado correctamente');
-  //   });
-
   describe('Content Component - Filtrado de valores', () => {
     it('should filter non-numeric characters from value input (Valor asegurado)', () => {
       console.log('🧪 === TEST: Campo VALOR (Asegurado) ===');

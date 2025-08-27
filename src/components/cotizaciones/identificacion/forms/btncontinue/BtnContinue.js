@@ -29,9 +29,8 @@ import arrow_back from '../../../../../assets/images/icon-back.svg';
 
 const hasValidCoordinates = (mapsOptions) => {
   const isValid = Boolean(
-    mapsOptions &&
-      mapsOptions.longitude &&
-      mapsOptions.latitude &&
+    mapsOptions?.longitude &&
+      mapsOptions?.latitude &&
       mapsOptions.latitude !== 0 &&
       mapsOptions.longitude !== 0
   );

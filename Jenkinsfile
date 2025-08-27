@@ -40,7 +40,7 @@ pipeline {
     stage('Continuos Integration') {
       steps {
         dir('shared-pipelines') {
-          git branch: 'release/v25.08.15-rc.1', url: 'https://github.com/hdiseguroscol/co-hdi-jenkins-pipelines.git', credentialsId: 'Github-HDI'            
+          git branch: 'master', url: 'https://github.com/hdiseguroscol/co-hdi-jenkins-pipelines.git', credentialsId: 'Github-HDI'            
         }
         load 'shared-pipelines/frontend/JenkinsfileReactCI'
       }
