@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import withRouter from 'react-router/withRouter';
+import { withRouter } from 'react-router-dom';
 
 import close_icon from 'assets/images/icon_close.svg';
 
