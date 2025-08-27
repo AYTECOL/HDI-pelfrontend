@@ -5,7 +5,7 @@ import GoogleMapReact from 'google-map-react';
 
 import './Map.scss';
 import store from '../../../../store';
-import { setAddresMap, saveIdentificationValue } from '../../../../store/actions';
+import { setAddresMap } from '../../../../store/actions';
 import GetAddresInfo from '../../../../services/AddresCoordenates';
 import Helpers from '../../../../common/helpers/helpers';
 import { withCities } from '../hooks/cities';
@@ -114,6 +114,12 @@ class MapBase extends Component {
           );
         } else {
           this.setError();
+          store.dispatch(
+            setAddresMap({
+              longitude: 0,
+              latitude: 0,
+            })
+          );
         }
       });
     }
@@ -125,6 +131,12 @@ class MapBase extends Component {
       isMarkerShown: false,
     });
     Helpers.addClass(this.elementError, 'error');
+    store.dispatch(
+      setAddresMap({
+        longitude: 0,
+        latitude: 0,
+      })
+    );
   };
 
   /**
@@ -152,11 +164,10 @@ class MapBase extends Component {
     const { googleMapURL } = this.props;
     const { zoom, markerPosition, isMarkerShown } = this.state;
     return (
-      
       <GoogleMapReact
         bootstrapURLKeys={{
           //key: googleMapURL,
-          key : "AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4"
+          key: 'AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4',
         }}
         defaultZoom={zoom}
         defaultCenter={markerPosition}
