@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import withRouter from 'react-router/withRouter';
+import { withRouter } from 'react-router-dom';
 
 const ValidatePersonIdentity = withRouter(
   ({

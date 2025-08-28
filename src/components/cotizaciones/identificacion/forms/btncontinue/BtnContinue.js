@@ -27,6 +27,16 @@ import { isValidDirection } from '../../../../../common/validations';
 
 import arrow_back from '../../../../../assets/images/icon-back.svg';
 
+const hasValidCoordinates = (mapsOptions) => {
+  const isValid = Boolean(
+    mapsOptions?.longitude &&
+      mapsOptions?.latitude &&
+      mapsOptions.latitude !== 0 &&
+      mapsOptions.longitude !== 0
+  );
+  return isValid;
+};
+
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
@@ -209,6 +219,7 @@ export default withRouter(
       typeDocument,
       cotizacion,
       continueButtonDisable,
+      mapsOptions,
     }) => {
       let stateForm = stateFormIdentificacion;
       let typeDoc = typeDocument;
@@ -233,7 +244,8 @@ export default withRouter(
           address === '' ||
           department === '' ||
           city === '' ||
-          !isValidDirection(address)
+          !isValidDirection(address) ||
+          !hasValidCoordinates(mapsOptions)
         ) {
           i++;
         }

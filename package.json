@@ -4,11 +4,11 @@
   "private": true,
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
-    "axios": "^0.30.0",
+    "axios": "^1.11.0",
     "bootstrap": "^4.6.0",
     "clsx": "^1.1.1",
     "date-fns": "^1.30.1",
-    "dotenv": "^7.0.0",
+    "dotenv": "^17.2.1",
     "env-cmd": "10.1.0",
     "es6-promise": "^4.2.6",
     "es6-promise-promise": "^1.0.0",
@@ -29,10 +29,10 @@
     "react-scripts": "^4.0.3",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "sass": "^1.64.2",
+    "sass": "^1.90.0",
     "serverless-plugin-resource-tagging": "^1.1.1",
     "simple-mask-money": "^3.0.1",
-    "validator": "^13.7.0",
+    "validator": "^13.15.15",
     "yup": "^1.3.2"
   },
   "scripts": {
@@ -84,3 +84,4 @@
     "react-test-renderer": "^16.8.6"
   }
 }
+
