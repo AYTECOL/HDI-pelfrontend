@@ -37,7 +37,7 @@ jest.mock('../../../../../components/cotizaciones/identificacion/hooks/cities', 
 
 const mockStore = configureStore([]);
 
-describe('MapBase Component', () => {
+describe('Componente MapBase', () => {
   let mockProps;
   let storeState;
   let mockStoreInstance;
@@ -92,8 +92,8 @@ describe('MapBase Component', () => {
     jest.clearAllMocks();
   });
 
-  describe('Component Rendering', () => {
-    test('should render without crashing', () => {
+  describe('Renderizado del Componente', () => {
+    test('debería renderizar sin errores', () => {
       const component = renderer.create(
         <Provider store={mockStoreInstance}>
           <MapBase {...mockProps} />
@@ -103,7 +103,7 @@ describe('MapBase Component', () => {
       expect(component.toJSON()).toBeTruthy();
     });
 
-    test('should render GoogleMapReact and Marker components', () => {
+    test('debería renderizar los componentes GoogleMapReact y Marker', () => {
       const component = renderer.create(
         <Provider store={mockStoreInstance}>
           <MapBase {...mockProps} />
@@ -115,8 +115,8 @@ describe('MapBase Component', () => {
     });
   });
 
-  describe('Static Methods', () => {
-    test('should call GetAddresInfo.get with correct address', async () => {
+  describe('Métodos Estáticos', () => {
+    test('debería llamar GetAddresInfo.get con la dirección correcta', async () => {
       const address = 'Test Address';
       GetAddresInfo.get.mockResolvedValue({ lat: 4.7110, lng: -74.0721 });
       
@@ -127,8 +127,8 @@ describe('MapBase Component', () => {
     });
   });
 
-  describe('Service Integration', () => {
-    test('should call GetAddresInfo service methods', () => {
+  describe('Integración de Servicios', () => {
+    test('debería llamar los métodos del servicio GetAddresInfo', () => {
       GetAddresInfo.get.mockResolvedValue({ lat: 4.7110, lng: -74.0721 });
       GetAddresInfo.getAdressByCoors.mockResolvedValue('Test Address');
       
@@ -136,7 +136,7 @@ describe('MapBase Component', () => {
       expect(GetAddresInfo.getAdressByCoors).toBeDefined();
     });
 
-    test('should call Helper methods', () => {
+    test('debería llamar los métodos Helper', () => {
       expect(Helpers.removeClass).toBeDefined();
       expect(Helpers.addClass).toBeDefined();
     });

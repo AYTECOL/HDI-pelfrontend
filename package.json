@@ -54,11 +54,14 @@
       "lcov"
     ],
     "testMatch": [
-      "<rootDir>/src/__tests__/**/*.test.js"
+      "<rootDir>/src/**/*.test.js"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(axios)/)"
-    ]
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
+    }
   },
   "jestSonar": {
     "sonar56x": true,
@@ -88,6 +91,7 @@
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "prettier": "^2.7.1",
     "react-error-overlay": "6.0.9",
