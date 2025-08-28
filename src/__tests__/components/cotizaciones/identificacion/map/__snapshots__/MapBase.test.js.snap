@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MapBase Component Component Rendering should render GoogleMapReact and Marker components 1`] = `
+<div
+  data-testid="google-map-react"
+  onClick={[Function]}
+>
+  <div
+    data-testid="marker"
+    lat={4.711}
+    lng={-74.0721}
+  />
+</div>
+`;
