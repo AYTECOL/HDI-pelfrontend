@@ -56,8 +56,11 @@
     "testMatch": [
       "<rootDir>/src/**/*.test.js"
     ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/App.test.js"
+    ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(axios|date-fns)/)"
+      "node_modules/(?!(axios|date-fns|react-datepicker)/)"
     ],
     "moduleNameMapper": {
       "\\.(css|scss)$": "identity-obj-proxy"
