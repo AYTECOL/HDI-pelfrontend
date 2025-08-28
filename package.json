@@ -54,10 +54,8 @@
       "lcov"
     ],
     "testMatch": [
-      "<rootDir>/src/**/*.test.js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/src/App.test.js"
+      "<rootDir>/src/**/*.test.js",
+      "!<rootDir>/src/App.test.js"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(axios|date-fns|react-datepicker)/)"
