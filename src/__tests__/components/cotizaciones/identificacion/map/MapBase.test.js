@@ -111,7 +111,11 @@ describe('Componente MapBase', () => {
       );
       
       const tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
+      expect(tree).toBeTruthy();
+      expect(tree.props['data-testid']).toBe('google-map-react');
+      expect(tree.props.role).toBe('button');
+      expect(tree.children[0].props['data-testid']).toBe('marker');
+      expect(tree.children[0].props.role).toBe('img');
     });
   });
 
