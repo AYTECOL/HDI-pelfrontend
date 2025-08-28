@@ -41,7 +41,8 @@
     "build:dev": "env-cmd -f env/dev.env npm run prebuild",
     "build:nonprod": "env-cmd -f env/nonprod.env npm run prebuild",
     "build:prod": "env-cmd -f env/prod.env npm run prebuild",
-    "test": "JEST_JUNIT_OUTPUT_DIR=./test-results JEST_JUNIT_OUTPUT_NAME=junit.xml react-scripts test --watchAll=false --reporters=default --reporters=jest-junit",
+    "test": "react-scripts test --watchAll=false",
+    "test:junit": "node scripts/test-junit.js",
     "test:watch": "react-scripts test",
     "test:coverage": "node scripts/test-coverage.js"
   },
@@ -95,6 +96,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@silvermine/serverless-plugin-cloudfront-lambda-edge": "2.2.3",
+    "cross-env": "^10.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint-config-prettier": "^8.5.0",
