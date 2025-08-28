@@ -41,7 +41,7 @@
     "build:dev": "env-cmd -f env/dev.env npm run prebuild",
     "build:nonprod": "env-cmd -f env/nonprod.env npm run prebuild",
     "build:prod": "env-cmd -f env/prod.env npm run prebuild",
-    "test": "react-scripts test --watchAll=false",
+    "test": "JEST_JUNIT_OUTPUT_DIR=./test-results JEST_JUNIT_OUTPUT_NAME=junit.xml react-scripts test --watchAll=false --reporters=default --reporters=jest-junit",
     "test:watch": "react-scripts test",
     "test:coverage": "node scripts/test-coverage.js"
   },
@@ -62,11 +62,7 @@
     ],
     "moduleNameMapper": {
       "\\.(css|scss)$": "identity-obj-proxy"
-    },
-    "reporters": [
-      "default",
-      "jest-junit"
-    ]
+    }
   },
   "jest-junit": {
     "outputDirectory": "./test-results",
