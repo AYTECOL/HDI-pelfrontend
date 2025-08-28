@@ -4,7 +4,7 @@ This directory follows React testing best practices:
 
 ## Directory Structure
 
-```
+````
 src/__tests__/
 ├── components/           # Component tests mirroring src/components structure
 ├── __mocks__/           # Manual mocks for external dependencies

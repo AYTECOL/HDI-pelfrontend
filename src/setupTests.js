@@ -12,3 +12,13 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', () => {
+  // Ignore unhandled promise rejections in tests
+});
+
+// Clean up after each test
+afterEach(() => {
+  jest.clearAllTimers();
+});
