@@ -14,7 +14,13 @@ jest.mock('../../../../../store');
 jest.mock('google-map-react', () => {
   return function GoogleMapReact({ children, onClick }) {
     return (
-      <div data-testid="google-map-react" onClick={onClick}>
+      <div 
+        data-testid="google-map-react" 
+        onClick={onClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === 'Enter' && onClick && onClick(e)}
+      >
         {children}
       </div>
     );
@@ -22,7 +28,7 @@ jest.mock('google-map-react', () => {
 });
 jest.mock('../../../../../components/cotizaciones/identificacion/map/Marker', () => {
   return function Marker(props) {
-    return <div data-testid="marker" {...props} />;
+    return <div data-testid="marker" role="img" aria-label="Map marker" {...props} />;
   };
 });
 jest.mock('../../../../../components/cotizaciones/identificacion/hooks/cities', () => ({
