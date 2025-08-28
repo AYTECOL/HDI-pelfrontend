@@ -62,7 +62,18 @@
     ],
     "moduleNameMapper": {
       "\\.(css|scss)$": "identity-obj-proxy"
-    }
+    },
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
+  },
+  "jest-junit": {
+    "outputDirectory": "./test-results",
+    "outputName": "junit.xml",
+    "suiteName": "Jest Tests",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
   },
   "jestSonar": {
     "sonar56x": true,
@@ -93,6 +104,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "identity-obj-proxy": "^3.0.0",
+    "jest-junit": "^16.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "prettier": "^2.7.1",
     "react-error-overlay": "6.0.9",
