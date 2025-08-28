@@ -1,34 +1,32 @@
 @Library('utils@master') _
 import com.lmig.intl.cloud.jenkins.util.EnvConfigUtil
-
+ 
 def envUtil = new EnvConfigUtil()
 countryParams = envUtil.getCountryEnvDetails(env.JOB_NAME)
-
+ 
 pipeline {
   agent {
     docker { 
-      image 'jfrog.hdicolombia.com.co/pod-templates-latam/java11-node16-mvn3.9.x-pipeline2.0.x:latest'
+      image 'jfrog.hdicolombia.com.co/pod-templates-latam/java17-node16-mvn3.9.x-pipeline2.0.x:latest'
       args '''
-        -v /usr/lib/jvm/java-17-amazon-corretto.x86_64:/usr/lib/jvm/java-17-amazon-corretto.x86_64 
         -v /usr/local/aws-cli/:/usr/local/aws-cli/ 
-        -v /home/jenkins/sonar-scanner-3.2.0.1227-linux/:/home/jenkins/sonar-scanner-3.2.0.1227-linux/
-        --add-host sonarold.hdiseguros.com.co:172.19.0.102  
+        -v /home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/:/home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/
       '''
     }
   }
-
+ 
   parameters {
     string(name: 'Ref', defaultValue: 'refs/heads/', description: 'Enter Branch Name. Example: master, develop, feature/*, release/*, hotfix/*', trim: true)
     string(name: 'Email', defaultValue: '', description: 'Enter Email notification. Example: pperez@mail.com', trim: true)
   }
-
+ 
   options { 
     timestamps()
     timeout(time: 3, unit: 'HOURS')
     disableConcurrentBuilds()
     buildDiscarder(logRotator(daysToKeepStr: '90'))
   }
-
+ 
   environment {
     STAGE = countryParams.countryEnv.toLowerCase()
     VERSION = null
@@ -37,7 +35,7 @@ pipeline {
     BUCKET = null
     CLOUDFRONT_ID = null
   }
-
+ 
   stages {
     stage('Continuos Integration') {
       steps {
@@ -47,13 +45,13 @@ pipeline {
         load 'shared-pipelines/frontend/JenkinsfileReactCI'
       }
     }
-
+ 
     stage('Continuos Deployment') {
       steps {
         load 'shared-pipelines/frontend/JenkinsfileReactCD'
       }
     }
-
+ 
     stage('Create Invalidation Cloudfront') {
       steps {
         script {
@@ -62,7 +60,7 @@ pipeline {
         }
       }
     }
-
+ 
     stage('Report') {
       steps {
         script {
@@ -70,26 +68,24 @@ pipeline {
         }
       }
     }
-  }
 
+    stage('Testing E2E') {
+      steps {
+        script {
+          def stageRunTestingE2E = load 'shared-pipelines/utils/StageRunTestingE2E'
+          stageRunTestingE2E.run("co-hdi-acc-portales/${STAGE}/testing/co-gui-testing-selenium", "master")
+        }
+      }
+    }
+  }
+ 
   post {
     always {
       script {
+        notification(emails: "${params.Email}")
         cleanWs()
         deleteDir()
       }
     }
-    // success {
-    //   script {
-    //     notificationSuccess {
-
-    //     }
-    //   }
-    // }
-    // failure {
-    //   notificationError {
-          
-    //   }
-    // }
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import withRouter from 'react-router/withRouter';
+import { withRouter } from 'react-router-dom';
 
 import WarningIcon from 'assets/icons/warning_icon.svg';
 import { EMAIL_SUPPORT } from 'common/constants';
