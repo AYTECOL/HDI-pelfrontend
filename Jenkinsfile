@@ -46,7 +46,7 @@ pipeline {
       }
     }
 
-    stage('Test Unit') {
+    stage('Test Unit Report') {
       steps {
         sh 'npm run test:junit'
         sh 'ls -la reports/junit/'
