@@ -44,7 +44,7 @@
     "test": "react-scripts test --watchAll=false",
     "test:junit": "node scripts/test-junit.js",
     "test:watch": "react-scripts test",
-    "test:coverage": "node scripts/test-coverage.js"
+    "test:coverage": "react-scripts test --coverage --watchAll=false --coverageDirectory=coverage"
   },
   "jest": {
     "coverageReporters": [
@@ -53,6 +53,12 @@
       "json",
       "clover",
       "lcov"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!src/serviceWorker.js",
+      "!src/**/*.test.js"
     ],
     "testMatch": [
       "<rootDir>/src/**/*.test.js",
