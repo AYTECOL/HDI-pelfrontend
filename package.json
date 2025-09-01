@@ -42,6 +42,7 @@
     "build:nonprod": "env-cmd -f env/nonprod.env npm run prebuild",
     "build:prod": "env-cmd -f env/prod.env npm run prebuild",
     "test": "react-scripts test --watchAll=false",
+    "test:ci": "CI=true jest --ci --runInBand",
     "test:junit": "node scripts/test-junit.js",
     "test:watch": "react-scripts test",
     "test:coverage": "react-scripts test --coverage --watchAll=false --coverageDirectory=coverage"
@@ -72,7 +73,7 @@
     }
   },
   "jest-junit": {
-    "outputDirectory": "./test-results",
+    "outputDirectory": "./reports/junit",
     "outputName": "junit.xml",
     "suiteName": "Jest Tests",
     "classNameTemplate": "{classname}",

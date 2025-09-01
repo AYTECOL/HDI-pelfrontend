@@ -4,14 +4,14 @@ const path = require('path');
 
 console.log('Running tests with JUnit XML output...');
 
-// Ensure test-results directory exists
-const testResultsDir = path.join(process.cwd(), 'test-results');
-if (!fs.existsSync(testResultsDir)) {
-  fs.mkdirSync(testResultsDir, { recursive: true });
+// Ensure reports/junit directory exists
+const reportsDir = path.join(process.cwd(), 'reports', 'junit');
+if (!fs.existsSync(reportsDir)) {
+  fs.mkdirSync(reportsDir, { recursive: true });
 }
 
 // Set environment variables for jest-junit
-process.env.JEST_JUNIT_OUTPUT_DIR = './test-results';
+process.env.JEST_JUNIT_OUTPUT_DIR = './reports/junit';
 process.env.JEST_JUNIT_OUTPUT_NAME = 'junit.xml';
 
 try {
@@ -22,7 +22,7 @@ try {
   });
   
   console.log('Tests completed successfully!');
-  console.log('JUnit XML report generated at: ./test-results/junit.xml');
+  console.log('JUnit XML report generated at: ./reports/junit/junit.xml');
 } catch (error) {
   console.error('Tests failed:', error.message);
   process.exit(1);
