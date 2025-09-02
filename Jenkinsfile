@@ -45,20 +45,6 @@ pipeline {
         load 'shared-pipelines/frontend/JenkinsfileReactCI'
       }
     }
-
-    stage('Test Unit Report') {
-      steps {
-        sh 'npm run test:junit'
-        sh 'ls -la reports/junit/'
-        sh 'head -20 reports/junit/junit.xml || echo "JUnit XML not found"'
-      }
-      post {
-        always {
-          junit testResults: 'reports/junit/**/*.xml', allowEmptyResults: true
-          archiveArtifacts artifacts: 'reports/junit/**, coverage/**', allowEmptyArchive: true
-        }
-      }
-    }
  
     stage('Continuos Deployment') {
       steps {
