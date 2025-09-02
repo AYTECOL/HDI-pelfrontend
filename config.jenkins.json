@@ -1,6 +1,12 @@
 {
   "AppName": "co-home-aws",
   "Package": "build",
+  "Testing": {
+    "Path": "src/__tests__",
+    "lcovReportPath": "coverage/lcov.info",
+    "JunitReportPath": "reports/junit/junit.xml",
+    "SonarExclusion": "src/__tests__"
+  },
   "dev": {
     "bucketName": "poliza-express-hogar-hdi-dev"
   },
