@@ -5,7 +5,7 @@
     "Path": "src/__tests__",
     "lcovReportPath": "coverage/lcov.info",
     "JunitReportPath": "reports/junit/junit.xml",
-    "SonarExclusion": "'src/__tests__, test/**, src/setupTests.js'"
+    "SonarExclusion": "'src/__tests__/**, test/**, src/setupTests.js'"
   },
   "dev": {
     "bucketName": "poliza-express-hogar-hdi-dev"
