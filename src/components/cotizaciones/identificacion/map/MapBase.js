@@ -65,8 +65,10 @@ class MapBase extends Component {
     this.setAddres(this.props);
   }
 
-  componentWillReceiveProps(newProps) {
-    this.setAddres(newProps);
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.setAddres(this.props);
+    }
   }
 
   setAddres = async (newProps) => {
