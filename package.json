@@ -41,7 +41,11 @@
     "build:dev": "env-cmd -f env/dev.env npm run prebuild",
     "build:nonprod": "env-cmd -f env/nonprod.env npm run prebuild",
     "build:prod": "env-cmd -f env/prod.env npm run prebuild",
-    "test": "echo 'Test Unit'"
+    "test": "react-scripts test --coverage --watchAll=false --coverageDirectory=coverage && npm run test:junit",
+    "test:ci": "CI=true jest --ci --runInBand",
+    "test:junit": "node scripts/test-junit.js",
+    "test:watch": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage --watchAll=false --coverageDirectory=coverage"
   },
   "jest": {
     "coverageReporters": [
@@ -50,7 +54,30 @@
       "json",
       "clover",
       "lcov"
-    ]
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!src/serviceWorker.js",
+      "!src/**/*.test.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/*.test.js",
+      "!<rootDir>/src/App.test.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(axios|date-fns|react-datepicker)/)"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
+    }
+  },
+  "jest-junit": {
+    "outputDirectory": "./reports/junit",
+    "outputName": "junit.xml",
+    "suiteName": "Jest Tests",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
   },
   "jestSonar": {
     "sonar56x": true,
@@ -74,14 +101,19 @@
     "react-error-overlay": "6.0.9"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@silvermine/serverless-plugin-cloudfront-lambda-edge": "2.2.3",
+    "cross-env": "^10.0.0",
     "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-junit": "^16.0.0",
     "jest-sonar-reporter": "^2.0.0",
     "prettier": "^2.7.1",
     "react-error-overlay": "6.0.9",
-    "react-test-renderer": "^16.8.6"
+    "react-test-renderer": "^16.8.6",
+    "redux-mock-store": "^1.5.4"
   }
 }
-
