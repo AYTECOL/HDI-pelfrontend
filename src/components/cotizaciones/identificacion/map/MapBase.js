@@ -20,6 +20,9 @@ class MapBase extends Component {
 
   elementError = '.wrapper-map';
 
+  hasValidCoordinates = (m) =>
+    Boolean(m?.longitude && m?.latitude && m.latitude !== 0 && m.longitude !== 0);
+
   /**
    *
    * @readonly
@@ -77,8 +80,25 @@ class MapBase extends Component {
         identification: { address, city, department },
       },
       citiesProps,
+      mapsOptions
     } = newProps;
     const place = { address, city, department };
+
+    // 1) Si hay coordenadas guardadas válidas, PRIORIDAD total → centra el mapa y termina.
+    if (this.hasValidCoordinates(mapsOptions)) {
+      Helpers.removeClass(this.elementError, 'error');
+      const { latitude, longitude } = mapsOptions;
+      if (
+        !isEqual(this.state.markerPosition, { lat: latitude, lng: longitude })
+      ) {
+        this.setState({
+          ...this.state,
+          markerPosition: { lat: latitude, lng: longitude },
+          isMarkerShown: true,
+        });
+      }
+      return; // evitamos geocodificar por dirección
+    }
     /**
      * @type {{
      * code_city: number,
@@ -91,6 +111,7 @@ class MapBase extends Component {
       ...(await citiesProps.getCity({ city, departament: department })),
     };
 
+    // 2) Sin coordenadas válidas: fallback al flujo por dirección
     if (!city || !department || !address) this.setError();
     else if (!isEqual(this.place, place)) {
       this.place = place;
@@ -146,20 +167,18 @@ class MapBase extends Component {
    */
   onMapClick = async (e) => {
     const { lat, lng } = e;
-    return GetAddresInfo.getAdressByCoors({ lat, lng }).then((response) => {
-      this.place.address = response;
-      this.setState({
-        markerPosition: { lat, lng },
-        isMarkerShown: true,
-      });
-      Helpers.removeClass(this.elementError, 'error');
-      /* store.dispatch(
-        saveIdentificationValue({
-          name: 'address',
-          value: response,
-        })
-      ); */
+    this.setState({
+      markerPosition: { lat, lng },
+      isMarkerShown: true,
     });
+    Helpers.removeClass(this.elementError, 'error');
+
+    store.dispatch(
+      setAddresMap({
+        longitude: lng,
+        latitude: lat,
+      })
+    );
   };
 
   render() {
@@ -186,8 +205,9 @@ class MapBase extends Component {
 }
 
 export default withCities(
-  connect(({ cityDescription, cotizacion }) => ({
+  connect(({ cityDescription, cotizacion, mapsOptions }) => ({
     cityDescription,
     cotizacion,
+    mapsOptions,
   }))(MapBase)
 );
