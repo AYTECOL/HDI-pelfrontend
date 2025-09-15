@@ -91,11 +91,10 @@ class MapBase extends Component {
       if (
         !isEqual(this.state.markerPosition, { lat: latitude, lng: longitude })
       ) {
-        this.setState({
-          ...this.state,
+        this.setState(() => ({
           markerPosition: { lat: latitude, lng: longitude },
           isMarkerShown: true,
-        });
+        }));
       }
       return; // evitamos geocodificar por dirección
     }
@@ -121,11 +120,10 @@ class MapBase extends Component {
       ).then((data) => {
         if (data.lng && data.lat) {
           this.setState(
-            {
-              ...this.state,
+            () => ({
               markerPosition: data,
               isMarkerShown: true,
-            },
+            }),
             () => {
               store.dispatch(
                 setAddresMap({
@@ -149,10 +147,7 @@ class MapBase extends Component {
   };
 
   setError = () => {
-    this.setState({
-      ...this.state,
-      isMarkerShown: false,
-    });
+    this.setState({ isMarkerShown: false });
     Helpers.addClass(this.elementError, 'error');
     store.dispatch(
       setAddresMap({
@@ -167,10 +162,7 @@ class MapBase extends Component {
    */
   onMapClick = async (e) => {
     const { lat, lng } = e;
-    this.setState({
-      markerPosition: { lat, lng },
-      isMarkerShown: true,
-    });
+    this.setState({ markerPosition: { lat, lng }, isMarkerShown: true });
     Helpers.removeClass(this.elementError, 'error');
 
     store.dispatch(
