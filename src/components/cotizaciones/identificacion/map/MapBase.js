@@ -80,69 +80,62 @@ class MapBase extends Component {
         identification: { address, city, department },
       },
       citiesProps,
-      mapsOptions
+      mapsOptions,
     } = newProps;
+
     const place = { address, city, department };
+    const placeComplete = Boolean(address && city && department);
+    const placeChanged = !isEqual(this.place, place);
 
-    // 1) Si hay coordenadas guardadas válidas, PRIORIDAD total → centra el mapa y termina.
-    if (this.hasValidCoordinates(mapsOptions)) {
-      Helpers.removeClass(this.elementError, 'error');
-      const { latitude, longitude } = mapsOptions;
-      if (
-        !isEqual(this.state.markerPosition, { lat: latitude, lng: longitude })
-      ) {
-        this.setState(() => ({
-          markerPosition: { lat: latitude, lng: longitude },
-          isMarkerShown: true,
-        }));
-      }
-      return; // evitamos geocodificar por dirección
-    }
-    /**
-     * @type {{
-     * code_city: number,
-     * code_department: number,
-     * city: string
-     * department: string
-     * }}
-     */
-    const cityObject = {
-      ...(await citiesProps.getCity({ city, departament: department })),
-    };
-
-    // 2) Sin coordenadas válidas: fallback al flujo por dirección
-    if (!city || !department || !address) this.setError();
-    else if (!isEqual(this.place, place)) {
+    // 1) Si el usuario cambió address/city/department y está completo → geocodifica SIEMPRE
+    if (placeComplete && placeChanged) {
       this.place = place;
       Helpers.removeClass(this.elementError, 'error');
-      MapBase.reqAddress(
-        address + ', ' + cityObject.city + ' ' + cityObject.department
-      ).then((data) => {
+
+      const cityObject = {
+        ...(await citiesProps.getCity({ city, departament: department })),
+      };
+
+      try {
+        const data = await MapBase.reqAddress(`${address}, ${cityObject.city} ${cityObject.department}`);
         if (data.lng && data.lat) {
           this.setState(
-            () => ({
-              markerPosition: data,
-              isMarkerShown: true,
-            }),
+            () => ({ markerPosition: data, isMarkerShown: true }),
             () => {
-              store.dispatch(
-                setAddresMap({
-                  longitude: data.lng,
-                  latitude: data.lat,
-                })
-              );
+              store.dispatch(setAddresMap({ longitude: data.lng, latitude: data.lat }));
             }
           );
         } else {
-          this.setError();
-          store.dispatch(
-            setAddresMap({
-              longitude: 0,
-              latitude: 0,
-            })
-          );
+          // Si falla geocoding y NO hay coords previas válidas, marcamos error
+          if (!this.hasValidCoordinates(mapsOptions)) {
+            this.setError();
+            store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
+          }
         }
-      });
+      } catch {
+        if (!this.hasValidCoordinates(mapsOptions)) {
+          this.setError();
+          store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
+        }
+      }
+      return;
+    }
+
+    // 2) Si NO cambió el place, prioriza las coordenadas guardadas (retomar)
+    if (this.hasValidCoordinates(mapsOptions)) {
+      Helpers.removeClass(this.elementError, 'error');
+      const { latitude, longitude } = mapsOptions;
+      const next = { lat: latitude, lng: longitude };
+      if (!isEqual(this.state.markerPosition, next)) {
+        this.setState(() => ({ markerPosition: next, isMarkerShown: true }));
+      }
+      return; // ¡clave! no seguimos a setError() ni geocodificamos por dirección
+    }
+
+    // 3) Sin coords válidas y sin place completo → error visual + coords 0
+    if (!placeComplete) {
+      this.setError();
+      store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
     }
   };
 
