@@ -169,6 +169,7 @@ class MapBase extends Component {
   render() {
     const { googleMapURL } = this.props;
     const { zoom, markerPosition, isMarkerShown } = this.state;
+    console.log("Coordenadas obtenidas en el mapa (API de GOOGLE): ", markerPosition);
     return (
       <GoogleMapReact
         bootstrapURLKeys={{
