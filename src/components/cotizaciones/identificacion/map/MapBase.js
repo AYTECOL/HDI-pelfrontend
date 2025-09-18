@@ -20,6 +20,9 @@ class MapBase extends Component {
 
   elementError = '.wrapper-map';
 
+  hasValidCoordinates = (m) =>
+    Boolean(m?.longitude && m?.latitude && m.latitude !== 0 && m.longitude !== 0);
+
   /**
    *
    * @readonly
@@ -77,61 +80,67 @@ class MapBase extends Component {
         identification: { address, city, department },
       },
       citiesProps,
+      mapsOptions,
     } = newProps;
-    const place = { address, city, department };
-    /**
-     * @type {{
-     * code_city: number,
-     * code_department: number,
-     * city: string
-     * department: string
-     * }}
-     */
-    const cityObject = {
-      ...(await citiesProps.getCity({ city, departament: department })),
-    };
 
-    if (!city || !department || !address) this.setError();
-    else if (!isEqual(this.place, place)) {
+    const place = { address, city, department };
+    const placeComplete = Boolean(address && city && department);
+    const placeChanged = !isEqual(this.place, place);
+
+    // 1) Si el usuario cambió address/city/department y está completo → geocodifica SIEMPRE
+    if (placeComplete && placeChanged) {
       this.place = place;
       Helpers.removeClass(this.elementError, 'error');
-      MapBase.reqAddress(
-        address + ', ' + cityObject.city + ' ' + cityObject.department
-      ).then((data) => {
+
+      const cityObject = {
+        ...(await citiesProps.getCity({ city, departament: department })),
+      };
+
+      try {
+        const data = await MapBase.reqAddress(`${address}, ${cityObject.city} ${cityObject.department}`);
         if (data.lng && data.lat) {
           this.setState(
-            {
-              ...this.state,
-              markerPosition: data,
-              isMarkerShown: true,
-            },
+            () => ({ markerPosition: data, isMarkerShown: true }),
             () => {
-              store.dispatch(
-                setAddresMap({
-                  longitude: data.lng,
-                  latitude: data.lat,
-                })
-              );
+              store.dispatch(setAddresMap({ longitude: data.lng, latitude: data.lat }));
             }
           );
         } else {
-          this.setError();
-          store.dispatch(
-            setAddresMap({
-              longitude: 0,
-              latitude: 0,
-            })
-          );
+          // Si falla geocoding y NO hay coords previas válidas, marcamos error
+          if (!this.hasValidCoordinates(mapsOptions)) {
+            this.setError();
+            store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
+          }
         }
-      });
+      } catch {
+        if (!this.hasValidCoordinates(mapsOptions)) {
+          this.setError();
+          store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
+        }
+      }
+      return;
+    }
+
+    // 2) Si NO cambió el place, prioriza las coordenadas guardadas (retomar)
+    if (this.hasValidCoordinates(mapsOptions)) {
+      Helpers.removeClass(this.elementError, 'error');
+      const { latitude, longitude } = mapsOptions;
+      const next = { lat: latitude, lng: longitude };
+      if (!isEqual(this.state.markerPosition, next)) {
+        this.setState(() => ({ markerPosition: next, isMarkerShown: true }));
+      }
+      return; // ¡clave! no seguimos a setError() ni geocodificamos por dirección
+    }
+
+    // 3) Sin coords válidas y sin place completo → error visual + coords 0
+    if (!placeComplete) {
+      this.setError();
+      store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
     }
   };
 
   setError = () => {
-    this.setState({
-      ...this.state,
-      isMarkerShown: false,
-    });
+    this.setState({ isMarkerShown: false });
     Helpers.addClass(this.elementError, 'error');
     store.dispatch(
       setAddresMap({
@@ -146,25 +155,21 @@ class MapBase extends Component {
    */
   onMapClick = async (e) => {
     const { lat, lng } = e;
-    return GetAddresInfo.getAdressByCoors({ lat, lng }).then((response) => {
-      this.place.address = response;
-      this.setState({
-        markerPosition: { lat, lng },
-        isMarkerShown: true,
-      });
-      Helpers.removeClass(this.elementError, 'error');
-      /* store.dispatch(
-        saveIdentificationValue({
-          name: 'address',
-          value: response,
-        })
-      ); */
-    });
+    this.setState({ markerPosition: { lat, lng }, isMarkerShown: true });
+    Helpers.removeClass(this.elementError, 'error');
+
+    store.dispatch(
+      setAddresMap({
+        longitude: lng,
+        latitude: lat,
+      })
+    );
   };
 
   render() {
     const { googleMapURL } = this.props;
     const { zoom, markerPosition, isMarkerShown } = this.state;
+    console.log("Coordenadas obtenidas en el mapa (API de GOOGLE): ", markerPosition);
     return (
       <GoogleMapReact
         bootstrapURLKeys={{
@@ -186,8 +191,9 @@ class MapBase extends Component {
 }
 
 export default withCities(
-  connect(({ cityDescription, cotizacion }) => ({
+  connect(({ cityDescription, cotizacion, mapsOptions }) => ({
     cityDescription,
     cotizacion,
+    mapsOptions,
   }))(MapBase)
 );
