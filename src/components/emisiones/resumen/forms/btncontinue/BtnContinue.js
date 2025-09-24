@@ -140,6 +140,8 @@ class BtnContinue extends Component {
             questionSarlaft
           );
         }
+        console.log("Coordenadas a enviar a IAXIS - preguntas 7836 y 7837 - (Obtenidas del store global y previamente de la API de GOOGLE): ", mapOptions);
+        if ((mapOptions.latitude === null && mapOptions.longitude === null) || (mapOptions.latitude === "" && mapOptions.longitude === "")) console.log("No se han obtenido coordenadas, los valores son nulos.");
         if (
           mapOptions &&
           'longitude' in mapOptions &&

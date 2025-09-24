@@ -11,6 +11,9 @@
 .idea
 .idea/*
 
+/test/node_modules
+/test/coverage
+
 # testing
 /coverage
 /co
@@ -36,3 +39,5 @@ yarn-error.log*
 serverless.yml
 .serverless/
 .vscode/
+junit.xml
+package-lock.json
