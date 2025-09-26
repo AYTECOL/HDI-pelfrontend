@@ -30,6 +30,7 @@ import BeneficiariesFinalPage from './beneficiaries-final';
 import { TYPE_DOCUMENT_IS_JURIDIC } from 'assets/constants';
 import store from 'store';
 import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
+import PropTypes from 'prop-types';
 
 import close_icon from 'assets/images/icon_close.svg';
 
@@ -615,8 +616,12 @@ export default class Persona extends Component {
         let person = this.state.person;
         person.codeDisabled = true;
         person.valueDisabled = true;
-        this.setState({ ...this.state, person: person }, () =>
-          this.validateAll()
+        this.setState(
+          (prevState) => ({
+            ...prevState,
+            person: person,
+          }),
+          () => this.validateAll()
         );
       });
     } else {
@@ -2245,3 +2250,8 @@ export default class Persona extends Component {
     );
   }
 }
+
+Persona.propTypes = {
+  item: PropTypes.number,
+
+};
