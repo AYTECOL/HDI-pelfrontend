@@ -28,6 +28,8 @@ import {
 import LegalRepresentative from './legal-representative';
 import BeneficiariesFinalPage from './beneficiaries-final';
 import { TYPE_DOCUMENT_IS_JURIDIC } from 'assets/constants';
+import store from 'store';
+import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 
 import close_icon from 'assets/images/icon_close.svg';
 
@@ -87,6 +89,13 @@ export default class Persona extends Component {
         fieldsNames.personalAccidents,
         fieldsNames.exequiasParticipation,
       ],
+      // popup validar servicio consulta personas
+      errorValidatePerson: false,
+      tittle: '',
+      message: '',
+      buttonRetry: true,
+      idPolicy: store.getState().cotizacion.number,
+      subtittle: '',
     };
     let person = this.state.person;
     if (
@@ -590,27 +599,36 @@ export default class Persona extends Component {
   }
 
   componentDidMount() {
+    this.initializeComponent();
+  }
+
+  initializeComponent = () => {
     this._isMounted = true;
     Helpers.fieldNumeric();
+
     let personObject = this.state.person;
     if (typeof personObject.person !== 'undefined')
       personObject.object = personObject.person;
-    if (typeof personObject.object !== 'undefined' && this.props.item !== -1)
+
+    if (typeof personObject.object !== 'undefined' && this.props.item !== -1) {
       this.validateDoc({ person: personObject.person }, async () => {
         let person = this.state.person;
         person.codeDisabled = true;
         person.valueDisabled = true;
-
-        this.setState(
-          {
-            ...this.state,
-            person: person,
-          },
-          () => this.validateAll()
+        this.setState({ ...this.state, person: person }, () =>
+          this.validateAll()
         );
       });
-    else this.validateAll();
-  }
+    } else {
+      this.validateAll();
+    }
+  };
+
+  //Función para volver a montar totalmente el componente, usada para el retry cuando falla consultaPersona
+  handleRetry = () => {
+    this.setState({ errorValidatePerson: false });
+    this.initializeComponent();
+  };
 
   componentWillUnmount() {
     this._isMounted = false;
@@ -952,9 +970,18 @@ export default class Persona extends Component {
             callback && callback();
           }
         );
-      } else {
-        Loading.toggle(false);
       }
+      Loading.toggle(false);
+      this.setState({ errorValidatePerson: true });
+      this.setState({
+        ...this.state,
+        tittle: 'Ups, lo sentimos',
+        message: `Tenemos un problema técnico en este momento`,
+        buttonRetry: true,
+        subtittle:
+          'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios',
+      });
+      return;
     }
   };
 
@@ -2200,6 +2227,15 @@ export default class Persona extends Component {
               </div>
             </div>
           </div>
+          <ValidatePersonIdentity
+            subtittle={this.state.subtittle}
+            idPolicy={this.state.idPolicy}
+            tittle={this.state.tittle}
+            message={this.state.message}
+            button={this.state.buttonRetry}
+            open={this.state.errorValidatePerson}
+            onRetry={this.handleRetry}
+          />
           <Validaridentificacion
             toggle={this.props.toggle}
             changeValue={this.changeValuePopup}
