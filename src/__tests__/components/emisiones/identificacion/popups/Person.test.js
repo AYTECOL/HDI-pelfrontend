@@ -3,10 +3,10 @@ import renderer, { act } from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { BrowserRouter as Router } from 'react-router-dom';
-import ConsultaPersonas from './../../services/ConsultaPersonas';
+import ConsultaPersonas from '../../../../../services/ConsultaPersonas';
 import Persona from 'components/emisiones/identificacion/popups/persona/person';
 
-jest.mock('./../../services/ConsultaPersonas', () => ({
+jest.mock('../../../../../services/ConsultaPersonas', () => ({
   get: jest.fn(),
 }));
 
