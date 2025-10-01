@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -8,12 +8,6 @@ import Persona from 'components/emisiones/identificacion/popups/persona/person';
 
 jest.mock('../../../../../services/ConsultaPersonas', () => ({
   get: jest.fn(),
-}));
-
-// Mock para evitar problemas de DOM
-jest.mock('react-dom', () => ({
-  ...jest.requireActual('react-dom'),
-  createPortal: (node) => node,
 }));
 
 describe('Persona Component - Error Handling', () => {
@@ -41,21 +35,23 @@ describe('Persona Component - Error Handling', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.setTimeout(10000);
   });
 
   test('should handle service failure and show retry option', () => {
     ConsultaPersonas.get.mockRejectedValue(new Error('Service Unavailable'));
 
-    const { container } = render(
+    const div = document.createElement('div');
+    ReactDOM.render(
       <Provider store={mockStoreInstance}>
         <Router>
           <Persona {...mockProps} />
         </Router>
-      </Provider>
+      </Provider>,
+      div
     );
 
-    expect(container).toBeDefined();
+    expect(div).toBeDefined();
     expect(ConsultaPersonas.get).toBeDefined();
+    ReactDOM.unmountComponentAtNode(div);
   });
 });
