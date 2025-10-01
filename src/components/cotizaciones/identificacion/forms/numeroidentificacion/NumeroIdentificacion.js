@@ -34,6 +34,7 @@ class NumeroIdentificacion extends Component {
     let error = false;
     type = type.toString();
     if (v.length < 1) error = true;
+    if (v.includes('.')) error = true;
     // CC
     if (type === '36') {
       if (v.length < 3 || v.length > 10 || isNaN(v)) error = true;
