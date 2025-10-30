@@ -770,12 +770,7 @@ export default class Persona extends Component {
     });
   };
 
-  changeValue = (e) => {
-    const { name, value } = e.target || {};
-    if (name === 'city_code' || name === 'department_code') {
-      console.log('[Persona] set', name, value);
-    }
-    
+  changeValue = (e) => {    
     let v = e.target.value;
     let n = e.target.name;
     if (n === 'email') {
