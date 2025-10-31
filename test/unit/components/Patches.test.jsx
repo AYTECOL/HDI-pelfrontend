@@ -1,4 +1,3 @@
-// test/patches.p1-p3.spec.jsx
 /**
  * Pruebas para Parches 1, 2 y 3.
  * P1: Al presionar Continuar NO se rehidrata con extractDataFromIaxis (no pisa departmentCode/cityCode editados).
