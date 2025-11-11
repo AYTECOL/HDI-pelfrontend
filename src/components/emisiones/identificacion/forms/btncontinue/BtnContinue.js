@@ -77,20 +77,20 @@ class BtnContinue extends PureComponent {
     };
     for (let i in persons) {
       let person = persons[i];
-      if (typeof person.object !== 'undefined' && person.object !== '') {
-        person = Persona.extractDataFromIaxis(
-          person.object,
-          person['code'],
-          person
-        );
-      }
+      // if (typeof person.object !== 'undefined' && person.object !== '') {
+      //   person = Persona.extractDataFromIaxis(
+      //     person.object,
+      //     person['code'],
+      //     person
+      //   );
+      // }
       newPersons.push(person);
     }
     persons = newPersons;
     const { personalAccidents, exequiasParticipation } = fieldsNames;
     for (let i in persons) {
-      let location = persons['ciudad'];
       const person = persons[i];
+      let location = person['ciudad'];
       let dataUser = {
         person:
           typeof person.person === 'undefined' ? person.object : person.person,

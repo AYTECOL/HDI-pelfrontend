@@ -71,12 +71,10 @@ class AutocompleteCities extends Component {
 
   updateValue(props) {
     const { value } = props;
-    if (value && typeof value === 'string' && value.trim()) {
-      this.setState({
-        ...this.state,
-        value: value,
-      });
-    }
+    this.setState({
+      ...this.state,
+      value: typeof value === 'string' ? value : (value || ''),
+    });
   }
 
   /**
@@ -133,6 +131,30 @@ class AutocompleteCities extends Component {
           toggle: false,
           empty: empty,
         });
+        const typed = (this.state.value || '').trim();
+        if (typed) {
+          const match = this.state.originalOptions.cities.find(
+            (o) => (o.description || '').toLowerCase() === typed.toLowerCase()
+          );
+          if (match) {
+            this.changeTargets([
+              { name: this.props.name, value: match.description },
+              { name: 'city_code', value: parseInt(match.code_city) },
+              { name: 'department_code', value: parseInt(match.code_department) },
+              { name: 'city', value: match.city },
+              { name: 'departamento', value: match.department },
+            ]);
+          } else {
+            // si no hay match exacto, limpia en el padre
+            this.changeTargets([
+              { name: this.props.name, value: '' },
+              { name: 'city_code', value: 0 },
+              { name: 'department_code', value: 0 },
+              { name: 'city', value: '' },
+              { name: 'departamento', value: '' },
+            ]);
+          }
+        }
       }, 200);
     }
   };

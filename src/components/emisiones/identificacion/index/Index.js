@@ -275,10 +275,10 @@ class Index extends Component {
   hasDuplicates(array) {
     const seen = new Set();
     for (let element of array) {
-        if (seen.has(element)) {
-            return true;
-        }
-        seen.add(element);
+      if (seen.has(element)) {
+        return true;
+      }
+      seen.add(element);
     }
     return false;
   }
@@ -381,21 +381,17 @@ class Index extends Component {
   }
 
   updatePerson(person) {
-    let persons = this.state.persons;
-    let exits = this.exitsPerson(person);
-    if (exits !== false) {
-      persons[exits.index] = exits.person;
-    } else {
-      if (this.state.itemSelected === -1) {
+    this.setState(prev => {
+      const persons = [...prev.persons];
+      const exits = this.exitsPerson(person, persons);
+      if (exits !== false) {
+        persons[exits.index] = exits.person;
+      } else if (prev.itemSelected === -1) {
         persons.push(person);
       } else {
-        persons[this.state.itemSelected] = person;
+        persons[prev.itemSelected] = person;
       }
-    }
-
-    this.setState({
-      ...this.state,
-      person: persons,
+      return { ...prev, persons };
     });
     setTimeout(() => {
       this.showAnyPopup('showPopUpPersona');
@@ -528,9 +524,9 @@ class Index extends Component {
 
           {this.isDisabled().duplicatedBeneficiary && (
             <div className="row justify-content-center">
-                <span className= "error_message">
-                  La identificación del beneficiario no puede ser igual a la del beneficiario oneroso
-                </span>
+              <span className="error_message">
+                La identificación del beneficiario no puede ser igual a la del beneficiario oneroso
+              </span>
             </div>
           )}
 
