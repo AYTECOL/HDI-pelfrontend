@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { withCities } from '../../hooks/cities';
 import store from '../../../../../store';
 import Helpers from '../../../../../common/helpers/helpers';
+import PropTypes from 'prop-types';
 
 class AutocompleteCities extends Component {
   _isMounted = false;
@@ -373,5 +374,18 @@ class AutocompleteCities extends Component {
     );
   }
 }
+
+AutocompleteCities.propTypes = {
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func,
+  onSelect: PropTypes.func,
+  citiesProps: PropTypes.shape({
+    promise: PropTypes.object,
+  }),
+  hideTitle: PropTypes.bool,
+  label: PropTypes.string,
+  disabled: PropTypes.bool,
+};
 
 export default withRouter(withCities(AutocompleteCities));
