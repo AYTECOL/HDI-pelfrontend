@@ -126,34 +126,45 @@ class AutocompleteCities extends Component {
       let empty = false;
       if (v === '') empty = true;
       setTimeout(() => {
-        this.setState({
-          ...this.state,
-          toggle: false,
-          empty: empty,
-        });
         const typed = (this.state.value || '').trim();
         if (typed) {
           const match = this.state.originalOptions.cities.find(
             (o) => (o.description || '').toLowerCase() === typed.toLowerCase()
           );
           if (match) {
+            this.setState({
+              ...this.state,
+              toggle: false,
+              empty: false,
+            });
             this.changeTargets([
-              { name: this.props.name, value: match.description },
+              { name: this.nameInput, value: match.description },
               { name: 'city_code', value: parseInt(match.code_city) },
               { name: 'department_code', value: parseInt(match.code_department) },
               { name: 'city', value: match.city },
               { name: 'departamento', value: match.department },
             ]);
           } else {
-            // si no hay match exacto, limpia en el padre
+            // si no hay match exacto, muestra error y limpia en el padre
+            this.setState({
+              ...this.state,
+              toggle: false,
+              empty: true,
+            });
             this.changeTargets([
-              { name: this.props.name, value: '' },
+              { name: this.nameInput, value: '' },
               { name: 'city_code', value: 0 },
               { name: 'department_code', value: 0 },
               { name: 'city', value: '' },
               { name: 'departamento', value: '' },
             ]);
           }
+        } else {
+          this.setState({
+            ...this.state,
+            toggle: false,
+            empty: empty,
+          });
         }
       }, 200);
     }
@@ -163,8 +174,13 @@ class AutocompleteCities extends Component {
    * @param {({ name:string, value:any })[]} targets
    */
   changeTargets = (targets) => {
+    const { onChange } = this.props;
+    if (typeof onChange !== 'function') {
+      // Si no hay onChange seguro, no hacemos nada para evitar excepciones
+      return;
+    }
     for (const { name, value } of targets) {
-      this.props.onChange({
+      onChange({
         target: { name, value },
       });
     }
@@ -184,11 +200,11 @@ class AutocompleteCities extends Component {
         value,
         empty: false,
       });
-      if (typeof this.props.onChange !== 'undefined') {
+      if (typeof this.props.onChange === 'function') {
         this.changeTargets([
           {
             value: value,
-            name: this.props.name,
+            name: this.nameInput,
           },
           {
             value: parseInt(code),
@@ -279,10 +295,18 @@ class AutocompleteCities extends Component {
       options = this.selectActive(options, true);
     } else if (key === 13 || key === 9) {
       e.preventDefault();
-      this.onBlur('noempty');
-      e.target.blur();
-      if (Helpers.hasClass(element, 'active'))
-        document.querySelector(element).click();
+      
+      // Si hay opciones disponibles, seleccionar la activa o la primera
+      if (this.state.toggle && options.cities && options.cities.length > 0) {
+        const activeOption = options.cities.find(opt => opt.active);
+        const optionToSelect = activeOption || options.cities[0];
+        this.saveOption(optionToSelect)();
+        e.target.blur();
+      } else {
+        // Si no hay opciones, ejecutar el blur normal para validar
+        this.onBlur('noempty');
+        e.target.blur();
+      }
     }
     if (typeof options !== 'undefined') {
       this.setState({
