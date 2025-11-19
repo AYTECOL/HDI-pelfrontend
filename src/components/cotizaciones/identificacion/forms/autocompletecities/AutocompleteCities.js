@@ -133,11 +133,11 @@ class AutocompleteCities extends Component {
             (o) => (o.description || '').toLowerCase() === typed.toLowerCase()
           );
           if (match) {
-            this.setState({
-              ...this.state,
+            this.setState((prevState) => ({
+              ...prevState,
               toggle: false,
               empty: false,
-            });
+            }));
             this.changeTargets([
               { name: this.nameInput, value: match.description },
               { name: 'city_code', value: parseInt(match.code_city) },
@@ -147,11 +147,11 @@ class AutocompleteCities extends Component {
             ]);
           } else {
             // si no hay match exacto, muestra error y limpia en el padre
-            this.setState({
-              ...this.state,
+            this.setState((prevState) => ({
+              ...prevState,
               toggle: false,
               empty: true,
-            });
+            }));
             this.changeTargets([
               { name: this.nameInput, value: '' },
               { name: 'city_code', value: 0 },
@@ -161,11 +161,11 @@ class AutocompleteCities extends Component {
             ]);
           }
         } else {
-          this.setState({
-            ...this.state,
+          this.setState((prevState) => ({
+            ...prevState,
             toggle: false,
             empty: empty,
-          });
+          }));
         }
       }, 200);
     }
