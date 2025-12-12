@@ -105,7 +105,6 @@ class BtnContinue extends Component {
       );
 
       this.setState({
-        ...this.state,
         continueButtonDisable: false,
         showRetryModal: true,
       });

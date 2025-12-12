@@ -10,6 +10,7 @@ import GetAddresInfo from '../../../../services/AddresCoordenates';
 import Helpers from '../../../../common/helpers/helpers';
 import { withCities } from '../hooks/cities';
 import Marker from './Marker';
+import { hasValidCoordinates } from '../../../../common/helpers/coordenates/validationCoord';
 
 class MapBase extends Component {
   place = {
@@ -19,33 +20,6 @@ class MapBase extends Component {
   };
 
   elementError = '.wrapper-map';
-
-  hasValidCoordinates = (mapsOptions) => {
-    if (!mapsOptions) return false;
-
-    const lat = mapsOptions.latitude;
-    const lng = mapsOptions.longitude;
-
-    const latNum =
-      lat === null || typeof lat === 'undefined' || lat === ''
-        ? null
-        : Number(lat);
-    const lngNum =
-      lng === null || typeof lng === 'undefined' || lng === ''
-        ? null
-        : Number(lng);
-
-    // null / undefined / vacío ⇒ inválido
-    if (latNum === null || lngNum === null) return false;
-
-    // valores no numéricos ⇒ inválido
-    if (Number.isNaN(latNum) || Number.isNaN(lngNum)) return false;
-
-    // 0 en cualquiera de las dos ⇒ inválido
-    if (latNum === 0 || lngNum === 0) return false;
-
-    return true;
-  };
 
   /**
    *
@@ -131,13 +105,13 @@ class MapBase extends Component {
           );
         } else {
           // Si falla geocoding y NO hay coords previas válidas, marcamos error
-          if (!this.hasValidCoordinates(mapsOptions)) {
+          if (!hasValidCoordinates(mapsOptions)) {
             this.setError();
             store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
           }
         }
       } catch {
-        if (!this.hasValidCoordinates(mapsOptions)) {
+        if (!hasValidCoordinates(mapsOptions)) {
           this.setError();
           store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
         }
@@ -151,7 +125,7 @@ class MapBase extends Component {
     }
 
     // 2) Si NO cambió el place, prioriza las coordenadas guardadas (retomar)
-    if (this.hasValidCoordinates(mapsOptions)) {
+    if (hasValidCoordinates(mapsOptions)) {
       Helpers.removeClass(this.elementError, 'error');
       const { latitude, longitude } = mapsOptions;
       const next = { lat: latitude, lng: longitude };

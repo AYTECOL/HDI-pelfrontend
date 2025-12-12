@@ -25,67 +25,20 @@ import TipoDocumento from '../tipodocumento/TipoDocumento';
 import Validaridentificacion from '../../popups/validaridentificacion/Validaridentificacion';
 import { withRouter } from 'react-router-dom';
 import { isValidDirection } from '../../../../../common/validations';
+import {
+  hasValidCoordinates,
+  isInvalidAddress,
+  normalize,
+} from '../../../../../common/helpers/coordenates/validationCoord';
 import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 
 import arrow_back from '../../../../../assets/images/icon-back.svg';
 
-const hasValidCoordinates = (mapsOptions) => {
-  if (!mapsOptions) return false;
-
-  const lat = mapsOptions.latitude;
-  const lng = mapsOptions.longitude;
-
-  const latNum =
-    lat === null || typeof lat === 'undefined' || lat === ''
-      ? null
-      : Number(lat);
-  const lngNum =
-    lng === null || typeof lng === 'undefined' || lng === ''
-      ? null
-      : Number(lng);
-
-  // null / undefined / vacío ⇒ inválido
-  if (latNum === null || lngNum === null) return false;
-
-  // valores no numéricos ⇒ inválido
-  if (Number.isNaN(latNum) || Number.isNaN(lngNum)) return false;
-
-  // 0 en cualquiera de las dos ⇒ inválido
-  if (latNum === 0 || lngNum === 0) return false;
-
-  return true;
-};
-
-const normalize = (value) =>
-  String(value ?? '').trim().toLowerCase();
-
 const shouldShowRetryModal = (identification, mapsOptions) => {
-  const normalizedAddress = normalize(identification?.address);
-
-  // address solo "0" o solo "null"
-  const addressZeroOrNull =
-    normalizedAddress === '0' || normalizedAddress === 'null' || normalizedAddress === 'ninguna' || normalizedAddress === 'ningun' || normalizedAddress === 'ninguna direccion' || normalizedAddress === 'sin direccion' || normalizedAddress === 'sin dirección' || normalizedAddress === 'no aplica' || normalizedAddress === 'na' || normalizedAddress === 'n/a' || normalizedAddress === 's/n' || normalizedAddress === 'nulo' || normalizedAddress === 'nula';
-
-  const latRaw = mapsOptions?.latitude;
-  const lngRaw = mapsOptions?.longitude;
-
-  const latStr =
-    latRaw === null || typeof latRaw === 'undefined'
-      ? 'null'
-      : String(latRaw).trim().toLowerCase();
-  const lngStr =
-    lngRaw === null || typeof lngRaw === 'undefined'
-      ? 'null'
-      : String(lngRaw).trim().toLowerCase();
-
-  // Coordenadas en 0 o null (también si vienen como string)
-  const coordsZeroOrNull =
-    latStr === '0' ||
-    lngStr === '0' ||
-    latStr === 'null' ||
-    lngStr === 'null';
-
-  return coordsZeroOrNull || addressZeroOrNull;
+  const address = identification?.address;
+  const addressInvalid = isInvalidAddress(address);
+  const coordsInvalid = !hasValidCoordinates(mapsOptions);
+  return addressInvalid || coordsInvalid;
 };
 
 class BtnContinue extends Component {
