@@ -34,7 +34,7 @@ import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 
 import arrow_back from '../../../../../assets/images/icon-back.svg';
 
-const shouldShowRetryModal = (identification, mapsOptions) => {
+export const shouldShowRetryModal = (identification, mapsOptions) => {
   const address = identification?.address;
   const addressInvalid = isInvalidAddress(address);
   const coordsInvalid = !hasValidCoordinates(mapsOptions);
