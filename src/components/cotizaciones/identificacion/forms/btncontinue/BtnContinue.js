@@ -7,6 +7,7 @@ import {
   nextStepIndentification,
   resetStore,
   saveIdentificationValue,
+  mapForceRetry,
 } from 'store/actions';
 import Loading from '../../../../../components/globals/loading/Loading';
 import QuoteService from 'services/Quote';
@@ -24,17 +25,67 @@ import TipoDocumento from '../tipodocumento/TipoDocumento';
 import Validaridentificacion from '../../popups/validaridentificacion/Validaridentificacion';
 import { withRouter } from 'react-router-dom';
 import { isValidDirection } from '../../../../../common/validations';
+import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 
 import arrow_back from '../../../../../assets/images/icon-back.svg';
 
 const hasValidCoordinates = (mapsOptions) => {
-  const isValid = Boolean(
-    mapsOptions?.longitude &&
-      mapsOptions?.latitude &&
-      mapsOptions.latitude !== 0 &&
-      mapsOptions.longitude !== 0
-  );
-  return isValid;
+  if (!mapsOptions) return false;
+
+  const lat = mapsOptions.latitude;
+  const lng = mapsOptions.longitude;
+
+  const latNum =
+    lat === null || typeof lat === 'undefined' || lat === ''
+      ? null
+      : Number(lat);
+  const lngNum =
+    lng === null || typeof lng === 'undefined' || lng === ''
+      ? null
+      : Number(lng);
+
+  // null / undefined / vacío ⇒ inválido
+  if (latNum === null || lngNum === null) return false;
+
+  // valores no numéricos ⇒ inválido
+  if (Number.isNaN(latNum) || Number.isNaN(lngNum)) return false;
+
+  // 0 en cualquiera de las dos ⇒ inválido
+  if (latNum === 0 || lngNum === 0) return false;
+
+  return true;
+};
+
+const normalize = (value) =>
+  String(value ?? '').trim().toLowerCase();
+
+const shouldShowRetryModal = (identification, mapsOptions) => {
+  const normalizedAddress = normalize(identification?.address);
+
+  // address solo "0" o solo "null"
+  const addressZeroOrNull =
+    normalizedAddress === '0' || normalizedAddress === 'null' || normalizedAddress === 'ninguna' || normalizedAddress === 'ningun' || normalizedAddress === 'ninguna direccion' || normalizedAddress === 'sin direccion' || normalizedAddress === 'sin dirección' || normalizedAddress === 'no aplica' || normalizedAddress === 'na' || normalizedAddress === 'n/a' || normalizedAddress === 's/n' || normalizedAddress === 'nulo' || normalizedAddress === 'nula';
+
+  const latRaw = mapsOptions?.latitude;
+  const lngRaw = mapsOptions?.longitude;
+
+  const latStr =
+    latRaw === null || typeof latRaw === 'undefined'
+      ? 'null'
+      : String(latRaw).trim().toLowerCase();
+  const lngStr =
+    lngRaw === null || typeof lngRaw === 'undefined'
+      ? 'null'
+      : String(lngRaw).trim().toLowerCase();
+
+  // Coordenadas en 0 o null (también si vienen como string)
+  const coordsZeroOrNull =
+    latStr === '0' ||
+    lngStr === '0' ||
+    latStr === 'null' ||
+    lngStr === 'null';
+
+  return coordsZeroOrNull || addressZeroOrNull;
 };
 
 class BtnContinue extends Component {
@@ -44,11 +95,25 @@ class BtnContinue extends Component {
       loading: false,
       stateFormIdentificacion: 0,
       cotizacionExclude: [],
+      showRetryModal: false,
+      maxRetriesReached: false,
+      retryAttempts: 0,
     };
   }
 
   nextStepIndex = async () => {
-    const { identification, stateFormIdentificacion, match } = this.props;
+    const { identification, stateFormIdentificacion, match, mapsOptions } = this.props;
+
+    if (
+      stateFormIdentificacion === 1 &&
+      shouldShowRetryModal(identification, mapsOptions)
+    ) {
+      this.setState((prev) => ({
+        ...prev,
+        showRetryModal: true,
+      }));
+      return;
+    }
     if (stateFormIdentificacion === 1) {
       Loading.toggle(true);
       store.dispatch(NextStep(2));
@@ -101,7 +166,7 @@ class BtnContinue extends Component {
               NumeroIdentificacion.toggleDisable(true);
               personaData =
                 personaData[
-                  personaType === 2 ? 'personaJuridica' : 'personaNatural'
+                personaType === 2 ? 'personaJuridica' : 'personaNatural'
                 ];
               if (
                 typeof personaData.primerNombre !== 'undefined' &&
@@ -167,9 +232,30 @@ class BtnContinue extends Component {
     Helpers.goToHome(this.props.history);
   };
 
+  handleRetry = () => {
+    const { retryAttempts } = this.state;
+
+    if (retryAttempts >= 3) {
+      this.setState((prev) => ({
+        ...prev,
+        maxRetriesReached: true,
+        showRetryModal: true, // sigue viendo el modal, pero sin botón de reintentar
+      }));
+      return;
+    }
+
+    store.dispatch(mapForceRetry());
+
+    this.setState((prev) => ({
+      ...prev,
+      retryAttempts: prev.retryAttempts + 1,
+      showRetryModal: false,
+    }));
+  };
+
   render() {
     const { stateFormIdentificacion, continueButtonDisable } = this.props;
-    const { loading } = this.state;
+    const { loading, showRetryModal, maxRetriesReached, retryAttempts } = this.state;
     const disabled = loading || continueButtonDisable;
     return (
       <Fragment>
@@ -207,6 +293,17 @@ class BtnContinue extends Component {
         >
           Continuar
         </button>
+        <ValidatePersonIdentity
+          subtittle={
+            retryAttempts < 3 && !maxRetriesReached ? 'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios' : 'Por favor retoma la cotizacion en unos minutos desde Mis negocios'
+          }
+          idPolicy={store.getState().cotizacion.number}
+          tittle={'Ups, lo sentimos'}
+          message={`Tenemos un problema técnico en este momento`}
+          button={retryAttempts < 3 && !maxRetriesReached}
+          open={showRetryModal}
+          onRetry={this.handleRetry}
+        />
       </Fragment>
     );
   }
@@ -256,6 +353,7 @@ export default withRouter(
         identification,
         continueButtonDisable,
         stateFormIdentificacion,
+        mapsOptions
       };
     }
   )(BtnContinue)

@@ -10,6 +10,19 @@ const setAddresMap = (data) => {
   return { type: actionsTypes.SET_ADDRES_MAP, data };
 };
 
+// types
+export const MAP_FORCE_RETRY = 'MAP_FORCE_RETRY';
+export const MAP_CLEAR_FORCE_RETRY = 'MAP_CLEAR_FORCE_RETRY';
+
+// action creators
+export const mapForceRetry = () => ({
+  type: MAP_FORCE_RETRY,
+});
+
+export const mapClearForceRetry = () => ({
+  type: MAP_CLEAR_FORCE_RETRY,
+});
+
 const nextStepIndentification = () => {
   return { type: actionsTypes.NEXT_STEP_INDENTIFICATION, data: 1 };
 };

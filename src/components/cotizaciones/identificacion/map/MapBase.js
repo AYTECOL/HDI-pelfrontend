@@ -5,7 +5,7 @@ import GoogleMapReact from 'google-map-react';
 
 import './Map.scss';
 import store from '../../../../store';
-import { setAddresMap } from '../../../../store/actions';
+import { setAddresMap, mapClearForceRetry } from '../../../../store/actions';
 import GetAddresInfo from '../../../../services/AddresCoordenates';
 import Helpers from '../../../../common/helpers/helpers';
 import { withCities } from '../hooks/cities';
@@ -20,8 +20,32 @@ class MapBase extends Component {
 
   elementError = '.wrapper-map';
 
-  hasValidCoordinates = (m) =>
-    Boolean(m?.longitude && m?.latitude && m.latitude !== 0 && m.longitude !== 0);
+  hasValidCoordinates = (mapsOptions) => {
+    if (!mapsOptions) return false;
+
+    const lat = mapsOptions.latitude;
+    const lng = mapsOptions.longitude;
+
+    const latNum =
+      lat === null || typeof lat === 'undefined' || lat === ''
+        ? null
+        : Number(lat);
+    const lngNum =
+      lng === null || typeof lng === 'undefined' || lng === ''
+        ? null
+        : Number(lng);
+
+    // null / undefined / vacío ⇒ inválido
+    if (latNum === null || lngNum === null) return false;
+
+    // valores no numéricos ⇒ inválido
+    if (Number.isNaN(latNum) || Number.isNaN(lngNum)) return false;
+
+    // 0 en cualquiera de las dos ⇒ inválido
+    if (latNum === 0 || lngNum === 0) return false;
+
+    return true;
+  };
 
   /**
    *
@@ -85,7 +109,7 @@ class MapBase extends Component {
 
     const place = { address, city, department };
     const placeComplete = Boolean(address && city && department);
-    const placeChanged = !isEqual(this.place, place);
+    const placeChanged = mapsOptions.forceRetry || !isEqual(this.place, place);
 
     // 1) Si el usuario cambió address/city/department y está completo → geocodifica SIEMPRE
     if (placeComplete && placeChanged) {
@@ -118,6 +142,11 @@ class MapBase extends Component {
           store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
         }
       }
+      finally {
+        if (mapsOptions.forceRetry) {
+          store.dispatch(mapClearForceRetry());
+        }
+      }
       return;
     }
 
@@ -129,7 +158,7 @@ class MapBase extends Component {
       if (!isEqual(this.state.markerPosition, next)) {
         this.setState(() => ({ markerPosition: next, isMarkerShown: true }));
       }
-      return; // ¡clave! no seguimos a setError() ni geocodificamos por dirección
+      return;
     }
 
     // 3) Sin coords válidas y sin place completo → error visual + coords 0

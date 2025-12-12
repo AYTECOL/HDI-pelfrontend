@@ -10,6 +10,7 @@ import {
   NextStep,
   saveIdentificationValue,
   saveAttachedFile,
+  mapForceRetry,
 } from 'store/actions';
 import QuoteService from 'services/Quote';
 import Crearpolizaiaxis from 'services/Crearpolizaiaxis';
@@ -22,6 +23,42 @@ import GetQuoteService from 'services/GetQuote';
 
 import arrow_back from '../../../../../assets/images/icon-back.svg';
 
+import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
+
+// Coordenadas válidas: no null, no vacío, no 0 (como número)
+const hasValidCoordinates = (mapOptions) => {
+  if (!mapOptions) return false;
+
+  const { latitude, longitude } = mapOptions;
+
+  // null / undefined / vacío
+  if (
+    latitude === null ||
+    longitude === null ||
+    typeof latitude === 'undefined' ||
+    typeof longitude === 'undefined' ||
+    latitude === '' ||
+    longitude === ''
+  ) {
+    return false;
+  }
+
+  const latNum = Number(latitude);
+  const lngNum = Number(longitude);
+
+  // no numérico o 0
+  if (!Number.isFinite(latNum) || !Number.isFinite(lngNum)) return false;
+  if (latNum === 0 || lngNum === 0) return false;
+
+  return true;
+};
+
+const shouldShowRetryModal = (mapOptions) => {
+  const invalidCoords = !hasValidCoordinates(mapOptions);
+
+  return invalidCoords;
+};
+
 class BtnContinue extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +68,9 @@ class BtnContinue extends Component {
       stateFormIdentificacion: 0,
       cotizacionExclude: [],
       plan: this.props.plan,
+      showRetryModal: false,
+      maxRetriesReached: false,
+      retryAttempts: 0,
     };
   }
 
@@ -50,13 +90,29 @@ class BtnContinue extends Component {
     return emissionId;
   };
 
-  nextStep = async () => {
+  nextStep = async (isRetry = false) => {
     const { match, history } = this.props;
     const { params } = match;
     const { id } = params;
     const exceptionSarlaft = store.getState().exceptionSarlaft;
     const mapOptions = store.getState().mapsOptions;
     const auth = store.getState().auth;
+
+    // 1) Validar condiciones para mostrar modal (coords inválidas o dirección "0"/"null")
+    if (shouldShowRetryModal(mapOptions)) {
+      console.log(
+        'Emisión bloqueada: coordenadas inválidas o dirección inválida. Mostrando modal de reintento.'
+      );
+
+      this.setState({
+        ...this.state,
+        continueButtonDisable: false,
+        showRetryModal: true,
+      });
+
+      return; // NO seguimos al flujo de emisión
+    }
+
     Loading.toggle(true);
     try {
       this.setState({
@@ -141,12 +197,7 @@ class BtnContinue extends Component {
           );
         }
         console.log("Coordenadas a enviar a IAXIS - preguntas 7836 y 7837 - (Obtenidas del store global y previamente de la API de GOOGLE): ", mapOptions);
-        if ((mapOptions.latitude === null && mapOptions.longitude === null) || (mapOptions.latitude === "" && mapOptions.longitude === "")) console.log("No se han obtenido coordenadas, los valores son nulos.");
-        if (
-          mapOptions &&
-          'longitude' in mapOptions &&
-          'latitude' in mapOptions
-        ) {
+        if (hasValidCoordinates(mapOptions)) {
           const questionMapOptionsLongitude = {
             pregunta: {
               codigo: '7836',
@@ -222,9 +273,28 @@ class BtnContinue extends Component {
     }
   };
 
+  handleRetry = () => {
+    const { retryAttempts } = this.state;
+
+    if (retryAttempts >= 3) {
+      this.setState((prev) => ({
+        ...prev,
+        maxRetriesReached: true,
+        showRetryModal: true, // sigue viendo el modal, pero sin botón de reintentar
+      }));
+      return;
+    }
+
+    store.dispatch(mapForceRetry());
+    this.setState(
+      (prev) => ({ ...prev, showRetryModal: false, retryAttempts: prev.retryAttempts + 1, }));
+  };
+
   render() {
     const { props, state } = this;
     const disabled = props.continueButtonDisable || state.continueButtonDisable;
+    const mapsOptions = store.getState().mapsOptions;
+    const retryAttempts = state.retryAttempts;
     return (
       <Fragment>
         <div className={'return-button'}>
@@ -250,6 +320,17 @@ class BtnContinue extends Component {
         >
           Emitir
         </button>
+        <ValidatePersonIdentity
+          subtittle={
+            retryAttempts < 3 && !state.maxRetriesReached ? 'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios' : 'Por favor retoma la cotizacion en unos minutos desde Mis negocios'
+          }
+          idPolicy={this.props.match.params.id}
+          tittle={'Ups, lo sentimos'}
+          message={`Tenemos un problema técnico en este momento`}
+          button={retryAttempts < 3 && !state.maxRetriesReached}
+          open={state.showRetryModal}
+          onRetry={this.handleRetry}
+        />
       </Fragment>
     );
   }
