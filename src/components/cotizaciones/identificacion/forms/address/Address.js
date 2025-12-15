@@ -44,6 +44,12 @@ class Address extends Component {
     let errors = [];
     if (!value || value.length > 200)
       errors.push('Ingresa una dirección del hogar valida');
+
+    const normalized = String(value ?? '').trim().toLowerCase();
+    if (normalized === '0' || normalized === 'null' || normalized === 'ninguna' || normalized === 'ningun' || normalized === 'ninguna direccion' || normalized === 'sin direccion' || normalized === 'sin dirección' || normalized === 'no aplica' || normalized === 'na' || normalized === 'n/a' || normalized === 's/n' || normalized === 'nulo' || normalized === 'nula') {
+      errors.push('Ingresa una dirección del hogar valida');
+    }
+
     if (!isValidDirection(value)) errors.push(validationMessages.addressRegex);
     return errors;
   }
