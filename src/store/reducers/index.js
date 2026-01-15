@@ -11,6 +11,8 @@ const initialState = {
     options: {
       zoom: 20,
     },
+    forceRetry: false,
+    retryCount: 0,
   },
   cotizacion: {
     number: '00000000',
@@ -96,11 +98,51 @@ initialState.originalStore = initialState;
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionsTypes.SET_ADDRES_MAP:
+    case actionsTypes.SET_ADDRES_MAP: {
+      const prevMapsOptions = state.mapsOptions || {};
+
       return {
         ...state,
-        mapsOptions: action.data,
+        mapsOptions: {
+          ...prevMapsOptions,
+          ...action.data,
+          forceRetry: false,
+          retryCount: prevMapsOptions.retryCount ?? 0,
+        },
       };
+    }
+    case actionsTypes.MAP_FORCE_RETRY: {
+      const prevMapsOptions = state.mapsOptions || {};
+      const currentRetries =
+        typeof prevMapsOptions.retryCount === 'number'
+          ? prevMapsOptions.retryCount
+          : 0;
+
+      // Máximo 3 reintentos
+      if (currentRetries >= 3) {
+        return state;
+      }
+
+      return {
+        ...state,
+        mapsOptions: {
+          ...prevMapsOptions,
+          forceRetry: true,
+          retryCount: currentRetries + 1,
+        },
+      };
+    }
+    case actionsTypes.MAP_CLEAR_FORCE_RETRY: {
+      const prevMapsOptions = state.mapsOptions || {};
+
+      return {
+        ...state,
+        mapsOptions: {
+          ...prevMapsOptions,
+          forceRetry: false,
+        },
+      };
+    }
     case actionsTypes.ADD_IDENTIFICATIONS:
       return {
         ...state,
@@ -161,13 +203,20 @@ const reducer = (state = initialState, action) => {
         cityDescription: action.data,
       };
     case actionsTypes.RESTORE_COTIZACION:
+      const prevMapsOptions = state.mapsOptions || {};
+      const restoredMapsOptions = action.data.mapsOptions || {};
       return {
         ...state,
         cotizacion: action.data,
         typeDocument: action.data.typeDocument,
         stateFormIdentificacion: action.data.stateFormIdentificacion,
         showMap: action.data.showMap,
-        mapsOptions: action.data.mapsOptions,
+        mapsOptions: {
+          ...prevMapsOptions,
+          ...restoredMapsOptions,
+          forceRetry: false,
+          retryCount: 0,
+        },
       };
     case actionsTypes.RESTORE_COTIZACION_RISK:
       return {

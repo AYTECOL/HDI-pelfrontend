@@ -7,6 +7,7 @@ import {
   nextStepIndentification,
   resetStore,
   saveIdentificationValue,
+  mapForceRetry,
 } from 'store/actions';
 import Loading from '../../../../../components/globals/loading/Loading';
 import QuoteService from 'services/Quote';
@@ -24,17 +25,20 @@ import TipoDocumento from '../tipodocumento/TipoDocumento';
 import Validaridentificacion from '../../popups/validaridentificacion/Validaridentificacion';
 import { withRouter } from 'react-router-dom';
 import { isValidDirection } from '../../../../../common/validations';
+import {
+  hasValidCoordinates,
+  isInvalidAddress,
+  normalize,
+} from '../../../../../common/helpers/coordenates/validationCoord';
+import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 
 import arrow_back from '../../../../../assets/images/icon-back.svg';
 
-const hasValidCoordinates = (mapsOptions) => {
-  const isValid = Boolean(
-    mapsOptions?.longitude &&
-      mapsOptions?.latitude &&
-      mapsOptions.latitude !== 0 &&
-      mapsOptions.longitude !== 0
-  );
-  return isValid;
+export const shouldShowRetryModal = (identification, mapsOptions) => {
+  const address = identification?.address;
+  const addressInvalid = isInvalidAddress(address);
+  const coordsInvalid = !hasValidCoordinates(mapsOptions);
+  return addressInvalid || coordsInvalid;
 };
 
 class BtnContinue extends Component {
@@ -44,11 +48,25 @@ class BtnContinue extends Component {
       loading: false,
       stateFormIdentificacion: 0,
       cotizacionExclude: [],
+      showRetryModal: false,
+      maxRetriesReached: false,
+      retryAttempts: 0,
     };
   }
 
   nextStepIndex = async () => {
-    const { identification, stateFormIdentificacion, match } = this.props;
+    const { identification, stateFormIdentificacion, match, mapsOptions } = this.props;
+
+    if (
+      stateFormIdentificacion === 1 &&
+      shouldShowRetryModal(identification, mapsOptions)
+    ) {
+      this.setState((prev) => ({
+        ...prev,
+        showRetryModal: true,
+      }));
+      return;
+    }
     if (stateFormIdentificacion === 1) {
       Loading.toggle(true);
       store.dispatch(NextStep(2));
@@ -101,7 +119,7 @@ class BtnContinue extends Component {
               NumeroIdentificacion.toggleDisable(true);
               personaData =
                 personaData[
-                  personaType === 2 ? 'personaJuridica' : 'personaNatural'
+                personaType === 2 ? 'personaJuridica' : 'personaNatural'
                 ];
               if (
                 typeof personaData.primerNombre !== 'undefined' &&
@@ -167,9 +185,30 @@ class BtnContinue extends Component {
     Helpers.goToHome(this.props.history);
   };
 
+  handleRetry = () => {
+    const { retryAttempts } = this.state;
+
+    if (retryAttempts >= 3) {
+      this.setState((prev) => ({
+        ...prev,
+        maxRetriesReached: true,
+        showRetryModal: true, // sigue viendo el modal, pero sin botón de reintentar
+      }));
+      return;
+    }
+
+    store.dispatch(mapForceRetry());
+
+    this.setState((prev) => ({
+      ...prev,
+      retryAttempts: prev.retryAttempts + 1,
+      showRetryModal: false,
+    }));
+  };
+
   render() {
     const { stateFormIdentificacion, continueButtonDisable } = this.props;
-    const { loading } = this.state;
+    const { loading, showRetryModal, maxRetriesReached, retryAttempts } = this.state;
     const disabled = loading || continueButtonDisable;
     return (
       <Fragment>
@@ -207,6 +246,17 @@ class BtnContinue extends Component {
         >
           Continuar
         </button>
+        <ValidatePersonIdentity
+          subtittle={
+            retryAttempts < 3 && !maxRetriesReached ? 'Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios' : 'Por favor retoma la cotizacion en unos minutos desde Mis negocios'
+          }
+          idPolicy={store.getState().cotizacion.number}
+          tittle={'Ups, lo sentimos'}
+          message={`Tenemos un problema técnico en este momento`}
+          button={retryAttempts < 3 && !maxRetriesReached}
+          open={showRetryModal}
+          onRetry={this.handleRetry}
+        />
       </Fragment>
     );
   }
@@ -256,6 +306,7 @@ export default withRouter(
         identification,
         continueButtonDisable,
         stateFormIdentificacion,
+        mapsOptions
       };
     }
   )(BtnContinue)

@@ -5,11 +5,12 @@ import GoogleMapReact from 'google-map-react';
 
 import './Map.scss';
 import store from '../../../../store';
-import { setAddresMap } from '../../../../store/actions';
+import { setAddresMap, mapClearForceRetry } from '../../../../store/actions';
 import GetAddresInfo from '../../../../services/AddresCoordenates';
 import Helpers from '../../../../common/helpers/helpers';
 import { withCities } from '../hooks/cities';
 import Marker from './Marker';
+import { hasValidCoordinates } from '../../../../common/helpers/coordenates/validationCoord';
 
 class MapBase extends Component {
   place = {
@@ -19,9 +20,6 @@ class MapBase extends Component {
   };
 
   elementError = '.wrapper-map';
-
-  hasValidCoordinates = (m) =>
-    Boolean(m?.longitude && m?.latitude && m.latitude !== 0 && m.longitude !== 0);
 
   /**
    *
@@ -85,7 +83,7 @@ class MapBase extends Component {
 
     const place = { address, city, department };
     const placeComplete = Boolean(address && city && department);
-    const placeChanged = !isEqual(this.place, place);
+    const placeChanged = mapsOptions.forceRetry || !isEqual(this.place, place);
 
     // 1) Si el usuario cambió address/city/department y está completo → geocodifica SIEMPRE
     if (placeComplete && placeChanged) {
@@ -107,29 +105,34 @@ class MapBase extends Component {
           );
         } else {
           // Si falla geocoding y NO hay coords previas válidas, marcamos error
-          if (!this.hasValidCoordinates(mapsOptions)) {
+          if (!hasValidCoordinates(mapsOptions)) {
             this.setError();
             store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
           }
         }
       } catch {
-        if (!this.hasValidCoordinates(mapsOptions)) {
+        if (!hasValidCoordinates(mapsOptions)) {
           this.setError();
           store.dispatch(setAddresMap({ longitude: 0, latitude: 0 }));
+        }
+      }
+      finally {
+        if (mapsOptions.forceRetry) {
+          store.dispatch(mapClearForceRetry());
         }
       }
       return;
     }
 
     // 2) Si NO cambió el place, prioriza las coordenadas guardadas (retomar)
-    if (this.hasValidCoordinates(mapsOptions)) {
+    if (hasValidCoordinates(mapsOptions)) {
       Helpers.removeClass(this.elementError, 'error');
       const { latitude, longitude } = mapsOptions;
       const next = { lat: latitude, lng: longitude };
       if (!isEqual(this.state.markerPosition, next)) {
         this.setState(() => ({ markerPosition: next, isMarkerShown: true }));
       }
-      return; // ¡clave! no seguimos a setError() ni geocodificamos por dirección
+      return;
     }
 
     // 3) Sin coords válidas y sin place completo → error visual + coords 0

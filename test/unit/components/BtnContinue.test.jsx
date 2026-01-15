@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import BtnContinue from '../../../src/components/cotizaciones/identificacion/forms/btncontinue/BtnContinue';
+import BtnContinue, { shouldShowRetryModal } from '../../../src/components/cotizaciones/identificacion/forms/btncontinue/BtnContinue';
 
 jest.mock('../../../src/components/globals/loading/Loading', () => ({
   toggle: jest.fn(),
@@ -344,5 +344,27 @@ describe('BtnContinue Component - Comportamiento Real', () => {
     });
   });
 
-  describe('Estado del botón', () => {});
+  describe('Estado del botón', () => { });
+});
+
+describe('shouldShowRetryModal', () => {
+  const baseIdentification = { address: 'Calle 10 # 20-30' };
+
+  test('true cuando address es "0"', () => {
+    const identification = { ...baseIdentification, address: '0' };
+    const mapsOptions = { latitude: 4.65, longitude: -74.08 };
+    expect(shouldShowRetryModal(identification, mapsOptions)).toBe(true);
+  });
+
+  test('true cuando las coordenadas son 0,0', () => {
+    const identification = baseIdentification;
+    const mapsOptions = { latitude: 0, longitude: 0 };
+    expect(shouldShowRetryModal(identification, mapsOptions)).toBe(true);
+  });
+
+  test('false cuando address y coords son válidos', () => {
+    const identification = baseIdentification;
+    const mapsOptions = { latitude: 4.65, longitude: -74.08 };
+    expect(shouldShowRetryModal(identification, mapsOptions)).toBe(false);
+  });
 });
