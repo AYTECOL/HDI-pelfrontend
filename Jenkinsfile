@@ -28,6 +28,7 @@ pipeline {
   }
  
   environment {
+    HOME = "${env.WORKSPACE}"
     STAGE = countryParams.countryEnv.toLowerCase()
     VERSION = null
     REPO_NAME = null
