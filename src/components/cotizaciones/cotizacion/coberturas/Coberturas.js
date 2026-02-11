@@ -589,57 +589,53 @@ class Coberturas extends Component {
   };
 
   inputChange = async ({ target }, k, key, type) => {
-    /**
-     * @type {{
-     * coverages: Coverage[]
-     * }}
-     */
-    let plan = { ...this.state.plan };
-    let item = plan.coverages[key];
     const { value, tagName } = target;
 
-    if (type === 1) {
-      const planValue = item.values[k];
-      planValue.value_show = Masknumbermoney.formatToMask(value);
-      planValue.changed = true;
-      // Lógica de dependencias entre coberturas (Incendio, Terremoto, etc.)
-      for (let j = 0; j < plan.coverages.length; j++) {
-        const coverage = plan.coverages[j];
-        if (+coverage.code === 9691 || +coverage.code_content === 9691) {
-          for (const value of coverage.values) {
-            if (+value.code === 9688) {
-              if (+planValue.code === 9692) {
-                value.value_show = planValue.value_show;
-                value.value_to_quotate = planValue.value_to_quotate;
+    let nextPlan;
+
+    this.setState((prevState) => {
+      nextPlan = structuredClone(prevState.plan);
+
+      const item = nextPlan.coverages[key];
+
+      if (type === 1) {
+        const planValue = item.values[k];
+        planValue.value_show = Masknumbermoney.formatToMask(value);
+        planValue.changed = true;
+
+        for (let j = 0; j < nextPlan.coverages.length; j++) {
+          const coverage = nextPlan.coverages[j];
+          if (+coverage.code === 9691 || +coverage.code_content === 9691) {
+            for (const v of coverage.values) {
+              if (+v.code === 9688 && +planValue.code === 9692) {
+                v.value_show = planValue.value_show;
+                v.value_to_quotate = planValue.value_to_quotate;
               }
-            }
-            if (+value.code === 9687) {
-              if (+planValue.code === 3017) {
-                value.value_show = planValue.value_show;
-                value.value_to_quotate = planValue.value_to_quotate;
+              if (+v.code === 9687 && +planValue.code === 3017) {
+                v.value_show = planValue.value_show;
+                v.value_to_quotate = planValue.value_to_quotate;
               }
             }
           }
         }
+      } else if (type === 2) {
+        for (let i = 0; i < item.values[k].values.length; i++) {
+          item.values[k].values[i].default = false;
+        }
+        item.values[k].values[value].default = true;
+        item.values[k].value = item.values[k].values[value].limit;
+        item.values[k].value_to_quotate = item.values[k].values[value].limit;
+        item.values[k].value_show = Masknumbermoney.formatToMask(
+          item.values[k].values[value].limit
+        );
       }
-    } else if (type === 2) {
-      for (let i = 0; i < item.values[k].values.length; i++)
-        item.values[k].values[i].default = false;
-      item.values[k].values[value].default = true;
-      item.values[k].value = item.values[k].values[value].limit;
-      item.values[k].value_to_quotate = item.values[k].values[value].limit;
-      item.values[k].value_show = Masknumbermoney.formatToMask(item.values[k].values[value].limit);
-    }
 
-    // 1. Actualizamos el estado local inmediatamente para que el usuario vea lo que escribió/eligió
-    this.setState({ plan }, async () => {
-      // 2. Si es un SELECT, disparamos la validación pesada del servidor
+      return { plan: nextPlan };
+    }, async () => {
       if (tagName === 'SELECT') {
-        await this.sendAndValidate(plan);
+        await this.sendAndValidate(nextPlan);
       } else {
-        // 3. Si es INPUT, llamamos a showItem manualmente para refrescar alertas
-        // sin esperar a Redux
-        this.showItem(plan);
+        this.showItem(nextPlan);
       }
     });
   };
