@@ -316,50 +316,37 @@ class Coberturas extends Component {
    * @param {PlanSelectedInfoItem} plan Plan selected by user
    * @returns {boolean}
    */
-  showItem(plan) {
-    plan = Coberturas.setHiredCoverages(plan);
+  showItem = (plan) => {
     /**
      * @type {Coverage[]}
      */
-    const coverages = plan.coverages || [];
-    let valid = true;
-    const newPlan = {
+    if (!plan) return;
+
+    let hasAnyError = false;
+
+    // Mapeamos el plan para inyectarle los errores SIEMPRE
+    const planWithErrors = {
       ...plan,
-      coverages: coverages.map(({ values, ...rest }, k) => ({
-        ...rest,
-        values:
-          values &&
-          values.map((value) => {
-            const errors =
-              (value.hired && [
-                ...(Coberturas.getErrorsCoverage(
-                  plan,
-                  value,
-                  k,
-                  value.values ? 2 : 1
-                ) || []),
-              ]) ||
-              undefined;
-            if (errors && errors.length) valid = false;
-            return {
-              ...value,
-              errors: errors,
-            };
-          }),
-      })),
+      coverages: plan.coverages.map((coverage, i) => {
+        if (!coverage.values) return coverage;
+
+        const newValues = coverage.values.map((valueItem) => {
+          const currentType = valueItem.values ? 2 : 1;
+          const itemErrors = Coberturas.getErrorsCoverage(plan, valueItem, i, currentType);
+
+          if (itemErrors && itemErrors.length > 0) hasAnyError = true;
+
+          return { ...valueItem, errors: itemErrors };
+        });
+
+        return { ...coverage, values: newValues };
+      }),
     };
-    if (this._isMounted === true) {
-      this.setState(
-        {
-          ...this.state,
-          plan: newPlan,
-          coverturasTotal: this.countCoverturas(plan),
-        },
-        () => {
-          this.toggleValid(valid);
-        }
-      );
-    }
+
+    this.setState({ plan: planWithErrors }, () => {
+      // Esto mantiene el botón de continuar sincronizado
+      this.toggleValid(!hasAnyError);
+    });
   }
 
   componentDidMount() {
@@ -476,14 +463,14 @@ class Coberturas extends Component {
       if (max && formatValue > max) {
         errors.push(
           (formatError && formatError({ max: true, value })) ||
-            `${value.name} es superior al permitido.`
+          `${value.name} es superior al permitido.`
         );
       }
       if (min && formatValue < min) {
         if (!!value.value || value.value !== formatValue) {
           errors.push(
             (formatError && formatError({ min: true, value })) ||
-              `${value.name} es inferior al permitido.`
+            `${value.name} es inferior al permitido.`
           );
         }
       }
@@ -553,16 +540,16 @@ class Coberturas extends Component {
                   if (parseInt(planValue.code) === 3008) {
                     errors.push(
                       'Valor asegurado del amparo ' +
-                        item.name +
-                        ', es superior al reportado en “' +
-                        n +
-                        '” del amparo de INCENDIO '
+                      item.name +
+                      ', es superior al reportado en “' +
+                      n +
+                      '” del amparo de INCENDIO '
                     );
                   } else {
                     errors.push(
                       'Valor asegurado de ' +
-                        n +
-                        ' es superior al reportado en INCENDIO'
+                      n +
+                      ' es superior al reportado en INCENDIO'
                     );
                   }
                 }
@@ -575,15 +562,15 @@ class Coberturas extends Component {
             ) {
               errors.push(
                 'Valor Asegurado del amparo ' +
-                  item.name +
-                  ' es superior al permitido.'
+                item.name +
+                ' es superior al permitido.'
               );
             }
             if (0 >= Masknumbermoney.formatToNumber(planValue.value_show)) {
               errors.push(
                 'Valor Asegurado del amparo ' +
-                  item.name +
-                  ' es inferior al permitido.'
+                item.name +
+                ' es inferior al permitido.'
               );
             }
           }
@@ -604,19 +591,18 @@ class Coberturas extends Component {
   inputChange = async ({ target }, k, key, type) => {
     /**
      * @type {{
-     *  coverages: Coverage[]
+     * coverages: Coverage[]
      * }}
      */
-    let plan = this.state.plan;
+    let plan = { ...this.state.plan };
     let item = plan.coverages[key];
-
     const { value, tagName } = target;
 
-    //Input
     if (type === 1) {
       const planValue = item.values[k];
       planValue.value_show = Masknumbermoney.formatToMask(value);
       planValue.changed = true;
+      // Lógica de dependencias entre coberturas (Incendio, Terremoto, etc.)
       for (let j = 0; j < plan.coverages.length; j++) {
         const coverage = plan.coverages[j];
         if (+coverage.code === 9691 || +coverage.code_content === 9691) {
@@ -642,46 +628,20 @@ class Coberturas extends Component {
       item.values[k].values[value].default = true;
       item.values[k].value = item.values[k].values[value].limit;
       item.values[k].value_to_quotate = item.values[k].values[value].limit;
-      item.values[k].value_show = Masknumbermoney.formatToMask(
-        item.values[k].values[value].limit
-      );
+      item.values[k].value_show = Masknumbermoney.formatToMask(item.values[k].values[value].limit);
     }
-    const errors = Coberturas.getErrorsCoverage(
-      plan,
-      item.values[k],
-      key,
-      type
-    );
-    item.values[k].errors = errors;
-    const valid = !(errors && errors.length);
-    const { coverages } = plan;
-    const newPlan = {
-      ...plan,
-      coverages: coverages.map((coverage, i) => {
-        if (key === i) {
-          const { values } = coverage;
-          return {
-            ...coverage,
-            values: values.map((valueItem, j) =>
-              k === j ? { ...valueItem, errors } : valueItem
-            ),
-          };
-        }
-        return coverage;
-      }),
-    };
-    // Select
-    if (tagName === 'SELECT') {
-      await this.sendAndValidate(newPlan);
-    }
-    this.setState(
-      {
-        plan: newPlan,
-      },
-      () => {
-        this.toggleValid(valid);
+
+    // 1. Actualizamos el estado local inmediatamente para que el usuario vea lo que escribió/eligió
+    this.setState({ plan }, async () => {
+      // 2. Si es un SELECT, disparamos la validación pesada del servidor
+      if (tagName === 'SELECT') {
+        await this.sendAndValidate(plan);
+      } else {
+        // 3. Si es INPUT, llamamos a showItem manualmente para refrescar alertas
+        // sin esperar a Redux
+        this.showItem(plan);
       }
-    );
+    });
   };
 
   toggleValid = (valid) => {
@@ -779,7 +739,7 @@ class Coberturas extends Component {
                         className={clsx(
                           'col col-12 col-sm-12 col-md-3 col-lg-3 middle',
                           (!option.checked || !option.optional) &&
-                            'disabled-item'
+                          'disabled-item'
                         )}
                       >
                         {typeof option.values !== 'undefined' && (
@@ -800,8 +760,8 @@ class Coberturas extends Component {
                                     'form-group',
                                     opt.values && 'input-select',
                                     opt.errors &&
-                                      !!opt.errors.length &&
-                                      'error',
+                                    !!opt.errors.length &&
+                                    'error',
                                     disabled && 'disabled-item'
                                   )}
                                   key={k}
