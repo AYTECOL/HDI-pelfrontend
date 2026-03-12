@@ -322,17 +322,24 @@ class Coberturas extends Component {
      */
     if (!plan) return;
 
+    const planWithLogic = Coberturas.setHiredCoverages(plan);
+
     let hasAnyError = false;
 
-    // Mapeamos el plan para inyectarle los errores SIEMPRE
     const planWithErrors = {
-      ...plan,
-      coverages: plan.coverages.map((coverage, i) => {
+      ...planWithLogic,
+      coverages: planWithLogic.coverages.map((coverage, i) => {
         if (!coverage.values) return coverage;
 
         const newValues = coverage.values.map((valueItem) => {
           const currentType = valueItem.values ? 2 : 1;
-          const itemErrors = Coberturas.getErrorsCoverage(plan, valueItem, i, currentType);
+
+          const itemErrors = Coberturas.getErrorsCoverage(
+            planWithLogic,
+            valueItem,
+            i,
+            currentType
+          );
 
           if (itemErrors && itemErrors.length > 0) hasAnyError = true;
 
@@ -344,7 +351,6 @@ class Coberturas extends Component {
     };
 
     this.setState({ plan: planWithErrors }, () => {
-      // Esto mantiene el botón de continuar sincronizado
       this.toggleValid(!hasAnyError);
     });
   }
@@ -492,98 +498,91 @@ class Coberturas extends Component {
    * @param {number} type
    */
   static getErrorsCoverage = (plan, planValue, key, type) => {
+    const coberturaInmueble = this.getCoverageByCode(plan, 9667);
+
+    // 1. Extraemos el valor del inmueble con total seguridad
+    const valorInmueble = (coberturaInmueble &&
+      coberturaInmueble.values &&
+      coberturaInmueble.values[0] &&
+      coberturaInmueble.values[0].value_show)
+      ? Masknumbermoney.formatToNumber(coberturaInmueble.values[0].value_show)
+      : 0;
+
+    // 2. Si el inmueble no tiene valor (el usuario lo quitó),
+    // permitimos continuar sin errores de comparación.
+    if (valorInmueble === 0) {
+      // Importante: No retornamos [] vacío aquí directamente porque
+      // aún debemos validar si el campo está vacío o tiene otros errores básicos.
+      // Así que simplemente dejamos que fluya, pero las comparaciones de abajo no se activarán.
+    }
+
     let item = plan.coverages[key];
     const { checked } = item;
     if (!checked) return [];
+
     const otrosContenidos = plan.coverages.find(
       (element) => element.code_content === 9670
     );
-    const valueContenido =
-      otrosContenidos &&
-      otrosContenidos.values &&
-      otrosContenidos.values[0].value_to_quotate;
+
+    const valueContenido = (otrosContenidos && otrosContenidos.values && otrosContenidos.values[0])
+      ? otrosContenidos.values[0].value_to_quotate
+      : 0;
 
     const errors = [];
-    //Input
+
     if (type === 1) {
       planValue.errors = [];
-      //Validations extra
 
-      //--------
-      //Validations of max and min
-      if (
-        parseInt(planValue.code) === 9692 ||
-        parseInt(planValue.code) === 3017 ||
-        parseInt(planValue.code) === 3008
-      ) {
+      const code = parseInt(planValue.code);
+      if (code === 9692 || code === 3017 || code === 3008) {
         /**
          * todo Merge method with static method are equals
          * @param code code Of coverage that you want find
          */
-
-        const coverage = this.getCoverageByCode(plan, 9667);
-        if (coverage && coverage.values) {
-          for (let i = 0; i < coverage.values.length; i++) {
-            if (coverage.values[i].id === planValue.id) {
+        // 3. Solo entramos a comparar contra Incendio si el valorInmueble existe
+        if (coberturaInmueble && coberturaInmueble.values && valorInmueble > 0) {
+          for (let i = 0; i < coberturaInmueble.values.length; i++) {
+            if (coberturaInmueble.values[i].id === planValue.id) {
               if (
-                typeof coverage.values[i].value_show !== 'undefined' &&
+                typeof coberturaInmueble.values[i].value_show !== 'undefined' &&
                 typeof planValue.value_show !== 'undefined'
               ) {
-                if (
-                  Masknumbermoney.formatToNumber(
-                    coverage.values[i].value_show
-                  ) < Masknumbermoney.formatToNumber(planValue.value_show)
-                ) {
-                  let n = coverage.values[i].name
-                    .toUpperCase()
-                    .replace('VALOR ', '');
-                  if (parseInt(planValue.code) === 3008) {
-                    errors.push(
-                      'Valor asegurado del amparo ' +
-                      item.name +
-                      ', es superior al reportado en “' +
-                      n +
-                      '” del amparo de INCENDIO '
-                    );
-                  } else {
-                    errors.push(
-                      'Valor asegurado de ' +
-                      n +
-                      ' es superior al reportado en INCENDIO'
-                    );
-                  }
+                const vIncendio = Masknumbermoney.formatToNumber(coberturaInmueble.values[i].value_show || '0');
+                const vActual = Masknumbermoney.formatToNumber(planValue.value_show || '0');
+
+                if (vIncendio < vActual) {
+                  let n = coberturaInmueble.values[i].name.toUpperCase().replace('VALOR ', '');
+                  errors.push(
+                    code === 3008
+                      ? `Valor asegurado del amparo ${item.name}, es superior al reportado en “${n}” del amparo de INCENDIO`
+                      : `Valor asegurado de ${n} es superior al reportado en INCENDIO`
+                  );
                 }
               }
             }
           }
-          if (parseInt(planValue.code) === 3008) {
-            if (
-              500000000 < Masknumbermoney.formatToNumber(planValue.value_show)
-            ) {
-              errors.push(
-                'Valor Asegurado del amparo ' +
-                item.name +
-                ' es superior al permitido.'
-              );
-            }
-            if (0 >= Masknumbermoney.formatToNumber(planValue.value_show)) {
-              errors.push(
-                'Valor Asegurado del amparo ' +
-                item.name +
-                ' es inferior al permitido.'
-              );
-            }
-          }
-        } else {
-          let formatValue = Masknumbermoney.formatToNumber(
-            planValue.value_show
-          );
+        } else if (valueContenido > 0) {
+          // Si no hay inmueble pero hay contenidos, validamos contra contenidos
+          let formatValue = Masknumbermoney.formatToNumber(planValue.value_show || '0');
           if (formatValue > valueContenido) {
             errors.push('Valor asegurado es mayor al reportado en Contenidos');
           }
         }
+
+        // Validaciones de límites fijos (siempre se ejecutan si el código es 3008)
+        if (code === 3008) {
+          const numValue = Masknumbermoney.formatToNumber(planValue.value_show || '0');
+          if (500000000 < numValue) {
+            errors.push(`Valor Asegurado del amparo ${item.name} es superior al permitido.`);
+          }
+          if (numValue <= 0) {
+            errors.push(`Valor Asegurado del amparo ${item.name} es inferior al permitido.`);
+          }
+        }
       }
     }
+
+    // Al final, llamamos a las validaciones generales (que revisan si es requerido, etc.)
     errors.push(...(Coberturas.getErrors(planValue, plan.coverages) || []));
     return errors;
   };
