@@ -268,7 +268,7 @@ class BtnContinue extends Component {
         cotizacion: number,
       };
       await CreateAuditData.createDataAudit(body);
-      if (zoneLock(infoGeocodingSig, inmueble))
+      if (this.zoneLock(infoGeocodingSig, inmueble))
       {
         console.log('🎉','entro if zoneLock');
         store.dispatch(NextStep(2));
