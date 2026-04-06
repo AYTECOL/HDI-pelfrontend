@@ -22,7 +22,7 @@ import OtherQuestions from '../OtherQuestions';
 import PropertyNotAllowed from '../../../../PropertyNotAllowed';
 import clsx from 'clsx';
 import ModalAlert from 'components/globals/Modal';
-import { OPTIONS_TYPES_RISK } from 'assets/constants';
+import { AMENAZAS_ALL_FLOORS, AMENAZAS_FIRST_FLOORS, OPTIONS_TYPES_RISK } from 'assets/constants';
 
 import arrow_back from '../../../../../assets/images/icon-back.svg';
 
@@ -52,6 +52,38 @@ class BtnContinue extends Component {
       UrlSite + '/cotizacion/1/' + this.props.match.params.id
     );
   };
+
+  zoneLock = (infoGeocodingSig, inmueble) => {
+    if (!infoGeocodingSig?.features?.[0]?.attributes) {
+      return false;
+    }
+
+    const attributes = infoGeocodingSig.features[0].attributes;
+    const isFirstFloor = +inmueble.pisonumero == 1;
+    const isHouse = inmueble.type_risk == OPTIONS_TYPES_RISK.HOUSE;
+    const isApartment = inmueble.type_risk == OPTIONS_TYPES_RISK.APARTMENT;
+
+    // Verificar si hay amenazas no asegurables
+    const hasUninsurableAllFloors = AMENAZAS_ALL_FLOORS.some(
+      amenaza => attributes[amenaza] == 'NO ASEGURABLE'
+    );
+
+    const hasUninsurableFirstFloors = AMENAZAS_FIRST_FLOORS.some(
+      amenaza => attributes[amenaza] == 'NO ASEGURABLE'
+    );
+
+    // Casas o apartamentos en primer piso
+    if (isHouse || (isApartment && isFirstFloor)) {
+      return hasUninsurableAllFloors || hasUninsurableFirstFloors;
+    }
+
+    // Apartamentos en pisos superiores
+    if (isApartment && !isFirstFloor) {
+      return hasUninsurableAllFloors;
+    }
+
+    return false;
+  }
 
   saveServiceContinue = async () => {
     let storeState = store.getState();
@@ -229,16 +261,8 @@ class BtnContinue extends Component {
         cotizacion: number,
       };
       await CreateAuditData.createDataAudit(body);
-      const NotInsured =
-        infoGeocodingSig &&
-        infoGeocodingSig.features[0]?.attributes.AMENAZA_INUNDACION ===
-          'NO ASEGURABLE';
-      if (
-        (OPTIONS_TYPES_RISK.HOUSE === inmueble.type_risk && NotInsured) ||
-        (OPTIONS_TYPES_RISK.APARTMENT === inmueble.type_risk &&
-          NotInsured &&
-          +inmueble.pisonumero === 1)
-      ) {
+      if (this.zoneLock(infoGeocodingSig, inmueble))
+      {
         store.dispatch(NextStep(2));
         await QuoteService.save();
         this.setState({ ...this.state, notContinueQuotation: true });
