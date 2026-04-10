@@ -239,6 +239,8 @@ class BtnContinue extends Component {
           NotInsured &&
           +inmueble.pisonumero === 1)
       ) {
+        store.dispatch(NextStep(2));
+        await QuoteService.save();
         this.setState({ ...this.state, notContinueQuotation: true });
         Loading.toggle(false);
       } else {
@@ -296,8 +298,9 @@ class BtnContinue extends Component {
               la cotización en este momento
               <br />
               <span>
-                La ubicación del riesgo está restringida por{' '}
-                <strong>innundación</strong>{' '}
+                No es posible continuar con la cotización por <br/>
+                la ubicación en donde se encuentra el riesgo, <br/>
+                contactar con su asesor comercial <br/>
               </span>
             </>
           }

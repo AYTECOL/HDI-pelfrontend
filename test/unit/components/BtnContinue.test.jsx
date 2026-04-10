@@ -368,3 +368,24 @@ describe('shouldShowRetryModal', () => {
     expect(shouldShowRetryModal(identification, mapsOptions)).toBe(false);
   });
 });
+
+describe('Should render ValidatePersonIdentity Modal', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+  
+    test('debería renderizar el modal ValidatePersonIdentity cuando hay coordenadas inválidas', () => {
+      const mockProps = {
+        match: { params: { id: '123' } },
+        history: { push: jest.fn() },
+        mapsOptions: { longitude: -76.4770195, latitude: 3.4527491 } // Coordenadas inválidas
+      };
+  
+      render(<BtnContinue {...mockProps} />);
+  
+      // Verificar que el modal se renderiza
+      const modal = screen.getByTestId('validate-person-identity-modal');
+      expect(modal).toBeInTheDocument();
+      expect(screen.getByText('No es posible continuar con la cotización')).toBeInTheDocument();
+    });
+  });
