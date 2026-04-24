@@ -11,7 +11,6 @@ import Helpers from '../../../../common/helpers/helpers';
 import { withCities } from '../hooks/cities';
 import Marker from './Marker';
 import { hasValidCoordinates } from '../../../../common/helpers/coordenates/validationCoord';
-import { ApiKeyGoogle } from '../../../../config';
 
 class MapBase extends Component {
   place = {
@@ -178,7 +177,7 @@ class MapBase extends Component {
       <GoogleMapReact
         bootstrapURLKeys={{
           //key: googleMapURL,
-          key: ApiKeyGoogle,
+          key: 'AIzaSyBL2heuQJheIysvzCbWXghuwDLu1Ga9dt4',
         }}
         defaultZoom={zoom}
         defaultCenter={markerPosition}
