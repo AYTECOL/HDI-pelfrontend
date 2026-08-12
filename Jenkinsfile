@@ -11,6 +11,7 @@ pipeline {
       args '''
         -v /usr/local/aws-cli/:/usr/local/aws-cli/ 
         -v /home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/:/home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/
+        -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/
       '''
     }
   }
