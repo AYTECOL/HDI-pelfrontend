@@ -36,6 +36,7 @@ pipeline {
     AWS_REGION = "us-east-1"
     BUCKET = null
     CLOUDFRONT_ID = null
+    NODE_OPTIONS = "--openssl-legacy-provider"
   }
  
   stages {
