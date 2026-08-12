@@ -41,7 +41,7 @@
     "build:dev": "env-cmd -f env/dev.env npm run prebuild",
     "build:nonprod": "env-cmd -f env/nonprod.env npm run prebuild",
     "build:prod": "env-cmd -f env/prod.env npm run prebuild",
-    "test": "jest --env=allure-jest/jsdom --coverage --coverageDirectory=coverage && npm run test:junit",
+    "test": "react-scripts test --coverage --watchAll=false --coverageDirectory=coverage && npm run test:junit",
     "test:ci": "CI=true jest --ci --runInBand",
     "test:junit": "node scripts/test-junit.js",
     "test:watch": "react-scripts test",
@@ -103,7 +103,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@silvermine/serverless-plugin-cloudfront-lambda-edge": "2.2.3",
-    "allure-jest": "^2.15.0",
     "cross-env": "^10.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.6",
