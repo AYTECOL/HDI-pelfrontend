@@ -323,8 +323,7 @@ class BtnContinue extends Component {
               <br />
               <span>
                 No es posible continuar con la cotización por <br/>
-                la ubicación en donde se encuentra el riesgo, <br/>
-                contactar con su asesor comercial <br/>
+                la ubicación en donde se encuentra el riesgo.
               </span>
             </>
           }
