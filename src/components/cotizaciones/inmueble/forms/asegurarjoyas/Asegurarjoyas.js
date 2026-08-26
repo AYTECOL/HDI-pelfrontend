@@ -125,8 +125,9 @@ class Asegurarjoyas extends Component {
 
   validateValue = (e) => {
     e = e.target;
-    let error = Asegurarjoyas.validateField(e.value);
-    let format = Masknumbermoney.formatToMask(e.value);
+    const rawValue = e.value.replace(/[^0-9]/g, '');
+    let error = Asegurarjoyas.validateField(rawValue);
+    let format = Masknumbermoney.formatToMask(rawValue);
     if (error === 0)
       Helpers.removeClass('.inmuebleasegudadojoyasvalor', 'error');
     store.dispatch(

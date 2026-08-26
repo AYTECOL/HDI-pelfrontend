@@ -110,7 +110,7 @@ const Content = ({
               name="value"
               value={Masknumbermoney.formatToMask(content.value)}
               onChange={({ target: { value } }) => {
-                const numValue = value.replace(/[^0-9,.]/g, '');
+                const numValue = value.replace(/[^0-9]/g, '');
                 let newValue = numValue;
                 let valueNumber = Masknumbermoney.formatToNumber(value);
                 if (valueNumber > maxNumber) newValue = max;
@@ -152,7 +152,7 @@ const Content = ({
               name="value"
               value={Masknumbermoney.formatToMask(content.real_value)}
               onChange={({ target: { value } }) => {
-                const numValue = value.replace(/[^0-9,.]/g, '');
+                const numValue = value.replace(/[^0-9]/g, '');
                 handleChange({
                   value: numValue,
                   type: TYPES_VALUE_CONTENT.REAL_VALUE,

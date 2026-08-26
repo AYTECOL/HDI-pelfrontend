@@ -125,10 +125,11 @@ class Segurarinmueble extends Component {
 
   validateValue = (e) => {
     e = e.target;
-    let error = Segurarinmueble.validateField(e.value);
+    const rawValue = e.value.replace(/[^0-9]/g, '');
+    let error = Segurarinmueble.validateField(rawValue);
     if (error === 0)
       Helpers.removeClass('.' + Segurarinmueble.nameModelValue, 'error');
-    let format = Masknumbermoney.formatToMask(e.value);
+    let format = Masknumbermoney.formatToMask(rawValue);
     store.dispatch(
       saveInmuebleValue({
         name: Segurarinmueble.nameModelValue,
