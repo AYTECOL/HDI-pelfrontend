@@ -159,7 +159,7 @@ class Asegurarcontenidos extends Component {
 
   validateValue = (e) => {
     e = e.target;
-    const rawValue = e.value.replace(/[^0-9]/g, '');
+    const rawValue = e.value.replace(/\D/g, '');
     let error = Asegurarcontenidos.validateField(rawValue);
     let format = Masknumbermoney.formatToMask(rawValue);
     if (error === 0) Helpers.removeClass('.contenidoasegudadovalor', 'error');

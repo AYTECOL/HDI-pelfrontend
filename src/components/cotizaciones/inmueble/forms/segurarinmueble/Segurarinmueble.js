@@ -125,7 +125,7 @@ class Segurarinmueble extends Component {
 
   validateValue = (e) => {
     e = e.target;
-    const rawValue = e.value.replace(/[^0-9]/g, '');
+    const rawValue = e.value.replace(/\D/g, '');
     let error = Segurarinmueble.validateField(rawValue);
     if (error === 0)
       Helpers.removeClass('.' + Segurarinmueble.nameModelValue, 'error');
