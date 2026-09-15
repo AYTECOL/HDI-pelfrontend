@@ -41,3 +41,4 @@ serverless.yml
 .vscode/
 junit.xml
 package-lock.json
+allure-results/
