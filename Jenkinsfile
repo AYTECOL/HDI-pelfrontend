@@ -12,6 +12,7 @@ pipeline {
         -v /usr/local/aws-cli/:/usr/local/aws-cli/ 
         -v /home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/:/home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/
         -v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/
+        -e PATH=/home/jenkins/sonar-scanner-7.1.0.4889-linux-x64_3/bin:/usr/local/aws-cli/v2/current/bin:/usr/local/aws-cli/v2/2.15.34/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       '''
     }
   }
