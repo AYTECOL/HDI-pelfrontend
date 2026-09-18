@@ -103,6 +103,9 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@silvermine/serverless-plugin-cloudfront-lambda-edge": "2.2.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^12.1.5",
+    "@testing-library/user-event": "^14.6.7",
     "cross-env": "^10.0.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.6",
@@ -114,6 +117,6 @@
     "prettier": "^2.7.1",
     "react-error-overlay": "6.0.9",
     "react-test-renderer": "^16.8.6",
-    "redux-mock-store": "^1.5.4"
+    "redux-mock-store": "^1.5.5"
   }
 }
