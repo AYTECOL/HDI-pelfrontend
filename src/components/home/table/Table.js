@@ -23,6 +23,7 @@ import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from 'common/helpers/helpers';
 import MomentJs from 'moment';
 import { MONTHS } from 'assets/constants';
+import ValidatePersonIdentity from 'components/ValidatePersonIdentity';
 
 import arrow from '../../../assets/images/arrow_down.svg';
 
@@ -43,6 +44,12 @@ const Table = (props) => {
     nombreUsuario,
     Sucursal,
   } = store.getState().auth || {};
+  const [subtittle, setSubtittle] = useState("");
+  const [idPolicy, setIdPolicy] = useState("");
+  const [tittle, setTittle] = useState("");
+  const [message, setMessage] = useState("");
+  const [buttonRetry, setButtonRetry] = useState(true);
+  const [errorValidate, setErrorValidate] = useState(false);
 
   const initialData = (dataProps) => {
     // const dataTemp = [...dataProps];
@@ -59,29 +66,47 @@ const Table = (props) => {
 
   const getRowById = (id) => async (e) => {
     const { history } = props;
-    await GetEstate.get(id);
 
-    let cotizacion = await GetQuote.getById(id);
-    let opcion =
-      cotizacion.state < 7 && cotizacion.state > 3
-        ? 'Dashboard link proceso emisión / retomar'
-        : 'Dashboard link cotizaciones / retomar';
-    let body = {
-      opcion: opcion,
-      respuesta: [],
-      respuesta_identificacion: [],
-      campo_filtro: '',
-      clave_broker: intermediateCode,
-      username: usuario,
-      celular: Celular,
-      nombreIntermediario: nombreUsuario,
-      sucursal: Sucursal,
-      identificacion: cotizacion.identification.value,
-      cotizacion: cotizacion.number,
-      fecha_cotizacion: cotizacion.fecha_cotizacion,
-    };
-    await CreateAuditData.createDataAudit(body);
-    if (typeof cotizacion.identification !== 'undefined') {
+    try {
+      await GetEstate.get(id);
+
+      let cotizacion = await GetQuote.getById(id);
+
+      // Validación temprana: Si la cotización viene vacía o sin identificación, abortamos el proceso
+      if (!cotizacion || !cotizacion.identification) {
+        console.error('La cotización no es válida o no contiene la estructura esperada:', cotizacion);
+        Loading.toggle(false); 
+        setErrorValidate(true);
+        setTittle("Ups, lo sentimos");
+        setMessage("Tenemos un problema técnico en este momento");
+        setButtonRetry(false);
+        setIdPolicy(id);
+        // setSubtittle("Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios");
+        return;
+      }
+
+      let opcion =
+        cotizacion.state < 7 && cotizacion.state > 3
+          ? 'Dashboard link proceso emisión / retomar'
+          : 'Dashboard link cotizaciones / retomar';
+
+      let body = {
+        opcion: opcion,
+        respuesta: [],
+        respuesta_identificacion: [],
+        campo_filtro: '',
+        clave_broker: intermediateCode,
+        username: usuario,
+        celular: Celular,
+        nombreIntermediario: nombreUsuario,
+        sucursal: Sucursal,
+        identificacion: cotizacion.identification.value,
+        cotizacion: cotizacion.number,
+        fecha_cotizacion: cotizacion.fecha_cotizacion,
+      };
+
+      await CreateAuditData.createDataAudit(body);
+
       if (cotizacion.state <= 3) {
         history.push(`${UrlSite}/cotizacion/${cotizacion.state}/${id}`);
       } else if (cotizacion.state < 7 && cotizacion.state > 3) {
@@ -91,7 +116,19 @@ const Table = (props) => {
           `${UrlSite}/exito/${id}/${cotizacion.identification.emissionId}`
         );
       }
+
       store.dispatch(restoreCotizacion(cotizacion));
+
+    } catch (error) {
+      setErrorValidate(true);
+      setTittle("Ups, lo sentimos");
+      setMessage("Tenemos un problema técnico en este momento");
+      setButtonRetry(false);
+      setIdPolicy(id);
+      // setSubtittle("Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios");
+      console.error('Ocurrió un error al retomar la cotización:', error);
+      // Asegurar que la interfaz se libere en caso de error
+      Loading.toggle(false);
     }
   };
   const getPdf = (id, emissionId) => async (e) => {
@@ -336,6 +373,15 @@ const Table = (props) => {
         })}
       </div>
       <Pagination items={quotesItems} onChangePage={onChangePage} />
+      <ValidatePersonIdentity
+        subtittle={subtittle}
+        idPolicy={idPolicy}
+        tittle={tittle}
+        message={message}
+        button={buttonRetry}
+        open={errorValidate}
+        onRetry={{}}
+      />
     </div>
   );
 };
