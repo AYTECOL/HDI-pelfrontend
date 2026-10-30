@@ -75,13 +75,13 @@ const Table = (props) => {
       // Validación temprana: Si la cotización viene vacía o sin identificación, abortamos el proceso
       if (!cotizacion || !cotizacion.identification) {
         console.error('La cotización no es válida o no contiene la estructura esperada:', cotizacion);
-        Loading.toggle(false); 
-        setErrorValidate(true);
-        setTittle("Ups, lo sentimos");
-        setMessage("Tenemos un problema técnico en este momento");
-        setButtonRetry(false);
-        setIdPolicy(id);
-        // setSubtittle("Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios");
+        Loading.toggle(false);
+        await CreateAuditData.createDataAudit({
+          opcion: 'Dashboard retomar cotización / ERROR',
+          cotizacion: id,
+          respuesta: [{ message: 'La cotización no es válida o no contiene la estructura esperada' }],
+        });
+        window.location.href = `${UrlSite}/`;
         return;
       }
 
@@ -120,15 +120,22 @@ const Table = (props) => {
       store.dispatch(restoreCotizacion(cotizacion));
 
     } catch (error) {
-      setErrorValidate(true);
-      setTittle("Ups, lo sentimos");
-      setMessage("Tenemos un problema técnico en este momento");
-      setButtonRetry(false);
-      setIdPolicy(id);
-      // setSubtittle("Por favor, intenta nuevamente a través del boton Reintentar, Si el error persiste, por favor retoma la cotizacion en unos minutos desde Mis negocios");
       console.error('Ocurrió un error al retomar la cotización:', error);
       // Asegurar que la interfaz se libere en caso de error
       Loading.toggle(false);
+      await CreateAuditData.createDataAudit({
+        opcion: 'Dashboard retomar cotización / ERROR',
+        cotizacion: id,
+        respuesta: [
+          {
+            message: error?.message,
+            stack: error?.stack,
+            status: error?.status,
+            statusText: error?.statusText,
+          },
+        ],
+      });
+      window.location.href = `${UrlSite}/`;
     }
   };
   const getPdf = (id, emissionId) => async (e) => {
