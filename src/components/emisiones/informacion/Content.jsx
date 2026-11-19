@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import Masknumbermoney from 'common/helpers/masknumbermoney/Masknumbermoney';
 import Helpers from 'common/helpers/helpers';
 import informative from 'assets/images/informative.svg';
+import HelpOutline from 'components/globals/icons/helpOutline';
+import { Tooltip } from 'components/Tooltip';
 import { typeItems } from 'common/typeItems';
 import { TYPES_VALUE_CONTENT, attachmentsItems } from './constants';
 
@@ -81,18 +83,29 @@ const Content = ({
         <div className="col no-padding-right">
           <div className="name form-group ">
             <label htmlFor="name">Características</label>
-            <input
-              type="text"
-              className="form-control"
-              name="caracte"
-              value={content.caracte}
-              onChange={updateContent}
-              disabled={!typeItem}
-              maxLength={400}
-            />
+            <div className="d-flex align-items-center">
+              <input
+                type="text"
+                className="form-control"
+                name="caracte"
+                value={content.caracte}
+                onChange={updateContent}
+                disabled={!typeItem}
+                maxLength={400}
+              />
+              {isCellPhone && (
+                <Tooltip
+                  className={'ml-2'}
+                  placement="left"
+                  title="Ingresa el IMEI de tu móvil, puedes encontrarlo marcando en tu celular *#06# (Android y iPhone). Si relacionas más de 1 equipo móvil debes incluir el IMEI de cada uno."
+                >
+                  <HelpOutline />
+                </Tooltip>
+              )}
+            </div>
             <small className="form-text d-block text-left">
               Ej: Marca, referencia, {isCellPhone && 'Numero IMEI,'} color...
-              (max 400 caracteres)
+              (max 400 caracteres)  
             </small>
           </div>
         </div>
