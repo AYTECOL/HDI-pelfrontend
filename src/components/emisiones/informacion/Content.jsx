@@ -83,10 +83,11 @@ const Content = ({
         <div className="col no-padding-right">
           <div className="name form-group ">
             <label htmlFor="name">Características</label>
-            <div className="d-flex align-items-center">
+            <div className="position-relative">
               <input
                 type="text"
                 className="form-control"
+                style={isCellPhone ? { paddingRight: '2.5rem' } : undefined}
                 name="caracte"
                 value={content.caracte}
                 onChange={updateContent}
@@ -95,8 +96,14 @@ const Content = ({
               />
               {isCellPhone && (
                 <Tooltip
-                  className={'ml-2'}
-                  placement="left"
+                  className="position-absolute d-flex"
+                  style={{
+                    right: '0.5rem',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    cursor: 'pointer',
+                  }}
+                  placement="top"
                   title="Ingresa el IMEI de tu móvil, puedes encontrarlo marcando en tu celular *#06# (Android y iPhone). Si relacionas más de 1 equipo móvil debes incluir el IMEI de cada uno."
                 >
                   <HelpOutline />
